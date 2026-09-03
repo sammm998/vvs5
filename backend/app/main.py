@@ -324,3 +324,16 @@ def export(job_id: str, fmt: str, user: User = Depends(current_user), db: Sessio
     if fmt == "pdf":
         return FileResponse(os.path.join(rd, "production-overlay.pdf"), media_type="application/pdf", filename=f"{base}-markerad.pdf")
     raise HTTPException(404, "Okänt exportformat")
+
+
+# ---------------------------------------------------------------- built frontend (single-container deployment)
+_STATIC = settings.static_root
+if os.path.isfile(os.path.join(_STATIC, "index.html")):
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def spa(full_path: str):
+        if full_path.startswith("api/"):
+            raise HTTPException(404, "Okänd API-väg")
+        candidate = os.path.normpath(os.path.join(_STATIC, full_path))
+        if full_path and candidate.startswith(_STATIC) and os.path.isfile(candidate):
+            return FileResponse(candidate)
+        return FileResponse(os.path.join(_STATIC, "index.html"))

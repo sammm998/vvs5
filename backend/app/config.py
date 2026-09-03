@@ -14,6 +14,13 @@ class Settings(BaseSettings):
     run_determinism: bool = False
     cors_origins: str = "http://localhost:5173,http://localhost:8080"
     allow_registration: bool = True
+    static_dir: str = ""          # built frontend (frontend/dist); served by the API when present
+
+    @property
+    def static_root(self) -> str:
+        if self.static_dir:
+            return self.static_dir
+        return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist"))
 
     model_config = {"env_prefix": "VVS_", "env_file": ".env", "extra": "ignore"}
 
