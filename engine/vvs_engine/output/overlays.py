@@ -74,14 +74,17 @@ def _pipe_polylines(pa, state):
     return out
 
 
+# one colour per identity; none of them may be dark enough to read as the drawing's own black line work
 PALETTE = [(0.05, 0.6, 0.1), (0.0, 0.35, 0.9), (0.85, 0.1, 0.1), (0.55, 0.0, 0.7), (0.0, 0.6, 0.6), (0.8, 0.45, 0.0),
-           (0.3, 0.3, 0.9), (0.6, 0.35, 0.1), (0.9, 0.0, 0.5), (0.1, 0.45, 0.3), (0.5, 0.5, 0.0), (0.2, 0.2, 0.2)]
+           (0.3, 0.3, 0.9), (0.6, 0.35, 0.1), (0.9, 0.0, 0.5), (0.1, 0.45, 0.3), (0.5, 0.5, 0.0), (0.45, 0.75, 0.0)]
 
 
 def identity_color(key: str):
-    """Deterministic colour per designation+DN (content hash of the identity key)."""
-    import hashlib
-    h = int(hashlib.sha1(key.encode("utf-8")).hexdigest()[:8], 16)
+    """Deterministic colour per designation+DN. The hash is the one the viewer uses, so a pipe keeps its colour
+    between the screen and the exported marked PDF."""
+    h = 0
+    for ch in key:
+        h = (h * 31 + ord(ch)) & 0xFFFFFFFF
     return PALETTE[h % len(PALETTE)]
 
 

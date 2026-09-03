@@ -6,7 +6,8 @@ import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 export type Layer = "pipes" | "ambiguous" | "unowned" | "designations" | "leaders" | "anchors";
 
-const PALETTE = ["#0d9a1a", "#0059e6", "#d91a1a", "#8c00b3", "#009999", "#cc7300", "#4d4de6", "#99591a", "#e6007f", "#1a734d", "#808000", "#333333"];
+// one colour per identity; none dark enough to read as the drawing's own black line work (same order as the engine palette)
+const PALETTE = ["#0d9a1a", "#0059e6", "#d91a1a", "#8c00b3", "#009999", "#cc7300", "#4d4de6", "#99591a", "#e6007f", "#1a734d", "#808000", "#73bf00"];
 export function identityColor(key: string): string {
   let h = 0;
   for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;

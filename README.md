@@ -71,6 +71,8 @@ designations and scale in the "Ej lösta" view.
 * Risers are counted from the drawn riser marks per designation. The drawing carries no floor height, so vertical
   metres are computed only when the user enters a floor height (Mängder tab; `?floor_height=` on Excel/CSV export).
 * DN changes are placed at drawn tick marks; labels pointing at a riser mark describe the riser, not the run.
+* Every designation gets its own colour, the same one in the viewer and in the exported marked PDF. No colour is
+  dark enough to be mistaken for the drawing's own black line work.
 
 ## Scale
 
