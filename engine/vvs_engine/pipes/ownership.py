@@ -555,11 +555,24 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                 else:
                     cands = {st[p].identity for p in resolved}
                     ci = chain_of[u]
-                    for pid in ch[ci]:
-                        s = st[pid]
-                        if s.state == "UNOWNED":
-                            s.state, s.candidates, s.reason = "AMBIGUOUS", set(cands), "AMBIGUOUS_BRANCH"
-                            s.evidence.append(f"unlabeled_branch_at_node_{nid}")
+                    # an unlabeled branch where every labeled arm of the junction carries the SAME identity has no
+                    # competing candidate: a size change is drawn with its own label, so an unnamed branch is the
+                    # identity that feeds it. Only a junction with two or more candidates is genuinely ambiguous.
+                    only = next(iter(cands)) if len(cands) == 1 else None
+                    if only is not None and only.dn is not None and not groups_of.get(ci):
+                        aids = set().union(*(st[p].anchors for p in resolved))
+                        for pid in ch[ci]:
+                            s = st[pid]
+                            if s.state == "UNOWNED":
+                                s.state, s.identity, s.reason = "CONFIRMED", only, "unlabeled_branch_takes_the_only_junction_identity"
+                                s.anchors |= aids
+                                s.evidence.append(f"single_candidate_at_node_{nid}")
+                    else:
+                        for pid in ch[ci]:
+                            s = st[pid]
+                            if s.state == "UNOWNED":
+                                s.state, s.candidates, s.reason = "AMBIGUOUS", set(cands), "AMBIGUOUS_BRANCH"
+                                s.evidence.append(f"unlabeled_branch_at_node_{nid}")
                     changed = True
 
 

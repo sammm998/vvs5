@@ -69,6 +69,9 @@ from CAD instead of scanning it.
 * Risers are counted from the drawn riser marks per designation. The drawing carries no floor height, so vertical
   metres are computed only when the user enters a floor height (Mängder tab; `?floor_height=` on Excel/CSV export).
 * DN changes are placed at drawn tick marks; labels pointing at a riser mark describe the riser, not the run.
+* A branch with no size label of its own, off a junction where every labelled arm carries the same identity, is
+  that identity: a size change is always drawn with its own label. A junction with two competing identities leaves
+  the branch AMBIGUOUS rather than guessing.
 * Every designation gets its own colour, the same one in the viewer and in the exported marked PDF. No colour is
   dark enough to be mistaken for the drawing's own black line work.
 
