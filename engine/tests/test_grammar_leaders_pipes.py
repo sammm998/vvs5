@@ -78,8 +78,9 @@ def test_full_pipeline_on_synthetic_drawing(synthetic_pdf):
     assert reconcile(pa)["state"] == "VALID"
 
 
-def test_dn_boundary_is_ambiguous_not_midpoint(tmp_path):
-    """Two labels with different DN on one straight run: geometry between them must be AMBIGUOUS."""
+def test_dn_boundary_at_smaller_dn_tick_not_midpoint(tmp_path):
+    """Two tick-labelled DN on one straight run with dead ends both sides: the reduction is drawn at the tick of
+    the smaller size, so DN40 runs up to the DN25 tick; nothing is split at an invented midpoint."""
     path = os.path.join(tmp_path, "dn.pdf")
     doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
     make_dashed_line(shape, (100, 300), (700, 300))
@@ -91,11 +92,13 @@ def test_dn_boundary_is_ambiguous_not_midpoint(tmp_path):
     page.insert_text((100, 560), "SKALA 1:50", fontsize=10, fontname="helv")
     shape.commit(); doc.save(path); doc.close()
     pa = analyze_page(extract_document(path).pages[0])
-    states = [st.state for sts in pa.ownership.prim_states.values() for st in sts.values()]
-    assert "AMBIGUOUS" in states and "CONFIRMED" in states
-    assert any(r["reason"] == "AMBIGUOUS_DN_BOUNDARY" for r in pa.ownership.ambiguous_runs)
-    q = {(r["designation"], r["dn"]): r for r in pa.quantities}
-    assert sum(r["ambiguous_m"] for r in pa.quantities) > 0
+    reasons = {st.reason for sts in pa.ownership.prim_states.values() for st in sts.values()}
+    assert "dn_boundary_at_smaller_dn_tick" in reasons
+    q = {r["dn"]: r for r in pa.quantities}
+    # DN40 tick at x=250, DN25 tick at x=650 on a 100..700 run: 40 owns 100..650 (550 pt), 25 owns 650..700 (50 pt)
+    assert abs(q[40]["confirmed_horizontal_m"] - 550 / 56.69) < 0.35
+    assert abs(q[25]["confirmed_horizontal_m"] - 50 / 56.69) < 0.35
+    assert sum(r["ambiguous_m"] for r in pa.quantities) == 0
 
 
 def test_vertical_from_two_elevations(tmp_path):

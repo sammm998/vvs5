@@ -367,6 +367,7 @@ def _span_bbox(bbox, d):
 # ----------------------------------------------------------------------------------------------------------------
 
 COUNT_RE = re.compile(r"^(\d{1,2})[xX](.+)$")
+DN_QUALIFIER_RE = re.compile(r"^(\d{1,4})[(\[]?[A-ZÅÄÖ]{1,3}[)\]]?$")
 
 
 def _words(line: TextRow) -> list[list[Glyph]]:
@@ -459,8 +460,12 @@ def _row_role(text: str, br: BlockRow, b: AnnotationBlock) -> str:
     if not t:
         return "text"
     words = t.split(" ")
-    # pure number row (possibly underlined) -> dn candidate
+    # pure number row (possibly underlined) -> dn candidate; a nominal size followed by a short bracketed or
+    # bare letter qualifier ("75(L)") is a dn row as well
     if len(words) == 1 and re.fullmatch(r"\d{1,4}", words[0]):
+        return "dn"
+    mq = DN_QUALIFIER_RE.match(t.replace(" ", ""))
+    if mq and len(words) <= 2 and int(mq.group(1)) in NOMINAL_SIZES:
         return "dn"
     # elevation: short letter tag + signed number (VG+1.67, CL 4000, FG +19.82)
     if ELEV_RE.match(t.replace(" ", "")) or (len(words) == 2 and re.fullmatch(r"[A-ZÅÄÖ]{1,4}", words[0]) and re.fullmatch(r"[+\-]?\d+[.,]?\d*", words[1])):
@@ -506,7 +511,8 @@ def _find_dn(word: str, toks: list[str], fam, b: AnnotationBlock, ri: int, word_
             ov = min(word_bbox[2], nxt.line.bbox[2]) - max(word_bbox[0], nxt.line.bbox[0])
             if ov <= 0:
                 continue
-        v = int(nxt.text_norm.strip())
+        mv = re.match(r"\d{1,4}", nxt.text_norm.strip())
+        v = int(mv.group(0)) if mv else -1
         if dn_plausible(v):
             return v, "row", rj
     return None, None, None

@@ -13,7 +13,7 @@ RAW PDF VECTOR OBJECTS  (vvs_engine/pdf/extract.py: paths, segments, flattened c
   -> ACTUAL CAD LEADER  (semantics/leaders.py: chains of real segments starting at block boundary points; tick markers)
   -> LEADER ENDPOINT + PIPE ATTACHMENT  (semantics/attachment.py: contacts at endpoint / crossing ticks; layer-token or count bijection; marker/fitting bridges)
   -> PIPE REPRESENTATION + TOPOLOGY  (pipes/representation.py: micro-gap families, T-junction splitting, crossing != connection)
-  -> PHYSICAL PIPE  (pipes/ownership.py: chain-wise ownership, agreeing anchors, DN boundaries, collinear continuation, AMBIGUOUS_BRANCH)
+  -> PHYSICAL PIPE  (pipes/ownership.py: chain-wise ownership, agreeing anchors, DN boundaries at drawn tick marks (pipe re-split at ticks), junction DN flowing up to a tick, collinear continuation, AMBIGUOUS_BRANCH)
   -> MEASUREMENT  (measure/scale.py: scale text + vector scale bar; measure/measure.py: horizontal from actual geometry, vertical only with explicit evidence)
   -> QUANTITY  (aggregate by designation base + DN; ambiguous reported separately)
   -> ARTIFACTS  (output/artifacts.py, output/overlays.py; reconcile.py; determinism.py; contamination.py)

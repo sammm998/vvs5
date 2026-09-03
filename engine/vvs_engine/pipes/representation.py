@@ -132,8 +132,31 @@ def split_t_junctions(prims: list[Prim]) -> tuple[list[Prim], list[dict]]:
                     if dist(ep, r.a) > TOUCH_TOL and dist(ep, r.b) > TOUCH_TOL:
                         cuts[pid2].append(t)
                         junctions.append({"prim": pid2, "t": round(t, 4), "from_prim": q.prim_id})
+    return _apply_cuts(prims, cuts), junctions
+
+
+def split_prims_at_points(prims: list[Prim], points: list[tuple[float, float]], tol: float = 1.0) -> list[Prim]:
+    """Split primitives at drawn boundary points (tick marks of verified leaders) so that the boundary becomes a
+    graph node; only interior hits (not already an endpoint) are cut."""
+    if not points or not prims:
+        return prims
+    idx = GridIndex(cell=12.0)
+    for q in prims:
+        idx.insert(q.prim_id, q.seg.bbox())
+    pmap = {q.prim_id: q for q in prims}
+    cuts: dict[int, list[float]] = defaultdict(list)
+    for (x, y) in sorted(points):
+        for pid in idx.query_point(x, y, tol + 0.1):
+            q = pmap[pid]
+            d, t = point_seg_distance(x, y, q.seg)
+            if d <= tol and 0.02 < t < 0.98 and dist((x, y), q.a) > tol and dist((x, y), q.b) > tol:
+                cuts[pid].append(t)
+    return _apply_cuts(prims, cuts)
+
+
+def _apply_cuts(prims: list[Prim], cuts: dict[int, list[float]]) -> list[Prim]:
     if not cuts:
-        return prims, []
+        return prims
     out: list[Prim] = []
     next_id = max(p.prim_id for p in prims) + 1
     for q in sorted(prims, key=lambda q: q.prim_id):
@@ -150,7 +173,7 @@ def split_t_junctions(prims: list[Prim]) -> tuple[list[Prim], list[dict]]:
             if k > 0:
                 next_id += 1
             out.append(Prim(prim_id=nid, pid=q.pid, seg_index=q.seg_index, seg=Seg(a[0], a[1], b[0], b[1]), family=q.family, layer=q.layer, width=q.width))
-    return out, junctions
+    return out
 
 
 def build_graph(prims: list[Prim], family: str) -> PipeGraph:

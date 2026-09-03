@@ -19,12 +19,13 @@ from .annotation import AnnotationBlock, Designation
 from .leaders import Leader
 
 CONTACT_TOL = 0.6
+MARKER_MAX = 3.0          # pt: closed end markers (dots, small circles) of pipes
 
 
 @dataclass
 class Contact:
     point: tuple[float, float]
-    kind: str            # 'end' | 'crossing_tick' | 'end_tick' | 'via_fitting'
+    kind: str            # 'end' | 'crossing_tick' | 'end_tick' | 'via_symbol' | 'via_marker' | 'via_fitting'
     family: str
     pid: str
     seg_index: int
@@ -99,6 +100,10 @@ def system_layer_match(system_token: str, layer: str) -> str | None:
                 return T
         if TU == alpha and len(alpha) >= 2:
             return T
+        # abbreviated system token: the layer token is the tail of the designation's system token with the same
+        # digits (KV2 -> V2, VV1 -> V1); a token of another alpha family with other digits was excluded above
+        if len(TU) >= 2 and len(S) > len(TU) and S.endswith(TU) and re.fullmatch(r"[A-ZÅÄÖ]+\d+", TU):
+            return T
     return None
 
 
@@ -120,12 +125,29 @@ class GeometryIndex:
     def __init__(self, page: RawPage, exclude_families: set[str], exclude_pids: set[str]):
         self.idx = GridIndex(cell=12.0)
         self.items: list[tuple[RawPath, int, Seg]] = []
+        # closed small symbols (riser marks, end circles, fittings) are indexed from ALL stroke paths: a circle
+        # read as a text glyph ('O', '0') is still the symbol a leader may point at
+        self.symbols: list[RawPath] = []
+        self.symbol_idx = GridIndex(cell=12.0)
         for p in sorted(page.paths, key=lambda p: p.pid):
+            if p.kind == "s" and _is_closed_symbol(p):
+                self.symbols.append(p)
+                self.symbol_idx.insert(len(self.symbols) - 1, p.bbox)
             if p.kind == "f" or family_of(p) in exclude_families or p.pid in exclude_pids:
                 continue
             for k, s in enumerate(p.segs):
                 self.items.append((p, k, s))
                 self.idx.insert(len(self.items) - 1, s.bbox())
+
+    def symbols_near(self, x: float, y: float, r: float) -> list[RawPath]:
+        return [self.symbols[i] for i in sorted(set(self.symbol_idx.query_point(x, y, r)))]
+
+    def paths_near(self, x: float, y: float, r: float) -> list[RawPath]:
+        seen: dict[str, RawPath] = {}
+        for i in self.idx.query_point(x, y, r):
+            p = self.items[i][0]
+            seen.setdefault(p.pid, p)
+        return [seen[k] for k in sorted(seen)]
 
     def hits(self, x: float, y: float, tol: float = CONTACT_TOL, skip_pids: set[str] | None = None) -> list[tuple[RawPath, int, float]]:
         out = []
@@ -145,11 +167,17 @@ def family_of(p: RawPath) -> str:
 
 
 def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | None, all_paths: dict[str, RawPath]) -> list[Contact]:
-    """Contacts at each attachment point. When pipe_families is given, non-pipe hits that are small closed symbols
-    are bridged to pipe primitives touching them (leader -> fitting -> pipe)."""
+    """Contacts at each attachment point.
+
+    A leader whose end lies inside a small closed symbol (riser mark, end circle, fitting) points at that symbol:
+    pipe geometry through the symbol or ending at the symbol group is a 'via_symbol' contact (a weak seed - the
+    label describes the symbol's object; DN ticks on the line outrank it). Otherwise the end / tick points give
+    direct contacts; tiny markers at the end bridge to pipe ends (via_marker); small symbols touched by the leader
+    bridge to pipes touching them (via_fitting)."""
     out: list[Contact] = []
     skip = set(ld.path_ids)
     seen: set[tuple[str, int]] = set()
+    symbol = _enclosing_symbol(ld.end, gidx, pipe_families, skip)
     for (pt, kind, mid) in contact_points(ld):
         hits = gidx.hits(pt[0], pt[1], skip_pids=skip)
         direct = []
@@ -160,30 +188,35 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
                 direct.append((p, k, d))
             else:
                 others.append((p, k, d))
+        if symbol is not None and pt == ld.end:
+            for p, k, d in direct:
+                if (p.pid, k) in seen:
+                    continue
+                seen.add((p.pid, k))
+                out.append(Contact(point=pt, kind="via_symbol", family=family_of(p), pid=p.pid, seg_index=k, distance=d, mark_id=mid, via=symbol.pid))
+            if pipe_families:
+                for p in _marker_cluster([symbol], gidx, pipe_families, skip):
+                    for q, kk, de, ep in _pipe_ends_at_marker(p, gidx, pipe_families, skip):
+                        if (q.pid, kk) not in seen:
+                            seen.add((q.pid, kk))
+                            out.append(Contact(point=ep, kind="via_symbol", family=family_of(q), pid=q.pid, seg_index=kk, distance=de, mark_id=mid, via=p.pid))
+            continue
         for p, k, d in direct:
             if (p.pid, k) in seen:
                 continue
             seen.add((p.pid, k))
             out.append(Contact(point=pt, kind=kind, family=family_of(p), pid=p.pid, seg_index=k, distance=d, mark_id=mid))
         if not direct and pipe_families and others:
-            # marker bridge: a dot/tiny marker at the leader end sitting at a pipe END (micro gap <= 2.5 pt)
-            for p, k, d in others:
-                w = p.bbox[2] - p.bbox[0]; h = p.bbox[3] - p.bbox[1]
-                if max(w, h) > 1.5:
-                    continue
-                mx, my = (p.bbox[0] + p.bbox[2]) / 2, (p.bbox[1] + p.bbox[3]) / 2
-                ends = []
-                for q, kk, dd in gidx.hits(mx, my, tol=2.5, skip_pids=skip | {p.pid}):
-                    if family_of(q) not in pipe_families:
-                        continue
-                    sg = q.segs[kk]
-                    de = min(dist((mx, my), (sg.x0, sg.y0)), dist((mx, my), (sg.x1, sg.y1)))
-                    if de <= 2.5 and (q.pid, kk) not in seen:
-                        ends.append((q, kk, de))
-                for q, kk, de in ends:
-                    seen.add((q.pid, kk))
-                    out.append(Contact(point=pt, kind="via_marker", family=family_of(q), pid=q.pid, seg_index=kk, distance=de, mark_id=mid, via=p.pid))
-            if any(c.kind == "via_marker" for c in out if c.point == pt):
+            # marker bridge: a dot/tiny marker at the leader end sitting at a pipe END (micro gap). Touching tiny
+            # markers form one cluster (stacked end markers of parallel pipes): every pipe end at any marker of
+            # the cluster is a contact.
+            n_before = len(out)
+            for p in _marker_cluster([p for p, _, _ in others if max(p.bbox[2] - p.bbox[0], p.bbox[3] - p.bbox[1]) <= MARKER_MAX], gidx, pipe_families, skip):
+                for q, kk, de, ep in _pipe_ends_at_marker(p, gidx, pipe_families, skip):
+                    if (q.pid, kk) not in seen:
+                        seen.add((q.pid, kk))
+                        out.append(Contact(point=ep, kind="via_marker", family=family_of(q), pid=q.pid, seg_index=kk, distance=de, mark_id=mid, via=p.pid))
+            if len(out) > n_before:
                 continue
             # fitting bridge: small symbol touched by the leader; pipe primitives touching the symbol
             for p, k, d in others:
@@ -195,9 +228,83 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
                         for q, kk, dd in gidx.hits(ep[0], ep[1], tol=1.5, skip_pids=skip | {p.pid}):
                             if family_of(q) in pipe_families and (q.pid, kk) not in seen:
                                 seen.add((q.pid, kk))
-                                out.append(Contact(point=pt, kind="via_fitting", family=family_of(q), pid=q.pid, seg_index=kk, distance=dd, mark_id=mid, via=p.pid))
+                                out.append(Contact(point=(ep[0], ep[1]), kind="via_fitting", family=family_of(q), pid=q.pid, seg_index=kk, distance=dd, mark_id=mid, via=p.pid))
     out.sort(key=lambda c: (c.pid, c.seg_index))
     return out
+
+
+WEAK_KINDS = ("via_symbol", "via_marker", "via_fitting")
+SYMBOL_MAX = 20.0         # pt: closed symbols a leader may point at (riser marks, end circles, fittings)
+
+
+def _is_closed_symbol(p: RawPath) -> bool:
+    if p.kind != "s" or len(p.segs) < 3:
+        return False
+    size = max(p.bbox[2] - p.bbox[0], p.bbox[3] - p.bbox[1])
+    if size < 1.0 or size > SYMBOL_MAX:
+        return False
+    a = (p.segs[0].x0, p.segs[0].y0); b = (p.segs[-1].x1, p.segs[-1].y1)
+    return dist(a, b) <= 0.25
+
+
+def _enclosing_symbol(pt: tuple[float, float], gidx: GeometryIndex, pipe_families: set[str] | None, skip: set[str]) -> RawPath | None:
+    """Smallest closed non-pipe symbol whose box strictly contains the point (the leader points at the symbol)."""
+    best = None
+    for p in gidx.symbols_near(pt[0], pt[1], 1.0):
+        if p.pid in skip or (pipe_families and family_of(p) in pipe_families):
+            continue
+        w = p.bbox[2] - p.bbox[0]; h = p.bbox[3] - p.bbox[1]
+        m = 0.1 * max(w, h)
+        if p.bbox[0] + m <= pt[0] <= p.bbox[2] - m and p.bbox[1] + m <= pt[1] <= p.bbox[3] - m:
+            size = max(w, h)
+            if best is None or size < best[0] or (size == best[0] and p.pid < best[1].pid):
+                best = (size, p)
+    return best[1] if best else None
+
+
+def _pipe_ends_at_marker(p: RawPath, gidx: GeometryIndex, pipe_families: set[str], skip: set[str]) -> list[tuple[RawPath, int, float, tuple[float, float]]]:
+    """Pipe primitives whose END lies at the marker's edge (within half its size + 1 pt of its centre), with the
+    end point (the contact point on the pipe)."""
+    mx, my = (p.bbox[0] + p.bbox[2]) / 2, (p.bbox[1] + p.bbox[3]) / 2
+    size = max(p.bbox[2] - p.bbox[0], p.bbox[3] - p.bbox[1])
+    R = max(2.5, 0.5 * size + 1.0)
+    ends = []
+    for q, kk, dd in gidx.hits(mx, my, tol=R, skip_pids=skip | {p.pid}):
+        if family_of(q) not in pipe_families:
+            continue
+        sg = q.segs[kk]
+        cands = [((sg.x0, sg.y0), dist((mx, my), (sg.x0, sg.y0))), ((sg.x1, sg.y1), dist((mx, my), (sg.x1, sg.y1)))]
+        ep, de = min(cands, key=lambda t: t[1])
+        if de <= R:
+            ends.append((q, kk, de, ep))
+    ends.sort(key=lambda t: (t[0].pid, t[1]))
+    return ends
+
+
+def _marker_cluster(seeds: list[RawPath], gidx: GeometryIndex, pipe_families: set[str], skip: set[str], limit: int = 16) -> list[RawPath]:
+    cluster: dict[str, RawPath] = {}
+    frontier: list[RawPath] = []
+    for p in sorted(seeds, key=lambda p: p.pid):
+        if p.pid not in cluster:
+            cluster[p.pid] = p
+            frontier.append(p)
+    while frontier and len(cluster) < limit:
+        p = frontier.pop(0)
+        mx, my = (p.bbox[0] + p.bbox[2]) / 2, (p.bbox[1] + p.bbox[3]) / 2
+        size = max(p.bbox[2] - p.bbox[0], p.bbox[3] - p.bbox[1])
+        neighbours = [q for q, _, _ in gidx.hits(mx, my, tol=2.5 + size, skip_pids=skip)] + gidx.symbols_near(mx, my, 2.5 + size)
+        for q in sorted(neighbours, key=lambda q: q.pid):
+            if q.pid in cluster or q.pid in skip or family_of(q) in pipe_families or q.kind == "f":
+                continue
+            qsize = max(q.bbox[2] - q.bbox[0], q.bbox[3] - q.bbox[1])
+            if qsize > MARKER_MAX:
+                continue
+            gx = max(0.0, max(p.bbox[0], q.bbox[0]) - min(p.bbox[2], q.bbox[2]))
+            gy = max(0.0, max(p.bbox[1], q.bbox[1]) - min(p.bbox[3], q.bbox[3]))
+            if max(gx, gy) <= max(0.5, 0.35 * max(size, qsize)):
+                cluster[q.pid] = q
+                frontier.append(q)
+    return [cluster[k] for k in sorted(cluster)]
 
 
 def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, contacts: list[Contact],

@@ -250,15 +250,44 @@ def cluster_rows(page: RawPage, comps: list[StrokeComponent], H: float) -> list[
     groups: dict[int, list[int]] = defaultdict(list)
     for i in range(len(cands)):
         groups[uf.find(i)].append(i)
-    rows: list[RowCluster] = []
+    clusters: list[tuple[list[StrokeComponent], float, int]] = []
     for root, members in groups.items():
         n_seed = sum(1 for i in members if seed[i])
         if n_seed == 0 or (n_seed == 1 and len(members) > 3):
             continue
         cs = [cands[i] for i in members]
-        rows.extend(_split_and_order(page, cs, H))
+        ang, strength = _principal_angle(cs), _angle_support(cs)
+        clusters.append((cs, ang, strength))
+    # drawing-local text orientations: clusters with >= 4 tall components estimate their axis robustly; weaker
+    # clusters (2-3 glyphs, PCA of few centers) adopt the nearest robust orientation within 20 degrees
+    robust: Counter = Counter()
+    for cs, ang, strength in clusters:
+        if strength >= 4:
+            robust[round(ang) % 180] += 1
+    prefs = [a for a, n in robust.items() if n >= 2] or sorted(robust)
+    rows: list[RowCluster] = []
+    for cs, ang, strength in clusters:
+        if strength < 4:
+            ang = _snap_angle(ang, prefs if prefs else [0.0, 90.0], 20.0)
+        rows.extend(_split_and_order(page, cs, H, ang))
     rows.sort(key=lambda r: r.rcid)
     return rows
+
+
+def _angle_support(cs: list[StrokeComponent]) -> int:
+    if not cs:
+        return 0
+    hmax = max(max(c.h, c.w) for c in cs)
+    return sum(1 for c in cs if max(c.h, c.w) >= 0.6 * hmax)
+
+
+def _snap_angle(ang: float, prefs, tol: float) -> float:
+    best = None
+    for p in prefs:
+        d = abs((ang - p + 90.0) % 180.0 - 90.0)
+        if d <= tol and (best is None or d < best[0]):
+            best = (d, float(p))
+    return best[1] % 180.0 if best else ang
 
 
 def _principal_angle(cs: list[StrokeComponent]) -> float:
@@ -283,9 +312,9 @@ def _principal_angle(cs: list[StrokeComponent]) -> float:
     return ang
 
 
-def _split_and_order(page: RawPage, cs: list[StrokeComponent], H: float) -> list[RowCluster]:
+def _split_and_order(page: RawPage, cs: list[StrokeComponent], H: float, angle: float | None = None) -> list[RowCluster]:
     cs = sorted(cs, key=lambda c: c.cid)
-    ang = _principal_angle(cs)
+    ang = _principal_angle(cs) if angle is None else angle
     a = math.radians(ang)
     d = (math.cos(a), math.sin(a))
     n = (-d[1], d[0])

@@ -59,7 +59,8 @@ def _vertical(p: PhysicalPipe, elevations: dict[str, list[dict]]):
     return None, None
 
 
-def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: float | None) -> list[dict[str, Any]]:
+def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: float | None,
+              risers: dict[str, list[dict]] | None = None) -> list[dict[str, Any]]:
     rows: dict[str, dict[str, Any]] = {}
     for m in measures:
         k = m.pipe.identity.key
@@ -86,9 +87,17 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         r["ambiguous_m"] += pt * mpp if mpp else 0.0
         if r["physical_pipe_count"] == 0:
             r["state"] = "AMBIGUOUS"
+    for k, lst in (risers or {}).items():
+        r = rows.setdefault(k, {"designation": k.split("|DN")[0], "base": k.split("|DN")[0], "dn": _dn_from_key(k), "system": "", "physical_pipe_count": 0,
+                                "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0, "confirmed_total_m": 0.0,
+                                "horizontal_pdf_units": 0.0, "ambiguous_m": 0.0, "vertical_known": False, "state": "CONFIRMED", "pipe_ids": []})
+        r["riser_count"] = sum(int(e.get("count") or 1) for e in lst)
     out = []
     for k in sorted(rows):
         r = rows[k]
+        r.setdefault("riser_count", 0)
+        if r["physical_pipe_count"] == 0 and r["ambiguous_m"] == 0 and r["riser_count"] > 0:
+            r["state"] = "RISER_LABELS_ONLY"
         for f in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m", "horizontal_pdf_units"):
             r[f] = round(r[f], 3)
         r["vertical_m"] = r["confirmed_vertical_m"] if r["vertical_known"] else "UNKNOWN"

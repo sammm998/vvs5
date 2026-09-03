@@ -18,6 +18,7 @@ from .annotation import AnnotationBlock, FreeSeg
 
 TOUCH_TOL = 0.15      # PDF export precision for shared endpoints
 MAX_SEGMENTS = 8
+START_PRIORITY = {"underline_end": 0, "box_corner": 0, "underline_touch": 1, "bbox_corner": 2}
 
 
 @dataclass
@@ -110,6 +111,10 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
         mark_idx.insert(i, mmap[mid].bbox)
     leaders: list[Leader] = []
     used_fids: set[int] = set()
+    # 1. every block claims the free segments starting at its boundary; a segment claimed by several blocks goes to
+    #    the strongest start evidence (frame end/corner > underline touch > bare bbox corner); equal claims of
+    #    different blocks are ambiguous and produce no leader
+    claims: dict[int, list[tuple[int, str, AnnotationBlock, FreeSeg, tuple[float, float], str]]] = defaultdict(list)
     for b in sorted(blocks, key=lambda b: b.bid):
         H = max(b.height, 1.0)
         tol_start = 0.35 * H
@@ -143,33 +148,58 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
                             inside = b.bbox[0] - 0.3 * H <= other[0] <= b.bbox[2] + 0.3 * H and b.bbox[1] - 0.3 * H <= other[1] <= b.bbox[3] + 0.3 * H
                             if not inside:
                                 starts.append((f, ep, "underline_touch"))
-        # dedupe starts by fid (keep the first deterministic)
+        # dedupe starts by fid within the block (strongest evidence first, then deterministic)
         seen: set[int] = set()
-        uniq = []
-        for f, ep, ptype in sorted(starts, key=lambda t: (t[0].pid, t[0].seg_index, t[1])):
+        for f, ep, ptype in sorted(starts, key=lambda t: (START_PRIORITY[t[2]], t[0].pid, t[0].seg_index, t[1])):
             if f.fid in seen:
                 continue
             seen.add(f.fid)
-            uniq.append((f, ep, ptype))
-        for f, ep, ptype in uniq:
-            chain, points, reason = _grow_chain(f, ep, fmap, ep_idx, used_fids)
-            if not chain:
-                continue
-            L = sum(s.seg.length for s in chain)
-            if L < 0.8 * H:
-                continue
-            for s in chain:
-                used_fids.add(s.fid)
-            end = points[-1]
-            lid = stable_id("ldr", page.info.index, b.bid, *(f"{s.pid}#{s.seg_index}" for s in chain))
-            ld = Leader(lid=lid, page=page.info.index, block_id=b.bid, segs=chain, points=points, start=points[0], end=end,
-                        start_type=ptype, layer=chain[0].layer, width=chain[0].width, truncated_reason=reason)
-            _attach_marks(ld, mark_idx, mark_keys, mmap)
-            leaders.append(ld)
+            claims[f.fid].append((START_PRIORITY[ptype], b.bid, b, f, ep, ptype))
+    chosen = []
+    for fid in sorted(claims):
+        lst = sorted(claims[fid], key=lambda t: (t[0], t[1]))
+        best = lst[0][0]
+        top = [t for t in lst if t[0] == best]
+        if len({t[1] for t in top}) > 1:
+            # equally strong claims of several blocks (shared frame line / corner): the leader leaves its own
+            # block, so keep the blocks the segment points away from; then blocks that carry a designation
+            out = [t for t in top if _leaves_block(t[2], t[3], t[4])]
+            if len({t[1] for t in out}) > 1:
+                out = [t for t in out if any(r.role == "designation" for r in t[2].rows)]
+            if len({t[1] for t in out}) != 1:
+                continue    # still ambiguous: no leader from this segment
+            top = out
+        chosen.append(top[0])
+    # 2. grow chains, strongest starts first
+    for prio, bid, b, f, ep, ptype in sorted(chosen, key=lambda t: (t[0], t[1], t[3].pid, t[3].seg_index)):
+        if f.fid in used_fids:
+            continue
+        H = max(b.height, 1.0)
+        chain, points, reason = _grow_chain(f, ep, fmap, ep_idx, used_fids)
+        if not chain:
+            continue
+        L = sum(s.seg.length for s in chain)
+        if L < 0.8 * H:
+            continue
+        for s in chain:
+            used_fids.add(s.fid)
+        end = points[-1]
+        lid = stable_id("ldr", page.info.index, b.bid, *(f"{s.pid}#{s.seg_index}" for s in chain))
+        ld = Leader(lid=lid, page=page.info.index, block_id=b.bid, segs=chain, points=points, start=points[0], end=end,
+                    start_type=ptype, layer=chain[0].layer, width=chain[0].width, truncated_reason=reason)
+        _attach_marks(ld, mark_idx, mark_keys, mmap)
+        leaders.append(ld)
     for ld in leaders:
         ld.family = leader_family(ld)
     leaders.sort(key=lambda l: l.lid)
     return leaders
+
+
+def _leaves_block(b: AnnotationBlock, f: FreeSeg, ep: tuple[float, float]) -> bool:
+    """The segment's far end lies on the side of the start point facing away from the block's centre."""
+    cx, cy = (b.bbox[0] + b.bbox[2]) / 2, (b.bbox[1] + b.bbox[3]) / 2
+    other = _other(f, ep)
+    return (ep[0] - cx) * (other[0] - ep[0]) + (ep[1] - cy) * (other[1] - ep[1]) > 0
 
 
 def _boundary_points(b: AnnotationBlock) -> list[tuple[tuple[float, float], str]]:

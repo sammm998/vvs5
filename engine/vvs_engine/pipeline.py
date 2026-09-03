@@ -11,7 +11,9 @@ from typing import Any, Callable
 
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
-from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family, family_key)
+from .geometry.core import dist
+from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family, family_key,
+                                   split_prims_at_points)
 from .profile.layers import compute_layer_stats
 from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, extract_designations, free_segments, merge_lines)
 from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, leader_contacts, resolve_block, system_layer_match)
@@ -155,6 +157,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
                 rows = [d for d in rows if d.row_index in unit]
                 if not rows:
                     continue        # leader belongs to a non-designation label unit (component tag, note)
+                rows = _rows_owning_leader(block, rows, ld)
             contacts = leader_contacts(ld, gidx, pf, paths)
             if not contacts and ld.length < 2.5 * max(block.height, 1.0) and not ld.end_marks:
                 continue        # dangling frame stub, not a leader
@@ -189,9 +192,10 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
         ann_layers = {}
     timings["leader_ms"] = 0.0
     t0 = _t(timings, "leader_attachment_ms", t0)
-    prims = {fk: graphs[fk].prims for fk in graphs}
     if progress:
         progress("BUILDING_TOPOLOGY")
+    graphs, pipe_families = _split_at_tick_contacts(page, graphs, pipe_families, anchors)
+    prims = {fk: graphs[fk].prims for fk in graphs}
     t0 = _t(timings, "topology_ms", t0)
     if progress:
         progress("BUILDING_PHYSICAL_PIPES")
@@ -209,7 +213,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
             if st.state == "AMBIGUOUS":
                 for ident in st.candidates:
                     amb_pt[ident.key] += g.prims[pid].seg.length / max(len(st.candidates), 1)
-    quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt)
+    quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, ownership.riser_labels)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
     return PageAnalysis(page=page, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
@@ -217,6 +221,43 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,
                         timings=timings)
+
+
+def _rows_owning_leader(block: AnnotationBlock, rows: list[Designation], ld: Leader) -> list[Designation]:
+    """Within a label unit of several designation rows each carrying its own underline (no box frame), a leader
+    starting at the end of one row's underline belongs to that row alone."""
+    if len(rows) <= 1 or block.box_segs or ld.start_type != "underline_end":
+        return rows
+    tol = 0.35 * max(block.height, 1.0)
+    own = []
+    for d in rows:
+        br = block.rows[d.row_index]
+        if any(dist(ld.start, ep) <= tol for u in br.underline for ep in ((u.seg.x0, u.seg.y0), (u.seg.x1, u.seg.y1))):
+            own.append(d)
+    return own if len(own) == 1 else rows
+
+
+def _split_at_tick_contacts(page: RawPage, graphs: dict, pipe_families: dict, anchors: list[PipeCodeAnchor]):
+    """Tick marks of verified leaders are drawn boundary evidence on the pipe: re-split the pipe primitives there
+    so every tick contact becomes a graph node (ownership can then change identity exactly at the tick)."""
+    pts: dict[str, set[tuple[float, float]]] = defaultdict(set)
+    for a in anchors:
+        if a.state != "VERIFIED_PIPE_ATTACHMENT":
+            continue
+        for c in a.contacts:
+            if c.kind in ("end_tick", "crossing_tick") and c.family in graphs:
+                pts[c.family].add((round(c.point[0], 3), round(c.point[1], 3)))
+    if not pts:
+        return graphs, pipe_families
+    prims_all = collect_prims(page, set(pts))
+    for fk in sorted(pts):
+        if not prims_all.get(fk):
+            continue
+        ps = split_prims_at_points(prims_all[fk], sorted(pts[fk]))
+        g = build_graph(ps, fk)
+        graphs[fk] = g
+        pipe_families[fk] = describe_family(fk, ps, g)
+    return graphs, pipe_families
 
 
 def _pipe_identities(designations, anchors, grammar) -> dict[str, Identity]:

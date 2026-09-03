@@ -3,13 +3,23 @@
 * **Vertical quantities** are produced only when two elevation annotations with the same tag (VG, CL, ...) sit on
   the anchors of one physical pipe; riser symbols and section relationships are not interpreted. Most pipes therefore
   report `vertical_m = UNKNOWN` (honest, not fabricated).
-* **DN transitions without a second label** cannot be split: the run between two labels of different DN is
-  reported as AMBIGUOUS_DN_BOUNDARY; reducer symbols are not recognised as proof of the transition point.
+* **DN transitions** are placed only at drawn evidence: the tick mark at a leader end on the pipe. Between two labels
+  of different DN the geometry belongs to the label whose tick is not the boundary; when both (or neither) carry a
+  tick and no dead end decides, the run is AMBIGUOUS_DN_BOUNDARY. A tick in the middle of a branch that continues
+  past it (DN change or plain pointer, undecidable) makes the part between junction and tick AMBIGUOUS.
+  Reducer symbols are not recognised as proof of a transition point.
+* **Label-vs-takeoff convention on dead-end stubs**: a stub labelled DN75 with its tick right after the junction is
+  owned as DN75 from that tick (label evidence). A human takeoff may count the stub as the main DN up to the last
+  tick before the riser; the engine does not guess and reports the label's reading.
 * **Unlabeled branches** at junctions stay AMBIGUOUS_BRANCH with candidate identities; only collinear straight-through
-  runs and agreeing anchors continue ownership through junctions.
+  runs, agreeing anchors, and the junction's own DN up to a drawn tick continue ownership through junctions.
 * **Bundle labels** (one leader crossing N pipes with N stacked rows) are resolved through drawing-local layer-name
-  tokens or a unique parallel-line count bijection; a bundle with two rows of the same system and different DN on the
-  same layer stays ambiguous.
+  tokens (exact, wildcard, or abbreviated tail such as KV2 -> V2), a unique parallel-line count bijection, or the row
+  whose own underline the leader starts from; a bundle with two rows of the same system and different DN on the same
+  layer stays ambiguous. Runs interrupted by symbol groups (stacked valve/coupling circles) are not bridged through
+  the symbols: the geometry beyond the symbol group stays UNNAMED unless it carries its own label.
+* **Count prefixes** ("5xKV2-X31") are read and recorded as the label's multiplier; quantities count the pipes actually
+  drawn and attached (parallel lines), never the multiplier times one line.
 * **Stroke-font recognition** relies on generic reference alphabets (Hershey simplex/duplex, Helvetica, Courier,
   Times skeletons). Very small text (< 2.5 pt on the page) and exotic CAD fonts produce unknown glyphs ('?');
   unknown characters are never repaired from expected words.
