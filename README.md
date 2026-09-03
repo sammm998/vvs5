@@ -85,13 +85,33 @@ off the graduations (that error was 0.95 % on these drawings). When a sheet stat
 ("SKALA A1 (A3)" over "1:50 (1:100)"), the k-th format belongs to the k-th ratio and the sheet's own size selects
 the one that applies. Two ratios with nothing to separate them stay a CONFLICT and no scale is assumed.
 
+## Review agents
+
+Every analysis is checked afterwards by agents that do not trust it (`vvs_engine/review/`). They report findings
+with a severity, a place to look and the numbers behind the verdict; none of them may change a measurement, since
+a review that could edit the result would hide the disagreement it exists to surface.
+
+* **scale** - is there a scale, does a bar confirm it, is the ratio a plausible one
+* **coverage** - how much of the accepted pipe geometry actually ended up owned by a designation
+* **plausibility** - sizes against the nominal series, lengths against the drawing's own extent, rows without DN
+* **topology** - free pipe ends and runs left between two possible designations
+* **designations** - labels with a dimension that never reached a pipe, unreadable characters
+* **ocr_crosscheck** - the page is rendered and read with OCR as an independent second opinion. It never feeds the
+  measurement: it only asks whether OCR sees a designation, in the drawing's own label pattern, where the vector
+  reading has no text at all. On drawings A and W-50-1-A-0014 it finds none, which is the confirmation that the
+  vector reading missed nothing. Needs the `review` extra (`pip install -e engine[review]`); without it the agent
+  reports that the cross-check did not run. Disable with `VVS_REVIEW_OCR=false`, the whole layer with
+  `VVS_RUN_REVIEW=false`.
+
+The findings are written to `review-findings.json` and shown in the application's "Granskning" tab.
+
 ## Artifacts per drawing (results/<name>/)
 
 drawing-profile.json, drawing-profile-report.md, raw-vector-inventory.json, cad-layer-map.json,
 vector-designations.json, designation-overlay.pdf, leader-forensics.json, leader-family-report.json,
 pipe-code-anchors.json, endpoint-pipe-attachment-overlay.pdf, pipe-representation-families.json,
 pipe-geometry-inventory.json, pipe-topology.json, physical-pipes.json, quantities.json, unresolved-issues.json,
-evidence-graph.json, reconciliation.json, determinism.json, contamination-report.json, performance-report.json,
+evidence-graph.json, reconciliation.json, review-findings.json, determinism.json, contamination-report.json, performance-report.json,
 production-overlay.pdf (+ topology/ambiguous/unsupported-style overlays), analysis-report.md, freeze-manifest.json.
 
 ## Principles enforced by the engine

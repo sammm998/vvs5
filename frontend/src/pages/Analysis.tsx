@@ -19,7 +19,7 @@ export default function AnalysisPage() {
   const [result, setResult] = useState<any>(null);
   const [pdf, setPdf] = useState<ArrayBuffer | null>(null);
   const [err, setErr] = useState("");
-  const [tab, setTab] = useState<"mangder" | "ejlosta" | "oversikt" | "artefakter">("mangder");
+  const [tab, setTab] = useState<"mangder" | "ejlosta" | "granskning" | "oversikt" | "artefakter">("mangder");
   const [selIdent, setSelIdent] = useState<string | null>(null);
   const [selPipe, setSelPipe] = useState<any>(null);
   const [why, setWhy] = useState<any>(null);
@@ -101,12 +101,19 @@ export default function AnalysisPage() {
         <div className="tabs">
           <button className={tab === "mangder" ? "active" : ""} onClick={() => setTab("mangder")}>Mängder</button>
           <button className={tab === "ejlosta" ? "active" : ""} onClick={() => setTab("ejlosta")}>Ej lösta ({result.issues.length})</button>
+          <button className={tab === "granskning" ? "active" : ""} onClick={() => setTab("granskning")}>
+            Granskning{result.review ? ` (${result.review.findings.filter((f: any) => f.severity !== "INFO").length})` : ""}
+          </button>
           <button className={tab === "oversikt" ? "active" : ""} onClick={() => setTab("oversikt")}>Översikt</button>
           <button className={tab === "artefakter" ? "active" : ""} onClick={() => setTab("artefakter")}>Export</button>
         </div>
         {tab === "mangder" && (
           <div className="card">
-            {covWarn && <p className="badge warn">Semantisk täckning är låg – mängderna täcker inte alla rör på ritningen.</p>}
+            {covWarn && (
+              <p className="badge warn">
+                {`${c.verified_attachments} av ${c.designations} beteckningar nådde ett rör. Resten är legendtext, komponenttaggar eller etiketter vars hänvisningslinje inte når fram – se Granskning.`}
+              </p>
+            )}
             <div className="row" style={{ marginBottom: 8, alignItems: "center", gap: 8 }}>
               <label style={{ fontSize: 12 }}>Våningshöjd för stigare (m): <input style={{ width: 70 }} value={floorHeight} placeholder="t.ex. 2,8"
                 onChange={(e) => { setFloorHeight(e.target.value); try { localStorage.setItem("vvs.floorHeight", e.target.value); } catch {} }} /></label>
@@ -137,6 +144,30 @@ export default function AnalysisPage() {
               </div>
             ))}
             {result.issues.length === 0 && <p className="muted">Inga olösta problem.</p>}
+          </div>
+        )}
+        {tab === "granskning" && (
+          <div className="card">
+            {!result.review && <p className="muted">Granskningen kördes inte för det här jobbet.</p>}
+            {result.review && (
+              <>
+                <p style={{ marginTop: 0 }}>
+                  Oberoende granskning av resultatet: <b>{result.review.state === "OK" ? "inga anmärkningar" : result.review.state}</b>
+                  {` · ${result.review.n_findings} fynd · agenter: ${result.review.agents.join(", ")}`}
+                </p>
+                {result.review.findings.map((f: any, i: number) => (
+                  <div key={i} className="issue" style={{ cursor: f.bbox ? "pointer" : "default" }}
+                    onClick={() => f.bbox && viewer.current?.zoomTo(f.bbox)}>
+                    <span className={`badge ${f.severity === "ERROR" ? "bad" : f.severity === "WARN" ? "warn" : "ok"}`}>{f.severity}</span>
+                    {` ${f.message}`}
+                    <div className="muted" style={{ fontSize: 11, marginTop: 2 }}>
+                      {f.agent} · {f.code}
+                      {f.detail?.examples ? ` · ${f.detail.examples.join(", ")}` : ""}
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         )}
         {tab === "oversikt" && (

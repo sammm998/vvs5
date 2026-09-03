@@ -257,7 +257,7 @@ def unresolved_issues(pa) -> list[dict]:
 
 
 def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timings: dict, determinism: dict | None,
-              contamination: dict | None, overlays: dict, config: dict) -> dict[str, str]:
+              contamination: dict | None, overlays: dict, config: dict, review: dict | None = None) -> dict[str, str]:
     os.makedirs(out_dir, exist_ok=True)
     pa = analyses[0]
     files: dict[str, str] = {}
@@ -301,6 +301,8 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
                           "hatched_areas": [h.as_dict() for h in pa.hatch_families],
                           "risers": pa.risers})
     W("unresolved-issues.json", {"issues": unresolved_issues(pa)})
+    if review is not None:
+        W("review-findings.json", review)
     W("evidence-graph.json", evidence_graph(pa))
     from ..reconcile import reconcile
     W("reconciliation.json", reconcile(pa))

@@ -18,7 +18,7 @@ if ENGINE_DIR not in sys.path:
 
 STAGE_ORDER = ["QUEUED", "READING_PDF", "DISCOVERING_DRAWING_GRAMMAR", "EXTRACTING_VECTORS", "RECONSTRUCTING_TEXT", "READING_DESIGNATIONS",
                "FINDING_LEADERS", "RESOLVING_PIPE_REPRESENTATION", "ATTACHING_PIPES", "BUILDING_TOPOLOGY", "BUILDING_PHYSICAL_PIPES",
-               "MEASURING", "GENERATING_OVERLAYS", "COMPLETED"]
+               "MEASURING", "REVIEWING", "GENERATING_OVERLAYS", "COMPLETED"]
 
 _executor = ThreadPoolExecutor(max_workers=max(1, settings.worker_threads))
 _lock = threading.Lock()
@@ -56,7 +56,8 @@ def run_job(job_id: str) -> None:
     out_dir = storage.path(result_key)
     try:
         summary = analyze_pdf(pdf_path, out_dir, name=os.path.splitext(drawing.filename)[0], determinism=settings.run_determinism,
-                              contamination=True, progress=_progress_cb(job_id))
+                              contamination=True, progress=_progress_cb(job_id),
+                              review=settings.run_review, review_ocr=settings.review_ocr)
         _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
              summary={"total_seconds": summary["total_seconds"], **summary["summary"]})
     except UnsupportedInputError as e:

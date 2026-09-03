@@ -42,6 +42,10 @@
   unlabeled loop pipes; no VVS designation grammar exists, so no pipes are owned. The engine reports UNSUPPORTED
   structure and zero false ownership. Post-freeze, per-glyph O/0 twin substitution lets the vector scale bar
   (0 5 10 20 30 METER) be read (BAR_ONLY, 1:400).
+* **The review agents are deterministic checks, not a language model.** They compare the result against the
+  drawing's own evidence and report where to look; they do not reason about intent, and they never edit a
+  measurement. The OCR cross-check reads the rendered page only to ask whether a designation exists where the
+  vector reading has none - it never contributes a metre.
 * **Scanned drawings are not analysed.** Only vector PDFs are read. A scanned or image-only page is classified,
   skipped and reported; a PDF with no vector page is rejected. Measuring a scan means inferring geometry from
   pixels, and on these drawings that produced errors large enough to be misleading, so the engine says no instead.

@@ -265,7 +265,16 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
             "reconciliation": rec["state"], "determinism": summary.get("determinism"), "contamination": summary.get("contamination"),
         },
         "performance": perf,
+        "review": _load_optional(rd, "review-findings.json"),
     }
+
+
+def _load_optional(result_dir: str, name: str):
+    path = os.path.join(result_dir, name)
+    if not os.path.isfile(path):
+        return None
+    with open(path, "r", encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 @app.get("/api/jobs/{job_id}/artifacts")

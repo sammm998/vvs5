@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     access_token_minutes: int = 60 * 24
     worker_threads: int = 1
     run_determinism: bool = False
+    run_review: bool = True       # review agents check the finished result
+    review_ocr: bool = True       # let the review read the page with OCR as an independent second opinion
     cors_origins: str = "http://localhost:5173,http://localhost:8080"
     allow_registration: bool = True
     static_dir: str = ""          # built frontend (frontend/dist); served by the API when present

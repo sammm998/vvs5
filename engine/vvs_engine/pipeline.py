@@ -231,7 +231,12 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
             if st.state == "AMBIGUOUS":
                 for ident in st.candidates:
                     amb_pt[ident.key] += g.prims[pid].seg.length / max(len(st.candidates), 1)
-    quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers)
+    # what a reader counts on the drawing: verified labels per identity (a run usually carries several)
+    label_counts: Counter = Counter()
+    for a in anchors:
+        if a.state == "VERIFIED_PIPE_ATTACHMENT" and a.anchor_id in identities:
+            label_counts[identities[a.anchor_id].key] += 1
+    quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers, dict(label_counts))
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
     return PageAnalysis(page=page, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,

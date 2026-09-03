@@ -96,6 +96,7 @@ class RawPage:
     paths: list[RawPath]
     spans: list[TextSpan]
     input_class: dict | None = None            # how the page was classified before it was accepted
+    source_path: str | None = None             # the PDF this page came from (the review layer re-renders it)
 
 
 class UnsupportedInputError(Exception):
@@ -282,6 +283,7 @@ def extract_document(pdf_path: str, pages: list[int] | None = None, progress=Non
                         fonts=fonts, annots=annots)
         rp = RawPage(info=info, paths=paths, spans=spans)
         rp.input_class = klass.as_dict()
+        rp.source_path = pdf_path
         rd.pages.append(rp)
     doc.close()
     if not rd.pages:
