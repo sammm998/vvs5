@@ -1,0 +1,4046 @@
+{
+ "physical_pipes": [
+  {
+   "physical_pipe_id": "pp_011cb27c6628",
+   "page": 0,
+   "system": "VS21",
+   "designation": "VS21-S13",
+   "identity": "VS21-S13|DN15",
+   "dn": 15,
+   "supporting_anchors": [
+    "anc_45a51f0cbce5"
+   ],
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1250.88,
+      221.56
+     ],
+     [
+      1254.6,
+      220.48
+     ],
+     [
+      1254.84,
+      220.48
+     ],
+     [
+      1255.2,
+      220.48
+     ],
+     [
+      1255.44,
+      220.48
+     ],
+     [
+      1255.68,
+      220.6
+     ],
+     [
+      1255.92,
+      220.72
+     ],
+     [
+      1256.16,
+      220.96
+     ],
+     [
+      1256.4,
+      221.2
+     ],
+     [
+      1256.52,
+      221.44
+     ],
+     [
+      1256.64,
+      221.68
+     ],
+     [
+      1259.4,
+      231.16
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_7c147f2525dd"
+   ],
+   "source_segments": [
+    "path_7c147f2525dd#0",
+    "path_7c147f2525dd#1",
+    "path_7c147f2525dd#2",
+    "path_7c147f2525dd#3",
+    "path_7c147f2525dd#4",
+    "path_7c147f2525dd#5",
+    "path_7c147f2525dd#6",
+    "path_7c147f2525dd#7",
+    "path_7c147f2525dd#8",
+    "path_7c147f2525dd#9",
+    "path_7c147f2525dd#10"
+   ],
+   "graph_nodes": [
+    366,
+    367,
+    368,
+    369,
+    370,
+    371,
+    372,
+    373,
+    374,
+    375,
+    376,
+    377
+   ],
+   "horizontal_pdf_units": 16.339,
+   "raw_pt": 16.339,
+   "bridged_gap_pt": 0,
+   "horizontal_m": 0.291,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.291,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_114d293d0564",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-X32",
+   "identity": "VS31-X32|DN25",
+   "dn": 25,
+   "supporting_anchors": [
+    "anc_8c42492628c1"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      851.04,
+      742.36
+     ],
+     [
+      851.04,
+      738.64
+     ]
+    ],
+    [
+     [
+      851.04,
+      738.64
+     ],
+     [
+      850.92,
+      735.76
+     ],
+     [
+      851.04,
+      738.64
+     ]
+    ],
+    [
+     [
+      851.04,
+      753.52
+     ],
+     [
+      851.04,
+      742.36
+     ]
+    ],
+    [
+     [
+      851.04,
+      742.36
+     ],
+     [
+      851.04,
+      738.64
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_113ac39f21ae",
+    "path_917c48e3584a_0",
+    "path_917c48e3584a_1",
+    "path_9accbb3355bc"
+   ],
+   "source_segments": [
+    "path_113ac39f21ae#0",
+    "path_917c48e3584a_0#0",
+    "path_917c48e3584a_1#0",
+    "path_9accbb3355bc#0",
+    "path_9accbb3355bc#0"
+   ],
+   "graph_nodes": [
+    24,
+    25,
+    259,
+    278
+   ],
+   "horizontal_pdf_units": 24.36,
+   "raw_pt": 24.36,
+   "bridged_gap_pt": 0,
+   "horizontal_m": 0.434,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.434,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor",
+    "collinear_through_junction"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_1ae971ca5755",
+   "page": 0,
+   "system": "KV01",
+   "designation": "KV01-X7-40-W40",
+   "identity": "KV01-X7-W40|DN40",
+   "dn": 40,
+   "supporting_anchors": [
+    "anc_f7f7ef357742"
+   ],
+   "representation_family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "geometry": [
+    [
+     [
+      1303.56,
+      757.72
+     ],
+     [
+      1292.4,
+      761.8
+     ],
+     [
+      1288.44,
+      763.24
+     ],
+     [
+      1271.88,
+      769.24
+     ],
+     [
+      1270.56,
+      769.72
+     ],
+     [
+      1254.0,
+      775.72
+     ],
+     [
+      1250.04,
+      777.16
+     ],
+     [
+      1236.24,
+      782.2
+     ],
+     [
+      1234.92,
+      782.68
+     ],
+     [
+      1218.36,
+      788.68
+     ],
+     [
+      1217.04,
+      789.16
+     ],
+     [
+      1200.48,
+      795.16
+     ],
+     [
+      1199.16,
+      795.64
+     ],
+     [
+      1185.36,
+      800.68
+     ],
+     [
+      1181.28,
+      802.12
+     ],
+     [
+      1167.48,
+      807.16
+     ],
+     [
+      1160.76,
+      809.68
+     ],
+     [
+      1149.6,
+      813.76
+     ],
+     [
+      1143.0,
+      816.16
+     ],
+     [
+      1131.72,
+      820.24
+     ],
+     [
+      1127.76,
+      821.68
+     ],
+     [
+      1111.2,
+      827.68
+     ],
+     [
+      1109.88,
+      828.16
+     ],
+     [
+      1093.44,
+      834.16
+     ],
+     [
+      1092.12,
+      834.64
+     ],
+     [
+      1075.56,
+      840.64
+     ],
+     [
+      1074.24,
+      841.12
+     ],
+     [
+      1057.68,
+      847.12
+     ],
+     [
+      1053.72,
+      848.56
+     ],
+     [
+      1039.8,
+      853.6
+     ],
+     [
+      1038.48,
+      854.08
+     ],
+     [
+      1024.68,
+      859.24
+     ],
+     [
+      1020.72,
+      860.68
+     ],
+     [
+      1004.16,
+      866.68
+     ],
+     [
+      1002.84,
+      867.16
+     ],
+     [
+      986.28,
+      873.16
+     ],
+     [
+      982.32,
+      874.6
+     ],
+     [
+      971.16,
+      878.68
+     ],
+     [
+      964.44,
+      881.08
+     ],
+     [
+      953.28,
+      885.16
+     ],
+     [
+      949.32,
+      886.6
+     ],
+     [
+      932.76,
+      892.6
+     ],
+     [
+      928.8,
+      894.04
+     ],
+     [
+      914.88,
+      899.08
+     ],
+     [
+      913.56,
+      899.56
+     ],
+     [
+      898.32,
+      905.2
+     ],
+     [
+      897.96,
+      905.32
+     ],
+     [
+      897.72,
+      905.44
+     ],
+     [
+      897.48,
+      905.68
+     ],
+     [
+      892.68,
+      910.48
+     ],
+     [
+      887.64,
+      915.52
+     ],
+     [
+      879.24,
+      923.92
+     ],
+     [
+      874.2,
+      928.96
+     ],
+     [
+      865.8,
+      937.36
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_005453c770e0",
+    "path_04537371a7f6",
+    "path_055f94c422f1",
+    "path_0d8a8107d9e8",
+    "path_15894a3d2cd5",
+    "path_1c735d60d5b2",
+    "path_23e913e1ef6e",
+    "path_2c20f258f6b9",
+    "path_328075c14937",
+    "path_3533f62df030",
+    "path_3691c31068b2",
+    "path_3d2647bf311d",
+    "path_3db36243cc46",
+    "path_3fd143b56d85",
+    "path_4a6186c8cb76",
+    "path_4e389443bad3",
+    "path_581e7a4ccb53",
+    "path_5af07de29edd",
+    "path_60a4644147a3",
+    "path_65301acbb2d3",
+    "path_68b3722f2569",
+    "path_6b4a3d4c8f6d",
+    "path_702a625d14bd",
+    "path_73f62c8cfcc5",
+    "path_7a5dc3d96139",
+    "path_7f445694fac5",
+    "path_850584bf227a",
+    "path_8e7efc9dfcae",
+    "path_8f57c680b544",
+    "path_9750c79d5b32",
+    "path_9a562e4937ab",
+    "path_9b0829e59519",
+    "path_aadb8999bc86",
+    "path_ac0a38f71fb8",
+    "path_ac941d320fe9",
+    "path_ae0fcc7211f6",
+    "path_aea9b5f0bda5",
+    "path_b1f783d9dff1",
+    "path_b408dc5eb773",
+    "path_b896f5375902",
+    "path_bfd01d1a4b3f",
+    "path_c2ce9afb73bc",
+    "path_c9f26266b1a8",
+    "path_cd067b794446",
+    "path_ceb598e71567",
+    "path_d7b89446a557",
+    "path_d973fad0e482",
+    "path_db7ecc04b01e",
+    "path_ea2f83a9050d",
+    "path_f79625b2774a"
+   ],
+   "source_segments": [
+    "path_005453c770e0#0",
+    "path_04537371a7f6#0",
+    "path_055f94c422f1#0",
+    "path_0d8a8107d9e8#0",
+    "path_15894a3d2cd5#0",
+    "path_1c735d60d5b2#0",
+    "path_23e913e1ef6e#0",
+    "path_2c20f258f6b9#0",
+    "path_328075c14937#0",
+    "path_3533f62df030#0",
+    "path_3691c31068b2#0",
+    "path_3d2647bf311d#0",
+    "path_3db36243cc46#0",
+    "path_3fd143b56d85#0",
+    "path_4a6186c8cb76#0",
+    "path_4e389443bad3#0",
+    "path_581e7a4ccb53#0",
+    "path_5af07de29edd#0",
+    "path_60a4644147a3#0",
+    "path_65301acbb2d3#0",
+    "path_68b3722f2569#0",
+    "path_6b4a3d4c8f6d#0",
+    "path_702a625d14bd#0",
+    "path_73f62c8cfcc5#0",
+    "path_7a5dc3d96139#0",
+    "path_7f445694fac5#0",
+    "path_850584bf227a#0",
+    "path_8e7efc9dfcae#0",
+    "path_8f57c680b544#0",
+    "path_9750c79d5b32#0",
+    "path_9a562e4937ab#0",
+    "path_9a562e4937ab#1",
+    "path_9a562e4937ab#2",
+    "path_9a562e4937ab#3",
+    "path_9b0829e59519#0",
+    "path_aadb8999bc86#0",
+    "path_ac0a38f71fb8#0",
+    "path_ac941d320fe9#0",
+    "path_ae0fcc7211f6#0",
+    "path_aea9b5f0bda5#0",
+    "path_b1f783d9dff1#0",
+    "path_b408dc5eb773#0",
+    "path_b896f5375902#0",
+    "path_bfd01d1a4b3f#0",
+    "path_c2ce9afb73bc#0",
+    "path_c9f26266b1a8#0",
+    "path_cd067b794446#0",
+    "path_ceb598e71567#0",
+    "path_d7b89446a557#0",
+    "path_d973fad0e482#0",
+    "path_db7ecc04b01e#0",
+    "path_ea2f83a9050d#0",
+    "path_f79625b2774a#0"
+   ],
+   "graph_nodes": [
+    2,
+    3,
+    6,
+    7,
+    8,
+    9,
+    12,
+    13,
+    16,
+    17,
+    20,
+    21,
+    26,
+    27,
+    32,
+    33,
+    44,
+    45,
+    49,
+    52,
+    53,
+    64,
+    65,
+    66,
+    71,
+    74,
+    75,
+    78,
+    79,
+    86,
+    87,
+    90,
+    93,
+    102,
+    105,
+    110,
+    122,
+    123,
+    134,
+    135,
+    151,
+    153,
+    164,
+    165,
+    166,
+    167,
+    168,
+    171,
+    185,
+    190,
+    191,
+    192,
+    195,
+    219
+   ],
+   "horizontal_pdf_units": 477.059,
+   "raw_pt": 340.599,
+   "bridged_gap_pt": 136.46,
+   "horizontal_m": 8.495,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 8.495,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_35e214f4dc3f",
+   "page": 0,
+   "system": "VP01",
+   "designation": "VP01-S2-65-F80",
+   "identity": "VP01-S2-F80|DN65",
+   "dn": 65,
+   "supporting_anchors": [
+    "anc_f3df080d41bd"
+   ],
+   "representation_family": "V-56B--FE-_VPxx-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1359.84,
+      763.6
+     ],
+     [
+      1371.0,
+      759.52
+     ],
+     [
+      1374.96,
+      758.08
+     ],
+     [
+      1388.88,
+      753.04
+     ],
+     [
+      1395.48,
+      750.64
+     ],
+     [
+      1406.76,
+      746.56
+     ],
+     [
+      1410.72,
+      745.12
+     ],
+     [
+      1424.52,
+      740.08
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_25b8811ecf1f",
+    "path_3d5c07659b71",
+    "path_53c5e433282a",
+    "path_5746df9a5944",
+    "path_782ceafc7cc3",
+    "path_93cfd9e1ec4b",
+    "path_e2cbafe302c1"
+   ],
+   "source_segments": [
+    "path_25b8811ecf1f#0",
+    "path_3d5c07659b71#0",
+    "path_53c5e433282a#0",
+    "path_5746df9a5944#0",
+    "path_782ceafc7cc3#0",
+    "path_93cfd9e1ec4b#0",
+    "path_e2cbafe302c1#0"
+   ],
+   "graph_nodes": [
+    74,
+    75,
+    159,
+    193,
+    194,
+    201,
+    265,
+    338
+   ],
+   "horizontal_pdf_units": 68.826,
+   "raw_pt": 51.856,
+   "bridged_gap_pt": 16.97,
+   "horizontal_m": 1.226,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 1.226,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_3df334fb8119",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-S13-28-F60",
+   "identity": "VS31-S13-F60|DN28",
+   "dn": 28,
+   "supporting_anchors": [
+    "anc_b4fe592a764a"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      890.52,
+      771.04
+     ],
+     [
+      885.24,
+      756.88
+     ],
+     [
+      885.0,
+      756.4
+     ],
+     [
+      884.76,
+      755.92
+     ],
+     [
+      884.4,
+      755.68
+     ],
+     [
+      884.04,
+      755.32
+     ],
+     [
+      883.56,
+      755.08
+     ],
+     [
+      883.08,
+      754.96
+     ],
+     [
+      882.6,
+      754.96
+     ],
+     [
+      871.8,
+      754.96
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_6c1ff9053835",
+    "path_a2faec8f771a",
+    "path_e20262e51adc"
+   ],
+   "source_segments": [
+    "path_6c1ff9053835#0",
+    "path_a2faec8f771a#0",
+    "path_e20262e51adc#0",
+    "path_e20262e51adc#1",
+    "path_e20262e51adc#2",
+    "path_e20262e51adc#3",
+    "path_e20262e51adc#4",
+    "path_e20262e51adc#5",
+    "path_e20262e51adc#6"
+   ],
+   "graph_nodes": [
+    180,
+    181,
+    295,
+    296,
+    379,
+    380,
+    381,
+    382,
+    383,
+    384
+   ],
+   "horizontal_pdf_units": 29.439,
+   "raw_pt": 29.439,
+   "bridged_gap_pt": 0,
+   "horizontal_m": 0.524,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.524,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_43d4cb82510c",
+   "page": 0,
+   "system": "VP01",
+   "designation": "VP01-S2-65-F80",
+   "identity": "VP01-S2-F80|DN65",
+   "dn": 65,
+   "supporting_anchors": [
+    "anc_f3df080d41bd"
+   ],
+   "representation_family": "V-56B--FE-_VPxx-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1386.12,
+      771.28
+     ],
+     [
+      1399.92,
+      766.24
+     ],
+     [
+      1401.24,
+      765.76
+     ],
+     [
+      1415.16,
+      760.72
+     ],
+     [
+      1421.76,
+      758.32
+     ],
+     [
+      1435.68,
+      753.28
+     ],
+     [
+      1437.0,
+      752.8
+     ],
+     [
+      1453.56,
+      746.8
+     ],
+     [
+      1454.88,
+      746.32
+     ],
+     [
+      1468.68,
+      741.28
+     ],
+     [
+      1475.4,
+      738.88
+     ],
+     [
+      1486.56,
+      734.8
+     ],
+     [
+      1493.16,
+      732.4
+     ],
+     [
+      1504.44,
+      728.32
+     ],
+     [
+      1511.04,
+      725.8
+     ],
+     [
+      1522.2,
+      721.84
+     ],
+     [
+      1526.28,
+      720.28
+     ],
+     [
+      1540.08,
+      715.24
+     ],
+     [
+      1546.8,
+      712.84
+     ],
+     [
+      1557.96,
+      708.76
+     ],
+     [
+      1564.56,
+      706.36
+     ],
+     [
+      1578.48,
+      701.32
+     ],
+     [
+      1579.8,
+      700.84
+     ],
+     [
+      1593.6,
+      695.8
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_03f61abbb688",
+    "path_11abbe3dfc91",
+    "path_207b581a04dc",
+    "path_22341c5281a5",
+    "path_286d6014dafd",
+    "path_35b2264da4d0",
+    "path_4b6e56dab04a",
+    "path_589e3e777f41",
+    "path_59d104fd503f",
+    "path_730bf214f77f",
+    "path_800ce4a13f5c",
+    "path_8793f1ba3e10",
+    "path_8e7e8efeb23a",
+    "path_94eba32fea14",
+    "path_966ef10c6ef9",
+    "path_acc72559f278",
+    "path_ad26e052f24e",
+    "path_bd28edc9d40d",
+    "path_bdff91ecc895",
+    "path_c7a5d99f1b36",
+    "path_de268852f377",
+    "path_f7a8f195c1b4",
+    "path_fb6ae4e913ba"
+   ],
+   "source_segments": [
+    "path_03f61abbb688#0",
+    "path_11abbe3dfc91#0",
+    "path_207b581a04dc#0",
+    "path_22341c5281a5#0",
+    "path_286d6014dafd#0",
+    "path_35b2264da4d0#0",
+    "path_4b6e56dab04a#0",
+    "path_589e3e777f41#0",
+    "path_59d104fd503f#0",
+    "path_730bf214f77f#0",
+    "path_800ce4a13f5c#0",
+    "path_8793f1ba3e10#0",
+    "path_8e7e8efeb23a#0",
+    "path_94eba32fea14#0",
+    "path_966ef10c6ef9#0",
+    "path_acc72559f278#0",
+    "path_ad26e052f24e#0",
+    "path_bd28edc9d40d#0",
+    "path_bdff91ecc895#0",
+    "path_c7a5d99f1b36#0",
+    "path_de268852f377#0",
+    "path_f7a8f195c1b4#0",
+    "path_fb6ae4e913ba#0"
+   ],
+   "graph_nodes": [
+    4,
+    5,
+    27,
+    56,
+    57,
+    64,
+    65,
+    84,
+    85,
+    145,
+    146,
+    175,
+    176,
+    203,
+    204,
+    211,
+    212,
+    284,
+    309,
+    343,
+    406,
+    429,
+    431,
+    449
+   ],
+   "horizontal_pdf_units": 220.787,
+   "raw_pt": 158.337,
+   "bridged_gap_pt": 62.45,
+   "horizontal_m": 3.931,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 3.931,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_4419e5bfe992",
+   "page": 0,
+   "system": "VP01",
+   "designation": "VP01-S2-65-F80",
+   "identity": "VP01-S2-F80|DN65",
+   "dn": 65,
+   "supporting_anchors": [
+    "anc_73339b3001cb"
+   ],
+   "representation_family": "V-56B--FE-_VPxx-|s|w1.44",
+   "geometry": [
+    [
+     [
+      588.72,
+      1091.92
+     ],
+     [
+      593.52,
+      1091.92
+     ],
+     [
+      600.6,
+      1091.92
+     ],
+     [
+      615.36,
+      1091.92
+     ],
+     [
+      616.8,
+      1091.92
+     ],
+     [
+      634.32,
+      1091.92
+     ],
+     [
+      635.76,
+      1091.92
+     ],
+     [
+      653.4,
+      1091.92
+     ],
+     [
+      654.84,
+      1091.92
+     ],
+     [
+      669.48,
+      1091.92
+     ],
+     [
+      676.56,
+      1091.92
+     ],
+     [
+      688.56,
+      1091.92
+     ],
+     [
+      692.76,
+      1091.92
+     ],
+     [
+      707.52,
+      1091.92
+     ],
+     [
+      714.6,
+      1091.92
+     ],
+     [
+      726.48,
+      1091.92
+     ],
+     [
+      733.56,
+      1091.92
+     ],
+     [
+      748.32,
+      1091.92
+     ],
+     [
+      749.76,
+      1091.92
+     ],
+     [
+      765.6,
+      1091.92
+     ],
+     [
+      766.68,
+      1091.8
+     ],
+     [
+      767.76,
+      1091.44
+     ],
+     [
+      768.72,
+      1090.96
+     ],
+     [
+      769.56,
+      1090.24
+     ],
+     [
+      774.24,
+      1085.56
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_026f79c84a02",
+    "path_0dde6a57567f",
+    "path_156b4474104e",
+    "path_2006d3c4beae",
+    "path_2c73997991e6",
+    "path_2ed401d0e50e",
+    "path_2f5a17a28803",
+    "path_314ae6042421",
+    "path_39533aa961f3",
+    "path_4c3d5ef35a06",
+    "path_4ccd3e5eb6bc",
+    "path_64873de4b35d",
+    "path_739da3f1deff",
+    "path_7b29194f3d91",
+    "path_7d34b30baad8",
+    "path_7f24d5c982da",
+    "path_7fbad9f748a1",
+    "path_8d0845e9024c",
+    "path_a18fe7b74a14",
+    "path_aa47d52cefca",
+    "path_acbab7f30384"
+   ],
+   "source_segments": [
+    "path_026f79c84a02#0",
+    "path_0dde6a57567f#0",
+    "path_156b4474104e#0",
+    "path_2006d3c4beae#0",
+    "path_2006d3c4beae#1",
+    "path_2006d3c4beae#2",
+    "path_2006d3c4beae#3",
+    "path_2c73997991e6#0",
+    "path_2ed401d0e50e#0",
+    "path_2f5a17a28803#0",
+    "path_314ae6042421#0",
+    "path_39533aa961f3#0",
+    "path_4c3d5ef35a06#0",
+    "path_4ccd3e5eb6bc#0",
+    "path_64873de4b35d#0",
+    "path_739da3f1deff#0",
+    "path_7b29194f3d91#0",
+    "path_7d34b30baad8#0",
+    "path_7f24d5c982da#0",
+    "path_7fbad9f748a1#0",
+    "path_8d0845e9024c#0",
+    "path_a18fe7b74a14#0",
+    "path_aa47d52cefca#0",
+    "path_acbab7f30384#0"
+   ],
+   "graph_nodes": [
+    2,
+    3,
+    20,
+    21,
+    34,
+    35,
+    52,
+    53,
+    54,
+    55,
+    107,
+    108,
+    118,
+    119,
+    120,
+    129,
+    130,
+    155,
+    156,
+    178,
+    179,
+    255,
+    256,
+    269,
+    272
+   ],
+   "horizontal_pdf_units": 187.903,
+   "raw_pt": 136.903,
+   "bridged_gap_pt": 51.0,
+   "horizontal_m": 3.346,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 3.346,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_58a4159f0de8",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-S13-28-F60",
+   "identity": "VS31-S13-F60|DN28",
+   "dn": 28,
+   "supporting_anchors": [
+    "anc_8e0e7df424fb"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1399.92,
+      792.88
+     ],
+     [
+      1404.0,
+      791.32
+     ],
+     [
+      1415.16,
+      787.36
+     ],
+     [
+      1421.76,
+      784.84
+     ],
+     [
+      1433.04,
+      780.76
+     ],
+     [
+      1437.0,
+      779.32
+     ],
+     [
+      1453.56,
+      773.32
+     ],
+     [
+      1454.88,
+      772.84
+     ],
+     [
+      1468.68,
+      767.8
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_3db3906a2300",
+    "path_49b67d2642b2",
+    "path_5cdf17b49606",
+    "path_5e880354c99e",
+    "path_69460c34b8f9",
+    "path_bba2c5063ef0",
+    "path_c78f96cbc7ae",
+    "path_e941b2e3c325"
+   ],
+   "source_segments": [
+    "path_3db3906a2300#0",
+    "path_49b67d2642b2#0",
+    "path_5cdf17b49606#0",
+    "path_5e880354c99e#0",
+    "path_69460c34b8f9#0",
+    "path_bba2c5063ef0#0",
+    "path_c78f96cbc7ae#0",
+    "path_e941b2e3c325#0"
+   ],
+   "graph_nodes": [
+    102,
+    103,
+    122,
+    123,
+    146,
+    147,
+    150,
+    175,
+    361
+   ],
+   "horizontal_pdf_units": 73.193,
+   "raw_pt": 53.333,
+   "bridged_gap_pt": 19.86,
+   "horizontal_m": 1.303,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 1.303,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_5d7092032c8b",
+   "page": 0,
+   "system": "VS21",
+   "designation": "VS21-S13-15-F50",
+   "identity": "VS21-S13-F50|DN15",
+   "dn": 15,
+   "supporting_anchors": [
+    "anc_35ce460f0288",
+    "anc_5182853df389",
+    "anc_f53f03f750bf"
+   ],
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      879.48,
+      342.04
+     ],
+     [
+      874.08,
+      342.04
+     ],
+     [
+      873.72,
+      342.04
+     ],
+     [
+      873.48,
+      342.16
+     ],
+     [
+      873.12,
+      342.28
+     ],
+     [
+      872.88,
+      342.4
+     ],
+     [
+      872.76,
+      342.64
+     ],
+     [
+      872.52,
+      342.88
+     ],
+     [
+      872.4,
+      343.24
+     ],
+     [
+      872.4,
+      343.48
+     ],
+     [
+      872.28,
+      343.72
+     ],
+     [
+      872.28,
+      354.64
+     ],
+     [
+      872.28,
+      358.96
+     ],
+     [
+      872.28,
+      373.72
+     ],
+     [
+      872.28,
+      380.8
+     ],
+     [
+      872.28,
+      391.72
+     ],
+     [
+      872.28,
+      391.96
+     ],
+     [
+      872.28,
+      392.32
+     ],
+     [
+      872.04,
+      392.56
+     ],
+     [
+      871.92,
+      392.8
+     ],
+     [
+      871.68,
+      393.04
+     ],
+     [
+      871.44,
+      393.16
+     ],
+     [
+      871.2,
+      393.28
+     ],
+     [
+      870.96,
+      393.4
+     ],
+     [
+      870.6,
+      393.4
+     ],
+     [
+      860.64,
+      393.4
+     ],
+     [
+      853.56,
+      393.4
+     ],
+     [
+      843.6,
+      393.4
+     ],
+     [
+      829.92,
+      393.4
+     ],
+     [
+      828.48,
+      393.4
+     ],
+     [
+      810.96,
+      393.4
+     ],
+     [
+      806.64,
+      393.4
+     ],
+     [
+      791.88,
+      393.4
+     ],
+     [
+      790.56,
+      393.4
+     ],
+     [
+      772.92,
+      393.4
+     ],
+     [
+      771.48,
+      393.4
+     ],
+     [
+      756.72,
+      393.4
+     ],
+     [
+      749.64,
+      393.4
+     ],
+     [
+      734.88,
+      393.4
+     ],
+     [
+      733.56,
+      393.4
+     ],
+     [
+      722.76,
+      393.4
+     ],
+     [
+      711.96,
+      390.4
+     ],
+     [
+      708.48,
+      393.4
+     ],
+     [
+      704.28,
+      393.4
+     ],
+     [
+      692.28,
+      393.4
+     ],
+     [
+      685.2,
+      393.4
+     ],
+     [
+      673.8,
+      393.4
+     ],
+     [
+      655.32,
+      393.4
+     ],
+     [
+      644.76,
+      396.04
+     ],
+     [
+      636.72,
+      393.4
+     ],
+     [
+      635.28,
+      393.4
+     ],
+     [
+      617.64,
+      393.4
+     ],
+     [
+      613.44,
+      393.4
+     ],
+     [
+      600.48,
+      393.4
+     ],
+     [
+      588.72,
+      393.4
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_07f7b4ecedf9",
+    "path_0a294b1f546e",
+    "path_1c4e54528f5d",
+    "path_2aeb1fb56e27",
+    "path_31571db958b2",
+    "path_3642caadf845",
+    "path_3eb4b3972d13",
+    "path_4bd88e3b7dce",
+    "path_5757ed8fe279",
+    "path_637e9ed5e419",
+    "path_6c06af87a4fb",
+    "path_6e21e46a205a",
+    "path_750e6bd6f460",
+    "path_7a9d7676e2d5",
+    "path_809c231a9fc6",
+    "path_8e1f33d21a34",
+    "path_97f18d44680b",
+    "path_9a330bac559a",
+    "path_a30ac1bf1812",
+    "path_acd6c391de5e",
+    "path_b1aa9e52002d",
+    "path_b32fe97348ea",
+    "path_b4abba7b04e3",
+    "path_b560a4b4d9b2",
+    "path_b8816f45180c",
+    "path_c7a495311900",
+    "path_d4f81a4953ab",
+    "path_d664c64b943a",
+    "path_df6aba425ea0",
+    "path_e17098e497d9",
+    "path_e1a1ebb8d01d",
+    "path_e4e14cb25ebd",
+    "path_e5aa6bf81d33"
+   ],
+   "source_segments": [
+    "path_07f7b4ecedf9#0",
+    "path_0a294b1f546e#0",
+    "path_1c4e54528f5d#0",
+    "path_2aeb1fb56e27#0",
+    "path_31571db958b2#0",
+    "path_3642caadf845#0",
+    "path_3642caadf845#1",
+    "path_3642caadf845#2",
+    "path_3642caadf845#3",
+    "path_3642caadf845#4",
+    "path_3642caadf845#5",
+    "path_3642caadf845#6",
+    "path_3642caadf845#7",
+    "path_3642caadf845#8",
+    "path_3642caadf845#9",
+    "path_3eb4b3972d13#0",
+    "path_4bd88e3b7dce#0",
+    "path_5757ed8fe279#0",
+    "path_637e9ed5e419#0",
+    "path_6c06af87a4fb#0",
+    "path_6e21e46a205a#0",
+    "path_750e6bd6f460#0",
+    "path_750e6bd6f460#1",
+    "path_750e6bd6f460#2",
+    "path_750e6bd6f460#3",
+    "path_750e6bd6f460#4",
+    "path_750e6bd6f460#5",
+    "path_750e6bd6f460#6",
+    "path_750e6bd6f460#7",
+    "path_750e6bd6f460#8",
+    "path_750e6bd6f460#9",
+    "path_750e6bd6f460#10",
+    "path_7a9d7676e2d5#0",
+    "path_809c231a9fc6#0",
+    "path_8e1f33d21a34#0",
+    "path_97f18d44680b#0",
+    "path_9a330bac559a#0",
+    "path_a30ac1bf1812#0",
+    "path_acd6c391de5e#0",
+    "path_b1aa9e52002d#0",
+    "path_b32fe97348ea#0",
+    "path_b4abba7b04e3#0",
+    "path_b560a4b4d9b2#0",
+    "path_b8816f45180c#0",
+    "path_c7a495311900#0",
+    "path_d4f81a4953ab#0",
+    "path_d664c64b943a#0",
+    "path_df6aba425ea0#0",
+    "path_e17098e497d9#0",
+    "path_e1a1ebb8d01d#0",
+    "path_e4e14cb25ebd#0",
+    "path_e5aa6bf81d33#0",
+    "path_6c06af87a4fb#0",
+    "path_e17098e497d9#0"
+   ],
+   "graph_nodes": [
+    18,
+    26,
+    27,
+    30,
+    31,
+    95,
+    96,
+    99,
+    130,
+    131,
+    150,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    189,
+    190,
+    210,
+    211,
+    248,
+    268,
+    269,
+    307,
+    308,
+    342,
+    343,
+    344,
+    345,
+    346,
+    347,
+    348,
+    349,
+    350,
+    351,
+    352,
+    353,
+    362,
+    387,
+    439,
+    445,
+    465,
+    493,
+    512,
+    518,
+    519,
+    522,
+    544,
+    636
+   ],
+   "horizontal_pdf_units": 340.764,
+   "raw_pt": 252.444,
+   "bridged_gap_pt": 88.32,
+   "horizontal_m": 6.068,
+   "vertical_m": 0.25,
+   "vertical_evidence": {
+    "kind": "elevation_difference_between_anchors",
+    "tag": "CL",
+    "values": [
+     4000.0,
+     4250.0
+    ],
+    "anchors": [
+     "anc_35ce460f0288",
+     "anc_5182853df389",
+     "anc_f53f03f750bf"
+    ]
+   },
+   "total_m": 6.318,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_687419d2f0e9",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-S13-28-F60",
+   "identity": "VS31-S13-F60|DN28",
+   "dn": 28,
+   "supporting_anchors": [
+    "anc_8e0e7df424fb"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1696.08,
+      673.12
+     ],
+     [
+      1694.76,
+      673.6
+     ],
+     [
+      1680.84,
+      678.64
+     ],
+     [
+      1674.24,
+      681.04
+     ],
+     [
+      1662.96,
+      685.12
+     ],
+     [
+      1659.0,
+      686.56
+     ],
+     [
+      1642.44,
+      692.68
+     ],
+     [
+      1641.12,
+      693.16
+     ],
+     [
+      1627.32,
+      698.2
+     ],
+     [
+      1623.36,
+      699.64
+     ],
+     [
+      1606.8,
+      705.64
+     ],
+     [
+      1602.84,
+      707.08
+     ],
+     [
+      1591.56,
+      711.16
+     ],
+     [
+      1584.96,
+      713.56
+     ],
+     [
+      1573.8,
+      717.64
+     ],
+     [
+      1569.72,
+      719.08
+     ],
+     [
+      1553.28,
+      725.08
+     ],
+     [
+      1549.2,
+      726.52
+     ],
+     [
+      1538.04,
+      730.6
+     ],
+     [
+      1531.44,
+      733.0
+     ],
+     [
+      1520.16,
+      737.08
+     ],
+     [
+      1516.2,
+      738.52
+     ],
+     [
+      1499.64,
+      744.64
+     ],
+     [
+      1498.32,
+      745.12
+     ],
+     [
+      1481.88,
+      751.12
+     ],
+     [
+      1480.56,
+      751.6
+     ],
+     [
+      1464.0,
+      757.6
+     ],
+     [
+      1460.04,
+      759.04
+     ],
+     [
+      1448.76,
+      763.12
+     ],
+     [
+      1444.8,
+      764.56
+     ],
+     [
+      1428.24,
+      770.56
+     ],
+     [
+      1426.92,
+      771.04
+     ],
+     [
+      1413.12,
+      776.08
+     ],
+     [
+      1409.16,
+      777.52
+     ],
+     [
+      1392.6,
+      783.52
+     ],
+     [
+      1391.28,
+      784.0
+     ],
+     [
+      1374.72,
+      790.12
+     ],
+     [
+      1370.76,
+      791.56
+     ],
+     [
+      1359.6,
+      795.64
+     ],
+     [
+      1352.88,
+      798.04
+     ],
+     [
+      1341.72,
+      802.12
+     ],
+     [
+      1337.76,
+      803.56
+     ],
+     [
+      1321.2,
+      809.56
+     ],
+     [
+      1319.88,
+      810.04
+     ],
+     [
+      1303.32,
+      816.04
+     ],
+     [
+      1299.36,
+      817.48
+     ],
+     [
+      1288.2,
+      821.56
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_015b6b631459",
+    "path_0c88744c155a",
+    "path_172eb3a25b9f",
+    "path_17c908c023a9",
+    "path_1de1d586d3e1",
+    "path_24b5d1dc556d",
+    "path_2c3eaa4bc0f8",
+    "path_2dbf9f4d9fd3",
+    "path_339b8add68db",
+    "path_3791ded2f83f",
+    "path_37f14cc9b393",
+    "path_39f8bbfd4291",
+    "path_43b42e94dd60",
+    "path_540735e1358b",
+    "path_56795c5b65ea",
+    "path_5b17789cbc42",
+    "path_5fd597412698",
+    "path_5ff940a33b86",
+    "path_603c60c5c45a",
+    "path_6d95e78955fb",
+    "path_6fa2ca1ea2ca",
+    "path_7192dd5d278f",
+    "path_7b5f13eccf71",
+    "path_82ccb0e9ce4c",
+    "path_82f771f4d56c",
+    "path_83677c494451",
+    "path_83ace72538b9",
+    "path_86695f7bb413",
+    "path_9b2eec8f13a6",
+    "path_9f54e6750e89",
+    "path_aeb20a65b846",
+    "path_b93f6b1ef1ee",
+    "path_c1cdf567ba30",
+    "path_c46cc30703c5",
+    "path_c4a93159d612",
+    "path_c50b6e2660d2",
+    "path_cf02c7ccc442",
+    "path_d615238eb062",
+    "path_e8e07103bbfe",
+    "path_edb31d7fc3fa",
+    "path_ee240463812b",
+    "path_eeb8479eaf27",
+    "path_f35c2d225a53",
+    "path_f9bcf639fe91",
+    "path_faaf5b1a852c",
+    "path_fc38ac8295ac"
+   ],
+   "source_segments": [
+    "path_015b6b631459#0",
+    "path_0c88744c155a#0",
+    "path_172eb3a25b9f#0",
+    "path_17c908c023a9#0",
+    "path_1de1d586d3e1#0",
+    "path_24b5d1dc556d#0",
+    "path_2c3eaa4bc0f8#0",
+    "path_2dbf9f4d9fd3#0",
+    "path_339b8add68db#0",
+    "path_3791ded2f83f#0",
+    "path_37f14cc9b393#0",
+    "path_39f8bbfd4291#0",
+    "path_43b42e94dd60#0",
+    "path_540735e1358b#0",
+    "path_56795c5b65ea#0",
+    "path_5b17789cbc42#0",
+    "path_5fd597412698#0",
+    "path_5ff940a33b86#0",
+    "path_603c60c5c45a#0",
+    "path_6d95e78955fb#0",
+    "path_6fa2ca1ea2ca#0",
+    "path_7192dd5d278f#0",
+    "path_7b5f13eccf71#0",
+    "path_82ccb0e9ce4c#0",
+    "path_82f771f4d56c#0",
+    "path_83677c494451#0",
+    "path_83ace72538b9#0",
+    "path_86695f7bb413#0",
+    "path_9b2eec8f13a6#0",
+    "path_9f54e6750e89#0",
+    "path_aeb20a65b846#0",
+    "path_b93f6b1ef1ee#0",
+    "path_c1cdf567ba30#0",
+    "path_c46cc30703c5#0",
+    "path_c4a93159d612#0",
+    "path_c50b6e2660d2#0",
+    "path_cf02c7ccc442#0",
+    "path_d615238eb062#0",
+    "path_e8e07103bbfe#0",
+    "path_edb31d7fc3fa#0",
+    "path_ee240463812b#0",
+    "path_eeb8479eaf27#0",
+    "path_f35c2d225a53#0",
+    "path_f9bcf639fe91#0",
+    "path_faaf5b1a852c#0",
+    "path_fc38ac8295ac#0"
+   ],
+   "graph_nodes": [
+    4,
+    5,
+    16,
+    17,
+    34,
+    35,
+    36,
+    37,
+    53,
+    62,
+    63,
+    74,
+    75,
+    78,
+    79,
+    90,
+    91,
+    96,
+    97,
+    100,
+    101,
+    112,
+    113,
+    135,
+    138,
+    139,
+    144,
+    157,
+    158,
+    159,
+    162,
+    163,
+    185,
+    190,
+    191,
+    192,
+    193,
+    231,
+    234,
+    238,
+    248,
+    289,
+    339,
+    360,
+    370,
+    405,
+    409
+   ],
+   "horizontal_pdf_units": 434.056,
+   "raw_pt": 306.196,
+   "bridged_gap_pt": 127.86,
+   "horizontal_m": 7.729,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 7.729,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_7857a2ea075d",
+   "page": 0,
+   "system": "VS21",
+   "designation": "VS21-S13-15-F50",
+   "identity": "VS21-S13-F50|DN15",
+   "dn": 15,
+   "supporting_anchors": [
+    "anc_35ce460f0288",
+    "anc_5182853df389",
+    "anc_f53f03f750bf"
+   ],
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      590.88,
+      404.8
+     ],
+     [
+      592.2,
+      404.8
+     ],
+     [
+      609.72,
+      404.8
+     ],
+     [
+      622.92,
+      404.8
+     ],
+     [
+      627.24,
+      404.8
+     ],
+     [
+      643.32,
+      404.8
+     ],
+     [
+      664.2,
+      404.8
+     ],
+     [
+      665.64,
+      404.8
+     ],
+     [
+      686.4,
+      404.8
+     ],
+     [
+      694.92,
+      404.8
+     ],
+     [
+      702.0,
+      404.8
+     ],
+     [
+      710.52,
+      404.8
+     ],
+     [
+      726.0,
+      404.8
+     ],
+     [
+      730.2,
+      404.8
+     ],
+     [
+      747.84,
+      404.8
+     ],
+     [
+      749.28,
+      404.8
+     ],
+     [
+      766.8,
+      404.8
+     ],
+     [
+      771.12,
+      404.8
+     ],
+     [
+      783.0,
+      404.8
+     ],
+     [
+      787.2,
+      404.8
+     ],
+     [
+      804.84,
+      404.8
+     ],
+     [
+      809.04,
+      404.8
+     ],
+     [
+      823.8,
+      404.8
+     ],
+     [
+      828.12,
+      404.8
+     ],
+     [
+      843.6,
+      404.8
+     ],
+     [
+      849.72,
+      404.8
+     ],
+     [
+      853.92,
+      404.8
+     ],
+     [
+      871.56,
+      404.8
+     ],
+     [
+      873.0,
+      404.8
+     ],
+     [
+      882.0,
+      404.8
+     ],
+     [
+      882.24,
+      404.68
+     ],
+     [
+      882.6,
+      404.68
+     ],
+     [
+      882.84,
+      404.56
+     ],
+     [
+      883.08,
+      404.32
+     ],
+     [
+      883.32,
+      404.2
+     ],
+     [
+      883.44,
+      403.96
+     ],
+     [
+      883.56,
+      403.6
+     ],
+     [
+      883.68,
+      403.36
+     ],
+     [
+      883.68,
+      403.0
+     ],
+     [
+      883.68,
+      395.56
+     ],
+     [
+      883.68,
+      388.36
+     ],
+     [
+      883.68,
+      376.48
+     ],
+     [
+      883.68,
+      372.28
+     ],
+     [
+      883.68,
+      357.52
+     ],
+     [
+      883.68,
+      353.32
+     ],
+     [
+      883.68,
+      342.88
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_05d2b1d950ad",
+    "path_1390a3a8069c",
+    "path_16a159fc8088",
+    "path_230ec37b55e2",
+    "path_2532fb57665e",
+    "path_2a42432e78c8",
+    "path_2d86fbba16a6",
+    "path_2d9efa58606a",
+    "path_312646e3b697",
+    "path_3f3bfb9f6dd5",
+    "path_4c69f497bb88",
+    "path_4e7bbe564e3d",
+    "path_663719094b19",
+    "path_6901a56b875b",
+    "path_6c351339816f",
+    "path_6c46074b0e4f",
+    "path_785a756a295a",
+    "path_7c0ea99ead55",
+    "path_859f0e25f608",
+    "path_8a69d49361d1",
+    "path_8c26f1db1aa9",
+    "path_8f0302c03377",
+    "path_99933b48adfa",
+    "path_9f9b62bc5b01",
+    "path_b8036f405a64",
+    "path_bc912f090113",
+    "path_c1515f48067f",
+    "path_c34fe6b09008",
+    "path_c3d19d0f4567",
+    "path_c4571af3e291",
+    "path_c4e4d2cb2883",
+    "path_ce937333d07b",
+    "path_e49240b4e8cd",
+    "path_e9acebe13cd2",
+    "path_f1053fc3bc07",
+    "path_f4f19422ea38"
+   ],
+   "source_segments": [
+    "path_05d2b1d950ad#0",
+    "path_1390a3a8069c#0",
+    "path_16a159fc8088#0",
+    "path_230ec37b55e2#0",
+    "path_2532fb57665e#0",
+    "path_2a42432e78c8#0",
+    "path_2d86fbba16a6#0",
+    "path_2d9efa58606a#0",
+    "path_312646e3b697#0",
+    "path_3f3bfb9f6dd5#0",
+    "path_4c69f497bb88#0",
+    "path_4e7bbe564e3d#0",
+    "path_663719094b19#0",
+    "path_6901a56b875b#0",
+    "path_6c351339816f#0",
+    "path_6c46074b0e4f#0",
+    "path_785a756a295a#0",
+    "path_7c0ea99ead55#0",
+    "path_859f0e25f608#0",
+    "path_8a69d49361d1#0",
+    "path_8c26f1db1aa9#0",
+    "path_8f0302c03377#0",
+    "path_99933b48adfa#0",
+    "path_9f9b62bc5b01#0",
+    "path_b8036f405a64#0",
+    "path_bc912f090113#0",
+    "path_bc912f090113#1",
+    "path_bc912f090113#2",
+    "path_bc912f090113#3",
+    "path_bc912f090113#4",
+    "path_bc912f090113#5",
+    "path_bc912f090113#6",
+    "path_bc912f090113#7",
+    "path_bc912f090113#8",
+    "path_bc912f090113#9",
+    "path_c1515f48067f#0",
+    "path_c34fe6b09008#0",
+    "path_c3d19d0f4567#0",
+    "path_c4571af3e291#0",
+    "path_c4e4d2cb2883#0",
+    "path_ce937333d07b#0",
+    "path_e49240b4e8cd#0",
+    "path_e9acebe13cd2#0",
+    "path_f1053fc3bc07#0",
+    "path_f4f19422ea38#0"
+   ],
+   "graph_nodes": [
+    22,
+    23,
+    66,
+    74,
+    75,
+    116,
+    117,
+    120,
+    121,
+    128,
+    129,
+    133,
+    134,
+    135,
+    136,
+    148,
+    191,
+    192,
+    218,
+    278,
+    289,
+    301,
+    302,
+    304,
+    357,
+    394,
+    395,
+    408,
+    410,
+    419,
+    443,
+    444,
+    540,
+    554,
+    555,
+    556,
+    557,
+    558,
+    559,
+    560,
+    561,
+    562,
+    586,
+    588,
+    664,
+    696
+   ],
+   "horizontal_pdf_units": 354.021,
+   "raw_pt": 257.181,
+   "bridged_gap_pt": 96.84,
+   "horizontal_m": 6.304,
+   "vertical_m": 0.25,
+   "vertical_evidence": {
+    "kind": "elevation_difference_between_anchors",
+    "tag": "CL",
+    "values": [
+     4000.0,
+     4250.0
+    ],
+    "anchors": [
+     "anc_35ce460f0288",
+     "anc_5182853df389",
+     "anc_f53f03f750bf"
+    ]
+   },
+   "total_m": 6.554,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_with_agreeing_anchors"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_84df6c30d046",
+   "page": 0,
+   "system": "S01",
+   "designation": "S01-P5-160",
+   "identity": "S01-P5|DN160",
+   "dn": 160,
+   "supporting_anchors": [
+    "anc_17bf287ee605"
+   ],
+   "representation_family": "V-53BBBFE-_Sxx|s|w2.88",
+   "geometry": [
+    [
+     [
+      1434.84,
+      1071.4
+     ],
+     [
+      1433.28,
+      1067.2
+     ],
+     [
+      1431.84,
+      1062.88
+     ],
+     [
+      1427.4,
+      1050.76
+     ],
+     [
+      1425.84,
+      1046.8
+     ],
+     [
+      1421.88,
+      1035.52
+     ],
+     [
+      1420.32,
+      1031.56
+     ],
+     [
+      1414.32,
+      1015.0
+     ],
+     [
+      1413.84,
+      1013.68
+     ],
+     [
+      1407.84,
+      997.24
+     ],
+     [
+      1407.36,
+      995.92
+     ],
+     [
+      1401.36,
+      979.36
+     ],
+     [
+      1400.88,
+      978.04
+     ],
+     [
+      1395.84,
+      964.12
+     ],
+     [
+      1394.4,
+      960.16
+     ],
+     [
+      1389.36,
+      946.36
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_1a8ee905e3ab",
+    "path_2025eb6de611",
+    "path_344a744a731a",
+    "path_3abd56900ac5",
+    "path_3d94f5c767eb",
+    "path_7c62dfffeb83",
+    "path_82b8fec12815",
+    "path_9ec50de62a62",
+    "path_b8c416d040e4",
+    "path_d807afb9d7d6",
+    "path_db65e40b640e",
+    "path_f06723f51290",
+    "path_f0a2338c4e0c",
+    "path_f83463f96453"
+   ],
+   "source_segments": [
+    "path_1a8ee905e3ab#0",
+    "path_2025eb6de611#0",
+    "path_344a744a731a#0",
+    "path_3abd56900ac5#0",
+    "path_3d94f5c767eb#0",
+    "path_7c62dfffeb83#0",
+    "path_82b8fec12815#0",
+    "path_9ec50de62a62#0",
+    "path_b8c416d040e4#0",
+    "path_d807afb9d7d6#0",
+    "path_db65e40b640e#0",
+    "path_f06723f51290#0",
+    "path_f06723f51290#1",
+    "path_f0a2338c4e0c#0",
+    "path_f83463f96453#0"
+   ],
+   "graph_nodes": [
+    27,
+    28,
+    31,
+    32,
+    35,
+    36,
+    39,
+    40,
+    45,
+    69,
+    82,
+    83,
+    106,
+    116,
+    133,
+    134
+   ],
+   "horizontal_pdf_units": 133.06,
+   "raw_pt": 99.04,
+   "bridged_gap_pt": 34.02,
+   "horizontal_m": 2.369,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 2.369,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_92c0941fe1cf",
+   "page": 0,
+   "system": "VS21",
+   "designation": "VS21-S13",
+   "identity": "VS21-S13|DN15",
+   "dn": 15,
+   "supporting_anchors": [
+    "anc_df7ae4b10b5a"
+   ],
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1407.96,
+      218.08
+     ],
+     [
+      1405.44,
+      209.08
+     ],
+     [
+      1403.4,
+      202.24
+     ],
+     [
+      1400.16,
+      190.84
+     ],
+     [
+      1398.96,
+      186.76
+     ],
+     [
+      1395.6,
+      175.0
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_b8f7138d7829",
+    "path_ba041c02f7f3",
+    "path_c4d98b8b7609",
+    "path_e7212752b98a",
+    "path_f419d3598d0f"
+   ],
+   "source_segments": [
+    "path_b8f7138d7829#0",
+    "path_ba041c02f7f3#0",
+    "path_c4d98b8b7609#0",
+    "path_e7212752b98a#0",
+    "path_f419d3598d0f#0"
+   ],
+   "graph_nodes": [
+    546,
+    547,
+    550,
+    551,
+    596,
+    671
+   ],
+   "horizontal_pdf_units": 44.803,
+   "raw_pt": 33.313,
+   "bridged_gap_pt": 11.49,
+   "horizontal_m": 0.798,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.798,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_9ddc6aa2daa7",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-S13-28-F60",
+   "identity": "VS31-S13-F60|DN28",
+   "dn": 28,
+   "supporting_anchors": [
+    "anc_4d60a6b96186"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1136.28,
+      888.76
+     ],
+     [
+      1150.08,
+      883.72
+     ],
+     [
+      1154.04,
+      882.28
+     ],
+     [
+      1167.96,
+      877.24
+     ],
+     [
+      1169.28,
+      876.76
+     ],
+     [
+      1183.08,
+      871.72
+     ],
+     [
+      1189.8,
+      869.32
+     ],
+     [
+      1203.6,
+      864.28
+     ],
+     [
+      1207.68,
+      862.84
+     ],
+     [
+      1218.84,
+      858.76
+     ],
+     [
+      1225.44,
+      856.36
+     ],
+     [
+      1236.72,
+      852.28
+     ],
+     [
+      1243.32,
+      849.88
+     ],
+     [
+      1254.48,
+      845.8
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_01ecddc0e550",
+    "path_0416b67805d0",
+    "path_16c6e6747365",
+    "path_22d1cc8b34f6",
+    "path_53be6df10ed8",
+    "path_6bd80266e735",
+    "path_7ab17fc08449",
+    "path_8666459529c8",
+    "path_9456abf40530",
+    "path_99e6969769e1",
+    "path_b37690c69b25",
+    "path_b5ac94054c16",
+    "path_f246273d37eb"
+   ],
+   "source_segments": [
+    "path_01ecddc0e550#0",
+    "path_0416b67805d0#0",
+    "path_16c6e6747365#0",
+    "path_22d1cc8b34f6#0",
+    "path_53be6df10ed8#0",
+    "path_6bd80266e735#0",
+    "path_7ab17fc08449#0",
+    "path_8666459529c8#0",
+    "path_9456abf40530#0",
+    "path_99e6969769e1#0",
+    "path_b37690c69b25#0",
+    "path_b5ac94054c16#0",
+    "path_f246273d37eb#0"
+   ],
+   "graph_nodes": [
+    6,
+    7,
+    9,
+    33,
+    59,
+    132,
+    133,
+    178,
+    215,
+    216,
+    246,
+    263,
+    328,
+    329
+   ],
+   "horizontal_pdf_units": 125.77,
+   "raw_pt": 91.83,
+   "bridged_gap_pt": 33.94,
+   "horizontal_m": 2.239,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 2.239,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_a4ac87cce8e2",
+   "page": 0,
+   "system": "VP01",
+   "designation": "VP01-S2-65-F80",
+   "identity": "VP01-S2-F80|DN65",
+   "dn": 65,
+   "supporting_anchors": [
+    "anc_74788073be39"
+   ],
+   "representation_family": "V-56B--FE-_VPxx-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1379.4,
+      773.8
+     ],
+     [
+      1365.6,
+      778.84
+     ],
+     [
+      1364.28,
+      779.32
+     ],
+     [
+      1350.36,
+      784.36
+     ],
+     [
+      1343.76,
+      786.76
+     ],
+     [
+      1332.6,
+      790.84
+     ],
+     [
+      1325.88,
+      793.24
+     ],
+     [
+      1312.08,
+      798.28
+     ],
+     [
+      1310.76,
+      798.76
+     ],
+     [
+      1294.2,
+      804.76
+     ],
+     [
+      1292.88,
+      805.24
+     ],
+     [
+      1276.32,
+      811.24
+     ],
+     [
+      1275.0,
+      811.72
+     ],
+     [
+      1258.44,
+      817.72
+     ],
+     [
+      1254.48,
+      819.28
+     ],
+     [
+      1240.68,
+      824.32
+     ],
+     [
+      1239.36,
+      824.8
+     ],
+     [
+      1225.44,
+      829.84
+     ],
+     [
+      1221.48,
+      831.28
+     ],
+     [
+      1204.92,
+      837.28
+     ],
+     [
+      1203.6,
+      837.76
+     ],
+     [
+      1189.8,
+      842.8
+     ],
+     [
+      1185.72,
+      844.24
+     ],
+     [
+      1169.28,
+      850.24
+     ],
+     [
+      1165.2,
+      851.68
+     ],
+     [
+      1154.04,
+      855.76
+     ],
+     [
+      1150.08,
+      857.2
+     ],
+     [
+      1133.52,
+      863.2
+     ],
+     [
+      1129.56,
+      864.64
+     ],
+     [
+      1118.4,
+      868.72
+     ],
+     [
+      1111.68,
+      871.24
+     ],
+     [
+      1100.52,
+      875.32
+     ],
+     [
+      1093.8,
+      877.72
+     ],
+     [
+      1082.64,
+      881.8
+     ],
+     [
+      1078.68,
+      883.24
+     ],
+     [
+      1062.12,
+      889.24
+     ],
+     [
+      1060.8,
+      889.72
+     ],
+     [
+      1047.0,
+      894.76
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_1144724f2d4a",
+    "path_1ae226791dcd",
+    "path_278f636afd34",
+    "path_29b2aa03b387",
+    "path_2ac78a9c5aa2",
+    "path_2b260cac7341",
+    "path_2cb0ef066373",
+    "path_2ddbb489f5c7",
+    "path_30c1a52ba47f",
+    "path_337542605fc5",
+    "path_346719153168",
+    "path_381470dc5ff3",
+    "path_3917cd542815",
+    "path_523c5aa072af",
+    "path_58f8a1351158",
+    "path_76f35824a4ac",
+    "path_7f8cfe0fba7d",
+    "path_8055ed091567",
+    "path_8501bb187428",
+    "path_888fa2c321ef",
+    "path_89ddf16c400b",
+    "path_8bada01365a9",
+    "path_98aa4ab2ab38",
+    "path_9be07f6c2278",
+    "path_a0444160a988",
+    "path_a04ee3802bce",
+    "path_a52685d28281",
+    "path_aa28cb4f0eeb",
+    "path_aad1b299b75a",
+    "path_bca80b9d5685",
+    "path_c3318ba1cb9c",
+    "path_c8fe228a6c04",
+    "path_d6118c6e9de9",
+    "path_e690d7331b5e",
+    "path_eb6136fd0459",
+    "path_f3232ec13d1c",
+    "path_f3b22e904bee"
+   ],
+   "source_segments": [
+    "path_1144724f2d4a#0",
+    "path_1ae226791dcd#0",
+    "path_278f636afd34#0",
+    "path_29b2aa03b387#0",
+    "path_2ac78a9c5aa2#0",
+    "path_2b260cac7341#0",
+    "path_2cb0ef066373#0",
+    "path_2ddbb489f5c7#0",
+    "path_30c1a52ba47f#0",
+    "path_337542605fc5#0",
+    "path_346719153168#0",
+    "path_381470dc5ff3#0",
+    "path_3917cd542815#0",
+    "path_523c5aa072af#0",
+    "path_58f8a1351158#0",
+    "path_76f35824a4ac#0",
+    "path_7f8cfe0fba7d#0",
+    "path_8055ed091567#0",
+    "path_8501bb187428#0",
+    "path_888fa2c321ef#0",
+    "path_89ddf16c400b#0",
+    "path_8bada01365a9#0",
+    "path_98aa4ab2ab38#0",
+    "path_9be07f6c2278#0",
+    "path_a0444160a988#0",
+    "path_a04ee3802bce#0",
+    "path_a52685d28281#0",
+    "path_aa28cb4f0eeb#0",
+    "path_aad1b299b75a#0",
+    "path_bca80b9d5685#0",
+    "path_c3318ba1cb9c#0",
+    "path_c8fe228a6c04#0",
+    "path_d6118c6e9de9#0",
+    "path_e690d7331b5e#0",
+    "path_eb6136fd0459#0",
+    "path_f3232ec13d1c#0",
+    "path_f3b22e904bee#0"
+   ],
+   "graph_nodes": [
+    24,
+    25,
+    42,
+    43,
+    80,
+    93,
+    94,
+    99,
+    100,
+    101,
+    102,
+    109,
+    110,
+    113,
+    126,
+    133,
+    134,
+    140,
+    149,
+    150,
+    151,
+    187,
+    188,
+    207,
+    208,
+    263,
+    264,
+    281,
+    282,
+    287,
+    310,
+    314,
+    356,
+    362,
+    395,
+    399,
+    427,
+    491
+   ],
+   "horizontal_pdf_units": 353.731,
+   "raw_pt": 251.571,
+   "bridged_gap_pt": 102.16,
+   "horizontal_m": 6.299,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 6.299,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_b798582d2d2f",
+   "page": 0,
+   "system": "KV01",
+   "designation": "KV01-X7-40-W40",
+   "identity": "KV01-X7-W40|DN40",
+   "dn": 40,
+   "supporting_anchors": [
+    "anc_822d20426cd5"
+   ],
+   "representation_family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "geometry": [
+    [
+     [
+      1310.28,
+      755.2
+     ],
+     [
+      1324.08,
+      750.16
+     ],
+     [
+      1325.4,
+      749.68
+     ],
+     [
+      1339.32,
+      744.64
+     ],
+     [
+      1345.92,
+      742.24
+     ],
+     [
+      1357.2,
+      738.16
+     ],
+     [
+      1361.16,
+      736.72
+     ],
+     [
+      1374.96,
+      731.68
+     ],
+     [
+      1381.68,
+      729.28
+     ],
+     [
+      1392.84,
+      725.2
+     ],
+     [
+      1396.8,
+      723.76
+     ],
+     [
+      1413.36,
+      717.76
+     ],
+     [
+      1414.68,
+      717.28
+     ],
+     [
+      1431.24,
+      711.28
+     ],
+     [
+      1432.56,
+      710.8
+     ],
+     [
+      1446.36,
+      705.76
+     ],
+     [
+      1450.44,
+      704.2
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_2097df47b773",
+    "path_2449b4715122",
+    "path_31ff946fbd82",
+    "path_3df449e23660",
+    "path_4aa8beb27529",
+    "path_56d5ac7c4583",
+    "path_7314937fbf1f",
+    "path_7dfaf66136e7",
+    "path_7dfb2c7c8ba7",
+    "path_875587b4a37d",
+    "path_876316815ace",
+    "path_9a29836d8bc4",
+    "path_d961e655b74b",
+    "path_da32ff611f32",
+    "path_eaf9bbd47c0e",
+    "path_f5b76f40b77a"
+   ],
+   "source_segments": [
+    "path_2097df47b773#0",
+    "path_2449b4715122#0",
+    "path_31ff946fbd82#0",
+    "path_3df449e23660#0",
+    "path_4aa8beb27529#0",
+    "path_56d5ac7c4583#0",
+    "path_7314937fbf1f#0",
+    "path_7dfaf66136e7#0",
+    "path_7dfb2c7c8ba7#0",
+    "path_875587b4a37d#0",
+    "path_876316815ace#0",
+    "path_9a29836d8bc4#0",
+    "path_d961e655b74b#0",
+    "path_da32ff611f32#0",
+    "path_eaf9bbd47c0e#0",
+    "path_f5b76f40b77a#0"
+   ],
+   "graph_nodes": [
+    22,
+    23,
+    28,
+    29,
+    42,
+    43,
+    68,
+    69,
+    76,
+    77,
+    84,
+    126,
+    129,
+    138,
+    140,
+    236,
+    252
+   ],
+   "horizontal_pdf_units": 149.154,
+   "raw_pt": 106.594,
+   "bridged_gap_pt": 42.56,
+   "horizontal_m": 2.656,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 2.656,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_bb97a8820508",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-S13-28-F60",
+   "identity": "VS31-S13-F60|DN28",
+   "dn": 28,
+   "supporting_anchors": [
+    "anc_b4fe592a764a"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      898.08,
+      758.2
+     ],
+     [
+      893.4,
+      745.6
+     ],
+     [
+      893.28,
+      745.12
+     ],
+     [
+      892.92,
+      744.76
+     ],
+     [
+      892.56,
+      744.4
+     ],
+     [
+      892.2,
+      744.16
+     ],
+     [
+      891.72,
+      743.92
+     ],
+     [
+      891.24,
+      743.8
+     ],
+     [
+      890.76,
+      743.68
+     ],
+     [
+      871.8,
+      743.68
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_1d8c34c71219",
+    "path_be8e93d7b20d",
+    "path_fff1bd3fce82"
+   ],
+   "source_segments": [
+    "path_1d8c34c71219#0",
+    "path_1d8c34c71219#1",
+    "path_1d8c34c71219#2",
+    "path_1d8c34c71219#3",
+    "path_1d8c34c71219#4",
+    "path_1d8c34c71219#5",
+    "path_1d8c34c71219#6",
+    "path_be8e93d7b20d#0",
+    "path_fff1bd3fce82#0"
+   ],
+   "graph_nodes": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    348,
+    439
+   ],
+   "horizontal_pdf_units": 35.873,
+   "raw_pt": 35.873,
+   "bridged_gap_pt": 0,
+   "horizontal_m": 0.639,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.639,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_be3b271580fe",
+   "page": 0,
+   "system": "VP01",
+   "designation": "VP01-S2-65-F80",
+   "identity": "VP01-S2-F80|DN65",
+   "dn": 65,
+   "supporting_anchors": [
+    "anc_73339b3001cb"
+   ],
+   "representation_family": "V-56B--FE-_VPxx-|s|w1.44",
+   "geometry": [
+    [
+     [
+      787.2,
+      1050.04
+     ],
+     [
+      778.68,
+      1058.44
+     ],
+     [
+      773.64,
+      1063.48
+     ],
+     [
+      762.96,
+      1074.04
+     ],
+     [
+      762.12,
+      1074.76
+     ],
+     [
+      761.16,
+      1075.24
+     ],
+     [
+      760.08,
+      1075.6
+     ],
+     [
+      759.0,
+      1075.72
+     ],
+     [
+      746.4,
+      1075.72
+     ],
+     [
+      745.08,
+      1075.72
+     ],
+     [
+      727.44,
+      1075.72
+     ],
+     [
+      723.24,
+      1075.72
+     ],
+     [
+      711.24,
+      1075.72
+     ],
+     [
+      704.16,
+      1075.72
+     ],
+     [
+      692.28,
+      1075.72
+     ],
+     [
+      688.08,
+      1075.72
+     ],
+     [
+      673.32,
+      1075.72
+     ],
+     [
+      666.24,
+      1075.72
+     ],
+     [
+      651.48,
+      1075.72
+     ],
+     [
+      650.04,
+      1075.72
+     ],
+     [
+      635.28,
+      1075.72
+     ],
+     [
+      628.2,
+      1075.72
+     ],
+     [
+      616.32,
+      1075.72
+     ],
+     [
+      609.24,
+      1075.72
+     ],
+     [
+      597.36,
+      1075.72
+     ],
+     [
+      590.28,
+      1075.72
+     ],
+     [
+      588.72,
+      1075.72
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_165c2431f052",
+    "path_1c7254b34201",
+    "path_287eb259ec39",
+    "path_39485bc2ee7d",
+    "path_40df112dfcde",
+    "path_483884594186",
+    "path_58b6130238ec",
+    "path_5f55ba8da312",
+    "path_634c0b8dc9d3",
+    "path_66e73884410e",
+    "path_7551f8eef167",
+    "path_8143f4711128",
+    "path_83782f6a8e5a",
+    "path_8af1727af34e",
+    "path_937658c13eea",
+    "path_cee017a14798",
+    "path_dc4e4766f879",
+    "path_e9daf7254eec",
+    "path_f34fe859953e",
+    "path_f7776f8819a3",
+    "path_facbeab08410",
+    "path_fb5a0a31c0c0",
+    "path_fcea791eddd1"
+   ],
+   "source_segments": [
+    "path_165c2431f052#0",
+    "path_1c7254b34201#0",
+    "path_287eb259ec39#0",
+    "path_39485bc2ee7d#0",
+    "path_40df112dfcde#0",
+    "path_483884594186#0",
+    "path_58b6130238ec#0",
+    "path_5f55ba8da312#0",
+    "path_634c0b8dc9d3#0",
+    "path_66e73884410e#0",
+    "path_7551f8eef167#0",
+    "path_8143f4711128#0",
+    "path_83782f6a8e5a#0",
+    "path_8af1727af34e#0",
+    "path_937658c13eea#0",
+    "path_cee017a14798#0",
+    "path_cee017a14798#1",
+    "path_cee017a14798#2",
+    "path_cee017a14798#3",
+    "path_dc4e4766f879#0",
+    "path_e9daf7254eec#0",
+    "path_f34fe859953e#0",
+    "path_f7776f8819a3#0",
+    "path_facbeab08410#0",
+    "path_fb5a0a31c0c0#0",
+    "path_fcea791eddd1#0"
+   ],
+   "graph_nodes": [
+    36,
+    37,
+    46,
+    47,
+    86,
+    87,
+    153,
+    154,
+    161,
+    162,
+    169,
+    170,
+    205,
+    206,
+    221,
+    231,
+    237,
+    238,
+    317,
+    461,
+    462,
+    463,
+    464,
+    465,
+    474,
+    500,
+    511
+   ],
+   "horizontal_pdf_units": 208.796,
+   "raw_pt": 152.026,
+   "bridged_gap_pt": 56.77,
+   "horizontal_m": 3.718,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 3.718,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_d619eb370e92",
+   "page": 0,
+   "system": "KV01",
+   "designation": "KV01-X7-40-W40",
+   "identity": "KV01-X7-W40|DN40",
+   "dn": 40,
+   "supporting_anchors": [
+    "anc_7765ade11909"
+   ],
+   "representation_family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "geometry": [
+    [
+     [
+      793.68,
+      1009.48
+     ],
+     [
+      785.28,
+      1017.88
+     ],
+     [
+      782.28,
+      1020.88
+     ],
+     [
+      775.44,
+      1027.72
+     ],
+     [
+      775.2,
+      1027.96
+     ],
+     [
+      774.84,
+      1028.2
+     ],
+     [
+      774.48,
+      1028.32
+     ],
+     [
+      774.24,
+      1028.32
+     ],
+     [
+      773.88,
+      1028.44
+     ],
+     [
+      763.08,
+      1028.44
+     ],
+     [
+      758.76,
+      1028.44
+     ],
+     [
+      746.88,
+      1028.44
+     ],
+     [
+      742.68,
+      1028.44
+     ],
+     [
+      725.04,
+      1028.44
+     ],
+     [
+      723.6,
+      1028.44
+     ],
+     [
+      706.08,
+      1028.44
+     ],
+     [
+      704.64,
+      1028.44
+     ],
+     [
+      687.12,
+      1028.44
+     ],
+     [
+      682.8,
+      1028.44
+     ],
+     [
+      670.92,
+      1028.44
+     ],
+     [
+      666.72,
+      1028.44
+     ],
+     [
+      649.08,
+      1028.44
+     ],
+     [
+      644.88,
+      1028.44
+     ],
+     [
+      632.88,
+      1028.44
+     ],
+     [
+      625.8,
+      1028.44
+     ],
+     [
+      613.92,
+      1028.44
+     ],
+     [
+      606.84,
+      1028.44
+     ],
+     [
+      594.96,
+      1028.44
+     ],
+     [
+      590.64,
+      1028.44
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_0185d4f3833e",
+    "path_102269cd0d5c",
+    "path_163d6c6983dc",
+    "path_27054a80de2b",
+    "path_318c7d319f74",
+    "path_37a23fea687e",
+    "path_3d1acbe20270",
+    "path_40bd389b0b61",
+    "path_722d9b8e039a",
+    "path_78acc8248102",
+    "path_7d2fd1cd7210",
+    "path_86db7f46649c",
+    "path_894747add5da",
+    "path_8b52ce110aa8",
+    "path_8da3c143b854",
+    "path_8fc22b478d80",
+    "path_9a85d6847a6f",
+    "path_a410ea35d08c",
+    "path_add205211b81",
+    "path_b98346db9127",
+    "path_becdabdb6c1c",
+    "path_d9e0a322de66",
+    "path_eec1f5461316",
+    "path_f7c9675b9255"
+   ],
+   "source_segments": [
+    "path_0185d4f3833e#0",
+    "path_102269cd0d5c#0",
+    "path_163d6c6983dc#0",
+    "path_27054a80de2b#0",
+    "path_318c7d319f74#0",
+    "path_37a23fea687e#0",
+    "path_3d1acbe20270#0",
+    "path_40bd389b0b61#0",
+    "path_722d9b8e039a#0",
+    "path_78acc8248102#0",
+    "path_7d2fd1cd7210#0",
+    "path_86db7f46649c#0",
+    "path_894747add5da#0",
+    "path_8b52ce110aa8#0",
+    "path_8da3c143b854#0",
+    "path_8fc22b478d80#0",
+    "path_9a85d6847a6f#0",
+    "path_a410ea35d08c#0",
+    "path_add205211b81#0",
+    "path_b98346db9127#0",
+    "path_becdabdb6c1c#0",
+    "path_d9e0a322de66#0",
+    "path_eec1f5461316#0",
+    "path_f7c9675b9255#0",
+    "path_f7c9675b9255#1",
+    "path_f7c9675b9255#2",
+    "path_f7c9675b9255#3",
+    "path_f7c9675b9255#4"
+   ],
+   "graph_nodes": [
+    4,
+    5,
+    14,
+    15,
+    18,
+    19,
+    30,
+    31,
+    40,
+    41,
+    56,
+    57,
+    62,
+    72,
+    73,
+    106,
+    107,
+    116,
+    137,
+    144,
+    146,
+    149,
+    179,
+    188,
+    205,
+    264,
+    265,
+    266,
+    267
+   ],
+   "horizontal_pdf_units": 210.816,
+   "raw_pt": 151.276,
+   "bridged_gap_pt": 59.54,
+   "horizontal_m": 3.754,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 3.754,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_e3ca00a57d37",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-S13-28-F60",
+   "identity": "VS31-S13-F60|DN28",
+   "dn": 28,
+   "supporting_anchors": [
+    "anc_4d60a6b96186"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1210.08,
+      850.0
+     ],
+     [
+      1196.28,
+      855.04
+     ],
+     [
+      1194.96,
+      855.52
+     ],
+     [
+      1178.4,
+      861.52
+     ],
+     [
+      1177.08,
+      862.0
+     ],
+     [
+      1160.52,
+      868.0
+     ],
+     [
+      1156.56,
+      869.44
+     ],
+     [
+      1145.4,
+      873.52
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_2a656ff2d0a7",
+    "path_4073c434c1cf",
+    "path_78b14c907a6f",
+    "path_7ced2341fecf",
+    "path_aa6f6ebb9c34",
+    "path_ab4f413e6d69",
+    "path_b8c9031a044a"
+   ],
+   "source_segments": [
+    "path_2a656ff2d0a7#0",
+    "path_4073c434c1cf#0",
+    "path_78b14c907a6f#0",
+    "path_7ced2341fecf#0",
+    "path_aa6f6ebb9c34#0",
+    "path_ab4f413e6d69#0",
+    "path_b8c9031a044a#0"
+   ],
+   "graph_nodes": [
+    70,
+    71,
+    106,
+    211,
+    212,
+    221,
+    222,
+    305
+   ],
+   "horizontal_pdf_units": 68.826,
+   "raw_pt": 51.856,
+   "bridged_gap_pt": 16.97,
+   "horizontal_m": 1.226,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 1.226,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_f22838687f72",
+   "page": 0,
+   "system": "VS21",
+   "designation": "VS21-S13",
+   "identity": "VS21-S13|DN15",
+   "dn": 15,
+   "supporting_anchors": [
+    "anc_34d738f3d416"
+   ],
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1655.76,
+      1208.92
+     ],
+     [
+      1647.64,
+      1211.9
+     ]
+    ],
+    [
+     [
+      1655.76,
+      1208.92
+     ],
+     [
+      1656.0,
+      1208.8
+     ]
+    ],
+    [
+     [
+      1655.76,
+      1208.92
+     ],
+     [
+      1647.64,
+      1211.9
+     ]
+    ],
+    [
+     [
+      1643.52,
+      1213.48
+     ],
+     [
+      1647.0,
+      1212.16
+     ]
+    ],
+    [
+     [
+      1647.0,
+      1212.16
+     ],
+     [
+      1647.36,
+      1212.04
+     ]
+    ],
+    [
+     [
+      1647.64,
+      1211.9
+     ],
+     [
+      1647.36,
+      1212.04
+     ]
+    ],
+    [
+     [
+      1647.36,
+      1212.04
+     ],
+     [
+      1647.0,
+      1212.16
+     ]
+    ],
+    [
+     [
+      1647.0,
+      1212.16
+     ],
+     [
+      1643.52,
+      1213.48
+     ]
+    ],
+    [
+     [
+      1643.52,
+      1213.48
+     ],
+     [
+      1641.36,
+      1214.2
+     ]
+    ],
+    [
+     [
+      1647.64,
+      1211.9
+     ],
+     [
+      1647.36,
+      1212.04
+     ]
+    ],
+    [
+     [
+      1647.36,
+      1212.04
+     ],
+     [
+      1647.0,
+      1212.16
+     ]
+    ],
+    [
+     [
+      1647.0,
+      1212.16
+     ],
+     [
+      1643.52,
+      1213.48
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_45d54b66c89e",
+    "path_7493a0c758ae",
+    "path_c9d7eb23636d",
+    "path_cdb042a00a5a"
+   ],
+   "source_segments": [
+    "path_45d54b66c89e#0",
+    "path_7493a0c758ae#7",
+    "path_c9d7eb23636d#0",
+    "path_cdb042a00a5a#0",
+    "path_cdb042a00a5a#1",
+    "path_45d54b66c89e#0",
+    "path_45d54b66c89e#0",
+    "path_45d54b66c89e#0",
+    "path_45d54b66c89e#0",
+    "path_c9d7eb23636d#0",
+    "path_c9d7eb23636d#0",
+    "path_c9d7eb23636d#0"
+   ],
+   "graph_nodes": [
+    197,
+    198,
+    341,
+    616,
+    617,
+    618,
+    723
+   ],
+   "horizontal_pdf_units": 32.88,
+   "raw_pt": 32.88,
+   "bridged_gap_pt": 0,
+   "horizontal_m": 0.585,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.585,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor",
+    "collinear_through_junction"
+   ],
+   "ambiguity_reason": null,
+   "reasons": []
+  }
+ ]
+}

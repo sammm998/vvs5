@@ -1,0 +1,201 @@
+{
+ "scale": {
+  "meters_per_pdf_point": 0.017806264709948293,
+  "scope": "page",
+  "state": "VERIFIED",
+  "reason": "scale_text_and_scale_bar_agree",
+  "evidence": [
+   {
+    "kind": "scale_text",
+    "text": "SKALA 1:50 (A1) 0",
+    "bbox": [
+     937.7,
+     1643.1,
+     1054.8,
+     1658.5
+    ],
+    "meters_per_pt": 0.017638888888888885,
+    "detail": {
+     "ratio": 50,
+     "qualifier": [
+      "(A1)"
+     ]
+    }
+   },
+   {
+    "kind": "scale_bar",
+    "text": "0 1 2 3 4 5",
+    "bbox": [
+     1047.8,
+     1643.1,
+     1335.6,
+     1658.5
+    ],
+    "meters_per_pt": 0.017806264709948293,
+    "detail": {
+     "labels": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "span_pt": 280.8,
+     "unit": "m",
+     "implied_ratio": 50.5,
+     "n_labels": 6
+    }
+   }
+  ]
+ },
+ "rows": [
+  {
+   "designation": "KV01-X7-40-W40",
+   "base": "KV01-X7-W40",
+   "dn": 40,
+   "system": "KV01",
+   "physical_pipe_count": 3,
+   "confirmed_horizontal_m": 14.904,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 14.904,
+   "horizontal_pdf_units": 837.029,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_1ae971ca5755",
+    "pp_b798582d2d2f",
+    "pp_d619eb370e92"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "S01-P5-160",
+   "base": "S01-P5",
+   "dn": 160,
+   "system": "S01",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 2.369,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 2.369,
+   "horizontal_pdf_units": 133.06,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_84df6c30d046"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VP01-S2-65-F80",
+   "base": "VP01-S2-F80",
+   "dn": 65,
+   "system": "VP01",
+   "physical_pipe_count": 5,
+   "confirmed_horizontal_m": 18.519,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 18.519,
+   "horizontal_pdf_units": 1040.044,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_35e214f4dc3f",
+    "pp_43d4cb82510c",
+    "pp_4419e5bfe992",
+    "pp_a4ac87cce8e2",
+    "pp_be3b271580fe"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VS21-S13-15-F50",
+   "base": "VS21-S13-F50",
+   "dn": 15,
+   "system": "VS21",
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 12.372,
+   "confirmed_vertical_m": 0.5,
+   "confirmed_total_m": 12.872,
+   "horizontal_pdf_units": 694.784,
+   "ambiguous_m": 1.652,
+   "vertical_known": true,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_5d7092032c8b",
+    "pp_7857a2ea075d"
+   ],
+   "vertical_m": 0.5
+  },
+  {
+   "designation": "VS21-S13",
+   "base": "VS21-S13",
+   "dn": 15,
+   "system": "VS21",
+   "physical_pipe_count": 3,
+   "confirmed_horizontal_m": 1.674,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 1.674,
+   "horizontal_pdf_units": 94.023,
+   "ambiguous_m": 1.783,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_011cb27c6628",
+    "pp_92c0941fe1cf",
+    "pp_f22838687f72"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VS31-S13-28-F60",
+   "base": "VS31-S13-F60",
+   "dn": 28,
+   "system": "VS31",
+   "physical_pipe_count": 6,
+   "confirmed_horizontal_m": 13.66,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 13.66,
+   "horizontal_pdf_units": 767.157,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_3df334fb8119",
+    "pp_58a4159f0de8",
+    "pp_687419d2f0e9",
+    "pp_9ddc6aa2daa7",
+    "pp_bb97a8820508",
+    "pp_e3ca00a57d37"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VS31-X32",
+   "base": "VS31-X32",
+   "dn": 25,
+   "system": "VS31",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 0.434,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.434,
+   "horizontal_pdf_units": 24.36,
+   "ambiguous_m": 0.004,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_114d293d0564"
+   ],
+   "vertical_m": "UNKNOWN"
+  }
+ ],
+ "totals": {
+  "physical_pipes": 21,
+  "confirmed_horizontal_m": 63.932,
+  "confirmed_vertical_m": 0.5,
+  "confirmed_total_m": 64.432,
+  "ambiguous_m": 3.439
+ }
+}

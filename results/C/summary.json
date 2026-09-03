@@ -1,0 +1,81 @@
+{
+ "name": "DRAWING_C",
+ "pages": 1,
+ "summary": {
+  "designations": 45,
+  "with_dn": 36,
+  "blocks": 250,
+  "leaders": 19,
+  "designation_leaders": 14,
+  "anchors": {
+   "NO_PIPE_ATTACHMENT": 9,
+   "VERIFIED_PIPE_ATTACHMENT": 17
+  },
+  "pipe_families": {
+   "V-52B--FE-_Vxx-KV|s|w1.44": "fragmented-dashed",
+   "V-53BBBFE-_Sxx|s|w2.88": "fragmented-dashed",
+   "V-56B--FE-_VPxx-|s|w1.44": "fragmented-dashed",
+   "V-56B--FE-_VS2x-|s|w1.44": "fragmented-dashed",
+   "V-56B--FE-_VS3x-|s|w1.44": "fragmented-dashed",
+   "V-52B--FE-_Vxx-VVCXX|s|w1.44": "fragmented-dashed",
+   "V-52B--FE-_Vxx-VV|s|w1.44": "fragmented-dashed"
+  },
+  "ownership": {
+   "UNOWNED": 1010,
+   "CONFIRMED": 453,
+   "AMBIGUOUS": 54
+  },
+  "physical_pipes": 21,
+  "scale": "VERIFIED",
+  "confirmed_horizontal_m": 63.93,
+  "ambiguous_m": 3.44,
+  "timings_ms": {
+   "profile_ms": 88,
+   "text_ms": 8226,
+   "designation_ms": 173,
+   "leader_ms": 0,
+   "leader_attachment_ms": 1370,
+   "topology_ms": 0,
+   "physical_pipes_ms": 11,
+   "measurement_ms": 17,
+   "text_components_ms": 322,
+   "text_rows_ms": 577,
+   "text_raster_ms": 1668,
+   "text_classify_ms": 5577,
+   "text_assemble_ms": 38
+  }
+ },
+ "determinism": "PASS",
+ "contamination": "PASS",
+ "files": {
+  "drawing-profile.json": "/home/user/vvs5/results/C/drawing-profile.json",
+  "drawing-profile-report.md": "/home/user/vvs5/results/C/drawing-profile-report.md",
+  "raw-vector-inventory.json": "/home/user/vvs5/results/C/raw-vector-inventory.json",
+  "cad-layer-map.json": "/home/user/vvs5/results/C/cad-layer-map.json",
+  "vector-designations.json": "/home/user/vvs5/results/C/vector-designations.json",
+  "leader-forensics.json": "/home/user/vvs5/results/C/leader-forensics.json",
+  "leader-family-report.json": "/home/user/vvs5/results/C/leader-family-report.json",
+  "pipe-code-anchors.json": "/home/user/vvs5/results/C/pipe-code-anchors.json",
+  "pipe-representation-families.json": "/home/user/vvs5/results/C/pipe-representation-families.json",
+  "pipe-geometry-inventory.json": "/home/user/vvs5/results/C/pipe-geometry-inventory.json",
+  "pipe-topology.json": "/home/user/vvs5/results/C/pipe-topology.json",
+  "physical-pipes.json": "/home/user/vvs5/results/C/physical-pipes.json",
+  "quantities.json": "/home/user/vvs5/results/C/quantities.json",
+  "unresolved-issues.json": "/home/user/vvs5/results/C/unresolved-issues.json",
+  "evidence-graph.json": "/home/user/vvs5/results/C/evidence-graph.json",
+  "reconciliation.json": "/home/user/vvs5/results/C/reconciliation.json",
+  "determinism.json": "/home/user/vvs5/results/C/determinism.json",
+  "contamination-report.json": "/home/user/vvs5/results/C/contamination-report.json",
+  "performance-report.json": "/home/user/vvs5/results/C/performance-report.json",
+  "production-overlay.pdf": "/home/user/vvs5/results/C/production-overlay.pdf",
+  "designation-overlay.pdf": "/home/user/vvs5/results/C/designation-overlay.pdf",
+  "leader-overlay.pdf": "/home/user/vvs5/results/C/leader-overlay.pdf",
+  "endpoint-pipe-attachment-overlay.pdf": "/home/user/vvs5/results/C/endpoint-pipe-attachment-overlay.pdf",
+  "topology-overlay.pdf": "/home/user/vvs5/results/C/topology-overlay.pdf",
+  "ambiguous-overlay.pdf": "/home/user/vvs5/results/C/ambiguous-overlay.pdf",
+  "unsupported-style-overlay.pdf": "/home/user/vvs5/results/C/unsupported-style-overlay.pdf",
+  "analysis-report.md": "/home/user/vvs5/results/C/analysis-report.md",
+  "freeze-manifest.json": "/home/user/vvs5/results/C/freeze-manifest.json"
+ },
+ "total_seconds": 36.92
+}

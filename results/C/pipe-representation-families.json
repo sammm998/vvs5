@@ -1,0 +1,102 @@
+{
+ "families": [
+  {
+   "family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "layer": "V-52B--FE-_Vxx-KV",
+   "style": "w1.44",
+   "width": 1.4399999380111694,
+   "n_primitives": 140,
+   "total_length_pt": 869.3,
+   "gap_mode_pt": 2.75,
+   "dash_mode_pt": 12.0,
+   "n_chains": 22,
+   "longest_chain_pt": 340.6,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44"
+  },
+  {
+   "family": "V-53BBBFE-_Sxx|s|w2.88",
+   "layer": "V-53BBBFE-_Sxx",
+   "style": "w2.88",
+   "width": 2.879999876022339,
+   "n_primitives": 86,
+   "total_length_pt": 492.0,
+   "gap_mode_pt": 2.75,
+   "dash_mode_pt": 12.0,
+   "n_chains": 11,
+   "longest_chain_pt": 157.1,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 2.88"
+  },
+  {
+   "family": "V-56B--FE-_VPxx-|s|w1.44",
+   "layer": "V-56B--FE-_VPxx-",
+   "style": "w1.44",
+   "width": 1.4399999380111694,
+   "n_primitives": 272,
+   "total_length_pt": 1730.2,
+   "gap_mode_pt": 2.75,
+   "dash_mode_pt": 12.0,
+   "n_chains": 51,
+   "longest_chain_pt": 251.6,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44"
+  },
+  {
+   "family": "V-56B--FE-_VS2x-|s|w1.44",
+   "layer": "V-56B--FE-_VS2x-",
+   "style": "w1.44",
+   "width": 1.4399999380111694,
+   "n_primitives": 493,
+   "total_length_pt": 2154.7,
+   "gap_mode_pt": 3.0,
+   "dash_mode_pt": 12.0,
+   "n_chains": 172,
+   "longest_chain_pt": 257.2,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~12.0pt gap~3.0pt, width 1.44"
+  },
+  {
+   "family": "V-56B--FE-_VS3x-|s|w1.44",
+   "layer": "V-56B--FE-_VS3x-",
+   "style": "w1.44",
+   "width": 1.4399999380111694,
+   "n_primitives": 234,
+   "total_length_pt": 1485.9,
+   "gap_mode_pt": 2.75,
+   "dash_mode_pt": 12.0,
+   "n_chains": 45,
+   "longest_chain_pt": 306.2,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44"
+  },
+  {
+   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "layer": "V-52B--FE-_Vxx-VVCXX",
+   "style": "w1.44",
+   "width": 1.4399999380111694,
+   "n_primitives": 136,
+   "total_length_pt": 856.2,
+   "gap_mode_pt": 2.75,
+   "dash_mode_pt": 12.0,
+   "n_chains": 12,
+   "longest_chain_pt": 306.3,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44"
+  },
+  {
+   "family": "V-52B--FE-_Vxx-VV|s|w1.44",
+   "layer": "V-52B--FE-_Vxx-VV",
+   "style": "w1.44",
+   "width": 1.4399999380111694,
+   "n_primitives": 139,
+   "total_length_pt": 860.3,
+   "gap_mode_pt": 2.75,
+   "dash_mode_pt": 12.0,
+   "n_chains": 18,
+   "longest_chain_pt": 208.7,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44"
+  }
+ ]
+}

@@ -1,0 +1,727 @@
+{
+ "source": "/home/user/vvs5/data/dev/DRAWING_C.pdf",
+ "n_pages": 1,
+ "metadata": {
+  "format": "PDF 1.7",
+  "title": "V-50-1-A0121",
+  "creator": "AutoCAD MEP 2020 - English 2020 (23.1s (LMS Tech))",
+  "producer": "pdfplot15.hdi 15.01.070.000",
+  "creationDate": "D:20230530095628",
+  "modDate": "D:20230530095628"
+ },
+ "ocgs": [
+  {
+   "xref": 1,
+   "name": "V-53BBBFE-_Sxx",
+   "on": true
+  },
+  {
+   "xref": 3,
+   "name": "V-56B--KE-_VS2x--",
+   "on": true
+  },
+  {
+   "xref": 23,
+   "name": "V-56B--FE-_VS2x-",
+   "on": true
+  },
+  {
+   "xref": 44,
+   "name": "V-56B--FE-_VPxx-",
+   "on": true
+  },
+  {
+   "xref": 45,
+   "name": "V-52B--FE-_Vxx-KV",
+   "on": true
+  },
+  {
+   "xref": 46,
+   "name": "V-52B--FE-_Vxx-VV",
+   "on": true
+  },
+  {
+   "xref": 47,
+   "name": "V-52B--FE-_Vxx-VVCXX",
+   "on": true
+  },
+  {
+   "xref": 69,
+   "name": "V-53BBBFE-_Sxx-",
+   "on": true
+  },
+  {
+   "xref": 72,
+   "name": "V-56B---T-_VS2x-",
+   "on": true
+  },
+  {
+   "xref": 79,
+   "name": "SK-46-P-0100-1764-A|SK-46C-B-EB-E",
+   "on": true
+  },
+  {
+   "xref": 80,
+   "name": "SK-46-P-0100-1764-A|A-46B--BE-N",
+   "on": true
+  },
+  {
+   "xref": 81,
+   "name": "SK-46-P-0100-1764-A|SK-46C-B-EI-E",
+   "on": true
+  },
+  {
+   "xref": 82,
+   "name": "SK-46-P-0100-1764-A|SK-46C-B-EK-E",
+   "on": true
+  },
+  {
+   "xref": 83,
+   "name": "SK-46-P-0100-1764-A|VS-53BB-5L-E6-E",
+   "on": true
+  },
+  {
+   "xref": 84,
+   "name": "SK-46-P-0100-1764-A|E-65-E6-E",
+   "on": true
+  },
+  {
+   "xref": 85,
+   "name": "SK-46-P-0100-1764-A|V-52BB-FE_V1",
+   "on": true
+  },
+  {
+   "xref": 86,
+   "name": "SK-46-P-0100-1764-A|SK-46C-B-EM-E",
+   "on": true
+  },
+  {
+   "xref": 87,
+   "name": "SK-46-P-0100-1764-A|V-52BC-FE_V1",
+   "on": true
+  },
+  {
+   "xref": 88,
+   "name": "SK-46-P-0100-1764-A|VS-52BB-E6-E",
+   "on": true
+  },
+  {
+   "xref": 89,
+   "name": "SK-46-P-0100-1764-A|Inredning",
+   "on": true
+  },
+  {
+   "xref": 90,
+   "name": "V-56B--FE-_VS3x-",
+   "on": true
+  },
+  {
+   "xref": 91,
+   "name": "V-56B--KE-_VS3x--",
+   "on": true
+  },
+  {
+   "xref": 93,
+   "name": "V-56B--JE-_VS3x--",
+   "on": true
+  },
+  {
+   "xref": 105,
+   "name": "_Avgasare",
+   "on": true
+  },
+  {
+   "xref": 106,
+   "name": "A-40-P-0100-1764-A|A-42D--BE-N",
+   "on": true
+  },
+  {
+   "xref": 107,
+   "name": "A-40-P-0100-1764-A|A-27----E-N",
+   "on": true
+  },
+  {
+   "xref": 108,
+   "name": "A-40-P-0100-1764-A|A-27B---E-N",
+   "on": true
+  },
+  {
+   "xref": 109,
+   "name": "A-40-P-0100-1764-A|A-43CB--E-N",
+   "on": true
+  },
+  {
+   "xref": 110,
+   "name": "A-40-P-0100-1764-A|A-------D3-",
+   "on": true
+  },
+  {
+   "xref": 112,
+   "name": "A-40-P-0100-1764-A|A-43CC-CE-N",
+   "on": true
+  },
+  {
+   "xref": 113,
+   "name": "A-40-P-0100-1764-A|A-42D--CE-N",
+   "on": true
+  },
+  {
+   "xref": 114,
+   "name": "A-40-P-0100-1764-A|A-27F---E-N",
+   "on": true
+  },
+  {
+   "xref": 115,
+   "name": "A-40-P-0100-1764-A|A-27D---E-N",
+   "on": true
+  },
+  {
+   "xref": 116,
+   "name": "A-40-P-0100-1764-A|A-42D--M--N",
+   "on": true
+  },
+  {
+   "xref": 117,
+   "name": "A-40-P-0100-1764-A|A-B-B---E-N",
+   "on": true
+  },
+  {
+   "xref": 122,
+   "name": "A-40-P-0100-1764-A|spacedivider",
+   "on": true
+  },
+  {
+   "xref": 123,
+   "name": "A-40-P-0100-1764-A|A-45CA--E-N",
+   "on": true
+  },
+  {
+   "xref": 124,
+   "name": "A-40-P-0100-1764-A|A-46B--BE-N",
+   "on": true
+  },
+  {
+   "xref": 125,
+   "name": "A-40-P-0100-1764-A|A-42D--FE-N",
+   "on": true
+  },
+  {
+   "xref": 126,
+   "name": "A-40-P-0100-1764-A|A-43CC-CT2N",
+   "on": true
+  },
+  {
+   "xref": 128,
+   "name": "A-40-P-0100-1764-A|A--VE---E-N",
+   "on": true
+  },
+  {
+   "xref": 129,
+   "name": "A-40-P-0100-1764-A|A-45BY--E-N",
+   "on": true
+  },
+  {
+   "xref": 130,
+   "name": "A-40-P-0100-1764-A|A-27F---EMN",
+   "on": true
+  },
+  {
+   "xref": 131,
+   "name": "A-40-P-0100-1764-A|A-------AA-",
+   "on": true
+  },
+  {
+   "xref": 132,
+   "name": "A-40-P-0100-1764-A|A-------G2-",
+   "on": true
+  },
+  {
+   "xref": 141,
+   "name": "A-40-P-0100-1764-A|A-5-----E-N",
+   "on": true
+  },
+  {
+   "xref": 142,
+   "name": "A-40-P-0100-1764-A|A-45C---E-N",
+   "on": true
+  },
+  {
+   "xref": 143,
+   "name": "A-40-P-0100-1764-A|A-27G---E-N",
+   "on": true
+  },
+  {
+   "xref": 144,
+   "name": "A-40-P-0100-1764-A|A-B-B-----N",
+   "on": true
+  },
+  {
+   "xref": 146,
+   "name": "V-0-----E-_",
+   "on": true
+  },
+  {
+   "xref": 149,
+   "name": "V-A-NTA-T2E",
+   "on": true
+  },
+  {
+   "xref": 150,
+   "name": "V-53BBB-T-_Sxx",
+   "on": true
+  },
+  {
+   "xref": 151,
+   "name": "V-5-----EB_",
+   "on": true
+  },
+  {
+   "xref": 152,
+   "name": "V-56B---T-_VS3x-",
+   "on": true
+  },
+  {
+   "xref": 153,
+   "name": "V-5-----T-_--",
+   "on": true
+  },
+  {
+   "xref": 154,
+   "name": "V-52B---T-_Vxx-",
+   "on": true
+  },
+  {
+   "xref": 155,
+   "name": "V-53BB--T-_SFxx",
+   "on": true
+  },
+  {
+   "xref": 156,
+   "name": "Slips - Skola|V-5-----V-_",
+   "on": true
+  },
+  {
+   "xref": 157,
+   "name": "Slips - Skola|V-5-----T-_-",
+   "on": true
+  },
+  {
+   "xref": 158,
+   "name": "Slips - Skola|V-5-----T-_--",
+   "on": true
+  },
+  {
+   "xref": 159,
+   "name": "P-------F1-",
+   "on": true
+  },
+  {
+   "xref": 160,
+   "name": "P-------O4N",
+   "on": true
+  },
+  {
+   "xref": 161,
+   "name": "A-------G1-",
+   "on": true
+  },
+  {
+   "xref": 162,
+   "name": "0",
+   "on": true
+  },
+  {
+   "xref": 163,
+   "name": "P-------F2-",
+   "on": true
+  },
+  {
+   "xref": 169,
+   "name": "P-------O1-",
+   "on": true
+  },
+  {
+   "xref": 176,
+   "name": "P-------O2N",
+   "on": true
+  },
+  {
+   "xref": 178,
+   "name": "orienteringsfig|A-27G---E-N",
+   "on": true
+  },
+  {
+   "xref": 179,
+   "name": "orienteringsfig|A-------N-N",
+   "on": true
+  },
+  {
+   "xref": 180,
+   "name": "orienteringsfig|P-------O4N",
+   "on": true
+  }
+ ],
+ "pages": [
+  {
+   "page": 0,
+   "width": 2384.0,
+   "height": 1684.0,
+   "rotation": 0,
+   "mediabox": [
+    0.0,
+    0.0,
+    2384.0,
+    1684.0
+   ],
+   "cropbox": [
+    0.0,
+    0.0,
+    2384.0,
+    1684.0
+   ],
+   "n_paths": 13099,
+   "n_segments": 48081,
+   "n_curve_items": 652,
+   "n_text_spans": 250,
+   "n_text_chars": 2785,
+   "n_images": 0,
+   "n_annotations": 23,
+   "n_xobjects": 0,
+   "xobjects": [],
+   "fonts": [
+    {
+     "xref": 78,
+     "ext": "ttf",
+     "type": "Type0",
+     "basefont": "ISOCPEUR",
+     "name": "F1",
+     "encoding": "Identity-H"
+    },
+    {
+     "xref": 175,
+     "ext": "ttf",
+     "type": "Type0",
+     "basefont": "ArialMT",
+     "name": "F2",
+     "encoding": "Identity-H"
+    }
+   ],
+   "annotations": [
+    {
+     "type": "Square",
+     "rect": [
+      1057.0,
+      826.0,
+      1137.0,
+      845.0
+     ],
+     "content": "FG +19.82"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1060.0,
+      178.0,
+      1114.0,
+      208.0
+     ],
+     "content": "EI60"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1545.0,
+      1290.0,
+      1599.0,
+      1319.0
+     ],
+     "content": "EI60"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      957.0,
+      355.0,
+      1036.0,
+      375.0
+     ],
+     "content": "FG +19.82"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1306.0,
+      1447.0,
+      1386.0,
+      1466.0
+     ],
+     "content": "FG +19.82"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      999.0,
+      202.0,
+      1049.0,
+      224.0
+     ],
+     "content": "USP43A"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      675.0,
+      202.0,
+      688.0,
+      239.0
+     ],
+     "content": "DEL 21"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      655.0,
+      202.0,
+      668.0,
+      239.0
+     ],
+     "content": "DEL 12"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      675.0,
+      1531.0,
+      688.0,
+      1568.0
+     ],
+     "content": "DEL 21"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      655.0,
+      1531.0,
+      668.0,
+      1568.0
+     ],
+     "content": "DEL 12"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1086.0,
+      136.0,
+      1110.0,
+      174.0
+     ],
+     "content": "DEL 22"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1068.0,
+      142.0,
+      1091.0,
+      179.0
+     ],
+     "content": "DEL 21"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1533.0,
+      1420.0,
+      1556.0,
+      1456.0
+     ],
+     "content": "DEL 21"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1551.0,
+      1413.0,
+      1575.0,
+      1451.0
+     ],
+     "content": "DEL 22"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2230.0,
+      1183.0,
+      2265.0,
+      1194.0
+     ],
+     "content": "230601"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2269.0,
+      1183.0,
+      2326.0,
+      1194.0
+     ],
+     "content": "K. PERSSON"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2092.0,
+      1183.0,
+      2127.0,
+      1194.0
+     ],
+     "content": "PM1-W"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2072.0,
+      1183.0,
+      2082.0,
+      1194.0
+     ],
+     "content": "0"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2049.0,
+      1183.0,
+      2060.0,
+      1194.0
+     ],
+     "content": "A"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1997.0,
+      1293.0,
+      2020.0,
+      1431.0
+     ],
+     "content": "Hyllie boulevard"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1764.0,
+      1407.0,
+      1777.0,
+      1426.0
+     ],
+     "content": "B"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1938.0,
+      1429.0,
+      1952.0,
+      1448.0
+     ],
+     "content": "A"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1939.0,
+      1457.0,
+      1954.0,
+      1472.0
+     ],
+     "content": "21"
+    }
+   ],
+   "path_kinds": {
+    "s": 9592,
+    "fs": 3507
+   },
+   "layers": {
+    "0": 2588,
+    "A-------G1-": 492,
+    "A-40-P-0100-1764-A|A-------AA-": 3,
+    "A-40-P-0100-1764-A|A-------D3-": 75,
+    "A-40-P-0100-1764-A|A-------G2-": 784,
+    "A-40-P-0100-1764-A|A--VE---E-N": 2,
+    "A-40-P-0100-1764-A|A-27----E-N": 40,
+    "A-40-P-0100-1764-A|A-27B---E-N": 32,
+    "A-40-P-0100-1764-A|A-27D---E-N": 33,
+    "A-40-P-0100-1764-A|A-27F---E-N": 10,
+    "A-40-P-0100-1764-A|A-27F---EMN": 89,
+    "A-40-P-0100-1764-A|A-27G---E-N": 204,
+    "A-40-P-0100-1764-A|A-42D--BE-N": 161,
+    "A-40-P-0100-1764-A|A-42D--CE-N": 28,
+    "A-40-P-0100-1764-A|A-42D--FE-N": 10,
+    "A-40-P-0100-1764-A|A-42D--M--N": 520,
+    "A-40-P-0100-1764-A|A-43CB--E-N": 24,
+    "A-40-P-0100-1764-A|A-43CC-CE-N": 44,
+    "A-40-P-0100-1764-A|A-43CC-CT2N": 22,
+    "A-40-P-0100-1764-A|A-45BY--E-N": 415,
+    "A-40-P-0100-1764-A|A-45C---E-N": 9,
+    "A-40-P-0100-1764-A|A-45CA--E-N": 1145,
+    "A-40-P-0100-1764-A|A-46B--BE-N": 61,
+    "A-40-P-0100-1764-A|A-5-----E-N": 1,
+    "A-40-P-0100-1764-A|A-B-B-----N": 103,
+    "A-40-P-0100-1764-A|A-B-B---E-N": 26,
+    "A-40-P-0100-1764-A|spacedivider": 1,
+    "P-------F1-": 842,
+    "P-------F2-": 34,
+    "P-------O1-": 616,
+    "P-------O2N": 78,
+    "SK-46-P-0100-1764-A|A-46B--BE-N": 3,
+    "SK-46-P-0100-1764-A|E-65-E6-E": 36,
+    "SK-46-P-0100-1764-A|Inredning": 7,
+    "SK-46-P-0100-1764-A|SK-46C-B-EB-E": 1159,
+    "SK-46-P-0100-1764-A|SK-46C-B-EI-E": 653,
+    "SK-46-P-0100-1764-A|SK-46C-B-EK-E": 521,
+    "SK-46-P-0100-1764-A|SK-46C-B-EM-E": 135,
+    "SK-46-P-0100-1764-A|V-52BB-FE_V1": 32,
+    "SK-46-P-0100-1764-A|V-52BC-FE_V1": 2,
+    "SK-46-P-0100-1764-A|VS-52BB-E6-E": 312,
+    "SK-46-P-0100-1764-A|VS-53BB-5L-E6-E": 99,
+    "Slips - Skola|V-5-----T-_-": 1,
+    "Slips - Skola|V-5-----T-_--": 14,
+    "Slips - Skola|V-5-----V-_": 16,
+    "V-0-----E-_": 2,
+    "V-5-----EB_": 4,
+    "V-5-----T-_--": 21,
+    "V-52B---T-_Vxx-": 39,
+    "V-52B--FE-_Vxx-KV": 142,
+    "V-52B--FE-_Vxx-VV": 138,
+    "V-52B--FE-_Vxx-VVCXX": 130,
+    "V-53BB--T-_SFxx": 2,
+    "V-53BBB-T-_Sxx": 16,
+    "V-53BBBFE-_Sxx": 90,
+    "V-53BBBFE-_Sxx-": 3,
+    "V-56B---T-_VS2x-": 61,
+    "V-56B---T-_VS3x-": 14,
+    "V-56B--FE-_VPxx-": 260,
+    "V-56B--FE-_VS2x-": 365,
+    "V-56B--FE-_VS3x-": 234,
+    "V-56B--JE-_VS3x--": 9,
+    "V-56B--KE-_VS2x--": 54,
+    "V-56B--KE-_VS3x--": 1,
+    "_Avgasare": 2,
+    "orienteringsfig|A-------N-N": 11,
+    "orienteringsfig|A-27G---E-N": 12,
+    "orienteringsfig|P-------O4N": 7
+   },
+   "stroke_widths": {
+    "0.00": 3779,
+    "0.24": 51,
+    "0.48": 3197,
+    "0.72": 3165,
+    "0.96": 1269,
+    "1.44": 1233,
+    "2.88": 69,
+    "3.96": 336
+   }
+  }
+ ]
+}

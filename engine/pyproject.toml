@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vvs-engine"
+version = "0.1.0"
+description = "Drawing-adaptive automatic VVS pipe takeoff engine for clean vector PDFs"
+requires-python = ">=3.11"
+dependencies = ["pymupdf>=1.24", "shapely>=2.0", "numpy>=1.26", "scipy>=1.11"]
+
+[project.scripts]
+vvs-takeoff = "vvs_engine.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["vvs_engine*"]
+
+[tool.setuptools.package-data]
+vvs_engine = ["text/data/*.jhf", "text/data/NOTICE.txt"]

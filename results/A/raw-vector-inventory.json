@@ -1,0 +1,328 @@
+{
+ "source": "/home/user/vvs5/data/dev/DRAWING_A.pdf",
+ "n_pages": 1,
+ "metadata": {
+  "format": "PDF 1.7",
+  "title": "Mallfil ADT 2013-2017 ADT C4 Teknik",
+  "author": "Per Erlandsson",
+  "creator": "AutoCAD 2023 - English 2023 (24.2s (LMS Tech))",
+  "producer": "pdfplot16.hdi 16.02.053.00000",
+  "creationDate": "D:20240507090548",
+  "modDate": "D:20240507090548"
+ },
+ "ocgs": [
+  {
+   "xref": 1,
+   "name": "HUS A - GRUNDPLAN|K-27F---EI_",
+   "on": true
+  },
+  {
+   "xref": 2,
+   "name": "HUS A - GRUNDPLAN|K-27B---EI_",
+   "on": true
+  },
+  {
+   "xref": 3,
+   "name": "HUS A - GRUNDPLAN|K-15S---EJ_",
+   "on": true
+  },
+  {
+   "xref": 4,
+   "name": "HUS A - GRUNDPLAN|K-42E---EI_",
+   "on": true
+  },
+  {
+   "xref": 5,
+   "name": "HUS A - GRUNDPLAN|K-15S---EI_",
+   "on": true
+  },
+  {
+   "xref": 6,
+   "name": "HUS A - GRUNDPLAN|K-15S---EK_",
+   "on": true
+  },
+  {
+   "xref": 7,
+   "name": "HUS A - GRUNDPLAN|K----------",
+   "on": true
+  },
+  {
+   "xref": 8,
+   "name": "HUS A - GRUNDPLAN|K-------E-_",
+   "on": true
+  },
+  {
+   "xref": 9,
+   "name": "HUS A - GRUNDPLAN|K-------EK_",
+   "on": true
+  },
+  {
+   "xref": 10,
+   "name": "HUS A - GRUNDPLAN|K-------Y2-",
+   "on": true
+  },
+  {
+   "xref": 17,
+   "name": "HUS A - GRUNDPLAN|K-------Y3-",
+   "on": true
+  },
+  {
+   "xref": 18,
+   "name": "268140-W-50-P-A-00|S com",
+   "on": true
+  },
+  {
+   "xref": 19,
+   "name": "268140-W-50-P-A-00|V-52BC-FE--V1-",
+   "on": true
+  },
+  {
+   "xref": 20,
+   "name": "268140-W-50-P-A-00|V-53BB-FE--S3-",
+   "on": true
+  },
+  {
+   "xref": 21,
+   "name": "268140-W-50-P-A-00|V-5--BEE--_V50",
+   "on": true
+  },
+  {
+   "xref": 22,
+   "name": "0",
+   "on": true
+  },
+  {
+   "xref": 23,
+   "name": "268140-W-50-P-A-00|V-53BB-LE--S3--",
+   "on": true
+  },
+  {
+   "xref": 24,
+   "name": "268140-W-50-P-A-00|V-5-----T1_-",
+   "on": true
+  },
+  {
+   "xref": 25,
+   "name": "268140-W-50-P-A-00|V-52BB-FE--V2-",
+   "on": true
+  },
+  {
+   "xref": 26,
+   "name": "268140-W-50-P-A-00|V-53BB--T--S1--",
+   "on": true
+  },
+  {
+   "xref": 27,
+   "name": "268140-W-50-P-A-00|V-53BB-FE--S1-",
+   "on": true
+  },
+  {
+   "xref": 28,
+   "name": "268140-W-50-P-A-00|V-52BB-FE--V1-",
+   "on": true
+  },
+  {
+   "xref": 29,
+   "name": "268140-W-50-P-A-00|V-53BB--T--S3--",
+   "on": true
+  },
+  {
+   "xref": 30,
+   "name": "268140-W-50-P-A-00|V-53BB-LE--S1--",
+   "on": true
+  },
+  {
+   "xref": 31,
+   "name": "268140-W-50-P-A-00|V-52B---T--V2--",
+   "on": true
+  },
+  {
+   "xref": 32,
+   "name": "268140-W-50-P-A-00|V-52B---T--V1--",
+   "on": true
+  },
+  {
+   "xref": 33,
+   "name": "268140-W-50-P-A-00|PM2",
+   "on": true
+  },
+  {
+   "xref": 34,
+   "name": "slipstext|V-5-----T1_",
+   "on": true
+  },
+  {
+   "xref": 35,
+   "name": "268140-W-50-P-A-00|V-52B---S-N",
+   "on": true
+  },
+  {
+   "xref": 36,
+   "name": "268140-W-50-P-A-00|K-27F---EI_",
+   "on": true
+  },
+  {
+   "xref": 37,
+   "name": "268140-W-50-P-A-00|K-------EDN",
+   "on": true
+  },
+  {
+   "xref": 38,
+   "name": "268140-W-50-P-A-00|K-------EKN",
+   "on": true
+  },
+  {
+   "xref": 39,
+   "name": "268140-W-50-P-A-00|K-------D--",
+   "on": true
+  },
+  {
+   "xref": 40,
+   "name": "268140-W-50-P-A-00|K-------J1-",
+   "on": true
+  },
+  {
+   "xref": 41,
+   "name": "268140-W-50-P-A-00|V-56----S-N",
+   "on": true
+  },
+  {
+   "xref": 42,
+   "name": "268140-W-50-P-A-00|V-52B--FE--V1--",
+   "on": true
+  },
+  {
+   "xref": 43,
+   "name": "A-------H-N",
+   "on": true
+  },
+  {
+   "xref": 44,
+   "name": "A-------EXN",
+   "on": true
+  },
+  {
+   "xref": 45,
+   "name": "A-------AA-",
+   "on": true
+  },
+  {
+   "xref": 46,
+   "name": "A-------F-N",
+   "on": true
+  },
+  {
+   "xref": 47,
+   "name": "A131",
+   "on": true
+  },
+  {
+   "xref": 48,
+   "name": "Kristianstad_logo_cmyk vit text$0$Layer 1",
+   "on": true
+  },
+  {
+   "xref": 49,
+   "name": "A-------O4N",
+   "on": true
+  }
+ ],
+ "pages": [
+  {
+   "page": 0,
+   "width": 2384.0,
+   "height": 1684.0,
+   "rotation": 0,
+   "mediabox": [
+    0.0,
+    0.0,
+    2384.0,
+    1684.0
+   ],
+   "cropbox": [
+    0.0,
+    0.0,
+    2384.0,
+    1684.0
+   ],
+   "n_paths": 25225,
+   "n_segments": 122002,
+   "n_curve_items": 7649,
+   "n_text_spans": 17,
+   "n_text_chars": 72,
+   "n_images": 0,
+   "n_annotations": 0,
+   "n_xobjects": 0,
+   "xobjects": [],
+   "fonts": [
+    {
+     "xref": 16,
+     "ext": "ttf",
+     "type": "Type0",
+     "basefont": "ISOCPEUR",
+     "name": "F1",
+     "encoding": "Identity-H"
+    }
+   ],
+   "annotations": [],
+   "path_kinds": {
+    "s": 18459,
+    "fs": 6766
+   },
+   "layers": {
+    "0": 4229,
+    "268140-W-50-P-A-00|K-------D--": 2,
+    "268140-W-50-P-A-00|K-------EDN": 91,
+    "268140-W-50-P-A-00|K-------EKN": 30,
+    "268140-W-50-P-A-00|K-------J1-": 1,
+    "268140-W-50-P-A-00|K-27F---EI_": 4,
+    "268140-W-50-P-A-00|PM2": 86,
+    "268140-W-50-P-A-00|S com": 22,
+    "268140-W-50-P-A-00|V-5-----T1_-": 2878,
+    "268140-W-50-P-A-00|V-5--BEE--_V50": 194,
+    "268140-W-50-P-A-00|V-52B---S-N": 37,
+    "268140-W-50-P-A-00|V-52B---T--V1--": 147,
+    "268140-W-50-P-A-00|V-52B---T--V2--": 98,
+    "268140-W-50-P-A-00|V-52B--FE--V1--": 3,
+    "268140-W-50-P-A-00|V-52BB-FE--V1-": 64,
+    "268140-W-50-P-A-00|V-52BB-FE--V2-": 115,
+    "268140-W-50-P-A-00|V-52BC-FE--V1-": 121,
+    "268140-W-50-P-A-00|V-53BB--T--S1--": 471,
+    "268140-W-50-P-A-00|V-53BB--T--S3--": 4578,
+    "268140-W-50-P-A-00|V-53BB-FE--S1-": 94,
+    "268140-W-50-P-A-00|V-53BB-FE--S3-": 677,
+    "268140-W-50-P-A-00|V-53BB-LE--S1--": 22,
+    "268140-W-50-P-A-00|V-53BB-LE--S3--": 75,
+    "268140-W-50-P-A-00|V-56----S-N": 18,
+    "A-------AA-": 651,
+    "A-------EXN": 212,
+    "A-------F-N": 25,
+    "A-------H-N": 408,
+    "A-------O4N": 42,
+    "A131": 171,
+    "HUS A - GRUNDPLAN|K----------": 1,
+    "HUS A - GRUNDPLAN|K-------E-_": 57,
+    "HUS A - GRUNDPLAN|K-------EK_": 93,
+    "HUS A - GRUNDPLAN|K-------Y2-": 9,
+    "HUS A - GRUNDPLAN|K-------Y3-": 1447,
+    "HUS A - GRUNDPLAN|K-15S---EI_": 71,
+    "HUS A - GRUNDPLAN|K-15S---EJ_": 2,
+    "HUS A - GRUNDPLAN|K-15S---EK_": 701,
+    "HUS A - GRUNDPLAN|K-27B---EI_": 28,
+    "HUS A - GRUNDPLAN|K-27F---EI_": 1,
+    "HUS A - GRUNDPLAN|K-42E---EI_": 2,
+    "Kristianstad_logo_cmyk vit text$0$Layer 1": 7020,
+    "slipstext|V-5-----T1_": 227
+   },
+   "stroke_widths": {
+    "0.00": 7040,
+    "0.36": 1447,
+    "0.48": 1373,
+    "0.72": 13746,
+    "0.96": 517,
+    "1.44": 517,
+    "2.04": 585
+   }
+  }
+ ]
+}

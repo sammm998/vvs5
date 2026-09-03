@@ -1,0 +1,459 @@
+{
+ "scale": {
+  "meters_per_pdf_point": 0.017806264709948293,
+  "scope": "page",
+  "state": "VERIFIED",
+  "reason": "scale_text_and_scale_bar_agree",
+  "evidence": [
+   {
+    "kind": "scale_text",
+    "text": "SKALA 1:50 (A1) 0",
+    "bbox": [
+     937.7,
+     1643.1,
+     1054.8,
+     1658.5
+    ],
+    "meters_per_pt": 0.017638888888888885,
+    "detail": {
+     "ratio": 50,
+     "qualifier": [
+      "(A1)"
+     ]
+    }
+   },
+   {
+    "kind": "scale_bar",
+    "text": "0 1 2 3 4 5",
+    "bbox": [
+     1047.8,
+     1643.1,
+     1335.6,
+     1658.5
+    ],
+    "meters_per_pt": 0.017806264709948293,
+    "detail": {
+     "labels": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "span_pt": 280.8,
+     "unit": "m",
+     "implied_ratio": 50.5,
+     "n_labels": 6
+    }
+   }
+  ]
+ },
+ "rows": [
+  {
+   "designation": "KV01-X32",
+   "base": "KV01-X32",
+   "dn": 25,
+   "system": "KV01",
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 0.379,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.379,
+   "horizontal_pdf_units": 21.267,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_5b4e08e369b9",
+    "pp_c4355e762320"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "KV01-X7-20-W40",
+   "base": "KV01-X7-W40",
+   "dn": 20,
+   "system": "KV01",
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 0.866,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.866,
+   "horizontal_pdf_units": 48.615,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_144a23162cfa",
+    "pp_a75c759f0049"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "KV01-X7-25-W40",
+   "base": "KV01-X7-W40",
+   "dn": 25,
+   "system": "KV01",
+   "physical_pipe_count": 3,
+   "confirmed_horizontal_m": 5.477,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 5.477,
+   "horizontal_pdf_units": 307.561,
+   "ambiguous_m": 0.572,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_375b63db796a",
+    "pp_4a6cd000d02a",
+    "pp_7b497279b7ff"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "KV01-X7-32-W40",
+   "base": "KV01-X7-W40",
+   "dn": 32,
+   "system": "KV01",
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 0.764,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.764,
+   "horizontal_pdf_units": 42.881,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_1b7cdec519e9",
+    "pp_6dfb171445eb"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "KV01-X7-40-W40",
+   "base": "KV01-X7-W40",
+   "dn": 40,
+   "system": "KV01",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 17.373,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 17.373,
+   "horizontal_pdf_units": 975.675,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_40a324d0a4f1"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "KV02-X32",
+   "base": "KV02-X32",
+   "dn": 25,
+   "system": "KV02",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 0.15,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.15,
+   "horizontal_pdf_units": 8.426,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_fd3dae747f34"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "S01-P5-160",
+   "base": "S01-P5",
+   "dn": 160,
+   "system": "S01",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 10.362,
+   "confirmed_vertical_m": 0.1,
+   "confirmed_total_m": 10.462,
+   "horizontal_pdf_units": 581.919,
+   "ambiguous_m": 0.0,
+   "vertical_known": true,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_ed454d5e3f0d"
+   ],
+   "vertical_m": 0.1
+  },
+  {
+   "designation": "S01-P5",
+   "base": "S01-P5",
+   "dn": 75,
+   "system": "S01",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 0.147,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.147,
+   "horizontal_pdf_units": 8.265,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_0b2e13f3ed81"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "SF01-P5-110",
+   "base": "SF01-P5",
+   "dn": 110,
+   "system": "SF01",
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 0.915,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.915,
+   "horizontal_pdf_units": 51.406,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_5d3306c2feea",
+    "pp_61a38c65bfed"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "SF01-P5-160",
+   "base": "SF01-P5",
+   "dn": 160,
+   "system": "SF01",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 0.382,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.382,
+   "horizontal_pdf_units": 21.466,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_2f382201063d"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "SF01-P5",
+   "base": "SF01-P5",
+   "dn": 75,
+   "system": "SF01",
+   "physical_pipe_count": 7,
+   "confirmed_horizontal_m": 4.244,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 4.244,
+   "horizontal_pdf_units": 238.341,
+   "ambiguous_m": 2.75,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_0576df2e9e47",
+    "pp_4ffcf81281a3",
+    "pp_598af2802ada",
+    "pp_77f7a246d2b6",
+    "pp_b099a301d659",
+    "pp_e5bf73908585",
+    "pp_f3445ac709aa"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VP01-S2-65-F80",
+   "base": "VP01-S2-F80",
+   "dn": 65,
+   "system": "VP01",
+   "physical_pipe_count": 4,
+   "confirmed_horizontal_m": 35.087,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 35.087,
+   "horizontal_pdf_units": 1970.503,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_30ebfd1658de",
+    "pp_6f504f6428bf",
+    "pp_8aefb93b5ec9",
+    "pp_c629a2fa7138"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VS21-S13-15-F50",
+   "base": "VS21-S13-F50",
+   "dn": 15,
+   "system": "VS21",
+   "physical_pipe_count": 5,
+   "confirmed_horizontal_m": 10.149,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 10.149,
+   "horizontal_pdf_units": 569.955,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_7b8ce6e45e54",
+    "pp_a33d589d62c8",
+    "pp_a9ad1f573f37",
+    "pp_bf0f89e05e47",
+    "pp_e399cf7f8e4e"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VS21-S13",
+   "base": "VS21-S13",
+   "dn": 15,
+   "system": "VS21",
+   "physical_pipe_count": 13,
+   "confirmed_horizontal_m": 9.128,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 9.128,
+   "horizontal_pdf_units": 512.61,
+   "ambiguous_m": 1.822,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_1b2b5ee23611",
+    "pp_4be9f84e2708",
+    "pp_4da8d642e497",
+    "pp_65eee71bdbd4",
+    "pp_66db0397a23c",
+    "pp_7445fd214c62",
+    "pp_9f4ee06cd7e9",
+    "pp_b09bb01fcd38",
+    "pp_ccbe55463c56",
+    "pp_d642e2253223",
+    "pp_e2fd773f0bba",
+    "pp_eee003e06585",
+    "pp_fff248aec9c8"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VS31-S13-28-F60",
+   "base": "VS31-S13-F60",
+   "dn": 28,
+   "system": "VS31",
+   "physical_pipe_count": 4,
+   "confirmed_horizontal_m": 36.737,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 36.737,
+   "horizontal_pdf_units": 2063.123,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_83bb4a54e22d",
+    "pp_9e9a824b1e5c",
+    "pp_be97a84d8663",
+    "pp_f593f29545b1"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VS31-X32",
+   "base": "VS31-X32",
+   "dn": null,
+   "system": "VS31",
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 0.624,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.624,
+   "horizontal_pdf_units": 35.049,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_5a6adbfdfa10",
+    "pp_ede2d9ffa586"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VV01-X32",
+   "base": "VV01-X32",
+   "dn": 25,
+   "system": "VV01",
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 0.326,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.326,
+   "horizontal_pdf_units": 18.327,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_03885308620e",
+    "pp_5f187bb62c33"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VV01-X7-25-F60",
+   "base": "VV01-X7-F60",
+   "dn": 25,
+   "system": "VV01",
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 1.014,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 1.014,
+   "horizontal_pdf_units": 56.942,
+   "ambiguous_m": 0.737,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_2b674b459b29",
+    "pp_a8a3be21e15d"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VV01-X7-32-F60",
+   "base": "VV01-X7-F60",
+   "dn": 32,
+   "system": "VV01",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 0.414,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 0.414,
+   "horizontal_pdf_units": 23.238,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_58d20feb0cc0"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VVC01-X7-20",
+   "base": "VVC01-X7",
+   "dn": 20,
+   "system": "VVC01",
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 2.545,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 2.545,
+   "horizontal_pdf_units": 142.928,
+   "ambiguous_m": 0.216,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_32a524223a9d",
+    "pp_4ac536bd0345"
+   ],
+   "vertical_m": "UNKNOWN"
+  }
+ ],
+ "totals": {
+  "physical_pipes": 58,
+  "confirmed_horizontal_m": 137.083,
+  "confirmed_vertical_m": 0.1,
+  "confirmed_total_m": 137.183,
+  "ambiguous_m": 6.097
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "families": [
+  {
+   "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44",
+   "layer": "268140-W-50-P-A-00|V-52BB-FE--V2-",
+   "style": "w1.44",
+   "width": 1.4399999380111694,
+   "n_primitives": 210,
+   "total_length_pt": 1574.6,
+   "gap_mode_pt": 4.25,
+   "dash_mode_pt": 17.0,
+   "n_chains": 5,
+   "longest_chain_pt": 368.0,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~17.0pt gap~4.25pt, width 1.44"
+  },
+  {
+   "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44",
+   "layer": "268140-W-50-P-A-00|V-52BC-FE--V1-",
+   "style": "w1.44",
+   "width": 1.4399999380111694,
+   "n_primitives": 216,
+   "total_length_pt": 1629.7,
+   "gap_mode_pt": 4.25,
+   "dash_mode_pt": 17.0,
+   "n_chains": 5,
+   "longest_chain_pt": 389.3,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~17.0pt gap~4.25pt, width 1.44"
+  },
+  {
+   "family": "268140-W-50-P-A-00|V-53BB-FE--S1-|s|w2.04",
+   "layer": "268140-W-50-P-A-00|V-53BB-FE--S1-",
+   "style": "w2.04",
+   "width": 2.0399999618530273,
+   "n_primitives": 105,
+   "total_length_pt": 1033.0,
+   "gap_mode_pt": 4.25,
+   "dash_mode_pt": 17.0,
+   "n_chains": 17,
+   "longest_chain_pt": 308.1,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~17.0pt gap~4.25pt, width 2.04"
+  },
+  {
+   "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04",
+   "layer": "268140-W-50-P-A-00|V-53BB-FE--S3-",
+   "style": "w2.04",
+   "width": 2.0399999618530273,
+   "n_primitives": 622,
+   "total_length_pt": 5595.0,
+   "gap_mode_pt": 4.25,
+   "dash_mode_pt": 17.0,
+   "n_chains": 95,
+   "longest_chain_pt": 784.4,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~17.0pt gap~4.25pt, width 2.04"
+  },
+  {
+   "family": "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44",
+   "layer": "268140-W-50-P-A-00|V-52BB-FE--V1-",
+   "style": "w1.44",
+   "width": 1.4399999380111694,
+   "n_primitives": 74,
+   "total_length_pt": 950.1,
+   "gap_mode_pt": 4.25,
+   "dash_mode_pt": 17.0,
+   "n_chains": 2,
+   "longest_chain_pt": 475.2,
+   "kind": "fragmented-dashed",
+   "description": "dashed/fragmented line, dash~17.0pt gap~4.25pt, width 1.44"
+  }
+ ]
+}

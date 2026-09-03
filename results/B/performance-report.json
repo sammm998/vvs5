@@ -1,0 +1,22 @@
+{
+ "pdf_extraction_ms": 1588,
+ "drawing_profile_ms": 156,
+ "glyph_text_reconstruction_ms": 13109,
+ "designation_dn_ms": 394,
+ "leader_discovery_and_pipe_attachment_ms": 5625,
+ "topology_ms": 0,
+ "physical_pipe_reconstruction_ms": 41,
+ "measurement_ms": 77,
+ "overlays_ms": 1775,
+ "artifacts_ms": 0,
+ "total_seconds": 83.31,
+ "counts": {
+  "raw_vector_objects": 24050,
+  "raw_segments": 88706,
+  "glyphs": 4054,
+  "glyph_families": 1587,
+  "pipe_primitives": 5132,
+  "graph_nodes": 6017,
+  "graph_edges": 5132
+ }
+}
