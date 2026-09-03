@@ -360,7 +360,7 @@
      "4",
      "T1"
     ],
-    "role": "UNKNOWN"
+    "role": "CONNECTOR"
    },
    {
     "layer": "A-42D--BE-N",
@@ -904,7 +904,7 @@
     "tokens": [
      "Banmarkeringar"
     ],
-    "role": "UNKNOWN"
+    "role": "CONNECTOR"
    },
    {
     "layer": "Banmarkeringar ifyllnad",
@@ -2536,7 +2536,7 @@
     "occurrences": 5
    }
   ],
-  "marks": 519,
+  "marks": 1743,
   "rejected_rows": 509
  },
  "annotation_structure": {
@@ -2810,27 +2810,19 @@
   "leader_families": [
    {
     "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
-    "occurrences": 67,
-    "processed": 67,
+    "occurrences": 48,
+    "processed": 48,
     "confirmed": 0,
     "ambiguous": 0,
-    "unsupported": 67
-   },
-   {
-    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
-    "occurrences": 44,
-    "processed": 44,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 44
+    "unsupported": 48
    },
    {
     "family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
-    "occurrences": 36,
-    "processed": 36,
+    "occurrences": 48,
+    "processed": 48,
     "confirmed": 0,
     "ambiguous": 0,
-    "unsupported": 36
+    "unsupported": 48
    },
    {
     "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.00",
@@ -2841,23 +2833,23 @@
     "unsupported": 36
    },
    {
-    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
-    "occurrences": 34,
-    "processed": 34,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 34
-   },
-   {
-    "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
-    "occurrences": 26,
-    "processed": 26,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 26
-   },
-   {
     "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 31,
+    "processed": 31,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 31
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 25,
+    "processed": 25,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 25
+   },
+   {
+    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
     "occurrences": 24,
     "processed": 24,
     "confirmed": 0,
@@ -2865,20 +2857,44 @@
     "unsupported": 24
    },
    {
-    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
-    "occurrences": 20,
-    "processed": 20,
+    "family": "multi-bend|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 18,
+    "processed": 18,
     "confirmed": 0,
     "ambiguous": 0,
-    "unsupported": 20
+    "unsupported": 18
    },
    {
-    "family": "straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
-    "occurrences": 16,
-    "processed": 16,
+    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 18,
+    "processed": 18,
     "confirmed": 0,
     "ambiguous": 0,
-    "unsupported": 16
+    "unsupported": 18
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 17,
+    "processed": 17,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 17
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+    "occurrences": 14,
+    "processed": 14,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 14
+   },
+   {
+    "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 14,
+    "processed": 14,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 14
    },
    {
     "family": "straight|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
@@ -2889,28 +2905,28 @@
     "unsupported": 13
    },
    {
-    "family": "multi-bend|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
-    "occurrences": 10,
-    "processed": 10,
+    "family": "straight|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+    "occurrences": 12,
+    "processed": 12,
     "confirmed": 0,
     "ambiguous": 0,
-    "unsupported": 10
+    "unsupported": 12
    },
    {
-    "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+    "family": "multi-bend|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
+    "occurrences": 11,
+    "processed": 11,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 11
+   },
+   {
+    "family": "straight|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
     "occurrences": 9,
     "processed": 9,
     "confirmed": 0,
     "ambiguous": 0,
     "unsupported": 9
-   },
-   {
-    "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
-    "occurrences": 8,
-    "processed": 8,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 8
    },
    {
     "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
@@ -2922,38 +2938,6 @@
    },
    {
     "family": "multi-bend|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
-    "occurrences": 8,
-    "processed": 8,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 8
-   },
-   {
-    "family": "multi-bend|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
-    "occurrences": 8,
-    "processed": 8,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 8
-   },
-   {
-    "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
-    "occurrences": 8,
-    "processed": 8,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 8
-   },
-   {
-    "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
-    "occurrences": 8,
-    "processed": 8,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 8
-   },
-   {
-    "family": "multi-bend|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
     "occurrences": 7,
     "processed": 7,
     "confirmed": 0,
@@ -2961,15 +2945,7 @@
     "unsupported": 7
    },
    {
-    "family": "multi-bend|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
-    "occurrences": 7,
-    "processed": 7,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 7
-   },
-   {
-    "family": "straight|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
+    "family": "multi-bend|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
     "occurrences": 7,
     "processed": 7,
     "confirmed": 0,
@@ -2985,7 +2961,7 @@
     "unsupported": 7
    },
    {
-    "family": "multi-bend|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+    "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
     "occurrences": 6,
     "processed": 6,
     "confirmed": 0,
@@ -2993,7 +2969,23 @@
     "unsupported": 6
    },
    {
-    "family": "multi-bend|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
+    "family": "multi-bend|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 6,
+    "processed": 6,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 6
+   },
+   {
+    "family": "multi-bend|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 6,
+    "processed": 6,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 6
+   },
+   {
+    "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
     "occurrences": 6,
     "processed": 6,
     "confirmed": 0,
@@ -3009,7 +3001,15 @@
     "unsupported": 6
    },
    {
-    "family": "bent|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
+    "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 6,
+    "processed": 6,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 6
+   },
+   {
+    "family": "bent|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
     "occurrences": 5,
     "processed": 5,
     "confirmed": 0,
@@ -3017,7 +3017,23 @@
     "unsupported": 5
    },
    {
-    "family": "multi-bend|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
+    "family": "bent|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
+    "occurrences": 5,
+    "processed": 5,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 5
+   },
+   {
+    "family": "multi-bend|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 5,
+    "processed": 5,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 5
+   },
+   {
+    "family": "multi-bend|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
     "occurrences": 5,
     "processed": 5,
     "confirmed": 0,
@@ -3033,23 +3049,23 @@
     "unsupported": 5
    },
    {
+    "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.72",
+    "occurrences": 5,
+    "processed": 5,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 5
+   },
+   {
+    "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 5,
+    "processed": 5,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 5
+   },
+   {
     "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
-    "occurrences": 4,
-    "processed": 4,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 4
-   },
-   {
-    "family": "bent|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
-    "occurrences": 4,
-    "processed": 4,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 4
-   },
-   {
-    "family": "bent|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
     "occurrences": 4,
     "processed": 4,
     "confirmed": 0,
@@ -3065,7 +3081,7 @@
     "unsupported": 4
    },
    {
-    "family": "bent|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
+    "family": "multi-bend|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
     "occurrences": 4,
     "processed": 4,
     "confirmed": 0,
@@ -3073,60 +3089,12 @@
     "unsupported": 4
    },
    {
-    "family": "multi-bend|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
+    "family": "multi-bend|horizontal|bbox_corner|end-tick|crossing-ticks|w0.36",
     "occurrences": 4,
     "processed": 4,
     "confirmed": 0,
     "ambiguous": 0,
     "unsupported": 4
-   },
-   {
-    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.72",
-    "occurrences": 4,
-    "processed": 4,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 4
-   },
-   {
-    "family": "multi-bend|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
-    "occurrences": 4,
-    "processed": 4,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 4
-   },
-   {
-    "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
-    "occurrences": 4,
-    "processed": 4,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 4
-   },
-   {
-    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
-    "occurrences": 4,
-    "processed": 4,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 4
-   },
-   {
-    "family": "straight|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
-    "occurrences": 4,
-    "processed": 4,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 4
-   },
-   {
-    "family": "bent|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
-    "occurrences": 3,
-    "processed": 3,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 3
    },
    {
     "family": "bent|diagonal|box_corner|end-tick|no-crossing-ticks|w0.00",
@@ -3137,7 +3105,23 @@
     "unsupported": 3
    },
    {
-    "family": "bent|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
+    "family": "bent|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "bent|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "bent|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
     "occurrences": 3,
     "processed": 3,
     "confirmed": 0,
@@ -3161,7 +3145,7 @@
     "unsupported": 3
    },
    {
-    "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
+    "family": "multi-bend|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
     "occurrences": 3,
     "processed": 3,
     "confirmed": 0,
@@ -3169,7 +3153,31 @@
     "unsupported": 3
    },
    {
-    "family": "multi-bend|horizontal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "split-path|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "straight|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
     "occurrences": 3,
     "processed": 3,
     "confirmed": 0,
@@ -3185,6 +3193,14 @@
     "unsupported": 3
    },
    {
+    "family": "bent|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
     "family": "bent|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.00",
     "occurrences": 2,
     "processed": 2,
@@ -3193,31 +3209,7 @@
     "unsupported": 2
    },
    {
-    "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
-    "occurrences": 2,
-    "processed": 2,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 2
-   },
-   {
-    "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
-    "occurrences": 2,
-    "processed": 2,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 2
-   },
-   {
-    "family": "bent|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
-    "occurrences": 2,
-    "processed": 2,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 2
-   },
-   {
-    "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
+    "family": "bent|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3226,6 +3218,14 @@
    },
    {
     "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.60",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "bent|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3249,7 +3249,7 @@
     "unsupported": 2
    },
    {
-    "family": "multi-bend|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
+    "family": "multi-bend|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.72",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3281,14 +3281,6 @@
     "unsupported": 2
    },
    {
-    "family": "split-path|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
-    "occurrences": 2,
-    "processed": 2,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 2
-   },
-   {
     "family": "split-path|vertical|underline_touch|plain-end|no-crossing-ticks|w0.72",
     "occurrences": 2,
     "processed": 2,
@@ -3297,7 +3289,7 @@
     "unsupported": 2
    },
    {
-    "family": "straight|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3313,7 +3305,7 @@
     "unsupported": 2
    },
    {
-    "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.72",
+    "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.00",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3321,7 +3313,7 @@
     "unsupported": 2
    },
    {
-    "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.00",
+    "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3337,14 +3329,6 @@
     "unsupported": 2
    },
    {
-    "family": "bent|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
-    "occurrences": 1,
-    "processed": 1,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 1
-   },
-   {
     "family": "bent|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
     "occurrences": 1,
     "processed": 1,
@@ -3353,7 +3337,23 @@
     "unsupported": 1
    },
    {
+    "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
     "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3409,6 +3409,14 @@
     "unsupported": 1
    },
    {
+    "family": "multi-bend|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.72",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
     "family": "multi-bend|diagonal|underline_end|plain-end|crossing-ticks|w0.24",
     "occurrences": 1,
     "processed": 1,
@@ -3425,15 +3433,7 @@
     "unsupported": 1
    },
    {
-    "family": "multi-bend|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
-    "occurrences": 1,
-    "processed": 1,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 1
-   },
-   {
-    "family": "multi-bend|horizontal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
+    "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3465,7 +3465,7 @@
     "unsupported": 1
    },
    {
-    "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
+    "family": "split-path|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3473,7 +3473,7 @@
     "unsupported": 1
    },
    {
-    "family": "split-path|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+    "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3489,7 +3489,15 @@
     "unsupported": 1
    },
    {
-    "family": "split-path|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+    "family": "split-path|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.00",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3513,7 +3521,7 @@
     "unsupported": 1
    },
    {
-    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.24",
+    "family": "straight|diagonal|underline_end|end-tick|crossing-ticks|w0.24",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3530,14 +3538,6 @@
    },
    {
     "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.00",
-    "occurrences": 1,
-    "processed": 1,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 1
-   },
-   {
-    "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3571,8 +3571,20 @@
   ],
   "marker_families": [
    {
+    "family": "crossing-tick|A-42D--BE-N|s|w0.36",
+    "occurrences": 584
+   },
+   {
+    "family": "end-tick|A-42D--BE-N|s|w0.36",
+    "occurrences": 109
+   },
+   {
     "family": "end-tick|A-27E---E-|s|w0.36",
-    "occurrences": 71
+    "occurrences": 69
+   },
+   {
+    "family": "end-tick|A-43CB--E-N|s|w0.36",
+    "occurrences": 64
    },
    {
     "family": "end-tick|A-43CB--H-|s|w0.36",
@@ -3580,27 +3592,27 @@
    },
    {
     "family": "crossing-tick|A-B-B---E-|s|w0.00",
-    "occurrences": 45
-   },
-   {
-    "family": "end-tick|A-43CB--E-N|s|w0.36",
-    "occurrences": 26
+    "occurrences": 44
    },
    {
     "family": "end-tick|A-46B--BE-N|s|w0.36",
-    "occurrences": 25
-   },
-   {
-    "family": "crossing-tick|A-27C---E-N|s|w0.36",
-    "occurrences": 21
+    "occurrences": 32
    },
    {
     "family": "crossing-tick|A-43CB--E-N|s|w0.36",
-    "occurrences": 18
+    "occurrences": 21
    },
    {
-    "family": "crossing-tick|A-42D--BE-N|s|w0.36",
-    "occurrences": 17
+    "family": "crossing-tick|A-27C---E-N|s|w0.36",
+    "occurrences": 20
+   },
+   {
+    "family": "end-tick|A-5-----E-N|s|w0.36",
+    "occurrences": 16
+   },
+   {
+    "family": "end-tick|A-5-----E-N|s|w0.72",
+    "occurrences": 12
    },
    {
     "family": "end-tick|A-------G1|s|w0.36",
@@ -3611,19 +3623,27 @@
     "occurrences": 10
    },
    {
-    "family": "end-tick|A-42D--BE-N|s|w0.36",
-    "occurrences": 10
+    "family": "crossing-tick|A-46B--BE-N|s|w0.36",
+    "occurrences": 9
+   },
+   {
+    "family": "end-tick|A-27C---E-N|s|w0.36",
+    "occurrences": 7
    },
    {
     "family": "crossing-tick|A-43CB--H-|s|w0.36",
     "occurrences": 7
    },
    {
-    "family": "end-tick|A-27C---E-N|s|w0.36",
+    "family": "end-tick|Banmarkeringar|s|w0.00",
     "occurrences": 6
    },
    {
-    "family": "crossing-tick|A-46B--BE-N|s|w0.36",
+    "family": "crossing-tick|A-42D--CE-N|s|w0.36",
+    "occurrences": 4
+   },
+   {
+    "family": "end-tick|A-46B--BE-T|s|w0.36",
     "occurrences": 4
    },
    {
@@ -3631,7 +3651,7 @@
     "occurrences": 3
    },
    {
-    "family": "end-tick|A-46B--BE-T|s|w0.36",
+    "family": "end-tick|A-4-----T1|s|w0.36",
     "occurrences": 3
    },
    {
@@ -3644,10 +3664,6 @@
    },
    {
     "family": "crossing-tick|A-46B--BE-N|s|w0.00",
-    "occurrences": 2
-   },
-   {
-    "family": "end-tick|A-5-----E-N|s|w0.72",
     "occurrences": 2
    },
    {
@@ -3675,6 +3691,10 @@
     "occurrences": 1
    },
    {
+    "family": "crossing-tick|A-46B--BE-T|s|w0.36",
+    "occurrences": 1
+   },
+   {
     "family": "crossing-tick|Terrängpunkt|s|w0.12",
     "occurrences": 1
    }
@@ -3690,12 +3710,12 @@
     "A-5-----E-N|s|w0.36": 19.0,
     "A-43CB--E-N|s|w0.36": 16.0,
     "A-27E---E-|s|w0.36": 9.0,
+    "A-46B--BE-T|s|w0.36": 9.0,
     "A-43CB--H-|s|w0.36": 8.0,
     "A-46B--BE-N|s|w0.36": 6.0,
-    "A-46B--BE-N|s|w0.00": 5.0,
+    "A-46B--BE-N|s|w0.00": 6.0,
     "A-43CC-CE-N|s|w0.36": 4.0,
-    "A-27C---E-N|s|w0.36": 2.0,
-    "A-46B--BE-T|s|w0.36": 1.0
+    "A-27C---E-N|s|w0.36": 2.0
    },
    "token_votes": {},
    "candidate_families": [],
@@ -3703,22 +3723,47 @@
     "A-5-----E-N|s|w0.36": 19,
     "A-43CB--E-N|s|w0.36": 15,
     "A-27E---E-|s|w0.36": 9,
+    "A-46B--BE-T|s|w0.36": 9,
     "A-43CB--H-|s|w0.36": 8,
     "A-46B--BE-N|s|w0.36": 6,
-    "A-46B--BE-N|s|w0.00": 5,
-    "A-27C---E-N|s|w0.36": 2,
-    "A-46B--BE-T|s|w0.36": 1
+    "A-46B--BE-N|s|w0.00": 6,
+    "A-27C---E-N|s|w0.36": 2
    }
   },
   "junction_convention": "shared endpoints and endpoint-on-interior T contacts are nodes; crossings are never connections"
  },
  "measurement": {
   "scale": {
-   "meters_per_pdf_point": null,
-   "scope": "none",
-   "state": "NONE",
-   "reason": "no_scale_evidence_found",
-   "evidence": []
+   "meters_per_pdf_point": 0.14116320207436844,
+   "scope": "page",
+   "state": "BAR_ONLY",
+   "reason": "vector_scale_bar_only",
+   "evidence": [
+    {
+     "kind": "scale_bar",
+     "text": "0 5 10 20 30",
+     "bbox": [
+      1741.0,
+      1617.7,
+      1961.0,
+      1626.7
+     ],
+     "meters_per_pt": 0.14116320207436844,
+     "detail": {
+      "labels": [
+       0,
+       5,
+       10,
+       20,
+       30
+      ],
+      "span_pt": 212.52,
+      "unit": "m",
+      "implied_ratio": 400.1,
+      "n_labels": 5
+     }
+    }
+   ]
   },
   "vertical_evidence": {
    "kind": "elevation annotations in label units",

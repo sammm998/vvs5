@@ -537,6 +537,244 @@
    "path": "path_d2b9c94a8ec4"
   },
   {
+   "id": "pp_22260dfc4968",
+   "kind": "PHYSICAL_PIPE",
+   "identity": "VV01-X7-F60|DN40",
+   "designation": "VV01-X7-40-F60",
+   "dn": 40,
+   "length_pt": 294.2,
+   "family": "V-52B--FE-_Vxx-VV|s|w1.44"
+  },
+  {
+   "id": "family:V-52B--FE-_Vxx-VV|s|w1.44",
+   "kind": "DRAWING_FAMILY",
+   "family": "V-52B--FE-_Vxx-VV|s|w1.44"
+  },
+  {
+   "id": "raw:path_0be37ed906c4#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_0be37ed906c4#0"
+  },
+  {
+   "id": "raw:path_0c5b0d982603#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_0c5b0d982603#0"
+  },
+  {
+   "id": "raw:path_11d580b8cba4#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_11d580b8cba4#0"
+  },
+  {
+   "id": "raw:path_2679cefe828f#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2679cefe828f#0"
+  },
+  {
+   "id": "raw:path_32fb6632dfed#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_32fb6632dfed#0"
+  },
+  {
+   "id": "raw:path_4d2d2179b170#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_4d2d2179b170#0"
+  },
+  {
+   "id": "raw:path_56ac9c735f66#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_56ac9c735f66#0"
+  },
+  {
+   "id": "raw:path_5a951eb211de#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_5a951eb211de#0"
+  },
+  {
+   "id": "raw:path_5c4934ef35ac#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_5c4934ef35ac#0"
+  },
+  {
+   "id": "raw:path_5ed3cad62e11#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_5ed3cad62e11#0"
+  },
+  {
+   "id": "raw:path_618bcf9cc372#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_618bcf9cc372#0"
+  },
+  {
+   "id": "raw:path_6226a2bdb280#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_6226a2bdb280#0"
+  },
+  {
+   "id": "raw:path_6e718cc21b4b#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_6e718cc21b4b#0"
+  },
+  {
+   "id": "raw:path_75d77e1fdd41#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_75d77e1fdd41#0"
+  },
+  {
+   "id": "raw:path_a6aeaeb88726#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_a6aeaeb88726#0"
+  },
+  {
+   "id": "raw:path_ad07ca35679e#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_ad07ca35679e#0"
+  },
+  {
+   "id": "raw:path_b7e7210984da#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_b7e7210984da#0"
+  },
+  {
+   "id": "raw:path_ba7978eeb971#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_ba7978eeb971#0"
+  },
+  {
+   "id": "raw:path_bf0ec8d922a4#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_bf0ec8d922a4#0"
+  },
+  {
+   "id": "raw:path_cb677399e2a5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_cb677399e2a5#0"
+  },
+  {
+   "id": "raw:path_cd9fa96fc647#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_cd9fa96fc647#0"
+  },
+  {
+   "id": "raw:path_ceefb4f79f77#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_ceefb4f79f77#0"
+  },
+  {
+   "id": "raw:path_d802b6f31af2#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_d802b6f31af2#0"
+  },
+  {
+   "id": "raw:path_d8877ea1f78a#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_d8877ea1f78a#0"
+  },
+  {
+   "id": "raw:path_e188a5b2f7b0#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e188a5b2f7b0#0"
+  },
+  {
+   "id": "raw:path_e8f0ad0248e1#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e8f0ad0248e1#0"
+  },
+  {
+   "id": "raw:path_e8f0ad0248e1#1",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e8f0ad0248e1#1"
+  },
+  {
+   "id": "raw:path_e8f0ad0248e1#2",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e8f0ad0248e1#2"
+  },
+  {
+   "id": "raw:path_e8f0ad0248e1#3",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e8f0ad0248e1#3"
+  },
+  {
+   "id": "raw:path_e8f0ad0248e1#4",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e8f0ad0248e1#4"
+  },
+  {
+   "id": "raw:path_e91eef3fea61#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e91eef3fea61#0"
+  },
+  {
+   "id": "raw:path_ed5a4d574de6#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_ed5a4d574de6#0"
+  },
+  {
+   "id": "raw:path_eed3ade97df3#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_eed3ade97df3#0"
+  },
+  {
+   "id": "raw:path_f49a38d576e5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_f49a38d576e5#0"
+  },
+  {
+   "id": "raw:path_f9e5cc48359d#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_f9e5cc48359d#0"
+  },
+  {
+   "id": "raw:path_fa97a0e8bf97#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_fa97a0e8bf97#0"
+  },
+  {
+   "id": "raw:path_ff1b210705f5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_ff1b210705f5#0"
+  },
+  {
+   "id": "anc_cda7a453473d",
+   "kind": "PIPE_ATTACHMENT",
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "endpoint": [
+    635.2799682617188,
+    1091.919921875
+   ]
+  },
+  {
+   "id": "des_b9639626a835",
+   "kind": "DESIGNATION",
+   "text": "VV01-X7-40-F60",
+   "dn": 40,
+   "source": "text",
+   "bbox": [
+    557.8800048828125,
+    926.3770751953125,
+    630.8552856445312,
+    937.372314453125
+   ]
+  },
+  {
+   "id": "ldr_d5c1082abe72",
+   "kind": "ACTUAL_LEADER",
+   "family": "split-path|vertical|box_corner|end-tick|crossing-ticks|w0.72",
+   "paths": [
+    "path_cf5c9d5c155f"
+   ],
+   "endpoint": [
+    635.2799682617188,
+    1091.919921875
+   ]
+  },
+  {
+   "id": "raw:path_cf5c9d5c155f",
+   "kind": "RAW_PDF_OBJECT",
+   "path": "path_cf5c9d5c155f"
+  },
+  {
    "id": "pp_35e214f4dc3f",
    "kind": "PHYSICAL_PIPE",
    "identity": "VP01-S2-F80|DN65",
@@ -993,21 +1231,541 @@
    ]
   },
   {
-   "id": "ldr_d5c1082abe72",
-   "kind": "ACTUAL_LEADER",
-   "family": "split-path|vertical|box_corner|end-tick|crossing-ticks|w0.72",
-   "paths": [
-    "path_cf5c9d5c155f"
-   ],
+   "id": "pp_44244d228cce",
+   "kind": "PHYSICAL_PIPE",
+   "identity": "VVC01-X7|DN32",
+   "designation": "VVC01-X7-32",
+   "dn": 32,
+   "length_pt": 434.06,
+   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44"
+  },
+  {
+   "id": "family:V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "kind": "DRAWING_FAMILY",
+   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44"
+  },
+  {
+   "id": "raw:path_097ae191937f#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_097ae191937f#0"
+  },
+  {
+   "id": "raw:path_0ebe5b1a714d#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_0ebe5b1a714d#0"
+  },
+  {
+   "id": "raw:path_12f6411ad7ae#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_12f6411ad7ae#0"
+  },
+  {
+   "id": "raw:path_138a0b5d31e9#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_138a0b5d31e9#0"
+  },
+  {
+   "id": "raw:path_1546526f9f7a#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_1546526f9f7a#0"
+  },
+  {
+   "id": "raw:path_1c9e4f6089a5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_1c9e4f6089a5#0"
+  },
+  {
+   "id": "raw:path_1dde85218651#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_1dde85218651#0"
+  },
+  {
+   "id": "raw:path_1e78ac03a1d4#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_1e78ac03a1d4#0"
+  },
+  {
+   "id": "raw:path_28cbbf1614be#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_28cbbf1614be#0"
+  },
+  {
+   "id": "raw:path_28da43323df8#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_28da43323df8#0"
+  },
+  {
+   "id": "raw:path_2da26238f069#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2da26238f069#0"
+  },
+  {
+   "id": "raw:path_2e72129b4589#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2e72129b4589#0"
+  },
+  {
+   "id": "raw:path_3936be0705ad#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_3936be0705ad#0"
+  },
+  {
+   "id": "raw:path_45a2fa18a3d6#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_45a2fa18a3d6#0"
+  },
+  {
+   "id": "raw:path_4cf1e71259e4#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_4cf1e71259e4#0"
+  },
+  {
+   "id": "raw:path_4d1752921b64#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_4d1752921b64#0"
+  },
+  {
+   "id": "raw:path_4d4808b0a739#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_4d4808b0a739#0"
+  },
+  {
+   "id": "raw:path_4f7ca81de2d6#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_4f7ca81de2d6#0"
+  },
+  {
+   "id": "raw:path_5256a1f5e4ea#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_5256a1f5e4ea#0"
+  },
+  {
+   "id": "raw:path_5d5c59656030#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_5d5c59656030#0"
+  },
+  {
+   "id": "raw:path_5da238a92a46#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_5da238a92a46#0"
+  },
+  {
+   "id": "raw:path_5ead95fa5b66#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_5ead95fa5b66#0"
+  },
+  {
+   "id": "raw:path_63160cb57a23#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_63160cb57a23#0"
+  },
+  {
+   "id": "raw:path_6c5d223640f5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_6c5d223640f5#0"
+  },
+  {
+   "id": "raw:path_6e1d8d5b43a5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_6e1d8d5b43a5#0"
+  },
+  {
+   "id": "raw:path_6e9cc89f2509#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_6e9cc89f2509#0"
+  },
+  {
+   "id": "raw:path_6f657c0ba6bf#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_6f657c0ba6bf#0"
+  },
+  {
+   "id": "raw:path_711e303b5b24#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_711e303b5b24#0"
+  },
+  {
+   "id": "raw:path_77d9eb542012#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_77d9eb542012#0"
+  },
+  {
+   "id": "raw:path_7ebd52a2411b#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_7ebd52a2411b#0"
+  },
+  {
+   "id": "raw:path_82c78b7cdfcd#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_82c78b7cdfcd#0"
+  },
+  {
+   "id": "raw:path_8fd0e1c0d70f#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_8fd0e1c0d70f#0"
+  },
+  {
+   "id": "raw:path_a3d1eef614c4#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_a3d1eef614c4#0"
+  },
+  {
+   "id": "raw:path_ad66d4b596b5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_ad66d4b596b5#0"
+  },
+  {
+   "id": "raw:path_b03f41d65029#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_b03f41d65029#0"
+  },
+  {
+   "id": "raw:path_b263865ddb2d#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_b263865ddb2d#0"
+  },
+  {
+   "id": "raw:path_b8317f43bb94#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_b8317f43bb94#0"
+  },
+  {
+   "id": "raw:path_c4ff7fa131bf#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_c4ff7fa131bf#0"
+  },
+  {
+   "id": "raw:path_c964c9683e7c#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_c964c9683e7c#0"
+  },
+  {
+   "id": "raw:path_cc25e694d5eb#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_cc25e694d5eb#0"
+  },
+  {
+   "id": "raw:path_d8ac2d875bdb#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_d8ac2d875bdb#0"
+  },
+  {
+   "id": "raw:path_e4839eb4cce1#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e4839eb4cce1#0"
+  },
+  {
+   "id": "raw:path_e8ddbe66f6ef#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e8ddbe66f6ef#0"
+  },
+  {
+   "id": "raw:path_e9ed21f4e24f#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e9ed21f4e24f#0"
+  },
+  {
+   "id": "raw:path_f07c8b436827#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_f07c8b436827#0"
+  },
+  {
+   "id": "raw:path_fc4d89873d6e#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_fc4d89873d6e#0"
+  },
+  {
+   "id": "anc_ba792373e631",
+   "kind": "PIPE_ATTACHMENT",
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "endpoint": [
+    1194.0,
+    867.760009765625
+   ]
+  },
+  {
+   "id": "des_a941507c6f3b",
+   "kind": "DESIGNATION",
+   "text": "VVC01-X7-32",
+   "dn": 32,
+   "source": "text",
+   "bbox": [
+    1082.52001953125,
+    718.2970581054688,
+    1139.9044189453125,
+    729.2922973632812
+   ]
+  },
+  {
+   "id": "pp_4db6ae0df7a7",
+   "kind": "PHYSICAL_PIPE",
+   "identity": "VVC01-X7|DN32",
+   "designation": "VVC01-X7-32",
+   "dn": 32,
+   "length_pt": 381.77,
+   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44"
+  },
+  {
+   "id": "raw:path_004be5037566#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_004be5037566#0"
+  },
+  {
+   "id": "raw:path_0b9548a3d8fe#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_0b9548a3d8fe#0"
+  },
+  {
+   "id": "raw:path_101315650a9f#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_101315650a9f#0"
+  },
+  {
+   "id": "raw:path_120974aec67f#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_120974aec67f#0"
+  },
+  {
+   "id": "raw:path_209fcebd12e2#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_209fcebd12e2#0"
+  },
+  {
+   "id": "raw:path_29b1c73af692#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_29b1c73af692#0"
+  },
+  {
+   "id": "raw:path_2e760137bf7f#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2e760137bf7f#0"
+  },
+  {
+   "id": "raw:path_2ea2bf35c76d#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2ea2bf35c76d#0"
+  },
+  {
+   "id": "raw:path_33d82d24b170#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_33d82d24b170#0"
+  },
+  {
+   "id": "raw:path_3462db57a408#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_3462db57a408#0"
+  },
+  {
+   "id": "raw:path_35b2f8954846#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_35b2f8954846#0"
+  },
+  {
+   "id": "raw:path_3d079cbb9002#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_3d079cbb9002#0"
+  },
+  {
+   "id": "raw:path_3da9692eb434#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_3da9692eb434#0"
+  },
+  {
+   "id": "raw:path_56410ba5886d#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_56410ba5886d#0"
+  },
+  {
+   "id": "raw:path_56db6c4b618b#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_56db6c4b618b#0"
+  },
+  {
+   "id": "raw:path_605d90ffdad9#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_605d90ffdad9#0"
+  },
+  {
+   "id": "raw:path_6e5202aaf742#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_6e5202aaf742#0"
+  },
+  {
+   "id": "raw:path_6f78814a4821#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_6f78814a4821#0"
+  },
+  {
+   "id": "raw:path_782baa4448f8#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_782baa4448f8#0"
+  },
+  {
+   "id": "raw:path_7d1c1eb2bedc#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_7d1c1eb2bedc#0"
+  },
+  {
+   "id": "raw:path_9a1b94aae643#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_9a1b94aae643#0"
+  },
+  {
+   "id": "raw:path_9b5815ce69a0#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_9b5815ce69a0#0"
+  },
+  {
+   "id": "raw:path_9b8dedec3919#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_9b8dedec3919#0"
+  },
+  {
+   "id": "raw:path_9d755bbc103c#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_9d755bbc103c#0"
+  },
+  {
+   "id": "raw:path_a0c931453daa#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_a0c931453daa#0"
+  },
+  {
+   "id": "raw:path_a48df85acaed#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_a48df85acaed#0"
+  },
+  {
+   "id": "raw:path_a7118d92aa87#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_a7118d92aa87#0"
+  },
+  {
+   "id": "raw:path_acddcf8893f3#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_acddcf8893f3#0"
+  },
+  {
+   "id": "raw:path_aea5913e5283#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_aea5913e5283#0"
+  },
+  {
+   "id": "raw:path_af144d2e9ba4#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_af144d2e9ba4#0"
+  },
+  {
+   "id": "raw:path_b4f8bf9971e5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_b4f8bf9971e5#0"
+  },
+  {
+   "id": "raw:path_b6eab454cb34#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_b6eab454cb34#0"
+  },
+  {
+   "id": "raw:path_c1b3e39c69d6#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_c1b3e39c69d6#0"
+  },
+  {
+   "id": "raw:path_c481527ec443#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_c481527ec443#0"
+  },
+  {
+   "id": "raw:path_c4e8fbb32b84#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_c4e8fbb32b84#0"
+  },
+  {
+   "id": "raw:path_c778f35ae7d7#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_c778f35ae7d7#0"
+  },
+  {
+   "id": "raw:path_d19db9ed90a3#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_d19db9ed90a3#0"
+  },
+  {
+   "id": "raw:path_e63ab39bfdd6#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e63ab39bfdd6#0"
+  },
+  {
+   "id": "raw:path_e63ab39bfdd6#1",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e63ab39bfdd6#1"
+  },
+  {
+   "id": "raw:path_e63ab39bfdd6#2",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e63ab39bfdd6#2"
+  },
+  {
+   "id": "raw:path_e63ab39bfdd6#3",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e63ab39bfdd6#3"
+  },
+  {
+   "id": "raw:path_e75b40046969#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e75b40046969#0"
+  },
+  {
+   "id": "raw:path_f9eab2bde9cd#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_f9eab2bde9cd#0"
+  },
+  {
+   "id": "raw:path_fa40c3ef4426#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_fa40c3ef4426#0"
+  },
+  {
+   "id": "raw:path_fa40c3ef4426#1",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_fa40c3ef4426#1"
+  },
+  {
+   "id": "raw:path_fa40c3ef4426#2",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_fa40c3ef4426#2"
+  },
+  {
+   "id": "raw:path_fa40c3ef4426#3",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_fa40c3ef4426#3"
+  },
+  {
+   "id": "raw:path_fca72716cb2f#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_fca72716cb2f#0"
+  },
+  {
+   "id": "anc_38a98cb7ca07",
+   "kind": "PIPE_ATTACHMENT",
+   "state": "VERIFIED_PIPE_ATTACHMENT",
    "endpoint": [
     635.2799682617188,
     1091.919921875
    ]
   },
   {
-   "id": "raw:path_cf5c9d5c155f",
-   "kind": "RAW_PDF_OBJECT",
-   "path": "path_cf5c9d5c155f"
+   "id": "des_c4fe012a85bb",
+   "kind": "DESIGNATION",
+   "text": "VVC01-X7-32",
+   "dn": 32,
+   "source": "text",
+   "bbox": [
+    557.8800048828125,
+    937.8970947265625,
+    615.2640991210938,
+    948.892333984375
+   ]
   },
   {
    "id": "pp_58a4159f0de8",
@@ -2443,6 +3201,72 @@
    ]
   },
   {
+   "id": "pp_b0fd5cb3d97b",
+   "kind": "PHYSICAL_PIPE",
+   "identity": "VVC01-X7|DN32",
+   "designation": "VVC01-X7-32",
+   "dn": 32,
+   "length_pt": 68.83,
+   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44"
+  },
+  {
+   "id": "raw:path_09f9d688ee72#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_09f9d688ee72#0"
+  },
+  {
+   "id": "raw:path_151e96bb3288#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_151e96bb3288#0"
+  },
+  {
+   "id": "raw:path_2c307a511321#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2c307a511321#0"
+  },
+  {
+   "id": "raw:path_41df7b338db5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_41df7b338db5#0"
+  },
+  {
+   "id": "raw:path_872b5b2360eb#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_872b5b2360eb#0"
+  },
+  {
+   "id": "raw:path_bd95aec0c451#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_bd95aec0c451#0"
+  },
+  {
+   "id": "raw:path_d6eba1153dc6#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_d6eba1153dc6#0"
+  },
+  {
+   "id": "anc_fd698a6e7250",
+   "kind": "PIPE_ATTACHMENT",
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "endpoint": [
+    1386.9599609375,
+    727.3600463867188
+   ]
+  },
+  {
+   "id": "des_8009c92e7f2d",
+   "kind": "DESIGNATION",
+   "text": "VVC01-X7-32",
+   "dn": 32,
+   "source": "text",
+   "bbox": [
+    1431.5823974609375,
+    825.28076171875,
+    1489.262939453125,
+    855.25927734375
+   ]
+  },
+  {
    "id": "pp_b798582d2d2f",
    "kind": "PHYSICAL_PIPE",
    "identity": "KV01-X7-W40|DN40",
@@ -2918,6 +3742,152 @@
    ]
   },
   {
+   "id": "pp_dd53170f138d",
+   "kind": "PHYSICAL_PIPE",
+   "identity": "VV01-X7-F60|DN40",
+   "designation": "VV01-X7-40-F60",
+   "dn": 40,
+   "length_pt": 220.79,
+   "family": "V-52B--FE-_Vxx-VV|s|w1.44"
+  },
+  {
+   "id": "raw:path_28313b77f5da#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_28313b77f5da#0"
+  },
+  {
+   "id": "raw:path_2a3d41f6e3cc#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2a3d41f6e3cc#0"
+  },
+  {
+   "id": "raw:path_3593d4e1704a#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_3593d4e1704a#0"
+  },
+  {
+   "id": "raw:path_3be1dbed4e3d#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_3be1dbed4e3d#0"
+  },
+  {
+   "id": "raw:path_46ea08e05bde#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_46ea08e05bde#0"
+  },
+  {
+   "id": "raw:path_5506ff5ccfd7#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_5506ff5ccfd7#0"
+  },
+  {
+   "id": "raw:path_5f38c9fbf37b#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_5f38c9fbf37b#0"
+  },
+  {
+   "id": "raw:path_620e640dcd7c#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_620e640dcd7c#0"
+  },
+  {
+   "id": "raw:path_738e58556d52#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_738e58556d52#0"
+  },
+  {
+   "id": "raw:path_76d35bad9d1c#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_76d35bad9d1c#0"
+  },
+  {
+   "id": "raw:path_770fa0254ca1#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_770fa0254ca1#0"
+  },
+  {
+   "id": "raw:path_82a4952f8a5c#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_82a4952f8a5c#0"
+  },
+  {
+   "id": "raw:path_8bac4a8aa636#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_8bac4a8aa636#0"
+  },
+  {
+   "id": "raw:path_929dccd10f8a#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_929dccd10f8a#0"
+  },
+  {
+   "id": "raw:path_92a7d9bd573b#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_92a7d9bd573b#0"
+  },
+  {
+   "id": "raw:path_b90f8a74b7e1#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_b90f8a74b7e1#0"
+  },
+  {
+   "id": "raw:path_d628db3992e5#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_d628db3992e5#0"
+  },
+  {
+   "id": "raw:path_d875b31466c7#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_d875b31466c7#0"
+  },
+  {
+   "id": "raw:path_e02ed3e9ee4e#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e02ed3e9ee4e#0"
+  },
+  {
+   "id": "raw:path_e3af34583256#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e3af34583256#0"
+  },
+  {
+   "id": "raw:path_ea531a91f12f#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_ea531a91f12f#0"
+  },
+  {
+   "id": "raw:path_f82563bda744#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_f82563bda744#0"
+  },
+  {
+   "id": "raw:path_f87070a0ba8c#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_f87070a0ba8c#0"
+  },
+  {
+   "id": "anc_e07ff0e92b99",
+   "kind": "PIPE_ATTACHMENT",
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "endpoint": [
+    1386.9599609375,
+    727.3600463867188
+   ]
+  },
+  {
+   "id": "des_301fb67ee542",
+   "kind": "DESIGNATION",
+   "text": "VV01-X7-40-F60",
+   "dn": 40,
+   "source": "text",
+   "bbox": [
+    1427.627685546875,
+    809.186279296875,
+    1499.9674072265625,
+    844.4598388671875
+   ]
+  },
+  {
    "id": "pp_e3ca00a57d37",
    "kind": "PHYSICAL_PIPE",
    "identity": "VS31-S13-F60|DN28",
@@ -3033,6 +4003,182 @@
    "id": "raw:path_9990f667a313",
    "kind": "RAW_PDF_OBJECT",
    "path": "path_9990f667a313"
+  },
+  {
+   "id": "pp_f4d82ec2e409",
+   "kind": "PHYSICAL_PIPE",
+   "identity": "VV01-X7-F60|DN40",
+   "designation": "VV01-X7-40-F60",
+   "dn": 40,
+   "length_pt": 277.73,
+   "family": "V-52B--FE-_Vxx-VV|s|w1.44"
+  },
+  {
+   "id": "raw:path_0a5245fb233a#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_0a5245fb233a#0"
+  },
+  {
+   "id": "raw:path_11c10b84376e#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_11c10b84376e#0"
+  },
+  {
+   "id": "raw:path_183646f34064#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_183646f34064#0"
+  },
+  {
+   "id": "raw:path_2225aa9e80bd#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2225aa9e80bd#0"
+  },
+  {
+   "id": "raw:path_2a2c11b102d2#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2a2c11b102d2#0"
+  },
+  {
+   "id": "raw:path_2bfd32b10f32#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_2bfd32b10f32#0"
+  },
+  {
+   "id": "raw:path_553aa5ce6df9#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_553aa5ce6df9#0"
+  },
+  {
+   "id": "raw:path_6f694559ab3d#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_6f694559ab3d#0"
+  },
+  {
+   "id": "raw:path_705de76db89a#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_705de76db89a#0"
+  },
+  {
+   "id": "raw:path_740ce2d5d3a6#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_740ce2d5d3a6#0"
+  },
+  {
+   "id": "raw:path_808454f74912#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_808454f74912#0"
+  },
+  {
+   "id": "raw:path_8bc281d57348#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_8bc281d57348#0"
+  },
+  {
+   "id": "raw:path_8edc5d90c282#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_8edc5d90c282#0"
+  },
+  {
+   "id": "raw:path_8fe31c655c8a#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_8fe31c655c8a#0"
+  },
+  {
+   "id": "raw:path_9268708745bf#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_9268708745bf#0"
+  },
+  {
+   "id": "raw:path_98ab976de441#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_98ab976de441#0"
+  },
+  {
+   "id": "raw:path_a78ec6c05c7a#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_a78ec6c05c7a#0"
+  },
+  {
+   "id": "raw:path_b4d93775ba0e#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_b4d93775ba0e#0"
+  },
+  {
+   "id": "raw:path_b6a21dbbb1eb#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_b6a21dbbb1eb#0"
+  },
+  {
+   "id": "raw:path_c81413dfd4ad#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_c81413dfd4ad#0"
+  },
+  {
+   "id": "raw:path_cb99c141bbb6#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_cb99c141bbb6#0"
+  },
+  {
+   "id": "raw:path_d12987949e4c#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_d12987949e4c#0"
+  },
+  {
+   "id": "raw:path_da5f6320d1c3#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_da5f6320d1c3#0"
+  },
+  {
+   "id": "raw:path_dbb41cd22aab#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_dbb41cd22aab#0"
+  },
+  {
+   "id": "raw:path_e13a6d635ff4#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_e13a6d635ff4#0"
+  },
+  {
+   "id": "raw:path_ee3760c1c585#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_ee3760c1c585#0"
+  },
+  {
+   "id": "raw:path_f629bd3cb28d#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_f629bd3cb28d#0"
+  },
+  {
+   "id": "raw:path_fa1093036aae#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_fa1093036aae#0"
+  },
+  {
+   "id": "raw:path_fa467f9ce239#0",
+   "kind": "RAW_PDF_OBJECT",
+   "segment": "path_fa467f9ce239#0"
+  },
+  {
+   "id": "anc_5265a1ed79a9",
+   "kind": "PIPE_ATTACHMENT",
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "endpoint": [
+    1194.0,
+    867.760009765625
+   ]
+  },
+  {
+   "id": "des_2cee20b190cf",
+   "kind": "DESIGNATION",
+   "text": "VV01-X7-40-F60",
+   "dn": 40,
+   "source": "text",
+   "bbox": [
+    1082.52001953125,
+    706.777099609375,
+    1155.4957275390625,
+    717.7723388671875
+   ]
   }
  ],
  "edges": [
@@ -3469,6 +4615,226 @@
   {
    "from": "scale",
    "to": "pp_1ae971ca5755",
+   "rel": "MEASURES"
+  },
+  {
+   "from": "family:V-52B--FE-_Vxx-VV|s|w1.44",
+   "to": "pp_22260dfc4968",
+   "rel": "PIPE_GEOMETRY_OF"
+  },
+  {
+   "from": "raw:path_0be37ed906c4#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_0c5b0d982603#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_11d580b8cba4#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2679cefe828f#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_32fb6632dfed#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_4d2d2179b170#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_56ac9c735f66#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_5a951eb211de#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_5c4934ef35ac#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_5ed3cad62e11#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_618bcf9cc372#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_6226a2bdb280#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_6e718cc21b4b#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_75d77e1fdd41#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_a6aeaeb88726#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_ad07ca35679e#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_b7e7210984da#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_ba7978eeb971#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_bf0ec8d922a4#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_cb677399e2a5#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_cd9fa96fc647#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_ceefb4f79f77#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_d802b6f31af2#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_d8877ea1f78a#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e188a5b2f7b0#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e8f0ad0248e1#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e8f0ad0248e1#1",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e8f0ad0248e1#2",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e8f0ad0248e1#3",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e8f0ad0248e1#4",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e91eef3fea61#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_ed5a4d574de6#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_eed3ade97df3#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_f49a38d576e5#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_f9e5cc48359d#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_fa97a0e8bf97#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_ff1b210705f5#0",
+   "to": "pp_22260dfc4968",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "anc_cda7a453473d",
+   "to": "pp_22260dfc4968",
+   "rel": "OWNS"
+  },
+  {
+   "from": "des_b9639626a835",
+   "to": "anc_cda7a453473d",
+   "rel": "LABELS"
+  },
+  {
+   "from": "des_b9639626a835",
+   "to": "ldr_d5c1082abe72",
+   "rel": "HAS_LEADER"
+  },
+  {
+   "from": "ldr_d5c1082abe72",
+   "to": "anc_cda7a453473d",
+   "rel": "ENDS_AT"
+  },
+  {
+   "from": "raw:path_cf5c9d5c155f",
+   "to": "ldr_d5c1082abe72",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "scale",
+   "to": "pp_22260dfc4968",
    "rel": "MEASURES"
   },
   {
@@ -3924,6 +5290,546 @@
   {
    "from": "scale",
    "to": "pp_4419e5bfe992",
+   "rel": "MEASURES"
+  },
+  {
+   "from": "family:V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "to": "pp_44244d228cce",
+   "rel": "PIPE_GEOMETRY_OF"
+  },
+  {
+   "from": "raw:path_097ae191937f#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_0ebe5b1a714d#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_12f6411ad7ae#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_138a0b5d31e9#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_1546526f9f7a#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_1c9e4f6089a5#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_1dde85218651#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_1e78ac03a1d4#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_28cbbf1614be#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_28da43323df8#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2da26238f069#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2e72129b4589#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_3936be0705ad#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_45a2fa18a3d6#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_4cf1e71259e4#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_4d1752921b64#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_4d4808b0a739#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_4f7ca81de2d6#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_5256a1f5e4ea#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_5d5c59656030#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_5da238a92a46#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_5ead95fa5b66#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_63160cb57a23#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_6c5d223640f5#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_6e1d8d5b43a5#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_6e9cc89f2509#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_6f657c0ba6bf#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_711e303b5b24#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_77d9eb542012#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_7ebd52a2411b#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_82c78b7cdfcd#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_8fd0e1c0d70f#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_a3d1eef614c4#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_ad66d4b596b5#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_b03f41d65029#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_b263865ddb2d#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_b8317f43bb94#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_c4ff7fa131bf#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_c964c9683e7c#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_cc25e694d5eb#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_d8ac2d875bdb#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e4839eb4cce1#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e8ddbe66f6ef#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e9ed21f4e24f#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_f07c8b436827#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_fc4d89873d6e#0",
+   "to": "pp_44244d228cce",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "anc_ba792373e631",
+   "to": "pp_44244d228cce",
+   "rel": "OWNS"
+  },
+  {
+   "from": "des_a941507c6f3b",
+   "to": "anc_ba792373e631",
+   "rel": "LABELS"
+  },
+  {
+   "from": "des_a941507c6f3b",
+   "to": "ldr_82f054975f6d",
+   "rel": "HAS_LEADER"
+  },
+  {
+   "from": "ldr_82f054975f6d",
+   "to": "anc_ba792373e631",
+   "rel": "ENDS_AT"
+  },
+  {
+   "from": "raw:path_d2b9c94a8ec4",
+   "to": "ldr_82f054975f6d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "scale",
+   "to": "pp_44244d228cce",
+   "rel": "MEASURES"
+  },
+  {
+   "from": "family:V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "PIPE_GEOMETRY_OF"
+  },
+  {
+   "from": "raw:path_004be5037566#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_0b9548a3d8fe#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_101315650a9f#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_120974aec67f#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_209fcebd12e2#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_29b1c73af692#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2e760137bf7f#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2ea2bf35c76d#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_33d82d24b170#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_3462db57a408#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_35b2f8954846#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_3d079cbb9002#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_3da9692eb434#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_56410ba5886d#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_56db6c4b618b#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_605d90ffdad9#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_6e5202aaf742#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_6f78814a4821#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_782baa4448f8#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_7d1c1eb2bedc#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_9a1b94aae643#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_9b5815ce69a0#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_9b8dedec3919#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_9d755bbc103c#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_a0c931453daa#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_a48df85acaed#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_a7118d92aa87#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_acddcf8893f3#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_aea5913e5283#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_af144d2e9ba4#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_b4f8bf9971e5#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_b6eab454cb34#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_c1b3e39c69d6#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_c481527ec443#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_c4e8fbb32b84#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_c778f35ae7d7#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_d19db9ed90a3#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e63ab39bfdd6#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e63ab39bfdd6#1",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e63ab39bfdd6#2",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e63ab39bfdd6#3",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e75b40046969#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_f9eab2bde9cd#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_fa40c3ef4426#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_fa40c3ef4426#1",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_fa40c3ef4426#2",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_fa40c3ef4426#3",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_fca72716cb2f#0",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "anc_38a98cb7ca07",
+   "to": "pp_4db6ae0df7a7",
+   "rel": "OWNS"
+  },
+  {
+   "from": "des_c4fe012a85bb",
+   "to": "anc_38a98cb7ca07",
+   "rel": "LABELS"
+  },
+  {
+   "from": "des_c4fe012a85bb",
+   "to": "ldr_d5c1082abe72",
+   "rel": "HAS_LEADER"
+  },
+  {
+   "from": "ldr_d5c1082abe72",
+   "to": "anc_38a98cb7ca07",
+   "rel": "ENDS_AT"
+  },
+  {
+   "from": "raw:path_cf5c9d5c155f",
+   "to": "ldr_d5c1082abe72",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "scale",
+   "to": "pp_4db6ae0df7a7",
    "rel": "MEASURES"
   },
   {
@@ -5402,6 +7308,76 @@
    "rel": "MEASURES"
   },
   {
+   "from": "family:V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "PIPE_GEOMETRY_OF"
+  },
+  {
+   "from": "raw:path_09f9d688ee72#0",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_151e96bb3288#0",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2c307a511321#0",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_41df7b338db5#0",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_872b5b2360eb#0",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_bd95aec0c451#0",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_d6eba1153dc6#0",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "anc_fd698a6e7250",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "OWNS"
+  },
+  {
+   "from": "des_8009c92e7f2d",
+   "to": "anc_fd698a6e7250",
+   "rel": "LABELS"
+  },
+  {
+   "from": "des_8009c92e7f2d",
+   "to": "ldr_58f7cee21bde",
+   "rel": "HAS_LEADER"
+  },
+  {
+   "from": "ldr_58f7cee21bde",
+   "to": "anc_fd698a6e7250",
+   "rel": "ENDS_AT"
+  },
+  {
+   "from": "raw:path_807a8bc81615",
+   "to": "ldr_58f7cee21bde",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "scale",
+   "to": "pp_b0fd5cb3d97b",
+   "rel": "MEASURES"
+  },
+  {
    "from": "family:V-52B--FE-_Vxx-KV|s|w1.44",
    "to": "pp_b798582d2d2f",
    "rel": "PIPE_GEOMETRY_OF"
@@ -5937,6 +7913,156 @@
    "rel": "MEASURES"
   },
   {
+   "from": "family:V-52B--FE-_Vxx-VV|s|w1.44",
+   "to": "pp_dd53170f138d",
+   "rel": "PIPE_GEOMETRY_OF"
+  },
+  {
+   "from": "raw:path_28313b77f5da#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2a3d41f6e3cc#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_3593d4e1704a#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_3be1dbed4e3d#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_46ea08e05bde#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_5506ff5ccfd7#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_5f38c9fbf37b#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_620e640dcd7c#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_738e58556d52#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_76d35bad9d1c#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_770fa0254ca1#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_82a4952f8a5c#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_8bac4a8aa636#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_929dccd10f8a#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_92a7d9bd573b#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_b90f8a74b7e1#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_d628db3992e5#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_d875b31466c7#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e02ed3e9ee4e#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e3af34583256#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_ea531a91f12f#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_f82563bda744#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_f87070a0ba8c#0",
+   "to": "pp_dd53170f138d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "anc_e07ff0e92b99",
+   "to": "pp_dd53170f138d",
+   "rel": "OWNS"
+  },
+  {
+   "from": "des_301fb67ee542",
+   "to": "anc_e07ff0e92b99",
+   "rel": "LABELS"
+  },
+  {
+   "from": "des_301fb67ee542",
+   "to": "ldr_58f7cee21bde",
+   "rel": "HAS_LEADER"
+  },
+  {
+   "from": "ldr_58f7cee21bde",
+   "to": "anc_e07ff0e92b99",
+   "rel": "ENDS_AT"
+  },
+  {
+   "from": "raw:path_807a8bc81615",
+   "to": "ldr_58f7cee21bde",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "scale",
+   "to": "pp_dd53170f138d",
+   "rel": "MEASURES"
+  },
+  {
    "from": "family:V-56B--FE-_VS3x-|s|w1.44",
    "to": "pp_e3ca00a57d37",
    "rel": "PIPE_GEOMETRY_OF"
@@ -6099,6 +8225,186 @@
   {
    "from": "scale",
    "to": "pp_f22838687f72",
+   "rel": "MEASURES"
+  },
+  {
+   "from": "family:V-52B--FE-_Vxx-VV|s|w1.44",
+   "to": "pp_f4d82ec2e409",
+   "rel": "PIPE_GEOMETRY_OF"
+  },
+  {
+   "from": "raw:path_0a5245fb233a#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_11c10b84376e#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_183646f34064#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2225aa9e80bd#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2a2c11b102d2#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_2bfd32b10f32#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_553aa5ce6df9#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_6f694559ab3d#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_705de76db89a#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_740ce2d5d3a6#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_808454f74912#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_8bc281d57348#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_8edc5d90c282#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_8fe31c655c8a#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_9268708745bf#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_98ab976de441#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_a78ec6c05c7a#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_b4d93775ba0e#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_b6a21dbbb1eb#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_c81413dfd4ad#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_cb99c141bbb6#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_d12987949e4c#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_da5f6320d1c3#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_dbb41cd22aab#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_e13a6d635ff4#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_ee3760c1c585#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_f629bd3cb28d#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_fa1093036aae#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "raw:path_fa467f9ce239#0",
+   "to": "pp_f4d82ec2e409",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "anc_5265a1ed79a9",
+   "to": "pp_f4d82ec2e409",
+   "rel": "OWNS"
+  },
+  {
+   "from": "des_2cee20b190cf",
+   "to": "anc_5265a1ed79a9",
+   "rel": "LABELS"
+  },
+  {
+   "from": "des_2cee20b190cf",
+   "to": "ldr_82f054975f6d",
+   "rel": "HAS_LEADER"
+  },
+  {
+   "from": "ldr_82f054975f6d",
+   "to": "anc_5265a1ed79a9",
+   "rel": "ENDS_AT"
+  },
+  {
+   "from": "raw:path_d2b9c94a8ec4",
+   "to": "ldr_82f054975f6d",
+   "rel": "SOURCE_OF"
+  },
+  {
+   "from": "scale",
+   "to": "pp_f4d82ec2e409",
    "rel": "MEASURES"
   }
  ]

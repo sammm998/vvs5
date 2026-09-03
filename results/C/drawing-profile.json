@@ -2342,7 +2342,7 @@
   "annotation_layers": {
    "V-53BBB-T-_Sxx|s|w0.72": 4,
    "V-56B---T-_VS2x-|s|w0.72": 17,
-   "V-52B---T-_Vxx-|s|w0.72": 58,
+   "V-52B---T-_Vxx-|s|w0.72": 100,
    "V-56B---T-_VS3x-|s|w0.72": 6
   }
  },
@@ -2444,7 +2444,7 @@
     "occurrences": 2
    }
   ],
-  "marks": 2280,
+  "marks": 5020,
   "rejected_rows": 416
  },
  "annotation_structure": {
@@ -2454,9 +2454,9 @@
     "family": "grammar:A9-A9-9-A9",
     "occurrences": 16,
     "processed": 16,
-    "confirmed": 12,
+    "confirmed": 15,
     "ambiguous": 0,
-    "unsupported": 4,
+    "unsupported": 1,
     "examples": [
      "KV01-X7-40-W40",
      "VP01-S2-65-F80",
@@ -2501,9 +2501,9 @@
     "family": "grammar:A9-A9-9",
     "occurrences": 6,
     "processed": 6,
-    "confirmed": 1,
+    "confirmed": 4,
     "ambiguous": 0,
-    "unsupported": 5,
+    "unsupported": 2,
     "examples": [
      "S01-P5-110",
      "S01-P5-160",
@@ -2790,7 +2790,7 @@
   "marker_families": [
    {
     "family": "crossing-tick|V-52B---T-_Vxx-|s|w0.72",
-    "occurrences": 10
+    "occurrences": 16
    },
    {
     "family": "end-tick|V-56B---T-_VS2x-|s|w0.72",
@@ -2853,6 +2853,58 @@
      "FE",
      "Vxx",
      "KV"
+    ]
+   },
+   {
+    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "layer": "V-52B--FE-_Vxx-VVCXX",
+    "style": "w1.44",
+    "width": 1.4399999380111694,
+    "n_primitives": 136,
+    "total_length_pt": 856.2,
+    "gap_mode_pt": 2.75,
+    "dash_mode_pt": 12.0,
+    "n_chains": 12,
+    "longest_chain_pt": 306.3,
+    "kind": "fragmented-dashed",
+    "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44",
+    "occurrences": 136,
+    "processed": 136,
+    "confirmed": 101,
+    "ambiguous": 0,
+    "unsupported": 0,
+    "unowned": 35,
+    "system_tokens": [
+     "52B",
+     "FE",
+     "Vxx",
+     "VVCXX"
+    ]
+   },
+   {
+    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
+    "layer": "V-52B--FE-_Vxx-VV",
+    "style": "w1.44",
+    "width": 1.4399999380111694,
+    "n_primitives": 139,
+    "total_length_pt": 860.3,
+    "gap_mode_pt": 2.75,
+    "dash_mode_pt": 12.0,
+    "n_chains": 18,
+    "longest_chain_pt": 208.7,
+    "kind": "fragmented-dashed",
+    "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44",
+    "occurrences": 139,
+    "processed": 139,
+    "confirmed": 89,
+    "ambiguous": 0,
+    "unsupported": 0,
+    "unowned": 50,
+    "system_tokens": [
+     "52B",
+     "FE",
+     "Vxx",
+     "VV"
     ]
    },
    {
@@ -2953,58 +3005,6 @@
      "FE",
      "VS3x"
     ]
-   },
-   {
-    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
-    "layer": "V-52B--FE-_Vxx-VVCXX",
-    "style": "w1.44",
-    "width": 1.4399999380111694,
-    "n_primitives": 136,
-    "total_length_pt": 856.2,
-    "gap_mode_pt": 2.75,
-    "dash_mode_pt": 12.0,
-    "n_chains": 12,
-    "longest_chain_pt": 306.3,
-    "kind": "fragmented-dashed",
-    "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44",
-    "occurrences": 136,
-    "processed": 136,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 0,
-    "unowned": 136,
-    "system_tokens": [
-     "52B",
-     "FE",
-     "Vxx",
-     "VVCXX"
-    ]
-   },
-   {
-    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
-    "layer": "V-52B--FE-_Vxx-VV",
-    "style": "w1.44",
-    "width": 1.4399999380111694,
-    "n_primitives": 139,
-    "total_length_pt": 860.3,
-    "gap_mode_pt": 2.75,
-    "dash_mode_pt": 12.0,
-    "n_chains": 18,
-    "longest_chain_pt": 208.7,
-    "kind": "fragmented-dashed",
-    "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44",
-    "occurrences": 139,
-    "processed": 139,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 0,
-    "unowned": 139,
-    "system_tokens": [
-     "52B",
-     "FE",
-     "Vxx",
-     "VV"
-    ]
    }
   ],
   "contact_votes": {
@@ -3015,6 +3015,8 @@
     "V-56B--JE-_VS3x--|s|w0.72": 5.0,
     "V-56B--FE-_VPxx-|s|w1.44": 5.0,
     "V-52B--FE-_Vxx-KV|s|w1.44": 3.0,
+    "V-52B--FE-_Vxx-VV|s|w1.44": 3.0,
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44": 3.0,
     "V-56B--FE-_VS3x-|s|w0.72": 1.0,
     "V-53BBBFE-_Sxx|s|w0.72": 1.0,
     "A-------G1-|s|w0.72": 1.0,
@@ -3027,6 +3029,8 @@
     "V-56B--FE-_VS2x-|s|w1.44": 7,
     "V-56B--FE-_VPxx-|s|w1.44": 5,
     "V-52B--FE-_Vxx-KV|s|w1.44": 3,
+    "V-52B--FE-_Vxx-VV|s|w1.44": 3,
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44": 3,
     "V-56B--FE-_VS3x-|s|w0.72": 2,
     "V-53BBBFE-_Sxx|s|w0.72": 2,
     "V-53BBBFE-_Sxx|s|w2.88": 1
@@ -3046,6 +3050,8 @@
     "V-56B--JE-_VS3x--|s|w0.72": 5,
     "V-56B--FE-_VPxx-|s|w1.44": 5,
     "V-52B--FE-_Vxx-KV|s|w1.44": 3,
+    "V-52B--FE-_Vxx-VV|s|w1.44": 3,
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44": 3,
     "A-------G1-|s|w0.72": 1,
     "V-53BBBFE-_Sxx|s|w2.88": 1
    }
@@ -3126,7 +3132,7 @@
   ],
   "unresolved_anchor_reasons": {
    "leader_endpoint_touches_no_pipe_geometry": 1,
-   "multi_row_no_compatible_layer_group": 8
+   "multi_row_no_compatible_layer_group": 2
   }
  }
 }

@@ -5792,7 +5792,7 @@
   {
    "id": "ldr_4bc7d5e16faa",
    "kind": "ACTUAL_LEADER",
-   "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.48",
+   "family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.48",
    "paths": [
     "path_26adfac00c29"
    ],

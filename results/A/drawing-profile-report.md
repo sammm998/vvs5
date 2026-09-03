@@ -29,11 +29,11 @@ Engine 0.1.0
 ## Leader families
 | family | occurrences | processed | confirmed | ambiguous | unsupported |
 |---|---|---|---|---|---|
-| straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.48 | 87 | 87 | 74 | 0 | 13 |
-| straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.48 | 22 | 22 | 17 | 0 | 5 |
+| straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.48 | 89 | 89 | 75 | 0 | 14 |
+| straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.48 | 19 | 19 | 16 | 0 | 3 |
 | straight|horizontal|box_corner|plain-end|no-crossing-ticks|w0.48 | 11 | 11 | 0 | 0 | 11 |
 | straight|vertical|box_corner|plain-end|no-crossing-ticks|w0.72 | 11 | 11 | 0 | 0 | 11 |
-| straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.48 | 9 | 9 | 0 | 0 | 9 |
+| straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.48 | 10 | 10 | 0 | 0 | 10 |
 | straight|horizontal|underline_end|end-tick|no-crossing-ticks|w0.48 | 7 | 7 | 5 | 0 | 2 |
 | bent|horizontal|underline_end|plain-end|no-crossing-ticks|w0.48 | 5 | 5 | 0 | 0 | 5 |
 | straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.48 | 5 | 5 | 2 | 0 | 3 |
@@ -46,20 +46,20 @@ Engine 0.1.0
 | multi-bend|vertical|underline_end|plain-end|no-crossing-ticks|w0.48 | 3 | 3 | 0 | 0 | 3 |
 | straight|horizontal|underline_end|plain-end|no-crossing-ticks|w0.48 | 3 | 3 | 2 | 0 | 1 |
 | split-path|vertical|box_corner|plain-end|no-crossing-ticks|w0.72 | 2 | 2 | 0 | 0 | 2 |
-| straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.48 | 2 | 2 | 0 | 0 | 2 |
 | straight|diagonal|box_corner|end-tick|no-crossing-ticks|w0.48 | 2 | 2 | 0 | 0 | 2 |
 | straight|horizontal|bbox_corner|plain-end|no-crossing-ticks|w0.48 | 2 | 2 | 0 | 0 | 2 |
 | bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.48 | 1 | 1 | 0 | 0 | 1 |
 | bent|vertical|underline_end|end-tick|crossing-ticks|w0.48 | 1 | 1 | 0 | 0 | 1 |
 | multi-bend|horizontal|bbox_corner|plain-end|no-crossing-ticks|w0.48 | 1 | 1 | 0 | 0 | 1 |
 | multi-bend|vertical|underline_end|end-tick|no-crossing-ticks|w0.48 | 1 | 1 | 1 | 0 | 0 |
+| straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.48 | 1 | 1 | 0 | 0 | 1 |
 | straight|horizontal|bbox_corner|plain-end|crossing-ticks|w0.48 | 1 | 1 | 0 | 0 | 1 |
 | straight|horizontal|box_corner|end-tick|no-crossing-ticks|w0.48 | 1 | 1 | 0 | 0 | 1 |
 | straight|vertical|underline_end|end-tick|no-crossing-ticks|w0.48 | 1 | 1 | 0 | 0 | 1 |
 
 ## Marker / connector families
 - end-tick|268140-W-50-P-A-00|V-53BB--T--S3--|s|w0.48: 64
-- end-tick|268140-W-50-P-A-00|V-5-----T1_-|s|w0.48: 47
+- end-tick|268140-W-50-P-A-00|V-5-----T1_-|s|w0.48: 54
 - crossing-tick|268140-W-50-P-A-00|V-5-----T1_-|s|w0.48: 7
 - end-tick|268140-W-50-P-A-00|V-53BB--T--S1--|s|w0.48: 5
 - crossing-tick|268140-W-50-P-A-00|V-53BB--T--S3--|s|w0.48: 2

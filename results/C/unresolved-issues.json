@@ -1288,30 +1288,6 @@
   },
   {
    "kind": "missing_pipe_attachment",
-   "text": "VVC01-X7-32",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    630.2799682617188,
-    1086.919921875,
-    640.2799682617188,
-    1096.919921875
-   ],
-   "id": "anc_38a98cb7ca07"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "VV01-X7-40-F60",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    1189.0,
-    862.760009765625,
-    1199.0,
-    872.760009765625
-   ],
-   "id": "anc_5265a1ed79a9"
-  },
-  {
-   "kind": "missing_pipe_attachment",
    "text": "RV601-20",
    "reason": "multi_row_no_compatible_layer_group",
    "bbox": [
@@ -1335,54 +1311,6 @@
    "id": "anc_70b1eb9f9203"
   },
   {
-   "kind": "missing_pipe_attachment",
-   "text": "VVC01-X7-32",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    1189.0,
-    862.760009765625,
-    1199.0,
-    872.760009765625
-   ],
-   "id": "anc_ba792373e631"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "VV01-X7-40-F60",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    630.2799682617188,
-    1086.919921875,
-    640.2799682617188,
-    1096.919921875
-   ],
-   "id": "anc_cda7a453473d"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "VV01-X7-40-F60",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    1381.9599609375,
-    722.3600463867188,
-    1391.9599609375,
-    732.3600463867188
-   ],
-   "id": "anc_e07ff0e92b99"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "VVC01-X7-32",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    1381.9599609375,
-    722.3600463867188,
-    1391.9599609375,
-    732.3600463867188
-   ],
-   "id": "anc_fd698a6e7250"
-  },
-  {
    "kind": "unowned_geometry",
    "family": "V-52B--FE-_Vxx-KV|s|w1.44",
    "count": 43,
@@ -1394,6 +1322,32 @@
     688.800048828125
    ],
    "id": "unowned:V-52B--FE-_Vxx-KV|s|w1.44"
+  },
+  {
+   "kind": "unowned_geometry",
+   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "count": 35,
+   "length_pt": 223.7,
+   "bbox": [
+    1452.52001953125,
+    710.2400512695312,
+    1461.199951171875,
+    720.7200317382812
+   ],
+   "id": "unowned:V-52B--FE-_Vxx-VVCXX|s|w1.44"
+  },
+  {
+   "kind": "unowned_geometry",
+   "family": "V-52B--FE-_Vxx-VV|s|w1.44",
+   "count": 50,
+   "length_pt": 295.0,
+   "bbox": [
+    1647.760009765625,
+    637.0400390625,
+    1656.3199462890625,
+    647.52001953125
+   ],
+   "id": "unowned:V-52B--FE-_Vxx-VV|s|w1.44"
   },
   {
    "kind": "unowned_geometry",
@@ -1470,32 +1424,6 @@
     924.0
    ],
    "id": "unowned:V-56B--FE-_VS3x-|s|w1.44"
-  },
-  {
-   "kind": "unowned_geometry",
-   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
-   "count": 136,
-   "length_pt": 856.2,
-   "bbox": [
-    680.4400024414062,
-    1036.1600341796875,
-    678.5599975585938,
-    1046.1600341796875
-   ],
-   "id": "unowned:V-52B--FE-_Vxx-VVCXX|s|w1.44"
-  },
-  {
-   "kind": "unowned_geometry",
-   "family": "V-52B--FE-_Vxx-VV|s|w1.44",
-   "count": 139,
-   "length_pt": 860.3,
-   "bbox": [
-    1647.760009765625,
-    637.0400390625,
-    1656.3199462890625,
-    647.52001953125
-   ],
-   "id": "unowned:V-52B--FE-_Vxx-VV|s|w1.44"
   }
  ]
 }

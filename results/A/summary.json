@@ -5,8 +5,8 @@
   "designations": 143,
   "with_dn": 122,
   "blocks": 390,
-  "leaders": 202,
-  "designation_leaders": 148,
+  "leaders": 201,
+  "designation_leaders": 147,
   "anchors": {
    "VERIFIED_PIPE_ATTACHMENT": 103,
    "NO_PIPE_ATTACHMENT": 25
@@ -28,19 +28,19 @@
   "confirmed_horizontal_m": 156.66,
   "ambiguous_m": 2.95,
   "timings_ms": {
-   "profile_ms": 192,
-   "text_ms": 8588,
-   "designation_ms": 230,
+   "profile_ms": 196,
+   "text_ms": 8685,
+   "designation_ms": 244,
    "leader_ms": 0,
-   "leader_attachment_ms": 2074,
+   "leader_attachment_ms": 2207,
    "topology_ms": 0,
-   "physical_pipes_ms": 19,
-   "measurement_ms": 30,
-   "text_components_ms": 703,
-   "text_rows_ms": 720,
-   "text_raster_ms": 1515,
-   "text_classify_ms": 5562,
-   "text_assemble_ms": 56
+   "physical_pipes_ms": 18,
+   "measurement_ms": 31,
+   "text_components_ms": 771,
+   "text_rows_ms": 786,
+   "text_raster_ms": 1528,
+   "text_classify_ms": 5508,
+   "text_assemble_ms": 64
   }
  },
  "determinism": "PASS",
@@ -75,5 +75,5 @@
   "analysis-report.md": "/home/user/vvs5/results/A/analysis-report.md",
   "freeze-manifest.json": "/home/user/vvs5/results/A/freeze-manifest.json"
  },
- "total_seconds": 52.17
+ "total_seconds": 50.91
 }

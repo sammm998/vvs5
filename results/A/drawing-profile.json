@@ -1527,8 +1527,8 @@
    }
   ],
   "annotation_layers": {
-   "268140-W-50-P-A-00|V-53BB--T--S3--|s|w0.48": 393,
-   "268140-W-50-P-A-00|V-53BB--T--S3--|s|w0.72": 263,
+   "268140-W-50-P-A-00|V-53BB--T--S3--|s|w0.48": 389,
+   "268140-W-50-P-A-00|V-53BB--T--S3--|s|w0.72": 261,
    "268140-W-50-P-A-00|V-53BB--T--S1--|s|w0.48": 44,
    "268140-W-50-P-A-00|V-53BB--T--S1--|s|w0.72": 35,
    "HUS A - GRUNDPLAN|K-------EK_|s|w0.72": 29,
@@ -1635,7 +1635,7 @@
     "occurrences": 8
    }
   ],
-  "marks": 2607,
+  "marks": 2846,
   "rejected_rows": 148
  },
  "annotation_structure": {
@@ -2039,19 +2039,19 @@
   "leader_families": [
    {
     "family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.48",
-    "occurrences": 87,
-    "processed": 87,
-    "confirmed": 74,
+    "occurrences": 89,
+    "processed": 89,
+    "confirmed": 75,
     "ambiguous": 0,
-    "unsupported": 13
+    "unsupported": 14
    },
    {
     "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.48",
-    "occurrences": 22,
-    "processed": 22,
-    "confirmed": 17,
+    "occurrences": 19,
+    "processed": 19,
+    "confirmed": 16,
     "ambiguous": 0,
-    "unsupported": 5
+    "unsupported": 3
    },
    {
     "family": "straight|horizontal|box_corner|plain-end|no-crossing-ticks|w0.48",
@@ -2071,11 +2071,11 @@
    },
    {
     "family": "straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.48",
-    "occurrences": 9,
-    "processed": 9,
+    "occurrences": 10,
+    "processed": 10,
     "confirmed": 0,
     "ambiguous": 0,
-    "unsupported": 9
+    "unsupported": 10
    },
    {
     "family": "straight|horizontal|underline_end|end-tick|no-crossing-ticks|w0.48",
@@ -2174,14 +2174,6 @@
     "unsupported": 2
    },
    {
-    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.48",
-    "occurrences": 2,
-    "processed": 2,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 2
-   },
-   {
     "family": "straight|diagonal|box_corner|end-tick|no-crossing-ticks|w0.48",
     "occurrences": 2,
     "processed": 2,
@@ -2230,6 +2222,14 @@
     "unsupported": 0
    },
    {
+    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.48",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
     "family": "straight|horizontal|bbox_corner|plain-end|crossing-ticks|w0.48",
     "occurrences": 1,
     "processed": 1,
@@ -2261,7 +2261,7 @@
    },
    {
     "family": "end-tick|268140-W-50-P-A-00|V-5-----T1_-|s|w0.48",
-    "occurrences": 47
+    "occurrences": 54
    },
    {
     "family": "crossing-tick|268140-W-50-P-A-00|V-5-----T1_-|s|w0.48",
@@ -2428,7 +2428,7 @@
   "contact_votes": {
    "votes": {
     "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04": 68.0,
-    "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w0.72": 51.0,
+    "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w0.72": 52.0,
     "268140-W-50-P-A-00|S com|s|w0.48": 32.0,
     "268140-W-50-P-A-00|V-53BB-LE--S3--|s|w0.48": 12.5,
     "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w0.48": 5.0,
@@ -2460,7 +2460,7 @@
    ],
    "tick_votes": {
     "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04": 68,
-    "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w0.72": 38,
+    "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w0.72": 40,
     "268140-W-50-P-A-00|S com|s|w0.48": 32,
     "268140-W-50-P-A-00|V-53BB-LE--S3--|s|w0.48": 12,
     "268140-W-50-P-A-00|V-53BB-FE--S1-|s|w2.04": 4,

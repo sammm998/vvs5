@@ -1,57 +1,65 @@
 {
- "n_leaders": 579,
+ "n_leaders": 554,
  "families": [
   {
    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
-   "occurrences": 67
-  },
-  {
-   "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
-   "occurrences": 44
+   "occurrences": 48
   },
   {
    "family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 36
+   "occurrences": 48
   },
   {
    "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.00",
    "occurrences": 36
   },
   {
-   "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
-   "occurrences": 34
-  },
-  {
-   "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
-   "occurrences": 26
-  },
-  {
    "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 24
-  },
-  {
-   "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
-   "occurrences": 20
+   "occurrences": 31
   },
   {
    "family": "straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 16
+   "occurrences": 25
+  },
+  {
+   "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
+   "occurrences": 24
+  },
+  {
+   "family": "multi-bend|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
+   "occurrences": 18
+  },
+  {
+   "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
+   "occurrences": 18
+  },
+  {
+   "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+   "occurrences": 17
+  },
+  {
+   "family": "multi-bend|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+   "occurrences": 14
+  },
+  {
+   "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+   "occurrences": 14
   },
   {
    "family": "straight|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
    "occurrences": 13
   },
   {
-   "family": "multi-bend|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 10
+   "family": "straight|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+   "occurrences": 12
   },
   {
-   "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+   "family": "multi-bend|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
+   "occurrences": 11
+  },
+  {
+   "family": "straight|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
    "occurrences": 9
-  },
-  {
-   "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
-   "occurrences": 8
   },
   {
    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
@@ -59,30 +67,10 @@
   },
   {
    "family": "multi-bend|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 8
-  },
-  {
-   "family": "multi-bend|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
-   "occurrences": 8
-  },
-  {
-   "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
-   "occurrences": 8
-  },
-  {
-   "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
-   "occurrences": 8
-  },
-  {
-   "family": "multi-bend|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
    "occurrences": 7
   },
   {
-   "family": "multi-bend|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 7
-  },
-  {
-   "family": "straight|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
+   "family": "multi-bend|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
    "occurrences": 7
   },
   {
@@ -90,11 +78,19 @@
    "occurrences": 7
   },
   {
-   "family": "multi-bend|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+   "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
    "occurrences": 6
   },
   {
-   "family": "multi-bend|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
+   "family": "multi-bend|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+   "occurrences": 6
+  },
+  {
+   "family": "multi-bend|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
+   "occurrences": 6
+  },
+  {
+   "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
    "occurrences": 6
   },
   {
@@ -102,11 +98,23 @@
    "occurrences": 6
   },
   {
-   "family": "bent|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
+   "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+   "occurrences": 6
+  },
+  {
+   "family": "bent|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
    "occurrences": 5
   },
   {
-   "family": "multi-bend|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
+   "family": "bent|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
+   "occurrences": 5
+  },
+  {
+   "family": "multi-bend|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
+   "occurrences": 5
+  },
+  {
+   "family": "multi-bend|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
    "occurrences": 5
   },
   {
@@ -114,15 +122,15 @@
    "occurrences": 5
   },
   {
+   "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.72",
+   "occurrences": 5
+  },
+  {
+   "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
+   "occurrences": 5
+  },
+  {
    "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
-   "occurrences": 4
-  },
-  {
-   "family": "bent|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 4
-  },
-  {
-   "family": "bent|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
    "occurrences": 4
   },
   {
@@ -130,43 +138,27 @@
    "occurrences": 4
   },
   {
-   "family": "bent|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
+   "family": "multi-bend|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
    "occurrences": 4
   },
   {
-   "family": "multi-bend|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
+   "family": "multi-bend|horizontal|bbox_corner|end-tick|crossing-ticks|w0.36",
    "occurrences": 4
-  },
-  {
-   "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.72",
-   "occurrences": 4
-  },
-  {
-   "family": "multi-bend|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 4
-  },
-  {
-   "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
-   "occurrences": 4
-  },
-  {
-   "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
-   "occurrences": 4
-  },
-  {
-   "family": "straight|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
-   "occurrences": 4
-  },
-  {
-   "family": "bent|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 3
   },
   {
    "family": "bent|diagonal|box_corner|end-tick|no-crossing-ticks|w0.00",
    "occurrences": 3
   },
   {
-   "family": "bent|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
+   "family": "bent|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
+   "occurrences": 3
+  },
+  {
+   "family": "bent|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
+   "occurrences": 3
+  },
+  {
+   "family": "bent|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
    "occurrences": 3
   },
   {
@@ -178,11 +170,23 @@
    "occurrences": 3
   },
   {
-   "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
+   "family": "multi-bend|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
    "occurrences": 3
   },
   {
-   "family": "multi-bend|horizontal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+   "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.72",
+   "occurrences": 3
+  },
+  {
+   "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+   "occurrences": 3
+  },
+  {
+   "family": "split-path|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
+   "occurrences": 3
+  },
+  {
+   "family": "straight|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
    "occurrences": 3
   },
   {
@@ -190,27 +194,23 @@
    "occurrences": 3
   },
   {
+   "family": "bent|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+   "occurrences": 2
+  },
+  {
    "family": "bent|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.00",
    "occurrences": 2
   },
   {
-   "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
-   "occurrences": 2
-  },
-  {
-   "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
-   "occurrences": 2
-  },
-  {
-   "family": "bent|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
-   "occurrences": 2
-  },
-  {
-   "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
+   "family": "bent|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
    "occurrences": 2
   },
   {
    "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.60",
+   "occurrences": 2
+  },
+  {
+   "family": "bent|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
    "occurrences": 2
   },
   {
@@ -222,7 +222,7 @@
    "occurrences": 2
   },
   {
-   "family": "multi-bend|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
+   "family": "multi-bend|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.72",
    "occurrences": 2
   },
   {
@@ -238,15 +238,11 @@
    "occurrences": 2
   },
   {
-   "family": "split-path|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
-   "occurrences": 2
-  },
-  {
    "family": "split-path|vertical|underline_touch|plain-end|no-crossing-ticks|w0.72",
    "occurrences": 2
   },
   {
-   "family": "straight|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+   "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
    "occurrences": 2
   },
   {
@@ -254,11 +250,11 @@
    "occurrences": 2
   },
   {
-   "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.72",
+   "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.00",
    "occurrences": 2
   },
   {
-   "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.00",
+   "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
    "occurrences": 2
   },
   {
@@ -266,15 +262,19 @@
    "occurrences": 2
   },
   {
-   "family": "bent|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
-   "occurrences": 1
-  },
-  {
    "family": "bent|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
    "occurrences": 1
   },
   {
+   "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
+   "occurrences": 1
+  },
+  {
    "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.00",
+   "occurrences": 1
+  },
+  {
+   "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
    "occurrences": 1
   },
   {
@@ -302,6 +302,10 @@
    "occurrences": 1
   },
   {
+   "family": "multi-bend|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
    "family": "multi-bend|diagonal|underline_end|plain-end|crossing-ticks|w0.24",
    "occurrences": 1
   },
@@ -310,11 +314,7 @@
    "occurrences": 1
   },
   {
-   "family": "multi-bend|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
-   "occurrences": 1
-  },
-  {
-   "family": "multi-bend|horizontal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
+   "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
    "occurrences": 1
   },
   {
@@ -330,11 +330,11 @@
    "occurrences": 1
   },
   {
-   "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
+   "family": "split-path|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
    "occurrences": 1
   },
   {
-   "family": "split-path|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+   "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
    "occurrences": 1
   },
   {
@@ -342,7 +342,11 @@
    "occurrences": 1
   },
   {
-   "family": "split-path|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+   "family": "split-path|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
+   "occurrences": 1
+  },
+  {
+   "family": "straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.00",
    "occurrences": 1
   },
   {
@@ -354,7 +358,7 @@
    "occurrences": 1
   },
   {
-   "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.24",
+   "family": "straight|diagonal|underline_end|end-tick|crossing-ticks|w0.24",
    "occurrences": 1
   },
   {
@@ -363,10 +367,6 @@
   },
   {
    "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.00",
-   "occurrences": 1
-  },
-  {
-   "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
    "occurrences": 1
   },
   {

@@ -5,12 +5,12 @@
   "designations": 151,
   "with_dn": 111,
   "blocks": 664,
-  "leaders": 101,
-  "designation_leaders": 70,
+  "leaders": 243,
+  "designation_leaders": 87,
   "anchors": {
-   "AMBIGUOUS_PIPE_ATTACHMENT": 19,
-   "NO_PIPE_ATTACHMENT": 47,
-   "VERIFIED_PIPE_ATTACHMENT": 49
+   "AMBIGUOUS_PIPE_ATTACHMENT": 23,
+   "NO_PIPE_ATTACHMENT": 45,
+   "VERIFIED_PIPE_ATTACHMENT": 59
   },
   "pipe_families": {
    "V-52B--FE-_Vxx-KV|s|w1.44": "fragmented-dashed",
@@ -18,7 +18,6 @@
    "V-52B--FE-_Vxx-VV|s|w1.44": "fragmented-dashed",
    "V-52B--FE-_Vxx-|s|w0.96": "continuous",
    "V-52BB-FE-_KV02-KV|s|w0.48": "fragmented-dashed",
-   "V-53BB--T-_SFxx|s|w0.72": "continuous",
    "V-53BB-FE-_SFxx|s|w2.28": "fragmented-dashed",
    "V-53BBBFE-_Sxx|s|w2.28": "fragmented-dashed",
    "V-56B--FE-_VPxx-|s|w1.44": "fragmented-dashed",
@@ -28,28 +27,28 @@
    "V-56B--FE-_VS1x-|s|w1.44": "fragmented-dashed"
   },
   "ownership": {
-   "UNOWNED": 4065,
-   "CONFIRMED": 966,
-   "AMBIGUOUS": 101
+   "UNOWNED": 3774,
+   "CONFIRMED": 1238,
+   "AMBIGUOUS": 104
   },
-  "physical_pipes": 58,
+  "physical_pipes": 68,
   "scale": "VERIFIED",
-  "confirmed_horizontal_m": 137.08,
-  "ambiguous_m": 6.1,
+  "confirmed_horizontal_m": 178.44,
+  "ambiguous_m": 6.17,
   "timings_ms": {
-   "profile_ms": 179,
-   "text_ms": 14316,
-   "designation_ms": 647,
+   "profile_ms": 148,
+   "text_ms": 12876,
+   "designation_ms": 351,
    "leader_ms": 0,
-   "leader_attachment_ms": 5784,
+   "leader_attachment_ms": 6297,
    "topology_ms": 0,
-   "physical_pipes_ms": 48,
-   "measurement_ms": 89,
-   "text_components_ms": 749,
-   "text_rows_ms": 987,
-   "text_raster_ms": 3518,
-   "text_classify_ms": 8894,
-   "text_assemble_ms": 71
+   "physical_pipes_ms": 41,
+   "measurement_ms": 74,
+   "text_components_ms": 649,
+   "text_rows_ms": 842,
+   "text_raster_ms": 2981,
+   "text_classify_ms": 8039,
+   "text_assemble_ms": 82
   }
  },
  "determinism": "PASS",
@@ -84,5 +83,5 @@
   "analysis-report.md": "/home/user/vvs5/results/B/analysis-report.md",
   "freeze-manifest.json": "/home/user/vvs5/results/B/freeze-manifest.json"
  },
- "total_seconds": 86.35
+ "total_seconds": 85.95
 }

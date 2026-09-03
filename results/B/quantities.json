@@ -200,6 +200,27 @@
    "vertical_m": "UNKNOWN"
   },
   {
+   "designation": "SF01-P3",
+   "base": "SF01-P3",
+   "dn": 75,
+   "system": "SF01",
+   "physical_pipe_count": 4,
+   "confirmed_horizontal_m": 1.234,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 1.234,
+   "horizontal_pdf_units": 69.316,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_3517557848c1",
+    "pp_4367170c9724",
+    "pp_ae5ea2032598",
+    "pp_d2c8ddd4b396"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
    "designation": "SF01-P5-110",
    "base": "SF01-P5",
    "dn": 110,
@@ -241,17 +262,18 @@
    "base": "SF01-P5",
    "dn": 75,
    "system": "SF01",
-   "physical_pipe_count": 7,
-   "confirmed_horizontal_m": 4.244,
+   "physical_pipe_count": 8,
+   "confirmed_horizontal_m": 5.215,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 4.244,
-   "horizontal_pdf_units": 238.341,
+   "confirmed_total_m": 5.215,
+   "horizontal_pdf_units": 292.895,
    "ambiguous_m": 2.75,
    "vertical_known": false,
    "state": "CONFIRMED",
    "pipe_ids": [
     "pp_0576df2e9e47",
     "pp_4ffcf81281a3",
+    "pp_5883ce7bc9a4",
     "pp_598af2802ada",
     "pp_77f7a246d2b6",
     "pp_b099a301d659",
@@ -416,16 +438,35 @@
    "base": "VV01-X7-F60",
    "dn": 32,
    "system": "VV01",
-   "physical_pipe_count": 1,
-   "confirmed_horizontal_m": 0.414,
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 0.701,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 0.414,
-   "horizontal_pdf_units": 23.238,
+   "confirmed_total_m": 0.701,
+   "horizontal_pdf_units": 39.389,
    "ambiguous_m": 0.0,
    "vertical_known": false,
    "state": "CONFIRMED",
    "pipe_ids": [
-    "pp_58d20feb0cc0"
+    "pp_58d20feb0cc0",
+    "pp_eb00b296c76d"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VV01-X7-40-F60",
+   "base": "VV01-X7-F60",
+   "dn": 40,
+   "system": "VV01",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 16.987,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 16.987,
+   "horizontal_pdf_units": 954.014,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_31c84a7d3f13"
    ],
    "vertical_m": "UNKNOWN"
   },
@@ -434,26 +475,46 @@
    "base": "VVC01-X7",
    "dn": 20,
    "system": "VVC01",
-   "physical_pipe_count": 2,
-   "confirmed_horizontal_m": 2.545,
+   "physical_pipe_count": 4,
+   "confirmed_horizontal_m": 7.111,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 2.545,
-   "horizontal_pdf_units": 142.928,
-   "ambiguous_m": 0.216,
+   "confirmed_total_m": 7.111,
+   "horizontal_pdf_units": 399.349,
+   "ambiguous_m": 0.288,
    "vertical_known": false,
    "state": "CONFIRMED",
    "pipe_ids": [
     "pp_32a524223a9d",
-    "pp_4ac536bd0345"
+    "pp_49fa4e166420",
+    "pp_4ac536bd0345",
+    "pp_d48f22b03eb9"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VVC01-X7-32",
+   "base": "VVC01-X7",
+   "dn": 32,
+   "system": "VVC01",
+   "physical_pipe_count": 1,
+   "confirmed_horizontal_m": 17.317,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 17.317,
+   "horizontal_pdf_units": 972.546,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_1665f968f7b6"
    ],
    "vertical_m": "UNKNOWN"
   }
  ],
  "totals": {
-  "physical_pipes": 58,
-  "confirmed_horizontal_m": 137.083,
+  "physical_pipes": 68,
+  "confirmed_horizontal_m": 178.445,
   "confirmed_vertical_m": 0.1,
-  "confirmed_total_m": 137.183,
-  "ambiguous_m": 6.097
+  "confirmed_total_m": 178.545,
+  "ambiguous_m": 6.169
  }
 }

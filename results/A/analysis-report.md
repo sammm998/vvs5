@@ -2,14 +2,14 @@
 
 ## Status
 - designations: 143 (with DN 122)
-- actual CAD leaders: 202 (from designation blocks: 148)
+- actual CAD leaders: 201 (from designation blocks: 147)
 - pipe attachments: verified 103, ambiguous 0, none 25
 - physical pipes: 37
 - scale: VERIFIED (scale_text_and_scale_bar_agree)
 - reconciliation: VALID (raw 10782.459 pt = confirmed 7498.154 + ambiguous 165.723 + unowned 3118.582)
 - determinism: PASS
 - contamination: PASS
-- runtime: 52.2 s
+- runtime: 50.9 s
 
 ## Quantities (confirmed only; ambiguous reported separately)
 | Beteckning | DN | Antal | Horisontellt m | Vertikalt m | Totalt m | Tvetydigt m | Status |

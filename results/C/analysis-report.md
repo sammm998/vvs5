@@ -3,13 +3,13 @@
 ## Status
 - designations: 45 (with DN 36)
 - actual CAD leaders: 19 (from designation blocks: 14)
-- pipe attachments: verified 17, ambiguous 0, none 9
-- physical pipes: 21
+- pipe attachments: verified 23, ambiguous 0, none 3
+- physical pipes: 27
 - scale: VERIFIED (scale_text_and_scale_bar_agree)
-- reconciliation: VALID (raw 8448.6 pt = confirmed 2633.247 + ambiguous 193.159 + unowned 5622.194)
+- reconciliation: VALID (raw 8448.6 pt = confirmed 3831.119 + ambiguous 193.159 + unowned 4424.322)
 - determinism: PASS
 - contamination: PASS
-- runtime: 37.0 s
+- runtime: 36.5 s
 
 ## Quantities (confirmed only; ambiguous reported separately)
 | Beteckning | DN | Antal | Horisontellt m | Vertikalt m | Totalt m | Tvetydigt m | Status |
@@ -21,14 +21,16 @@
 | VS21-S13 | 15 | 3 | 1.67 | UNKNOWN | 1.67 | 1.78 | CONFIRMED |
 | VS31-S13-28-F60 | 28 | 6 | 13.66 | UNKNOWN | 13.66 | 0.00 | CONFIRMED |
 | VS31-X32 | 25 | 1 | 0.43 | UNKNOWN | 0.43 | 0.00 | CONFIRMED |
+| VV01-X7-40-F60 | 40 | 3 | 14.12 | UNKNOWN | 14.12 | 0.00 | CONFIRMED |
+| VVC01-X7-32 | 32 | 3 | 15.75 | UNKNOWN | 15.75 | 0.00 | CONFIRMED |
 
-Totals: confirmed horizontal 63.93 m, ambiguous 3.44 m, unowned pipe geometry 100.11 m
+Totals: confirmed horizontal 93.80 m, ambiguous 3.44 m, unowned pipe geometry 78.78 m
 
 ## Unresolved
 - unknown_glyph: 65
 - missing_dn: 9
 - missing_leader: 19
-- missing_pipe_attachment: 9
+- missing_pipe_attachment: 3
 - unowned_geometry: 7
 - branch_conflict: 2
 

@@ -8,41 +8,41 @@
   "leaders": 19,
   "designation_leaders": 14,
   "anchors": {
-   "NO_PIPE_ATTACHMENT": 9,
-   "VERIFIED_PIPE_ATTACHMENT": 17
+   "NO_PIPE_ATTACHMENT": 3,
+   "VERIFIED_PIPE_ATTACHMENT": 23
   },
   "pipe_families": {
    "V-52B--FE-_Vxx-KV|s|w1.44": "fragmented-dashed",
+   "V-52B--FE-_Vxx-VVCXX|s|w1.44": "fragmented-dashed",
+   "V-52B--FE-_Vxx-VV|s|w1.44": "fragmented-dashed",
    "V-53BBBFE-_Sxx|s|w2.88": "fragmented-dashed",
    "V-56B--FE-_VPxx-|s|w1.44": "fragmented-dashed",
    "V-56B--FE-_VS2x-|s|w1.44": "fragmented-dashed",
-   "V-56B--FE-_VS3x-|s|w1.44": "fragmented-dashed",
-   "V-52B--FE-_Vxx-VVCXX|s|w1.44": "fragmented-dashed",
-   "V-52B--FE-_Vxx-VV|s|w1.44": "fragmented-dashed"
+   "V-56B--FE-_VS3x-|s|w1.44": "fragmented-dashed"
   },
   "ownership": {
-   "UNOWNED": 1010,
-   "CONFIRMED": 453,
+   "UNOWNED": 820,
+   "CONFIRMED": 643,
    "AMBIGUOUS": 54
   },
-  "physical_pipes": 21,
+  "physical_pipes": 27,
   "scale": "VERIFIED",
-  "confirmed_horizontal_m": 63.93,
+  "confirmed_horizontal_m": 93.8,
   "ambiguous_m": 3.44,
   "timings_ms": {
-   "profile_ms": 88,
-   "text_ms": 7850,
-   "designation_ms": 166,
+   "profile_ms": 82,
+   "text_ms": 7983,
+   "designation_ms": 139,
    "leader_ms": 0,
-   "leader_attachment_ms": 1297,
+   "leader_attachment_ms": 1445,
    "topology_ms": 0,
    "physical_pipes_ms": 11,
-   "measurement_ms": 17,
-   "text_components_ms": 296,
-   "text_rows_ms": 467,
-   "text_raster_ms": 1613,
-   "text_classify_ms": 5391,
-   "text_assemble_ms": 40
+   "measurement_ms": 16,
+   "text_components_ms": 282,
+   "text_rows_ms": 518,
+   "text_raster_ms": 1696,
+   "text_classify_ms": 5366,
+   "text_assemble_ms": 69
   }
  },
  "determinism": "PASS",
@@ -77,5 +77,5 @@
   "analysis-report.md": "/home/user/vvs5/results/C/analysis-report.md",
   "freeze-manifest.json": "/home/user/vvs5/results/C/freeze-manifest.json"
  },
- "total_seconds": 37.04
+ "total_seconds": 36.53
 }

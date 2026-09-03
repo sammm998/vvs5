@@ -1450,7 +1450,7 @@
    "lid": "ldr_273fff3a4241",
    "page": 0,
    "block_id": "blk_d8187a12f0de",
-   "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.48",
+   "family": "straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.48",
    "source_paths": [
     "path_4f6c143b04cc"
    ],
@@ -1481,7 +1481,9 @@
    "n_segments": 1,
    "n_bends": 0,
    "length": 91.37,
-   "end_marks": [],
+   "end_marks": [
+    "mark_98a2f07d7db0"
+   ],
    "crossing_marks": [],
    "truncated_reason": null
   },
@@ -2847,7 +2849,7 @@
    "lid": "ldr_4bc7d5e16faa",
    "page": 0,
    "block_id": "blk_a9d612fe94fb",
-   "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.48",
+   "family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.48",
    "source_paths": [
     "path_26adfac00c29"
    ],
@@ -2878,7 +2880,9 @@
    "n_segments": 1,
    "n_bends": 0,
    "length": 71.17,
-   "end_marks": [],
+   "end_marks": [
+    "mark_98a2f07d7db0"
+   ],
    "crossing_marks": [],
    "truncated_reason": null
   },
@@ -3000,7 +3004,9 @@
    "n_bends": 0,
    "length": 52.44,
    "end_marks": [
-    "mark_681767d2048f"
+    "mark_2401b7fd360d",
+    "mark_681767d2048f",
+    "mark_e12e059e1821"
    ],
    "crossing_marks": [],
    "truncated_reason": null
@@ -3577,7 +3583,9 @@
    "n_bends": 1,
    "length": 70.35,
    "end_marks": [
-    "mark_681767d2048f"
+    "mark_2401b7fd360d",
+    "mark_681767d2048f",
+    "mark_e12e059e1821"
    ],
    "crossing_marks": [
     "mark_5b3550d9a204",
@@ -6340,45 +6348,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_c32aab92c4b0",
-   "page": 0,
-   "block_id": "blk_365f4297de30",
-   "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_82ff34306d5c"
-   ],
-   "segment_ids": [
-    "path_82ff34306d5c#0"
-   ],
-   "points": [
-    [
-     996.36,
-     797.32
-    ],
-    [
-     988.44,
-     792.52
-    ]
-   ],
-   "start": [
-    996.36,
-    797.32
-   ],
-   "end": [
-    988.44,
-    792.52
-   ],
-   "start_type": "underline_end",
-   "layer": "268140-W-50-P-A-00|V-53BB--T--S3--",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 9.26,
-   "end_marks": [],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_c82370f046a7",
    "page": 0,
    "block_id": "blk_62f427a280b8",
@@ -7398,7 +7367,7 @@
    "lid": "ldr_dec8ccd1345b",
    "page": 0,
    "block_id": "blk_08291b7e38f0",
-   "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.48",
+   "family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.48",
    "source_paths": [
     "path_8078250a1e16"
    ],
@@ -7429,7 +7398,9 @@
    "n_segments": 1,
    "n_bends": 0,
    "length": 90.25,
-   "end_marks": [],
+   "end_marks": [
+    "mark_aa90ece76fde"
+   ],
    "crossing_marks": [],
    "truncated_reason": null
   },

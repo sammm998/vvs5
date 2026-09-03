@@ -1921,17 +1921,6 @@
   },
   {
    "kind": "missing_leader",
-   "text": "SF01-P5",
-   "bbox": [
-    1431.9599609375,
-    1303.6578369140625,
-    1466.6798095703125,
-    1314.652099609375
-   ],
-   "id": "des_004ed94f8bd2"
-  },
-  {
-   "kind": "missing_leader",
    "text": "SF01-P5-75",
    "bbox": [
     1337.8800048828125,
@@ -1940,28 +1929,6 @@
     1343.692138671875
    ],
    "id": "des_05672fa41585"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "A01-033",
-   "bbox": [
-    1392.135009765625,
-    975.2302856445312,
-    1428.23291015625,
-    999.8936767578125
-   ],
-   "id": "des_0de3782e9ce0"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "SF01-P3",
-   "bbox": [
-    841.4400024414062,
-    1438.4178466796875,
-    876.1599731445312,
-    1449.412109375
-   ],
-   "id": "des_0f2c2b734498"
   },
   {
    "kind": "missing_leader",
@@ -1976,17 +1943,6 @@
   },
   {
    "kind": "missing_leader",
-   "text": "SF01-P3",
-   "bbox": [
-    918.239990234375,
-    1088.3779296875,
-    952.9600219726562,
-    1099.3721923828125
-   ],
-   "id": "des_12181b4635cc"
-  },
-  {
-   "kind": "missing_leader",
    "text": "KV01-X7-32-W40",
    "bbox": [
     1575.2462158203125,
@@ -1995,17 +1951,6 @@
     1124.9151611328125
    ],
    "id": "des_18600d39c06f"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "SF01-P3",
-   "bbox": [
-    1020.47998046875,
-    1163.617919921875,
-    1055.1998291015625,
-    1174.6121826171875
-   ],
-   "id": "des_2082e6d90b41"
   },
   {
    "kind": "missing_leader",
@@ -2028,17 +1973,6 @@
     1173.8800048828125
    ],
    "id": "des_275d07fad138"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "SF01-P3",
-   "bbox": [
-    1237.446044921875,
-    622.6788330078125,
-    1273.4688720703125,
-    647.7952270507812
-   ],
-   "id": "des_322f5e947932"
   },
   {
    "kind": "missing_leader",
@@ -2127,17 +2061,6 @@
     1226.9307861328125
    ],
    "id": "des_57b61ccc3573"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "SF01-P3",
-   "bbox": [
-    1342.199951171875,
-    1232.3778076171875,
-    1376.919921875,
-    1243.3720703125
-   ],
-   "id": "des_61992fa00972"
   },
   {
    "kind": "missing_leader",
@@ -2361,17 +2284,6 @@
   },
   {
    "kind": "missing_leader",
-   "text": "S01-P3",
-   "bbox": [
-    327.9599914550781,
-    475.6578063964844,
-    357.72149658203125,
-    486.652099609375
-   ],
-   "id": "des_cc30b7e7618f"
-  },
-  {
-   "kind": "missing_leader",
    "text": "KV01-X31",
    "bbox": [
     2150.351318359375,
@@ -2461,6 +2373,18 @@
   },
   {
    "kind": "missing_pipe_attachment",
+   "text": "SF01-P5",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1022.199951171875,
+    1529.8399658203125,
+    1032.199951171875,
+    1539.8399658203125
+   ],
+   "id": "anc_050797a39351"
+  },
+  {
+   "kind": "missing_pipe_attachment",
    "text": "VP01-S13-42-F60",
    "reason": "leader_endpoint_touches_no_pipe_geometry",
    "bbox": [
@@ -2485,18 +2409,6 @@
   },
   {
    "kind": "missing_pipe_attachment",
-   "text": "VVC01-X7-32",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    342.6399841308594,
-    721.6400146484375,
-    352.6399841308594,
-    731.6400146484375
-   ],
-   "id": "anc_0e289c9c16c9"
-  },
-  {
-   "kind": "missing_pipe_attachment",
    "text": "VV01-X7-25-F60",
    "reason": "multi_row_no_compatible_layer_group",
    "bbox": [
@@ -2509,8 +2421,20 @@
   },
   {
    "kind": "missing_pipe_attachment",
+   "text": "A01-033",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1455.2799072265625,
+    1028.0,
+    1465.2799072265625,
+    1038.0
+   ],
+   "id": "anc_166b50a5ef1a"
+  },
+  {
+   "kind": "ambiguous_pipe_attachment",
    "text": "VVC01-X7-20",
-   "reason": "multi_row_no_compatible_layer_group",
+   "reason": "multi_row_token_match_not_unique",
    "bbox": [
     1290.6400146484375,
     902.4800415039062,
@@ -2592,9 +2516,9 @@
    "id": "anc_28481d2eddfb"
   },
   {
-   "kind": "missing_pipe_attachment",
+   "kind": "ambiguous_pipe_attachment",
    "text": "VV01-X7-40-F60",
-   "reason": "multi_row_no_compatible_layer_group",
+   "reason": "multi_row_token_match_not_unique",
    "bbox": [
     1290.6400146484375,
     902.4800415039062,
@@ -2638,6 +2562,18 @@
     1400.1600341796875
    ],
    "id": "anc_3da2dd39f1d5"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "A01-038",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1522.239990234375,
+    1139.239990234375,
+    1532.239990234375,
+    1149.239990234375
+   ],
+   "id": "anc_3deea8d48316"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -2736,18 +2672,6 @@
    "id": "anc_524a75b95395"
   },
   {
-   "kind": "missing_pipe_attachment",
-   "text": "VVC01-X7-20",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    870.8800048828125,
-    1043.0,
-    880.8800048828125,
-    1053.0
-   ],
-   "id": "anc_55085c73c9b5"
-  },
-  {
    "kind": "ambiguous_pipe_attachment",
    "text": "AV601-22",
    "reason": "system_conflict:layer_matches_VS31_not_AV601",
@@ -2796,6 +2720,18 @@
    "id": "anc_6193daebde1e"
   },
   {
+   "kind": "missing_pipe_attachment",
+   "text": "SF01-P5",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1522.239990234375,
+    1139.239990234375,
+    1532.239990234375,
+    1149.239990234375
+   ],
+   "id": "anc_64ccfa60e1c7"
+  },
+  {
    "kind": "ambiguous_pipe_attachment",
    "text": "KV01-X7-25-W40",
    "reason": "multi_row_token_match_not_unique",
@@ -2806,6 +2742,18 @@
     1387.9200439453125
    ],
    "id": "anc_6702d001d853"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S01-P3",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    263.0799865722656,
+    442.0400390625,
+    273.0799865722656,
+    452.0400390625
+   ],
+   "id": "anc_68bdd993f06c"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -2928,9 +2876,9 @@
    "id": "anc_866e39791ee8"
   },
   {
-   "kind": "missing_pipe_attachment",
+   "kind": "ambiguous_pipe_attachment",
    "text": "VV01-X7-32-F60",
-   "reason": "multi_row_no_compatible_layer_group",
+   "reason": "multi_row_token_match_not_unique",
    "bbox": [
     1290.6400146484375,
     902.4800415039062,
@@ -2938,6 +2886,18 @@
     912.4800415039062
    ],
    "id": "anc_89829b01673c"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "SF01-P3",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1324.47998046875,
+    626.47998046875,
+    1334.47998046875,
+    636.47998046875
+   ],
+   "id": "anc_89f0512d8b86"
   },
   {
    "kind": "ambiguous_pipe_attachment",
@@ -2964,9 +2924,9 @@
    "id": "anc_8d88d02474a5"
   },
   {
-   "kind": "missing_pipe_attachment",
+   "kind": "ambiguous_pipe_attachment",
    "text": "VVC01-X7-32",
-   "reason": "multi_row_no_compatible_layer_group",
+   "reason": "multi_row_token_match_not_unique",
    "bbox": [
     1290.6400146484375,
     902.4800415039062,
@@ -2974,18 +2934,6 @@
     912.4800415039062
    ],
    "id": "anc_8ff008f1ade7"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "VV01-X7-32-F60",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    1279.9599609375,
-    907.6400146484375,
-    1289.9599609375,
-    917.6400146484375
-   ],
-   "id": "anc_906255b18ceb"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -3010,18 +2958,6 @@
     1398.47998046875
    ],
    "id": "anc_973bf68ef071"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "VV01-X7-40-F60",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    342.6399841308594,
-    721.6400146484375,
-    352.6399841308594,
-    731.6400146484375
-   ],
-   "id": "anc_9895dfa68ae5"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -3120,18 +3056,6 @@
    "id": "anc_b656d408e40c"
   },
   {
-   "kind": "missing_pipe_attachment",
-   "text": "VVC01-X7-20",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    1279.9599609375,
-    907.6400146484375,
-    1289.9599609375,
-    917.6400146484375
-   ],
-   "id": "anc_bcd01b0e7b71"
-  },
-  {
    "kind": "ambiguous_pipe_attachment",
    "text": "VV01-X7-25-F60",
    "reason": "multi_row_token_match_not_unique",
@@ -3178,6 +3102,18 @@
     1414.199951171875
    ],
    "id": "anc_d8161549e71f"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "SF01-P5",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1022.199951171875,
+    1529.8399658203125,
+    1032.199951171875,
+    1539.8399658203125
+   ],
+   "id": "anc_def211ad01bb"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -3282,20 +3218,20 @@
   {
    "kind": "branch_conflict",
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
-   "count": 5,
+   "count": 8,
    "bbox": [
-    1286.43994140625,
-    1435.52001953125,
-    1296.43994140625,
-    1445.4000244140625
+    746.4400024414062,
+    1022.719970703125,
+    756.3200073242188,
+    1032.719970703125
    ],
    "id": "branch:V-52B--FE-_Vxx-VVCXX|s|w1.44"
   },
   {
    "kind": "unowned_geometry",
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
-   "count": 425,
-   "length_pt": 2311.7,
+   "count": 274,
+   "length_pt": 1432.8,
    "bbox": [
     1372.8399658203125,
     1008.9200439453125,
@@ -3319,8 +3255,8 @@
   {
    "kind": "unowned_geometry",
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
-   "count": 925,
-   "length_pt": 4220.3,
+   "count": 820,
+   "length_pt": 3531.7,
    "bbox": [
     1190.7999267578125,
     1187.719970703125,
@@ -3356,19 +3292,6 @@
    "id": "unowned:V-52BB-FE-_KV02-KV|s|w0.48"
   },
   {
-   "kind": "unowned_geometry",
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "count": 16,
-   "length_pt": 783.1,
-   "bbox": [
-    1404.6400146484375,
-    1192.8800048828125,
-    1383.5599365234375,
-    1248.1199951171875
-   ],
-   "id": "unowned:V-53BB--T-_SFxx|s|w0.72"
-  },
-  {
    "kind": "branch_conflict",
    "family": "V-53BB-FE-_SFxx|s|w2.28",
    "count": 22,
@@ -3383,8 +3306,8 @@
   {
    "kind": "unowned_geometry",
    "family": "V-53BB-FE-_SFxx|s|w2.28",
-   "count": 283,
-   "length_pt": 1483.0,
+   "count": 264,
+   "length_pt": 1373.4,
    "bbox": [
     1310.5599365234375,
     1213.760009765625,

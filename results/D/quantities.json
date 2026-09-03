@@ -1,10 +1,35 @@
 {
  "scale": {
-  "meters_per_pdf_point": null,
-  "scope": "none",
-  "state": "NONE",
-  "reason": "no_scale_evidence_found",
-  "evidence": []
+  "meters_per_pdf_point": 0.14116320207436844,
+  "scope": "page",
+  "state": "BAR_ONLY",
+  "reason": "vector_scale_bar_only",
+  "evidence": [
+   {
+    "kind": "scale_bar",
+    "text": "0 5 10 20 30",
+    "bbox": [
+     1741.0,
+     1617.7,
+     1961.0,
+     1626.7
+    ],
+    "meters_per_pt": 0.14116320207436844,
+    "detail": {
+     "labels": [
+      0,
+      5,
+      10,
+      20,
+      30
+     ],
+     "span_pt": 212.52,
+     "unit": "m",
+     "implied_ratio": 400.1,
+     "n_labels": 5
+    }
+   }
+  ]
  },
  "rows": [],
  "totals": {

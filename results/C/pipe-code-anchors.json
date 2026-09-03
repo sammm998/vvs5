@@ -215,20 +215,41 @@
     635.28,
     1091.92
    ],
-   "state": "NO_PIPE_ATTACHMENT",
-   "reason": "multi_row_no_compatible_layer_group",
-   "contacts": [],
-   "raw_pipe_source_paths": [],
-   "raw_pipe_segments": [],
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "reason": "multi_row_layer_token_bijection",
+   "contacts": [
+    {
+     "point": [
+      635.34,
+      1041.22
+     ],
+     "kind": "crossing_tick",
+     "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+     "pid": "path_b4f8bf9971e5",
+     "seg_index": 0,
+     "distance": 0.306,
+     "mark_id": "mark_30132a77e56b",
+     "via": null
+    }
+   ],
+   "raw_pipe_source_paths": [
+    "path_b4f8bf9971e5"
+   ],
+   "raw_pipe_segments": [
+    "path_b4f8bf9971e5#0"
+   ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 4,
-    "n_groups": 2,
+    "n_groups": 4,
     "leader_family": "split-path|vertical|box_corner|end-tick|crossing-ticks|w0.72",
-    "row_index": 2
+    "row_index": 2,
+    "layer_token_match": "V-52B--FE-_Vxx-VVCXX|s|w1.44"
    }
   },
   {
@@ -339,12 +360,14 @@
    ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "bent|vertical|underline_end|end-tick|crossing-ticks|w0.72",
     "row_index": 4,
     "layer_token_match": "V-56B--FE-_VS3x-|s|w1.44"
@@ -433,21 +456,42 @@
     1194.0,
     867.76
    ],
-   "state": "NO_PIPE_ATTACHMENT",
-   "reason": "multi_row_no_compatible_layer_group",
-   "contacts": [],
-   "raw_pipe_source_paths": [],
-   "raw_pipe_segments": [],
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "reason": "multi_row_layer_token_bijection",
+   "contacts": [
+    {
+     "point": [
+      1193.94,
+      809.08
+     ],
+     "kind": "crossing_tick",
+     "family": "V-52B--FE-_Vxx-VV|s|w1.44",
+     "pid": "path_0a5245fb233a",
+     "seg_index": 0,
+     "distance": 0.016,
+     "mark_id": "mark_813059b502f5",
+     "via": null
+    }
+   ],
+   "raw_pipe_source_paths": [
+    "path_0a5245fb233a"
+   ],
+   "raw_pipe_segments": [
+    "path_0a5245fb233a#0"
+   ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "bent|vertical|underline_end|end-tick|crossing-ticks|w0.72",
-    "row_index": 1
+    "row_index": 1,
+    "layer_token_match": "V-52B--FE-_Vxx-VV|s|w1.44"
    }
   },
   {
@@ -571,11 +615,13 @@
    ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 4,
-    "n_groups": 2,
+    "n_groups": 4,
     "leader_family": "split-path|vertical|box_corner|end-tick|crossing-ticks|w0.72",
     "row_index": 3,
     "layer_token_match": "V-56B--FE-_VPxx-|s|w1.44"
@@ -623,12 +669,14 @@
    ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "bent|vertical|underline_end|end-tick|crossing-ticks|w0.72",
     "row_index": 3,
     "layer_token_match": "V-56B--FE-_VPxx-|s|w1.44"
@@ -676,11 +724,13 @@
    ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 4,
-    "n_groups": 2,
+    "n_groups": 4,
     "leader_family": "split-path|vertical|box_corner|end-tick|crossing-ticks|w0.72",
     "row_index": 0,
     "layer_token_match": "V-52B--FE-_Vxx-KV|s|w1.44"
@@ -728,12 +778,14 @@
    ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "split-path|diagonal|underline_end|end-tick|crossing-ticks|w0.72",
     "row_index": 0,
     "layer_token_match": "V-52B--FE-_Vxx-KV|s|w1.44"
@@ -847,12 +899,14 @@
    ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "split-path|diagonal|underline_end|end-tick|crossing-ticks|w0.72",
     "row_index": 4,
     "layer_token_match": "V-56B--FE-_VS3x-|s|w1.44"
@@ -941,21 +995,42 @@
     1194.0,
     867.76
    ],
-   "state": "NO_PIPE_ATTACHMENT",
-   "reason": "multi_row_no_compatible_layer_group",
-   "contacts": [],
-   "raw_pipe_source_paths": [],
-   "raw_pipe_segments": [],
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "reason": "multi_row_layer_token_bijection",
+   "contacts": [
+    {
+     "point": [
+      1193.94,
+      811.24
+     ],
+     "kind": "crossing_tick",
+     "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+     "pid": "path_fc4d89873d6e",
+     "seg_index": 0,
+     "distance": 0.064,
+     "mark_id": "mark_738da372fa9b",
+     "via": null
+    }
+   ],
+   "raw_pipe_source_paths": [
+    "path_fc4d89873d6e"
+   ],
+   "raw_pipe_segments": [
+    "path_fc4d89873d6e#0"
+   ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "bent|vertical|underline_end|end-tick|crossing-ticks|w0.72",
-    "row_index": 2
+    "row_index": 2,
+    "layer_token_match": "V-52B--FE-_Vxx-VVCXX|s|w1.44"
    }
   },
   {
@@ -975,20 +1050,41 @@
     635.28,
     1091.92
    ],
-   "state": "NO_PIPE_ATTACHMENT",
-   "reason": "multi_row_no_compatible_layer_group",
-   "contacts": [],
-   "raw_pipe_source_paths": [],
-   "raw_pipe_segments": [],
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "reason": "multi_row_layer_token_bijection",
+   "contacts": [
+    {
+     "point": [
+      635.34,
+      1039.18
+     ],
+     "kind": "crossing_tick",
+     "family": "V-52B--FE-_Vxx-VV|s|w1.44",
+     "pid": "path_ed5a4d574de6",
+     "seg_index": 0,
+     "distance": 0.06,
+     "mark_id": "mark_074f02a9de6a",
+     "via": null
+    }
+   ],
+   "raw_pipe_source_paths": [
+    "path_ed5a4d574de6"
+   ],
+   "raw_pipe_segments": [
+    "path_ed5a4d574de6#0"
+   ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 4,
-    "n_groups": 2,
+    "n_groups": 4,
     "leader_family": "split-path|vertical|box_corner|end-tick|crossing-ticks|w0.72",
-    "row_index": 1
+    "row_index": 1,
+    "layer_token_match": "V-52B--FE-_Vxx-VV|s|w1.44"
    }
   },
   {
@@ -1059,21 +1155,42 @@
     1386.96,
     727.36
    ],
-   "state": "NO_PIPE_ATTACHMENT",
-   "reason": "multi_row_no_compatible_layer_group",
-   "contacts": [],
-   "raw_pipe_source_paths": [],
-   "raw_pipe_segments": [],
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "reason": "multi_row_layer_token_bijection",
+   "contacts": [
+    {
+     "point": [
+      1390.68,
+      737.44
+     ],
+     "kind": "crossing_tick",
+     "family": "V-52B--FE-_Vxx-VV|s|w1.44",
+     "pid": "path_738e58556d52",
+     "seg_index": 0,
+     "distance": 0.016,
+     "mark_id": "mark_90050f8869df",
+     "via": null
+    }
+   ],
+   "raw_pipe_source_paths": [
+    "path_738e58556d52"
+   ],
+   "raw_pipe_segments": [
+    "path_738e58556d52#0"
+   ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "split-path|diagonal|underline_end|end-tick|crossing-ticks|w0.72",
-    "row_index": 1
+    "row_index": 1,
+    "layer_token_match": "V-52B--FE-_Vxx-VV|s|w1.44"
    }
   },
   {
@@ -1133,12 +1250,14 @@
    ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "split-path|diagonal|underline_end|end-tick|crossing-ticks|w0.72",
     "row_index": 3,
     "layer_token_match": "V-56B--FE-_VPxx-|s|w1.44"
@@ -1252,12 +1371,14 @@
    ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "bent|vertical|underline_end|end-tick|crossing-ticks|w0.72",
     "row_index": 0,
     "layer_token_match": "V-52B--FE-_Vxx-KV|s|w1.44"
@@ -1280,21 +1401,42 @@
     1386.96,
     727.36
    ],
-   "state": "NO_PIPE_ATTACHMENT",
-   "reason": "multi_row_no_compatible_layer_group",
-   "contacts": [],
-   "raw_pipe_source_paths": [],
-   "raw_pipe_segments": [],
+   "state": "VERIFIED_PIPE_ATTACHMENT",
+   "reason": "multi_row_layer_token_bijection",
+   "contacts": [
+    {
+     "point": [
+      1391.34,
+      739.36
+     ],
+     "kind": "crossing_tick",
+     "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+     "pid": "path_d6eba1153dc6",
+     "seg_index": 0,
+     "distance": 0.016,
+     "mark_id": "mark_af5dba343285",
+     "via": null
+    }
+   ],
+   "raw_pipe_source_paths": [
+    "path_d6eba1153dc6"
+   ],
+   "raw_pipe_segments": [
+    "path_d6eba1153dc6#0"
+   ],
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
+    "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+    "V-52B--FE-_Vxx-VV|s|w1.44",
     "V-56B--FE-_VPxx-|s|w1.44",
     "V-56B--FE-_VS3x-|s|w1.44"
    ],
    "evidence": {
     "n_rows": 5,
-    "n_groups": 3,
+    "n_groups": 5,
     "leader_family": "split-path|diagonal|underline_end|end-tick|crossing-ticks|w0.72",
-    "row_index": 2
+    "row_index": 2,
+    "layer_token_match": "V-52B--FE-_Vxx-VVCXX|s|w1.44"
    }
   }
  ]

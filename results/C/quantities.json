@@ -189,13 +189,53 @@
     "pp_114d293d0564"
    ],
    "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VV01-X7-40-F60",
+   "base": "VV01-X7-F60",
+   "dn": 40,
+   "system": "VV01",
+   "physical_pipe_count": 3,
+   "confirmed_horizontal_m": 14.115,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 14.115,
+   "horizontal_pdf_units": 792.716,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_22260dfc4968",
+    "pp_dd53170f138d",
+    "pp_f4d82ec2e409"
+   ],
+   "vertical_m": "UNKNOWN"
+  },
+  {
+   "designation": "VVC01-X7-32",
+   "base": "VVC01-X7",
+   "dn": 32,
+   "system": "VVC01",
+   "physical_pipe_count": 3,
+   "confirmed_horizontal_m": 15.752,
+   "confirmed_vertical_m": 0.0,
+   "confirmed_total_m": 15.752,
+   "horizontal_pdf_units": 884.656,
+   "ambiguous_m": 0.0,
+   "vertical_known": false,
+   "state": "CONFIRMED",
+   "pipe_ids": [
+    "pp_44244d228cce",
+    "pp_4db6ae0df7a7",
+    "pp_b0fd5cb3d97b"
+   ],
+   "vertical_m": "UNKNOWN"
   }
  ],
  "totals": {
-  "physical_pipes": 21,
-  "confirmed_horizontal_m": 63.932,
+  "physical_pipes": 27,
+  "confirmed_horizontal_m": 93.799,
   "confirmed_vertical_m": 0.5,
-  "confirmed_total_m": 64.432,
+  "confirmed_total_m": 94.299,
   "ambiguous_m": 3.439
  }
 }

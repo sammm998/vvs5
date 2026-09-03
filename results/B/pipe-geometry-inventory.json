@@ -13914,10 +13914,10 @@
    "x1": 321.6,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -13989,10 +13989,10 @@
    "x1": 862.44,
    "y1": 1036.72,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14004,10 +14004,10 @@
    "x1": 682.44,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14019,10 +14019,10 @@
    "x1": 914.64,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14304,10 +14304,10 @@
    "x1": 967.44,
    "y1": 739.48,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14364,10 +14364,10 @@
    "x1": 895.68,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14379,10 +14379,10 @@
    "x1": 249.84,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14394,10 +14394,10 @@
    "x1": 302.64,
    "y1": 739.48,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14409,10 +14409,10 @@
    "x1": 877.2,
    "y1": 1036.72,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14604,10 +14604,10 @@
    "x1": 972.12,
    "y1": 1036.84,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14619,10 +14619,10 @@
    "x1": 306.84,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14634,10 +14634,10 @@
    "x1": 496.8,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14664,10 +14664,10 @@
    "x1": 929.4,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14709,10 +14709,10 @@
    "x1": 763.2,
    "y1": 1036.72,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14769,10 +14769,10 @@
    "x1": 663.48,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14799,10 +14799,10 @@
    "x1": 420.84,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14844,10 +14844,10 @@
    "x1": 976.44,
    "y1": 1036.84,
    "length": 7.08,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14859,10 +14859,10 @@
    "x1": 990.6,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14874,10 +14874,10 @@
    "x1": 819.72,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14964,10 +14964,10 @@
    "x1": 435.6,
    "y1": 739.48,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14979,10 +14979,10 @@
    "x1": 1137.72,
    "y1": 739.48,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -14994,10 +14994,10 @@
    "x1": 1137.48,
    "y1": 739.48,
    "length": 0.24,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15009,10 +15009,10 @@
    "x1": 1137.24,
    "y1": 739.6,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15099,10 +15099,10 @@
    "x1": 591.72,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15114,10 +15114,10 @@
    "x1": 458.76,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15129,10 +15129,10 @@
    "x1": 1119.36,
    "y1": 739.6,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15159,10 +15159,10 @@
    "x1": 815.4,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15174,10 +15174,10 @@
    "x1": 724.68,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15264,10 +15264,10 @@
    "x1": 938.4,
    "y1": 1036.72,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15294,10 +15294,10 @@
    "x1": 820.2,
    "y1": 1036.72,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15309,10 +15309,10 @@
    "x1": 264.6,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15534,10 +15534,10 @@
    "x1": 283.56,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15549,10 +15549,10 @@
    "x1": 325.8,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15564,10 +15564,10 @@
    "x1": 587.52,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15579,10 +15579,10 @@
    "x1": 1005.36,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15624,10 +15624,10 @@
    "x1": 511.56,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15639,10 +15639,10 @@
    "x1": 416.52,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15714,10 +15714,10 @@
    "x1": 948.36,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15729,10 +15729,10 @@
    "x1": 1100.4,
    "y1": 739.6,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15804,10 +15804,10 @@
    "x1": 1062.36,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15819,10 +15819,10 @@
    "x1": 515.76,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15909,10 +15909,10 @@
    "x1": 211.92,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15924,10 +15924,10 @@
    "x1": 686.76,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15954,10 +15954,10 @@
    "x1": 838.68,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -15984,10 +15984,10 @@
    "x1": 230.88,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16164,10 +16164,10 @@
    "x1": 786.48,
    "y1": 1036.72,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16179,10 +16179,10 @@
    "x1": 701.52,
    "y1": 739.48,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16224,10 +16224,10 @@
    "x1": 900.48,
    "y1": 1036.72,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16254,10 +16254,10 @@
    "x1": 610.8,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16299,10 +16299,10 @@
    "x1": 1024.32,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16374,10 +16374,10 @@
    "x1": 753.36,
    "y1": 1036.72,
    "length": 7.08,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16449,10 +16449,10 @@
    "x1": 207.6,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16464,10 +16464,10 @@
    "x1": 568.56,
    "y1": 739.48,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16494,10 +16494,10 @@
    "x1": 344.88,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16524,10 +16524,10 @@
    "x1": 839.16,
    "y1": 1036.72,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16539,10 +16539,10 @@
    "x1": 1047.6,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16569,10 +16569,10 @@
    "x1": 753.12,
    "y1": 1036.72,
    "length": 0.24,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16584,10 +16584,10 @@
    "x1": 752.88,
    "y1": 1036.72,
    "length": 0.24,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16599,10 +16599,10 @@
    "x1": 752.76,
    "y1": 1036.6,
    "length": 0.17,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16614,10 +16614,10 @@
    "x1": 752.52,
    "y1": 1036.48,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16629,10 +16629,10 @@
    "x1": 752.4,
    "y1": 1036.24,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16644,10 +16644,10 @@
    "x1": 752.28,
    "y1": 1036.12,
    "length": 0.17,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16659,10 +16659,10 @@
    "x1": 752.28,
    "y1": 1035.88,
    "length": 0.24,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16674,10 +16674,10 @@
    "x1": 752.16,
    "y1": 1035.64,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16689,10 +16689,10 @@
    "x1": 752.16,
    "y1": 1028.8,
    "length": 6.84,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16704,10 +16704,10 @@
    "x1": 752.16,
    "y1": 1028.68,
    "length": 0.12,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "collinear_through_junction"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16719,10 +16719,10 @@
    "x1": 752.16,
    "y1": 1028.44,
    "length": 0.24,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "collinear_through_junction"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16734,10 +16734,10 @@
    "x1": 752.04,
    "y1": 1028.2,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "collinear_through_junction"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16749,10 +16749,10 @@
    "x1": 751.92,
    "y1": 1028.08,
    "length": 0.17,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "collinear_through_junction"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16764,10 +16764,10 @@
    "x1": 751.8,
    "y1": 1027.96,
    "length": 0.17,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "collinear_through_junction"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16779,10 +16779,10 @@
    "x1": 751.68,
    "y1": 1027.84,
    "length": 0.17,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "collinear_through_junction"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16794,10 +16794,10 @@
    "x1": 751.44,
    "y1": 1027.72,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "collinear_through_junction"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16809,10 +16809,12 @@
    "x1": 751.32,
    "y1": 1027.72,
    "length": 0.12,
-   "state": "UNOWNED",
+   "state": "AMBIGUOUS",
    "identity": null,
-   "candidates": [],
-   "reason": ""
+   "candidates": [
+    "VVC01-X7|DN20"
+   ],
+   "reason": "AMBIGUOUS_BRANCH"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16824,10 +16826,12 @@
    "x1": 751.08,
    "y1": 1027.72,
    "length": 0.24,
-   "state": "UNOWNED",
+   "state": "AMBIGUOUS",
    "identity": null,
-   "candidates": [],
-   "reason": ""
+   "candidates": [
+    "VVC01-X7|DN20"
+   ],
+   "reason": "AMBIGUOUS_BRANCH"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16839,10 +16843,10 @@
    "x1": 648.72,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16869,10 +16873,10 @@
    "x1": 439.8,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16884,10 +16888,10 @@
    "x1": 762.72,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16914,10 +16918,10 @@
    "x1": 382.8,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16929,10 +16933,10 @@
    "x1": 1123.56,
    "y1": 739.6,
    "length": 13.68,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -16944,10 +16948,10 @@
    "x1": 872.4,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17094,10 +17098,10 @@
    "x1": 530.52,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17154,10 +17158,10 @@
    "x1": 986.4,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17199,10 +17203,10 @@
    "x1": 397.56,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17259,10 +17263,10 @@
    "x1": 572.76,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17304,10 +17308,10 @@
    "x1": 340.56,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17319,10 +17323,10 @@
    "x1": 843.48,
    "y1": 1036.72,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17334,10 +17338,10 @@
    "x1": 705.72,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17379,10 +17383,10 @@
    "x1": 401.76,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17394,10 +17398,10 @@
    "x1": 1145.52,
    "y1": 735.76,
    "length": 8.373,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17439,10 +17443,10 @@
    "x1": 801.24,
    "y1": 1036.72,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17454,10 +17458,10 @@
    "x1": 915.24,
    "y1": 1036.72,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17484,10 +17488,10 @@
    "x1": 1009.68,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17529,10 +17533,10 @@
    "x1": 1104.6,
    "y1": 739.6,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17574,10 +17578,10 @@
    "x1": 192.84,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17589,10 +17593,10 @@
    "x1": 739.44,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17634,10 +17638,10 @@
    "x1": 477.84,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17649,10 +17653,10 @@
    "x1": 473.52,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17709,10 +17713,10 @@
    "x1": 934.2,
    "y1": 1036.72,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17724,10 +17728,10 @@
    "x1": 268.92,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17769,10 +17773,10 @@
    "x1": 1162.56,
    "y1": 727.36,
    "length": 11.914,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17799,10 +17803,10 @@
    "x1": 876.72,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -17949,10 +17953,12 @@
    "x1": 751.08,
    "y1": 1027.72,
    "length": 3.72,
-   "state": "UNOWNED",
+   "state": "AMBIGUOUS",
    "identity": null,
-   "candidates": [],
-   "reason": ""
+   "candidates": [
+    "VVC01-X7|DN20"
+   ],
+   "reason": "AMBIGUOUS_BRANCH"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18009,10 +18015,10 @@
    "x1": 800.64,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18084,10 +18090,10 @@
    "x1": 1149.24,
    "y1": 733.84,
    "length": 1.342,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18129,10 +18135,10 @@
    "x1": 805.44,
    "y1": 1036.72,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18144,10 +18150,10 @@
    "x1": 971.64,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18159,10 +18165,10 @@
    "x1": 743.76,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18174,10 +18180,10 @@
    "x1": 953.16,
    "y1": 1036.72,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18264,10 +18270,10 @@
    "x1": 667.68,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18294,10 +18300,10 @@
    "x1": 720.48,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18309,10 +18315,10 @@
    "x1": 1081.32,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18354,10 +18360,10 @@
    "x1": 857.64,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18369,10 +18375,10 @@
    "x1": 553.8,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18574,10 +18580,10 @@
    "x1": 853.44,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18589,10 +18595,10 @@
    "x1": 834.48,
    "y1": 739.48,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18634,10 +18640,10 @@
    "x1": 896.16,
    "y1": 1036.72,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18769,10 +18775,10 @@
    "x1": 1028.64,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18784,10 +18790,10 @@
    "x1": 767.52,
    "y1": 1036.72,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18814,10 +18820,10 @@
    "x1": 1043.4,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -18859,10 +18865,10 @@
    "x1": 549.48,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19009,10 +19015,10 @@
    "x1": 957.48,
    "y1": 1036.84,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19024,10 +19030,10 @@
    "x1": 781.68,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19174,10 +19180,10 @@
    "x1": 1273.08,
    "y1": 896.32,
    "length": 11.861,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19189,10 +19195,10 @@
    "x1": 287.88,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19204,10 +19210,10 @@
    "x1": 910.44,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19249,10 +19255,10 @@
    "x1": 606.48,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19264,10 +19270,10 @@
    "x1": 796.44,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19324,10 +19330,10 @@
    "x1": 758.4,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19339,10 +19345,10 @@
    "x1": 1085.64,
    "y1": 739.48,
    "length": 11.881,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19354,10 +19360,10 @@
    "x1": 644.52,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19459,10 +19465,10 @@
    "x1": 226.56,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19489,10 +19495,10 @@
    "x1": 1276.92,
    "y1": 894.4,
    "length": 1.45,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19504,10 +19510,10 @@
    "x1": 881.4,
    "y1": 1036.72,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19519,10 +19525,10 @@
    "x1": 363.84,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19534,10 +19540,10 @@
    "x1": 919.44,
    "y1": 1036.72,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19549,10 +19555,10 @@
    "x1": 777.48,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19579,10 +19585,10 @@
    "x1": 454.56,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19639,10 +19645,10 @@
    "x1": 625.44,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19669,10 +19675,10 @@
    "x1": 492.48,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19729,10 +19735,10 @@
    "x1": 824.52,
    "y1": 1036.72,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19774,10 +19780,10 @@
    "x1": 952.68,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19954,10 +19960,10 @@
    "x1": 891.36,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19969,10 +19975,10 @@
    "x1": 629.76,
    "y1": 739.48,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -19984,10 +19990,10 @@
    "x1": 245.64,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -20029,10 +20035,10 @@
    "x1": 359.52,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -20044,10 +20050,10 @@
    "x1": 1066.56,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -20089,10 +20095,10 @@
    "x1": 782.28,
    "y1": 1036.72,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -20104,10 +20110,10 @@
    "x1": 858.24,
    "y1": 1036.72,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN20",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -20194,10 +20200,10 @@
    "x1": 378.6,
    "y1": 739.48,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -20209,10 +20215,10 @@
    "x1": 933.6,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
@@ -20269,10 +20275,10 @@
    "x1": 534.72,
    "y1": 739.48,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -20329,10 +20335,10 @@
    "x1": 553.32,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -20524,10 +20530,10 @@
    "x1": 952.2,
    "y1": 737.56,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -20569,10 +20575,10 @@
    "x1": 705.24,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -20644,10 +20650,10 @@
    "x1": 473.04,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -21004,10 +21010,10 @@
    "x1": 781.2,
    "y1": 737.44,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -21469,10 +21475,10 @@
    "x1": 359.16,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -21514,10 +21520,10 @@
    "x1": 928.92,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -21728,10 +21734,10 @@
    "x1": 477.36,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -22343,10 +22349,10 @@
    "x1": 985.92,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -22478,10 +22484,10 @@
    "x1": 530.04,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -22493,10 +22499,10 @@
    "x1": 1004.88,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -22508,10 +22514,10 @@
    "x1": 283.2,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -22553,10 +22559,10 @@
    "x1": 625.08,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -22838,10 +22844,10 @@
    "x1": 644.04,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -22988,10 +22994,10 @@
    "x1": 738.96,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -23003,10 +23009,10 @@
    "x1": 591.36,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -23318,10 +23324,10 @@
    "x1": 1118.88,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -23753,10 +23759,10 @@
    "x1": 1278.36,
    "y1": 895.12,
    "length": 11.861,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -24143,10 +24149,10 @@
    "x1": 795.96,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -24323,10 +24329,10 @@
    "x1": 397.08,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -24491,10 +24497,10 @@
    "x1": 933.24,
    "y1": 737.56,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -24566,10 +24572,10 @@
    "x1": 587.04,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -24776,10 +24782,10 @@
    "x1": 344.4,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -25031,10 +25037,10 @@
    "x1": 891.0,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -25511,10 +25517,10 @@
    "x1": 743.28,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -25586,10 +25592,10 @@
    "x1": 287.4,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26186,10 +26192,10 @@
    "x1": 857.28,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26216,10 +26222,10 @@
    "x1": 1066.2,
    "y1": 737.56,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26231,10 +26237,10 @@
    "x1": 871.92,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26246,10 +26252,10 @@
    "x1": 1023.96,
    "y1": 737.56,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26306,10 +26312,10 @@
    "x1": 1085.16,
    "y1": 737.56,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26321,10 +26327,10 @@
    "x1": 758.04,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26411,10 +26417,10 @@
    "x1": 378.12,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26426,10 +26432,10 @@
    "x1": 435.12,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26456,10 +26462,10 @@
    "x1": 629.28,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26516,10 +26522,10 @@
    "x1": 245.16,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26621,10 +26627,10 @@
    "x1": 492.12,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26696,10 +26702,10 @@
    "x1": 686.28,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26771,10 +26777,10 @@
    "x1": 948.0,
    "y1": 737.56,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -26801,10 +26807,10 @@
    "x1": 321.12,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -27071,10 +27077,10 @@
    "x1": 416.16,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -27116,10 +27122,10 @@
    "x1": 895.2,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -27476,10 +27482,10 @@
    "x1": 230.4,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -27536,10 +27542,10 @@
    "x1": 439.32,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -27626,10 +27632,10 @@
    "x1": 838.2,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -28016,10 +28022,10 @@
    "x1": 648.24,
    "y1": 737.44,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -28031,10 +28037,10 @@
    "x1": 777.0,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -28061,10 +28067,10 @@
    "x1": 382.32,
    "y1": 737.44,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -28256,10 +28262,10 @@
    "x1": 549.12,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -28286,10 +28292,10 @@
    "x1": 606.0,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -28346,10 +28352,10 @@
    "x1": 226.2,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -28496,10 +28502,10 @@
    "x1": 724.32,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -28841,10 +28847,10 @@
    "x1": 701.04,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -28991,10 +28997,10 @@
    "x1": 815.04,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -29488,10 +29494,10 @@
    "x1": 340.08,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -29548,10 +29554,10 @@
    "x1": 762.24,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -29638,10 +29644,10 @@
    "x1": 363.36,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -29713,10 +29719,10 @@
    "x1": 663.0,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -29878,10 +29884,10 @@
    "x1": 682.08,
    "y1": 737.44,
    "length": 1.32,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -29908,10 +29914,10 @@
    "x1": 515.28,
    "y1": 737.44,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -29923,10 +29929,10 @@
    "x1": 852.96,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30133,10 +30139,10 @@
    "x1": 568.08,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30313,10 +30319,10 @@
    "x1": 720.0,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30343,10 +30349,10 @@
    "x1": 610.32,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30433,10 +30439,10 @@
    "x1": 496.32,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30463,10 +30469,10 @@
    "x1": 990.24,
    "y1": 737.56,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30525,10 +30531,10 @@
    "x1": 1042.92,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30555,10 +30561,10 @@
    "x1": 268.44,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30720,10 +30726,10 @@
    "x1": 1009.2,
    "y1": 737.56,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30810,10 +30816,10 @@
    "x1": 1028.16,
    "y1": 737.56,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30840,10 +30846,10 @@
    "x1": 966.96,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -30915,10 +30921,10 @@
    "x1": 207.12,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -31260,10 +31266,10 @@
    "x1": 249.36,
    "y1": 737.44,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -31320,10 +31326,10 @@
    "x1": 1099.92,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -31545,10 +31551,10 @@
    "x1": 971.16,
    "y1": 737.56,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -31575,10 +31581,10 @@
    "x1": 1104.12,
    "y1": 737.56,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -31800,10 +31806,10 @@
    "x1": 819.24,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -31815,10 +31821,10 @@
    "x1": 420.36,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -31830,10 +31836,10 @@
    "x1": 302.16,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -31905,10 +31911,10 @@
    "x1": 1047.12,
    "y1": 737.56,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -31935,10 +31941,10 @@
    "x1": 1265.16,
    "y1": 901.6,
    "length": 1.45,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN32",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -32130,10 +32136,10 @@
    "x1": 211.44,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -32282,10 +32288,10 @@
    "x1": 458.4,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -32297,10 +32303,10 @@
    "x1": 914.16,
    "y1": 737.56,
    "length": 12.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -32402,10 +32408,10 @@
    "x1": 834.0,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -32477,10 +32483,10 @@
    "x1": 401.4,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -32942,10 +32948,10 @@
    "x1": 1137.24,
    "y1": 737.44,
    "length": 0.379,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -32957,10 +32963,10 @@
    "x1": 1137.0,
    "y1": 737.44,
    "length": 0.24,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -32972,10 +32978,10 @@
    "x1": 1136.64,
    "y1": 737.56,
    "length": 0.379,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33062,10 +33068,10 @@
    "x1": 534.36,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33137,10 +33143,10 @@
    "x1": 1123.2,
    "y1": 737.56,
    "length": 13.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33167,10 +33173,10 @@
    "x1": 667.32,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33197,10 +33203,10 @@
    "x1": 511.08,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33377,10 +33383,10 @@
    "x1": 306.36,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33632,10 +33638,10 @@
    "x1": 1080.84,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33722,10 +33728,10 @@
    "x1": 572.28,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33752,10 +33758,10 @@
    "x1": 264.12,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33797,10 +33803,10 @@
    "x1": 876.24,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33962,10 +33968,10 @@
    "x1": 192.48,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -33992,10 +33998,10 @@
    "x1": 1145.52,
    "y1": 733.36,
    "length": 8.855,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -34037,10 +34043,10 @@
    "x1": 909.96,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -34097,10 +34103,10 @@
    "x1": 454.08,
    "y1": 737.44,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -34157,10 +34163,10 @@
    "x1": 800.28,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -34352,10 +34358,10 @@
    "x1": 1061.88,
    "y1": 737.56,
    "length": 1.44,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -34367,10 +34373,10 @@
    "x1": 325.44,
    "y1": 737.44,
    "length": 11.88,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-52B--FE-_Vxx-VV|s|w1.44",
@@ -38258,246 +38264,6 @@
    "reason": ""
   },
   {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 0,
-   "pid": "path_22152e60cb9d",
-   "seg": 0,
-   "x0": 1409.64,
-   "y0": 1197.88,
-   "x1": 1378.56,
-   "y1": 1243.12,
-   "length": 54.887,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 1,
-   "pid": "path_22152e60cb9d",
-   "seg": 1,
-   "x0": 1378.56,
-   "y0": 1243.12,
-   "x1": 1340.64,
-   "y1": 1243.12,
-   "length": 37.92,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 2,
-   "pid": "path_2577938b79ef",
-   "seg": 0,
-   "x0": 872.4,
-   "y0": 1114.84,
-   "x1": 916.56,
-   "y1": 1099.0,
-   "length": 46.915,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 3,
-   "pid": "path_2577938b79ef",
-   "seg": 1,
-   "x0": 916.56,
-   "y0": 1099.0,
-   "x1": 954.6,
-   "y1": 1099.0,
-   "length": 38.04,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 4,
-   "pid": "path_2d329e3e914e",
-   "seg": 0,
-   "x0": 1474.68,
-   "y0": 1328.44,
-   "x1": 1468.32,
-   "y1": 1314.4,
-   "length": 15.413,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 5,
-   "pid": "path_2d329e3e914e",
-   "seg": 1,
-   "x0": 1468.32,
-   "y0": 1314.4,
-   "x1": 1430.4,
-   "y1": 1314.4,
-   "length": 37.92,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 6,
-   "pid": "path_3c7e04e4641c",
-   "seg": 0,
-   "x0": 1329.48,
-   "y0": 631.48,
-   "x1": 1274.76,
-   "y1": 631.6,
-   "length": 54.72,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 7,
-   "pid": "path_3c7e04e4641c",
-   "seg": 1,
-   "x0": 1274.76,
-   "y0": 631.6,
-   "x1": 1240.68,
-   "y1": 648.28,
-   "length": 37.943,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 8,
-   "pid": "path_580ebb63eeb8",
-   "seg": 0,
-   "x0": 1203.24,
-   "y0": 1197.64,
-   "x1": 1161.6,
-   "y1": 1126.12,
-   "length": 82.759,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 9,
-   "pid": "path_580ebb63eeb8",
-   "seg": 1,
-   "x0": 1161.6,
-   "y0": 1126.12,
-   "x1": 1123.68,
-   "y1": 1126.12,
-   "length": 37.92,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 10,
-   "pid": "path_74ad68ded89c",
-   "seg": 0,
-   "x0": 1106.88,
-   "y0": 1224.4,
-   "x1": 1056.84,
-   "y1": 1174.36,
-   "length": 70.767,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 11,
-   "pid": "path_74ad68ded89c",
-   "seg": 1,
-   "x0": 1056.84,
-   "y0": 1174.36,
-   "x1": 1018.92,
-   "y1": 1174.36,
-   "length": 37.92,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 12,
-   "pid": "path_d8f6089a826b",
-   "seg": 0,
-   "x0": 268.08,
-   "y0": 447.04,
-   "x1": 326.28,
-   "y1": 486.28,
-   "length": 70.193,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 13,
-   "pid": "path_d8f6089a826b",
-   "seg": 1,
-   "x0": 326.28,
-   "y0": 486.28,
-   "x1": 359.28,
-   "y1": 486.28,
-   "length": 33.0,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 14,
-   "pid": "path_eccd6286c7bd",
-   "seg": 0,
-   "x0": 954.0,
-   "y0": 1403.32,
-   "x1": 877.8,
-   "y1": 1449.04,
-   "length": 88.864,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "prim": 15,
-   "pid": "path_eccd6286c7bd",
-   "seg": 1,
-   "x0": 877.8,
-   "y0": 1449.04,
-   "x1": 839.88,
-   "y1": 1449.04,
-   "length": 37.92,
-   "state": "UNOWNED",
-   "identity": null,
-   "candidates": [],
-   "reason": ""
-  },
-  {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
    "prim": 0,
    "pid": "path_0022102dce83",
@@ -38931,10 +38697,10 @@
    "x1": 1403.76,
    "y1": 1200.88,
    "length": 5.206,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P3|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -39006,10 +38772,10 @@
    "x1": 973.8,
    "y1": 1393.6,
    "length": 20.716,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P3|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -39246,10 +39012,10 @@
    "x1": 1470.36,
    "y1": 1338.16,
    "length": 7.192,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -39261,10 +39027,10 @@
    "x1": 1470.84,
    "y1": 1337.8,
    "length": 0.6,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -39276,10 +39042,10 @@
    "x1": 1471.32,
    "y1": 1337.44,
    "length": 0.6,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -39291,10 +39057,10 @@
    "x1": 1471.68,
    "y1": 1336.96,
    "length": 0.6,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -39306,10 +39072,10 @@
    "x1": 1471.92,
    "y1": 1336.36,
    "length": 0.646,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -40036,10 +39802,10 @@
    "x1": 858.84,
    "y1": 1114.84,
    "length": 11.64,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P3|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_with_agreeing_anchors"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -40458,10 +40224,10 @@
    "x1": 1474.2,
    "y1": 1329.88,
    "length": 2.543,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -41664,10 +41430,10 @@
    "x1": 886.08,
    "y1": 1114.84,
    "length": 11.64,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P3|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_with_agreeing_anchors"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -41756,10 +41522,10 @@
    "x1": 1461.24,
    "y1": 1342.6,
    "length": 1.342,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -42401,10 +42167,10 @@
    "x1": 874.44,
    "y1": 1114.84,
    "length": 0.6,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P3|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_with_agreeing_anchors"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -42566,10 +42332,10 @@
    "x1": 871.08,
    "y1": 1114.84,
    "length": 0.6,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P3|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_with_agreeing_anchors"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -42831,10 +42597,10 @@
    "x1": 1440.36,
    "y1": 1352.8,
    "length": 11.861,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -42861,10 +42627,10 @@
    "x1": 1457.52,
    "y1": 1344.4,
    "length": 12.022,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -43105,10 +42871,10 @@
    "x1": 1444.2,
    "y1": 1350.88,
    "length": 1.342,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -43587,10 +43353,10 @@
    "x1": 1099.2,
    "y1": 1208.56,
    "length": 16.154,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P3|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -44071,10 +43837,10 @@
    "x1": 1472.64,
    "y1": 1334.32,
    "length": 2.163,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
@@ -44086,10 +43852,10 @@
    "x1": 1473.36,
    "y1": 1332.28,
    "length": 2.163,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "SF01-P5|DN75",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-53BB-FE-_SFxx|s|w2.28",

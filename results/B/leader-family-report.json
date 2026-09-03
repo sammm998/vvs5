@@ -1,16 +1,24 @@
 {
- "n_leaders": 101,
+ "n_leaders": 243,
  "families": [
   {
+   "family": "straight|vertical|box_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 35
+  },
+  {
    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.72",
-   "occurrences": 15
+   "occurrences": 20
   },
   {
    "family": "bent|diagonal|underline_end|end-tick|crossing-ticks|w0.72",
-   "occurrences": 11
+   "occurrences": 13
   },
   {
    "family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.72",
+   "occurrences": 11
+  },
+  {
+   "family": "straight|vertical|underline_touch|plain-end|no-crossing-ticks|w0.96",
    "occurrences": 10
   },
   {
@@ -19,6 +27,18 @@
   },
   {
    "family": "straight|diagonal|box_corner|end-tick|no-crossing-ticks|w0.72",
+   "occurrences": 8
+  },
+  {
+   "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 7
+  },
+  {
+   "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 7
+  },
+  {
+   "family": "straight|horizontal|underline_end|plain-end|no-crossing-ticks|w0.96",
    "occurrences": 7
   },
   {
@@ -30,19 +50,67 @@
    "occurrences": 6
   },
   {
+   "family": "multi-bend|vertical|box_corner|end-tick|no-crossing-ticks|w0.96",
+   "occurrences": 5
+  },
+  {
+   "family": "straight|horizontal|box_corner|end-tick|no-crossing-ticks|w0.96",
+   "occurrences": 5
+  },
+  {
    "family": "straight|vertical|box_corner|end-tick|no-crossing-ticks|w0.72",
    "occurrences": 5
+  },
+  {
+   "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 5
+  },
+  {
+   "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 4
   },
   {
    "family": "bent|horizontal|underline_end|plain-end|no-crossing-ticks|w0.72",
    "occurrences": 4
   },
   {
+   "family": "multi-bend|horizontal|box_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 4
+  },
+  {
    "family": "split-path|vertical|underline_end|end-tick|crossing-ticks|w0.72",
+   "occurrences": 4
+  },
+  {
+   "family": "split-path|vertical|underline_touch|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 4
+  },
+  {
+   "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 4
+  },
+  {
+   "family": "bent|vertical|box_corner|end-tick|no-crossing-ticks|w0.96",
    "occurrences": 3
   },
   {
-   "family": "bent|diagonal|underline_end|plain-end|crossing-ticks|w0.72",
+   "family": "multi-bend|horizontal|underline_end|plain-end|crossing-ticks|w0.96",
+   "occurrences": 3
+  },
+  {
+   "family": "split-path|vertical|box_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 3
+  },
+  {
+   "family": "straight|horizontal|underline_end|plain-end|no-crossing-ticks|w0.72",
+   "occurrences": 3
+  },
+  {
+   "family": "straight|vertical|bbox_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 3
+  },
+  {
+   "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.96",
    "occurrences": 2
   },
   {
@@ -50,11 +118,27 @@
    "occurrences": 2
   },
   {
+   "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 2
+  },
+  {
+   "family": "multi-bend|vertical|bbox_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 2
+  },
+  {
+   "family": "multi-bend|vertical|box_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 2
+  },
+  {
+   "family": "split-path|diagonal|box_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 2
+  },
+  {
    "family": "split-path|horizontal|underline_end|end-tick|crossing-ticks|w0.72",
    "occurrences": 2
   },
   {
-   "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.72",
+   "family": "straight|horizontal|bbox_corner|plain-end|no-crossing-ticks|w0.96",
    "occurrences": 2
   },
   {
@@ -62,15 +146,27 @@
    "occurrences": 2
   },
   {
-   "family": "straight|horizontal|underline_end|plain-end|no-crossing-ticks|w0.72",
-   "occurrences": 2
-  },
-  {
    "family": "straight|vertical|box_corner|plain-end|no-crossing-ticks|w0.72",
    "occurrences": 2
   },
   {
+   "family": "straight|vertical|underline_end|end-tick|crossing-ticks|w0.96",
+   "occurrences": 2
+  },
+  {
+   "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
    "family": "bent|diagonal|box_corner|end-tick|crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "bent|diagonal|box_corner|end-tick|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
+   "family": "bent|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.96",
    "occurrences": 1
   },
   {
@@ -82,6 +178,30 @@
    "occurrences": 1
   },
   {
+   "family": "bent|horizontal|underline_end|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
+   "family": "multi-bend|diagonal|underline_end|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
+   "family": "multi-bend|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
+   "family": "multi-bend|horizontal|underline_end|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
+   "family": "multi-bend|vertical|underline_end|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
+   "family": "multi-bend|vertical|underline_touch|plain-end|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
    "family": "split-path|diagonal|box_corner|end-tick|crossing-ticks|w0.72",
    "occurrences": 1
   },
@@ -90,7 +210,11 @@
    "occurrences": 1
   },
   {
-   "family": "split-path|vertical|underline_end|end-tick|no-crossing-ticks|w0.72",
+   "family": "split-path|vertical|underline_end|end-tick|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
+   "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.72",
    "occurrences": 1
   },
   {
@@ -103,6 +227,14 @@
   },
   {
    "family": "straight|horizontal|box_corner|plain-end|no-crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "straight|horizontal|underline_end|end-tick|no-crossing-ticks|w0.96",
+   "occurrences": 1
+  },
+  {
+   "family": "straight|horizontal|underline_touch|end-tick|no-crossing-ticks|w0.96",
    "occurrences": 1
   },
   {

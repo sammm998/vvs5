@@ -71,20 +71,6 @@
    "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 0.48"
   },
   {
-   "family": "V-53BB--T-_SFxx|s|w0.72",
-   "layer": "V-53BB--T-_SFxx",
-   "style": "w0.72",
-   "width": 0.7199999690055847,
-   "n_primitives": 16,
-   "total_length_pt": 783.1,
-   "gap_mode_pt": null,
-   "dash_mode_pt": 38.0,
-   "n_chains": 8,
-   "longest_chain_pt": 126.8,
-   "kind": "continuous",
-   "description": "continuous polyline, width 0.72"
-  },
-  {
    "family": "V-53BB-FE-_SFxx|s|w2.28",
    "layer": "V-53BB-FE-_SFxx",
    "style": "w2.28",

@@ -335,7 +335,7 @@
     "4",
     "T1"
    ],
-   "role": "UNKNOWN"
+   "role": "CONNECTOR"
   },
   {
    "layer": "A-42D--BE-N",
@@ -879,7 +879,7 @@
    "tokens": [
     "Banmarkeringar"
    ],
-   "role": "UNKNOWN"
+   "role": "CONNECTOR"
   },
   {
    "layer": "Banmarkeringar ifyllnad",

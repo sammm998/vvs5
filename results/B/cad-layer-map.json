@@ -1368,7 +1368,7 @@
     "EB",
     "E"
    ],
-   "role": "UNKNOWN"
+   "role": "VVS_ANNOTATION"
   },
   {
    "layer": "SK-46-P-0100-1764-A|SK-46C-B-EI-E",
@@ -2245,7 +2245,7 @@
     "T",
     "SFxx"
    ],
-   "role": "PIPE_GEOMETRY"
+   "role": "VVS_ANNOTATION"
   },
   {
    "layer": "V-53BB-FE-_SFxx",
@@ -2962,11 +2962,13 @@
   }
  ],
  "annotation_layers": {
-  "V-52B---T-_Vxx-|s|w0.72": 134,
-  "V-52BB--T-_KV02-|s|w0.72": 3,
+  "V-52B---T-_Vxx-|s|w0.72": 169,
+  "V-53BBB-T-_Sxx|s|w0.72": 47,
+  "V-53BB--T-_SFxx|s|w0.72": 10,
+  "V-52BB--T-_KV02-|s|w0.72": 4,
   "V-56B---T-_VS2x-|s|w0.72": 41,
-  "V-5-----T-_--|s|w0.72": 38,
-  "V-53BBB-T-_Sxx|s|w0.72": 11,
+  "V-5-----T-_--|s|w0.72": 41,
+  "SK-46-P-0100-1764-A|SK-46C-B-EB-E|s|w0.96": 5,
   "V-56B---T-_VS3x-|s|w0.72": 2,
   "V-56B---T-_VS1x-|s|w0.72": 5,
   "V-56B---T-_VPxx-|s|w0.72": 3
@@ -2977,7 +2979,6 @@
   "V-52B--FE-_Vxx-VV|s|w1.44",
   "V-52B--FE-_Vxx-|s|w0.96",
   "V-52BB-FE-_KV02-KV|s|w0.48",
-  "V-53BB--T-_SFxx|s|w0.72",
   "V-53BB-FE-_SFxx|s|w2.28",
   "V-53BBBFE-_Sxx|s|w2.28",
   "V-56B--FE-_VPxx-|s|w1.44",
