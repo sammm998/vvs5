@@ -31,18 +31,18 @@
   "ambiguous_m": 3.44,
   "timings_ms": {
    "profile_ms": 88,
-   "text_ms": 8226,
-   "designation_ms": 173,
+   "text_ms": 7850,
+   "designation_ms": 166,
    "leader_ms": 0,
-   "leader_attachment_ms": 1370,
+   "leader_attachment_ms": 1297,
    "topology_ms": 0,
    "physical_pipes_ms": 11,
    "measurement_ms": 17,
-   "text_components_ms": 322,
-   "text_rows_ms": 577,
-   "text_raster_ms": 1668,
-   "text_classify_ms": 5577,
-   "text_assemble_ms": 38
+   "text_components_ms": 296,
+   "text_rows_ms": 467,
+   "text_raster_ms": 1613,
+   "text_classify_ms": 5391,
+   "text_assemble_ms": 40
   }
  },
  "determinism": "PASS",
@@ -77,5 +77,5 @@
   "analysis-report.md": "/home/user/vvs5/results/C/analysis-report.md",
   "freeze-manifest.json": "/home/user/vvs5/results/C/freeze-manifest.json"
  },
- "total_seconds": 36.92
+ "total_seconds": 37.04
 }

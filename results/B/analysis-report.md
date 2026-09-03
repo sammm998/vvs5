@@ -9,7 +9,7 @@
 - reconciliation: VALID (raw 29976.141 pt = confirmed 5713.495 + ambiguous 342.428 + unowned 23920.218)
 - determinism: PASS
 - contamination: PASS
-- runtime: 83.3 s
+- runtime: 86.3 s
 
 ## Quantities (confirmed only; ambiguous reported separately)
 | Beteckning | DN | Antal | Horisontellt m | Vertikalt m | Totalt m | Tvetydigt m | Status |
