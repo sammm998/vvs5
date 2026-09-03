@@ -27,7 +27,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     if progress:
         progress("READING_PDF")
     t0 = time.perf_counter()
-    doc = extract_document(pdf_path, pages)
+    doc = extract_document(pdf_path, pages, progress=progress)
     timings["extract_ms"] = (time.perf_counter() - t0) * 1000
     analyses: list[PageAnalysis] = []
     for pg in doc.pages:
@@ -44,7 +44,9 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     files = write_all(pdf_path, doc, analyses, out_dir, name, timings, det, cont, overlays, CONFIG)
     timings["artifacts_ms"] = (time.perf_counter() - t0) * 1000
     summary = {"name": name, "pages": len(doc.pages), "summary": summarize(analyses[0]), "determinism": det["state"] if det else None,
-               "contamination": cont["state"] if cont else None, "files": files, "total_seconds": round(timings["total_s"], 2)}
+               "contamination": cont["state"] if cont else None, "files": files, "total_seconds": round(timings["total_s"], 2),
+               "input_mode": getattr(doc.pages[0], "input_mode", "vector"), "input": getattr(doc.pages[0], "input_class", None),
+               "raster": getattr(doc.pages[0], "raster_report", None)}
     with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=1, default=str)
     if progress:

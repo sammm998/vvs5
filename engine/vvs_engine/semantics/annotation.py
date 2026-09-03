@@ -121,10 +121,11 @@ class FreeSeg:
 def free_segments(page: RawPage, consumed_pids: set[str]) -> list[FreeSeg]:
     out: list[FreeSeg] = []
     fid = 0
+    max_segs = 16 if getattr(page, "input_mode", "vector") == "raster" else 6     # traced strokes wobble into more pieces
     for p in sorted(page.paths, key=lambda p: p.pid):
         if p.kind != "s" or p.pid in consumed_pids or p.n_curves > 0:
             continue
-        if len(p.segs) > 6:
+        if len(p.segs) > max_segs:
             continue
         for k, s in enumerate(p.segs):
             if s.length < 0.3:

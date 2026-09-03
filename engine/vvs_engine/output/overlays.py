@@ -74,10 +74,42 @@ def _pipe_polylines(pa, state):
     return out
 
 
+PALETTE = [(0.05, 0.6, 0.1), (0.0, 0.35, 0.9), (0.85, 0.1, 0.1), (0.55, 0.0, 0.7), (0.0, 0.6, 0.6), (0.8, 0.45, 0.0),
+           (0.3, 0.3, 0.9), (0.6, 0.35, 0.1), (0.9, 0.0, 0.5), (0.1, 0.45, 0.3), (0.5, 0.5, 0.0), (0.2, 0.2, 0.2)]
+
+
+def identity_color(key: str):
+    """Deterministic colour per designation+DN (content hash of the identity key)."""
+    import hashlib
+    h = int(hashlib.sha1(key.encode("utf-8")).hexdigest()[:8], 16)
+    return PALETTE[h % len(PALETTE)]
+
+
 def _draw_production(page, shape, pa):
+    from ..profile.hatch import inside_hatch
     for m in pa.measures:
-        _draw_polylines(page, shape, m.pipe.points, COLORS["confirmed"], 2.6)
+        col = identity_color(m.pipe.identity.key)
+        g = pa.graphs[m.pipe.family]
+        inside, outside = [], []
+        for pid in m.pipe.prim_ids:
+            s = g.prims[pid].seg
+            (inside if pa.hatch_families and inside_hatch(pa.hatch_families, *s.mid) else outside).append([(s.x0, s.y0), (s.x1, s.y1)])
+        _draw_polylines(page, shape, outside, col, 2.6)
+        for pts in inside:
+            shape.draw_polyline([_pt(page, x, y) for x, y in pts])
+            shape.finish(color=COLORS["unowned"], width=2.6, lineCap=1, dashes="[3 2] 0", closePath=False)
     _draw_polylines(page, shape, _pipe_polylines(pa, "AMBIGUOUS"), COLORS["ambiguous"], 2.0)
+    # legend
+    y = 14.0
+    seen = {}
+    for m in pa.measures:
+        seen.setdefault(m.pipe.identity.key, m.pipe.identity.display + (f" DN{m.pipe.identity.dn}" if m.pipe.identity.dn is not None else ""))
+    for key, label in sorted(seen.items()):
+        shape.draw_line(_pt(page, 8, y), _pt(page, 28, y)); shape.finish(color=identity_color(key), width=2.4)
+        shape.insert_text(_pt(page, 31, y + 1.5), label, fontsize=4.5, color=(0, 0, 0))
+        y += 7
+    shape.draw_line(_pt(page, 8, y), _pt(page, 28, y)); shape.finish(color=COLORS["unowned"], width=2.4, dashes="[3 2] 0")
+    shape.insert_text(_pt(page, 31, y + 1.5), "i skrafferat omrade (vagg), ej i mangd", fontsize=4.5, color=(0, 0, 0))
     for d in pa.designations:
         if any(a.designation_id == d.did and a.state == "VERIFIED_PIPE_ATTACHMENT" for a in pa.anchors):
             shape.draw_rect(_rect(page, d.bbox)); shape.finish(color=COLORS["designation"], width=0.5)

@@ -188,6 +188,8 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
         ld = Leader(lid=lid, page=page.info.index, block_id=b.bid, segs=chain, points=points, start=points[0], end=end,
                     start_type=ptype, layer=chain[0].layer, width=chain[0].width, truncated_reason=reason)
         _attach_marks(ld, mark_idx, mark_keys, mmap)
+        if not ld.end_marks:
+            _attach_free_ticks(ld, ep_idx, fmap, H)
         leaders.append(ld)
     for ld in leaders:
         ld.family = leader_family(ld)
@@ -272,6 +274,31 @@ def _attach_marks(ld: Leader, mark_idx: GridIndex, mark_keys: list[str], mmap: d
                 break
     ld.end_marks.sort(key=lambda m: m.mid)
     ld.crossing_marks.sort(key=lambda m: m.mid)
+
+
+def _attach_free_ticks(ld: Leader, ep_idx: GridIndex, fmap, H: float) -> None:
+    """A tick at the leader end drawn as short strokes that share the end point (traced raster strokes meet at
+    junctions exactly): two or more short free strokes leaving the end at an angle to the leader form the tick."""
+    end = ld.end
+    last = ld.segs[-1].seg.angle
+    own = {s.fid for s in ld.segs}
+    pieces = []
+    for fid in ep_idx.query_point(end[0], end[1], 0.3):
+        f = fmap[fid]
+        if f.fid in own or f.seg.length > 0.9 * H or f.seg.length < 0.3:
+            continue
+        if min(dist((f.seg.x0, f.seg.y0), end), dist((f.seg.x1, f.seg.y1), end)) > TOUCH_TOL:
+            continue
+        d = abs(f.seg.angle - last) % 180
+        if min(d, 180 - d) < 25:
+            continue
+        pieces.append(f)
+    if len(pieces) < 2:
+        return
+    pieces.sort(key=lambda f: (f.pid, f.seg_index))
+    bbox = (min(f.seg.bbox()[0] for f in pieces), min(f.seg.bbox()[1] for f in pieces), max(f.seg.bbox()[2] for f in pieces), max(f.seg.bbox()[3] for f in pieces))
+    ld.end_marks.append(Mark(mid=stable_id("tick", ld.page, *(f"{f.pid}#{f.seg_index}" for f in pieces)), layer=pieces[0].layer,
+                             style=f"w{pieces[0].width:.2f}", bbox=bbox, segs=[f.seg for f in pieces], path_ids=sorted({f.pid for f in pieces})))
 
 
 def _mark_near_point(m: Mark, pt, tol: float) -> bool:

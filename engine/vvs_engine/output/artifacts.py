@@ -86,6 +86,8 @@ def drawing_profile(pa, doc) -> dict[str, Any]:
         "engine_version": __version__,
         "page_structure": {"page": page.info.index, "width_pt": page.info.width, "height_pt": page.info.height, "rotation": page.info.rotation,
                            "mediabox": page.info.mediabox, "cropbox": page.info.cropbox, "n_pages": doc.n_pages, "format": _fmt(page)},
+        "input": {"mode": getattr(page, "input_mode", "vector"), "classification": getattr(page, "input_class", None),
+                  "raster": getattr(page, "raster_report", None)},
         "cad_structure": {"n_ocgs": len(doc.ocgs), "n_layers_with_geometry": len(pa.layer_stats), "n_xobjects": page.info.n_xobjects,
                           "layers": layers, "annotation_layers": pa.ann_layers},
         "text_structure": {"searchable_spans": len(page.spans), "searchable_rows": len(pa.srows), "vector_glyph_rows": len(pa.vtext.rows),
@@ -216,6 +218,10 @@ def why(pa, pipe_id: str) -> dict[str, Any]:
 
 def unresolved_issues(pa) -> list[dict]:
     issues = []
+    if getattr(pa.page, "input_mode", "vector") == "raster":
+        rep = pa.page.raster_report or {}
+        issues.append({"kind": "rasterised_input", "reason": f"OCR mean confidence {rep.get('ocr_mean_confidence')}, {rep.get('ocr_low_confidence_lines')} low-confidence lines, "
+                                                           f"{rep.get('ink_explained_by_strokes')} of line ink traced", "count": rep.get("ocr_lines")})
     for f in pa.vtext.families.values():
         if f.char == "?" and f.n_members >= 2:
             issues.append({"kind": "unknown_glyph", "count": f.n_members, "family": f.family_id, "alternatives": f.alternatives[:2]})
@@ -276,12 +282,14 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     W("pipe-code-anchors.json", {"anchors": [a.as_dict() for a in pa.anchors]})
     W("pipe-representation-families.json", {"families": [rf.as_dict() for rf in pa.pipe_families.values()]})
     inv = []
+    from ..profile.hatch import inside_hatch
     for fk, g in pa.graphs.items():
         for pid, q in g.prims.items():
             st = pa.ownership.prim_states[fk][pid]
             inv.append({"family": fk, "prim": pid, "pid": q.pid, "seg": q.seg_index, "x0": round(q.seg.x0, 2), "y0": round(q.seg.y0, 2), "x1": round(q.seg.x1, 2), "y1": round(q.seg.y1, 2),
                         "length": round(q.seg.length, 3), "state": st.state, "identity": st.identity.key if st.identity else None,
-                        "candidates": sorted(c.key for c in st.candidates), "reason": st.reason})
+                        "candidates": sorted(c.key for c in st.candidates), "reason": st.reason,
+                        "in_hatch": bool(pa.hatch_families) and inside_hatch(pa.hatch_families, *q.seg.mid) is not None})
     W("pipe-geometry-inventory.json", {"primitives": inv})
     W("pipe-topology.json", {"families": [{"family": fk, "nodes": [{"id": n.nid, "x": round(n.x, 2), "y": round(n.y, 2), "degree": n.degree, "prims": n.prims} for n in g.nodes.values()],
                                             "edges": [{"prim": pid, "a": ab[0], "b": ab[1]} for pid, ab in g.prim_nodes.items()], "bridges": g.bridges, "junctions": g.junctions, "gap_mode": g.gap_mode}

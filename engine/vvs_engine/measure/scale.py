@@ -115,8 +115,8 @@ def _numeric_words(lines: list[TextRow]) -> list[_Label]:
             if g is None or g.char == " ":
                 if cur:
                     # twin shapes inside scale-bar labels: an O whose recognizer alternatives include 0 reads as 0
-                    t = "".join("0" if (x.char == "O" and any(a == "0" for a, _ in x.alternatives)) else x.char for x in cur)
-                    m = re.fullmatch(r"(\d{1,3})(m|M|cm|mm)?", t)
+                    t = "".join("0" if (x.char == "O" and (any(a == "0" for a, _ in x.alternatives) or ln.source == "text")) else x.char for x in cur)
+                    m = re.fullmatch(r"(\d{1,3})(m|M|cm|mm|CM|MM)?[:.,;]?", t)
                     if m:
                         t = m.group(1)
                         bb = (min(x.bbox[0] for x in cur), min(x.bbox[1] for x in cur), max(x.bbox[2] for x in cur), max(x.bbox[3] for x in cur))
@@ -163,23 +163,40 @@ def _find_scale_bar(page: RawPage, lines: list[TextRow]) -> ScaleEvidence | None
         ok = all(abs(pos[m] - vals[m] * k) <= 0.35 * H + 0.03 * span_p for m in range(len(vals)))
         if not ok:
             continue
-        # a bar/line must exist near the labels (long stroke parallel to d within 3H)
+        # a bar/line must exist near the labels: strokes parallel to d within 3H whose extents cover >= 60 % of the
+        # label span (one long stroke, or collinear pieces of a segmented / rasterised bar)
         bar_found = False
+        covered: list[tuple[float, float]] = []
+        lo, hi = project((a.cx, a.cy), d), project((a.cx, a.cy), d) + span_p
         for p in page.paths:
             if p.kind == "f":
                 continue
             for s in p.segs:
-                if s.length < 0.6 * span_p:
+                if s.length < 4.0:
                     continue
                 ang = s.angle
                 if min(abs(ang - a.angle % 180), 180 - abs(ang - a.angle % 180)) > 3:
                     continue
                 off = abs(project(s.mid, n) - project((a.cx, a.cy), n))
-                if off <= 3 * H:
-                    bar_found = True
-                    break
-            if bar_found:
-                break
+                if off > 3 * H:
+                    continue
+                p0, p1 = sorted((project((s.x0, s.y0), d), project((s.x1, s.y1), d)))
+                if p1 < lo - 5 or p0 > hi + 5:
+                    continue
+                covered.append((max(p0, lo), min(p1, hi)))
+        covered.sort()
+        total = 0.0
+        cur_lo, cur_hi = None, None
+        for p0, p1 in covered:
+            if cur_lo is None or p0 > cur_hi:
+                if cur_lo is not None:
+                    total += cur_hi - cur_lo
+                cur_lo, cur_hi = p0, p1
+            else:
+                cur_hi = max(cur_hi, p1)
+        if cur_lo is not None:
+            total += cur_hi - cur_lo
+        bar_found = total >= 0.6 * span_p
         if not bar_found:
             continue
         # unit: labels are meters when spacing implies a plausible drawing scale (1:10 .. 1:2000)

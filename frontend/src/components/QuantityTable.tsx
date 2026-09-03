@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { identityColor } from "./PdfViewer";
 
 export const identityKey = (r: any) => `${r.base}|DN${r.dn ?? "?"}`;
 const STATE_LABELS: Record<string, string> = { CONFIRMED: "BEKRÄFTAD", AMBIGUOUS: "TVETYDIG", UNSUPPORTED_STYLE: "EJ STÖDD STIL", RISER_LABELS_ONLY: "ENDAST STIGARE" };
@@ -39,7 +40,7 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight }:
         <tbody>
           {list.map((r) => (
             <tr key={identityKey(r)} className={`selectable ${selected === identityKey(r) ? "selected" : ""}`} onClick={() => onSelect(selected === identityKey(r) ? null : identityKey(r))}>
-              <td>{r.designation}</td><td>{r.dn ?? "?"}</td><td className="num">{r.physical_pipe_count}</td>
+              <td><span style={{ display: "inline-block", width: 12, height: 12, borderRadius: 2, background: identityColor(identityKey(r)), marginRight: 6, verticalAlign: "middle" }} />{r.designation}</td><td>{r.dn ?? "?"}</td><td className="num">{r.physical_pipe_count}</td>
               <td className="num">{r.confirmed_horizontal_m.toFixed(2)} m</td>
               <td className="num">{r.vertical_calc == null ? <span className="muted" title="Ange våningshöjd för att räkna stigare">okänt</span> : `${Number(r.vertical_calc).toFixed(2)} m`}</td>
               <td className="num">{r.total_calc.toFixed(2)} m</td>

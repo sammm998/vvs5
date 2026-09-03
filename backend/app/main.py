@@ -241,16 +241,18 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
     geom = _load(rd, "pipe-geometry-inventory.json")["primitives"]
     unowned = [g for g in geom if g["state"] == "UNOWNED"]
     ambiguous = [g for g in geom if g["state"] == "AMBIGUOUS"]
+    hatched = [g for g in geom if g["state"] == "CONFIRMED" and g.get("in_hatch")]
     mpp = quantities["scale"].get("meters_per_pdf_point")
     page = prof["page_structure"]
     return {
-        "job": _job_out(j), "page": page, "scale": quantities["scale"], "quantities": quantities["rows"], "totals": quantities["totals"],
+        "job": _job_out(j), "page": page, "input": prof.get("input"), "scale": quantities["scale"], "quantities": quantities["rows"], "totals": quantities["totals"],
         "pipes": [{k: v for k, v in p.items() if k not in ("source_segments",)} for p in pipes],
         "designations": [{"id": d["did"], "text": d["text"], "dn": d["dn"], "bbox": d["bbox"], "source": d["source"]} for d in des],
         "leaders": [{"id": l["lid"], "points": l["points"], "family": l["family"]} for l in leaders],
         "anchors": [{"id": a["anchor_id"], "designation": a["designation"], "dn": a["dn"], "state": a["state"], "reason": a["reason"], "endpoint": a["leader_endpoint"]} for a in anchors],
         "ambiguous_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "candidates": g["candidates"], "reason": g["reason"]} for g in ambiguous],
         "unowned_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "family": g["family"]} for g in unowned],
+        "hatched_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "identity": g["identity"]} for g in hatched],
         "issues": issues,
         "coverage": {
             "designations": len(des), "with_dn": sum(1 for d in des if d["dn"] is not None), "leaders": len(leaders),

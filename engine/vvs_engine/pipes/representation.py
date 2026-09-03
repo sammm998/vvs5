@@ -19,6 +19,23 @@ from ..pdf.extract import RawPage, RawPath
 TOUCH_TOL = 0.15
 
 
+@dataclass(frozen=True)
+class GraphTolerances:
+    """Geometric precision of the source: exported vectors are exact; traced raster skeletons wobble."""
+    ang_tol: float = 1.5        # degrees, collinear continuation across a micro gap
+    off_tol: float = 0.35       # pt, lateral offset of the continuation
+    gap_slack: float = 0.5      # fraction of the gap mode accepted as deviation
+    max_gap: float = 12.0       # pt, search window for a continuation
+
+
+VECTOR_TOL = GraphTolerances()
+RASTER_TOL = GraphTolerances(ang_tol=7.0, off_tol=1.2, gap_slack=0.8, max_gap=16.0)
+
+
+def graph_tolerances(page) -> GraphTolerances:
+    return RASTER_TOL if getattr(page, "input_mode", "vector") == "raster" else VECTOR_TOL
+
+
 @dataclass
 class Prim:
     """A straight primitive of a pipe-candidate family (one segment of a raw path)."""
@@ -176,9 +193,10 @@ def _apply_cuts(prims: list[Prim], cuts: dict[int, list[float]]) -> list[Prim]:
     return out
 
 
-def build_graph(prims: list[Prim], family: str) -> PipeGraph:
+def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = None) -> PipeGraph:
     """Nodes: shared endpoints (within TOUCH_TOL) incl. proven T-junctions. Then bridge collinear micro-gaps
     with unique continuation."""
+    tol = tol or VECTOR_TOL
     prims, junctions = split_t_junctions(prims)
     # 1. endpoint clustering on a lattice
     pts = []
@@ -227,22 +245,22 @@ def build_graph(prims: list[Prim], family: str) -> PipeGraph:
         if L < 1e-9:
             continue
         ux, uy = dx / L, dy / L
-        # search window ahead (up to 12 pt)
-        R = 12.0
+        # search window ahead
+        R = tol.max_gap
         box = (min(n.x, n.x + ux * R) - 1, min(n.y, n.y + uy * R) - 1, max(n.x, n.x + ux * R) + 1, max(n.y, n.y + uy * R) + 1)
         best = None
         for pid2 in idx.query(box):
             if pid2 == q.prim_id:
                 continue
             r = pmap[pid2]
-            if not collinear(q.seg, r.seg, ang_tol=1.5, off_tol=0.35):
+            if not collinear(q.seg, r.seg, ang_tol=tol.ang_tol, off_tol=tol.off_tol):
                 continue
             # nearest endpoint of r ahead of the node
             for ep in (r.a, r.b):
                 vx, vy = ep[0] - n.x, ep[1] - n.y
                 along = vx * ux + vy * uy
                 perp = abs(-vx * uy + vy * ux)
-                if 0.2 < along <= R and perp <= 0.35:
+                if 0.2 < along <= R and perp <= tol.off_tol:
                     if best is None or along < best[0]:
                         best = (along, pid2, ep)
         if best is not None:
@@ -256,11 +274,11 @@ def build_graph(prims: list[Prim], family: str) -> PipeGraph:
             gap_mode = None
     bridges = []
     if gap_mode is not None:
-        tol = max(0.6, 0.5 * gap_mode)
+        gtol = max(0.6, tol.gap_slack * gap_mode)
         # unique continuation: the partner endpoint must itself be a degree-1 node and there must be no competing bridge
         by_target: dict[tuple[int, int], list] = defaultdict(list)
         for (nid, pid2, ep, g) in cand_bridges:
-            if abs(g - gap_mode) > tol:
+            if abs(g - gap_mode) > gtol:
                 continue
             tn = find_node(ep[0], ep[1])
             if tn is None or tn == nid:

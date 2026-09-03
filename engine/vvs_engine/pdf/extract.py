@@ -95,6 +95,9 @@ class RawPage:
     info: PageInfo
     paths: list[RawPath]
     spans: list[TextSpan]
+    input_mode: str = "vector"                 # 'vector' | 'raster' (vectorised + OCR)
+    raster_report: dict | None = None
+    input_class: dict | None = None
 
 
 @dataclass
@@ -195,7 +198,9 @@ def _color(c) -> tuple | None:
     return tuple(round(float(v), 4) for v in c)
 
 
-def extract_document(pdf_path: str, pages: list[int] | None = None) -> RawDocument:
+def extract_document(pdf_path: str, pages: list[int] | None = None, mode: str = "auto", progress=None) -> RawDocument:
+    """mode: 'auto' classifies every page (vector / raster) and routes rasterised pages through the raster path;
+    'vector' forces the vector extractor; 'raster' forces vectorisation + OCR."""
     doc = pymupdf.open(pdf_path)
     try:
         ocgs_raw = doc.get_ocgs() or {}
@@ -208,6 +213,17 @@ def extract_document(pdf_path: str, pages: list[int] | None = None) -> RawDocume
         if pages is not None and pno not in pages:
             continue
         page = doc[pno]
+        from .classify import classify_page
+        klass = classify_page(page)
+        use_raster = mode == "raster" or (mode == "auto" and klass.mode == "raster")
+        if use_raster:
+            from ..raster.adapter import raster_page
+            if progress:
+                progress("RASTERISED_INPUT_OCR")
+            rpage, _ = raster_page(page, pno, progress)
+            rpage.input_class = klass.as_dict()
+            rd.pages.append(rpage)
+            continue
         rot = page.rotation
         # Work in the displayed (rotated) page space: PyMuPDF get_drawings/get_text return unrotated
         # coordinates; map them with rotation_matrix so all downstream geometry matches the rendered page.
@@ -260,7 +276,9 @@ def extract_document(pdf_path: str, pages: list[int] | None = None) -> RawDocume
                         mediabox=[round(v, 2) for v in page.mediabox], cropbox=[round(v, 2) for v in page.cropbox],
                         n_images=len(page.get_images()), n_annots=len(annots), n_xobjects=len(xobjs), xobjects=xobjs,
                         fonts=fonts, annots=annots)
-        rd.pages.append(RawPage(info=info, paths=paths, spans=spans))
+        rp = RawPage(info=info, paths=paths, spans=spans)
+        rp.input_class = klass.as_dict()
+        rd.pages.append(rp)
     doc.close()
     return rd
 

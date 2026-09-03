@@ -6,6 +6,13 @@ import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 export type Layer = "pipes" | "ambiguous" | "unowned" | "designations" | "leaders" | "anchors";
 
+const PALETTE = ["#0d9a1a", "#0059e6", "#d91a1a", "#8c00b3", "#009999", "#cc7300", "#4d4de6", "#99591a", "#e6007f", "#1a734d", "#808000", "#333333"];
+export function identityColor(key: string): string {
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  return PALETTE[h % PALETTE.length];
+}
+
 export interface ViewerProps {
   data: ArrayBuffer | null;
   page: number;
@@ -15,6 +22,7 @@ export interface ViewerProps {
   designations: any[];
   leaders: any[];
   anchors: any[];
+  hatched?: any[];
   selectedIdentity: string | null;
   selectedPipe: string | null;
   layers: Record<Layer, boolean>;
@@ -98,12 +106,16 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
             ))}
             {props.layers.pipes && props.pipes.map((p) => {
               const sel = props.selectedPipe === p.physical_pipe_id || (props.selectedIdentity !== null && props.selectedIdentity === p.identity);
+              const dim = props.selectedIdentity !== null && !sel;
               return p.geometry.map((pl: number[][], k: number) => (
                 <polyline key={`${p.physical_pipe_id}-${k}`} points={pl.map((q) => q.join(",")).join(" ")} fill="none"
-                  stroke={sel ? "#ff2d00" : "#12a24b"} strokeWidth={sw(sel ? 5 : 3.2)} strokeOpacity={0.85} strokeLinecap="round" strokeLinejoin="round"
+                  stroke={sel ? "#ff2d00" : identityColor(p.identity)} strokeWidth={sw(sel ? 5 : 3.2)} strokeOpacity={dim ? 0.25 : 0.85} strokeLinecap="round" strokeLinejoin="round"
                   style={{ pointerEvents: "stroke", cursor: "pointer" }} onClick={() => props.onPipeClick(p)} />
               ));
             })}
+            {props.layers.pipes && (props.hatched ?? []).map((g, i) => (
+              <line key={`h${i}`} x1={g.x0} y1={g.y0} x2={g.x1} y2={g.y1} stroke="#6b7280" strokeWidth={sw(3.4)} strokeDasharray={`${sw(4)} ${sw(3)}`} strokeOpacity={0.95} />
+            ))}
             {props.layers.leaders && props.leaders.map((l) => (
               <polyline key={l.id} points={l.points.map((q: number[]) => q.join(",")).join(" ")} fill="none" stroke="#b000b0" strokeWidth={sw(1.2)} />
             ))}

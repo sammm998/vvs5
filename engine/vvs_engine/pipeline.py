@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import time
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
@@ -13,7 +14,7 @@ from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
 from .geometry.core import GridIndex, dist
 from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family, family_key,
-                                   split_prims_at_points)
+                                   graph_tolerances, split_prims_at_points)
 from .profile.layers import compute_layer_stats
 from .profile.hatch import HatchFamily, discover_hatch, inside_hatch
 from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, extract_designations, free_segments, merge_lines)
@@ -125,7 +126,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
         for fk in voted:
             if not prims_all.get(fk):
                 continue
-            g = build_graph(prims_all[fk], fk)
+            g = build_graph(prims_all[fk], fk, graph_tolerances(page))
             rf = describe_family(fk, prims_all[fk], g)
             desc[fk] = (rf, g)
         def chain_like(fk):
@@ -145,7 +146,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
             similar = any(_layer_template_similar(layer, tl) for tl in token_layers)
             accept = (token_votes[f] >= 1) or (tick_votes[f] >= 2 and similar) \
                 or (tick_votes[f] >= 3 and style in token_styles) or (tick_votes[f] >= 5 and tick_votes[f] / total_ticks >= 0.15) \
-                or (not token_fams and tick_votes[f] >= 2 and tick_votes[f] / total_ticks >= 0.25)   # no layer-name evidence at all
+                or (not token_fams and tick_votes[f] >= 2 and tick_votes[f] / total_ticks >= 0.25) \
+                or (not token_fams and votes[f] >= 5 and votes[f] / total_votes >= 0.4) \
+                or (not token_fams and votes[f] >= 2 and votes[f] / total_votes >= 0.5)   # no layer names: leaders end mostly here
             if accept:
                 pipe_families[f] = desc[f][0]
                 graphs[f] = desc[f][1]
@@ -167,6 +170,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
             anchors.extend(resolve_block(block, rows, ld, contacts, system_tokens))
         anchors.sort(key=lambda a: a.anchor_id)
         stats = {"votes": dict(votes.most_common()), "token_votes": dict(token_votes.most_common()), "candidate_families": sorted(pipe_families), "tick_votes": dict(tick_votes.most_common())}
+        if os.environ.get("VVS_DEBUG_PASS"):
+            print(f"[pass ann_layers={sorted(ann_layers) if ann_layers else None}] leaders={len(leaders)} des_leaders={len(des_leaders)} votes={dict(votes)} ticks={dict(tick_votes)} "
+                  f"voted={voted} chain_like={[f for f in voted if chain_like(f)]} accepted={sorted(pipe_families)} anchors={Counter(a.state for a in anchors)}", file=sys.stderr)
         return leaders, pipe_families, graphs, anchors, stats
 
     # pass 1: unrestricted leaders; pass 2: leaders/marks restricted to the annotation layers evidenced by
@@ -188,7 +194,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
         for sgm in b.box_segs:
             ann_layers[f"{sgm.layer}|s|w{sgm.width:.2f}"] += 1
     if ann_layers:
-        keep = {k: v for k, v in ann_layers.items() if v >= 2 or v >= 0.05 * max(ann_layers.values())}
+        # a vector family accepted as pipe geometry in pass 1 is never an annotation family (an underline bar that
+        # happens to share the pipes' stroke class must not remove the pipes)
+        keep = {k: v for k, v in ann_layers.items() if (v >= 2 or v >= 0.05 * max(ann_layers.values())) and k not in pipe_families}
         leaders, pipe_families, graphs, anchors, contact_stats = run_pass(keep)
         ann_layers = keep
     else:
@@ -370,7 +378,7 @@ def _split_at_tick_contacts(page: RawPage, graphs: dict, pipe_families: dict, an
         if not prims_all.get(fk):
             continue
         ps = split_prims_at_points(prims_all[fk], sorted(pts[fk]))
-        g = build_graph(ps, fk)
+        g = build_graph(ps, fk, graph_tolerances(page))
         graphs[fk] = g
         pipe_families[fk] = describe_family(fk, ps, g)
     return graphs, pipe_families
@@ -498,7 +506,7 @@ def _generalize_families(page: RawPage, pipe_families: dict, graphs: dict):
         for fk in sorted(add):
             if not prims.get(fk):
                 continue
-            g = build_graph(prims[fk], fk)
+            g = build_graph(prims[fk], fk, graph_tolerances(page))
             rf = describe_family(fk, prims[fk], g)
             if rf.kind != "sparse" and rf.longest_chain >= 25 and rf.total_length >= 60:
                 pipe_families[fk] = rf
