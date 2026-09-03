@@ -39,7 +39,7 @@
 * **Scanned drawings** are supported through vectorisation + OCR, not at vector fidelity: traced dashes lose about
   half a stroke width at each end, crossings become junctions, OCR confuses 0/O, 1/I/T and drops very small digits,
   and layer names do not exist, so pipe families are accepted from leader-end evidence only. On a 300 dpi scan of
-  drawing A: 139/142 designations, scale VERIFIED, 72 verified attachments, 114 m confirmed + 30 m ambiguous against
+  drawing A: 139 designations (139 in the vector original), scale VERIFIED, 72 verified attachments, 114 m confirmed + 30 m ambiguous against
   210 m from the vector original. Results carry `input.mode = raster` and an OCR confidence report.
 * **Docker images** could not be built inside the development container (no Docker daemon); the Dockerfiles and
   compose file are provided as written and the backend/frontend were verified with pytest and `npm run build`.

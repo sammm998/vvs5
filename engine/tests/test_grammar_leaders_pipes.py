@@ -4,7 +4,8 @@ import pymupdf
 
 from vvs_engine.pdf.extract import extract_document
 from vvs_engine.pipeline import analyze_page
-from vvs_engine.semantics.grammar import DesignationGrammar, compress_pattern, is_code_like, strip_count_prefix
+from vvs_engine.semantics.grammar import DesignationGrammar, compress_pattern, is_code_like, strip_count_prefix, word_readings
+from vvs_engine.text.model import Glyph
 from vvs_engine.semantics.attachment import system_layer_match
 from vvs_engine.pipes.representation import Prim, build_graph, chains
 from vvs_engine.geometry.core import Seg
@@ -117,3 +118,32 @@ def test_vertical_from_two_elevations(tmp_path):
     q = pa.quantities
     assert len(q) == 1 and q[0]["physical_pipe_count"] == 1
     assert abs(float(q[0]["vertical_m"]) - 0.4) < 1e-6
+
+
+def _glyphs(text: str, twin_alt: dict[str, str]):
+    out = []
+    for i, ch in enumerate(text):
+        alts = [(twin_alt[ch], 0.30)] if ch in twin_alt else []
+        out.append(Glyph(gid=f"g{i}", char=ch, bbox=(i * 5.0, 0.0, i * 5.0 + 4.0, 7.0), source="stroke", score=0.28, alternatives=alts))
+    return out
+
+
+def test_systematic_twin_ambiguity_resolves_to_nominal_size():
+    """Every size token of a drawing read as digits + O (the font's 0 and O are twins): the patterns A9-A9-9A and
+    A9-A9-9 tie on drawing-local frequency, so the reading that forms a nominal pipe size must win (11O -> 110)
+    without any per-drawing rule."""
+    g = DesignationGrammar()
+    words = ["S1-P2-11O", "S1-P2-16O", "S2-P3-11O", "S2-P3-1OO", "S4-P1-16O"]
+    rds = [word_readings(_glyphs(w, {"O": "0"})) for w in words]
+    for r in rds:
+        g.observe(r)
+    chosen = [g.choose(r).text for r in rds]
+    assert chosen == ["S1-P2-110", "S1-P2-160", "S2-P3-110", "S2-P3-100", "S4-P1-160"]
+    # a drawing with clear evidence is not overridden: designations ending in a letter suffix keep it
+    g2 = DesignationGrammar()
+    words2 = ["KV01-X7-40-W40", "KV01-X7-25-W40", "VS31-K2-15-W40", "VS31-K2-2O-W40"]
+    rds2 = [word_readings(_glyphs(w, {"O": "0", "0": "O"})) for w in words2]
+    for r in rds2:
+        g2.observe(r)
+    assert g2.choose(rds2[3]).text == "VS31-K2-20-W40"
+    assert g2.choose(rds2[0]).text == "KV01-X7-40-W40"

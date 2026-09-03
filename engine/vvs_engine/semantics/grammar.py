@@ -79,25 +79,37 @@ class WordReading:
 
 
 def word_readings(glyphs: list[Glyph]) -> list[WordReading]:
-    """Enumerate alternative readings of a word over its twin-ambiguous glyphs (capped)."""
+    """Enumerate alternative readings of a word over its twin-ambiguous glyphs (capped).
+
+    Identical ambiguous characters inside one token are the same glyph shape of the same font and are resolved
+    together ("1OO" reads "1OO" or "100", never "10O"); tokens are independent ("KVO1-40" stays possible)."""
     amb = [i for i, g in enumerate(glyphs) if g.char in TWINS and any(a == TWINS[g.char] and sc <= g.score + MARGIN for a, sc in g.alternatives)]
     base = "".join(g.char for g in glyphs)
     readings = [WordReading(base, compress_pattern(base), 0, 0.0)]
     if not amb:
         return readings
-    amb = amb[:5]
-    for k in range(1, len(amb) + 1):
-        for combo in itertools.combinations(amb, k):
+    tok_idx, t = [], 0
+    for g in glyphs:
+        if not g.char.isalnum():
+            t += 1
+        tok_idx.append(t)
+    groups: dict[tuple[int, str], list[int]] = {}
+    for i in amb:
+        groups.setdefault((tok_idx[i], glyphs[i].char), []).append(i)
+    keys = list(groups)[:5]
+    for k in range(1, len(keys) + 1):
+        for combo in itertools.combinations(keys, k):
             chars = [g.char for g in glyphs]
             cost = 0.0
-            for i in combo:
-                g = glyphs[i]
-                alt = TWINS[g.char]
-                sc = next(s for a, s in g.alternatives if a == alt)
-                chars[i] = alt
-                cost += max(0.0, sc - g.score)
-            t = "".join(chars)
-            readings.append(WordReading(t, compress_pattern(t), k, cost))
+            for key in combo:
+                for i in groups[key]:
+                    g = glyphs[i]
+                    alt = TWINS[g.char]
+                    sc = next(s for a, s in g.alternatives if a == alt)
+                    chars[i] = alt
+                    cost += max(0.0, sc - g.score)
+            txt = "".join(chars)
+            readings.append(WordReading(txt, compress_pattern(txt), k, cost))
     return readings
 
 
@@ -143,18 +155,31 @@ class DesignationGrammar:
                 self.shape_weight[(base, i, token_shape(tok))] += w
 
     def typicality(self, r: WordReading) -> float:
+        """Mean drawing-local support of the reading's token shapes. A shape seen in fewer than two words (or in
+        under 5 % of the pattern's words) is no evidence: it must not overturn the recognizer's best reading."""
         base = self._base(r.pattern)
         _, core = strip_count_prefix(r.text)
         toks = split_tokens(core)
         if not toks:
             return 0.0
-        return sum(self.shape_weight.get((base, i, token_shape(t)), 0.0) for i, t in enumerate(toks)) / len(toks)
+        floor = max(2.0, 0.05 * self.pattern_weight.get(base, 0.0))
+        ws = [self.shape_weight.get((base, i, token_shape(t)), 0.0) for i, t in enumerate(toks)]
+        return sum(w for w in ws if w >= floor) / len(toks)
+
+    @staticmethod
+    def nominal_tokens(text: str) -> int:
+        """Number of pure-digit tokens after the first that read as a generic nominal pipe size."""
+        _, core = strip_count_prefix(text)
+        return sum(1 for i, t in enumerate(split_tokens(core)) if i > 0 and t.isdigit() and int(t) in NOMINAL_SIZES)
 
     def choose(self, readings: list[WordReading]) -> WordReading:
-        """Pick the reading with the most frequent drawing-local pattern, then the most typical token shapes;
-        ties -> fewer twin flips, lower cost, then text."""
+        """Pick the reading with the most frequent drawing-local pattern, then the most typical token shapes.
+        When the drawing itself cannot separate the readings (every word carries the same twin ambiguity, so the
+        alternative patterns tie), the reading whose size token is a nominal pipe size wins (11O -> 110); only
+        then fewer twin flips, lower cost, then text."""
         def key(r: WordReading):
-            return (-self.pattern_weight.get(self._base(r.pattern), 0.0), -round(self.typicality(r), 3), r.flips, r.cost, r.text)
+            return (-self.pattern_weight.get(self._base(r.pattern), 0.0), -round(self.typicality(r), 3),
+                    -self.nominal_tokens(r.text), r.flips, r.cost, r.text)
         code = [r for r in readings if self._admissible(r)]
         pool = code if code else readings
         return sorted(pool, key=key)[0]
