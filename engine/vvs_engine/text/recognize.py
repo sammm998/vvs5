@@ -252,9 +252,22 @@ def oriented_dts(img: np.ndarray, omap: np.ndarray) -> np.ndarray:
     return out
 
 
-@lru_cache(maxsize=1)
-def reference_alphabet() -> list[RefGlyph]:
+@lru_cache(maxsize=4)
+def reference_alphabet(embedded: tuple[tuple[str, bytes], ...] = ()) -> list[RefGlyph]:
+    """Reference shapes to recognise a drawn glyph against.
+
+    Generic alphabets (Hershey strokes, three PDF base fonts) plus, when the drawing embeds its own typeface, the
+    glyphs of that very font: a CAD export explodes its labels into line geometry but still embeds the font it
+    drew them with, so those shapes are the drawing's own evidence rather than a generic stand-in."""
     refs: list[RefGlyph] = []
+    for fname, buf in embedded:
+        for ch in CHARSET:
+            img, ar = _render_reference(ch, fname, buf)
+            if img is None:
+                continue
+            omap = skeleton_orientation(img)
+            refs.append(RefGlyph(char=ch, font=f"embedded:{fname}", img=img, dt=distance_transform(img), aspect=ar,
+                                 holes=HOLES.get(ch, 0), omap=omap, dt_bins=oriented_dts(img, omap)))
     for fname, glyphs in hershey_fonts().items():
         for ch in CHARSET:
             segs = glyphs.get(ch)
@@ -274,10 +287,16 @@ def reference_alphabet() -> list[RefGlyph]:
     return refs
 
 
-def _render_reference(ch: str, font: str):
+def _render_reference(ch: str, font: str, buffer: bytes | None = None):
     doc = pymupdf.open()
     page = doc.new_page(width=200, height=200)
     try:
+        if buffer is not None:
+            page.insert_font(fontname=font, fontbuffer=buffer)
+            f = pymupdf.Font(fontbuffer=buffer)
+            if not f.has_glyph(ord(ch)):
+                doc.close()
+                return None, 1.0      # a subset font carries only the characters its text actually used
         page.insert_text((40, 150), ch, fontsize=110, fontname=font)
     except Exception:
         doc.close()
@@ -335,9 +354,9 @@ def family_fingerprint(img: np.ndarray, aspect: float, size_class: str = "", has
 SMALL_MARKS = set("-.,:=°'~")
 
 
-@lru_cache(maxsize=1)
-def _ref_arrays():
-    refs = reference_alphabet()
+@lru_cache(maxsize=4)
+def _ref_arrays(embedded: tuple[tuple[str, bytes], ...] = ()):
+    refs = reference_alphabet(embedded)
     dts = np.stack([r.dt.ravel() for r in refs])
     raw_bins = np.stack([r.dt_bins.reshape(NBINS, -1) for r in refs])        # (n_ref, NBINS, 1024)
     bdm = _bin_dist_matrix()
@@ -384,12 +403,13 @@ def _bin_dist_matrix() -> np.ndarray:
 
 
 def classify(img: np.ndarray, aspect: float, holes: int, allow_lower: bool = True, rel_height: float = 1.0,
-             has_diacritic: bool = False, rel_size: float | None = None, omap: np.ndarray | None = None) -> tuple[str, float, list[tuple[str, float]]]:
+             has_diacritic: bool = False, rel_size: float | None = None, omap: np.ndarray | None = None,
+             embedded: tuple[tuple[str, bytes], ...] = ()) -> tuple[str, float, list[tuple[str, float]]]:
     """Score glyph against all reference glyphs (batched symmetric chamfer + capped aspect + hole penalties).
 
     rel_height: glyph height relative to its row height; punctuation marks are only admitted for short glyphs and
     excluded for full-height glyphs (structural typography, not drawing-specific knowledge)."""
-    refs, dts, masks, counts, aspects, rholes, chars, lower, small, diacritic, dt_bins, ref_bins = _ref_arrays()
+    refs, dts, masks, counts, aspects, rholes, chars, lower, small, diacritic, dt_bins, ref_bins = _ref_arrays(embedded)
     if rel_size is not None and rel_size < 0.18 and rel_height < 0.18:
         return ".", 0.0, [(".", 0.0)]
     m = (img.ravel() > 0).astype(float)
@@ -440,3 +460,14 @@ def classify(img: np.ndarray, aspect: float, holes: int, allow_lower: bool = Tru
 
 
 UNKNOWN_THRESHOLD = 0.14
+
+
+def decide(char: str, score: float, alternatives: list[tuple[str, float]]) -> tuple[str, bool]:
+    """The character to use, and whether it was accepted on a relaxed rule.
+
+    Only a match within the threshold is a reading. Accepting a decisively-best candidate further out was tried
+    and rejected: on W-50-1-A-0014 it read every 'S' as '5', and because the misreading was systematic the
+    drawing-local grammar then reinforced it. An unnamed character costs one label; a confidently wrong one
+    silently splits an identity in two.
+    """
+    return (char, False) if score <= UNKNOWN_THRESHOLD else ("?", False)

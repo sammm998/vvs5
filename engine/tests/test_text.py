@@ -67,3 +67,32 @@ def test_searchable_text_rows(synthetic_pdf):
     assert "KV01-X7-40-W40" in texts and "VS21-S13" in texts and "15" in texts
     row = next(r for r in rows if r.text == "KV01-X7-40-W40")
     assert row.source == "text" and row.font
+
+
+def test_a_character_is_named_only_within_the_threshold():
+    """A decisively-best but distant match is not a reading: on a real drawing that rule read every 'S' as '5',
+    and the drawing-local grammar then reinforced the misreading. An unnamed character costs one label; a
+    confidently wrong one splits an identity in two."""
+    from vvs_engine.text.recognize import UNKNOWN_THRESHOLD, decide
+    assert decide("4", UNKNOWN_THRESHOLD - 0.01, [("4", 0.13), ("5", 0.20)]) == ("4", False)
+    assert decide("5", 0.16, [("5", 0.16), ("S", 0.30)]) == ("?", False)
+
+
+def test_reference_alphabet_uses_a_font_embedded_in_the_drawing(tmp_path):
+    """A CAD export explodes its labels into lines but still embeds the typeface it drew them with; those glyph
+    shapes are the drawing's own evidence and join the reference alphabet."""
+    import os
+    import pymupdf
+    from vvs_engine.pdf.extract import extract_document
+    from vvs_engine.text.recognize import reference_alphabet
+    path = os.path.join(tmp_path, "font.pdf")
+    buf = pymupdf.Font("helv").buffer                     # a real font file, so the PDF embeds it
+    doc = pymupdf.open(); page = doc.new_page(width=300, height=200)
+    page.insert_font(fontname="EMB", fontbuffer=buf)
+    page.insert_text((30, 100), "AB12", fontsize=20, fontname="EMB")
+    doc.save(path, garbage=0); doc.close()
+    pg = extract_document(path).pages[0]
+    assert pg.embedded_fonts, "the page's own typeface must be carried through extraction"
+    refs = reference_alphabet(pg.embedded_fonts)
+    assert any(r.font.startswith("embedded:") for r in refs)
+    assert refs != reference_alphabet(())

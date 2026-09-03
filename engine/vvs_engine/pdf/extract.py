@@ -97,6 +97,7 @@ class RawPage:
     spans: list[TextSpan]
     input_class: dict | None = None            # how the page was classified before it was accepted
     source_path: str | None = None             # the PDF this page came from (the review layer re-renders it)
+    embedded_fonts: tuple = ()                 # (name, buffer) of the typefaces the page embeds
 
 
 class UnsupportedInputError(Exception):
@@ -200,6 +201,32 @@ def _items_to_segs(items, closed: bool) -> tuple[list[Seg], int, int]:
     return segs, n_curves, max(n_sub, 1)
 
 
+def _embedded_fonts(doc, page) -> tuple:
+    """The typefaces embedded in the page, as (name, buffer).
+
+    A CAD export explodes its labels into line geometry but still embeds the font it drew them with, usually
+    subset to the characters its remaining real text uses. Those glyph shapes are the drawing's own evidence of
+    what its letters look like, so the recogniser is given them alongside the generic alphabets."""
+    out = []
+    seen = set()
+    try:
+        for xref, ext, ftype, base, name, enc in page.get_fonts():
+            if xref in seen:
+                continue
+            seen.add(xref)
+            try:
+                buf = doc.extract_font(xref)[3]
+            except Exception:
+                continue
+            if buf and len(buf) > 200:
+                # the name becomes a PDF resource name when the glyphs are re-rendered: keep it simple
+                safe = "".join(c for c in (base or name or "F") if c.isalnum()) or "F"
+                out.append((f"{safe}{xref}", bytes(buf)))
+    except Exception:
+        return ()
+    return tuple(sorted(out))
+
+
 def _color(c) -> tuple | None:
     if c is None:
         return None
@@ -284,6 +311,7 @@ def extract_document(pdf_path: str, pages: list[int] | None = None, progress=Non
         rp = RawPage(info=info, paths=paths, spans=spans)
         rp.input_class = klass.as_dict()
         rp.source_path = pdf_path
+        rp.embedded_fonts = _embedded_fonts(doc, page)
         rd.pages.append(rp)
     doc.close()
     if not rd.pages:

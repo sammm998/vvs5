@@ -11,7 +11,7 @@ import numpy as np
 from ..geometry.core import stable_id
 from ..pdf.extract import RawPage
 from .model import Glyph, TextRow, make_row
-from .recognize import (UNKNOWN_THRESHOLD, FamilyResult, classify, count_holes, family_fingerprint,
+from .recognize import (UNKNOWN_THRESHOLD, FamilyResult, classify, count_holes, decide, family_fingerprint,
                         rasterize_polygon_fill, rasterize_segments_oriented, skeleton_orientation)
 from .postprocess import resolve_twins
 from .strokes import GlyphCandidate, RowCluster, StrokeComponent, build_components, cluster_rows, size_families
@@ -177,6 +177,7 @@ def vector_text_rows(page: RawPage, timing: dict | None = None) -> VectorTextRes
             fam_members[fid].append((g, rc, img, ar, omap))
             glyph_family[g.gid] = fid
     t3 = time.perf_counter()
+    n_relaxed = 0
     families: dict[str, FamilyResult] = {}
     for fid in sorted(fam_members):
         members = fam_members[fid]
@@ -191,12 +192,14 @@ def vector_text_rows(page: RawPage, timing: dict | None = None) -> VectorTextRes
         rel_size = gsize / rc.height if rc.height > 0 else 1.0
         allow_lower = rel < 0.85
         ch, score, alts = classify(img, ar, holes, allow_lower=allow_lower, rel_height=rel,
-                                   has_diacritic=g.n_diacritics > 0, rel_size=rel_size, omap=omap)
+                                   has_diacritic=g.n_diacritics > 0, rel_size=rel_size, omap=omap,
+                                   embedded=getattr(page, "embedded_fonts", ()))
         structural = _structural_char(g, rc)
         if structural is not None:
             ch, score, alts = structural, 0.0, [(structural, 0.0)] + alts[:3]
-        if score > UNKNOWN_THRESHOLD:
-            ch = "?"
+        ch, relaxed = decide(ch, score, alts)
+        if relaxed:
+            n_relaxed += 1
         families[fid] = FamilyResult(family_id=fid, char=ch, score=score, alternatives=alts, holes=holes, aspect=ar, n_members=len(members))
     t4 = time.perf_counter()
     rows: list[TextRow] = []

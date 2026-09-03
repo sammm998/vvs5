@@ -48,6 +48,21 @@ The root `Dockerfile` builds the frontend, installs the engine and the API and s
 FastAPI (`railway.json` points Railway at it). Environment: `PORT` (honoured), `VVS_SECRET_KEY`, optionally
 `VVS_DATABASE_URL` (PostgreSQL) and a volume at `/data` for uploads and the SQLite database.
 
+## What a vector PDF actually contains
+
+Worth being precise about, because it decides what is readable and what must be recognised. Drawing A's content
+stream holds 74 976 `l`, 33 081 `m`, 18 459 `S` and 7 649 `c` operators - and 17 text-show operators, 88
+characters in total: the grid bubbles (A2, A00, A100, A200, 00, 2, 70, 140, 210) and the revision table. Not one
+pipe designation. W-50-1-A-0014 has four text operators, 27 characters.
+
+The CAD export exploded every label into line geometry. `S1-P2-110` is not the string "S1-P2-110" anywhere in the
+file; it is a few dozen `m`/`l` pairs. There is no character code to read, so each character has to be recognised
+from the shape its strokes make - which is what the engine does, and where an unnamed '?' comes from.
+
+The drawing does embed the typeface it drew with (ISOCPEUR), and those glyph shapes join the reference alphabet as
+the drawing's own evidence. The embedded copy is subset to the characters its remaining real text uses, though -
+16 of them on drawing A, none of which are the S, R, V or K a designation needs - so it helps less than it sounds.
+
 ## Vector PDFs only
 
 The engine reads the drawing's own vector content: every path operator with its segments, layer, stroke width and
