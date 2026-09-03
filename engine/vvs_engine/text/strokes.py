@@ -255,6 +255,10 @@ def cluster_rows(page: RawPage, comps: list[StrokeComponent], H: float) -> list[
         n_seed = sum(1 for i in members if seed[i])
         if n_seed == 0 or (n_seed == 1 and len(members) > 3):
             continue
+        # a lone straight stroke that joined the row (hyphen, colon, 'I', '|') can never be taller than the row's
+        # own glyphs: a longer one is drawing geometry passing by (a frame edge, a scale-bar end, a leader)
+        gmax = max(max(cands[i].w, cands[i].h) for i in members if seed[i])
+        members = [i for i in members if seed[i] or max(cands[i].w, cands[i].h) <= 1.15 * gmax]
         cs = [cands[i] for i in members]
         ang, strength = _principal_angle(cs), _angle_support(cs)
         clusters.append((cs, ang, strength))

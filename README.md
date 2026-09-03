@@ -65,10 +65,20 @@ designations and scale in the "Ej lösta" view.
 ## Quantities: horizontal, hatched areas, risers
 
 * Horizontal metres are measured from the pipe geometry outside hatched areas; pipe running through hatched areas
-  (wall sections) is reported separately as "varav i skrafferat område".
+  (wall sections, adjacent sheet parts) is measured too and reported separately as "varav i skrafferat område".
+  It stays out of the total unless the checkbox "Räkna med skrafferade ytor" is ticked (`?include_hatched=true` on
+  Excel/CSV export). Measuring the reference markup of drawing A shows the takeoff excludes it: 0.25 m of 213.4 m.
 * Risers are counted from the drawn riser marks per designation. The drawing carries no floor height, so vertical
   metres are computed only when the user enters a floor height (Mängder tab; `?floor_height=` on Excel/CSV export).
 * DN changes are placed at drawn tick marks; labels pointing at a riser mark describe the riser, not the run.
+
+## Scale
+
+The scale is read from the drawing and never assumed. A printed ratio ("1:50") is exact; a drawn scale bar is
+measured from the bar's own extent rather than from its label glyph centres, which sit a fraction of a character
+off the graduations (that error was 0.95 % on these drawings). When a sheet states one ratio per print format
+("SKALA A1 (A3)" over "1:50 (1:100)"), the k-th format belongs to the k-th ratio and the sheet's own size selects
+the one that applies. Two ratios with nothing to separate them stay a CONFLICT and no scale is assumed.
 
 ## Artifacts per drawing (results/<name>/)
 

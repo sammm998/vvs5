@@ -4,10 +4,12 @@ import os
 
 import pymupdf
 
+from vvs_engine.measure.scale import discover_scale
 from vvs_engine.pdf.extract import extract_document
 from vvs_engine.pipeline import analyze_page
 from vvs_engine.semantics.annotation import _row_role
-from tests.conftest import make_dashed_line
+from vvs_engine.text.vector_text import vector_text_rows
+from tests.conftest import draw_hershey_text, make_dashed_line
 
 
 def _label(page, shape, x, y, text, dn_row=None, leader_to=None, tick=True):
@@ -134,3 +136,83 @@ def test_hatched_area_is_reported_separately(tmp_path):
     # horizontal quantity = drawn length outside the hatch (300 pt); the hatched half is reported separately
     assert abs(row["confirmed_horizontal_m"] - 300 / 56.69) < 0.5
     assert abs(row["in_hatched_area_m"] - 300 / 56.69) < 0.5
+
+
+def test_scale_bar_is_measured_from_its_own_drawn_extent(tmp_path):
+    """The bar is drawn for a whole number of metres; the label glyph centres sit a fraction of a character off
+    the graduations. The bar's own extent is the measurement, so the ratio comes out exact."""
+    path = os.path.join(tmp_path, "bar.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    span = 5 * 56.69                       # 5 m at 1:50
+    for i in range(6):
+        page.insert_text((300 + i * span / 5, 560), str(i), fontsize=8, fontname="helv")
+    shape.draw_line((301.5, 566), (301.5 + span, 566)); shape.finish(width=1.0, color=(0, 0, 0), closePath=False)
+    shape.commit(); doc.save(path); doc.close()
+    pg = extract_document(path).pages[0]
+    from vvs_engine.text.searchable import searchable_rows
+    sc = discover_scale(pg, searchable_rows(pg))
+    bar = [e for e in sc.evidence if e.kind == "scale_bar"]
+    assert bar and bar[0].detail["measured_from"] == "bar_extent"
+    assert abs(bar[0].detail["implied_ratio"] - 50.0) < 0.5
+
+
+def test_scale_text_selected_by_sheet_format(tmp_path):
+    """'SKALA A1 (A3)' over '1:50 (1:100)': the k-th format belongs to the k-th ratio, so an A1 sheet is 1:50.
+    Without that pairing two ratios are a conflict and no scale may be assumed."""
+    def build(fmt_row):
+        path = os.path.join(tmp_path, f"fmt{abs(hash(fmt_row))}.pdf")
+        doc = pymupdf.open()
+        page = doc.new_page(width=2384, height=1684)          # A1
+        page.insert_text((2048, 1600), fmt_row, fontsize=6, fontname="helv")
+        page.insert_text((2050, 1612), "1:50 (1:100)", fontsize=9, fontname="helv")
+        doc.save(path); doc.close()
+        return extract_document(path).pages[0]
+    from vvs_engine.text.searchable import searchable_rows
+    pg = build("SKALA A1 (A3)")
+    sc = discover_scale(pg, searchable_rows(pg))
+    assert sc.state == "TEXT_ONLY" and abs(sc.meters_per_pt - 50 * 25.4 / 72 / 1000) < 1e-9
+    assert "sheet_format_A1" in sc.reason
+    pg = build("SKALA")
+    assert discover_scale(pg, searchable_rows(pg)).meters_per_pt is None
+
+
+def test_long_stroke_never_joins_a_text_row(tmp_path):
+    """A frame edge or scale-bar end passing next to a label is drawing geometry: gluing it onto the label as a
+    dash would destroy the label (here: the '0' of a scale bar)."""
+    path = os.path.join(tmp_path, "stroke.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    draw_hershey_text(shape, "0", 300, 300, 9.0)
+    shape.draw_line((300.5, 302), (300.5, 319)); shape.finish(width=0.96, color=(0, 0, 0), closePath=False)
+    draw_hershey_text(shape, "2", 340, 300, 9.0)
+    draw_hershey_text(shape, "3", 380, 300, 9.0)
+    shape.commit(); doc.save(path); doc.close()
+    rows = vector_text_rows(extract_document(path).pages[0]).rows
+    texts = {r.text for r in rows}
+    assert "0" in texts, f"the digit must stay its own row, got {texts}"
+    assert not any(len(t) > 1 and t[0] == "-" for t in texts)
+
+
+def test_designation_clipped_by_a_drawing_boundary_is_completed_from_the_drawing(tmp_path):
+    """A sheet-part boundary cuts a label in half: the last character's ink stops dead at the line. The reading
+    is completed from what this drawing overwhelmingly writes, never invented, and only for truncated ink."""
+    path = os.path.join(tmp_path, "clip.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    for i in range(4):
+        y = 120 + i * 40
+        b = draw_hershey_text(shape, "KV01-X7-40", 100, y, 7.0)
+        shape.draw_line((100, y + 2), (b[2], y + 2)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    y = 300
+    b = draw_hershey_text(shape, "KV01-X7-4", 100, y, 7.0)
+    cx = b[2]
+    half = [(cx + 1.4, y - 7.0), (cx + 0.3, y - 5.6), (cx, y - 3.5), (cx + 0.3, y - 1.4), (cx + 1.4, y)]
+    for k in range(len(half) - 1):
+        shape.draw_line(half[k], half[k + 1]); shape.finish(width=0.5, color=(0, 0, 0), closePath=False)
+    shape.draw_line((cx + 1.5, y - 9), (cx + 1.5, y + 2)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    shape.draw_line((100, y + 2), (cx + 1.5, y + 2)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    page.insert_text((100, 560), "SKALA 1:50", fontsize=10, fontname="helv")
+    shape.commit(); doc.save(path); doc.close()
+    pa = analyze_page(extract_document(path).pages[0])
+    at_clip = [d for d in pa.designations if abs(d.bbox[1] - 293) < 6]
+    assert at_clip, "the clipped label must still be read"
+    assert at_clip[0].text == "KV01-X7-40" and at_clip[0].dn == 40
+    assert sum(1 for d in pa.designations if d.text == "KV01-X7-40") == 5

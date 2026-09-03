@@ -31,7 +31,13 @@
   drawn and attached (parallel lines), never the multiplier times one line.
 * **Stroke-font recognition** relies on generic reference alphabets (Hershey simplex/duplex, Helvetica, Courier,
   Times skeletons). Very small text (< 2.5 pt on the page) and exotic CAD fonts produce unknown glyphs ('?');
-  unknown characters are never repaired from expected words.
+  unknown characters are never repaired from expected words. The one exception is a character whose ink is cut
+  by a clipping edge of the drawing (a sheet-part boundary that halves a label): the truncated character is
+  completed from what this drawing itself writes, and only when one reading dominates the alternatives.
+* **Hatched areas** are detected as regularly spaced parallel strokes and pipe inside them is measured but held
+  out of the total. The engine cannot tell a wall section from a large area hatch marking an adjacent sheet part,
+  so on a sheet that hatches most of its plan (drawing W-50-1-A-0014: 39 m hatched against 48 m outside) the
+  operator decides with the "Räkna med skrafferade ytor" checkbox.
 * **Open-world drawing D** (ground-heating site plan, 1:400): labels are zone descriptions without DN, placed on
   unlabeled loop pipes; no VVS designation grammar exists, so no pipes are owned. The engine reports UNSUPPORTED
   structure and zero false ownership. Post-freeze, per-glyph O/0 twin substitution lets the vector scale bar

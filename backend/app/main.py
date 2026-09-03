@@ -310,16 +310,17 @@ def why(job_id: str, pipe_id: str, user: User = Depends(current_user), db: Sessi
 
 
 @app.get("/api/jobs/{job_id}/export/{fmt}")
-def export(job_id: str, fmt: str, floor_height: float | None = None, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def export(job_id: str, fmt: str, floor_height: float | None = None, include_hatched: bool = False,
+           user: User = Depends(current_user), db: Session = Depends(get_db)):
     j = _job(db, user, job_id)
     rd = _result_dir(j)
     base = os.path.splitext(j.drawing.filename)[0]
     fh = floor_height if floor_height and floor_height > 0 else None
     if fmt == "xlsx":
-        return Response(exports.to_xlsx(rd, fh), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        return Response(exports.to_xlsx(rd, fh, include_hatched), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         headers={"Content-Disposition": f'attachment; filename="{base}-mangder.xlsx"'})
     if fmt == "csv":
-        return Response(exports.to_csv(rd, fh).encode("utf-8-sig"), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="{base}-mangder.csv"'})
+        return Response(exports.to_csv(rd, fh, include_hatched).encode("utf-8-sig"), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="{base}-mangder.csv"'})
     if fmt == "json":
         return FileResponse(os.path.join(rd, "quantities.json"), media_type="application/json", filename=f"{base}-quantities.json")
     if fmt == "report":

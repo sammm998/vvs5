@@ -26,6 +26,8 @@ export default function AnalysisPage() {
   const [page, setPage] = useState(0);
   const [nPages, setNPages] = useState(1);
   const [floorHeight, setFloorHeight] = useState<string>(() => { try { return localStorage.getItem("vvs.floorHeight") ?? ""; } catch { return ""; } });
+  const [includeHatched, setIncludeHatched] = useState<boolean>(() => { try { return localStorage.getItem("vvs.includeHatched") === "1"; } catch { return false; } });
+  const exportQuery = [floorHeight.trim() && !Number.isNaN(Number(floorHeight.replace(",", "."))) ? `floor_height=${Number(floorHeight.replace(",", "."))}` : "", includeHatched ? "include_hatched=true" : ""].filter(Boolean).join("&");
   const fh = floorHeight.trim() ? Number(floorHeight.replace(",", ".")) : NaN;
   const floorH = Number.isFinite(fh) && fh > 0 ? fh : null;
   const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, designations: true, leaders: true, anchors: true });
@@ -109,9 +111,10 @@ export default function AnalysisPage() {
             <div className="row" style={{ marginBottom: 8, alignItems: "center", gap: 8 }}>
               <label style={{ fontSize: 12 }}>Våningshöjd för stigare (m): <input style={{ width: 70 }} value={floorHeight} placeholder="t.ex. 2,8"
                 onChange={(e) => { setFloorHeight(e.target.value); try { localStorage.setItem("vvs.floorHeight", e.target.value); } catch {} }} /></label>
-              <span className="muted" style={{ fontSize: 12 }}>Vertikalt = antal stigare × våningshöjd (ritningen anger ingen höjd). Horisontellt exkluderar rör i skrafferade områden (väggar), som redovisas separat.</span>
+              <span className="muted" style={{ fontSize: 12 }}>Vertikalt = antal stigare × våningshöjd (ritningen anger ingen höjd). Rör i skrafferade ytor mäts alltid men räknas in bara om du kryssar i rutan.</span>
             </div>
-            <QuantityTable rows={result.quantities} selected={selIdent} onSelect={(k) => { setSelIdent(k); setSelPipe(null); setWhy(null); }} floorHeight={floorH} />
+            <QuantityTable rows={result.quantities} selected={selIdent} onSelect={(k) => { setSelIdent(k); setSelPipe(null); setWhy(null); }} floorHeight={floorH}
+              includeHatched={includeHatched} onIncludeHatched={(v) => { setIncludeHatched(v); try { localStorage.setItem("vvs.includeHatched", v ? "1" : "0"); } catch {} }} />
             {why && (
               <div style={{ marginTop: 12 }}>
                 <h4>Varför? {why.pipe.designation} DN{why.pipe.dn ?? "?"} · {typeof why.pipe.horizontal_m === "number" ? `${why.pipe.horizontal_m.toFixed(2)} m` : "ingen skala"}</h4>
@@ -162,8 +165,8 @@ export default function AnalysisPage() {
             <h4>Export</h4>
             <div className="row">
               <button onClick={() => dl(api.exportUrl(id!, "pdf"), "markerad.pdf")}>Markerad PDF</button>
-              <button onClick={() => dl(api.exportUrl(id!, "xlsx") + (floorH ? `?floor_height=${floorH}` : ""), "mangder.xlsx")}>Excel</button>
-              <button onClick={() => dl(api.exportUrl(id!, "csv") + (floorH ? `?floor_height=${floorH}` : ""), "mangder.csv")}>CSV</button>
+              <button onClick={() => dl(api.exportUrl(id!, "xlsx") + (exportQuery ? `?${exportQuery}` : ""), "mangder.xlsx")}>Excel</button>
+              <button onClick={() => dl(api.exportUrl(id!, "csv") + (exportQuery ? `?${exportQuery}` : ""), "mangder.csv")}>CSV</button>
               <button onClick={() => dl(api.exportUrl(id!, "json"), "quantities.json")}>JSON</button>
               <button onClick={() => dl(api.exportUrl(id!, "report"), "analysrapport.md")}>Analysrapport</button>
             </div>

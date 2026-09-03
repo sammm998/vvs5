@@ -386,6 +386,92 @@ def _words(line: TextRow) -> list[list[Glyph]]:
     return words
 
 
+def _clip_stroke_at(page_idx: GridIndex, paths: list[RawPath], glyph: Glyph, line: TextRow, outer: str) -> bool:
+    """True when a straight stroke crosses the text line right at the glyph's outer ink edge: the drawing clips
+    its own content there (sheet-part boundaries cut labels in half), so this glyph's ink is incomplete."""
+    x0, y0, x1, y1 = glyph.bbox
+    h = max(line.height, 1.0)
+    d, n = row_axes(line.angle)
+    corners = ((x0, y0), (x1, y1), (x0, y1), (x1, y0))
+    gl = [project(c, d) for c in corners]
+    gn = [project(c, n) for c in corners]
+    edge = max(gl) if outer == "end" else min(gl)
+    for pid in page_idx.query((x0 - 1.5, y0 - 1.5, x1 + 1.5, y1 + 1.5)):
+        p = paths[pid]
+        for sg in p.segs:
+            if sg.length < 1.2 * h:
+                continue
+            ang = abs(((sg.angle - line.angle) + 90) % 180 - 90)
+            if ang < 70.0:
+                continue                       # a clipping edge cuts the line squarely; slanted strokes crossing
+                                               # a label (hatching, leaders) are drawn over it, not clipping it
+            a0, a1 = project((sg.x0, sg.y0), d), project((sg.x1, sg.y1), d)
+            b0, b1 = project((sg.x0, sg.y0), n), project((sg.x1, sg.y1), n)
+            if min(b0, b1) > min(gn) or max(b0, b1) < max(gn):
+                continue                       # does not span the glyph across the line
+            if abs((a0 + a1) / 2 - edge) <= 0.35:
+                return True                    # the ink runs straight into the line: cut, not merely adjacent
+    return False
+
+
+def _repair_clipped_words(page: RawPage, blocks: list[AnnotationBlock], word_cache: dict, chosen_words: list[str]) -> int:
+    """Complete words whose outermost glyph is cut by a clipping edge of the drawing.
+
+    The truncated glyph is read as a wildcard and the drawing's own vocabulary completes it; the repair is made
+    only when exactly one distinct code-like word of this drawing matches. No completion is invented."""
+    idx = GridIndex(cell=40.0)
+    for i, p in enumerate(page.paths):
+        if p.kind == "s":
+            idx.insert(i, p.bbox)
+    vocab = Counter(chosen_words)
+    repaired = 0
+    for b in blocks:
+        for ri, br in enumerate(b.rows):
+            gws = _words(br.line)
+            parts = br.text_norm.split(" ") if br.text_norm else []
+            if len(parts) != len(gws):
+                continue
+            changed = False
+            for wi, gw in enumerate(gws):
+                word = parts[wi]
+                gl = [g for g in gw if g.char != " "]
+                if len(gl) != len(word) or len(gl) < 3:
+                    continue
+                d, _ = row_axes(br.line.angle)
+                starts = sorted(project((x.bbox[0], x.bbox[1]), d) for x in gl)
+                steps = sorted(starts[i + 1] - starts[i] for i in range(len(starts) - 1))
+                pitch = steps[len(steps) // 2] if steps else 0.0
+                if pitch <= 0.5:
+                    continue
+                for pos, outer in ((len(gl) - 1, "end"), (0, "start")):
+                    g = gl[pos]
+                    span = max(abs(project((g.bbox[2], g.bbox[1]), d) - project((g.bbox[0], g.bbox[1]), d)),
+                               abs(project((g.bbox[2], g.bbox[3]), d) - project((g.bbox[0], g.bbox[1]), d)))
+                    if span > 0.75 * pitch:
+                        continue               # the character fills its cell: whole ink, not truncated
+                    if not _clip_stroke_at(idx, page.paths, g, br.line, outer):
+                        continue
+                    cands = sorted(((vocab[w], w) for w in vocab if len(w) == len(word) and w != word
+                                    and all(w[i] == word[i] for i in range(len(word)) if i != pos)), reverse=True)
+                    # the completion must be what this drawing overwhelmingly writes: a one-off reading (often
+                    # another copy of the same truncated label) may never rewrite a word
+                    if not cands or cands[0][0] < 2 or cands[0][0] < 3 * vocab[word]:
+                        continue
+                    if len(cands) > 1 and cands[0][0] < 3 * cands[1][0]:
+                        continue
+                    word = cands[0][1]
+                    parts[wi] = word
+                    changed = True
+                    repaired += 1
+                    break
+            if changed:
+                br.text_norm = " ".join(parts)
+                for w in parts:
+                    if is_code_like(w):
+                        chosen_words.append(w)
+    return repaired
+
+
 def extract_designations(page: RawPage, blocks: list[AnnotationBlock]) -> tuple[list[Designation], DesignationGrammar, dict]:
     grammar = DesignationGrammar()
     # pass 1: observe all code-like word readings (drawing-local structure)
@@ -409,6 +495,7 @@ def extract_designations(page: RawPage, blocks: list[AnnotationBlock]) -> tuple[
                 if is_code_like(best.text):
                     chosen_words.append(best.text)
             br.text_norm = " ".join(parts)
+    stats_repair = _repair_clipped_words(page, blocks, word_cache, chosen_words)
     grammar.finalize(chosen_words)
     # role assignment per row, then label units
     for b in blocks:
@@ -446,7 +533,7 @@ def extract_designations(page: RawPage, blocks: list[AnnotationBlock]) -> tuple[
                     family=f"grammar:{pat}"))
                 stats["designations"] += 1
     designations.sort(key=lambda d: d.did)
-    return designations, grammar, {"blocks": len(blocks), **stats}
+    return designations, grammar, {"blocks": len(blocks), "clipped_words_completed": stats_repair, **stats}
 
 
 def _designation_word(text: str) -> str | None:
