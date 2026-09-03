@@ -42,6 +42,20 @@ docker compose up --build       # web UI on http://localhost:8080, API on http:/
 Workflow: skapa projekt → ladda upp VVS-PDF → analysera → följ förloppet → inspektera ritning och mängder →
 Ej lösta → ladda ner markerad PDF / Excel / CSV / JSON / analysrapport.
 
+## Deploy as one container (Railway, any Docker host)
+
+The root `Dockerfile` builds the frontend, installs the engine and the API and serves the built frontend from
+FastAPI (`railway.json` points Railway at it). Environment: `PORT` (honoured), `VVS_SECRET_KEY`, optionally
+`VVS_DATABASE_URL` (PostgreSQL) and a volume at `/data` for uploads and the SQLite database.
+
+## Quantities: horizontal, hatched areas, risers
+
+* Horizontal metres are measured from the pipe geometry outside hatched areas; pipe running through hatched areas
+  (wall sections) is reported separately as "varav i skrafferat område".
+* Risers are counted from the drawn riser marks per designation. The drawing carries no floor height, so vertical
+  metres are computed only when the user enters a floor height (Mängder tab; `?floor_height=` on Excel/CSV export).
+* DN changes are placed at drawn tick marks; labels pointing at a riser mark describe the riser, not the run.
+
 ## Artifacts per drawing (results/<name>/)
 
 drawing-profile.json, drawing-profile-report.md, raw-vector-inventory.json, cad-layer-map.json,

@@ -134,13 +134,7 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
     for fk in graphs:
         for st in states[fk].values():
             stats[st.state] += 1
-    risers: dict[str, list[dict]] = defaultdict(list)
-    for a in sorted(anchors, key=lambda a: a.anchor_id):
-        if a.anchor_id in identities and a.contacts and all(c.kind == "via_symbol" for c in a.contacts):
-            risers[identities[a.anchor_id].key].append({"anchor_id": a.anchor_id, "designation": a.designation, "dn": a.dn,
-                                                        "count": a.multiplier, "point": [round(a.endpoint[0], 2), round(a.endpoint[1], 2)],
-                                                        "symbol": a.contacts[0].via})
-    return OwnershipResult(prim_states=states, pipes=pipes, ambiguous_runs=ambiguous_runs, stats=dict(stats), riser_labels=dict(risers))
+    return OwnershipResult(prim_states=states, pipes=pipes, ambiguous_runs=ambiguous_runs, stats=dict(stats))
 
 
 def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[PipeCodeAnchor], identities: dict[str, Identity]) -> None:

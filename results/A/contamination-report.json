@@ -1,6 +1,6 @@
 {
  "state": "PASS",
- "files_scanned": 33,
+ "files_scanned": 34,
  "findings": [],
  "validation_data_dependency": false,
  "note": "production package has no import of validation/facit data; detection runs with data/ absent"

@@ -307,9 +307,24 @@
    "seg": 0,
    "x0": 644.88,
    "y0": 1028.44,
+   "x1": 635.34,
+   "y1": 1028.44,
+   "length": 9.54,
+   "state": "CONFIRMED",
+   "identity": "KV01-X7-W40|DN40",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "prim": 140,
+   "pid": "path_318c7d319f74",
+   "seg": 0,
+   "x0": 635.34,
+   "y0": 1028.44,
    "x1": 632.88,
    "y1": 1028.44,
-   "length": 12.0,
+   "length": 2.46,
    "state": "CONFIRMED",
    "identity": "KV01-X7-W40|DN40",
    "candidates": [],
@@ -322,9 +337,24 @@
    "seg": 0,
    "x0": 1392.84,
    "y0": 725.2,
+   "x1": 1386.96,
+   "y1": 727.35,
+   "length": 6.264,
+   "state": "CONFIRMED",
+   "identity": "KV01-X7-W40|DN40",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "prim": 141,
+   "pid": "path_31ff946fbd82",
+   "seg": 0,
+   "x0": 1386.96,
+   "y0": 727.35,
    "x1": 1381.68,
    "y1": 729.28,
-   "length": 11.882,
+   "length": 5.618,
    "state": "CONFIRMED",
    "identity": "KV01-X7-W40|DN40",
    "candidates": [],
@@ -697,9 +727,24 @@
    "seg": 0,
    "x0": 1196.52,
    "y0": 796.6,
+   "x1": 1193.93,
+   "y1": 797.55,
+   "length": 2.753,
+   "state": "CONFIRMED",
+   "identity": "KV01-X7-W40|DN40",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "prim": 142,
+   "pid": "path_60a4644147a3",
+   "seg": 0,
+   "x0": 1193.93,
+   "y0": 797.55,
    "x1": 1185.36,
    "y1": 800.68,
-   "length": 11.882,
+   "length": 9.13,
    "state": "CONFIRMED",
    "identity": "KV01-X7-W40|DN40",
    "candidates": [],
@@ -3802,9 +3847,24 @@
    "seg": 0,
    "x0": 1399.92,
    "y0": 736.24,
+   "x1": 1391.35,
+   "y1": 739.37,
+   "length": 9.13,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "prim": 136,
+   "pid": "path_d6eba1153dc6",
+   "seg": 0,
+   "x0": 1391.35,
+   "y0": 739.37,
    "x1": 1388.76,
    "y1": 740.32,
-   "length": 11.882,
+   "length": 2.753,
    "state": "CONFIRMED",
    "identity": "VVC01-X7|DN32",
    "candidates": [],
@@ -4117,9 +4177,24 @@
    "seg": 0,
    "x0": 1203.6,
    "y0": 807.64,
+   "x1": 1193.92,
+   "y1": 811.18,
+   "length": 10.309,
+   "state": "CONFIRMED",
+   "identity": "VVC01-X7|DN32",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "prim": 137,
+   "pid": "path_fc4d89873d6e",
+   "seg": 0,
+   "x0": 1193.92,
+   "y0": 811.18,
    "x1": 1192.44,
    "y1": 811.72,
-   "length": 11.882,
+   "length": 1.574,
    "state": "CONFIRMED",
    "identity": "VVC01-X7|DN32",
    "candidates": [],
@@ -4177,9 +4252,24 @@
    "seg": 0,
    "x0": 1202.52,
    "y0": 805.96,
+   "x1": 1193.93,
+   "y1": 809.07,
+   "length": 9.13,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-52B--FE-_Vxx-VV|s|w1.44",
+   "prim": 139,
+   "pid": "path_0a5245fb233a",
+   "seg": 0,
+   "x0": 1193.93,
+   "y0": 809.07,
    "x1": 1191.24,
    "y1": 810.04,
-   "length": 11.995,
+   "length": 2.866,
    "state": "CONFIRMED",
    "identity": "VV01-X7-F60|DN40",
    "candidates": [],
@@ -4987,9 +5077,24 @@
    "seg": 0,
    "x0": 1398.84,
    "y0": 734.44,
+   "x1": 1390.67,
+   "y1": 737.43,
+   "length": 8.694,
+   "state": "CONFIRMED",
+   "identity": "VV01-X7-F60|DN40",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-52B--FE-_Vxx-VV|s|w1.44",
+   "prim": 140,
+   "pid": "path_738e58556d52",
+   "seg": 0,
+   "x0": 1390.67,
+   "y0": 737.43,
    "x1": 1387.68,
    "y1": 738.52,
-   "length": 11.882,
+   "length": 3.189,
    "state": "CONFIRMED",
    "identity": "VV01-X7-F60|DN40",
    "candidates": [],
@@ -8707,9 +8812,24 @@
    "seg": 0,
    "x0": 1189.8,
    "y0": 842.8,
+   "x1": 1193.96,
+   "y1": 841.28,
+   "length": 4.424,
+   "state": "CONFIRMED",
+   "identity": "VP01-S2-F80|DN65",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-56B--FE-_VPxx-|s|w1.44",
+   "prim": 272,
+   "pid": "path_3917cd542815",
+   "seg": 0,
+   "x0": 1193.96,
+   "y0": 841.28,
    "x1": 1200.96,
    "y1": 838.72,
-   "length": 11.882,
+   "length": 7.458,
    "state": "CONFIRMED",
    "identity": "VP01-S2-F80|DN65",
    "candidates": [],
@@ -12454,10 +12574,10 @@
    "x1": 1413.72,
    "y1": 204.64,
    "length": 13.104,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -12688,7 +12808,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 493,
+   "prim": 495,
    "pid": "path_1f061f8a4512",
    "seg": 0,
    "x0": 680.04,
@@ -12743,10 +12863,10 @@
    "x1": 1249.44,
    "y1": 229.84,
    "length": 6.115,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -12952,9 +13072,9 @@
    "seg": 0,
    "x0": 704.28,
    "y0": 393.4,
-   "x1": 692.28,
+   "x1": 698.28,
    "y1": 393.4,
-   "length": 12.0,
+   "length": 6.0,
    "state": "CONFIRMED",
    "identity": "VS21-S13-F50|DN15",
    "candidates": [],
@@ -13673,7 +13793,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 494,
+   "prim": 496,
    "pid": "path_45d54b66c89e",
    "seg": 0,
    "x0": 1647.64,
@@ -13688,7 +13808,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 495,
+   "prim": 497,
    "pid": "path_45d54b66c89e",
    "seg": 0,
    "x0": 1647.35,
@@ -13703,7 +13823,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 496,
+   "prim": 498,
    "pid": "path_45d54b66c89e",
    "seg": 0,
    "x0": 1646.99,
@@ -13718,7 +13838,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 497,
+   "prim": 499,
    "pid": "path_45d54b66c89e",
    "seg": 0,
    "x0": 1643.5,
@@ -13763,7 +13883,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 498,
+   "prim": 500,
    "pid": "path_4afbd6f32b63",
    "seg": 0,
    "x0": 712.32,
@@ -13793,7 +13913,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 499,
+   "prim": 501,
    "pid": "path_4afbd6f32b63",
    "seg": 1,
    "x0": 712.32,
@@ -14338,10 +14458,10 @@
    "x1": 1630.08,
    "y1": 1187.32,
    "length": 11.995,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -14771,7 +14891,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 500,
+   "prim": 502,
    "pid": "path_6c06af87a4fb",
    "seg": 0,
    "x0": 644.76,
@@ -15287,7 +15407,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 501,
+   "prim": 503,
    "pid": "path_7493a0c758ae",
    "seg": 9,
    "x0": 1656.45,
@@ -15502,9 +15622,9 @@
    "seg": 0,
    "x0": 630.0,
    "y0": 404.8,
-   "x1": 643.32,
+   "x1": 637.86,
    "y1": 404.8,
-   "length": 13.32,
+   "length": 7.86,
    "state": "CONFIRMED",
    "identity": "VS21-S13-F50|DN15",
    "candidates": [],
@@ -15895,10 +16015,10 @@
    "x1": 1635.12,
    "y1": 1201.24,
    "length": 1.405,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17379,10 +17499,10 @@
    "x1": 1402.32,
    "y1": 171.4,
    "length": 3.758,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17394,10 +17514,10 @@
    "x1": 1402.68,
    "y1": 171.4,
    "length": 0.36,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17409,10 +17529,10 @@
    "x1": 1402.92,
    "y1": 171.4,
    "length": 0.24,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17424,10 +17544,10 @@
    "x1": 1403.28,
    "y1": 171.4,
    "length": 0.36,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17439,10 +17559,10 @@
    "x1": 1403.52,
    "y1": 171.52,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17454,10 +17574,10 @@
    "x1": 1403.76,
    "y1": 171.64,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17469,10 +17589,10 @@
    "x1": 1404.0,
    "y1": 171.76,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17484,10 +17604,10 @@
    "x1": 1404.24,
    "y1": 172.0,
    "length": 0.339,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17499,10 +17619,10 @@
    "x1": 1404.36,
    "y1": 172.24,
    "length": 0.268,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17514,10 +17634,10 @@
    "x1": 1404.48,
    "y1": 172.6,
    "length": 0.379,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17529,10 +17649,10 @@
    "x1": 1408.08,
    "y1": 185.2,
    "length": 13.104,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17836,7 +17956,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 502,
+   "prim": 504,
    "pid": "path_bda0c9720c7c",
    "seg": 0,
    "x0": 644.99,
@@ -17904,10 +18024,10 @@
    "x1": 1409.28,
    "y1": 189.28,
    "length": 1.368,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -17926,7 +18046,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 503,
+   "prim": 505,
    "pid": "path_c142d87689d0",
    "seg": 0,
    "x0": 644.99,
@@ -17941,7 +18061,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 504,
+   "prim": 506,
    "pid": "path_c142d87689d0",
    "seg": 0,
    "x0": 650.28,
@@ -17964,10 +18084,10 @@
    "x1": 1623.6,
    "y1": 1169.56,
    "length": 11.882,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -18024,10 +18144,10 @@
    "x1": 1628.64,
    "y1": 1183.36,
    "length": 1.405,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -18256,7 +18376,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 505,
+   "prim": 507,
    "pid": "path_c9d7eb23636d",
    "seg": 0,
    "x0": 1647.65,
@@ -18271,7 +18391,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 506,
+   "prim": 508,
    "pid": "path_c9d7eb23636d",
    "seg": 0,
    "x0": 1647.36,
@@ -18286,7 +18406,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 507,
+   "prim": 509,
    "pid": "path_c9d7eb23636d",
    "seg": 0,
    "x0": 1647.01,
@@ -18297,7 +18417,7 @@
    "state": "CONFIRMED",
    "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": "collinear_through_junction"
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -18357,7 +18477,7 @@
    "state": "CONFIRMED",
    "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": "collinear_through_junction"
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -18745,7 +18865,7 @@
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
-   "prim": 508,
+   "prim": 510,
    "pid": "path_e17098e497d9",
    "seg": 0,
    "x0": 711.96,
@@ -18982,10 +19102,10 @@
    "x1": 1636.56,
    "y1": 1205.2,
    "length": 8.694,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13|DN15",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
@@ -19335,6 +19455,36 @@
    "reason": ""
   },
   {
+   "family": "V-56B--FE-_VS2x-|s|w1.44",
+   "prim": 493,
+   "pid": "path_2aeb1fb56e27",
+   "seg": 0,
+   "x0": 698.28,
+   "y0": 393.4,
+   "x1": 692.28,
+   "y1": 393.4,
+   "length": 6.0,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13-F50|DN15",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-56B--FE-_VS2x-|s|w1.44",
+   "prim": 494,
+   "pid": "path_785a756a295a",
+   "seg": 0,
+   "x0": 637.86,
+   "y0": 404.8,
+   "x1": 643.32,
+   "y1": 404.8,
+   "length": 5.46,
+   "state": "CONFIRMED",
+   "identity": "VS21-S13-F50|DN15",
+   "candidates": [],
+   "reason": "chain_with_agreeing_anchors"
+  },
+  {
    "family": "V-56B--FE-_VS3x-|s|w1.44",
    "prim": 0,
    "pid": "path_0047981503e5",
@@ -19527,7 +19677,7 @@
    "state": "CONFIRMED",
    "identity": "VS31-X32|DN25",
    "candidates": [],
-   "reason": "collinear_through_junction"
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS3x-|s|w1.44",
@@ -20498,9 +20648,9 @@
    "seg": 0,
    "x0": 1415.16,
    "y0": 787.36,
-   "x1": 1404.0,
-   "y1": 791.32,
-   "length": 11.842,
+   "x1": 1409.58,
+   "y1": 789.34,
+   "length": 5.921,
    "state": "CONFIRMED",
    "identity": "VS31-S13-F60|DN28",
    "candidates": [],
@@ -20546,10 +20696,10 @@
    "x1": 863.88,
    "y1": 743.68,
    "length": 2.52,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS31-X32|DN25",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS3x-|s|w1.44",
@@ -21398,9 +21548,9 @@
    "seg": 0,
    "x0": 1200.96,
    "y0": 865.24,
-   "x1": 1189.8,
-   "y1": 869.32,
-   "length": 11.882,
+   "x1": 1194.01,
+   "y1": 867.78,
+   "length": 7.402,
    "state": "CONFIRMED",
    "identity": "VS31-S13-F60|DN28",
    "candidates": [],
@@ -21528,7 +21678,7 @@
   },
   {
    "family": "V-56B--FE-_VS3x-|s|w1.44",
-   "prim": 234,
+   "prim": 238,
    "pid": "path_9accbb3355bc",
    "seg": 0,
    "x0": 851.04,
@@ -21685,9 +21835,9 @@
    "seg": 0,
    "x0": 871.8,
    "y0": 754.96,
-   "x1": 882.6,
+   "x1": 876.6,
    "y1": 754.96,
-   "length": 10.8,
+   "length": 4.8,
    "state": "CONFIRMED",
    "identity": "VS31-S13-F60|DN28",
    "candidates": [],
@@ -21913,10 +22063,10 @@
    "x1": 861.36,
    "y1": 743.68,
    "length": 9.0,
-   "state": "UNOWNED",
-   "identity": null,
+   "state": "CONFIRMED",
+   "identity": "VS31-X32|DN25",
    "candidates": [],
-   "reason": ""
+   "reason": "chain_from_anchor"
   },
   {
    "family": "V-56B--FE-_VS3x-|s|w1.44",
@@ -22840,9 +22990,9 @@
    "seg": 0,
    "x0": 871.8,
    "y0": 743.68,
-   "x1": 890.76,
+   "x1": 876.54,
    "y1": 743.68,
-   "length": 18.96,
+   "length": 4.74,
    "state": "CONFIRMED",
    "identity": "VS31-S13-F60|DN28",
    "candidates": [],
@@ -22862,6 +23012,66 @@
    "identity": null,
    "candidates": [],
    "reason": ""
+  },
+  {
+   "family": "V-56B--FE-_VS3x-|s|w1.44",
+   "prim": 234,
+   "pid": "path_5cdf17b49606",
+   "seg": 0,
+   "x0": 1409.58,
+   "y0": 789.34,
+   "x1": 1404.0,
+   "y1": 791.32,
+   "length": 5.921,
+   "state": "CONFIRMED",
+   "identity": "VS31-S13-F60|DN28",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-56B--FE-_VS3x-|s|w1.44",
+   "prim": 235,
+   "pid": "path_9456abf40530",
+   "seg": 0,
+   "x0": 1194.01,
+   "y0": 867.78,
+   "x1": 1189.8,
+   "y1": 869.32,
+   "length": 4.48,
+   "state": "CONFIRMED",
+   "identity": "VS31-S13-F60|DN28",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-56B--FE-_VS3x-|s|w1.44",
+   "prim": 236,
+   "pid": "path_a2faec8f771a",
+   "seg": 0,
+   "x0": 876.6,
+   "y0": 754.96,
+   "x1": 882.6,
+   "y1": 754.96,
+   "length": 6.0,
+   "state": "CONFIRMED",
+   "identity": "VS31-S13-F60|DN28",
+   "candidates": [],
+   "reason": "chain_from_anchor"
+  },
+  {
+   "family": "V-56B--FE-_VS3x-|s|w1.44",
+   "prim": 237,
+   "pid": "path_fff1bd3fce82",
+   "seg": 0,
+   "x0": 876.54,
+   "y0": 743.68,
+   "x1": 890.76,
+   "y1": 743.68,
+   "length": 14.22,
+   "state": "CONFIRMED",
+   "identity": "VS31-S13-F60|DN28",
+   "candidates": [],
+   "reason": "chain_from_anchor"
   }
  ]
 }

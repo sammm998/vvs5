@@ -33,21 +33,6 @@
   {
    "kind": "unknown_glyph",
    "count": 2,
-   "family": "0775fccc1708",
-   "alternatives": [
-    [
-     "8",
-     0.1876
-    ],
-    [
-     "B",
-     0.2015
-    ]
-   ]
-  },
-  {
-   "kind": "unknown_glyph",
-   "count": 2,
    "family": "096be2089dca",
    "alternatives": [
     [
@@ -122,7 +107,7 @@
   },
   {
    "kind": "unknown_glyph",
-   "count": 15,
+   "count": 14,
    "family": "17bf2a54dd80",
    "alternatives": [
     [
@@ -212,6 +197,21 @@
   },
   {
    "kind": "unknown_glyph",
+   "count": 2,
+   "family": "29579d58c8c4",
+   "alternatives": [
+    [
+     "*",
+     0.2275
+    ],
+    [
+     "+",
+     0.2336
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
    "count": 3,
    "family": "2993a57d9f93",
    "alternatives": [
@@ -287,21 +287,6 @@
   },
   {
    "kind": "unknown_glyph",
-   "count": 6,
-   "family": "329b36fae6c4",
-   "alternatives": [
-    [
-     "D",
-     0.1959
-    ],
-    [
-     "Ø",
-     0.211
-    ]
-   ]
-  },
-  {
-   "kind": "unknown_glyph",
    "count": 2,
    "family": "34134e6d98b2",
    "alternatives": [
@@ -332,6 +317,21 @@
   },
   {
    "kind": "unknown_glyph",
+   "count": 2,
+   "family": "37d6a13fc3c6",
+   "alternatives": [
+    [
+     "U",
+     0.2382
+    ],
+    [
+     "E",
+     0.2427
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
    "count": 8,
    "family": "3958ae6b9b05",
    "alternatives": [
@@ -347,22 +347,37 @@
   },
   {
    "kind": "unknown_glyph",
-   "count": 3,
+   "count": 4,
    "family": "3e5039738940",
    "alternatives": [
     [
      "H",
-     0.2109
+     0.2102
     ],
     [
      "+",
-     0.2492
+     0.2491
     ]
    ]
   },
   {
    "kind": "unknown_glyph",
-   "count": 3,
+   "count": 7,
+   "family": "403527d7e4fd",
+   "alternatives": [
+    [
+     "D",
+     0.1949
+    ],
+    [
+     "Ø",
+     0.2091
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
    "family": "42e58f304894",
    "alternatives": [
     [
@@ -407,6 +422,21 @@
   },
   {
    "kind": "unknown_glyph",
+   "count": 2,
+   "family": "446037ba9e46",
+   "alternatives": [
+    [
+     "X",
+     0.2122
+    ],
+    [
+     "N",
+     0.2241
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
    "count": 3,
    "family": "47632d2c8610",
    "alternatives": [
@@ -417,36 +447,6 @@
     [
      ".",
      0.2326
-    ]
-   ]
-  },
-  {
-   "kind": "unknown_glyph",
-   "count": 4,
-   "family": "4973a9b61d2a",
-   "alternatives": [
-    [
-     "X",
-     0.1852
-    ],
-    [
-     "N",
-     0.1971
-    ]
-   ]
-  },
-  {
-   "kind": "unknown_glyph",
-   "count": 2,
-   "family": "4a4d05684c2d",
-   "alternatives": [
-    [
-     "H",
-     0.2081
-    ],
-    [
-     "+",
-     0.249
     ]
    ]
   },
@@ -527,21 +527,6 @@
   },
   {
    "kind": "unknown_glyph",
-   "count": 3,
-   "family": "57fdf8d64344",
-   "alternatives": [
-    [
-     "=",
-     0.164
-    ],
-    [
-     ",",
-     0.2056
-    ]
-   ]
-  },
-  {
-   "kind": "unknown_glyph",
    "count": 2,
    "family": "5813dcf4851f",
    "alternatives": [
@@ -617,16 +602,16 @@
   },
   {
    "kind": "unknown_glyph",
-   "count": 2,
-   "family": "65fa143b7031",
+   "count": 6,
+   "family": "63f5b46f1c61",
    "alternatives": [
     [
-     "8",
-     0.1647
+     "D",
+     0.1883
     ],
     [
-     "B",
-     0.1732
+     "Ø",
+     0.2002
     ]
    ]
   },
@@ -677,16 +662,31 @@
   },
   {
    "kind": "unknown_glyph",
-   "count": 3,
+   "count": 2,
    "family": "70c6f404ad78",
    "alternatives": [
     [
      "X",
-     0.1875
+     0.1894
     ],
     [
      "N",
-     0.1994
+     0.2013
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
+   "family": "7992f51d98a2",
+   "alternatives": [
+    [
+     "=",
+     0.1814
+    ],
+    [
+     ",",
+     0.2108
     ]
    ]
   },
@@ -767,7 +767,7 @@
   },
   {
    "kind": "unknown_glyph",
-   "count": 53,
+   "count": 36,
    "family": "8ab8365f2ca1",
    "alternatives": [
     [
@@ -872,6 +872,21 @@
   },
   {
    "kind": "unknown_glyph",
+   "count": 5,
+   "family": "9dfe2ac2f454",
+   "alternatives": [
+    [
+     "+",
+     0.2503
+    ],
+    [
+     "*",
+     0.264
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
    "count": 4,
    "family": "9e2d3200a3e0",
    "alternatives": [
@@ -888,30 +903,30 @@
   {
    "kind": "unknown_glyph",
    "count": 3,
-   "family": "9f773570f8d2",
+   "family": "a20d7862f943",
    "alternatives": [
     [
-     "-",
-     0.2137
+     "+",
+     0.2348
     ],
     [
-     "=",
-     0.2141
+     ".",
+     0.24
     ]
    ]
   },
   {
    "kind": "unknown_glyph",
    "count": 3,
-   "family": "a053cf56dc7a",
+   "family": "a2204340a85a",
    "alternatives": [
     [
      "=",
-     0.2011
+     0.1677
     ],
     [
-     ".",
-     0.2159
+     ",",
+     0.2069
     ]
    ]
   },
@@ -927,21 +942,6 @@
     [
      "X",
      0.2585
-    ]
-   ]
-  },
-  {
-   "kind": "unknown_glyph",
-   "count": 2,
-   "family": "a712e537254a",
-   "alternatives": [
-    [
-     "+",
-     0.2394
-    ],
-    [
-     ".",
-     0.2518
     ]
    ]
   },
@@ -1007,6 +1007,21 @@
   },
   {
    "kind": "unknown_glyph",
+   "count": 2,
+   "family": "aee06a258e08",
+   "alternatives": [
+    [
+     "8",
+     0.1649
+    ],
+    [
+     "%",
+     0.172
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
    "count": 3,
    "family": "b6230da9e41d",
    "alternatives": [
@@ -1037,21 +1052,6 @@
   },
   {
    "kind": "unknown_glyph",
-   "count": 6,
-   "family": "c050faa44c57",
-   "alternatives": [
-    [
-     "D",
-     0.1915
-    ],
-    [
-     "Ø",
-     0.2017
-    ]
-   ]
-  },
-  {
-   "kind": "unknown_glyph",
    "count": 2,
    "family": "c15d38fa41da",
    "alternatives": [
@@ -1072,11 +1072,11 @@
    "alternatives": [
     [
      "X",
-     0.191
+     0.1911
     ],
     [
      "N",
-     0.2029
+     0.203
     ]
    ]
   },
@@ -1112,16 +1112,16 @@
   },
   {
    "kind": "unknown_glyph",
-   "count": 2,
-   "family": "d167033decaf",
+   "count": 3,
+   "family": "d0b4b3076930",
    "alternatives": [
     [
-     "m",
-     0.2005
+     "=",
+     0.1998
     ],
     [
-     "n",
-     0.2167
+     ".",
+     0.2149
     ]
    ]
   },
@@ -1143,15 +1143,15 @@
   {
    "kind": "unknown_glyph",
    "count": 2,
-   "family": "d7779fa4b32d",
+   "family": "d74d3a9de733",
    "alternatives": [
     [
-     ".",
-     0.2609
+     "=",
+     0.1587
     ],
     [
-     "X",
-     0.2836
+     ",",
+     0.1836
     ]
    ]
   },
@@ -1187,6 +1187,36 @@
   },
   {
    "kind": "unknown_glyph",
+   "count": 2,
+   "family": "dcffc4bf92bf",
+   "alternatives": [
+    [
+     "X",
+     0.2045
+    ],
+    [
+     "N",
+     0.2164
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "dd2559785b48",
+   "alternatives": [
+    [
+     "X",
+     0.2132
+    ],
+    [
+     "N",
+     0.2242
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
    "count": 7,
    "family": "ddb152a3d07f",
    "alternatives": [
@@ -1197,6 +1227,21 @@
     [
      "*",
      0.2644
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "e0c1beaf15eb",
+   "alternatives": [
+    [
+     "+",
+     0.2334
+    ],
+    [
+     ".",
+     0.2377
     ]
    ]
   },
@@ -1303,11 +1348,26 @@
    "alternatives": [
     [
      "D",
-     0.1961
+     0.1959
     ],
     [
      "Ø",
-     0.2134
+     0.2132
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 5,
+   "family": "ff6bc7984c65",
+   "alternatives": [
+    [
+     "+",
+     0.25
+    ],
+    [
+     "*",
+     0.2648
     ]
    ]
   },
@@ -1445,17 +1505,6 @@
   },
   {
    "kind": "missing_leader",
-   "text": "M-1O-1-OO2",
-   "bbox": [
-    2161.159912109375,
-    1626.239990234375,
-    2225.7193603515625,
-    1635.239990234375
-   ],
-   "id": "des_0a721677747f"
-  },
-  {
-   "kind": "missing_leader",
    "text": "H6-",
    "bbox": [
     513.3199462890625,
@@ -1489,17 +1538,6 @@
   },
   {
    "kind": "missing_leader",
-   "text": "H5-",
-   "bbox": [
-    500.47998046875,
-    1063.080078125,
-    501.5445556640625,
-    1065.3599853515625
-   ],
-   "id": "des_509254bcbb8a"
-  },
-  {
-   "kind": "missing_leader",
    "text": "//4GNWG",
    "bbox": [
     521.9599609375,
@@ -1508,17 +1546,6 @@
     975.1199951171875
    ],
    "id": "des_8c1d07144381"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "H5-",
-   "bbox": [
-    507.67999267578125,
-    1064.6400146484375,
-    508.74456787109375,
-    1066.800048828125
-   ],
-   "id": "des_a12aa0ed827b"
   },
   {
    "kind": "missing_leader",
@@ -1536,12 +1563,48 @@
    "text": "H5-",
    "reason": "leader_endpoint_touches_no_pipe_geometry",
    "bbox": [
+    480.7200012207031,
+    1120.0,
+    490.7200012207031,
+    1130.0
+   ],
+   "id": "anc_05244f5b1286"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    496.3199768066406,
+    1056.8800048828125,
+    506.3199768066406,
+    1066.8800048828125
+   ],
+   "id": "anc_1207e53fa94a"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
     560.0399780273438,
     875.7999877929688,
     570.0399780273438,
     885.7999877929688
    ],
    "id": "anc_3937cb03cdc8"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "M-1O-1-OO2",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    49.20000076293945,
+    1636.3599853515625,
+    59.20000076293945,
+    1646.3599853515625
+   ],
+   "id": "anc_3cf32408c0dc"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -1554,6 +1617,18 @@
     1135.8800048828125
    ],
    "id": "anc_41a3589db4e8"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    503.6399841308594,
+    1058.43994140625,
+    513.6399841308594,
+    1068.43994140625
+   ],
+   "id": "anc_43c4892e32cf"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -1596,6 +1671,18 @@
    "text": "H5-",
    "reason": "leader_endpoint_touches_no_pipe_geometry",
    "bbox": [
+    522.239990234375,
+    1062.1600341796875,
+    532.239990234375,
+    1072.1600341796875
+   ],
+   "id": "anc_7a7a164cf1d5"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
     531.239990234375,
     869.9200439453125,
     541.239990234375,
@@ -1608,12 +1695,24 @@
    "text": "H5-",
    "reason": "leader_endpoint_touches_no_pipe_geometry",
    "bbox": [
-    531.0,
-    871.0,
-    541.0,
-    881.0
+    504.0,
+    1058.43994140625,
+    514.0,
+    1068.43994140625
    ],
-   "id": "anc_9081c94b461e"
+   "id": "anc_a6215d49da68"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    542.0399780273438,
+    872.0800170898438,
+    552.0399780273438,
+    882.0800170898438
+   ],
+   "id": "anc_f480bc699fd5"
   },
   {
    "kind": "missing_pipe_attachment",

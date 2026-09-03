@@ -1,9 +1,9 @@
 {
  "state": "VALID",
  "raw_relevant_pipe_geometry_pt": 8448.6,
- "confirmed_pt": 3831.119,
+ "confirmed_pt": 3918.222,
  "ambiguous_pt": 193.159,
- "unowned_pt": 4424.322,
+ "unowned_pt": 4337.219,
  "residual_pt": 0.0,
  "double_counted_prims": 0,
  "families": [
@@ -60,20 +60,20 @@
   {
    "family": "V-56B--FE-_VS2x-|s|w1.44",
    "raw_pt": 2154.718,
-   "confirmed_pt": 592.157,
+   "confirmed_pt": 667.74,
    "ambiguous_pt": 192.919,
-   "unowned_pt": 1369.641,
-   "physical_pipe_raw_pt": 592.157,
+   "unowned_pt": 1294.058,
+   "physical_pipe_raw_pt": 667.74,
    "double_counted_prims": 0,
    "valid": true
   },
   {
    "family": "V-56B--FE-_VS3x-|s|w1.44",
    "raw_pt": 1485.898,
-   "confirmed_pt": 592.887,
+   "confirmed_pt": 604.407,
    "ambiguous_pt": 0.24,
-   "unowned_pt": 892.771,
-   "physical_pipe_raw_pt": 592.887,
+   "unowned_pt": 881.251,
+   "physical_pipe_raw_pt": 604.407,
    "double_counted_prims": 0,
    "valid": true
   }

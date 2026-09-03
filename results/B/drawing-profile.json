@@ -2987,13 +2987,13 @@
    }
   ],
   "annotation_layers": {
-   "V-52B---T-_Vxx-|s|w0.72": 169,
-   "V-53BBB-T-_Sxx|s|w0.72": 47,
+   "V-52B---T-_Vxx-|s|w0.72": 170,
+   "V-53BBB-T-_Sxx|s|w0.72": 49,
    "V-53BB--T-_SFxx|s|w0.72": 10,
    "V-52BB--T-_KV02-|s|w0.72": 4,
-   "V-56B---T-_VS2x-|s|w0.72": 41,
-   "V-5-----T-_--|s|w0.72": 41,
+   "V-56B---T-_VS2x-|s|w0.72": 38,
    "SK-46-P-0100-1764-A|SK-46C-B-EB-E|s|w0.96": 5,
+   "V-5-----T-_--|s|w0.72": 34,
    "V-56B---T-_VS3x-|s|w0.72": 2,
    "V-56B---T-_VS1x-|s|w0.72": 5,
    "V-56B---T-_VPxx-|s|w0.72": 3
@@ -3002,11 +3002,11 @@
  "text_structure": {
   "searchable_spans": 459,
   "searchable_rows": 440,
-  "vector_glyph_rows": 612,
+  "vector_glyph_rows": 609,
   "glyph_components": 10940,
-  "glyphs": 4054,
-  "glyph_families": 1587,
-  "unknown_glyph_families": 787,
+  "glyphs": 4064,
+  "glyph_families": 1571,
+  "unknown_glyph_families": 784,
   "size_families_pt": [
    3.0,
    4.25,
@@ -3033,11 +3033,11 @@
     "occurrences": 24
    },
    {
-    "family": "vector:V-52B--FE-_Vxx-KV:s|w0.72:2.8",
+    "family": "vector:SK-46-P-0100-1764-A|SK-46C-B-EK-E:s|w0.72:2.6",
     "occurrences": 20
    },
    {
-    "family": "vector:SK-46-P-0100-1764-A|SK-46C-B-EK-E:s|w0.72:2.6",
+    "family": "vector:V-52B--FE-_Vxx-KV:s|w0.72:2.8",
     "occurrences": 20
    },
    {
@@ -3097,19 +3097,19 @@
     "occurrences": 7
    }
   ],
-  "marks": 7441,
-  "rejected_rows": 1083
+  "marks": 7444,
+  "rejected_rows": 1084
  },
  "annotation_structure": {
-  "blocks": 664,
+  "blocks": 649,
   "designation_grammar_families": [
    {
     "family": "grammar:A9-A9-9-A9",
     "occurrences": 45,
     "processed": 45,
-    "confirmed": 18,
+    "confirmed": 19,
     "ambiguous": 14,
-    "unsupported": 13,
+    "unsupported": 12,
     "examples": [
      "KV01-X7-20-W40",
      "KV01-X7-25-W40",
@@ -3123,8 +3123,8 @@
     "family": "grammar:A9-A9",
     "occurrences": 44,
     "processed": 44,
-    "confirmed": 31,
-    "ambiguous": 2,
+    "confirmed": 30,
+    "ambiguous": 3,
     "unsupported": 11,
     "examples": [
      "KV01-X31",
@@ -3184,6 +3184,17 @@
     ]
    },
    {
+    "family": "grammar:A9",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2,
+    "examples": [
+     "I1"
+    ]
+   },
+   {
     "family": "grammar:A9-A",
     "occurrences": 1,
     "processed": 1,
@@ -3195,22 +3206,11 @@
     ]
    },
    {
-    "family": "grammar:A9",
-    "occurrences": 1,
-    "processed": 1,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 1,
-    "examples": [
-     "I1"
-    ]
-   },
-   {
     "family": "grammar:A9-A9A9-A9",
     "occurrences": 1,
     "processed": 1,
-    "confirmed": 0,
-    "ambiguous": 1,
+    "confirmed": 1,
+    "ambiguous": 0,
     "unsupported": 0,
     "examples": [
      "S01-P3S01-P3"
@@ -3232,14 +3232,14 @@
    "families": [
     {
      "pattern": "A9",
-     "count": 56,
+     "count": 55,
      "examples": [
       "LEL22",
       "TS104",
-      "Y2",
       "KV01",
       "KV02",
-      "VV01"
+      "VV01",
+      "VVC01"
      ],
      "numeric_positions": {},
      "dn_token_index": null
@@ -3340,8 +3340,8 @@
      "pattern": "9A",
      "count": 9,
      "examples": [
-      "1I",
       "0I",
+      "1I",
       "5K",
       "3S"
      ],
@@ -3454,20 +3454,20 @@
   },
   "leader_families": [
    {
-    "family": "straight|vertical|box_corner|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 35,
-    "processed": 35,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 35
-   },
-   {
     "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.72",
     "occurrences": 20,
     "processed": 20,
     "confirmed": 17,
     "ambiguous": 0,
     "unsupported": 3
+   },
+   {
+    "family": "straight|vertical|box_corner|plain-end|no-crossing-ticks|w0.96",
+    "occurrences": 15,
+    "processed": 15,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 15
    },
    {
     "family": "bent|diagonal|underline_end|end-tick|crossing-ticks|w0.72",
@@ -3486,14 +3486,6 @@
     "unsupported": 8
    },
    {
-    "family": "straight|vertical|underline_touch|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 10,
-    "processed": 10,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 10
-   },
-   {
     "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.72",
     "occurrences": 9,
     "processed": 9,
@@ -3503,67 +3495,19 @@
    },
    {
     "family": "straight|diagonal|box_corner|end-tick|no-crossing-ticks|w0.72",
-    "occurrences": 8,
-    "processed": 8,
+    "occurrences": 9,
+    "processed": 9,
     "confirmed": 0,
     "ambiguous": 0,
-    "unsupported": 8
-   },
-   {
-    "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 7,
-    "processed": 7,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 7
-   },
-   {
-    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 7,
-    "processed": 7,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 7
-   },
-   {
-    "family": "straight|horizontal|underline_end|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 7,
-    "processed": 7,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 7
-   },
-   {
-    "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.72",
-    "occurrences": 7,
-    "processed": 7,
-    "confirmed": 2,
-    "ambiguous": 0,
-    "unsupported": 5
+    "unsupported": 9
    },
    {
     "family": "straight|vertical|underline_end|end-tick|no-crossing-ticks|w0.72",
-    "occurrences": 6,
-    "processed": 6,
-    "confirmed": 2,
+    "occurrences": 7,
+    "processed": 7,
+    "confirmed": 3,
     "ambiguous": 1,
     "unsupported": 3
-   },
-   {
-    "family": "multi-bend|vertical|box_corner|end-tick|no-crossing-ticks|w0.96",
-    "occurrences": 5,
-    "processed": 5,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 5
-   },
-   {
-    "family": "straight|horizontal|box_corner|end-tick|no-crossing-ticks|w0.96",
-    "occurrences": 5,
-    "processed": 5,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 5
    },
    {
     "family": "straight|vertical|box_corner|end-tick|no-crossing-ticks|w0.72",
@@ -3574,20 +3518,12 @@
     "unsupported": 4
    },
    {
-    "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.96",
+    "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.72",
     "occurrences": 5,
     "processed": 5,
-    "confirmed": 0,
+    "confirmed": 2,
     "ambiguous": 0,
-    "unsupported": 5
-   },
-   {
-    "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 4,
-    "processed": 4,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 4
+    "unsupported": 3
    },
    {
     "family": "bent|horizontal|underline_end|plain-end|no-crossing-ticks|w0.72",
@@ -3598,7 +3534,15 @@
     "unsupported": 0
    },
    {
-    "family": "multi-bend|horizontal|box_corner|plain-end|no-crossing-ticks|w0.96",
+    "family": "bent|vertical|box_corner|end-tick|no-crossing-ticks|w0.96",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "multi-bend|vertical|box_corner|end-tick|no-crossing-ticks|w0.96",
     "occurrences": 4,
     "processed": 4,
     "confirmed": 0,
@@ -3622,7 +3566,7 @@
     "unsupported": 4
    },
    {
-    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.96",
+    "family": "straight|vertical|underline_touch|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 4,
     "processed": 4,
     "confirmed": 0,
@@ -3630,7 +3574,7 @@
     "unsupported": 4
    },
    {
-    "family": "bent|vertical|box_corner|end-tick|no-crossing-ticks|w0.96",
+    "family": "multi-bend|horizontal|box_corner|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 3,
     "processed": 3,
     "confirmed": 0,
@@ -3638,7 +3582,7 @@
     "unsupported": 3
    },
    {
-    "family": "multi-bend|horizontal|underline_end|plain-end|crossing-ticks|w0.96",
+    "family": "multi-bend|vertical|box_corner|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 3,
     "processed": 3,
     "confirmed": 0,
@@ -3646,7 +3590,23 @@
     "unsupported": 3
    },
    {
-    "family": "split-path|vertical|box_corner|plain-end|no-crossing-ticks|w0.96",
+    "family": "multi-bend|vertical|underline_end|plain-end|no-crossing-ticks|w0.96",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.96",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 3,
     "processed": 3,
     "confirmed": 0,
@@ -3662,7 +3622,7 @@
     "unsupported": 2
    },
    {
-    "family": "straight|vertical|bbox_corner|plain-end|no-crossing-ticks|w0.96",
+    "family": "straight|horizontal|underline_end|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 3,
     "processed": 3,
     "confirmed": 0,
@@ -3670,7 +3630,7 @@
     "unsupported": 3
    },
    {
-    "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.96",
+    "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3686,31 +3646,7 @@
     "unsupported": 2
    },
    {
-    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 2,
-    "processed": 2,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 2
-   },
-   {
-    "family": "multi-bend|vertical|bbox_corner|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 2,
-    "processed": 2,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 2
-   },
-   {
-    "family": "multi-bend|vertical|box_corner|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 2,
-    "processed": 2,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 2
-   },
-   {
-    "family": "split-path|diagonal|box_corner|plain-end|no-crossing-ticks|w0.96",
+    "family": "multi-bend|horizontal|underline_end|plain-end|crossing-ticks|w0.96",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3719,6 +3655,22 @@
    },
    {
     "family": "split-path|horizontal|underline_end|end-tick|crossing-ticks|w0.72",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "split-path|vertical|box_corner|plain-end|no-crossing-ticks|w0.96",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3742,7 +3694,7 @@
     "unsupported": 2
    },
    {
-    "family": "straight|vertical|box_corner|plain-end|no-crossing-ticks|w0.72",
+    "family": "straight|vertical|bbox_corner|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3750,7 +3702,7 @@
     "unsupported": 2
    },
    {
-    "family": "straight|vertical|underline_end|end-tick|crossing-ticks|w0.96",
+    "family": "straight|vertical|box_corner|plain-end|no-crossing-ticks|w0.72",
     "occurrences": 2,
     "processed": 2,
     "confirmed": 0,
@@ -3782,15 +3734,7 @@
     "unsupported": 1
    },
    {
-    "family": "bent|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 1,
-    "processed": 1,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 1
-   },
-   {
-    "family": "bent|horizontal|bbox_corner|plain-end|crossing-ticks|w0.72",
+    "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3814,7 +3758,7 @@
     "unsupported": 1
    },
    {
-    "family": "multi-bend|diagonal|underline_end|plain-end|no-crossing-ticks|w0.96",
+    "family": "bent|vertical|underline_end|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3830,6 +3774,14 @@
     "unsupported": 1
    },
    {
+    "family": "multi-bend|horizontal|underline_end|end-tick|no-crossing-ticks|w0.96",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
     "family": "multi-bend|horizontal|underline_end|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 1,
     "processed": 1,
@@ -3838,15 +3790,7 @@
     "unsupported": 1
    },
    {
-    "family": "multi-bend|vertical|underline_end|plain-end|no-crossing-ticks|w0.96",
-    "occurrences": 1,
-    "processed": 1,
-    "confirmed": 0,
-    "ambiguous": 0,
-    "unsupported": 1
-   },
-   {
-    "family": "multi-bend|vertical|underline_touch|plain-end|no-crossing-ticks|w0.96",
+    "family": "multi-bend|vertical|bbox_corner|plain-end|no-crossing-ticks|w0.96",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3862,6 +3806,14 @@
     "unsupported": 0
    },
    {
+    "family": "split-path|diagonal|box_corner|plain-end|no-crossing-ticks|w0.96",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
     "family": "split-path|diagonal|underline_end|end-tick|crossing-ticks|w0.72",
     "occurrences": 1,
     "processed": 1,
@@ -3870,7 +3822,15 @@
     "unsupported": 1
    },
    {
-    "family": "split-path|vertical|underline_end|end-tick|no-crossing-ticks|w0.96",
+    "family": "split-path|diagonal|underline_end|plain-end|no-crossing-ticks|w0.96",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "split-path|vertical|underline_end|plain-end|crossing-ticks|w0.96",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3902,6 +3862,14 @@
     "unsupported": 0
    },
    {
+    "family": "straight|horizontal|box_corner|end-tick|no-crossing-ticks|w0.96",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
     "family": "straight|horizontal|box_corner|plain-end|no-crossing-ticks|w0.72",
     "occurrences": 1,
     "processed": 1,
@@ -3926,7 +3894,7 @@
     "unsupported": 1
    },
    {
-    "family": "straight|vertical|underline_end|plain-end|crossing-ticks|w0.72",
+    "family": "straight|vertical|underline_end|plain-end|crossing-ticks|w0.96",
     "occurrences": 1,
     "processed": 1,
     "confirmed": 0,
@@ -3937,19 +3905,19 @@
   "marker_families": [
    {
     "family": "crossing-tick|V-52B---T-_Vxx-|s|w0.72",
-    "occurrences": 39
+    "occurrences": 38
    },
    {
     "family": "end-tick|V-5-----T-_--|s|w0.72",
-    "occurrences": 29
+    "occurrences": 30
    },
    {
     "family": "end-tick|SK-46-P-0100-1764-A|SK-46C-B-EB-E|s|w0.96",
-    "occurrences": 27
+    "occurrences": 20
    },
    {
     "family": "end-tick|V-52B---T-_Vxx-|s|w0.72",
-    "occurrences": 16
+    "occurrences": 17
    },
    {
     "family": "end-tick|V-56B---T-_VS2x-|s|w0.72",
@@ -3960,10 +3928,6 @@
     "occurrences": 8
    },
    {
-    "family": "crossing-tick|SK-46-P-0100-1764-A|SK-46C-B-EB-E|s|w0.96",
-    "occurrences": 7
-   },
-   {
     "family": "crossing-tick|V-52BB--T-_KV02-|s|w0.72",
     "occurrences": 6
    },
@@ -3972,12 +3936,12 @@
     "occurrences": 6
    },
    {
-    "family": "end-tick|V-52BB--T-_KV02-|s|w0.72",
-    "occurrences": 2
+    "family": "crossing-tick|SK-46-P-0100-1764-A|SK-46C-B-EB-E|s|w0.96",
+    "occurrences": 6
    },
    {
-    "family": "crossing-tick|V-5-----T-_--|s|w0.72",
-    "occurrences": 1
+    "family": "end-tick|V-52BB--T-_KV02-|s|w0.72",
+    "occurrences": 2
    },
    {
     "family": "end-tick|V-56B---T-_VS3x-|s|w0.72",
@@ -3991,7 +3955,7 @@
   "dn_layouts": {
    "row": 44,
    "inline": 67,
-   "none": 40
+   "none": 41
   }
  },
  "pipe_structure": {
@@ -4001,7 +3965,7 @@
     "layer": "V-52B--FE-_Vxx-KV",
     "style": "w1.44",
     "width": 1.4399999380111694,
-    "n_primitives": 897,
+    "n_primitives": 904,
     "total_length_pt": 4463.9,
     "gap_mode_pt": 2.75,
     "dash_mode_pt": 12.0,
@@ -4009,12 +3973,12 @@
     "longest_chain_pt": 692.4,
     "kind": "fragmented-dashed",
     "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44",
-    "occurrences": 897,
-    "processed": 897,
-    "confirmed": 171,
+    "occurrences": 904,
+    "processed": 904,
+    "confirmed": 179,
     "ambiguous": 7,
     "unsupported": 0,
-    "unowned": 723,
+    "unowned": 722,
     "system_tokens": [
      "52B",
      "FE",
@@ -4027,7 +3991,7 @@
     "layer": "V-52B--FE-_Vxx-VVCXX",
     "style": "w1.44",
     "width": 1.4399999380111694,
-    "n_primitives": 449,
+    "n_primitives": 451,
     "total_length_pt": 2432.5,
     "gap_mode_pt": 2.75,
     "dash_mode_pt": 12.0,
@@ -4035,9 +3999,9 @@
     "longest_chain_pt": 689.5,
     "kind": "fragmented-dashed",
     "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44",
-    "occurrences": 449,
-    "processed": 449,
-    "confirmed": 167,
+    "occurrences": 451,
+    "processed": 451,
+    "confirmed": 169,
     "ambiguous": 8,
     "unsupported": 0,
     "unowned": 274,
@@ -4053,7 +4017,7 @@
     "layer": "V-52B--FE-_Vxx-VV",
     "style": "w1.44",
     "width": 1.4399999380111694,
-    "n_primitives": 943,
+    "n_primitives": 947,
     "total_length_pt": 4345.9,
     "gap_mode_pt": 2.75,
     "dash_mode_pt": 12.0,
@@ -4061,9 +4025,9 @@
     "longest_chain_pt": 675.3,
     "kind": "fragmented-dashed",
     "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44",
-    "occurrences": 943,
-    "processed": 943,
-    "confirmed": 121,
+    "occurrences": 947,
+    "processed": 947,
+    "confirmed": 125,
     "ambiguous": 14,
     "unsupported": 0,
     "unowned": 820,
@@ -4130,7 +4094,7 @@
     "layer": "V-53BB-FE-_SFxx",
     "style": "w2.28",
     "width": 2.2799999713897705,
-    "n_primitives": 358,
+    "n_primitives": 359,
     "total_length_pt": 1928.8,
     "gap_mode_pt": 2.75,
     "dash_mode_pt": 12.0,
@@ -4138,9 +4102,9 @@
     "longest_chain_pt": 48.6,
     "kind": "fragmented-dashed",
     "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 2.28",
-    "occurrences": 358,
-    "processed": 358,
-    "confirmed": 85,
+    "occurrences": 359,
+    "processed": 359,
+    "confirmed": 86,
     "ambiguous": 22,
     "unsupported": 0,
     "unowned": 264,
@@ -4155,7 +4119,7 @@
     "layer": "V-53BBBFE-_Sxx",
     "style": "w2.28",
     "width": 2.2799999713897705,
-    "n_primitives": 85,
+    "n_primitives": 86,
     "total_length_pt": 507.8,
     "gap_mode_pt": 3.0,
     "dash_mode_pt": 12.0,
@@ -4163,12 +4127,12 @@
     "longest_chain_pt": 423.2,
     "kind": "fragmented-dashed",
     "description": "dashed/fragmented line, dash~12.0pt gap~3.0pt, width 2.28",
-    "occurrences": 85,
-    "processed": 85,
-    "confirmed": 73,
+    "occurrences": 86,
+    "processed": 86,
+    "confirmed": 75,
     "ambiguous": 0,
     "unsupported": 0,
-    "unowned": 12,
+    "unowned": 11,
     "system_tokens": [
      "53BBBFE",
      "Sxx"
@@ -4204,7 +4168,7 @@
     "layer": "V-56B--FE-_VS2x-",
     "style": "w1.44",
     "width": 1.4399999380111694,
-    "n_primitives": 1018,
+    "n_primitives": 1021,
     "total_length_pt": 4894.4,
     "gap_mode_pt": 2.75,
     "dash_mode_pt": 12.0,
@@ -4212,12 +4176,12 @@
     "longest_chain_pt": 389.6,
     "kind": "fragmented-dashed",
     "description": "dashed/fragmented line, dash~12.0pt gap~2.75pt, width 1.44",
-    "occurrences": 1018,
-    "processed": 1018,
-    "confirmed": 166,
+    "occurrences": 1021,
+    "processed": 1021,
+    "confirmed": 221,
     "ambiguous": 43,
     "unsupported": 0,
-    "unowned": 827,
+    "unowned": 775,
     "system_tokens": [
      "56B",
      "FE",
@@ -4229,7 +4193,7 @@
     "layer": "V-56B--FE-_VS3x-",
     "style": "w1.44",
     "width": 1.4399999380111694,
-    "n_primitives": 430,
+    "n_primitives": 433,
     "total_length_pt": 2511.1,
     "gap_mode_pt": 3.0,
     "dash_mode_pt": 12.0,
@@ -4237,9 +4201,9 @@
     "longest_chain_pt": 695.2,
     "kind": "fragmented-dashed",
     "description": "dashed/fragmented line, dash~12.0pt gap~3.0pt, width 1.44",
-    "occurrences": 430,
-    "processed": 430,
-    "confirmed": 234,
+    "occurrences": 433,
+    "processed": 433,
+    "confirmed": 237,
     "ambiguous": 0,
     "unsupported": 0,
     "unowned": 197,
@@ -4264,10 +4228,10 @@
     "description": "continuous polyline, width 0.96",
     "occurrences": 136,
     "processed": 136,
-    "confirmed": 4,
-    "ambiguous": 10,
+    "confirmed": 0,
+    "ambiguous": 0,
     "unsupported": 0,
-    "unowned": 238,
+    "unowned": 252,
     "system_tokens": [
      "56B",
      "KE",
@@ -4303,34 +4267,31 @@
   "contact_votes": {
    "votes": {
     "V-56B--FE-_VS2x-|s|w0.72": 19.0,
-    "V-52B--FE-_Vxx-KV|s|w1.44": 16.0,
+    "V-52B--FE-_Vxx-KV|s|w1.44": 17.0,
     "SK-46-P-0100-1764-A|V-52BB-FE_V1|s|w3.96": 16.0,
+    "V-52B--JE-_Vxx-|s|w0.72": 13.0,
     "V-52B--FE-_Vxx-VV|s|w1.44": 11.0,
     "V-53BB-FE-_SFxx|s|w0.72": 10.0,
     "SK-46-P-0100-1764-A|V-52BB-FE_V1|s|w0.00": 9.0,
     "V-52B--FE-_Vxx-VVCXX|s|w1.44": 8.0,
     "V-52B--FE-_Vxx-|s|w0.96": 8.0,
-    "V-52B--JE-_Vxx-|s|w0.72": 6.0,
     "V-56B--FE-_VS2x-|s|w1.44": 6.0,
     "A-40-P-0100-1764-A|A-27F---E-N|s|w0.36": 6.0,
-    "V-52BB-FE-_KV02-KV|s|w0.48": 5.0,
     "V-53BB-FE-_SFxx|s|w2.28": 5.0,
-    "V-56B--JE-_VS3x--|s|w0.72": 5.0,
-    "SK-46-P-0100-1764-A|SK-46C-B-EK-E|s|w0.72": 4.0,
+    "V-52BB-FE-_KV02-KV|s|w0.48": 4.5,
     "V-53BBBFE-_Sxx|s|w0.72": 4.0,
     "V-56B--FE-_VS3x-|s|w1.44": 4.0,
     "V-56B--FE-_VPxx-|s|w1.44": 4.0,
-    "A-------G1-|s|w0.72": 3.5,
     "V-0-----E-_|s|w1.44": 3.0,
     "A-40-P-0100-1764-A|A-5-----E-N|s|w0.72": 3.0,
-    "A-40-P-0100-1764-A|A-27B---E-N|s|w0.36": 2.5,
+    "A-------G1-|s|w0.72": 3.0,
+    "A-40-P-0100-1764-A|A-27B---E-N|s|w0.36": 2.0,
     "V-52BB-JE-_KV02-|s|w0.72": 2.0,
+    "SK-46-P-0100-1764-A|SK-46C-B-EK-E|s|w0.72": 2.0,
     "V-53BBBFE-_Sxx|s|w2.28": 2.0,
     "V-56B--KE-_VS2x--|s|w0.96": 2.0,
     "A-40-P-0100-1764-A|A-5-----E-N|s|w0.36": 2.0,
-    "SK-46-P-0100-1764-A|SK-46C-B-EM-E|s|w0.72": 1.5,
     "V-52B--FE-_Vxx-KV|s|w0.72": 1.5,
-    "A-40-P-0100-1764-A|A-43CC-CE-N|s|w0.36": 1.0,
     "V-56B--JE-_VS2x--|s|w0.72": 1.0,
     "SK-46-P-0100-1764-A|V-52BC-FE_V1|s|w0.00": 1.0,
     "SK-46-P-0100-1764-A|SK-46C-B-EI-E|s|w0.72": 1.0,
@@ -4338,12 +4299,14 @@
     "V-52B--FE-_Vxx-VV|s|w0.72": 1.0,
     "A-40-P-0100-1764-A|A-------G2-|s|w0.72": 1.0,
     "SK-46-P-0100-1764-A|VS-53BB-5L-E6-E|s|w0.48": 1.0,
+    "A-40-P-0100-1764-A|A-43CC-CE-N|s|w0.36": 0.5,
     "V-52BB-FE-_KV02-KV|s|w0.72": 0.5,
-    "V-56B--FE-_VS3x-|s|w0.72": 0.5
+    "V-56B--FE-_VS3x-|s|w0.72": 0.5,
+    "V-56B--JE-_VS3x--|s|w0.72": 0.5
    },
    "token_votes": {
     "V-56B--FE-_VS2x-|s|w0.72": 40,
-    "V-52B--FE-_Vxx-KV|s|w1.44": 26,
+    "V-52B--FE-_Vxx-KV|s|w1.44": 27,
     "V-53BB-FE-_SFxx|s|w0.72": 21,
     "V-52B--FE-_Vxx-VV|s|w1.44": 15,
     "V-52B--FE-_Vxx-VVCXX|s|w1.44": 9,
@@ -4351,7 +4314,6 @@
     "V-53BB-FE-_SFxx|s|w2.28": 8,
     "V-56B--KE-_VS2x--|s|w0.96": 8,
     "V-53BBBFE-_Sxx|s|w0.72": 6,
-    "V-56B--JE-_VS3x--|s|w0.72": 5,
     "V-52BB-FE-_KV02-KV|s|w0.48": 4,
     "V-56B--FE-_VS3x-|s|w1.44": 4,
     "V-56B--FE-_VPxx-|s|w1.44": 4,
@@ -4360,7 +4322,8 @@
     "V-52B--FE-_Vxx-VV|s|w0.72": 2,
     "V-53BBBFE-_Sxx|s|w2.28": 2,
     "V-52BB-FE-_KV02-KV|s|w0.72": 1,
-    "V-56B--FE-_VS3x-|s|w0.72": 1
+    "V-56B--FE-_VS3x-|s|w0.72": 1,
+    "V-56B--JE-_VS3x--|s|w0.72": 1
    },
    "candidate_families": [
     "V-52B--FE-_Vxx-KV|s|w1.44",
@@ -4377,36 +4340,35 @@
     "V-56B--KE-_VS2x--|s|w0.96"
    ],
    "tick_votes": {
-    "V-52B--FE-_Vxx-KV|s|w1.44": 16,
+    "V-52B--FE-_Vxx-KV|s|w1.44": 17,
+    "V-52B--JE-_Vxx-|s|w0.72": 12,
     "V-52B--FE-_Vxx-VV|s|w1.44": 11,
     "V-52B--FE-_Vxx-VVCXX|s|w1.44": 8,
     "V-52B--FE-_Vxx-|s|w0.96": 8,
     "SK-46-P-0100-1764-A|V-52BB-FE_V1|s|w0.00": 7,
-    "V-52B--JE-_Vxx-|s|w0.72": 6,
     "A-40-P-0100-1764-A|A-27F---E-N|s|w0.36": 6,
     "V-56B--FE-_VS2x-|s|w1.44": 5,
-    "V-52BB-FE-_KV02-KV|s|w0.48": 5,
     "V-53BB-FE-_SFxx|s|w2.28": 5,
-    "V-56B--JE-_VS3x--|s|w0.72": 5,
+    "V-52BB-FE-_KV02-KV|s|w0.48": 4,
     "V-56B--FE-_VS3x-|s|w1.44": 4,
     "V-56B--FE-_VPxx-|s|w1.44": 4,
     "A-40-P-0100-1764-A|A-5-----E-N|s|w0.72": 3,
     "A-------G1-|s|w0.72": 3,
-    "A-40-P-0100-1764-A|A-27B---E-N|s|w0.36": 2,
     "V-52BB-JE-_KV02-|s|w0.72": 2,
     "V-53BB-FE-_SFxx|s|w0.72": 2,
     "V-0-----E-_|s|w1.44": 2,
     "SK-46-P-0100-1764-A|V-52BB-FE_V1|s|w3.96": 2,
     "V-53BBBFE-_Sxx|s|w2.28": 2,
     "A-40-P-0100-1764-A|A-5-----E-N|s|w0.36": 2,
-    "A-40-P-0100-1764-A|A-43CC-CE-N|s|w0.36": 1,
     "V-56B--JE-_VS2x--|s|w0.72": 1,
     "A-40-P-0100-1764-A|A-43CB--E-N|s|w0.36": 1,
+    "A-40-P-0100-1764-A|A-27B---E-N|s|w0.36": 1,
     "A-40-P-0100-1764-A|A-------G2-|s|w0.72": 1,
     "SK-46-P-0100-1764-A|VS-53BB-5L-E6-E|s|w0.48": 1
    }
   },
-  "junction_convention": "shared endpoints and endpoint-on-interior T contacts are nodes; crossings are never connections"
+  "junction_convention": "shared endpoints and endpoint-on-interior T contacts are nodes; crossings are never connections",
+  "hatched_areas": []
  },
  "measurement": {
   "scale": {
@@ -4461,7 +4423,7 @@
   },
   "vertical_evidence": {
    "kind": "elevation annotations in label units",
-   "anchors_with_elevation": 52
+   "anchors_with_elevation": 54
   }
  },
  "unknown_structure": {
@@ -4482,11 +4444,10 @@
   ],
   "unresolved_anchor_reasons": {
    "multi_row_token_match_not_unique": 17,
-   "leader_endpoint_touches_no_pipe_geometry": 39,
-   "multi_row_no_compatible_layer_group": 6,
+   "leader_endpoint_touches_no_pipe_geometry": 35,
+   "multi_row_no_compatible_layer_group": 7,
    "system_conflict:layer_matches_VVC01_not_AV201": 1,
-   "system_conflict:layer_matches_VVC01_not_S01": 1,
-   "several_vector_families_at_leader_no_token_discrimination": 2,
+   "several_vector_families_at_leader_no_token_discrimination": 3,
    "system_conflict:layer_matches_VS31_not_AV601": 1,
    "system_conflict:layer_matches_SF01_not_AV201": 1
   }

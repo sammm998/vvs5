@@ -37,6 +37,10 @@
   "confirmed_horizontal_m": 0,
   "confirmed_vertical_m": 0,
   "confirmed_total_m": 0,
-  "ambiguous_m": 0
- }
+  "ambiguous_m": 0,
+  "in_hatched_area_m": 0,
+  "riser_labels": 0
+ },
+ "hatched_areas": [],
+ "risers": {}
 }

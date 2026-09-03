@@ -62,12 +62,14 @@
    "horizontal_pdf_units": 837.029,
    "ambiguous_m": 0.0,
    "vertical_known": false,
+   "in_hatched_area_m": 0.0,
    "state": "CONFIRMED",
    "pipe_ids": [
-    "pp_1ae971ca5755",
-    "pp_b798582d2d2f",
-    "pp_d619eb370e92"
+    "pp_24f9bb239267",
+    "pp_793edf0225bb",
+    "pp_d7d830ffdadd"
    ],
+   "riser_count": 0,
    "vertical_m": "UNKNOWN"
   },
   {
@@ -82,10 +84,12 @@
    "horizontal_pdf_units": 133.06,
    "ambiguous_m": 0.0,
    "vertical_known": false,
+   "in_hatched_area_m": 0.0,
    "state": "CONFIRMED",
    "pipe_ids": [
     "pp_84df6c30d046"
    ],
+   "riser_count": 0,
    "vertical_m": "UNKNOWN"
   },
   {
@@ -100,14 +104,16 @@
    "horizontal_pdf_units": 1040.044,
    "ambiguous_m": 0.0,
    "vertical_known": false,
+   "in_hatched_area_m": 0.0,
    "state": "CONFIRMED",
    "pipe_ids": [
+    "pp_2e6ff7677495",
     "pp_35e214f4dc3f",
     "pp_43d4cb82510c",
     "pp_4419e5bfe992",
-    "pp_a4ac87cce8e2",
     "pp_be3b271580fe"
    ],
+   "riser_count": 0,
    "vertical_m": "UNKNOWN"
   },
   {
@@ -122,11 +128,13 @@
    "horizontal_pdf_units": 694.784,
    "ambiguous_m": 1.652,
    "vertical_known": true,
+   "in_hatched_area_m": 0.0,
    "state": "CONFIRMED",
    "pipe_ids": [
-    "pp_5d7092032c8b",
-    "pp_7857a2ea075d"
+    "pp_ab7f6a886cf4",
+    "pp_ba7a1c1f5b1b"
    ],
+   "riser_count": 0,
    "vertical_m": 0.5
   },
   {
@@ -134,19 +142,24 @@
    "base": "VS21-S13",
    "dn": 15,
    "system": "VS21",
-   "physical_pipe_count": 3,
-   "confirmed_horizontal_m": 1.674,
+   "physical_pipe_count": 6,
+   "confirmed_horizontal_m": 3.323,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 1.674,
-   "horizontal_pdf_units": 94.023,
+   "confirmed_total_m": 3.323,
+   "horizontal_pdf_units": 186.606,
    "ambiguous_m": 1.783,
    "vertical_known": false,
+   "in_hatched_area_m": 0.0,
    "state": "CONFIRMED",
    "pipe_ids": [
     "pp_011cb27c6628",
+    "pp_2e26696e927c",
     "pp_92c0941fe1cf",
+    "pp_d38d8ded3f56",
+    "pp_d7dd581d8d5c",
     "pp_f22838687f72"
    ],
+   "riser_count": 2,
    "vertical_m": "UNKNOWN"
   },
   {
@@ -161,15 +174,17 @@
    "horizontal_pdf_units": 767.157,
    "ambiguous_m": 0.0,
    "vertical_known": false,
+   "in_hatched_area_m": 0.0,
    "state": "CONFIRMED",
    "pipe_ids": [
-    "pp_3df334fb8119",
-    "pp_58a4159f0de8",
+    "pp_0421b99f4f55",
+    "pp_6249e142765f",
     "pp_687419d2f0e9",
-    "pp_9ddc6aa2daa7",
-    "pp_bb97a8820508",
+    "pp_b36e50e66676",
+    "pp_c4ea29ce3af3",
     "pp_e3ca00a57d37"
    ],
+   "riser_count": 0,
    "vertical_m": "UNKNOWN"
   },
   {
@@ -177,17 +192,20 @@
    "base": "VS31-X32",
    "dn": 25,
    "system": "VS31",
-   "physical_pipe_count": 1,
-   "confirmed_horizontal_m": 0.434,
+   "physical_pipe_count": 2,
+   "confirmed_horizontal_m": 0.639,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 0.434,
-   "horizontal_pdf_units": 24.36,
+   "confirmed_total_m": 0.639,
+   "horizontal_pdf_units": 35.88,
    "ambiguous_m": 0.004,
    "vertical_known": false,
+   "in_hatched_area_m": 0.0,
    "state": "CONFIRMED",
    "pipe_ids": [
-    "pp_114d293d0564"
+    "pp_114d293d0564",
+    "pp_3ad3c2ea4947"
    ],
+   "riser_count": 1,
    "vertical_m": "UNKNOWN"
   },
   {
@@ -202,12 +220,14 @@
    "horizontal_pdf_units": 792.716,
    "ambiguous_m": 0.0,
    "vertical_known": false,
+   "in_hatched_area_m": 0.0,
    "state": "CONFIRMED",
    "pipe_ids": [
     "pp_22260dfc4968",
-    "pp_dd53170f138d",
-    "pp_f4d82ec2e409"
+    "pp_5152dfbabb78",
+    "pp_a9d5a081ef28"
    ],
+   "riser_count": 0,
    "vertical_m": "UNKNOWN"
   },
   {
@@ -222,20 +242,67 @@
    "horizontal_pdf_units": 884.656,
    "ambiguous_m": 0.0,
    "vertical_known": false,
+   "in_hatched_area_m": 0.0,
    "state": "CONFIRMED",
    "pipe_ids": [
-    "pp_44244d228cce",
     "pp_4db6ae0df7a7",
-    "pp_b0fd5cb3d97b"
+    "pp_6bff2ec57fb8",
+    "pp_8bda29930226"
    ],
+   "riser_count": 0,
    "vertical_m": "UNKNOWN"
   }
  ],
  "totals": {
-  "physical_pipes": 27,
-  "confirmed_horizontal_m": 93.799,
+  "physical_pipes": 31,
+  "confirmed_horizontal_m": 95.653,
   "confirmed_vertical_m": 0.5,
-  "confirmed_total_m": 94.299,
-  "ambiguous_m": 3.439
+  "confirmed_total_m": 96.153,
+  "ambiguous_m": 3.439,
+  "in_hatched_area_m": 0.0,
+  "riser_labels": 3
+ },
+ "hatched_areas": [],
+ "risers": {
+  "VS21-S13|DN15": [
+   {
+    "designation": "VS21-S13",
+    "dn": 15,
+    "point": [
+     1642.14,
+     1213.96
+    ],
+    "symbol": "path_5a369f43f2b0",
+    "source": "label",
+    "anchor_id": "anc_34d738f3d416",
+    "count_prefix": 1
+   },
+   {
+    "designation": "VS21-S13",
+    "dn": 15,
+    "point": [
+     1247.4,
+     222.64
+    ],
+    "symbol": "path_b2e804ada647",
+    "source": "label",
+    "anchor_id": "anc_45a51f0cbce5",
+    "count_prefix": 1
+   }
+  ],
+  "VS31-X32|DN25": [
+   {
+    "designation": "VS31-X32",
+    "dn": 25,
+    "point": [
+     850.98,
+     743.74
+    ],
+    "symbol": "path_ee8e2c445830",
+    "source": "label",
+    "anchor_id": "anc_8c42492628c1",
+    "count_prefix": 1
+   }
+  ]
  }
 }

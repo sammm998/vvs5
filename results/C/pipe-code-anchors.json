@@ -31,6 +31,56 @@
    }
   },
   {
+   "anchor_id": "anc_0a46df1d5afe",
+   "page": 0,
+   "designation_id": "des_0acc3c028716",
+   "designation": "S01-P5",
+   "system": "S01",
+   "dn": 160,
+   "multiplier": 1,
+   "block_id": "blk_758b3ec64699",
+   "leader_id": "ldr_eb72f56e8049",
+   "leader_source_paths": [
+    "path_3b59794dc043"
+   ],
+   "leader_endpoint": [
+    1424.28,
+    619.12
+   ],
+   "state": "AMBIGUOUS_PIPE_ATTACHMENT",
+   "reason": "multi_row_token_match_not_unique",
+   "contacts": [
+    {
+     "point": [
+      1424.28,
+      619.12
+     ],
+     "kind": "end_tick",
+     "family": "V-53BBBFE-_Sxx|s|w2.88",
+     "pid": "path_14896d7ed123",
+     "seg_index": 0,
+     "distance": 0.054,
+     "mark_id": "mark_69610acb5ac6",
+     "via": null
+    }
+   ],
+   "raw_pipe_source_paths": [
+    "path_14896d7ed123"
+   ],
+   "raw_pipe_segments": [
+    "path_14896d7ed123#0"
+   ],
+   "candidate_families": [
+    "V-53BBBFE-_Sxx|s|w2.88"
+   ],
+   "evidence": {
+    "n_rows": 2,
+    "n_groups": 1,
+    "leader_family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.72",
+    "row_index": 0
+   }
+  },
+  {
    "anchor_id": "anc_17bf287ee605",
    "page": 0,
    "designation_id": "des_c5bc1de85bad",
@@ -82,6 +132,56 @@
    }
   },
   {
+   "anchor_id": "anc_3398ba224713",
+   "page": 0,
+   "designation_id": "des_a39ba5abf011",
+   "designation": "S01-P5-160",
+   "system": "S01",
+   "dn": 160,
+   "multiplier": 1,
+   "block_id": "blk_758b3ec64699",
+   "leader_id": "ldr_eb72f56e8049",
+   "leader_source_paths": [
+    "path_3b59794dc043"
+   ],
+   "leader_endpoint": [
+    1424.28,
+    619.12
+   ],
+   "state": "AMBIGUOUS_PIPE_ATTACHMENT",
+   "reason": "multi_row_token_match_not_unique",
+   "contacts": [
+    {
+     "point": [
+      1424.28,
+      619.12
+     ],
+     "kind": "end_tick",
+     "family": "V-53BBBFE-_Sxx|s|w2.88",
+     "pid": "path_14896d7ed123",
+     "seg_index": 0,
+     "distance": 0.054,
+     "mark_id": "mark_69610acb5ac6",
+     "via": null
+    }
+   ],
+   "raw_pipe_source_paths": [
+    "path_14896d7ed123"
+   ],
+   "raw_pipe_segments": [
+    "path_14896d7ed123#0"
+   ],
+   "candidate_families": [
+    "V-53BBBFE-_Sxx|s|w2.88"
+   ],
+   "evidence": {
+    "n_rows": 2,
+    "n_groups": 1,
+    "leader_family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.72",
+    "row_index": 0
+   }
+  },
+  {
    "anchor_id": "anc_34d738f3d416",
    "page": 0,
    "designation_id": "des_4e8f47623fe1",
@@ -106,20 +206,65 @@
       1642.2,
       1213.96
      ],
-     "kind": "end",
+     "kind": "via_symbol",
      "family": "V-56B--FE-_VS2x-|s|w1.44",
      "pid": "path_45d54b66c89e",
      "seg_index": 0,
      "distance": 0.064,
      "mark_id": null,
-     "via": null
+     "via": "path_5a369f43f2b0"
+    },
+    {
+     "point": [
+      1643.52,
+      1213.48
+     ],
+     "kind": "via_symbol",
+     "family": "V-56B--FE-_VS2x-|s|w1.44",
+     "pid": "path_c9d7eb23636d",
+     "seg_index": 0,
+     "distance": 1.461,
+     "mark_id": null,
+     "via": "path_5a369f43f2b0"
+    },
+    {
+     "point": [
+      1643.52,
+      1213.48
+     ],
+     "kind": "via_symbol",
+     "family": "V-56B--FE-_VS2x-|s|w1.44",
+     "pid": "path_cdb042a00a5a",
+     "seg_index": 0,
+     "distance": 1.461,
+     "mark_id": null,
+     "via": "path_5a369f43f2b0"
+    },
+    {
+     "point": [
+      1639.56,
+      1213.36
+     ],
+     "kind": "via_symbol",
+     "family": "V-56B--FE-_VS2x-|s|w1.44",
+     "pid": "path_ee00a0f13ed6",
+     "seg_index": 0,
+     "distance": 1.405,
+     "mark_id": null,
+     "via": "path_b580a5ab9a13"
     }
    ],
    "raw_pipe_source_paths": [
-    "path_45d54b66c89e"
+    "path_45d54b66c89e",
+    "path_c9d7eb23636d",
+    "path_cdb042a00a5a",
+    "path_ee00a0f13ed6"
    ],
    "raw_pipe_segments": [
-    "path_45d54b66c89e#0"
+    "path_45d54b66c89e#0",
+    "path_c9d7eb23636d#0",
+    "path_cdb042a00a5a#0",
+    "path_ee00a0f13ed6#0"
    ],
    "candidate_families": [
     "V-56B--FE-_VS2x-|s|w1.44"
@@ -274,10 +419,23 @@
    "contacts": [
     {
      "point": [
-      1249.56,
-      221.92
+      1247.76,
+      223.96
      ],
-     "kind": "via_marker",
+     "kind": "via_symbol",
+     "family": "V-56B--FE-_VS2x-|s|w1.44",
+     "pid": "path_21433d6f11c4",
+     "seg_index": 0,
+     "distance": 1.368,
+     "mark_id": null,
+     "via": "path_b2e804ada647"
+    },
+    {
+     "point": [
+      1250.88,
+      221.56
+     ],
+     "kind": "via_symbol",
      "family": "V-56B--FE-_VS2x-|s|w1.44",
      "pid": "path_7c147f2525dd",
      "seg_index": 0,
@@ -287,9 +445,11 @@
     }
    ],
    "raw_pipe_source_paths": [
+    "path_21433d6f11c4",
     "path_7c147f2525dd"
    ],
    "raw_pipe_segments": [
+    "path_21433d6f11c4#0",
     "path_7c147f2525dd#0"
    ],
    "candidate_families": [
@@ -814,22 +974,52 @@
     {
      "point": [
       851.04,
+      742.36
+     ],
+     "kind": "via_symbol",
+     "family": "V-56B--FE-_VS3x-|s|w1.44",
+     "pid": "path_113ac39f21ae",
+     "seg_index": 0,
+     "distance": 1.32,
+     "mark_id": null,
+     "via": "path_0a3849d6f3e4_0"
+    },
+    {
+     "point": [
+      851.04,
       743.68
      ],
-     "kind": "end",
+     "kind": "via_symbol",
      "family": "V-56B--FE-_VS3x-|s|w1.44",
      "pid": "path_9accbb3355bc",
      "seg_index": 0,
      "distance": 0.0,
      "mark_id": null,
-     "via": null
+     "via": "path_ee8e2c445830"
+    },
+    {
+     "point": [
+      852.36,
+      743.68
+     ],
+     "kind": "via_symbol",
+     "family": "V-56B--FE-_VS3x-|s|w1.44",
+     "pid": "path_b1d48c9b171e",
+     "seg_index": 0,
+     "distance": 1.32,
+     "mark_id": null,
+     "via": "path_0a3849d6f3e4_0"
     }
    ],
    "raw_pipe_source_paths": [
-    "path_9accbb3355bc"
+    "path_113ac39f21ae",
+    "path_9accbb3355bc",
+    "path_b1d48c9b171e"
    ],
    "raw_pipe_segments": [
-    "path_9accbb3355bc#0"
+    "path_113ac39f21ae#0",
+    "path_9accbb3355bc#0",
+    "path_b1d48c9b171e#0"
    ],
    "candidate_families": [
     "V-56B--FE-_VS3x-|s|w1.44"
@@ -1109,10 +1299,23 @@
    "contacts": [
     {
      "point": [
-      1395.24,
-      173.56
+      1398.72,
+      172.48
      ],
-     "kind": "via_marker",
+     "kind": "via_symbol",
+     "family": "V-56B--FE-_VS2x-|s|w1.44",
+     "pid": "path_b78c75ed78a7",
+     "seg_index": 0,
+     "distance": 1.368,
+     "mark_id": null,
+     "via": "path_8b8843103803_0"
+    },
+    {
+     "point": [
+      1395.6,
+      175.0
+     ],
+     "kind": "via_symbol",
      "family": "V-56B--FE-_VS2x-|s|w1.44",
      "pid": "path_e7212752b98a",
      "seg_index": 0,
@@ -1122,9 +1325,11 @@
     }
    ],
    "raw_pipe_source_paths": [
+    "path_b78c75ed78a7",
     "path_e7212752b98a"
    ],
    "raw_pipe_segments": [
+    "path_b78c75ed78a7#0",
     "path_e7212752b98a#0"
    ],
    "candidate_families": [

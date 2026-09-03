@@ -1,8 +1,17 @@
 # Known limitations (state at the open-world gate)
 
-* **Vertical quantities** are produced only when two elevation annotations with the same tag (VG, CL, ...) sit on
-  the anchors of one physical pipe; riser symbols and section relationships are not interpreted. Most pipes therefore
-  report `vertical_m = UNKNOWN` (honest, not fabricated).
+* **Vertical quantities**: the drawing carries no floor height, so the engine never invents vertical metres. It
+  counts risers per designation (closed riser marks a label points at, marks of the same riser-mark family at the
+  end of or on a pipe, count prefixes such as `5x` for marker stacks) and reports `riser_count`; the application
+  turns risers into vertical metres only with a floor height the user enters (Excel/CSV export accept
+  `floor_height`). Elevation pairs (VG/CL) on one pipe still give measured vertical metres. Riser counts follow the
+  drawn marks: tiny end circles without a label (fixture connection points) are not risers; a label pointing at a
+  connection mark still counts it. On drawing A this gives 55 risers against 54 in the reference takeoff, with
+  per-system differences (KV2/VV1 7 vs 5 counted from the labelled end marks, S3-R8-75 28 vs 35 where seven riser
+  marks sit on short unowned stubs).
+* **Hatched areas** (regularly spaced parallel strokes: wall sections, existing parts) are discovered per drawing;
+  pipe length inside them is measured but excluded from the horizontal quantity and reported as
+  `in_hatched_area_m` ("varav i skrafferat område"), since takeoffs normally do not count pipe in walls.
 * **DN transitions** are placed only at drawn evidence: the tick mark at a leader end on the pipe. Between two labels
   of different DN the geometry belongs to the label whose tick is not the boundary; when both (or neither) carry a
   tick and no dead end decides, the run is AMBIGUOUS_DN_BOUNDARY. A tick in the middle of a branch that continues

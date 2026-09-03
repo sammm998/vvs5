@@ -2,14 +2,15 @@
  "name": "DRAWING_A",
  "pages": 1,
  "summary": {
-  "designations": 143,
-  "with_dn": 122,
+  "designations": 142,
+  "with_dn": 123,
   "blocks": 390,
-  "leaders": 201,
-  "designation_leaders": 147,
+  "leaders": 195,
+  "designation_leaders": 150,
   "anchors": {
-   "VERIFIED_PIPE_ATTACHMENT": 103,
-   "NO_PIPE_ATTACHMENT": 25
+   "VERIFIED_PIPE_ATTACHMENT": 114,
+   "NO_PIPE_ATTACHMENT": 20,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 1
   },
   "pipe_families": {
    "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44": "fragmented-dashed",
@@ -19,28 +20,28 @@
    "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44": "fragmented-dashed"
   },
   "ownership": {
-   "CONFIRMED": 879,
-   "UNOWNED": 385,
-   "AMBIGUOUS": 17
+   "CONFIRMED": 1310,
+   "AMBIGUOUS": 17,
+   "UNOWNED": 8
   },
-  "physical_pipes": 37,
+  "physical_pipes": 45,
   "scale": "VERIFIED",
-  "confirmed_horizontal_m": 156.66,
+  "confirmed_horizontal_m": 209.89,
   "ambiguous_m": 2.95,
   "timings_ms": {
-   "profile_ms": 196,
-   "text_ms": 8685,
-   "designation_ms": 244,
+   "profile_ms": 190,
+   "text_ms": 8202,
+   "designation_ms": 232,
    "leader_ms": 0,
-   "leader_attachment_ms": 2207,
-   "topology_ms": 0,
-   "physical_pipes_ms": 18,
-   "measurement_ms": 31,
-   "text_components_ms": 771,
-   "text_rows_ms": 786,
-   "text_raster_ms": 1528,
-   "text_classify_ms": 5508,
-   "text_assemble_ms": 64
+   "leader_attachment_ms": 2219,
+   "topology_ms": 89,
+   "physical_pipes_ms": 39,
+   "measurement_ms": 643,
+   "text_components_ms": 720,
+   "text_rows_ms": 707,
+   "text_raster_ms": 1464,
+   "text_classify_ms": 5225,
+   "text_assemble_ms": 60
   }
  },
  "determinism": "PASS",
@@ -75,5 +76,5 @@
   "analysis-report.md": "/home/user/vvs5/results/A/analysis-report.md",
   "freeze-manifest.json": "/home/user/vvs5/results/A/freeze-manifest.json"
  },
- "total_seconds": 50.91
+ "total_seconds": 53.22
 }

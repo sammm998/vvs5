@@ -4,11 +4,11 @@
  "summary": {
   "designations": 12,
   "with_dn": 0,
-  "blocks": 625,
-  "leaders": 554,
-  "designation_leaders": 9,
+  "blocks": 632,
+  "leaders": 426,
+  "designation_leaders": 15,
   "anchors": {
-   "NO_PIPE_ATTACHMENT": 9
+   "NO_PIPE_ATTACHMENT": 15
   },
   "pipe_families": {},
   "ownership": {},
@@ -17,19 +17,19 @@
   "confirmed_horizontal_m": 0,
   "ambiguous_m": 0,
   "timings_ms": {
-   "profile_ms": 325,
-   "text_ms": 12251,
-   "designation_ms": 231,
+   "profile_ms": 319,
+   "text_ms": 12786,
+   "designation_ms": 259,
    "leader_ms": 0,
-   "leader_attachment_ms": 2180,
+   "leader_attachment_ms": 2233,
    "topology_ms": 0,
    "physical_pipes_ms": 0,
-   "measurement_ms": 143,
-   "text_components_ms": 1192,
-   "text_rows_ms": 388,
-   "text_raster_ms": 2210,
-   "text_classify_ms": 8374,
-   "text_assemble_ms": 64
+   "measurement_ms": 1641,
+   "text_components_ms": 1292,
+   "text_rows_ms": 343,
+   "text_raster_ms": 2282,
+   "text_classify_ms": 8777,
+   "text_assemble_ms": 65
   }
  },
  "determinism": "PASS",
@@ -64,5 +64,5 @@
   "analysis-report.md": "/home/user/vvs5/results/D/analysis-report.md",
   "freeze-manifest.json": "/home/user/vvs5/results/D/freeze-manifest.json"
  },
- "total_seconds": 78.68
+ "total_seconds": 85.14
 }

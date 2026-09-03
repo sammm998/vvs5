@@ -19,14 +19,21 @@ class PipeMeasure:
     total_m: float | None
     state: str
     reasons: list[str] = field(default_factory=list)
+    hatched_pdf_units: float = 0.0
+    hatched_m: float | None = None      # part of the horizontal length running inside a hatched area
 
 
-def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str, list[dict]]) -> list[PipeMeasure]:
-    """elevations: anchor_id -> list of {tag, value} elevation annotations attached to the anchor's label unit."""
+def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str, list[dict]],
+                  hatched_pt: dict[str, float] | None = None) -> list[PipeMeasure]:
+    """elevations: anchor_id -> list of {tag, value} elevation annotations attached to the anchor's label unit.
+    hatched_pt: physical_pipe_id -> length (pdf units) of the pipe inside hatched areas."""
     out: list[PipeMeasure] = []
     mpp = scale.meters_per_pt if scale.state in ("VERIFIED", "TEXT_ONLY", "BAR_ONLY", "CONFLICT") and scale.meters_per_pt else None
     for p in own.pipes:
-        hpu = p.length_pt
+        # hatched length is measured on drawn primitives; scale it by the bridged-gap share of the run
+        factor = (p.length_pt / p.raw_length_pt) if p.raw_length_pt > 0 else 1.0
+        hpt = min((hatched_pt or {}).get(p.physical_pipe_id, 0.0) * factor, p.length_pt)
+        hpu = p.length_pt - hpt          # horizontal quantity = drawn length outside hatched (wall) areas
         hm = hpu * mpp if mpp is not None else None
         reasons = []
         if mpp is None:
@@ -37,7 +44,8 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
         if p.frontier_reasons:
             reasons.extend(p.frontier_reasons)
         out.append(PipeMeasure(pipe=p, horizontal_pdf_units=hpu, horizontal_m=hm, vertical_m=vert, vertical_evidence=vev,
-                               total_m=total, state=state, reasons=reasons))
+                               total_m=total, state=state, reasons=reasons, hatched_pdf_units=hpt,
+                               hatched_m=(hpt * mpp if mpp is not None else None)))
     return out
 
 
@@ -67,13 +75,14 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         r = rows.setdefault(k, {"designation": m.pipe.identity.display, "base": m.pipe.identity.base, "dn": m.pipe.identity.dn, "system": m.pipe.identity.system,
                                 "physical_pipe_count": 0, "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0,
                                 "confirmed_total_m": 0.0, "horizontal_pdf_units": 0.0, "ambiguous_m": 0.0, "vertical_known": False,
-                                "state": "CONFIRMED", "pipe_ids": []})
+                                "in_hatched_area_m": 0.0, "state": "CONFIRMED", "pipe_ids": []})
         r["physical_pipe_count"] += 1
         r["horizontal_pdf_units"] += m.horizontal_pdf_units
         r["pipe_ids"].append(m.pipe.physical_pipe_id)
         if m.horizontal_m is not None:
             r["confirmed_horizontal_m"] += m.horizontal_m
             r["confirmed_total_m"] += m.horizontal_m
+            r["in_hatched_area_m"] += m.hatched_m or 0.0      # excluded from the horizontal quantity
         else:
             r["state"] = "UNSUPPORTED_STYLE"
         if m.vertical_m is not None:
@@ -91,14 +100,15 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         r = rows.setdefault(k, {"designation": k.split("|DN")[0], "base": k.split("|DN")[0], "dn": _dn_from_key(k), "system": "", "physical_pipe_count": 0,
                                 "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0, "confirmed_total_m": 0.0,
                                 "horizontal_pdf_units": 0.0, "ambiguous_m": 0.0, "vertical_known": False, "state": "CONFIRMED", "pipe_ids": []})
-        r["riser_count"] = sum(int(e.get("count") or 1) for e in lst)
+        r["riser_count"] = len(lst)
     out = []
     for k in sorted(rows):
         r = rows[k]
         r.setdefault("riser_count", 0)
+        r.setdefault("in_hatched_area_m", 0.0)
         if r["physical_pipe_count"] == 0 and r["ambiguous_m"] == 0 and r["riser_count"] > 0:
             r["state"] = "RISER_LABELS_ONLY"
-        for f in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m", "horizontal_pdf_units"):
+        for f in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m", "horizontal_pdf_units", "in_hatched_area_m"):
             r[f] = round(r[f], 3)
         r["vertical_m"] = r["confirmed_vertical_m"] if r["vertical_known"] else "UNKNOWN"
         out.append(r)

@@ -1,29 +1,29 @@
 {
  "state": "VALID",
  "raw_relevant_pipe_geometry_pt": 10782.459,
- "confirmed_pt": 7498.154,
+ "confirmed_pt": 10589.976,
  "ambiguous_pt": 165.723,
- "unowned_pt": 3118.582,
+ "unowned_pt": 26.76,
  "residual_pt": -0.0,
  "double_counted_prims": 0,
  "families": [
   {
    "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44",
    "raw_pt": 1574.635,
-   "confirmed_pt": 298.743,
+   "confirmed_pt": 1574.635,
    "ambiguous_pt": 0.0,
-   "unowned_pt": 1275.892,
-   "physical_pipe_raw_pt": 298.743,
+   "unowned_pt": 0.0,
+   "physical_pipe_raw_pt": 1574.635,
    "double_counted_prims": 0,
    "valid": true
   },
   {
    "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44",
    "raw_pt": 1629.679,
-   "confirmed_pt": 288.73,
+   "confirmed_pt": 1629.679,
    "ambiguous_pt": 0.0,
-   "unowned_pt": 1340.949,
-   "physical_pipe_raw_pt": 288.73,
+   "unowned_pt": 0.0,
+   "physical_pipe_raw_pt": 1629.679,
    "double_counted_prims": 0,
    "valid": true
   },
@@ -50,10 +50,10 @@
   {
    "family": "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44",
    "raw_pt": 950.146,
-   "confirmed_pt": 475.166,
+   "confirmed_pt": 950.146,
    "ambiguous_pt": 0.0,
-   "unowned_pt": 474.98,
-   "physical_pipe_raw_pt": 475.166,
+   "unowned_pt": 0.0,
+   "physical_pipe_raw_pt": 950.146,
    "double_counted_prims": 0,
    "valid": true
   }

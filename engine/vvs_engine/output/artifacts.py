@@ -98,7 +98,8 @@ def drawing_profile(pa, doc) -> dict[str, Any]:
                                  "marker_families": [{"family": k, "occurrences": v} for k, v in marker_fams.most_common()],
                                  "dn_layouts": dict(Counter(d.dn_source or "none" for d in pa.designations))},
         "pipe_structure": {"representation_families": pipe_fams, "contact_votes": pa.contact_stats,
-                           "junction_convention": "shared endpoints and endpoint-on-interior T contacts are nodes; crossings are never connections"},
+                           "junction_convention": "shared endpoints and endpoint-on-interior T contacts are nodes; crossings are never connections",
+                           "hatched_areas": [h.as_dict() for h in pa.hatch_families]},
         "measurement": {"scale": pa.scale.as_dict(), "vertical_evidence": {"kind": "elevation annotations in label units", "anchors_with_elevation": len(pa.elevations)}},
         "unknown_structure": {"unsupported_families": unsupported,
                               "unresolved_anchor_reasons": dict(Counter(a.reason for a in pa.anchors if a.state != "VERIFIED_PIPE_ATTACHMENT"))},
@@ -291,7 +292,11 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
                                      "confirmed_horizontal_m": round(sum(q["confirmed_horizontal_m"] for q in pa.quantities), 3),
                                      "confirmed_vertical_m": round(sum(q["confirmed_vertical_m"] for q in pa.quantities), 3),
                                      "confirmed_total_m": round(sum(q["confirmed_total_m"] for q in pa.quantities), 3),
-                                     "ambiguous_m": round(sum(q["ambiguous_m"] for q in pa.quantities), 3)}})
+                                     "ambiguous_m": round(sum(q["ambiguous_m"] for q in pa.quantities), 3),
+                                     "in_hatched_area_m": round(sum(q.get("in_hatched_area_m", 0.0) for q in pa.quantities), 3),
+                                     "riser_labels": sum(q.get("riser_count", 0) for q in pa.quantities)},
+                          "hatched_areas": [h.as_dict() for h in pa.hatch_families],
+                          "risers": pa.risers})
     W("unresolved-issues.json", {"issues": unresolved_issues(pa)})
     W("evidence-graph.json", evidence_graph(pa))
     from ..reconcile import reconcile
@@ -320,10 +325,11 @@ def physical_pipe_dict(m) -> dict[str, Any]:
             "identity": p.identity.key, "dn": p.identity.dn, "supporting_anchors": p.anchor_ids, "representation_family": p.family,
             "geometry": [[[round(x, 2), round(y, 2)] for x, y in pl] for pl in p.points], "source_path_ids": p.source_paths,
             "source_segments": p.source_segments, "graph_nodes": p.nodes,
-            "horizontal_pdf_units": round(p.length_pt, 3), "raw_pt": round(p.raw_length_pt, 3), "bridged_gap_pt": round(p.bridged_gap_pt, 3),
+            "horizontal_pdf_units": round(m.horizontal_pdf_units, 3), "drawn_pdf_units": round(p.length_pt, 3), "raw_pt": round(p.raw_length_pt, 3), "bridged_gap_pt": round(p.bridged_gap_pt, 3),
             "horizontal_m": None if m.horizontal_m is None else round(m.horizontal_m, 3),
             "vertical_m": "UNKNOWN" if m.vertical_m is None else round(m.vertical_m, 3), "vertical_evidence": m.vertical_evidence,
             "total_m": None if m.total_m is None else round(m.total_m, 3), "evidence_state": m.state, "evidence": p.evidence,
+            "in_hatched_area_m": None if m.hatched_m is None else round(m.hatched_m, 3),
             "ambiguity_reason": None, "reasons": m.reasons}
 
 

@@ -2,14 +2,14 @@
 
 ## Status
 - designations: 12 (with DN 0)
-- actual CAD leaders: 554 (from designation blocks: 9)
-- pipe attachments: verified 0, ambiguous 0, none 9
+- actual CAD leaders: 426 (from designation blocks: 15)
+- pipe attachments: verified 0, ambiguous 0, none 15
 - physical pipes: 0
 - scale: BAR_ONLY (vector_scale_bar_only)
 - reconciliation: VALID (raw 0.0 pt = confirmed 0.0 + ambiguous 0.0 + unowned 0.0)
 - determinism: PASS
 - contamination: PASS
-- runtime: 78.7 s
+- runtime: 85.1 s
 
 ## Quantities (confirmed only; ambiguous reported separately)
 | Beteckning | DN | Antal | Horisontellt m | Vertikalt m | Totalt m | Tvetydigt m | Status |
@@ -18,10 +18,10 @@
 Totals: confirmed horizontal 0.00 m, ambiguous 0.00 m, unowned pipe geometry 0.00 m
 
 ## Unresolved
-- unknown_glyph: 88
+- unknown_glyph: 92
 - missing_dn: 12
-- missing_leader: 8
-- missing_pipe_attachment: 9
+- missing_leader: 5
+- missing_pipe_attachment: 15
 
 ## Artifacts
 - ambiguous-overlay.pdf

@@ -4,11 +4,12 @@
  "summary": {
   "designations": 45,
   "with_dn": 36,
-  "blocks": 250,
+  "blocks": 249,
   "leaders": 19,
-  "designation_leaders": 14,
+  "designation_leaders": 15,
   "anchors": {
    "NO_PIPE_ATTACHMENT": 3,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 2,
    "VERIFIED_PIPE_ATTACHMENT": 23
   },
   "pipe_families": {
@@ -21,28 +22,28 @@
    "V-56B--FE-_VS3x-|s|w1.44": "fragmented-dashed"
   },
   "ownership": {
-   "UNOWNED": 820,
-   "CONFIRMED": 643,
+   "UNOWNED": 799,
+   "CONFIRMED": 678,
    "AMBIGUOUS": 54
   },
-  "physical_pipes": 27,
+  "physical_pipes": 31,
   "scale": "VERIFIED",
-  "confirmed_horizontal_m": 93.8,
+  "confirmed_horizontal_m": 95.65,
   "ambiguous_m": 3.44,
   "timings_ms": {
    "profile_ms": 82,
-   "text_ms": 7983,
-   "designation_ms": 139,
+   "text_ms": 7747,
+   "designation_ms": 134,
    "leader_ms": 0,
-   "leader_attachment_ms": 1445,
-   "topology_ms": 0,
-   "physical_pipes_ms": 11,
-   "measurement_ms": 16,
-   "text_components_ms": 282,
-   "text_rows_ms": 518,
-   "text_raster_ms": 1696,
-   "text_classify_ms": 5366,
-   "text_assemble_ms": 69
+   "leader_attachment_ms": 1434,
+   "topology_ms": 96,
+   "physical_pipes_ms": 20,
+   "measurement_ms": 322,
+   "text_components_ms": 270,
+   "text_rows_ms": 481,
+   "text_raster_ms": 1591,
+   "text_classify_ms": 5315,
+   "text_assemble_ms": 52
   }
  },
  "determinism": "PASS",
@@ -77,5 +78,5 @@
   "analysis-report.md": "/home/user/vvs5/results/C/analysis-report.md",
   "freeze-manifest.json": "/home/user/vvs5/results/C/freeze-manifest.json"
  },
- "total_seconds": 36.53
+ "total_seconds": 38.41
 }

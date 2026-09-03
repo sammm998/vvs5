@@ -94,6 +94,7 @@
     377
    ],
    "horizontal_pdf_units": 16.339,
+   "drawn_pdf_units": 16.339,
    "raw_pt": 16.339,
    "bridged_gap_pt": 0,
    "horizontal_m": 0.291,
@@ -104,6 +105,111 @@
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_0421b99f4f55",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-S13-28-F60",
+   "identity": "VS31-S13-F60|DN28",
+   "dn": 28,
+   "supporting_anchors": [
+    "anc_8e0e7df424fb"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1399.92,
+      792.88
+     ],
+     [
+      1401.36,
+      792.4
+     ],
+     [
+      1409.58,
+      789.34
+     ],
+     [
+      1415.16,
+      787.36
+     ],
+     [
+      1421.76,
+      784.84
+     ],
+     [
+      1433.04,
+      780.76
+     ],
+     [
+      1437.0,
+      779.32
+     ],
+     [
+      1453.56,
+      773.32
+     ],
+     [
+      1454.88,
+      772.84
+     ],
+     [
+      1468.68,
+      767.8
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_3db3906a2300",
+    "path_49b67d2642b2",
+    "path_5cdf17b49606",
+    "path_5e880354c99e",
+    "path_69460c34b8f9",
+    "path_bba2c5063ef0",
+    "path_c78f96cbc7ae",
+    "path_e941b2e3c325"
+   ],
+   "source_segments": [
+    "path_3db3906a2300#0",
+    "path_49b67d2642b2#0",
+    "path_5cdf17b49606#0",
+    "path_5e880354c99e#0",
+    "path_69460c34b8f9#0",
+    "path_bba2c5063ef0#0",
+    "path_c78f96cbc7ae#0",
+    "path_e941b2e3c325#0",
+    "path_5cdf17b49606#0"
+   ],
+   "graph_nodes": [
+    102,
+    103,
+    122,
+    123,
+    146,
+    147,
+    150,
+    174,
+    175,
+    361
+   ],
+   "horizontal_pdf_units": 73.193,
+   "drawn_pdf_units": 73.193,
+   "raw_pt": 53.333,
+   "bridged_gap_pt": 19.86,
+   "horizontal_m": 1.303,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 1.303,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -184,6 +290,7 @@
     278
    ],
    "horizontal_pdf_units": 24.36,
+   "drawn_pdf_units": 24.36,
    "raw_pt": 24.36,
    "bridged_gap_pt": 0,
    "horizontal_m": 0.434,
@@ -195,414 +302,7 @@
     "chain_from_anchor",
     "collinear_through_junction"
    ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_1ae971ca5755",
-   "page": 0,
-   "system": "KV01",
-   "designation": "KV01-X7-40-W40",
-   "identity": "KV01-X7-W40|DN40",
-   "dn": 40,
-   "supporting_anchors": [
-    "anc_f7f7ef357742"
-   ],
-   "representation_family": "V-52B--FE-_Vxx-KV|s|w1.44",
-   "geometry": [
-    [
-     [
-      1303.56,
-      757.72
-     ],
-     [
-      1292.4,
-      761.8
-     ],
-     [
-      1288.44,
-      763.24
-     ],
-     [
-      1271.88,
-      769.24
-     ],
-     [
-      1270.56,
-      769.72
-     ],
-     [
-      1254.0,
-      775.72
-     ],
-     [
-      1250.04,
-      777.16
-     ],
-     [
-      1236.24,
-      782.2
-     ],
-     [
-      1234.92,
-      782.68
-     ],
-     [
-      1218.36,
-      788.68
-     ],
-     [
-      1217.04,
-      789.16
-     ],
-     [
-      1200.48,
-      795.16
-     ],
-     [
-      1199.16,
-      795.64
-     ],
-     [
-      1185.36,
-      800.68
-     ],
-     [
-      1181.28,
-      802.12
-     ],
-     [
-      1167.48,
-      807.16
-     ],
-     [
-      1160.76,
-      809.68
-     ],
-     [
-      1149.6,
-      813.76
-     ],
-     [
-      1143.0,
-      816.16
-     ],
-     [
-      1131.72,
-      820.24
-     ],
-     [
-      1127.76,
-      821.68
-     ],
-     [
-      1111.2,
-      827.68
-     ],
-     [
-      1109.88,
-      828.16
-     ],
-     [
-      1093.44,
-      834.16
-     ],
-     [
-      1092.12,
-      834.64
-     ],
-     [
-      1075.56,
-      840.64
-     ],
-     [
-      1074.24,
-      841.12
-     ],
-     [
-      1057.68,
-      847.12
-     ],
-     [
-      1053.72,
-      848.56
-     ],
-     [
-      1039.8,
-      853.6
-     ],
-     [
-      1038.48,
-      854.08
-     ],
-     [
-      1024.68,
-      859.24
-     ],
-     [
-      1020.72,
-      860.68
-     ],
-     [
-      1004.16,
-      866.68
-     ],
-     [
-      1002.84,
-      867.16
-     ],
-     [
-      986.28,
-      873.16
-     ],
-     [
-      982.32,
-      874.6
-     ],
-     [
-      971.16,
-      878.68
-     ],
-     [
-      964.44,
-      881.08
-     ],
-     [
-      953.28,
-      885.16
-     ],
-     [
-      949.32,
-      886.6
-     ],
-     [
-      932.76,
-      892.6
-     ],
-     [
-      928.8,
-      894.04
-     ],
-     [
-      914.88,
-      899.08
-     ],
-     [
-      913.56,
-      899.56
-     ],
-     [
-      898.32,
-      905.2
-     ],
-     [
-      897.96,
-      905.32
-     ],
-     [
-      897.72,
-      905.44
-     ],
-     [
-      897.48,
-      905.68
-     ],
-     [
-      892.68,
-      910.48
-     ],
-     [
-      887.64,
-      915.52
-     ],
-     [
-      879.24,
-      923.92
-     ],
-     [
-      874.2,
-      928.96
-     ],
-     [
-      865.8,
-      937.36
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_005453c770e0",
-    "path_04537371a7f6",
-    "path_055f94c422f1",
-    "path_0d8a8107d9e8",
-    "path_15894a3d2cd5",
-    "path_1c735d60d5b2",
-    "path_23e913e1ef6e",
-    "path_2c20f258f6b9",
-    "path_328075c14937",
-    "path_3533f62df030",
-    "path_3691c31068b2",
-    "path_3d2647bf311d",
-    "path_3db36243cc46",
-    "path_3fd143b56d85",
-    "path_4a6186c8cb76",
-    "path_4e389443bad3",
-    "path_581e7a4ccb53",
-    "path_5af07de29edd",
-    "path_60a4644147a3",
-    "path_65301acbb2d3",
-    "path_68b3722f2569",
-    "path_6b4a3d4c8f6d",
-    "path_702a625d14bd",
-    "path_73f62c8cfcc5",
-    "path_7a5dc3d96139",
-    "path_7f445694fac5",
-    "path_850584bf227a",
-    "path_8e7efc9dfcae",
-    "path_8f57c680b544",
-    "path_9750c79d5b32",
-    "path_9a562e4937ab",
-    "path_9b0829e59519",
-    "path_aadb8999bc86",
-    "path_ac0a38f71fb8",
-    "path_ac941d320fe9",
-    "path_ae0fcc7211f6",
-    "path_aea9b5f0bda5",
-    "path_b1f783d9dff1",
-    "path_b408dc5eb773",
-    "path_b896f5375902",
-    "path_bfd01d1a4b3f",
-    "path_c2ce9afb73bc",
-    "path_c9f26266b1a8",
-    "path_cd067b794446",
-    "path_ceb598e71567",
-    "path_d7b89446a557",
-    "path_d973fad0e482",
-    "path_db7ecc04b01e",
-    "path_ea2f83a9050d",
-    "path_f79625b2774a"
-   ],
-   "source_segments": [
-    "path_005453c770e0#0",
-    "path_04537371a7f6#0",
-    "path_055f94c422f1#0",
-    "path_0d8a8107d9e8#0",
-    "path_15894a3d2cd5#0",
-    "path_1c735d60d5b2#0",
-    "path_23e913e1ef6e#0",
-    "path_2c20f258f6b9#0",
-    "path_328075c14937#0",
-    "path_3533f62df030#0",
-    "path_3691c31068b2#0",
-    "path_3d2647bf311d#0",
-    "path_3db36243cc46#0",
-    "path_3fd143b56d85#0",
-    "path_4a6186c8cb76#0",
-    "path_4e389443bad3#0",
-    "path_581e7a4ccb53#0",
-    "path_5af07de29edd#0",
-    "path_60a4644147a3#0",
-    "path_65301acbb2d3#0",
-    "path_68b3722f2569#0",
-    "path_6b4a3d4c8f6d#0",
-    "path_702a625d14bd#0",
-    "path_73f62c8cfcc5#0",
-    "path_7a5dc3d96139#0",
-    "path_7f445694fac5#0",
-    "path_850584bf227a#0",
-    "path_8e7efc9dfcae#0",
-    "path_8f57c680b544#0",
-    "path_9750c79d5b32#0",
-    "path_9a562e4937ab#0",
-    "path_9a562e4937ab#1",
-    "path_9a562e4937ab#2",
-    "path_9a562e4937ab#3",
-    "path_9b0829e59519#0",
-    "path_aadb8999bc86#0",
-    "path_ac0a38f71fb8#0",
-    "path_ac941d320fe9#0",
-    "path_ae0fcc7211f6#0",
-    "path_aea9b5f0bda5#0",
-    "path_b1f783d9dff1#0",
-    "path_b408dc5eb773#0",
-    "path_b896f5375902#0",
-    "path_bfd01d1a4b3f#0",
-    "path_c2ce9afb73bc#0",
-    "path_c9f26266b1a8#0",
-    "path_cd067b794446#0",
-    "path_ceb598e71567#0",
-    "path_d7b89446a557#0",
-    "path_d973fad0e482#0",
-    "path_db7ecc04b01e#0",
-    "path_ea2f83a9050d#0",
-    "path_f79625b2774a#0"
-   ],
-   "graph_nodes": [
-    2,
-    3,
-    6,
-    7,
-    8,
-    9,
-    12,
-    13,
-    16,
-    17,
-    20,
-    21,
-    26,
-    27,
-    32,
-    33,
-    44,
-    45,
-    49,
-    52,
-    53,
-    64,
-    65,
-    66,
-    71,
-    74,
-    75,
-    78,
-    79,
-    86,
-    87,
-    90,
-    93,
-    102,
-    105,
-    110,
-    122,
-    123,
-    134,
-    135,
-    151,
-    153,
-    164,
-    165,
-    166,
-    167,
-    168,
-    171,
-    185,
-    190,
-    191,
-    192,
-    195,
-    219
-   ],
-   "horizontal_pdf_units": 477.059,
-   "raw_pt": 340.599,
-   "bridged_gap_pt": 136.46,
-   "horizontal_m": 8.495,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 8.495,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -888,6 +588,7 @@
     241
    ],
    "horizontal_pdf_units": 294.198,
+   "drawn_pdf_units": 294.198,
    "raw_pt": 208.678,
    "bridged_gap_pt": 85.52,
    "horizontal_m": 5.239,
@@ -898,6 +599,631 @@
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_24f9bb239267",
+   "page": 0,
+   "system": "KV01",
+   "designation": "KV01-X7-40-W40",
+   "identity": "KV01-X7-W40|DN40",
+   "dn": 40,
+   "supporting_anchors": [
+    "anc_7765ade11909"
+   ],
+   "representation_family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "geometry": [
+    [
+     [
+      793.68,
+      1009.48
+     ],
+     [
+      785.28,
+      1017.88
+     ],
+     [
+      782.28,
+      1020.88
+     ],
+     [
+      775.44,
+      1027.72
+     ],
+     [
+      775.2,
+      1027.96
+     ],
+     [
+      774.84,
+      1028.2
+     ],
+     [
+      774.48,
+      1028.32
+     ],
+     [
+      774.24,
+      1028.32
+     ],
+     [
+      773.88,
+      1028.44
+     ],
+     [
+      763.08,
+      1028.44
+     ],
+     [
+      758.76,
+      1028.44
+     ],
+     [
+      746.88,
+      1028.44
+     ],
+     [
+      742.68,
+      1028.44
+     ],
+     [
+      725.04,
+      1028.44
+     ],
+     [
+      723.6,
+      1028.44
+     ],
+     [
+      706.08,
+      1028.44
+     ],
+     [
+      704.64,
+      1028.44
+     ],
+     [
+      687.12,
+      1028.44
+     ],
+     [
+      682.8,
+      1028.44
+     ],
+     [
+      670.92,
+      1028.44
+     ],
+     [
+      666.72,
+      1028.44
+     ],
+     [
+      649.08,
+      1028.44
+     ],
+     [
+      644.88,
+      1028.44
+     ],
+     [
+      635.34,
+      1028.44
+     ],
+     [
+      630.12,
+      1028.44
+     ],
+     [
+      625.8,
+      1028.44
+     ],
+     [
+      613.92,
+      1028.44
+     ],
+     [
+      606.84,
+      1028.44
+     ],
+     [
+      594.96,
+      1028.44
+     ],
+     [
+      590.64,
+      1028.44
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_0185d4f3833e",
+    "path_102269cd0d5c",
+    "path_163d6c6983dc",
+    "path_27054a80de2b",
+    "path_318c7d319f74",
+    "path_37a23fea687e",
+    "path_3d1acbe20270",
+    "path_40bd389b0b61",
+    "path_722d9b8e039a",
+    "path_78acc8248102",
+    "path_7d2fd1cd7210",
+    "path_86db7f46649c",
+    "path_894747add5da",
+    "path_8b52ce110aa8",
+    "path_8da3c143b854",
+    "path_8fc22b478d80",
+    "path_9a85d6847a6f",
+    "path_a410ea35d08c",
+    "path_add205211b81",
+    "path_b98346db9127",
+    "path_becdabdb6c1c",
+    "path_d9e0a322de66",
+    "path_eec1f5461316",
+    "path_f7c9675b9255"
+   ],
+   "source_segments": [
+    "path_0185d4f3833e#0",
+    "path_102269cd0d5c#0",
+    "path_163d6c6983dc#0",
+    "path_27054a80de2b#0",
+    "path_318c7d319f74#0",
+    "path_37a23fea687e#0",
+    "path_3d1acbe20270#0",
+    "path_40bd389b0b61#0",
+    "path_722d9b8e039a#0",
+    "path_78acc8248102#0",
+    "path_7d2fd1cd7210#0",
+    "path_86db7f46649c#0",
+    "path_894747add5da#0",
+    "path_8b52ce110aa8#0",
+    "path_8da3c143b854#0",
+    "path_8fc22b478d80#0",
+    "path_9a85d6847a6f#0",
+    "path_a410ea35d08c#0",
+    "path_add205211b81#0",
+    "path_b98346db9127#0",
+    "path_becdabdb6c1c#0",
+    "path_d9e0a322de66#0",
+    "path_eec1f5461316#0",
+    "path_f7c9675b9255#0",
+    "path_f7c9675b9255#1",
+    "path_f7c9675b9255#2",
+    "path_f7c9675b9255#3",
+    "path_f7c9675b9255#4",
+    "path_318c7d319f74#0"
+   ],
+   "graph_nodes": [
+    4,
+    5,
+    14,
+    15,
+    18,
+    19,
+    30,
+    31,
+    40,
+    41,
+    56,
+    57,
+    62,
+    72,
+    73,
+    106,
+    107,
+    116,
+    124,
+    137,
+    144,
+    146,
+    149,
+    179,
+    188,
+    205,
+    264,
+    265,
+    266,
+    267
+   ],
+   "horizontal_pdf_units": 210.816,
+   "drawn_pdf_units": 210.816,
+   "raw_pt": 151.276,
+   "bridged_gap_pt": 59.54,
+   "horizontal_m": 3.754,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 3.754,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_2e26696e927c",
+   "page": 0,
+   "system": "VS21",
+   "designation": "VS21-S13",
+   "identity": "VS21-S13|DN15",
+   "dn": 15,
+   "supporting_anchors": [
+    "anc_34d738f3d416"
+   ],
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1623.6,
+      1169.56
+     ],
+     [
+      1627.68,
+      1180.72
+     ],
+     [
+      1630.08,
+      1187.32
+     ],
+     [
+      1634.16,
+      1198.6
+     ],
+     [
+      1635.6,
+      1202.56
+     ],
+     [
+      1639.56,
+      1213.36
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_56e6466e36a4",
+    "path_803ab3d31936",
+    "path_c14de1b85536",
+    "path_c2a7eb17927e",
+    "path_ee00a0f13ed6"
+   ],
+   "source_segments": [
+    "path_56e6466e36a4#0",
+    "path_803ab3d31936#0",
+    "path_c14de1b85536#0",
+    "path_c2a7eb17927e#0",
+    "path_ee00a0f13ed6#0"
+   ],
+   "graph_nodes": [
+    245,
+    246,
+    384,
+    576,
+    577,
+    683
+   ],
+   "horizontal_pdf_units": 46.621,
+   "drawn_pdf_units": 46.621,
+   "raw_pt": 35.381,
+   "bridged_gap_pt": 11.24,
+   "horizontal_m": 0.83,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.83,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_2e6ff7677495",
+   "page": 0,
+   "system": "VP01",
+   "designation": "VP01-S2-65-F80",
+   "identity": "VP01-S2-F80|DN65",
+   "dn": 65,
+   "supporting_anchors": [
+    "anc_74788073be39"
+   ],
+   "representation_family": "V-56B--FE-_VPxx-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1379.4,
+      773.8
+     ],
+     [
+      1365.6,
+      778.84
+     ],
+     [
+      1364.28,
+      779.32
+     ],
+     [
+      1350.36,
+      784.36
+     ],
+     [
+      1343.76,
+      786.76
+     ],
+     [
+      1332.6,
+      790.84
+     ],
+     [
+      1325.88,
+      793.24
+     ],
+     [
+      1312.08,
+      798.28
+     ],
+     [
+      1310.76,
+      798.76
+     ],
+     [
+      1294.2,
+      804.76
+     ],
+     [
+      1292.88,
+      805.24
+     ],
+     [
+      1276.32,
+      811.24
+     ],
+     [
+      1275.0,
+      811.72
+     ],
+     [
+      1258.44,
+      817.72
+     ],
+     [
+      1254.48,
+      819.28
+     ],
+     [
+      1240.68,
+      824.32
+     ],
+     [
+      1239.36,
+      824.8
+     ],
+     [
+      1225.44,
+      829.84
+     ],
+     [
+      1221.48,
+      831.28
+     ],
+     [
+      1204.92,
+      837.28
+     ],
+     [
+      1203.6,
+      837.76
+     ],
+     [
+      1193.96,
+      841.28
+     ],
+     [
+      1189.8,
+      842.8
+     ],
+     [
+      1185.72,
+      844.24
+     ],
+     [
+      1169.28,
+      850.24
+     ],
+     [
+      1165.2,
+      851.68
+     ],
+     [
+      1154.04,
+      855.76
+     ],
+     [
+      1150.08,
+      857.2
+     ],
+     [
+      1133.52,
+      863.2
+     ],
+     [
+      1129.56,
+      864.64
+     ],
+     [
+      1118.4,
+      868.72
+     ],
+     [
+      1111.68,
+      871.24
+     ],
+     [
+      1100.52,
+      875.32
+     ],
+     [
+      1093.8,
+      877.72
+     ],
+     [
+      1082.64,
+      881.8
+     ],
+     [
+      1078.68,
+      883.24
+     ],
+     [
+      1062.12,
+      889.24
+     ],
+     [
+      1060.8,
+      889.72
+     ],
+     [
+      1047.0,
+      894.76
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_1144724f2d4a",
+    "path_1ae226791dcd",
+    "path_278f636afd34",
+    "path_29b2aa03b387",
+    "path_2ac78a9c5aa2",
+    "path_2b260cac7341",
+    "path_2cb0ef066373",
+    "path_2ddbb489f5c7",
+    "path_30c1a52ba47f",
+    "path_337542605fc5",
+    "path_346719153168",
+    "path_381470dc5ff3",
+    "path_3917cd542815",
+    "path_523c5aa072af",
+    "path_58f8a1351158",
+    "path_76f35824a4ac",
+    "path_7f8cfe0fba7d",
+    "path_8055ed091567",
+    "path_8501bb187428",
+    "path_888fa2c321ef",
+    "path_89ddf16c400b",
+    "path_8bada01365a9",
+    "path_98aa4ab2ab38",
+    "path_9be07f6c2278",
+    "path_a0444160a988",
+    "path_a04ee3802bce",
+    "path_a52685d28281",
+    "path_aa28cb4f0eeb",
+    "path_aad1b299b75a",
+    "path_bca80b9d5685",
+    "path_c3318ba1cb9c",
+    "path_c8fe228a6c04",
+    "path_d6118c6e9de9",
+    "path_e690d7331b5e",
+    "path_eb6136fd0459",
+    "path_f3232ec13d1c",
+    "path_f3b22e904bee"
+   ],
+   "source_segments": [
+    "path_1144724f2d4a#0",
+    "path_1ae226791dcd#0",
+    "path_278f636afd34#0",
+    "path_29b2aa03b387#0",
+    "path_2ac78a9c5aa2#0",
+    "path_2b260cac7341#0",
+    "path_2cb0ef066373#0",
+    "path_2ddbb489f5c7#0",
+    "path_30c1a52ba47f#0",
+    "path_337542605fc5#0",
+    "path_346719153168#0",
+    "path_381470dc5ff3#0",
+    "path_3917cd542815#0",
+    "path_523c5aa072af#0",
+    "path_58f8a1351158#0",
+    "path_76f35824a4ac#0",
+    "path_7f8cfe0fba7d#0",
+    "path_8055ed091567#0",
+    "path_8501bb187428#0",
+    "path_888fa2c321ef#0",
+    "path_89ddf16c400b#0",
+    "path_8bada01365a9#0",
+    "path_98aa4ab2ab38#0",
+    "path_9be07f6c2278#0",
+    "path_a0444160a988#0",
+    "path_a04ee3802bce#0",
+    "path_a52685d28281#0",
+    "path_aa28cb4f0eeb#0",
+    "path_aad1b299b75a#0",
+    "path_bca80b9d5685#0",
+    "path_c3318ba1cb9c#0",
+    "path_c8fe228a6c04#0",
+    "path_d6118c6e9de9#0",
+    "path_e690d7331b5e#0",
+    "path_eb6136fd0459#0",
+    "path_f3232ec13d1c#0",
+    "path_f3b22e904bee#0",
+    "path_3917cd542815#0"
+   ],
+   "graph_nodes": [
+    24,
+    25,
+    42,
+    43,
+    80,
+    93,
+    94,
+    99,
+    100,
+    101,
+    102,
+    109,
+    110,
+    113,
+    126,
+    133,
+    134,
+    140,
+    149,
+    150,
+    151,
+    152,
+    187,
+    188,
+    207,
+    208,
+    263,
+    264,
+    281,
+    282,
+    287,
+    310,
+    314,
+    356,
+    362,
+    395,
+    399,
+    427,
+    491
+   ],
+   "horizontal_pdf_units": 353.731,
+   "drawn_pdf_units": 353.731,
+   "raw_pt": 251.571,
+   "bridged_gap_pt": 102.16,
+   "horizontal_m": 6.299,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 6.299,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -977,6 +1303,7 @@
     338
    ],
    "horizontal_pdf_units": 68.826,
+   "drawn_pdf_units": 68.826,
    "raw_pt": 51.856,
    "bridged_gap_pt": 16.97,
    "horizontal_m": 1.226,
@@ -987,103 +1314,63 @@
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
   {
-   "physical_pipe_id": "pp_3df334fb8119",
+   "physical_pipe_id": "pp_3ad3c2ea4947",
    "page": 0,
    "system": "VS31",
-   "designation": "VS31-S13-28-F60",
-   "identity": "VS31-S13-F60|DN28",
-   "dn": 28,
+   "designation": "VS31-X32",
+   "identity": "VS31-X32|DN25",
+   "dn": 25,
    "supporting_anchors": [
-    "anc_b4fe592a764a"
+    "anc_8c42492628c1"
    ],
    "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
    "geometry": [
     [
      [
-      890.52,
-      771.04
+      863.88,
+      743.68
      ],
      [
-      885.24,
-      756.88
+      861.36,
+      743.68
      ],
      [
-      885.0,
-      756.4
-     ],
-     [
-      884.76,
-      755.92
-     ],
-     [
-      884.4,
-      755.68
-     ],
-     [
-      884.04,
-      755.32
-     ],
-     [
-      883.56,
-      755.08
-     ],
-     [
-      883.08,
-      754.96
-     ],
-     [
-      882.6,
-      754.96
-     ],
-     [
-      871.8,
-      754.96
+      852.36,
+      743.68
      ]
     ]
    ],
    "source_path_ids": [
-    "path_6c1ff9053835",
-    "path_a2faec8f771a",
-    "path_e20262e51adc"
+    "path_5f1024849dd0",
+    "path_b1d48c9b171e"
    ],
    "source_segments": [
-    "path_6c1ff9053835#0",
-    "path_a2faec8f771a#0",
-    "path_e20262e51adc#0",
-    "path_e20262e51adc#1",
-    "path_e20262e51adc#2",
-    "path_e20262e51adc#3",
-    "path_e20262e51adc#4",
-    "path_e20262e51adc#5",
-    "path_e20262e51adc#6"
+    "path_5f1024849dd0#0",
+    "path_b1d48c9b171e#0"
    ],
    "graph_nodes": [
-    180,
-    181,
-    295,
-    296,
-    379,
-    380,
-    381,
-    382,
-    383,
-    384
+    152,
+    153,
+    325
    ],
-   "horizontal_pdf_units": 29.439,
-   "raw_pt": 29.439,
+   "horizontal_pdf_units": 11.52,
+   "drawn_pdf_units": 11.52,
+   "raw_pt": 11.52,
    "bridged_gap_pt": 0,
-   "horizontal_m": 0.524,
+   "horizontal_m": 0.205,
    "vertical_m": "UNKNOWN",
    "vertical_evidence": null,
-   "total_m": 0.524,
+   "total_m": 0.205,
    "evidence_state": "CONFIRMED",
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -1275,6 +1562,7 @@
     449
    ],
    "horizontal_pdf_units": 220.787,
+   "drawn_pdf_units": 220.787,
    "raw_pt": 158.337,
    "bridged_gap_pt": 62.45,
    "horizontal_m": 3.931,
@@ -1285,6 +1573,7 @@
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -1480,6 +1769,7 @@
     272
    ],
    "horizontal_pdf_units": 187.903,
+   "drawn_pdf_units": 187.903,
    "raw_pt": 136.903,
    "bridged_gap_pt": 51.0,
    "horizontal_m": 3.346,
@@ -1490,368 +1780,7 @@
    "evidence": [
     "chain_from_anchor"
    ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_44244d228cce",
-   "page": 0,
-   "system": "VVC01",
-   "designation": "VVC01-X7-32",
-   "identity": "VVC01-X7|DN32",
-   "dn": 32,
-   "supporting_anchors": [
-    "anc_ba792373e631"
-   ],
-   "representation_family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
-   "geometry": [
-    [
-     [
-      1332.6,
-      760.72
-     ],
-     [
-      1331.16,
-      761.2
-     ],
-     [
-      1314.72,
-      767.32
-     ],
-     [
-      1310.76,
-      768.76
-     ],
-     [
-      1299.48,
-      772.84
-     ],
-     [
-      1295.52,
-      774.28
-     ],
-     [
-      1278.96,
-      780.28
-     ],
-     [
-      1275.0,
-      781.72
-     ],
-     [
-      1263.84,
-      785.8
-     ],
-     [
-      1257.12,
-      788.2
-     ],
-     [
-      1245.96,
-      792.28
-     ],
-     [
-      1239.36,
-      794.68
-     ],
-     [
-      1225.44,
-      799.72
-     ],
-     [
-      1224.12,
-      800.2
-     ],
-     [
-      1210.32,
-      805.24
-     ],
-     [
-      1206.24,
-      806.68
-     ],
-     [
-      1189.8,
-      812.68
-     ],
-     [
-      1188.48,
-      813.16
-     ],
-     [
-      1171.92,
-      819.28
-     ],
-     [
-      1167.96,
-      820.72
-     ],
-     [
-      1156.68,
-      824.8
-     ],
-     [
-      1150.08,
-      827.2
-     ],
-     [
-      1138.92,
-      831.28
-     ],
-     [
-      1132.2,
-      833.68
-     ],
-     [
-      1121.04,
-      837.76
-     ],
-     [
-      1117.08,
-      839.2
-     ],
-     [
-      1100.52,
-      845.2
-     ],
-     [
-      1099.2,
-      845.68
-     ],
-     [
-      1085.28,
-      850.72
-     ],
-     [
-      1078.68,
-      853.12
-     ],
-     [
-      1064.76,
-      858.16
-     ],
-     [
-      1063.44,
-      858.64
-     ],
-     [
-      1047.0,
-      864.76
-     ],
-     [
-      1045.68,
-      865.24
-     ],
-     [
-      1029.12,
-      871.24
-     ],
-     [
-      1025.16,
-      872.68
-     ],
-     [
-      1013.88,
-      876.76
-     ],
-     [
-      1007.28,
-      879.16
-     ],
-     [
-      996.12,
-      883.24
-     ],
-     [
-      989.4,
-      885.64
-     ],
-     [
-      975.6,
-      890.68
-     ],
-     [
-      971.52,
-      892.12
-     ],
-     [
-      957.72,
-      897.16
-     ],
-     [
-      956.4,
-      897.64
-     ],
-     [
-      939.84,
-      903.64
-     ],
-     [
-      938.52,
-      904.12
-     ],
-     [
-      924.72,
-      909.16
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_097ae191937f",
-    "path_0ebe5b1a714d",
-    "path_12f6411ad7ae",
-    "path_138a0b5d31e9",
-    "path_1546526f9f7a",
-    "path_1c9e4f6089a5",
-    "path_1dde85218651",
-    "path_1e78ac03a1d4",
-    "path_28cbbf1614be",
-    "path_28da43323df8",
-    "path_2da26238f069",
-    "path_2e72129b4589",
-    "path_3936be0705ad",
-    "path_45a2fa18a3d6",
-    "path_4cf1e71259e4",
-    "path_4d1752921b64",
-    "path_4d4808b0a739",
-    "path_4f7ca81de2d6",
-    "path_5256a1f5e4ea",
-    "path_5d5c59656030",
-    "path_5da238a92a46",
-    "path_5ead95fa5b66",
-    "path_63160cb57a23",
-    "path_6c5d223640f5",
-    "path_6e1d8d5b43a5",
-    "path_6e9cc89f2509",
-    "path_6f657c0ba6bf",
-    "path_711e303b5b24",
-    "path_77d9eb542012",
-    "path_7ebd52a2411b",
-    "path_82c78b7cdfcd",
-    "path_8fd0e1c0d70f",
-    "path_a3d1eef614c4",
-    "path_ad66d4b596b5",
-    "path_b03f41d65029",
-    "path_b263865ddb2d",
-    "path_b8317f43bb94",
-    "path_c4ff7fa131bf",
-    "path_c964c9683e7c",
-    "path_cc25e694d5eb",
-    "path_d8ac2d875bdb",
-    "path_e4839eb4cce1",
-    "path_e8ddbe66f6ef",
-    "path_e9ed21f4e24f",
-    "path_f07c8b436827",
-    "path_fc4d89873d6e"
-   ],
-   "source_segments": [
-    "path_097ae191937f#0",
-    "path_0ebe5b1a714d#0",
-    "path_12f6411ad7ae#0",
-    "path_138a0b5d31e9#0",
-    "path_1546526f9f7a#0",
-    "path_1c9e4f6089a5#0",
-    "path_1dde85218651#0",
-    "path_1e78ac03a1d4#0",
-    "path_28cbbf1614be#0",
-    "path_28da43323df8#0",
-    "path_2da26238f069#0",
-    "path_2e72129b4589#0",
-    "path_3936be0705ad#0",
-    "path_45a2fa18a3d6#0",
-    "path_4cf1e71259e4#0",
-    "path_4d1752921b64#0",
-    "path_4d4808b0a739#0",
-    "path_4f7ca81de2d6#0",
-    "path_5256a1f5e4ea#0",
-    "path_5d5c59656030#0",
-    "path_5da238a92a46#0",
-    "path_5ead95fa5b66#0",
-    "path_63160cb57a23#0",
-    "path_6c5d223640f5#0",
-    "path_6e1d8d5b43a5#0",
-    "path_6e9cc89f2509#0",
-    "path_6f657c0ba6bf#0",
-    "path_711e303b5b24#0",
-    "path_77d9eb542012#0",
-    "path_7ebd52a2411b#0",
-    "path_82c78b7cdfcd#0",
-    "path_8fd0e1c0d70f#0",
-    "path_a3d1eef614c4#0",
-    "path_ad66d4b596b5#0",
-    "path_b03f41d65029#0",
-    "path_b263865ddb2d#0",
-    "path_b8317f43bb94#0",
-    "path_c4ff7fa131bf#0",
-    "path_c964c9683e7c#0",
-    "path_cc25e694d5eb#0",
-    "path_d8ac2d875bdb#0",
-    "path_e4839eb4cce1#0",
-    "path_e8ddbe66f6ef#0",
-    "path_e9ed21f4e24f#0",
-    "path_f07c8b436827#0",
-    "path_fc4d89873d6e#0"
-   ],
-   "graph_nodes": [
-    4,
-    5,
-    10,
-    11,
-    16,
-    17,
-    18,
-    22,
-    23,
-    30,
-    34,
-    35,
-    36,
-    40,
-    41,
-    42,
-    43,
-    48,
-    49,
-    50,
-    51,
-    64,
-    65,
-    74,
-    75,
-    80,
-    82,
-    83,
-    84,
-    85,
-    88,
-    89,
-    92,
-    102,
-    103,
-    105,
-    109,
-    118,
-    120,
-    128,
-    129,
-    133,
-    142,
-    171,
-    198,
-    221,
-    229
-   ],
-   "horizontal_pdf_units": 434.059,
-   "raw_pt": 306.309,
-   "bridged_gap_pt": 127.75,
-   "horizontal_m": 7.729,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 7.729,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -2212,6 +2141,7 @@
     258
    ],
    "horizontal_pdf_units": 381.771,
+   "drawn_pdf_units": 381.771,
    "raw_pt": 274.381,
    "bridged_gap_pt": 107.39,
    "horizontal_m": 6.798,
@@ -2222,513 +2152,321 @@
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
   {
-   "physical_pipe_id": "pp_58a4159f0de8",
+   "physical_pipe_id": "pp_5152dfbabb78",
+   "page": 0,
+   "system": "VV01",
+   "designation": "VV01-X7-40-F60",
+   "identity": "VV01-X7-F60|DN40",
+   "dn": 40,
+   "supporting_anchors": [
+    "anc_e07ff0e92b99"
+   ],
+   "representation_family": "V-52B--FE-_Vxx-VV|s|w1.44",
+   "geometry": [
+    [
+     [
+      1577.28,
+      669.52
+     ],
+     [
+      1566.12,
+      673.6
+     ],
+     [
+      1562.16,
+      675.04
+     ],
+     [
+      1545.6,
+      681.04
+     ],
+     [
+      1544.28,
+      681.52
+     ],
+     [
+      1530.48,
+      686.56
+     ],
+     [
+      1523.76,
+      688.96
+     ],
+     [
+      1512.6,
+      693.04
+     ],
+     [
+      1508.64,
+      694.48
+     ],
+     [
+      1492.08,
+      700.6
+     ],
+     [
+      1488.12,
+      702.04
+     ],
+     [
+      1474.2,
+      707.08
+     ],
+     [
+      1472.88,
+      707.56
+     ],
+     [
+      1456.32,
+      713.56
+     ],
+     [
+      1455.0,
+      714.04
+     ],
+     [
+      1441.2,
+      719.08
+     ],
+     [
+      1434.48,
+      721.48
+     ],
+     [
+      1423.32,
+      725.56
+     ],
+     [
+      1419.36,
+      727.0
+     ],
+     [
+      1402.8,
+      733.0
+     ],
+     [
+      1401.48,
+      733.48
+     ],
+     [
+      1390.67,
+      737.43
+     ],
+     [
+      1384.92,
+      739.48
+     ],
+     [
+      1383.6,
+      739.96
+     ],
+     [
+      1369.8,
+      745.0
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_28313b77f5da",
+    "path_2a3d41f6e3cc",
+    "path_3593d4e1704a",
+    "path_3be1dbed4e3d",
+    "path_46ea08e05bde",
+    "path_5506ff5ccfd7",
+    "path_5f38c9fbf37b",
+    "path_620e640dcd7c",
+    "path_738e58556d52",
+    "path_76d35bad9d1c",
+    "path_770fa0254ca1",
+    "path_82a4952f8a5c",
+    "path_8bac4a8aa636",
+    "path_929dccd10f8a",
+    "path_92a7d9bd573b",
+    "path_b90f8a74b7e1",
+    "path_d628db3992e5",
+    "path_d875b31466c7",
+    "path_e02ed3e9ee4e",
+    "path_e3af34583256",
+    "path_ea531a91f12f",
+    "path_f82563bda744",
+    "path_f87070a0ba8c"
+   ],
+   "source_segments": [
+    "path_28313b77f5da#0",
+    "path_2a3d41f6e3cc#0",
+    "path_3593d4e1704a#0",
+    "path_3be1dbed4e3d#0",
+    "path_46ea08e05bde#0",
+    "path_5506ff5ccfd7#0",
+    "path_5f38c9fbf37b#0",
+    "path_620e640dcd7c#0",
+    "path_738e58556d52#0",
+    "path_76d35bad9d1c#0",
+    "path_770fa0254ca1#0",
+    "path_82a4952f8a5c#0",
+    "path_8bac4a8aa636#0",
+    "path_929dccd10f8a#0",
+    "path_92a7d9bd573b#0",
+    "path_b90f8a74b7e1#0",
+    "path_d628db3992e5#0",
+    "path_d875b31466c7#0",
+    "path_e02ed3e9ee4e#0",
+    "path_e3af34583256#0",
+    "path_ea531a91f12f#0",
+    "path_f82563bda744#0",
+    "path_f87070a0ba8c#0",
+    "path_738e58556d52#0"
+   ],
+   "graph_nodes": [
+    28,
+    29,
+    32,
+    33,
+    42,
+    43,
+    44,
+    45,
+    48,
+    49,
+    68,
+    69,
+    80,
+    81,
+    85,
+    109,
+    117,
+    118,
+    129,
+    130,
+    145,
+    178,
+    179,
+    207,
+    219
+   ],
+   "horizontal_pdf_units": 220.787,
+   "drawn_pdf_units": 220.787,
+   "raw_pt": 158.337,
+   "bridged_gap_pt": 62.45,
+   "horizontal_m": 3.931,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 3.931,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_6249e142765f",
    "page": 0,
    "system": "VS31",
    "designation": "VS31-S13-28-F60",
    "identity": "VS31-S13-F60|DN28",
    "dn": 28,
    "supporting_anchors": [
-    "anc_8e0e7df424fb"
+    "anc_b4fe592a764a"
    ],
    "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
    "geometry": [
     [
      [
-      1399.92,
-      792.88
+      890.52,
+      771.04
      ],
      [
-      1404.0,
-      791.32
+      885.24,
+      756.88
      ],
      [
-      1415.16,
-      787.36
+      885.0,
+      756.4
      ],
      [
-      1421.76,
-      784.84
+      884.76,
+      755.92
      ],
      [
-      1433.04,
-      780.76
+      884.4,
+      755.68
      ],
      [
-      1437.0,
-      779.32
+      884.04,
+      755.32
      ],
      [
-      1453.56,
-      773.32
+      883.56,
+      755.08
      ],
      [
-      1454.88,
-      772.84
+      883.08,
+      754.96
      ],
      [
-      1468.68,
-      767.8
+      882.6,
+      754.96
+     ],
+     [
+      876.6,
+      754.96
+     ],
+     [
+      871.8,
+      754.96
      ]
     ]
    ],
    "source_path_ids": [
-    "path_3db3906a2300",
-    "path_49b67d2642b2",
-    "path_5cdf17b49606",
-    "path_5e880354c99e",
-    "path_69460c34b8f9",
-    "path_bba2c5063ef0",
-    "path_c78f96cbc7ae",
-    "path_e941b2e3c325"
+    "path_6c1ff9053835",
+    "path_a2faec8f771a",
+    "path_e20262e51adc"
    ],
    "source_segments": [
-    "path_3db3906a2300#0",
-    "path_49b67d2642b2#0",
-    "path_5cdf17b49606#0",
-    "path_5e880354c99e#0",
-    "path_69460c34b8f9#0",
-    "path_bba2c5063ef0#0",
-    "path_c78f96cbc7ae#0",
-    "path_e941b2e3c325#0"
+    "path_6c1ff9053835#0",
+    "path_a2faec8f771a#0",
+    "path_e20262e51adc#0",
+    "path_e20262e51adc#1",
+    "path_e20262e51adc#2",
+    "path_e20262e51adc#3",
+    "path_e20262e51adc#4",
+    "path_e20262e51adc#5",
+    "path_e20262e51adc#6",
+    "path_a2faec8f771a#0"
    ],
    "graph_nodes": [
-    102,
-    103,
-    122,
-    123,
-    146,
-    147,
-    150,
-    175,
-    361
+    180,
+    181,
+    295,
+    296,
+    379,
+    380,
+    381,
+    382,
+    383,
+    384,
+    385
    ],
-   "horizontal_pdf_units": 73.193,
-   "raw_pt": 53.333,
-   "bridged_gap_pt": 19.86,
-   "horizontal_m": 1.303,
+   "horizontal_pdf_units": 29.439,
+   "drawn_pdf_units": 29.439,
+   "raw_pt": 29.439,
+   "bridged_gap_pt": 0,
+   "horizontal_m": 0.524,
    "vertical_m": "UNKNOWN",
    "vertical_evidence": null,
-   "total_m": 1.303,
+   "total_m": 0.524,
    "evidence_state": "CONFIRMED",
    "evidence": [
     "chain_from_anchor"
    ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_5d7092032c8b",
-   "page": 0,
-   "system": "VS21",
-   "designation": "VS21-S13-15-F50",
-   "identity": "VS21-S13-F50|DN15",
-   "dn": 15,
-   "supporting_anchors": [
-    "anc_35ce460f0288",
-    "anc_5182853df389",
-    "anc_f53f03f750bf"
-   ],
-   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
-   "geometry": [
-    [
-     [
-      879.48,
-      342.04
-     ],
-     [
-      874.08,
-      342.04
-     ],
-     [
-      873.72,
-      342.04
-     ],
-     [
-      873.48,
-      342.16
-     ],
-     [
-      873.12,
-      342.28
-     ],
-     [
-      872.88,
-      342.4
-     ],
-     [
-      872.76,
-      342.64
-     ],
-     [
-      872.52,
-      342.88
-     ],
-     [
-      872.4,
-      343.24
-     ],
-     [
-      872.4,
-      343.48
-     ],
-     [
-      872.28,
-      343.72
-     ],
-     [
-      872.28,
-      354.64
-     ],
-     [
-      872.28,
-      358.96
-     ],
-     [
-      872.28,
-      373.72
-     ],
-     [
-      872.28,
-      380.8
-     ],
-     [
-      872.28,
-      391.72
-     ],
-     [
-      872.28,
-      391.96
-     ],
-     [
-      872.28,
-      392.32
-     ],
-     [
-      872.04,
-      392.56
-     ],
-     [
-      871.92,
-      392.8
-     ],
-     [
-      871.68,
-      393.04
-     ],
-     [
-      871.44,
-      393.16
-     ],
-     [
-      871.2,
-      393.28
-     ],
-     [
-      870.96,
-      393.4
-     ],
-     [
-      870.6,
-      393.4
-     ],
-     [
-      860.64,
-      393.4
-     ],
-     [
-      853.56,
-      393.4
-     ],
-     [
-      843.6,
-      393.4
-     ],
-     [
-      829.92,
-      393.4
-     ],
-     [
-      828.48,
-      393.4
-     ],
-     [
-      810.96,
-      393.4
-     ],
-     [
-      806.64,
-      393.4
-     ],
-     [
-      791.88,
-      393.4
-     ],
-     [
-      790.56,
-      393.4
-     ],
-     [
-      772.92,
-      393.4
-     ],
-     [
-      771.48,
-      393.4
-     ],
-     [
-      756.72,
-      393.4
-     ],
-     [
-      749.64,
-      393.4
-     ],
-     [
-      734.88,
-      393.4
-     ],
-     [
-      733.56,
-      393.4
-     ],
-     [
-      722.76,
-      393.4
-     ],
-     [
-      711.96,
-      390.4
-     ],
-     [
-      708.48,
-      393.4
-     ],
-     [
-      704.28,
-      393.4
-     ],
-     [
-      692.28,
-      393.4
-     ],
-     [
-      685.2,
-      393.4
-     ],
-     [
-      673.8,
-      393.4
-     ],
-     [
-      655.32,
-      393.4
-     ],
-     [
-      644.76,
-      396.04
-     ],
-     [
-      636.72,
-      393.4
-     ],
-     [
-      635.28,
-      393.4
-     ],
-     [
-      617.64,
-      393.4
-     ],
-     [
-      613.44,
-      393.4
-     ],
-     [
-      600.48,
-      393.4
-     ],
-     [
-      588.72,
-      393.4
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_07f7b4ecedf9",
-    "path_0a294b1f546e",
-    "path_1c4e54528f5d",
-    "path_2aeb1fb56e27",
-    "path_31571db958b2",
-    "path_3642caadf845",
-    "path_3eb4b3972d13",
-    "path_4bd88e3b7dce",
-    "path_5757ed8fe279",
-    "path_637e9ed5e419",
-    "path_6c06af87a4fb",
-    "path_6e21e46a205a",
-    "path_750e6bd6f460",
-    "path_7a9d7676e2d5",
-    "path_809c231a9fc6",
-    "path_8e1f33d21a34",
-    "path_97f18d44680b",
-    "path_9a330bac559a",
-    "path_a30ac1bf1812",
-    "path_acd6c391de5e",
-    "path_b1aa9e52002d",
-    "path_b32fe97348ea",
-    "path_b4abba7b04e3",
-    "path_b560a4b4d9b2",
-    "path_b8816f45180c",
-    "path_c7a495311900",
-    "path_d4f81a4953ab",
-    "path_d664c64b943a",
-    "path_df6aba425ea0",
-    "path_e17098e497d9",
-    "path_e1a1ebb8d01d",
-    "path_e4e14cb25ebd",
-    "path_e5aa6bf81d33"
-   ],
-   "source_segments": [
-    "path_07f7b4ecedf9#0",
-    "path_0a294b1f546e#0",
-    "path_1c4e54528f5d#0",
-    "path_2aeb1fb56e27#0",
-    "path_31571db958b2#0",
-    "path_3642caadf845#0",
-    "path_3642caadf845#1",
-    "path_3642caadf845#2",
-    "path_3642caadf845#3",
-    "path_3642caadf845#4",
-    "path_3642caadf845#5",
-    "path_3642caadf845#6",
-    "path_3642caadf845#7",
-    "path_3642caadf845#8",
-    "path_3642caadf845#9",
-    "path_3eb4b3972d13#0",
-    "path_4bd88e3b7dce#0",
-    "path_5757ed8fe279#0",
-    "path_637e9ed5e419#0",
-    "path_6c06af87a4fb#0",
-    "path_6e21e46a205a#0",
-    "path_750e6bd6f460#0",
-    "path_750e6bd6f460#1",
-    "path_750e6bd6f460#2",
-    "path_750e6bd6f460#3",
-    "path_750e6bd6f460#4",
-    "path_750e6bd6f460#5",
-    "path_750e6bd6f460#6",
-    "path_750e6bd6f460#7",
-    "path_750e6bd6f460#8",
-    "path_750e6bd6f460#9",
-    "path_750e6bd6f460#10",
-    "path_7a9d7676e2d5#0",
-    "path_809c231a9fc6#0",
-    "path_8e1f33d21a34#0",
-    "path_97f18d44680b#0",
-    "path_9a330bac559a#0",
-    "path_a30ac1bf1812#0",
-    "path_acd6c391de5e#0",
-    "path_b1aa9e52002d#0",
-    "path_b32fe97348ea#0",
-    "path_b4abba7b04e3#0",
-    "path_b560a4b4d9b2#0",
-    "path_b8816f45180c#0",
-    "path_c7a495311900#0",
-    "path_d4f81a4953ab#0",
-    "path_d664c64b943a#0",
-    "path_df6aba425ea0#0",
-    "path_e17098e497d9#0",
-    "path_e1a1ebb8d01d#0",
-    "path_e4e14cb25ebd#0",
-    "path_e5aa6bf81d33#0",
-    "path_6c06af87a4fb#0",
-    "path_e17098e497d9#0"
-   ],
-   "graph_nodes": [
-    18,
-    26,
-    27,
-    30,
-    31,
-    95,
-    96,
-    99,
-    130,
-    131,
-    150,
-    166,
-    167,
-    168,
-    169,
-    170,
-    171,
-    172,
-    173,
-    174,
-    175,
-    176,
-    189,
-    190,
-    210,
-    211,
-    248,
-    268,
-    269,
-    307,
-    308,
-    342,
-    343,
-    344,
-    345,
-    346,
-    347,
-    348,
-    349,
-    350,
-    351,
-    352,
-    353,
-    362,
-    387,
-    439,
-    445,
-    465,
-    493,
-    512,
-    518,
-    519,
-    522,
-    544,
-    636
-   ],
-   "horizontal_pdf_units": 340.764,
-   "raw_pt": 252.444,
-   "bridged_gap_pt": 88.32,
-   "horizontal_m": 6.068,
-   "vertical_m": 0.25,
-   "vertical_evidence": {
-    "kind": "elevation_difference_between_anchors",
-    "tag": "CL",
-    "values": [
-     4000.0,
-     4250.0
-    ],
-    "anchors": [
-     "anc_35ce460f0288",
-     "anc_5182853df389",
-     "anc_f53f03f750bf"
-    ]
-   },
-   "total_m": 6.318,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -3077,10 +2815,11 @@
     339,
     360,
     370,
-    405,
-    409
+    406,
+    410
    ],
    "horizontal_pdf_units": 434.056,
+   "drawn_pdf_units": 434.056,
    "raw_pt": 306.196,
    "bridged_gap_pt": 127.86,
    "horizontal_m": 7.729,
@@ -3091,11 +2830,1637 @@
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
   {
-   "physical_pipe_id": "pp_7857a2ea075d",
+   "physical_pipe_id": "pp_6bff2ec57fb8",
+   "page": 0,
+   "system": "VVC01",
+   "designation": "VVC01-X7-32",
+   "identity": "VVC01-X7|DN32",
+   "dn": 32,
+   "supporting_anchors": [
+    "anc_ba792373e631"
+   ],
+   "representation_family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "geometry": [
+    [
+     [
+      1332.6,
+      760.72
+     ],
+     [
+      1331.16,
+      761.2
+     ],
+     [
+      1314.72,
+      767.32
+     ],
+     [
+      1310.76,
+      768.76
+     ],
+     [
+      1299.48,
+      772.84
+     ],
+     [
+      1295.52,
+      774.28
+     ],
+     [
+      1278.96,
+      780.28
+     ],
+     [
+      1275.0,
+      781.72
+     ],
+     [
+      1263.84,
+      785.8
+     ],
+     [
+      1257.12,
+      788.2
+     ],
+     [
+      1245.96,
+      792.28
+     ],
+     [
+      1239.36,
+      794.68
+     ],
+     [
+      1225.44,
+      799.72
+     ],
+     [
+      1224.12,
+      800.2
+     ],
+     [
+      1210.32,
+      805.24
+     ],
+     [
+      1206.24,
+      806.68
+     ],
+     [
+      1193.92,
+      811.18
+     ],
+     [
+      1189.8,
+      812.68
+     ],
+     [
+      1188.48,
+      813.16
+     ],
+     [
+      1171.92,
+      819.28
+     ],
+     [
+      1167.96,
+      820.72
+     ],
+     [
+      1156.68,
+      824.8
+     ],
+     [
+      1150.08,
+      827.2
+     ],
+     [
+      1138.92,
+      831.28
+     ],
+     [
+      1132.2,
+      833.68
+     ],
+     [
+      1121.04,
+      837.76
+     ],
+     [
+      1117.08,
+      839.2
+     ],
+     [
+      1100.52,
+      845.2
+     ],
+     [
+      1099.2,
+      845.68
+     ],
+     [
+      1085.28,
+      850.72
+     ],
+     [
+      1078.68,
+      853.12
+     ],
+     [
+      1064.76,
+      858.16
+     ],
+     [
+      1063.44,
+      858.64
+     ],
+     [
+      1047.0,
+      864.76
+     ],
+     [
+      1045.68,
+      865.24
+     ],
+     [
+      1029.12,
+      871.24
+     ],
+     [
+      1025.16,
+      872.68
+     ],
+     [
+      1013.88,
+      876.76
+     ],
+     [
+      1007.28,
+      879.16
+     ],
+     [
+      996.12,
+      883.24
+     ],
+     [
+      989.4,
+      885.64
+     ],
+     [
+      975.6,
+      890.68
+     ],
+     [
+      971.52,
+      892.12
+     ],
+     [
+      957.72,
+      897.16
+     ],
+     [
+      956.4,
+      897.64
+     ],
+     [
+      939.84,
+      903.64
+     ],
+     [
+      938.52,
+      904.12
+     ],
+     [
+      924.72,
+      909.16
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_097ae191937f",
+    "path_0ebe5b1a714d",
+    "path_12f6411ad7ae",
+    "path_138a0b5d31e9",
+    "path_1546526f9f7a",
+    "path_1c9e4f6089a5",
+    "path_1dde85218651",
+    "path_1e78ac03a1d4",
+    "path_28cbbf1614be",
+    "path_28da43323df8",
+    "path_2da26238f069",
+    "path_2e72129b4589",
+    "path_3936be0705ad",
+    "path_45a2fa18a3d6",
+    "path_4cf1e71259e4",
+    "path_4d1752921b64",
+    "path_4d4808b0a739",
+    "path_4f7ca81de2d6",
+    "path_5256a1f5e4ea",
+    "path_5d5c59656030",
+    "path_5da238a92a46",
+    "path_5ead95fa5b66",
+    "path_63160cb57a23",
+    "path_6c5d223640f5",
+    "path_6e1d8d5b43a5",
+    "path_6e9cc89f2509",
+    "path_6f657c0ba6bf",
+    "path_711e303b5b24",
+    "path_77d9eb542012",
+    "path_7ebd52a2411b",
+    "path_82c78b7cdfcd",
+    "path_8fd0e1c0d70f",
+    "path_a3d1eef614c4",
+    "path_ad66d4b596b5",
+    "path_b03f41d65029",
+    "path_b263865ddb2d",
+    "path_b8317f43bb94",
+    "path_c4ff7fa131bf",
+    "path_c964c9683e7c",
+    "path_cc25e694d5eb",
+    "path_d8ac2d875bdb",
+    "path_e4839eb4cce1",
+    "path_e8ddbe66f6ef",
+    "path_e9ed21f4e24f",
+    "path_f07c8b436827",
+    "path_fc4d89873d6e"
+   ],
+   "source_segments": [
+    "path_097ae191937f#0",
+    "path_0ebe5b1a714d#0",
+    "path_12f6411ad7ae#0",
+    "path_138a0b5d31e9#0",
+    "path_1546526f9f7a#0",
+    "path_1c9e4f6089a5#0",
+    "path_1dde85218651#0",
+    "path_1e78ac03a1d4#0",
+    "path_28cbbf1614be#0",
+    "path_28da43323df8#0",
+    "path_2da26238f069#0",
+    "path_2e72129b4589#0",
+    "path_3936be0705ad#0",
+    "path_45a2fa18a3d6#0",
+    "path_4cf1e71259e4#0",
+    "path_4d1752921b64#0",
+    "path_4d4808b0a739#0",
+    "path_4f7ca81de2d6#0",
+    "path_5256a1f5e4ea#0",
+    "path_5d5c59656030#0",
+    "path_5da238a92a46#0",
+    "path_5ead95fa5b66#0",
+    "path_63160cb57a23#0",
+    "path_6c5d223640f5#0",
+    "path_6e1d8d5b43a5#0",
+    "path_6e9cc89f2509#0",
+    "path_6f657c0ba6bf#0",
+    "path_711e303b5b24#0",
+    "path_77d9eb542012#0",
+    "path_7ebd52a2411b#0",
+    "path_82c78b7cdfcd#0",
+    "path_8fd0e1c0d70f#0",
+    "path_a3d1eef614c4#0",
+    "path_ad66d4b596b5#0",
+    "path_b03f41d65029#0",
+    "path_b263865ddb2d#0",
+    "path_b8317f43bb94#0",
+    "path_c4ff7fa131bf#0",
+    "path_c964c9683e7c#0",
+    "path_cc25e694d5eb#0",
+    "path_d8ac2d875bdb#0",
+    "path_e4839eb4cce1#0",
+    "path_e8ddbe66f6ef#0",
+    "path_e9ed21f4e24f#0",
+    "path_f07c8b436827#0",
+    "path_fc4d89873d6e#0",
+    "path_fc4d89873d6e#0"
+   ],
+   "graph_nodes": [
+    4,
+    5,
+    10,
+    11,
+    16,
+    17,
+    18,
+    22,
+    23,
+    30,
+    34,
+    35,
+    36,
+    40,
+    41,
+    42,
+    43,
+    48,
+    49,
+    50,
+    51,
+    64,
+    65,
+    74,
+    75,
+    80,
+    82,
+    83,
+    84,
+    85,
+    88,
+    89,
+    92,
+    102,
+    103,
+    105,
+    109,
+    118,
+    120,
+    128,
+    129,
+    133,
+    142,
+    171,
+    198,
+    221,
+    229,
+    260
+   ],
+   "horizontal_pdf_units": 434.059,
+   "drawn_pdf_units": 434.059,
+   "raw_pt": 306.309,
+   "bridged_gap_pt": 127.75,
+   "horizontal_m": 7.729,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 7.729,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_793edf0225bb",
+   "page": 0,
+   "system": "KV01",
+   "designation": "KV01-X7-40-W40",
+   "identity": "KV01-X7-W40|DN40",
+   "dn": 40,
+   "supporting_anchors": [
+    "anc_822d20426cd5"
+   ],
+   "representation_family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "geometry": [
+    [
+     [
+      1310.28,
+      755.2
+     ],
+     [
+      1324.08,
+      750.16
+     ],
+     [
+      1325.4,
+      749.68
+     ],
+     [
+      1339.32,
+      744.64
+     ],
+     [
+      1345.92,
+      742.24
+     ],
+     [
+      1357.2,
+      738.16
+     ],
+     [
+      1361.16,
+      736.72
+     ],
+     [
+      1374.96,
+      731.68
+     ],
+     [
+      1379.04,
+      730.24
+     ],
+     [
+      1386.96,
+      727.35
+     ],
+     [
+      1392.84,
+      725.2
+     ],
+     [
+      1396.8,
+      723.76
+     ],
+     [
+      1413.36,
+      717.76
+     ],
+     [
+      1414.68,
+      717.28
+     ],
+     [
+      1431.24,
+      711.28
+     ],
+     [
+      1432.56,
+      710.8
+     ],
+     [
+      1446.36,
+      705.76
+     ],
+     [
+      1450.44,
+      704.2
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_2097df47b773",
+    "path_2449b4715122",
+    "path_31ff946fbd82",
+    "path_3df449e23660",
+    "path_4aa8beb27529",
+    "path_56d5ac7c4583",
+    "path_7314937fbf1f",
+    "path_7dfaf66136e7",
+    "path_7dfb2c7c8ba7",
+    "path_875587b4a37d",
+    "path_876316815ace",
+    "path_9a29836d8bc4",
+    "path_d961e655b74b",
+    "path_da32ff611f32",
+    "path_eaf9bbd47c0e",
+    "path_f5b76f40b77a"
+   ],
+   "source_segments": [
+    "path_2097df47b773#0",
+    "path_2449b4715122#0",
+    "path_31ff946fbd82#0",
+    "path_3df449e23660#0",
+    "path_4aa8beb27529#0",
+    "path_56d5ac7c4583#0",
+    "path_7314937fbf1f#0",
+    "path_7dfaf66136e7#0",
+    "path_7dfb2c7c8ba7#0",
+    "path_875587b4a37d#0",
+    "path_876316815ace#0",
+    "path_9a29836d8bc4#0",
+    "path_d961e655b74b#0",
+    "path_da32ff611f32#0",
+    "path_eaf9bbd47c0e#0",
+    "path_f5b76f40b77a#0",
+    "path_31ff946fbd82#0"
+   ],
+   "graph_nodes": [
+    22,
+    23,
+    28,
+    29,
+    42,
+    43,
+    68,
+    69,
+    76,
+    77,
+    84,
+    126,
+    129,
+    138,
+    140,
+    236,
+    252,
+    258
+   ],
+   "horizontal_pdf_units": 149.154,
+   "drawn_pdf_units": 149.154,
+   "raw_pt": 106.594,
+   "bridged_gap_pt": 42.56,
+   "horizontal_m": 2.656,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 2.656,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_84df6c30d046",
+   "page": 0,
+   "system": "S01",
+   "designation": "S01-P5-160",
+   "identity": "S01-P5|DN160",
+   "dn": 160,
+   "supporting_anchors": [
+    "anc_17bf287ee605"
+   ],
+   "representation_family": "V-53BBBFE-_Sxx|s|w2.88",
+   "geometry": [
+    [
+     [
+      1434.84,
+      1071.4
+     ],
+     [
+      1433.28,
+      1067.2
+     ],
+     [
+      1431.84,
+      1062.88
+     ],
+     [
+      1427.4,
+      1050.76
+     ],
+     [
+      1425.84,
+      1046.8
+     ],
+     [
+      1421.88,
+      1035.52
+     ],
+     [
+      1420.32,
+      1031.56
+     ],
+     [
+      1414.32,
+      1015.0
+     ],
+     [
+      1413.84,
+      1013.68
+     ],
+     [
+      1407.84,
+      997.24
+     ],
+     [
+      1407.36,
+      995.92
+     ],
+     [
+      1401.36,
+      979.36
+     ],
+     [
+      1400.88,
+      978.04
+     ],
+     [
+      1395.84,
+      964.12
+     ],
+     [
+      1394.4,
+      960.16
+     ],
+     [
+      1389.36,
+      946.36
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_1a8ee905e3ab",
+    "path_2025eb6de611",
+    "path_344a744a731a",
+    "path_3abd56900ac5",
+    "path_3d94f5c767eb",
+    "path_7c62dfffeb83",
+    "path_82b8fec12815",
+    "path_9ec50de62a62",
+    "path_b8c416d040e4",
+    "path_d807afb9d7d6",
+    "path_db65e40b640e",
+    "path_f06723f51290",
+    "path_f0a2338c4e0c",
+    "path_f83463f96453"
+   ],
+   "source_segments": [
+    "path_1a8ee905e3ab#0",
+    "path_2025eb6de611#0",
+    "path_344a744a731a#0",
+    "path_3abd56900ac5#0",
+    "path_3d94f5c767eb#0",
+    "path_7c62dfffeb83#0",
+    "path_82b8fec12815#0",
+    "path_9ec50de62a62#0",
+    "path_b8c416d040e4#0",
+    "path_d807afb9d7d6#0",
+    "path_db65e40b640e#0",
+    "path_f06723f51290#0",
+    "path_f06723f51290#1",
+    "path_f0a2338c4e0c#0",
+    "path_f83463f96453#0"
+   ],
+   "graph_nodes": [
+    27,
+    28,
+    31,
+    32,
+    35,
+    36,
+    39,
+    40,
+    45,
+    69,
+    82,
+    83,
+    106,
+    116,
+    133,
+    134
+   ],
+   "horizontal_pdf_units": 133.06,
+   "drawn_pdf_units": 133.06,
+   "raw_pt": 99.04,
+   "bridged_gap_pt": 34.02,
+   "horizontal_m": 2.369,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 2.369,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_8bda29930226",
+   "page": 0,
+   "system": "VVC01",
+   "designation": "VVC01-X7-32",
+   "identity": "VVC01-X7|DN32",
+   "dn": 32,
+   "supporting_anchors": [
+    "anc_fd698a6e7250"
+   ],
+   "representation_family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "geometry": [
+    [
+     [
+      1335.24,
+      759.76
+     ],
+     [
+      1349.04,
+      754.72
+     ],
+     [
+      1350.36,
+      754.24
+     ],
+     [
+      1364.28,
+      749.2
+     ],
+     [
+      1370.88,
+      746.8
+     ],
+     [
+      1384.8,
+      741.76
+     ],
+     [
+      1386.12,
+      741.28
+     ],
+     [
+      1391.35,
+      739.37
+     ],
+     [
+      1399.92,
+      736.24
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_09f9d688ee72",
+    "path_151e96bb3288",
+    "path_2c307a511321",
+    "path_41df7b338db5",
+    "path_872b5b2360eb",
+    "path_bd95aec0c451",
+    "path_d6eba1153dc6"
+   ],
+   "source_segments": [
+    "path_09f9d688ee72#0",
+    "path_151e96bb3288#0",
+    "path_2c307a511321#0",
+    "path_41df7b338db5#0",
+    "path_872b5b2360eb#0",
+    "path_bd95aec0c451#0",
+    "path_d6eba1153dc6#0",
+    "path_d6eba1153dc6#0"
+   ],
+   "graph_nodes": [
+    6,
+    7,
+    20,
+    47,
+    72,
+    73,
+    147,
+    226,
+    227
+   ],
+   "horizontal_pdf_units": 68.826,
+   "drawn_pdf_units": 68.826,
+   "raw_pt": 51.856,
+   "bridged_gap_pt": 16.97,
+   "horizontal_m": 1.226,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 1.226,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_92c0941fe1cf",
+   "page": 0,
+   "system": "VS21",
+   "designation": "VS21-S13",
+   "identity": "VS21-S13|DN15",
+   "dn": 15,
+   "supporting_anchors": [
+    "anc_df7ae4b10b5a"
+   ],
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1407.96,
+      218.08
+     ],
+     [
+      1405.44,
+      209.08
+     ],
+     [
+      1403.4,
+      202.24
+     ],
+     [
+      1400.16,
+      190.84
+     ],
+     [
+      1398.96,
+      186.76
+     ],
+     [
+      1395.6,
+      175.0
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_b8f7138d7829",
+    "path_ba041c02f7f3",
+    "path_c4d98b8b7609",
+    "path_e7212752b98a",
+    "path_f419d3598d0f"
+   ],
+   "source_segments": [
+    "path_b8f7138d7829#0",
+    "path_ba041c02f7f3#0",
+    "path_c4d98b8b7609#0",
+    "path_e7212752b98a#0",
+    "path_f419d3598d0f#0"
+   ],
+   "graph_nodes": [
+    546,
+    547,
+    550,
+    551,
+    596,
+    671
+   ],
+   "horizontal_pdf_units": 44.803,
+   "drawn_pdf_units": 44.803,
+   "raw_pt": 33.313,
+   "bridged_gap_pt": 11.49,
+   "horizontal_m": 0.798,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.798,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_a9d5a081ef28",
+   "page": 0,
+   "system": "VV01",
+   "designation": "VV01-X7-40-F60",
+   "identity": "VV01-X7-F60|DN40",
+   "dn": 40,
+   "supporting_anchors": [
+    "anc_5265a1ed79a9"
+   ],
+   "representation_family": "V-52B--FE-_Vxx-VV|s|w1.44",
+   "geometry": [
+    [
+     [
+      1363.08,
+      747.52
+     ],
+     [
+      1349.28,
+      752.56
+     ],
+     [
+      1345.32,
+      754.0
+     ],
+     [
+      1334.04,
+      758.08
+     ],
+     [
+      1327.44,
+      760.48
+     ],
+     [
+      1316.28,
+      764.56
+     ],
+     [
+      1309.56,
+      766.96
+     ],
+     [
+      1298.4,
+      771.04
+     ],
+     [
+      1294.44,
+      772.48
+     ],
+     [
+      1280.52,
+      777.52
+     ],
+     [
+      1273.92,
+      779.92
+     ],
+     [
+      1260.0,
+      784.96
+     ],
+     [
+      1258.68,
+      785.44
+     ],
+     [
+      1244.88,
+      790.48
+     ],
+     [
+      1238.16,
+      793.0
+     ],
+     [
+      1227.0,
+      796.96
+     ],
+     [
+      1220.28,
+      799.48
+     ],
+     [
+      1209.12,
+      803.56
+     ],
+     [
+      1202.52,
+      805.96
+     ],
+     [
+      1193.93,
+      809.07
+     ],
+     [
+      1188.6,
+      811.0
+     ],
+     [
+      1184.64,
+      812.44
+     ],
+     [
+      1173.48,
+      816.52
+     ],
+     [
+      1166.76,
+      818.92
+     ],
+     [
+      1155.6,
+      823.0
+     ],
+     [
+      1148.88,
+      825.4
+     ],
+     [
+      1137.72,
+      829.48
+     ],
+     [
+      1133.76,
+      830.92
+     ],
+     [
+      1119.84,
+      835.96
+     ],
+     [
+      1115.88,
+      837.4
+     ],
+     [
+      1102.08,
+      842.44
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_0a5245fb233a",
+    "path_11c10b84376e",
+    "path_183646f34064",
+    "path_2225aa9e80bd",
+    "path_2a2c11b102d2",
+    "path_2bfd32b10f32",
+    "path_553aa5ce6df9",
+    "path_6f694559ab3d",
+    "path_705de76db89a",
+    "path_740ce2d5d3a6",
+    "path_808454f74912",
+    "path_8bc281d57348",
+    "path_8edc5d90c282",
+    "path_8fe31c655c8a",
+    "path_9268708745bf",
+    "path_98ab976de441",
+    "path_a78ec6c05c7a",
+    "path_b4d93775ba0e",
+    "path_b6a21dbbb1eb",
+    "path_c81413dfd4ad",
+    "path_cb99c141bbb6",
+    "path_d12987949e4c",
+    "path_da5f6320d1c3",
+    "path_dbb41cd22aab",
+    "path_e13a6d635ff4",
+    "path_ee3760c1c585",
+    "path_f629bd3cb28d",
+    "path_fa1093036aae",
+    "path_fa467f9ce239"
+   ],
+   "source_segments": [
+    "path_0a5245fb233a#0",
+    "path_11c10b84376e#0",
+    "path_183646f34064#0",
+    "path_2225aa9e80bd#0",
+    "path_2a2c11b102d2#0",
+    "path_2bfd32b10f32#0",
+    "path_553aa5ce6df9#0",
+    "path_6f694559ab3d#0",
+    "path_705de76db89a#0",
+    "path_740ce2d5d3a6#0",
+    "path_808454f74912#0",
+    "path_8bc281d57348#0",
+    "path_8edc5d90c282#0",
+    "path_8fe31c655c8a#0",
+    "path_9268708745bf#0",
+    "path_98ab976de441#0",
+    "path_a78ec6c05c7a#0",
+    "path_b4d93775ba0e#0",
+    "path_b6a21dbbb1eb#0",
+    "path_c81413dfd4ad#0",
+    "path_cb99c141bbb6#0",
+    "path_d12987949e4c#0",
+    "path_da5f6320d1c3#0",
+    "path_dbb41cd22aab#0",
+    "path_e13a6d635ff4#0",
+    "path_ee3760c1c585#0",
+    "path_f629bd3cb28d#0",
+    "path_fa1093036aae#0",
+    "path_fa467f9ce239#0",
+    "path_0a5245fb233a#0"
+   ],
+   "graph_nodes": [
+    4,
+    5,
+    12,
+    13,
+    16,
+    17,
+    22,
+    23,
+    30,
+    31,
+    35,
+    71,
+    100,
+    101,
+    110,
+    125,
+    132,
+    133,
+    136,
+    137,
+    138,
+    139,
+    143,
+    170,
+    172,
+    188,
+    189,
+    195,
+    216,
+    223,
+    259
+   ],
+   "horizontal_pdf_units": 277.731,
+   "drawn_pdf_units": 277.731,
+   "raw_pt": 198.311,
+   "bridged_gap_pt": 79.42,
+   "horizontal_m": 4.945,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 4.945,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_ab7f6a886cf4",
+   "page": 0,
+   "system": "VS21",
+   "designation": "VS21-S13-15-F50",
+   "identity": "VS21-S13-F50|DN15",
+   "dn": 15,
+   "supporting_anchors": [
+    "anc_35ce460f0288",
+    "anc_5182853df389",
+    "anc_f53f03f750bf"
+   ],
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      879.48,
+      342.04
+     ],
+     [
+      874.08,
+      342.04
+     ],
+     [
+      873.72,
+      342.04
+     ],
+     [
+      873.48,
+      342.16
+     ],
+     [
+      873.12,
+      342.28
+     ],
+     [
+      872.88,
+      342.4
+     ],
+     [
+      872.76,
+      342.64
+     ],
+     [
+      872.52,
+      342.88
+     ],
+     [
+      872.4,
+      343.24
+     ],
+     [
+      872.4,
+      343.48
+     ],
+     [
+      872.28,
+      343.72
+     ],
+     [
+      872.28,
+      354.64
+     ],
+     [
+      872.28,
+      358.96
+     ],
+     [
+      872.28,
+      373.72
+     ],
+     [
+      872.28,
+      380.8
+     ],
+     [
+      872.28,
+      391.72
+     ],
+     [
+      872.28,
+      391.96
+     ],
+     [
+      872.28,
+      392.32
+     ],
+     [
+      872.04,
+      392.56
+     ],
+     [
+      871.92,
+      392.8
+     ],
+     [
+      871.68,
+      393.04
+     ],
+     [
+      871.44,
+      393.16
+     ],
+     [
+      871.2,
+      393.28
+     ],
+     [
+      870.96,
+      393.4
+     ],
+     [
+      870.6,
+      393.4
+     ],
+     [
+      860.64,
+      393.4
+     ],
+     [
+      853.56,
+      393.4
+     ],
+     [
+      843.6,
+      393.4
+     ],
+     [
+      829.92,
+      393.4
+     ],
+     [
+      828.48,
+      393.4
+     ],
+     [
+      810.96,
+      393.4
+     ],
+     [
+      806.64,
+      393.4
+     ],
+     [
+      791.88,
+      393.4
+     ],
+     [
+      790.56,
+      393.4
+     ],
+     [
+      772.92,
+      393.4
+     ],
+     [
+      771.48,
+      393.4
+     ],
+     [
+      756.72,
+      393.4
+     ],
+     [
+      749.64,
+      393.4
+     ],
+     [
+      734.88,
+      393.4
+     ],
+     [
+      733.56,
+      393.4
+     ],
+     [
+      722.76,
+      393.4
+     ],
+     [
+      711.96,
+      390.4
+     ],
+     [
+      708.48,
+      393.4
+     ],
+     [
+      704.28,
+      393.4
+     ],
+     [
+      698.28,
+      393.4
+     ],
+     [
+      689.52,
+      393.4
+     ],
+     [
+      685.2,
+      393.4
+     ],
+     [
+      673.8,
+      393.4
+     ],
+     [
+      655.32,
+      393.4
+     ],
+     [
+      644.76,
+      396.04
+     ],
+     [
+      636.72,
+      393.4
+     ],
+     [
+      635.28,
+      393.4
+     ],
+     [
+      617.64,
+      393.4
+     ],
+     [
+      613.44,
+      393.4
+     ],
+     [
+      600.48,
+      393.4
+     ],
+     [
+      588.72,
+      393.4
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_07f7b4ecedf9",
+    "path_0a294b1f546e",
+    "path_1c4e54528f5d",
+    "path_2aeb1fb56e27",
+    "path_31571db958b2",
+    "path_3642caadf845",
+    "path_3eb4b3972d13",
+    "path_4bd88e3b7dce",
+    "path_5757ed8fe279",
+    "path_637e9ed5e419",
+    "path_6c06af87a4fb",
+    "path_6e21e46a205a",
+    "path_750e6bd6f460",
+    "path_7a9d7676e2d5",
+    "path_809c231a9fc6",
+    "path_8e1f33d21a34",
+    "path_97f18d44680b",
+    "path_9a330bac559a",
+    "path_a30ac1bf1812",
+    "path_acd6c391de5e",
+    "path_b1aa9e52002d",
+    "path_b32fe97348ea",
+    "path_b4abba7b04e3",
+    "path_b560a4b4d9b2",
+    "path_b8816f45180c",
+    "path_c7a495311900",
+    "path_d4f81a4953ab",
+    "path_d664c64b943a",
+    "path_df6aba425ea0",
+    "path_e17098e497d9",
+    "path_e1a1ebb8d01d",
+    "path_e4e14cb25ebd",
+    "path_e5aa6bf81d33"
+   ],
+   "source_segments": [
+    "path_07f7b4ecedf9#0",
+    "path_0a294b1f546e#0",
+    "path_1c4e54528f5d#0",
+    "path_2aeb1fb56e27#0",
+    "path_31571db958b2#0",
+    "path_3642caadf845#0",
+    "path_3642caadf845#1",
+    "path_3642caadf845#2",
+    "path_3642caadf845#3",
+    "path_3642caadf845#4",
+    "path_3642caadf845#5",
+    "path_3642caadf845#6",
+    "path_3642caadf845#7",
+    "path_3642caadf845#8",
+    "path_3642caadf845#9",
+    "path_3eb4b3972d13#0",
+    "path_4bd88e3b7dce#0",
+    "path_5757ed8fe279#0",
+    "path_637e9ed5e419#0",
+    "path_6c06af87a4fb#0",
+    "path_6e21e46a205a#0",
+    "path_750e6bd6f460#0",
+    "path_750e6bd6f460#1",
+    "path_750e6bd6f460#2",
+    "path_750e6bd6f460#3",
+    "path_750e6bd6f460#4",
+    "path_750e6bd6f460#5",
+    "path_750e6bd6f460#6",
+    "path_750e6bd6f460#7",
+    "path_750e6bd6f460#8",
+    "path_750e6bd6f460#9",
+    "path_750e6bd6f460#10",
+    "path_7a9d7676e2d5#0",
+    "path_809c231a9fc6#0",
+    "path_8e1f33d21a34#0",
+    "path_97f18d44680b#0",
+    "path_9a330bac559a#0",
+    "path_a30ac1bf1812#0",
+    "path_acd6c391de5e#0",
+    "path_b1aa9e52002d#0",
+    "path_b32fe97348ea#0",
+    "path_b4abba7b04e3#0",
+    "path_b560a4b4d9b2#0",
+    "path_b8816f45180c#0",
+    "path_c7a495311900#0",
+    "path_d4f81a4953ab#0",
+    "path_d664c64b943a#0",
+    "path_df6aba425ea0#0",
+    "path_e17098e497d9#0",
+    "path_e1a1ebb8d01d#0",
+    "path_e4e14cb25ebd#0",
+    "path_e5aa6bf81d33#0",
+    "path_2aeb1fb56e27#0",
+    "path_6c06af87a4fb#0",
+    "path_e17098e497d9#0"
+   ],
+   "graph_nodes": [
+    18,
+    26,
+    27,
+    30,
+    31,
+    95,
+    96,
+    99,
+    130,
+    131,
+    150,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    189,
+    190,
+    210,
+    211,
+    248,
+    268,
+    269,
+    307,
+    308,
+    342,
+    343,
+    344,
+    345,
+    346,
+    347,
+    348,
+    349,
+    350,
+    351,
+    352,
+    353,
+    362,
+    387,
+    439,
+    445,
+    465,
+    493,
+    512,
+    518,
+    519,
+    522,
+    544,
+    610,
+    636
+   ],
+   "horizontal_pdf_units": 340.764,
+   "drawn_pdf_units": 340.764,
+   "raw_pt": 252.444,
+   "bridged_gap_pt": 88.32,
+   "horizontal_m": 6.068,
+   "vertical_m": 0.25,
+   "vertical_evidence": {
+    "kind": "elevation_difference_between_anchors",
+    "tag": "CL",
+    "values": [
+     4000.0,
+     4250.0
+    ],
+    "anchors": [
+     "anc_35ce460f0288",
+     "anc_5182853df389",
+     "anc_f53f03f750bf"
+    ]
+   },
+   "total_m": 6.318,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_b36e50e66676",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-S13-28-F60",
+   "identity": "VS31-S13-F60|DN28",
+   "dn": 28,
+   "supporting_anchors": [
+    "anc_b4fe592a764a"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      898.08,
+      758.2
+     ],
+     [
+      893.4,
+      745.6
+     ],
+     [
+      893.28,
+      745.12
+     ],
+     [
+      892.92,
+      744.76
+     ],
+     [
+      892.56,
+      744.4
+     ],
+     [
+      892.2,
+      744.16
+     ],
+     [
+      891.72,
+      743.92
+     ],
+     [
+      891.24,
+      743.8
+     ],
+     [
+      890.76,
+      743.68
+     ],
+     [
+      876.54,
+      743.68
+     ],
+     [
+      871.8,
+      743.68
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_1d8c34c71219",
+    "path_be8e93d7b20d",
+    "path_fff1bd3fce82"
+   ],
+   "source_segments": [
+    "path_1d8c34c71219#0",
+    "path_1d8c34c71219#1",
+    "path_1d8c34c71219#2",
+    "path_1d8c34c71219#3",
+    "path_1d8c34c71219#4",
+    "path_1d8c34c71219#5",
+    "path_1d8c34c71219#6",
+    "path_be8e93d7b20d#0",
+    "path_fff1bd3fce82#0",
+    "path_fff1bd3fce82#0"
+   ],
+   "graph_nodes": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    348,
+    440,
+    441
+   ],
+   "horizontal_pdf_units": 35.873,
+   "drawn_pdf_units": 35.873,
+   "raw_pt": 35.873,
+   "bridged_gap_pt": 0,
+   "horizontal_m": 0.639,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.639,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_ba7a1c1f5b1b",
    "page": 0,
    "system": "VS21",
    "designation": "VS21-S13-15-F50",
@@ -3130,7 +4495,11 @@
       404.8
      ],
      [
-      643.32,
+      637.86,
+      404.8
+     ],
+     [
+      646.2,
       404.8
      ],
      [
@@ -3378,7 +4747,8 @@
     "path_e49240b4e8cd#0",
     "path_e9acebe13cd2#0",
     "path_f1053fc3bc07#0",
-    "path_f4f19422ea38#0"
+    "path_f4f19422ea38#0",
+    "path_785a756a295a#0"
    ],
    "graph_nodes": [
     22,
@@ -3413,6 +4783,7 @@
     419,
     443,
     444,
+    451,
     540,
     554,
     555,
@@ -3429,6 +4800,7 @@
     696
    ],
    "horizontal_pdf_units": 354.021,
+   "drawn_pdf_units": 354.021,
    "raw_pt": 257.181,
    "bridged_gap_pt": 96.84,
    "horizontal_m": 6.304,
@@ -3451,993 +4823,7 @@
    "evidence": [
     "chain_with_agreeing_anchors"
    ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_84df6c30d046",
-   "page": 0,
-   "system": "S01",
-   "designation": "S01-P5-160",
-   "identity": "S01-P5|DN160",
-   "dn": 160,
-   "supporting_anchors": [
-    "anc_17bf287ee605"
-   ],
-   "representation_family": "V-53BBBFE-_Sxx|s|w2.88",
-   "geometry": [
-    [
-     [
-      1434.84,
-      1071.4
-     ],
-     [
-      1433.28,
-      1067.2
-     ],
-     [
-      1431.84,
-      1062.88
-     ],
-     [
-      1427.4,
-      1050.76
-     ],
-     [
-      1425.84,
-      1046.8
-     ],
-     [
-      1421.88,
-      1035.52
-     ],
-     [
-      1420.32,
-      1031.56
-     ],
-     [
-      1414.32,
-      1015.0
-     ],
-     [
-      1413.84,
-      1013.68
-     ],
-     [
-      1407.84,
-      997.24
-     ],
-     [
-      1407.36,
-      995.92
-     ],
-     [
-      1401.36,
-      979.36
-     ],
-     [
-      1400.88,
-      978.04
-     ],
-     [
-      1395.84,
-      964.12
-     ],
-     [
-      1394.4,
-      960.16
-     ],
-     [
-      1389.36,
-      946.36
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_1a8ee905e3ab",
-    "path_2025eb6de611",
-    "path_344a744a731a",
-    "path_3abd56900ac5",
-    "path_3d94f5c767eb",
-    "path_7c62dfffeb83",
-    "path_82b8fec12815",
-    "path_9ec50de62a62",
-    "path_b8c416d040e4",
-    "path_d807afb9d7d6",
-    "path_db65e40b640e",
-    "path_f06723f51290",
-    "path_f0a2338c4e0c",
-    "path_f83463f96453"
-   ],
-   "source_segments": [
-    "path_1a8ee905e3ab#0",
-    "path_2025eb6de611#0",
-    "path_344a744a731a#0",
-    "path_3abd56900ac5#0",
-    "path_3d94f5c767eb#0",
-    "path_7c62dfffeb83#0",
-    "path_82b8fec12815#0",
-    "path_9ec50de62a62#0",
-    "path_b8c416d040e4#0",
-    "path_d807afb9d7d6#0",
-    "path_db65e40b640e#0",
-    "path_f06723f51290#0",
-    "path_f06723f51290#1",
-    "path_f0a2338c4e0c#0",
-    "path_f83463f96453#0"
-   ],
-   "graph_nodes": [
-    27,
-    28,
-    31,
-    32,
-    35,
-    36,
-    39,
-    40,
-    45,
-    69,
-    82,
-    83,
-    106,
-    116,
-    133,
-    134
-   ],
-   "horizontal_pdf_units": 133.06,
-   "raw_pt": 99.04,
-   "bridged_gap_pt": 34.02,
-   "horizontal_m": 2.369,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 2.369,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_92c0941fe1cf",
-   "page": 0,
-   "system": "VS21",
-   "designation": "VS21-S13",
-   "identity": "VS21-S13|DN15",
-   "dn": 15,
-   "supporting_anchors": [
-    "anc_df7ae4b10b5a"
-   ],
-   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
-   "geometry": [
-    [
-     [
-      1407.96,
-      218.08
-     ],
-     [
-      1405.44,
-      209.08
-     ],
-     [
-      1403.4,
-      202.24
-     ],
-     [
-      1400.16,
-      190.84
-     ],
-     [
-      1398.96,
-      186.76
-     ],
-     [
-      1395.6,
-      175.0
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_b8f7138d7829",
-    "path_ba041c02f7f3",
-    "path_c4d98b8b7609",
-    "path_e7212752b98a",
-    "path_f419d3598d0f"
-   ],
-   "source_segments": [
-    "path_b8f7138d7829#0",
-    "path_ba041c02f7f3#0",
-    "path_c4d98b8b7609#0",
-    "path_e7212752b98a#0",
-    "path_f419d3598d0f#0"
-   ],
-   "graph_nodes": [
-    546,
-    547,
-    550,
-    551,
-    596,
-    671
-   ],
-   "horizontal_pdf_units": 44.803,
-   "raw_pt": 33.313,
-   "bridged_gap_pt": 11.49,
-   "horizontal_m": 0.798,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 0.798,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_9ddc6aa2daa7",
-   "page": 0,
-   "system": "VS31",
-   "designation": "VS31-S13-28-F60",
-   "identity": "VS31-S13-F60|DN28",
-   "dn": 28,
-   "supporting_anchors": [
-    "anc_4d60a6b96186"
-   ],
-   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
-   "geometry": [
-    [
-     [
-      1136.28,
-      888.76
-     ],
-     [
-      1150.08,
-      883.72
-     ],
-     [
-      1154.04,
-      882.28
-     ],
-     [
-      1167.96,
-      877.24
-     ],
-     [
-      1169.28,
-      876.76
-     ],
-     [
-      1183.08,
-      871.72
-     ],
-     [
-      1189.8,
-      869.32
-     ],
-     [
-      1203.6,
-      864.28
-     ],
-     [
-      1207.68,
-      862.84
-     ],
-     [
-      1218.84,
-      858.76
-     ],
-     [
-      1225.44,
-      856.36
-     ],
-     [
-      1236.72,
-      852.28
-     ],
-     [
-      1243.32,
-      849.88
-     ],
-     [
-      1254.48,
-      845.8
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_01ecddc0e550",
-    "path_0416b67805d0",
-    "path_16c6e6747365",
-    "path_22d1cc8b34f6",
-    "path_53be6df10ed8",
-    "path_6bd80266e735",
-    "path_7ab17fc08449",
-    "path_8666459529c8",
-    "path_9456abf40530",
-    "path_99e6969769e1",
-    "path_b37690c69b25",
-    "path_b5ac94054c16",
-    "path_f246273d37eb"
-   ],
-   "source_segments": [
-    "path_01ecddc0e550#0",
-    "path_0416b67805d0#0",
-    "path_16c6e6747365#0",
-    "path_22d1cc8b34f6#0",
-    "path_53be6df10ed8#0",
-    "path_6bd80266e735#0",
-    "path_7ab17fc08449#0",
-    "path_8666459529c8#0",
-    "path_9456abf40530#0",
-    "path_99e6969769e1#0",
-    "path_b37690c69b25#0",
-    "path_b5ac94054c16#0",
-    "path_f246273d37eb#0"
-   ],
-   "graph_nodes": [
-    6,
-    7,
-    9,
-    33,
-    59,
-    132,
-    133,
-    178,
-    215,
-    216,
-    246,
-    263,
-    328,
-    329
-   ],
-   "horizontal_pdf_units": 125.77,
-   "raw_pt": 91.83,
-   "bridged_gap_pt": 33.94,
-   "horizontal_m": 2.239,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 2.239,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_a4ac87cce8e2",
-   "page": 0,
-   "system": "VP01",
-   "designation": "VP01-S2-65-F80",
-   "identity": "VP01-S2-F80|DN65",
-   "dn": 65,
-   "supporting_anchors": [
-    "anc_74788073be39"
-   ],
-   "representation_family": "V-56B--FE-_VPxx-|s|w1.44",
-   "geometry": [
-    [
-     [
-      1379.4,
-      773.8
-     ],
-     [
-      1365.6,
-      778.84
-     ],
-     [
-      1364.28,
-      779.32
-     ],
-     [
-      1350.36,
-      784.36
-     ],
-     [
-      1343.76,
-      786.76
-     ],
-     [
-      1332.6,
-      790.84
-     ],
-     [
-      1325.88,
-      793.24
-     ],
-     [
-      1312.08,
-      798.28
-     ],
-     [
-      1310.76,
-      798.76
-     ],
-     [
-      1294.2,
-      804.76
-     ],
-     [
-      1292.88,
-      805.24
-     ],
-     [
-      1276.32,
-      811.24
-     ],
-     [
-      1275.0,
-      811.72
-     ],
-     [
-      1258.44,
-      817.72
-     ],
-     [
-      1254.48,
-      819.28
-     ],
-     [
-      1240.68,
-      824.32
-     ],
-     [
-      1239.36,
-      824.8
-     ],
-     [
-      1225.44,
-      829.84
-     ],
-     [
-      1221.48,
-      831.28
-     ],
-     [
-      1204.92,
-      837.28
-     ],
-     [
-      1203.6,
-      837.76
-     ],
-     [
-      1189.8,
-      842.8
-     ],
-     [
-      1185.72,
-      844.24
-     ],
-     [
-      1169.28,
-      850.24
-     ],
-     [
-      1165.2,
-      851.68
-     ],
-     [
-      1154.04,
-      855.76
-     ],
-     [
-      1150.08,
-      857.2
-     ],
-     [
-      1133.52,
-      863.2
-     ],
-     [
-      1129.56,
-      864.64
-     ],
-     [
-      1118.4,
-      868.72
-     ],
-     [
-      1111.68,
-      871.24
-     ],
-     [
-      1100.52,
-      875.32
-     ],
-     [
-      1093.8,
-      877.72
-     ],
-     [
-      1082.64,
-      881.8
-     ],
-     [
-      1078.68,
-      883.24
-     ],
-     [
-      1062.12,
-      889.24
-     ],
-     [
-      1060.8,
-      889.72
-     ],
-     [
-      1047.0,
-      894.76
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_1144724f2d4a",
-    "path_1ae226791dcd",
-    "path_278f636afd34",
-    "path_29b2aa03b387",
-    "path_2ac78a9c5aa2",
-    "path_2b260cac7341",
-    "path_2cb0ef066373",
-    "path_2ddbb489f5c7",
-    "path_30c1a52ba47f",
-    "path_337542605fc5",
-    "path_346719153168",
-    "path_381470dc5ff3",
-    "path_3917cd542815",
-    "path_523c5aa072af",
-    "path_58f8a1351158",
-    "path_76f35824a4ac",
-    "path_7f8cfe0fba7d",
-    "path_8055ed091567",
-    "path_8501bb187428",
-    "path_888fa2c321ef",
-    "path_89ddf16c400b",
-    "path_8bada01365a9",
-    "path_98aa4ab2ab38",
-    "path_9be07f6c2278",
-    "path_a0444160a988",
-    "path_a04ee3802bce",
-    "path_a52685d28281",
-    "path_aa28cb4f0eeb",
-    "path_aad1b299b75a",
-    "path_bca80b9d5685",
-    "path_c3318ba1cb9c",
-    "path_c8fe228a6c04",
-    "path_d6118c6e9de9",
-    "path_e690d7331b5e",
-    "path_eb6136fd0459",
-    "path_f3232ec13d1c",
-    "path_f3b22e904bee"
-   ],
-   "source_segments": [
-    "path_1144724f2d4a#0",
-    "path_1ae226791dcd#0",
-    "path_278f636afd34#0",
-    "path_29b2aa03b387#0",
-    "path_2ac78a9c5aa2#0",
-    "path_2b260cac7341#0",
-    "path_2cb0ef066373#0",
-    "path_2ddbb489f5c7#0",
-    "path_30c1a52ba47f#0",
-    "path_337542605fc5#0",
-    "path_346719153168#0",
-    "path_381470dc5ff3#0",
-    "path_3917cd542815#0",
-    "path_523c5aa072af#0",
-    "path_58f8a1351158#0",
-    "path_76f35824a4ac#0",
-    "path_7f8cfe0fba7d#0",
-    "path_8055ed091567#0",
-    "path_8501bb187428#0",
-    "path_888fa2c321ef#0",
-    "path_89ddf16c400b#0",
-    "path_8bada01365a9#0",
-    "path_98aa4ab2ab38#0",
-    "path_9be07f6c2278#0",
-    "path_a0444160a988#0",
-    "path_a04ee3802bce#0",
-    "path_a52685d28281#0",
-    "path_aa28cb4f0eeb#0",
-    "path_aad1b299b75a#0",
-    "path_bca80b9d5685#0",
-    "path_c3318ba1cb9c#0",
-    "path_c8fe228a6c04#0",
-    "path_d6118c6e9de9#0",
-    "path_e690d7331b5e#0",
-    "path_eb6136fd0459#0",
-    "path_f3232ec13d1c#0",
-    "path_f3b22e904bee#0"
-   ],
-   "graph_nodes": [
-    24,
-    25,
-    42,
-    43,
-    80,
-    93,
-    94,
-    99,
-    100,
-    101,
-    102,
-    109,
-    110,
-    113,
-    126,
-    133,
-    134,
-    140,
-    149,
-    150,
-    151,
-    187,
-    188,
-    207,
-    208,
-    263,
-    264,
-    281,
-    282,
-    287,
-    310,
-    314,
-    356,
-    362,
-    395,
-    399,
-    427,
-    491
-   ],
-   "horizontal_pdf_units": 353.731,
-   "raw_pt": 251.571,
-   "bridged_gap_pt": 102.16,
-   "horizontal_m": 6.299,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 6.299,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_b0fd5cb3d97b",
-   "page": 0,
-   "system": "VVC01",
-   "designation": "VVC01-X7-32",
-   "identity": "VVC01-X7|DN32",
-   "dn": 32,
-   "supporting_anchors": [
-    "anc_fd698a6e7250"
-   ],
-   "representation_family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
-   "geometry": [
-    [
-     [
-      1335.24,
-      759.76
-     ],
-     [
-      1349.04,
-      754.72
-     ],
-     [
-      1350.36,
-      754.24
-     ],
-     [
-      1364.28,
-      749.2
-     ],
-     [
-      1370.88,
-      746.8
-     ],
-     [
-      1384.8,
-      741.76
-     ],
-     [
-      1386.12,
-      741.28
-     ],
-     [
-      1399.92,
-      736.24
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_09f9d688ee72",
-    "path_151e96bb3288",
-    "path_2c307a511321",
-    "path_41df7b338db5",
-    "path_872b5b2360eb",
-    "path_bd95aec0c451",
-    "path_d6eba1153dc6"
-   ],
-   "source_segments": [
-    "path_09f9d688ee72#0",
-    "path_151e96bb3288#0",
-    "path_2c307a511321#0",
-    "path_41df7b338db5#0",
-    "path_872b5b2360eb#0",
-    "path_bd95aec0c451#0",
-    "path_d6eba1153dc6#0"
-   ],
-   "graph_nodes": [
-    6,
-    7,
-    20,
-    47,
-    72,
-    73,
-    147,
-    226
-   ],
-   "horizontal_pdf_units": 68.826,
-   "raw_pt": 51.856,
-   "bridged_gap_pt": 16.97,
-   "horizontal_m": 1.226,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 1.226,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_b798582d2d2f",
-   "page": 0,
-   "system": "KV01",
-   "designation": "KV01-X7-40-W40",
-   "identity": "KV01-X7-W40|DN40",
-   "dn": 40,
-   "supporting_anchors": [
-    "anc_822d20426cd5"
-   ],
-   "representation_family": "V-52B--FE-_Vxx-KV|s|w1.44",
-   "geometry": [
-    [
-     [
-      1310.28,
-      755.2
-     ],
-     [
-      1324.08,
-      750.16
-     ],
-     [
-      1325.4,
-      749.68
-     ],
-     [
-      1339.32,
-      744.64
-     ],
-     [
-      1345.92,
-      742.24
-     ],
-     [
-      1357.2,
-      738.16
-     ],
-     [
-      1361.16,
-      736.72
-     ],
-     [
-      1374.96,
-      731.68
-     ],
-     [
-      1381.68,
-      729.28
-     ],
-     [
-      1392.84,
-      725.2
-     ],
-     [
-      1396.8,
-      723.76
-     ],
-     [
-      1413.36,
-      717.76
-     ],
-     [
-      1414.68,
-      717.28
-     ],
-     [
-      1431.24,
-      711.28
-     ],
-     [
-      1432.56,
-      710.8
-     ],
-     [
-      1446.36,
-      705.76
-     ],
-     [
-      1450.44,
-      704.2
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_2097df47b773",
-    "path_2449b4715122",
-    "path_31ff946fbd82",
-    "path_3df449e23660",
-    "path_4aa8beb27529",
-    "path_56d5ac7c4583",
-    "path_7314937fbf1f",
-    "path_7dfaf66136e7",
-    "path_7dfb2c7c8ba7",
-    "path_875587b4a37d",
-    "path_876316815ace",
-    "path_9a29836d8bc4",
-    "path_d961e655b74b",
-    "path_da32ff611f32",
-    "path_eaf9bbd47c0e",
-    "path_f5b76f40b77a"
-   ],
-   "source_segments": [
-    "path_2097df47b773#0",
-    "path_2449b4715122#0",
-    "path_31ff946fbd82#0",
-    "path_3df449e23660#0",
-    "path_4aa8beb27529#0",
-    "path_56d5ac7c4583#0",
-    "path_7314937fbf1f#0",
-    "path_7dfaf66136e7#0",
-    "path_7dfb2c7c8ba7#0",
-    "path_875587b4a37d#0",
-    "path_876316815ace#0",
-    "path_9a29836d8bc4#0",
-    "path_d961e655b74b#0",
-    "path_da32ff611f32#0",
-    "path_eaf9bbd47c0e#0",
-    "path_f5b76f40b77a#0"
-   ],
-   "graph_nodes": [
-    22,
-    23,
-    28,
-    29,
-    42,
-    43,
-    68,
-    69,
-    76,
-    77,
-    84,
-    126,
-    129,
-    138,
-    140,
-    236,
-    252
-   ],
-   "horizontal_pdf_units": 149.154,
-   "raw_pt": 106.594,
-   "bridged_gap_pt": 42.56,
-   "horizontal_m": 2.656,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 2.656,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_bb97a8820508",
-   "page": 0,
-   "system": "VS31",
-   "designation": "VS31-S13-28-F60",
-   "identity": "VS31-S13-F60|DN28",
-   "dn": 28,
-   "supporting_anchors": [
-    "anc_b4fe592a764a"
-   ],
-   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
-   "geometry": [
-    [
-     [
-      898.08,
-      758.2
-     ],
-     [
-      893.4,
-      745.6
-     ],
-     [
-      893.28,
-      745.12
-     ],
-     [
-      892.92,
-      744.76
-     ],
-     [
-      892.56,
-      744.4
-     ],
-     [
-      892.2,
-      744.16
-     ],
-     [
-      891.72,
-      743.92
-     ],
-     [
-      891.24,
-      743.8
-     ],
-     [
-      890.76,
-      743.68
-     ],
-     [
-      871.8,
-      743.68
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_1d8c34c71219",
-    "path_be8e93d7b20d",
-    "path_fff1bd3fce82"
-   ],
-   "source_segments": [
-    "path_1d8c34c71219#0",
-    "path_1d8c34c71219#1",
-    "path_1d8c34c71219#2",
-    "path_1d8c34c71219#3",
-    "path_1d8c34c71219#4",
-    "path_1d8c34c71219#5",
-    "path_1d8c34c71219#6",
-    "path_be8e93d7b20d#0",
-    "path_fff1bd3fce82#0"
-   ],
-   "graph_nodes": [
-    42,
-    43,
-    44,
-    45,
-    46,
-    47,
-    48,
-    49,
-    348,
-    439
-   ],
-   "horizontal_pdf_units": 35.873,
-   "raw_pt": 35.873,
-   "bridged_gap_pt": 0,
-   "horizontal_m": 0.639,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 0.639,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -4647,6 +5033,7 @@
     511
    ],
    "horizontal_pdf_units": 208.796,
+   "drawn_pdf_units": 208.796,
    "raw_pt": 152.026,
    "bridged_gap_pt": 56.77,
    "horizontal_m": 3.718,
@@ -4657,439 +5044,734 @@
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
   {
-   "physical_pipe_id": "pp_d619eb370e92",
+   "physical_pipe_id": "pp_c4ea29ce3af3",
+   "page": 0,
+   "system": "VS31",
+   "designation": "VS31-S13-28-F60",
+   "identity": "VS31-S13-F60|DN28",
+   "dn": 28,
+   "supporting_anchors": [
+    "anc_4d60a6b96186"
+   ],
+   "representation_family": "V-56B--FE-_VS3x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1136.28,
+      888.76
+     ],
+     [
+      1150.08,
+      883.72
+     ],
+     [
+      1154.04,
+      882.28
+     ],
+     [
+      1167.96,
+      877.24
+     ],
+     [
+      1169.28,
+      876.76
+     ],
+     [
+      1183.08,
+      871.72
+     ],
+     [
+      1187.16,
+      870.28
+     ],
+     [
+      1194.01,
+      867.78
+     ],
+     [
+      1203.6,
+      864.28
+     ],
+     [
+      1207.68,
+      862.84
+     ],
+     [
+      1218.84,
+      858.76
+     ],
+     [
+      1225.44,
+      856.36
+     ],
+     [
+      1236.72,
+      852.28
+     ],
+     [
+      1243.32,
+      849.88
+     ],
+     [
+      1254.48,
+      845.8
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_01ecddc0e550",
+    "path_0416b67805d0",
+    "path_16c6e6747365",
+    "path_22d1cc8b34f6",
+    "path_53be6df10ed8",
+    "path_6bd80266e735",
+    "path_7ab17fc08449",
+    "path_8666459529c8",
+    "path_9456abf40530",
+    "path_99e6969769e1",
+    "path_b37690c69b25",
+    "path_b5ac94054c16",
+    "path_f246273d37eb"
+   ],
+   "source_segments": [
+    "path_01ecddc0e550#0",
+    "path_0416b67805d0#0",
+    "path_16c6e6747365#0",
+    "path_22d1cc8b34f6#0",
+    "path_53be6df10ed8#0",
+    "path_6bd80266e735#0",
+    "path_7ab17fc08449#0",
+    "path_8666459529c8#0",
+    "path_9456abf40530#0",
+    "path_99e6969769e1#0",
+    "path_b37690c69b25#0",
+    "path_b5ac94054c16#0",
+    "path_f246273d37eb#0",
+    "path_9456abf40530#0"
+   ],
+   "graph_nodes": [
+    6,
+    7,
+    9,
+    33,
+    59,
+    132,
+    133,
+    178,
+    215,
+    216,
+    246,
+    263,
+    272,
+    328,
+    329
+   ],
+   "horizontal_pdf_units": 125.77,
+   "drawn_pdf_units": 125.77,
+   "raw_pt": 91.83,
+   "bridged_gap_pt": 33.94,
+   "horizontal_m": 2.239,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 2.239,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_d38d8ded3f56",
+   "page": 0,
+   "system": "VS21",
+   "designation": "VS21-S13",
+   "identity": "VS21-S13|DN15",
+   "dn": 15,
+   "supporting_anchors": [
+    "anc_df7ae4b10b5a"
+   ],
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
+   "geometry": [
+    [
+     [
+      1413.72,
+      204.64
+     ],
+     [
+      1410.12,
+      192.04
+     ],
+     [
+      1408.08,
+      185.2
+     ],
+     [
+      1404.48,
+      172.6
+     ],
+     [
+      1404.36,
+      172.24
+     ],
+     [
+      1404.24,
+      172.0
+     ],
+     [
+      1404.0,
+      171.76
+     ],
+     [
+      1403.76,
+      171.64
+     ],
+     [
+      1403.52,
+      171.52
+     ],
+     [
+      1403.28,
+      171.4
+     ],
+     [
+      1402.92,
+      171.4
+     ],
+     [
+      1402.68,
+      171.4
+     ],
+     [
+      1402.32,
+      171.4
+     ],
+     [
+      1398.72,
+      172.48
+     ]
+    ]
+   ],
+   "source_path_ids": [
+    "path_176bc27f0513",
+    "path_b78c75ed78a7",
+    "path_c13cb0a59178"
+   ],
+   "source_segments": [
+    "path_176bc27f0513#0",
+    "path_b78c75ed78a7#0",
+    "path_b78c75ed78a7#1",
+    "path_b78c75ed78a7#2",
+    "path_b78c75ed78a7#3",
+    "path_b78c75ed78a7#4",
+    "path_b78c75ed78a7#5",
+    "path_b78c75ed78a7#6",
+    "path_b78c75ed78a7#7",
+    "path_b78c75ed78a7#8",
+    "path_b78c75ed78a7#9",
+    "path_b78c75ed78a7#10",
+    "path_c13cb0a59178#0"
+   ],
+   "graph_nodes": [
+    76,
+    77,
+    528,
+    529,
+    530,
+    531,
+    532,
+    533,
+    534,
+    535,
+    536,
+    537,
+    538,
+    539
+   ],
+   "horizontal_pdf_units": 39.847,
+   "drawn_pdf_units": 39.847,
+   "raw_pt": 34.087,
+   "bridged_gap_pt": 5.76,
+   "horizontal_m": 0.71,
+   "vertical_m": "UNKNOWN",
+   "vertical_evidence": null,
+   "total_m": 0.71,
+   "evidence_state": "CONFIRMED",
+   "evidence": [
+    "chain_from_anchor"
+   ],
+   "in_hatched_area_m": 0.0,
+   "ambiguity_reason": null,
+   "reasons": []
+  },
+  {
+   "physical_pipe_id": "pp_d7d830ffdadd",
    "page": 0,
    "system": "KV01",
    "designation": "KV01-X7-40-W40",
    "identity": "KV01-X7-W40|DN40",
    "dn": 40,
    "supporting_anchors": [
-    "anc_7765ade11909"
+    "anc_f7f7ef357742"
    ],
    "representation_family": "V-52B--FE-_Vxx-KV|s|w1.44",
    "geometry": [
     [
      [
-      793.68,
-      1009.48
+      1303.56,
+      757.72
      ],
      [
-      785.28,
-      1017.88
+      1292.4,
+      761.8
      ],
      [
-      782.28,
-      1020.88
+      1288.44,
+      763.24
      ],
      [
-      775.44,
-      1027.72
+      1271.88,
+      769.24
      ],
      [
-      775.2,
-      1027.96
+      1270.56,
+      769.72
      ],
      [
-      774.84,
-      1028.2
+      1254.0,
+      775.72
      ],
      [
-      774.48,
-      1028.32
+      1250.04,
+      777.16
      ],
      [
-      774.24,
-      1028.32
+      1236.24,
+      782.2
      ],
      [
-      773.88,
-      1028.44
+      1234.92,
+      782.68
      ],
      [
-      763.08,
-      1028.44
+      1218.36,
+      788.68
      ],
      [
-      758.76,
-      1028.44
+      1217.04,
+      789.16
      ],
      [
-      746.88,
-      1028.44
+      1200.48,
+      795.16
      ],
      [
-      742.68,
-      1028.44
+      1199.16,
+      795.64
      ],
      [
-      725.04,
-      1028.44
+      1193.93,
+      797.55
      ],
      [
-      723.6,
-      1028.44
+      1182.6,
+      801.64
      ],
      [
-      706.08,
-      1028.44
+      1181.28,
+      802.12
      ],
      [
-      704.64,
-      1028.44
+      1167.48,
+      807.16
      ],
      [
-      687.12,
-      1028.44
+      1160.76,
+      809.68
      ],
      [
-      682.8,
-      1028.44
+      1149.6,
+      813.76
      ],
      [
-      670.92,
-      1028.44
+      1143.0,
+      816.16
      ],
      [
-      666.72,
-      1028.44
+      1131.72,
+      820.24
      ],
      [
-      649.08,
-      1028.44
+      1127.76,
+      821.68
      ],
      [
-      644.88,
-      1028.44
+      1111.2,
+      827.68
      ],
      [
-      632.88,
-      1028.44
+      1109.88,
+      828.16
      ],
      [
-      625.8,
-      1028.44
+      1093.44,
+      834.16
      ],
      [
-      613.92,
-      1028.44
+      1092.12,
+      834.64
      ],
      [
-      606.84,
-      1028.44
+      1075.56,
+      840.64
      ],
      [
-      594.96,
-      1028.44
+      1074.24,
+      841.12
      ],
      [
-      590.64,
-      1028.44
+      1057.68,
+      847.12
+     ],
+     [
+      1053.72,
+      848.56
+     ],
+     [
+      1039.8,
+      853.6
+     ],
+     [
+      1038.48,
+      854.08
+     ],
+     [
+      1024.68,
+      859.24
+     ],
+     [
+      1020.72,
+      860.68
+     ],
+     [
+      1004.16,
+      866.68
+     ],
+     [
+      1002.84,
+      867.16
+     ],
+     [
+      986.28,
+      873.16
+     ],
+     [
+      982.32,
+      874.6
+     ],
+     [
+      971.16,
+      878.68
+     ],
+     [
+      964.44,
+      881.08
+     ],
+     [
+      953.28,
+      885.16
+     ],
+     [
+      949.32,
+      886.6
+     ],
+     [
+      932.76,
+      892.6
+     ],
+     [
+      928.8,
+      894.04
+     ],
+     [
+      914.88,
+      899.08
+     ],
+     [
+      913.56,
+      899.56
+     ],
+     [
+      898.32,
+      905.2
+     ],
+     [
+      897.96,
+      905.32
+     ],
+     [
+      897.72,
+      905.44
+     ],
+     [
+      897.48,
+      905.68
+     ],
+     [
+      892.68,
+      910.48
+     ],
+     [
+      887.64,
+      915.52
+     ],
+     [
+      879.24,
+      923.92
+     ],
+     [
+      874.2,
+      928.96
+     ],
+     [
+      865.8,
+      937.36
      ]
     ]
    ],
    "source_path_ids": [
-    "path_0185d4f3833e",
-    "path_102269cd0d5c",
-    "path_163d6c6983dc",
-    "path_27054a80de2b",
-    "path_318c7d319f74",
-    "path_37a23fea687e",
-    "path_3d1acbe20270",
-    "path_40bd389b0b61",
-    "path_722d9b8e039a",
-    "path_78acc8248102",
-    "path_7d2fd1cd7210",
-    "path_86db7f46649c",
-    "path_894747add5da",
-    "path_8b52ce110aa8",
-    "path_8da3c143b854",
-    "path_8fc22b478d80",
-    "path_9a85d6847a6f",
-    "path_a410ea35d08c",
-    "path_add205211b81",
-    "path_b98346db9127",
-    "path_becdabdb6c1c",
-    "path_d9e0a322de66",
-    "path_eec1f5461316",
-    "path_f7c9675b9255"
+    "path_005453c770e0",
+    "path_04537371a7f6",
+    "path_055f94c422f1",
+    "path_0d8a8107d9e8",
+    "path_15894a3d2cd5",
+    "path_1c735d60d5b2",
+    "path_23e913e1ef6e",
+    "path_2c20f258f6b9",
+    "path_328075c14937",
+    "path_3533f62df030",
+    "path_3691c31068b2",
+    "path_3d2647bf311d",
+    "path_3db36243cc46",
+    "path_3fd143b56d85",
+    "path_4a6186c8cb76",
+    "path_4e389443bad3",
+    "path_581e7a4ccb53",
+    "path_5af07de29edd",
+    "path_60a4644147a3",
+    "path_65301acbb2d3",
+    "path_68b3722f2569",
+    "path_6b4a3d4c8f6d",
+    "path_702a625d14bd",
+    "path_73f62c8cfcc5",
+    "path_7a5dc3d96139",
+    "path_7f445694fac5",
+    "path_850584bf227a",
+    "path_8e7efc9dfcae",
+    "path_8f57c680b544",
+    "path_9750c79d5b32",
+    "path_9a562e4937ab",
+    "path_9b0829e59519",
+    "path_aadb8999bc86",
+    "path_ac0a38f71fb8",
+    "path_ac941d320fe9",
+    "path_ae0fcc7211f6",
+    "path_aea9b5f0bda5",
+    "path_b1f783d9dff1",
+    "path_b408dc5eb773",
+    "path_b896f5375902",
+    "path_bfd01d1a4b3f",
+    "path_c2ce9afb73bc",
+    "path_c9f26266b1a8",
+    "path_cd067b794446",
+    "path_ceb598e71567",
+    "path_d7b89446a557",
+    "path_d973fad0e482",
+    "path_db7ecc04b01e",
+    "path_ea2f83a9050d",
+    "path_f79625b2774a"
    ],
    "source_segments": [
-    "path_0185d4f3833e#0",
-    "path_102269cd0d5c#0",
-    "path_163d6c6983dc#0",
-    "path_27054a80de2b#0",
-    "path_318c7d319f74#0",
-    "path_37a23fea687e#0",
-    "path_3d1acbe20270#0",
-    "path_40bd389b0b61#0",
-    "path_722d9b8e039a#0",
-    "path_78acc8248102#0",
-    "path_7d2fd1cd7210#0",
-    "path_86db7f46649c#0",
-    "path_894747add5da#0",
-    "path_8b52ce110aa8#0",
-    "path_8da3c143b854#0",
-    "path_8fc22b478d80#0",
-    "path_9a85d6847a6f#0",
-    "path_a410ea35d08c#0",
-    "path_add205211b81#0",
-    "path_b98346db9127#0",
-    "path_becdabdb6c1c#0",
-    "path_d9e0a322de66#0",
-    "path_eec1f5461316#0",
-    "path_f7c9675b9255#0",
-    "path_f7c9675b9255#1",
-    "path_f7c9675b9255#2",
-    "path_f7c9675b9255#3",
-    "path_f7c9675b9255#4"
+    "path_005453c770e0#0",
+    "path_04537371a7f6#0",
+    "path_055f94c422f1#0",
+    "path_0d8a8107d9e8#0",
+    "path_15894a3d2cd5#0",
+    "path_1c735d60d5b2#0",
+    "path_23e913e1ef6e#0",
+    "path_2c20f258f6b9#0",
+    "path_328075c14937#0",
+    "path_3533f62df030#0",
+    "path_3691c31068b2#0",
+    "path_3d2647bf311d#0",
+    "path_3db36243cc46#0",
+    "path_3fd143b56d85#0",
+    "path_4a6186c8cb76#0",
+    "path_4e389443bad3#0",
+    "path_581e7a4ccb53#0",
+    "path_5af07de29edd#0",
+    "path_60a4644147a3#0",
+    "path_65301acbb2d3#0",
+    "path_68b3722f2569#0",
+    "path_6b4a3d4c8f6d#0",
+    "path_702a625d14bd#0",
+    "path_73f62c8cfcc5#0",
+    "path_7a5dc3d96139#0",
+    "path_7f445694fac5#0",
+    "path_850584bf227a#0",
+    "path_8e7efc9dfcae#0",
+    "path_8f57c680b544#0",
+    "path_9750c79d5b32#0",
+    "path_9a562e4937ab#0",
+    "path_9a562e4937ab#1",
+    "path_9a562e4937ab#2",
+    "path_9a562e4937ab#3",
+    "path_9b0829e59519#0",
+    "path_aadb8999bc86#0",
+    "path_ac0a38f71fb8#0",
+    "path_ac941d320fe9#0",
+    "path_ae0fcc7211f6#0",
+    "path_aea9b5f0bda5#0",
+    "path_b1f783d9dff1#0",
+    "path_b408dc5eb773#0",
+    "path_b896f5375902#0",
+    "path_bfd01d1a4b3f#0",
+    "path_c2ce9afb73bc#0",
+    "path_c9f26266b1a8#0",
+    "path_cd067b794446#0",
+    "path_ceb598e71567#0",
+    "path_d7b89446a557#0",
+    "path_d973fad0e482#0",
+    "path_db7ecc04b01e#0",
+    "path_ea2f83a9050d#0",
+    "path_f79625b2774a#0",
+    "path_60a4644147a3#0"
    ],
    "graph_nodes": [
-    4,
-    5,
-    14,
-    15,
-    18,
-    19,
-    30,
-    31,
-    40,
-    41,
-    56,
-    57,
-    62,
-    72,
-    73,
-    106,
-    107,
-    116,
-    137,
-    144,
-    146,
-    149,
-    179,
-    188,
-    205,
-    264,
-    265,
-    266,
-    267
+    2,
+    3,
+    6,
+    7,
+    8,
+    9,
+    12,
+    13,
+    16,
+    17,
+    20,
+    21,
+    26,
+    27,
+    32,
+    33,
+    44,
+    45,
+    49,
+    52,
+    53,
+    64,
+    65,
+    66,
+    71,
+    74,
+    75,
+    78,
+    79,
+    86,
+    87,
+    90,
+    93,
+    102,
+    105,
+    110,
+    122,
+    123,
+    134,
+    135,
+    150,
+    151,
+    153,
+    164,
+    165,
+    166,
+    167,
+    168,
+    171,
+    185,
+    190,
+    191,
+    192,
+    195,
+    219
    ],
-   "horizontal_pdf_units": 210.816,
-   "raw_pt": 151.276,
-   "bridged_gap_pt": 59.54,
-   "horizontal_m": 3.754,
+   "horizontal_pdf_units": 477.059,
+   "drawn_pdf_units": 477.059,
+   "raw_pt": 340.599,
+   "bridged_gap_pt": 136.46,
+   "horizontal_m": 8.495,
    "vertical_m": "UNKNOWN",
    "vertical_evidence": null,
-   "total_m": 3.754,
+   "total_m": 8.495,
    "evidence_state": "CONFIRMED",
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
   {
-   "physical_pipe_id": "pp_dd53170f138d",
+   "physical_pipe_id": "pp_d7dd581d8d5c",
    "page": 0,
-   "system": "VV01",
-   "designation": "VV01-X7-40-F60",
-   "identity": "VV01-X7-F60|DN40",
-   "dn": 40,
+   "system": "VS21",
+   "designation": "VS21-S13",
+   "identity": "VS21-S13|DN15",
+   "dn": 15,
    "supporting_anchors": [
-    "anc_e07ff0e92b99"
+    "anc_45a51f0cbce5"
    ],
-   "representation_family": "V-52B--FE-_Vxx-VV|s|w1.44",
+   "representation_family": "V-56B--FE-_VS2x-|s|w1.44",
    "geometry": [
     [
      [
-      1577.28,
-      669.52
+      1247.76,
+      223.96
      ],
      [
-      1566.12,
-      673.6
-     ],
-     [
-      1562.16,
-      675.04
-     ],
-     [
-      1545.6,
-      681.04
-     ],
-     [
-      1544.28,
-      681.52
-     ],
-     [
-      1530.48,
-      686.56
-     ],
-     [
-      1523.76,
-      688.96
-     ],
-     [
-      1512.6,
-      693.04
-     ],
-     [
-      1508.64,
-      694.48
-     ],
-     [
-      1492.08,
-      700.6
-     ],
-     [
-      1488.12,
-      702.04
-     ],
-     [
-      1474.2,
-      707.08
-     ],
-     [
-      1472.88,
-      707.56
-     ],
-     [
-      1456.32,
-      713.56
-     ],
-     [
-      1455.0,
-      714.04
-     ],
-     [
-      1441.2,
-      719.08
-     ],
-     [
-      1434.48,
-      721.48
-     ],
-     [
-      1423.32,
-      725.56
-     ],
-     [
-      1419.36,
-      727.0
-     ],
-     [
-      1402.8,
-      733.0
-     ],
-     [
-      1401.48,
-      733.48
-     ],
-     [
-      1384.92,
-      739.48
-     ],
-     [
-      1383.6,
-      739.96
-     ],
-     [
-      1369.8,
-      745.0
+      1249.44,
+      229.84
      ]
     ]
    ],
    "source_path_ids": [
-    "path_28313b77f5da",
-    "path_2a3d41f6e3cc",
-    "path_3593d4e1704a",
-    "path_3be1dbed4e3d",
-    "path_46ea08e05bde",
-    "path_5506ff5ccfd7",
-    "path_5f38c9fbf37b",
-    "path_620e640dcd7c",
-    "path_738e58556d52",
-    "path_76d35bad9d1c",
-    "path_770fa0254ca1",
-    "path_82a4952f8a5c",
-    "path_8bac4a8aa636",
-    "path_929dccd10f8a",
-    "path_92a7d9bd573b",
-    "path_b90f8a74b7e1",
-    "path_d628db3992e5",
-    "path_d875b31466c7",
-    "path_e02ed3e9ee4e",
-    "path_e3af34583256",
-    "path_ea531a91f12f",
-    "path_f82563bda744",
-    "path_f87070a0ba8c"
+    "path_21433d6f11c4"
    ],
    "source_segments": [
-    "path_28313b77f5da#0",
-    "path_2a3d41f6e3cc#0",
-    "path_3593d4e1704a#0",
-    "path_3be1dbed4e3d#0",
-    "path_46ea08e05bde#0",
-    "path_5506ff5ccfd7#0",
-    "path_5f38c9fbf37b#0",
-    "path_620e640dcd7c#0",
-    "path_738e58556d52#0",
-    "path_76d35bad9d1c#0",
-    "path_770fa0254ca1#0",
-    "path_82a4952f8a5c#0",
-    "path_8bac4a8aa636#0",
-    "path_929dccd10f8a#0",
-    "path_92a7d9bd573b#0",
-    "path_b90f8a74b7e1#0",
-    "path_d628db3992e5#0",
-    "path_d875b31466c7#0",
-    "path_e02ed3e9ee4e#0",
-    "path_e3af34583256#0",
-    "path_ea531a91f12f#0",
-    "path_f82563bda744#0",
-    "path_f87070a0ba8c#0"
+    "path_21433d6f11c4#0"
    ],
    "graph_nodes": [
-    28,
-    29,
-    32,
-    33,
-    42,
-    43,
-    44,
-    45,
-    48,
-    49,
-    68,
-    69,
-    80,
-    81,
-    85,
-    117,
-    118,
-    129,
-    130,
-    145,
-    178,
-    179,
-    207,
-    219
+    102,
+    103
    ],
-   "horizontal_pdf_units": 220.787,
-   "raw_pt": 158.337,
-   "bridged_gap_pt": 62.45,
-   "horizontal_m": 3.931,
+   "horizontal_pdf_units": 6.115,
+   "drawn_pdf_units": 6.115,
+   "raw_pt": 6.115,
+   "bridged_gap_pt": 0,
+   "horizontal_m": 0.109,
    "vertical_m": "UNKNOWN",
    "vertical_evidence": null,
-   "total_m": 3.931,
+   "total_m": 0.109,
    "evidence_state": "CONFIRMED",
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -5169,6 +5851,7 @@
     305
    ],
    "horizontal_pdf_units": 68.826,
+   "drawn_pdf_units": 68.826,
    "raw_pt": 51.856,
    "bridged_gap_pt": 16.97,
    "horizontal_m": 1.226,
@@ -5179,6 +5862,7 @@
    "evidence": [
     "chain_from_anchor"
    ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   },
@@ -5342,9 +6026,10 @@
     616,
     617,
     618,
-    723
+    725
    ],
    "horizontal_pdf_units": 32.88,
+   "drawn_pdf_units": 32.88,
    "raw_pt": 32.88,
    "bridged_gap_pt": 0,
    "horizontal_m": 0.585,
@@ -5356,249 +6041,7 @@
     "chain_from_anchor",
     "collinear_through_junction"
    ],
-   "ambiguity_reason": null,
-   "reasons": []
-  },
-  {
-   "physical_pipe_id": "pp_f4d82ec2e409",
-   "page": 0,
-   "system": "VV01",
-   "designation": "VV01-X7-40-F60",
-   "identity": "VV01-X7-F60|DN40",
-   "dn": 40,
-   "supporting_anchors": [
-    "anc_5265a1ed79a9"
-   ],
-   "representation_family": "V-52B--FE-_Vxx-VV|s|w1.44",
-   "geometry": [
-    [
-     [
-      1363.08,
-      747.52
-     ],
-     [
-      1349.28,
-      752.56
-     ],
-     [
-      1345.32,
-      754.0
-     ],
-     [
-      1334.04,
-      758.08
-     ],
-     [
-      1327.44,
-      760.48
-     ],
-     [
-      1316.28,
-      764.56
-     ],
-     [
-      1309.56,
-      766.96
-     ],
-     [
-      1298.4,
-      771.04
-     ],
-     [
-      1294.44,
-      772.48
-     ],
-     [
-      1280.52,
-      777.52
-     ],
-     [
-      1273.92,
-      779.92
-     ],
-     [
-      1260.0,
-      784.96
-     ],
-     [
-      1258.68,
-      785.44
-     ],
-     [
-      1244.88,
-      790.48
-     ],
-     [
-      1238.16,
-      793.0
-     ],
-     [
-      1227.0,
-      796.96
-     ],
-     [
-      1220.28,
-      799.48
-     ],
-     [
-      1209.12,
-      803.56
-     ],
-     [
-      1202.52,
-      805.96
-     ],
-     [
-      1191.24,
-      810.04
-     ],
-     [
-      1184.64,
-      812.44
-     ],
-     [
-      1173.48,
-      816.52
-     ],
-     [
-      1166.76,
-      818.92
-     ],
-     [
-      1155.6,
-      823.0
-     ],
-     [
-      1148.88,
-      825.4
-     ],
-     [
-      1137.72,
-      829.48
-     ],
-     [
-      1133.76,
-      830.92
-     ],
-     [
-      1119.84,
-      835.96
-     ],
-     [
-      1115.88,
-      837.4
-     ],
-     [
-      1102.08,
-      842.44
-     ]
-    ]
-   ],
-   "source_path_ids": [
-    "path_0a5245fb233a",
-    "path_11c10b84376e",
-    "path_183646f34064",
-    "path_2225aa9e80bd",
-    "path_2a2c11b102d2",
-    "path_2bfd32b10f32",
-    "path_553aa5ce6df9",
-    "path_6f694559ab3d",
-    "path_705de76db89a",
-    "path_740ce2d5d3a6",
-    "path_808454f74912",
-    "path_8bc281d57348",
-    "path_8edc5d90c282",
-    "path_8fe31c655c8a",
-    "path_9268708745bf",
-    "path_98ab976de441",
-    "path_a78ec6c05c7a",
-    "path_b4d93775ba0e",
-    "path_b6a21dbbb1eb",
-    "path_c81413dfd4ad",
-    "path_cb99c141bbb6",
-    "path_d12987949e4c",
-    "path_da5f6320d1c3",
-    "path_dbb41cd22aab",
-    "path_e13a6d635ff4",
-    "path_ee3760c1c585",
-    "path_f629bd3cb28d",
-    "path_fa1093036aae",
-    "path_fa467f9ce239"
-   ],
-   "source_segments": [
-    "path_0a5245fb233a#0",
-    "path_11c10b84376e#0",
-    "path_183646f34064#0",
-    "path_2225aa9e80bd#0",
-    "path_2a2c11b102d2#0",
-    "path_2bfd32b10f32#0",
-    "path_553aa5ce6df9#0",
-    "path_6f694559ab3d#0",
-    "path_705de76db89a#0",
-    "path_740ce2d5d3a6#0",
-    "path_808454f74912#0",
-    "path_8bc281d57348#0",
-    "path_8edc5d90c282#0",
-    "path_8fe31c655c8a#0",
-    "path_9268708745bf#0",
-    "path_98ab976de441#0",
-    "path_a78ec6c05c7a#0",
-    "path_b4d93775ba0e#0",
-    "path_b6a21dbbb1eb#0",
-    "path_c81413dfd4ad#0",
-    "path_cb99c141bbb6#0",
-    "path_d12987949e4c#0",
-    "path_da5f6320d1c3#0",
-    "path_dbb41cd22aab#0",
-    "path_e13a6d635ff4#0",
-    "path_ee3760c1c585#0",
-    "path_f629bd3cb28d#0",
-    "path_fa1093036aae#0",
-    "path_fa467f9ce239#0"
-   ],
-   "graph_nodes": [
-    4,
-    5,
-    12,
-    13,
-    16,
-    17,
-    22,
-    23,
-    30,
-    31,
-    35,
-    71,
-    100,
-    101,
-    110,
-    125,
-    132,
-    133,
-    136,
-    137,
-    138,
-    139,
-    143,
-    172,
-    188,
-    189,
-    195,
-    216,
-    223,
-    259
-   ],
-   "horizontal_pdf_units": 277.731,
-   "raw_pt": 198.311,
-   "bridged_gap_pt": 79.42,
-   "horizontal_m": 4.945,
-   "vertical_m": "UNKNOWN",
-   "vertical_evidence": null,
-   "total_m": 4.945,
-   "evidence_state": "CONFIRMED",
-   "evidence": [
-    "chain_from_anchor"
-   ],
+   "in_hatched_area_m": 0.0,
    "ambiguity_reason": null,
    "reasons": []
   }

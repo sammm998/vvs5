@@ -251,45 +251,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_07e413b6bd38",
-   "page": 0,
-   "block_id": "blk_c1242558018f",
-   "family": "straight|vertical|box_corner|plain-end|no-crossing-ticks|w0.72",
-   "source_paths": [
-    "path_c8663ac4eaa7"
-   ],
-   "segment_ids": [
-    "path_c8663ac4eaa7#1"
-   ],
-   "points": [
-    [
-     328.92,
-     591.88
-    ],
-    [
-     328.92,
-     580.48
-    ]
-   ],
-   "start": [
-    328.92,
-    591.88
-   ],
-   "end": [
-    328.92,
-    580.48
-   ],
-   "start_type": "box_corner",
-   "layer": "HUS A - GRUNDPLAN|K-------EK_",
-   "width": 0.72,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 11.4,
-   "end_marks": [],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_08716763a996",
    "page": 0,
    "block_id": "blk_a9d612fe94fb",
@@ -893,45 +854,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_15401932bd5b",
-   "page": 0,
-   "block_id": "blk_53cf253b3e53",
-   "family": "straight|horizontal|box_corner|plain-end|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_a5c1e3623080"
-   ],
-   "segment_ids": [
-    "path_a5c1e3623080#2"
-   ],
-   "points": [
-    [
-     174.96,
-     1367.68
-    ],
-    [
-     327.84,
-     1367.68
-    ]
-   ],
-   "start": [
-    174.96,
-    1367.68
-   ],
-   "end": [
-    327.84,
-    1367.68
-   ],
-   "start_type": "box_corner",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 152.88,
-   "end_marks": [],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_16996e6f266b",
    "page": 0,
    "block_id": "blk_2d3846a3dd7f",
@@ -1488,40 +1410,45 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_29d3e0d5be06",
+   "lid": "ldr_280e4a279dae",
    "page": 0,
-   "block_id": "blk_70957424e8bd",
-   "family": "straight|horizontal|bbox_corner|plain-end|no-crossing-ticks|w0.48",
+   "block_id": "blk_460d0e73e204",
+   "family": "bent|horizontal|underline_end|plain-end|no-crossing-ticks|w0.48",
    "source_paths": [
-    "path_74c143afbba9"
+    "path_660e9849f29e"
    ],
    "segment_ids": [
-    "path_74c143afbba9#2"
+    "path_660e9849f29e#1",
+    "path_660e9849f29e#0"
    ],
    "points": [
     [
-     944.88,
-     724.96
+     1313.4,
+     1094.08
     ],
     [
-     927.84,
-     724.96
+     1340.4,
+     996.04
+    ],
+    [
+     1346.04,
+     996.04
     ]
    ],
    "start": [
-    944.88,
-    724.96
+    1313.4,
+    1094.08
    ],
    "end": [
-    927.84,
-    724.96
+    1346.04,
+    996.04
    ],
-   "start_type": "bbox_corner",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
+   "start_type": "underline_end",
+   "layer": "268140-W-50-P-A-00|V-52B---T--V2--",
    "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 17.04,
+   "n_segments": 2,
+   "n_bends": 1,
+   "length": 107.33,
    "end_marks": [],
    "crossing_marks": [],
    "truncated_reason": null
@@ -1896,45 +1823,6 @@
    "end_marks": [
     "mark_4ccc636715aa"
    ],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
-   "lid": "ldr_3049f677d7d4",
-   "page": 0,
-   "block_id": "blk_e484601707d4",
-   "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_82c9fe4671c9"
-   ],
-   "segment_ids": [
-    "path_82c9fe4671c9#3"
-   ],
-   "points": [
-    [
-     488.64,
-     1553.08
-    ],
-    [
-     488.64,
-     1443.88
-    ]
-   ],
-   "start": [
-    488.64,
-    1553.08
-   ],
-   "end": [
-    488.64,
-    1443.88
-   ],
-   "start_type": "underline_end",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 109.2,
-   "end_marks": [],
    "crossing_marks": [],
    "truncated_reason": null
   },
@@ -2595,45 +2483,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_3dad94384322",
-   "page": 0,
-   "block_id": "blk_996084940e69",
-   "family": "straight|horizontal|bbox_corner|plain-end|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_650ebaa763d9"
-   ],
-   "segment_ids": [
-    "path_650ebaa763d9#0"
-   ],
-   "points": [
-    [
-     936.84,
-     1289.2
-    ],
-    [
-     953.76,
-     1289.2
-    ]
-   ],
-   "start": [
-    936.84,
-    1289.2
-   ],
-   "end": [
-    953.76,
-    1289.2
-   ],
-   "start_type": "bbox_corner",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 16.92,
-   "end_marks": [],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_3e0495e2c024",
    "page": 0,
    "block_id": "blk_2a36620b8fc7",
@@ -3289,45 +3138,6 @@
    "end_marks": [
     "mark_629f06a52521"
    ],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
-   "lid": "ldr_5e3c4b052671",
-   "page": 0,
-   "block_id": "blk_2038eb6702ef",
-   "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_a53656a03ef4"
-   ],
-   "segment_ids": [
-    "path_a53656a03ef4#3"
-   ],
-   "points": [
-    [
-     634.32,
-     1491.04
-    ],
-    [
-     634.32,
-     1444.24
-    ]
-   ],
-   "start": [
-    634.32,
-    1491.04
-   ],
-   "end": [
-    634.32,
-    1444.24
-   ],
-   "start_type": "underline_end",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 46.8,
-   "end_marks": [],
    "crossing_marks": [],
    "truncated_reason": null
   },
@@ -4242,6 +4052,50 @@
    "truncated_reason": null
   },
   {
+   "lid": "ldr_7a7a6d50eca8",
+   "page": 0,
+   "block_id": "blk_41517ef428b2",
+   "family": "bent|horizontal|underline_end|plain-end|no-crossing-ticks|w0.48",
+   "source_paths": [
+    "path_a2ab09d656a6"
+   ],
+   "segment_ids": [
+    "path_a2ab09d656a6#1",
+    "path_a2ab09d656a6#0"
+   ],
+   "points": [
+    [
+     993.48,
+     1263.76
+    ],
+    [
+     917.88,
+     1143.4
+    ],
+    [
+     914.76,
+     1143.4
+    ]
+   ],
+   "start": [
+    993.48,
+    1263.76
+   ],
+   "end": [
+    914.76,
+    1143.4
+   ],
+   "start_type": "underline_end",
+   "layer": "268140-W-50-P-A-00|V-52B---T--V1--",
+   "width": 0.48,
+   "n_segments": 2,
+   "n_bends": 1,
+   "length": 145.25,
+   "end_marks": [],
+   "crossing_marks": [],
+   "truncated_reason": null
+  },
+  {
    "lid": "ldr_7e2718370176",
    "page": 0,
    "block_id": "blk_f1c7e5fab05f",
@@ -4736,45 +4590,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_8c69fb0a2302",
-   "page": 0,
-   "block_id": "blk_2a36620b8fc7",
-   "family": "straight|horizontal|box_corner|plain-end|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_a1cd0c189562"
-   ],
-   "segment_ids": [
-    "path_a1cd0c189562#2"
-   ],
-   "points": [
-    [
-     1402.8,
-     839.68
-    ],
-    [
-     1415.04,
-     839.68
-    ]
-   ],
-   "start": [
-    1402.8,
-    839.68
-   ],
-   "end": [
-    1415.04,
-    839.68
-   ],
-   "start_type": "box_corner",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 12.24,
-   "end_marks": [],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_8f344d3c38b7",
    "page": 0,
    "block_id": "blk_abfd8fc00488",
@@ -5074,6 +4889,50 @@
    "end_marks": [
     "mark_1d99430737f4"
    ],
+   "crossing_marks": [],
+   "truncated_reason": null
+  },
+  {
+   "lid": "ldr_96c0f1c2b17a",
+   "page": 0,
+   "block_id": "blk_bfc48c2d3d87",
+   "family": "bent|horizontal|underline_end|plain-end|no-crossing-ticks|w0.48",
+   "source_paths": [
+    "path_d393d47f8731"
+   ],
+   "segment_ids": [
+    "path_d393d47f8731#1",
+    "path_d393d47f8731#0"
+   ],
+   "points": [
+    [
+     1395.12,
+     807.64
+    ],
+    [
+     1346.04,
+     828.76
+    ],
+    [
+     1340.4,
+     828.76
+    ]
+   ],
+   "start": [
+    1395.12,
+    807.64
+   ],
+   "end": [
+    1340.4,
+    828.76
+   ],
+   "start_type": "underline_end",
+   "layer": "268140-W-50-P-A-00|V-52B---T--V1--",
+   "width": 0.48,
+   "n_segments": 2,
+   "n_bends": 1,
+   "length": 59.07,
+   "end_marks": [],
    "crossing_marks": [],
    "truncated_reason": null
   },
@@ -5455,45 +5314,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_a19ba8102277",
-   "page": 0,
-   "block_id": "blk_0b4bca6c60c6",
-   "family": "straight|horizontal|box_corner|plain-end|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_9765569fc91f"
-   ],
-   "segment_ids": [
-    "path_9765569fc91f#2"
-   ],
-   "points": [
-    [
-     743.52,
-     972.04
-    ],
-    [
-     729.84,
-     972.04
-    ]
-   ],
-   "start": [
-    743.52,
-    972.04
-   ],
-   "end": [
-    729.84,
-    972.04
-   ],
-   "start_type": "box_corner",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 13.68,
-   "end_marks": [],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_a662a0c1fa22",
    "page": 0,
    "block_id": "blk_8643fa5524de",
@@ -5654,45 +5474,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_ad8eda323f94",
-   "page": 0,
-   "block_id": "blk_6ae3508c35ce",
-   "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_0a30804f2c47"
-   ],
-   "segment_ids": [
-    "path_0a30804f2c47#3"
-   ],
-   "points": [
-    [
-     1655.4,
-     418.84
-    ],
-    [
-     1655.4,
-     387.64
-    ]
-   ],
-   "start": [
-    1655.4,
-    418.84
-   ],
-   "end": [
-    1655.4,
-    387.64
-   ],
-   "start_type": "underline_end",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 31.2,
-   "end_marks": [],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_adaa356f2efd",
    "page": 0,
    "block_id": "blk_1b640b28672d",
@@ -5821,47 +5602,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_afa25b52af3b",
-   "page": 0,
-   "block_id": "blk_69aad0c51447",
-   "family": "straight|horizontal|box_corner|end-tick|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_860870845870"
-   ],
-   "segment_ids": [
-    "path_860870845870#0"
-   ],
-   "points": [
-    [
-     328.92,
-     1131.52
-    ],
-    [
-     445.92,
-     1131.52
-    ]
-   ],
-   "start": [
-    328.92,
-    1131.52
-   ],
-   "end": [
-    445.92,
-    1131.52
-   ],
-   "start_type": "box_corner",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 117.0,
-   "end_marks": [
-    "mark_606b76504fef"
-   ],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_b0e0756c21f3",
    "page": 0,
    "block_id": "blk_5f2fb228d4fc",
@@ -5981,6 +5721,50 @@
    "end_marks": [
     "mark_d1d0e28995e5"
    ],
+   "crossing_marks": [],
+   "truncated_reason": null
+  },
+  {
+   "lid": "ldr_b3a33008cd82",
+   "page": 0,
+   "block_id": "blk_1bd31f3b08e8",
+   "family": "bent|horizontal|underline_end|plain-end|no-crossing-ticks|w0.48",
+   "source_paths": [
+    "path_a11aca85d72f"
+   ],
+   "segment_ids": [
+    "path_a11aca85d72f#1",
+    "path_a11aca85d72f#0"
+   ],
+   "points": [
+    [
+     829.2,
+     1036.24
+    ],
+    [
+     904.2,
+     1075.24
+    ],
+    [
+     907.68,
+     1075.24
+    ]
+   ],
+   "start": [
+    829.2,
+    1036.24
+   ],
+   "end": [
+    907.68,
+    1075.24
+   ],
+   "start_type": "underline_end",
+   "layer": "268140-W-50-P-A-00|V-52B---T--V1--",
+   "width": 0.48,
+   "n_segments": 2,
+   "n_bends": 1,
+   "length": 88.01,
+   "end_marks": [],
    "crossing_marks": [],
    "truncated_reason": null
   },
@@ -6147,47 +5931,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_bb6d6d75f660",
-   "page": 0,
-   "block_id": "blk_43ec9b8ffa59",
-   "family": "straight|horizontal|bbox_corner|plain-end|crossing-ticks|w0.48",
-   "source_paths": [
-    "path_22cf5eef5956"
-   ],
-   "segment_ids": [
-    "path_22cf5eef5956#0"
-   ],
-   "points": [
-    [
-     920.64,
-     409.84
-    ],
-    [
-     945.12,
-     408.4
-    ]
-   ],
-   "start": [
-    920.64,
-    409.84
-   ],
-   "end": [
-    945.12,
-    408.4
-   ],
-   "start_type": "bbox_corner",
-   "layer": "268140-W-50-P-A-00|V-53BB--T--S3--",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 24.52,
-   "end_marks": [],
-   "crossing_marks": [
-    "mark_e245cfa2fcf5"
-   ],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_bd1300526d5c",
    "page": 0,
    "block_id": "blk_c9277be63596",
@@ -6307,6 +6050,50 @@
    "truncated_reason": null
   },
   {
+   "lid": "ldr_bf582f4f99bb",
+   "page": 0,
+   "block_id": "blk_a7edb00be639",
+   "family": "bent|vertical|underline_end|plain-end|no-crossing-ticks|w0.48",
+   "source_paths": [
+    "path_2d9210af02b2"
+   ],
+   "segment_ids": [
+    "path_2d9210af02b2#1",
+    "path_2d9210af02b2#0"
+   ],
+   "points": [
+    [
+     953.04,
+     858.4
+    ],
+    [
+     1080.24,
+     824.44
+    ],
+    [
+     1080.24,
+     817.36
+    ]
+   ],
+   "start": [
+    953.04,
+    858.4
+   ],
+   "end": [
+    1080.24,
+    817.36
+   ],
+   "start_type": "underline_end",
+   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
+   "width": 0.48,
+   "n_segments": 2,
+   "n_bends": 1,
+   "length": 138.74,
+   "end_marks": [],
+   "crossing_marks": [],
+   "truncated_reason": null
+  },
+  {
    "lid": "ldr_c1b12e75a168",
    "page": 0,
    "block_id": "blk_2a36620b8fc7",
@@ -6348,6 +6135,50 @@
    "truncated_reason": null
   },
   {
+   "lid": "ldr_c6795b0a9275",
+   "page": 0,
+   "block_id": "blk_4c40169d6474",
+   "family": "bent|horizontal|underline_end|plain-end|no-crossing-ticks|w0.48",
+   "source_paths": [
+    "path_341bc73e56e5"
+   ],
+   "segment_ids": [
+    "path_341bc73e56e5#1",
+    "path_341bc73e56e5#0"
+   ],
+   "points": [
+    [
+     1395.0,
+     746.32
+    ],
+    [
+     1346.04,
+     729.52
+    ],
+    [
+     1340.4,
+     729.52
+    ]
+   ],
+   "start": [
+    1395.0,
+    746.32
+   ],
+   "end": [
+    1340.4,
+    729.52
+   ],
+   "start_type": "underline_end",
+   "layer": "268140-W-50-P-A-00|V-52B---T--V2--",
+   "width": 0.48,
+   "n_segments": 2,
+   "n_bends": 1,
+   "length": 57.4,
+   "end_marks": [],
+   "crossing_marks": [],
+   "truncated_reason": null
+  },
+  {
    "lid": "ldr_c82370f046a7",
    "page": 0,
    "block_id": "blk_62f427a280b8",
@@ -6385,45 +6216,6 @@
    "end_marks": [
     "mark_e9ca0f0c6623"
    ],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
-   "lid": "ldr_c9e063f4f21a",
-   "page": 0,
-   "block_id": "blk_69aad0c51447",
-   "family": "straight|vertical|box_corner|plain-end|no-crossing-ticks|w0.72",
-   "source_paths": [
-    "path_e2a0b126009d"
-   ],
-   "segment_ids": [
-    "path_e2a0b126009d#0"
-   ],
-   "points": [
-    [
-     328.92,
-     1130.44
-    ],
-    [
-     328.92,
-     1144.6
-    ]
-   ],
-   "start": [
-    328.92,
-    1130.44
-   ],
-   "end": [
-    328.92,
-    1144.6
-   ],
-   "start_type": "box_corner",
-   "layer": "HUS A - GRUNDPLAN|K-------EK_",
-   "width": 0.72,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 14.16,
-   "end_marks": [],
    "crossing_marks": [],
    "truncated_reason": null
   },
@@ -6501,6 +6293,45 @@
    "n_segments": 1,
    "n_bends": 0,
    "length": 60.06,
+   "end_marks": [],
+   "crossing_marks": [],
+   "truncated_reason": null
+  },
+  {
+   "lid": "ldr_ccf527173b56",
+   "page": 0,
+   "block_id": "blk_c6ccd0c82769",
+   "family": "straight|horizontal|box_corner|plain-end|no-crossing-ticks|w0.48",
+   "source_paths": [
+    "path_650ebaa763d9"
+   ],
+   "segment_ids": [
+    "path_650ebaa763d9#0"
+   ],
+   "points": [
+    [
+     936.84,
+     1289.2
+    ],
+    [
+     953.76,
+     1289.2
+    ]
+   ],
+   "start": [
+    936.84,
+    1289.2
+   ],
+   "end": [
+    953.76,
+    1289.2
+   ],
+   "start_type": "box_corner",
+   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
+   "width": 0.48,
+   "n_segments": 1,
+   "n_bends": 0,
+   "length": 16.92,
    "end_marks": [],
    "crossing_marks": [],
    "truncated_reason": null
@@ -6998,45 +6829,6 @@
    "truncated_reason": null
   },
   {
-   "lid": "ldr_d7c5f69b13f6",
-   "page": 0,
-   "block_id": "blk_9dc3cff42e49",
-   "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.72",
-   "source_paths": [
-    "path_0ec05a24cf45"
-   ],
-   "segment_ids": [
-    "path_0ec05a24cf45#1"
-   ],
-   "points": [
-    [
-     328.92,
-     353.68
-    ],
-    [
-     328.92,
-     365.08
-    ]
-   ],
-   "start": [
-    328.92,
-    353.68
-   ],
-   "end": [
-    328.92,
-    365.08
-   ],
-   "start_type": "underline_end",
-   "layer": "HUS A - GRUNDPLAN|K-------EK_",
-   "width": 0.72,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 11.4,
-   "end_marks": [],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
    "lid": "ldr_d8731359ed8a",
    "page": 0,
    "block_id": "blk_916cf773058b",
@@ -7444,45 +7236,6 @@
    "n_segments": 2,
    "n_bends": 0,
    "length": 25.44,
-   "end_marks": [],
-   "crossing_marks": [],
-   "truncated_reason": null
-  },
-  {
-   "lid": "ldr_e06991d6cfa6",
-   "page": 0,
-   "block_id": "blk_8890698c54e5",
-   "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.48",
-   "source_paths": [
-    "path_2d9210af02b2"
-   ],
-   "segment_ids": [
-    "path_2d9210af02b2#1"
-   ],
-   "points": [
-    [
-     1080.24,
-     824.44
-    ],
-    [
-     953.04,
-     858.4
-    ]
-   ],
-   "start": [
-    1080.24,
-    824.44
-   ],
-   "end": [
-    953.04,
-    858.4
-   ],
-   "start_type": "bbox_corner",
-   "layer": "268140-W-50-P-A-00|V-5-----T1_-",
-   "width": 0.48,
-   "n_segments": 1,
-   "n_bends": 0,
-   "length": 131.66,
    "end_marks": [],
    "crossing_marks": [],
    "truncated_reason": null
@@ -8272,6 +8025,47 @@
    "length": 144.22,
    "end_marks": [
     "mark_faf99be56059"
+   ],
+   "crossing_marks": [],
+   "truncated_reason": null
+  },
+  {
+   "lid": "ldr_ff27c8d06af7",
+   "page": 0,
+   "block_id": "blk_c6ef04cc2b82",
+   "family": "straight|horizontal|underline_end|end-tick|no-crossing-ticks|w0.48",
+   "source_paths": [
+    "path_22cf5eef5956"
+   ],
+   "segment_ids": [
+    "path_22cf5eef5956#0"
+   ],
+   "points": [
+    [
+     945.12,
+     408.4
+    ],
+    [
+     920.64,
+     409.84
+    ]
+   ],
+   "start": [
+    945.12,
+    408.4
+   ],
+   "end": [
+    920.64,
+    409.84
+   ],
+   "start_type": "underline_end",
+   "layer": "268140-W-50-P-A-00|V-53BB--T--S3--",
+   "width": 0.48,
+   "n_segments": 1,
+   "n_bends": 0,
+   "length": 24.52,
+   "end_marks": [
+    "mark_e245cfa2fcf5"
    ],
    "crossing_marks": [],
    "truncated_reason": null

@@ -425,17 +425,6 @@
   },
   {
    "kind": "missing_dn",
-   "text": "S1-P2",
-   "bbox": [
-    303.4190979003906,
-    368.9200439453125,
-    326.03997802734375,
-    375.4000244140625
-   ],
-   "id": "des_352dc2e74184"
-  },
-  {
-   "kind": "missing_dn",
    "text": "-25O",
    "bbox": [
     1199.8800048828125,
@@ -499,17 +488,6 @@
     1330.719970703125
    ],
    "id": "des_ba77be147843"
-  },
-  {
-   "kind": "missing_dn",
-   "text": "C0C",
-   "bbox": [
-    1038.9600219726562,
-    946.8400115966797,
-    1054.8599853515625,
-    958.7200317382812
-   ],
-   "id": "des_c534ec443873"
   },
   {
    "kind": "missing_dn",
@@ -623,28 +601,6 @@
   },
   {
    "kind": "missing_leader",
-   "text": "VV1-X31",
-   "bbox": [
-    1437.8399658203125,
-    737.3200073242188,
-    1471.7999267578125,
-    743.800048828125
-   ],
-   "id": "des_10ea5db03a86"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "KV2-X31",
-   "bbox": [
-    1437.1199951171875,
-    798.5200805664062,
-    1471.919921875,
-    805.0
-   ],
-   "id": "des_11a90ccb445b"
-  },
-  {
-   "kind": "missing_leader",
    "text": "V5-INSTALLATIONER",
    "bbox": [
     2051.0400390625,
@@ -678,17 +634,6 @@
   },
   {
    "kind": "missing_leader",
-   "text": "KV2-X31",
-   "bbox": [
-    1035.5999755859375,
-    1254.64013671875,
-    1070.280029296875,
-    1261.1199951171875
-   ],
-   "id": "des_5a49db8f44d8"
-  },
-  {
-   "kind": "missing_leader",
    "text": "S3-R8",
    "bbox": [
     674.3390502929688,
@@ -711,28 +656,6 @@
   },
   {
    "kind": "missing_leader",
-   "text": "VV1-X31",
-   "bbox": [
-    1276.679931640625,
-    1085.080078125,
-    1310.6400146484375,
-    1091.43994140625
-   ],
-   "id": "des_6a54f3cc7483"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "VV1-X31",
-   "bbox": [
-    752.3999633789062,
-    1027.239990234375,
-    786.3599853515625,
-    1033.719970703125
-   ],
-   "id": "des_70104159406d"
-  },
-  {
-   "kind": "missing_leader",
    "text": "O5-O7",
    "bbox": [
     2276.7598876953125,
@@ -741,17 +664,6 @@
     1483.0
    ],
    "id": "des_721c28835837"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "S3-R8-110",
-   "bbox": [
-    947.8190307617188,
-    387.760009765625,
-    988.9199676513672,
-    394.239990234375
-   ],
-   "id": "des_79f4efd44bea"
   },
   {
    "kind": "missing_leader",
@@ -799,39 +711,6 @@
   },
   {
    "kind": "missing_leader",
-   "text": "VV1-X31",
-   "bbox": [
-    906.47998046875,
-    849.52001953125,
-    950.3999633789062,
-    855.8800048828125
-   ],
-   "id": "des_9886e58cab35"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "KV2-X31",
-   "bbox": [
-    791.760009765625,
-    1027.239990234375,
-    826.5599975585938,
-    1033.719970703125
-   ],
-   "id": "des_9cb51745e296"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "KV2-X31",
-   "bbox": [
-    1236.47998046875,
-    1084.9600830078125,
-    1271.280029296875,
-    1091.43994140625
-   ],
-   "id": "des_9f0b1d928534"
-  },
-  {
-   "kind": "missing_leader",
    "text": "S1-P2-110",
    "bbox": [
     904.8590698242188,
@@ -840,17 +719,6 @@
     228.1600341796875
    ],
    "id": "des_a8066475ddb2"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "C0C",
-   "bbox": [
-    1038.9600219726562,
-    946.8400115966797,
-    1054.8599853515625,
-    958.7200317382812
-   ],
-   "id": "des_c534ec443873"
   },
   {
    "kind": "missing_leader",
@@ -884,17 +752,6 @@
     905.2000122070312
    ],
    "id": "des_d4172a68cf86"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "KV2-X31",
-   "bbox": [
-    1397.6400146484375,
-    737.3200073242188,
-    1432.43994140625,
-    743.800048828125
-   ],
-   "id": "des_d93ab648bd99"
   },
   {
    "kind": "missing_leader",
@@ -963,28 +820,6 @@
    "id": "des_f7dfb81e6cef"
   },
   {
-   "kind": "missing_leader",
-   "text": "VV1-X31",
-   "bbox": [
-    996.239990234375,
-    1254.760009765625,
-    1030.199951171875,
-    1261.1199951171875
-   ],
-   "id": "des_fa73298dab05"
-  },
-  {
-   "kind": "missing_leader",
-   "text": "VV1-X31",
-   "bbox": [
-    1397.760009765625,
-    798.6400146484375,
-    1431.8399658203125,
-    805.0
-   ],
-   "id": "des_fba5230ce2bc"
-  },
-  {
    "kind": "missing_pipe_attachment",
    "text": "S1-P2-75",
    "reason": "leader_endpoint_touches_no_pipe_geometry",
@@ -998,15 +833,27 @@
   },
   {
    "kind": "missing_pipe_attachment",
-   "text": "B8-GOLVRÄNNA",
-   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "text": "VV1-X31",
+   "reason": "multi_row_no_compatible_layer_group",
    "bbox": [
-    629.3200073242188,
-    1439.239990234375,
-    639.3200073242188,
-    1449.239990234375
+    1335.4000244140625,
+    724.52001953125,
+    1345.4000244140625,
+    734.52001953125
    ],
-   "id": "anc_0790435e4542"
+   "id": "anc_07d83fcbf4cf"
+  },
+  {
+   "kind": "ambiguous_pipe_attachment",
+   "text": "S3-R8-110",
+   "reason": "system_conflict:layer_matches_KV1_not_S3",
+   "bbox": [
+    1085.3199462890625,
+    812.3600463867188,
+    1095.3199462890625,
+    822.3600463867188
+   ],
+   "id": "anc_11ef37cf1cf0"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -1118,15 +965,15 @@
   },
   {
    "kind": "missing_pipe_attachment",
-   "text": "KV2-X31-16",
+   "text": "KV2-X31",
    "reason": "multi_row_no_compatible_layer_group",
    "bbox": [
-    978.0399780273438,
-    1002.3200073242188,
-    988.0399780273438,
-    1012.3200073242188
+    1341.0399169921875,
+    991.0400390625,
+    1351.0399169921875,
+    1001.0400390625
    ],
-   "id": "anc_8c0d79d97458"
+   "id": "anc_895edbc0b893"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -1139,18 +986,6 @@
     387.0
    ],
    "id": "anc_8ffbdd0cb6f8"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "VV1-X31-16",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    994.8399658203125,
-    1003.0400390625,
-    1004.8399658203125,
-    1013.0400390625
-   ],
-   "id": "anc_9835b14f176f"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -1178,39 +1013,15 @@
   },
   {
    "kind": "missing_pipe_attachment",
-   "text": "I251I",
-   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "text": "KV2-X31",
+   "reason": "multi_row_no_compatible_layer_group",
    "bbox": [
-    629.3200073242188,
-    1439.239990234375,
-    639.3200073242188,
-    1449.239990234375
+    1335.4000244140625,
+    823.760009765625,
+    1345.4000244140625,
+    833.760009765625
    ],
-   "id": "anc_a86e1410943a"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "SOOX300",
-   "reason": "leader_endpoint_touches_no_pipe_geometry",
-   "bbox": [
-    629.3200073242188,
-    1439.239990234375,
-    639.3200073242188,
-    1449.239990234375
-   ],
-   "id": "anc_aba835766025"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "S3-P2",
-   "reason": "leader_endpoint_touches_no_pipe_geometry",
-   "bbox": [
-    787.1199951171875,
-    317.719970703125,
-    797.1199951171875,
-    327.719970703125
-   ],
-   "id": "anc_abaefa2fdbd5"
+   "id": "anc_ac6bf45c6a25"
   },
   {
    "kind": "missing_pipe_attachment",
@@ -1250,18 +1061,6 @@
   },
   {
    "kind": "missing_pipe_attachment",
-   "text": "KV2-X31-16",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    994.8399658203125,
-    1003.0400390625,
-    1004.8399658203125,
-    1013.0400390625
-   ],
-   "id": "anc_eecd4bb825d0"
-  },
-  {
-   "kind": "missing_pipe_attachment",
    "text": "S3-R8",
    "reason": "leader_endpoint_touches_no_pipe_geometry",
    "bbox": [
@@ -1271,44 +1070,6 @@
     727.2000122070312
    ],
    "id": "anc_ef2f78250bb8"
-  },
-  {
-   "kind": "missing_pipe_attachment",
-   "text": "VV1-X31-16",
-   "reason": "multi_row_no_compatible_layer_group",
-   "bbox": [
-    978.0399780273438,
-    1002.3200073242188,
-    988.0399780273438,
-    1012.3200073242188
-   ],
-   "id": "anc_f751554947b4"
-  },
-  {
-   "kind": "unowned_geometry",
-   "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44",
-   "count": 166,
-   "length_pt": 1275.9,
-   "bbox": [
-    1235.679931640625,
-    791.239990234375,
-    1262.5999755859375,
-    801.239990234375
-   ],
-   "id": "unowned:268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44"
-  },
-  {
-   "kind": "unowned_geometry",
-   "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44",
-   "count": 173,
-   "length_pt": 1340.9,
-   "bbox": [
-    978.0399780273438,
-    953.8400268554688,
-    988.0399780273438,
-    980.8800048828125
-   ],
-   "id": "unowned:268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44"
   },
   {
    "kind": "branch_conflict",
@@ -1334,19 +1095,6 @@
     960.9600219726562
    ],
    "id": "unowned:268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04"
-  },
-  {
-   "kind": "unowned_geometry",
-   "family": "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44",
-   "count": 38,
-   "length_pt": 475.0,
-   "bbox": [
-    1283.679931640625,
-    917.8400268554688,
-    1310.719970703125,
-    927.8400268554688
-   ],
-   "id": "unowned:268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44"
   }
  ]
 }

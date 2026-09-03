@@ -1,22 +1,22 @@
 {
- "pdf_extraction_ms": 890,
+ "pdf_extraction_ms": 848,
  "drawing_profile_ms": 82,
- "glyph_text_reconstruction_ms": 7983,
- "designation_dn_ms": 139,
- "leader_discovery_and_pipe_attachment_ms": 1445,
- "topology_ms": 0,
- "physical_pipe_reconstruction_ms": 11,
- "measurement_ms": 16,
- "overlays_ms": 576,
+ "glyph_text_reconstruction_ms": 7747,
+ "designation_dn_ms": 134,
+ "leader_discovery_and_pipe_attachment_ms": 1434,
+ "topology_ms": 96,
+ "physical_pipe_reconstruction_ms": 20,
+ "measurement_ms": 322,
+ "overlays_ms": 626,
  "artifacts_ms": 0,
- "total_seconds": 36.53,
+ "total_seconds": 38.41,
  "counts": {
   "raw_vector_objects": 13099,
   "raw_segments": 48081,
-  "glyphs": 3034,
+  "glyphs": 3035,
   "glyph_families": 807,
-  "pipe_primitives": 1517,
-  "graph_nodes": 1699,
-  "graph_edges": 1517
+  "pipe_primitives": 1531,
+  "graph_nodes": 1713,
+  "graph_edges": 1531
  }
 }

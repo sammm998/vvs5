@@ -11,10 +11,11 @@ from typing import Any, Callable
 
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
-from .geometry.core import dist
+from .geometry.core import GridIndex, dist
 from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family, family_key,
                                    split_prims_at_points)
 from .profile.layers import compute_layer_stats
+from .profile.hatch import HatchFamily, discover_hatch, inside_hatch
 from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, extract_designations, free_segments, merge_lines)
 from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, leader_contacts, resolve_block, system_layer_match)
 from .semantics.leaders import Leader, annotation_layers, discover_leaders, leader_family_report
@@ -52,6 +53,8 @@ class PageAnalysis:
     quantities: list[dict] = field(default_factory=list)
     elevations: dict[str, list[dict]] = field(default_factory=dict)
     timings: dict[str, float] = field(default_factory=dict)
+    hatch_families: list[HatchFamily] = field(default_factory=list)
+    risers: dict[str, list[dict]] = field(default_factory=dict)     # identity key -> riser symbols
 
 
 def _t(timings: dict, key: str, t0: float) -> float:
@@ -206,21 +209,134 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
         progress("MEASURING")
     scale = discover_scale(page, lines)
     elevations = _elevations(blocks, anchors)
-    measures = measure_pipes(ownership, scale, elevations)
+    hatch = discover_hatch(page, set(pipe_families))
+    hatched_pt: dict[str, float] = {}
+    if hatch:
+        for pp in ownership.pipes:
+            g = graphs[pp.family]
+            hatched_pt[pp.physical_pipe_id] = sum(g.prims[pid].seg.length for pid in pp.prim_ids if inside_hatch(hatch, *g.prims[pid].seg.mid) is not None)
+    measures = measure_pipes(ownership, scale, elevations, hatched_pt)
+    risers = _riser_symbols(page, ann_layers, glyph_pids, graphs, ownership, anchors, identities)
     amb_pt: Counter = Counter()
     for fk, g in graphs.items():
         for pid, st in ownership.prim_states[fk].items():
             if st.state == "AMBIGUOUS":
                 for ident in st.candidates:
                     amb_pt[ident.key] += g.prims[pid].seg.length / max(len(st.candidates), 1)
-    quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, ownership.riser_labels)
+    quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
     return PageAnalysis(page=page, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
                         designations=designations, grammar=grammar, ann_layers=ann_layers, leaders=leaders,
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,
-                        timings=timings)
+                        timings=timings, hatch_families=hatch, risers=risers)
+
+
+def _riser_symbols(page: RawPage, ann_layers, glyph_pids, graphs, ownership, anchors, identities) -> dict[str, list[dict]]:
+    """Risers (vertical pipes) are drawn as closed marks (circle / circle-cross) that a pipe run ends at or that
+    a label points at. Concentric marks form one riser. The riser's designation is the label pointing at it
+    (a DN-less label takes the DN of the pipe at the mark), otherwise the designation of the pipe ending there."""
+    from .geometry.core import dist as _dist
+    from .pipes.ownership import _merge_identity, _seed_prims
+    gidx = GeometryIndex(page, set(ann_layers) if ann_layers else set(), glyph_pids)
+    syms = [s for s in gidx.symbols if 1.5 <= max(s.bbox[2] - s.bbox[0], s.bbox[3] - s.bbox[1]) <= 14.0 and f"{s.layer}|s|w{s.width:.2f}" not in graphs]
+    groups: list[dict] = []
+    for s in sorted(syms, key=lambda s: s.pid):
+        cx, cy = (s.bbox[0] + s.bbox[2]) / 2, (s.bbox[1] + s.bbox[3]) / 2
+        size = max(s.bbox[2] - s.bbox[0], s.bbox[3] - s.bbox[1])
+        for grp in groups:
+            if _dist((cx, cy), grp["center"]) <= 1.0:
+                grp["pids"].append(s.pid); grp["size"] = max(grp["size"], size)
+                break
+        else:
+            groups.append({"center": (cx, cy), "size": size, "pids": [s.pid]})
+    by_pid = {pid: i for i, grp in enumerate(groups) for pid in grp["pids"]}
+    layer_of = {}
+    for s in syms:
+        layer_of[s.pid] = s.layer
+    for grp in groups:
+        grp["fam"] = (min(layer_of[p] for p in grp["pids"]), round(grp["size"]))
+    gi_idx = GridIndex(cell=12.0)
+    for i, grp in enumerate(groups):
+        cx, cy = grp["center"]; r = grp["size"] / 2 + 1.5
+        gi_idx.insert(i, (cx - r, cy - r, cx + r, cy + r))
+
+    def stack_of(i: int) -> list[int]:
+        """Marks of the same family touching / adjacent to mark i (a stack of end markers)."""
+        grp = groups[i]
+        out_ids, frontier = {i}, [i]
+        while frontier:
+            j = frontier.pop()
+            cj = groups[j]["center"]; sz = groups[j]["size"]
+            for k in gi_idx.query_point(cj[0], cj[1], 1.6 * sz):
+                if k in out_ids or groups[k]["fam"] != grp["fam"]:
+                    continue
+                if _dist(cj, groups[k]["center"]) <= 1.5 * max(sz, groups[k]["size"]):
+                    out_ids.add(k); frontier.append(k)
+        return sorted(out_ids)
+
+    out: dict[str, list[dict]] = defaultdict(list)
+    counted: set[int] = set()
+    riser_fams: set = set()
+    # (a) labels pointing at a mark; a count prefix ("5x") names the number of risers of the mark's stack
+    for a in sorted(anchors, key=lambda a: a.anchor_id):
+        if a.anchor_id not in identities or not a.contacts or not all(c.kind == "via_symbol" for c in a.contacts):
+            continue
+        gi = next((by_pid[c.via] for c in a.contacts if c.via in by_pid), None)
+        if gi is None or gi in counted:
+            continue
+        ident = identities[a.anchor_id]
+        if ident.dn is None:
+            for fk, lst in _seed_prims(a, graphs).items():
+                for pid, _, _ in lst:
+                    st = ownership.prim_states[fk][pid]
+                    if st.state == "CONFIRMED" and st.identity is not None and _merge_identity([ident, st.identity]) is not None:
+                        ident = _merge_identity([ident, st.identity])
+                        break
+        members = stack_of(gi) if a.multiplier > 1 else [gi]
+        counted.update(members)
+        riser_fams.add(groups[gi]["fam"])
+        n = max(a.multiplier, 1)
+        for k in range(n):
+            grp = groups[members[min(k, len(members) - 1)]]
+            out[ident.key].append({"designation": ident.display, "dn": ident.dn, "point": [round(v, 2) for v in grp["center"]],
+                                   "symbol": grp["pids"][0], "source": "label", "anchor_id": a.anchor_id, "count_prefix": a.multiplier})
+    # (b) unlabeled marks of a riser mark family (established by the labels above) sitting at the end of, or on,
+    #     a confirmed pipe: risers of that pipe's designation. Tiny marks (< 4 pt: end dots, connection points)
+    #     count only when a label points at them.
+    from .geometry.core import point_seg_distance as _psd
+    prim_idx: dict[str, GridIndex] = {}
+    for fk, g in graphs.items():
+        idx = GridIndex(cell=12.0)
+        for pid, q in g.prims.items():
+            idx.insert(pid, q.seg.bbox())
+        prim_idx[fk] = idx
+    for i, grp in enumerate(groups):
+        if i in counted or grp["fam"] not in riser_fams or grp["size"] < 4.0:
+            continue
+        cx, cy = grp["center"]; R = grp["size"] / 2 + 1.5
+        best = None
+        for fk in sorted(graphs):
+            g = graphs[fk]
+            for pid in sorted(set(prim_idx[fk].query_point(cx, cy, R))):
+                q = g.prims[pid]
+                d, t = _psd(cx, cy, q.seg)
+                if d > R:
+                    continue
+                st = ownership.prim_states[fk][pid]
+                if st.state != "CONFIRMED" or st.identity is None:
+                    continue
+                at_end = any(_dist((n.x, n.y), (cx, cy)) <= R and n.degree == 1 for n in (g.nodes[k] for k in g.prim_nodes[pid]))
+                if best is None or d < best[0]:
+                    best = (d, st.identity, fk, "pipe_end" if at_end else "on_pipe")
+        if best is None:
+            continue
+        counted.add(i)
+        _, ident, fk, src = best
+        out[ident.key].append({"designation": ident.display, "dn": ident.dn, "point": [round(cx, 2), round(cy, 2)],
+                               "symbol": grp["pids"][0], "source": src, "family": fk})
+    return dict(out)
 
 
 def _rows_owning_leader(block: AnnotationBlock, rows: list[Designation], ld: Leader) -> list[Designation]:

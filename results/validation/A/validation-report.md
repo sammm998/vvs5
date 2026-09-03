@@ -74,6 +74,43 @@ Fix follows from W1.
 
 The facit assigns 2.8 m per riser symbol. The drawing has no riser elevations, so the engine reports vertical as UNKNOWN with reason NO_ELEVATION_EVIDENCE. This is by design and stays; the report exposes riser count so a user-set floor height can be applied in the application.
 
+## Post-validation generic fixes (results/A regenerated; blind artifacts untouched)
+
+The failure classes above were addressed with drawing-independent rules (tick marks as drawn DN boundaries, symbol-
+attached labels as weak riser labels, junction DN flowing into dead-end stubs, leader start conflicts resolved by
+outward direction, end-marker clusters for bundles, abbreviated layer tokens, single-system layers, hatched wall
+areas reported separately, riser counting). Validation of the regenerated artifacts
+(validation-post_validation_fixes.json):
+
+- Designations: 9 / 9 correct (VV1-X31-16 found), no false positives, DN correct for all
+- Pipe attachments at the contact point: correct 96, wrong 17 (riser-label stubs where the takeoff assigns the
+  main DN, see below), not in facit 1
+- Physical pipe match per reference measurement (78): full 64, partial 2, miss 12 (was 39 / 6 / 33)
+- Length audit: correctly owned 171.6 m (was 92.3), wrongly owned 7.4 m (was 33.0), missed 11.3 m (was 105.1),
+  ambiguous near reference 3.0 m, unowned near reference 0.5 m (was 54.2)
+- Horizontal total 209.9 m + 2.95 m ambiguous vs reference 213.7 m; a further 12.3 m of drawn pipe runs inside the
+  hatched wall areas and is reported separately (the reference excludes it)
+- Risers: 55 counted vs 55 in the reference (150.8 m / 2.8 m per floor); vertical metres need a floor height that
+  the drawing does not carry - the application computes them from a user-entered floor height
+
+| Beteckning | ref H m | ours H m | in hatch m | ambiguous m | ref risers | ours risers |
+|---|---|---|---|---|---|---|
+| KV1-X31-16 | 17.4 | 17.26 | 3.52 | 0 | 0 | 2 |
+| KV2-X31-16 | 33.4 | 33.42 | 0 | 0 | 5 | 7 |
+| S1-P2-110 | 9.8 | 10.28 | 2.66 | 0 | 1 | 2 |
+| S1-P2-75 | 4.7 | 4.20 | 4.66 | 0 | 4 | 2 |
+| S3-P2-160 | 16.9 | 16.99 | 0 | 0 | 0 | 1 |
+| S3-R8-110 | 59.8 | 56.19 | 1.44 | 0.62 | 5 | 7 |
+| S3-R8-160 | 16.3 | 15.62 | 0 | 1.05 | 0 | 0 |
+| S3-R8-75 | 21.3 | 21.69 | 0 | 1.28 | 35 | 28 |
+| VV1-X31-16 | 34.1 | 34.24 | 0 | 0 | 5 | 6 |
+
+Remaining differences: 5.2 m of stubs owned as S3-R8-75 from the first tick after the junction where the takeoff
+keeps 110 up to the last tick before the riser (label reading vs takeoff convention); 1.7 m of ambiguous DN
+boundary on the S3-R8-160/110 run where two ticks compete; riser counts per system differ where labelled end marks
+of the tappvatten bundles are counted as risers (KV2/VV1 7 vs 5) and where seven S3-R8-75 riser marks sit on short
+stubs the engine leaves unowned.
+
 ## Files
 
 - validation-blind_frozen_87c37c1.json: blind frozen artifacts vs facit

@@ -1,38 +1,39 @@
 # Analysis report: DRAWING_A
 
 ## Status
-- designations: 143 (with DN 122)
-- actual CAD leaders: 201 (from designation blocks: 147)
-- pipe attachments: verified 103, ambiguous 0, none 25
-- physical pipes: 37
+- designations: 142 (with DN 123)
+- actual CAD leaders: 195 (from designation blocks: 150)
+- pipe attachments: verified 114, ambiguous 1, none 20
+- physical pipes: 45
 - scale: VERIFIED (scale_text_and_scale_bar_agree)
-- reconciliation: VALID (raw 10782.459 pt = confirmed 7498.154 + ambiguous 165.723 + unowned 3118.582)
+- reconciliation: VALID (raw 10782.459 pt = confirmed 10589.976 + ambiguous 165.723 + unowned 26.76)
 - determinism: PASS
 - contamination: PASS
-- runtime: 50.9 s
+- runtime: 53.2 s
 
 ## Quantities (confirmed only; ambiguous reported separately)
 | Beteckning | DN | Antal | Horisontellt m | Vertikalt m | Totalt m | Tvetydigt m | Status |
 |---|---|---|---|---|---|---|---|
-| KV1-X31 | 16 | 1 | 10.36 | UNKNOWN | 10.36 | 0.00 | CONFIRMED |
-| KV2-X31 | 16 | 1 | 6.30 | UNKNOWN | 6.30 | 0.00 | CONFIRMED |
-| S1-P2-110 | 110 | 1 | 8.71 | 0.04 | 8.75 | 0.00 | CONFIRMED |
-| S1-P2 | 75 | 5 | 10.45 | UNKNOWN | 10.45 | 0.00 | CONFIRMED |
-| S1-P2 | ? | 1 | 2.72 | UNKNOWN | 2.72 | 0.00 | CONFIRMED |
+| KV1-X31 | 16 | 2 | 17.26 | UNKNOWN | 17.26 | 0.00 | CONFIRMED |
+| KV2-X31 | 16 | 5 | 33.42 | UNKNOWN | 33.42 | 0.00 | CONFIRMED |
+| S1-P2-110 | 110 | 1 | 10.28 | 0.09 | 10.37 | 0.00 | CONFIRMED |
+| S1-P2 | 75 | 4 | 4.20 | UNKNOWN | 4.20 | 0.00 | CONFIRMED |
 | S3-P2-160 | 160 | 1 | 16.99 | UNKNOWN | 16.99 | 0.00 | CONFIRMED |
-| S3-R8-110 | 110 | 6 | 50.73 | 0.25 | 50.98 | 1.15 | CONFIRMED |
-| S3-R8-160 | 160 | 1 | 11.14 | 0.09 | 11.23 | 0.53 | CONFIRMED |
-| S3-R8-75 | 75 | 20 | 39.27 | 0.12 | 39.39 | 1.28 | CONFIRMED |
+| S3-R8-110 | 110 | 5 | 56.19 | 0.41 | 56.60 | 0.62 | CONFIRMED |
+| S3-R8-160 | 160 | 1 | 15.62 | 0.15 | 15.77 | 1.05 | CONFIRMED |
+| S3-R8 | 75 | 21 | 21.69 | 0.18 | 21.87 | 1.28 | CONFIRMED |
+| VV1-X31 | 16 | 5 | 34.24 | UNKNOWN | 34.24 | 0.00 | CONFIRMED |
 
-Totals: confirmed horizontal 156.66 m, ambiguous 2.95 m, unowned pipe geometry 55.53 m
+Totals: confirmed horizontal 209.89 m, ambiguous 2.95 m, unowned pipe geometry 0.48 m
 
 ## Unresolved
 - unknown_glyph: 26
-- missing_dn: 21
-- missing_leader: 33
-- missing_pipe_attachment: 25
-- unowned_geometry: 4
+- missing_dn: 19
+- missing_leader: 20
+- missing_pipe_attachment: 20
+- ambiguous_pipe_attachment: 1
 - branch_conflict: 1
+- unowned_geometry: 1
 
 ## Artifacts
 - ambiguous-overlay.pdf

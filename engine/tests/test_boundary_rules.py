@@ -107,3 +107,30 @@ def test_leader_from_shared_frame_corner_goes_to_block_it_leaves(tmp_path):
     assert {a.designation for a in ver} == {"VS21-S13-15-F50"}
     starts = sorted(tuple(round(v) for v in a.endpoint) for a in ver)
     assert starts == [(300, 400), (640, 400)]
+
+
+def test_hatched_area_is_reported_separately(tmp_path):
+    """A pipe whose east half runs through a hatched area (regularly spaced 45-degree strokes) is measured in
+    full, and the part inside the hatch is reported separately."""
+    path = os.path.join(tmp_path, "hatch.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    make_dashed_line(shape, (100, 300), (700, 300))
+    _label(page, shape, 120, 200, "S3-R8-110", leader_to=(200, 300))
+    _label(page, shape, 300, 200, "S3-R8-110", leader_to=(380, 300))
+    # hatch: 45-degree strokes every 9 pt covering x 400..700, y 150..450
+    x = 400 - 300
+    while x < 700 + 300:
+        x0, y0 = max(400, x), 450 - (max(400, x) - x)
+        x1, y1 = min(700, x + 300), 450 - (min(700, x + 300) - x)
+        if x1 > x0:
+            shape.draw_line((x0, y0), (x1, y1)); shape.finish(width=0.36, color=(0.5, 0.5, 0.5), closePath=False)
+        x += 9
+    _scale(page)
+    shape.commit(); doc.save(path); doc.close()
+    pa = analyze_page(extract_document(path).pages[0])
+    assert len(pa.hatch_families) == 1 and abs(pa.hatch_families[0].spacing - 9.0 / 2 ** 0.5) < 1.0
+    q = {(r["base"], r["dn"]): r for r in pa.quantities}
+    row = q[("S3-R8", 110)]
+    # horizontal quantity = drawn length outside the hatch (300 pt); the hatched half is reported separately
+    assert abs(row["confirmed_horizontal_m"] - 300 / 56.69) < 0.5
+    assert abs(row["in_hatched_area_m"] - 300 / 56.69) < 0.5
