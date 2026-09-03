@@ -1,0 +1,3744 @@
+{
+ "engine_version": "0.1.0",
+ "page_structure": {
+  "page": 0,
+  "width_pt": 2384.0,
+  "height_pt": 1684.0,
+  "rotation": 0,
+  "mediabox": [
+   0.0,
+   0.0,
+   2384.0,
+   1684.0
+  ],
+  "cropbox": [
+   0.0,
+   0.0,
+   2384.0,
+   1684.0
+  ],
+  "n_pages": 1,
+  "format": "A1"
+ },
+ "cad_structure": {
+  "n_ocgs": 88,
+  "n_layers_with_geometry": 83,
+  "n_xobjects": 0,
+  "layers": [
+   {
+    "layer": "",
+    "n_paths": 724,
+    "n_segments": 2940,
+    "total_length_pt": 15970.1,
+    "kinds": {
+     "fs": 91,
+     "s": 633
+    },
+    "widths": {
+     "0.00": 177,
+     "0.24": 364,
+     "0.72": 183
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 590,
+     "(0.3294, 0.3294, 0.3294)": 134
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 364,
+     "s|w0.72|c(0.3294, 0.3294, 0.3294)": 134,
+     "fs|w0.00|c(0.0, 0.0, 0.0)": 91,
+     "s|w0.00|c(0.0, 0.0, 0.0)": 86,
+     "s|w0.72|c(0.0, 0.0, 0.0)": 49
+    },
+    "n_curves": 55,
+    "small_paths": 633,
+    "tiny_paths": 221,
+    "long_paths": 51,
+    "single_segment_paths": 401,
+    "tokens": [],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "0",
+    "n_paths": 651,
+    "n_segments": 2604,
+    "total_length_pt": 4016.5,
+    "kinds": {
+     "fs": 299,
+     "s": 352
+    },
+    "widths": {
+     "0.00": 302,
+     "0.36": 348,
+     "0.72": 1
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 647,
+     "(1.0, 1.0, 1.0)": 1,
+     "(0.0, 0.0, 1.0)": 1,
+     "(1.0, 0.0, 0.0)": 1,
+     "(0.0, 1.0, 0.0)": 1
+    },
+    "styles": {
+     "s|w0.36|c(0.3294, 0.3294, 0.3294)": 348,
+     "fs|w0.00|c(0.3294, 0.3294, 0.3294)": 299,
+     "s|w0.72|c(1.0, 1.0, 1.0)": 1,
+     "s|w0.00|c(0.0, 0.0, 1.0)": 1,
+     "s|w0.00|c(1.0, 0.0, 0.0)": 1,
+     "s|w0.00|c(0.0, 1.0, 0.0)": 1
+    },
+    "n_curves": 170,
+    "small_paths": 646,
+    "tiny_paths": 458,
+    "long_paths": 2,
+    "single_segment_paths": 173,
+    "tokens": [
+     "0"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "5 m höjdkurva",
+    "n_paths": 6,
+    "n_segments": 78,
+    "total_length_pt": 480.9,
+    "kinds": {
+     "s": 6
+    },
+    "widths": {
+     "0.12": 6
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 6
+    },
+    "styles": {
+     "s|w0.12|c(0.0, 0.0, 0.0)": 6
+    },
+    "n_curves": 0,
+    "small_paths": 1,
+    "tiny_paths": 0,
+    "long_paths": 2,
+    "single_segment_paths": 0,
+    "tokens": [
+     "5",
+     "m",
+     "höjdkurva"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "A-------F3",
+    "n_paths": 1,
+    "n_segments": 3,
+    "total_length_pt": 42.6,
+    "kinds": {
+     "s": 1
+    },
+    "widths": {
+     "0.36": 1
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 1
+    },
+    "styles": {
+     "s|w0.36|c(0.0, 0.0, 0.0)": 1
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 0,
+    "tokens": [
+     "A",
+     "F3"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "A-------G1",
+    "n_paths": 174,
+    "n_segments": 397,
+    "total_length_pt": 687.3,
+    "kinds": {
+     "s": 174
+    },
+    "widths": {
+     "0.36": 174
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 174
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 174
+    },
+    "n_curves": 52,
+    "small_paths": 156,
+    "tiny_paths": 156,
+    "long_paths": 0,
+    "single_segment_paths": 83,
+    "tokens": [
+     "A",
+     "G1"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-27C---E-N",
+    "n_paths": 196,
+    "n_segments": 309,
+    "total_length_pt": 6406.1,
+    "kinds": {
+     "s": 196
+    },
+    "widths": {
+     "0.36": 196
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 102,
+     "(1.0, 0.0, 0.0)": 94
+    },
+    "styles": {
+     "s|w0.36|c(0.0, 0.0, 0.0)": 102,
+     "s|w0.36|c(1.0, 0.0, 0.0)": 94
+    },
+    "n_curves": 0,
+    "small_paths": 114,
+    "tiny_paths": 68,
+    "long_paths": 24,
+    "single_segment_paths": 136,
+    "tokens": [
+     "A",
+     "27C",
+     "E",
+     "N"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-27E---E-",
+    "n_paths": 116,
+    "n_segments": 117,
+    "total_length_pt": 1584.1,
+    "kinds": {
+     "s": 116
+    },
+    "widths": {
+     "0.36": 116
+    },
+    "colors": {
+     "(1.0, 0.0, 0.0)": 116
+    },
+    "styles": {
+     "s|w0.36|c(1.0, 0.0, 0.0)": 116
+    },
+    "n_curves": 0,
+    "small_paths": 46,
+    "tiny_paths": 46,
+    "long_paths": 0,
+    "single_segment_paths": 115,
+    "tokens": [
+     "A",
+     "27E",
+     "E"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-27G---E-N",
+    "n_paths": 71,
+    "n_segments": 76,
+    "total_length_pt": 1294.2,
+    "kinds": {
+     "s": 71
+    },
+    "widths": {
+     "0.36": 71
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 71
+    },
+    "styles": {
+     "s|w0.36|c(0.0, 0.0, 0.0)": 71
+    },
+    "n_curves": 0,
+    "small_paths": 34,
+    "tiny_paths": 34,
+    "long_paths": 0,
+    "single_segment_paths": 68,
+    "tokens": [
+     "A",
+     "27G",
+     "E",
+     "N"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "A-3760-T3",
+    "n_paths": 20,
+    "n_segments": 64,
+    "total_length_pt": 20.6,
+    "kinds": {
+     "s": 20
+    },
+    "widths": {
+     "0.36": 20
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 20
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 20
+    },
+    "n_curves": 12,
+    "small_paths": 20,
+    "tiny_paths": 17,
+    "long_paths": 0,
+    "single_segment_paths": 10,
+    "tokens": [
+     "A",
+     "3760",
+     "T3"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "A-3770-00-",
+    "n_paths": 1,
+    "n_segments": 4,
+    "total_length_pt": 68.0,
+    "kinds": {
+     "s": 1
+    },
+    "widths": {
+     "0.36": 1
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 1
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 1
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 0,
+    "tokens": [
+     "A",
+     "3770",
+     "00"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "A-4-----T1",
+    "n_paths": 1913,
+    "n_segments": 5796,
+    "total_length_pt": 1867.0,
+    "kinds": {
+     "s": 1913
+    },
+    "widths": {
+     "0.00": 423,
+     "0.36": 1490
+    },
+    "colors": {
+     "(1.0, 0.0, 0.0)": 1913
+    },
+    "styles": {
+     "s|w0.36|c(1.0, 0.0, 0.0)": 1490,
+     "s|w0.00|c(1.0, 0.0, 0.0)": 423
+    },
+    "n_curves": 975,
+    "small_paths": 1913,
+    "tiny_paths": 1913,
+    "long_paths": 0,
+    "single_segment_paths": 820,
+    "tokens": [
+     "A",
+     "4",
+     "T1"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "A-42D--BE-N",
+    "n_paths": 571,
+    "n_segments": 1096,
+    "total_length_pt": 2535.7,
+    "kinds": {
+     "s": 571
+    },
+    "widths": {
+     "0.36": 571
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 571
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 571
+    },
+    "n_curves": 0,
+    "small_paths": 565,
+    "tiny_paths": 352,
+    "long_paths": 0,
+    "single_segment_paths": 394,
+    "tokens": [
+     "A",
+     "42D",
+     "BE",
+     "N"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-42D--CE-N",
+    "n_paths": 62,
+    "n_segments": 216,
+    "total_length_pt": 356.7,
+    "kinds": {
+     "s": 62
+    },
+    "widths": {
+     "0.36": 62
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 62
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 62
+    },
+    "n_curves": 18,
+    "small_paths": 58,
+    "tiny_paths": 21,
+    "long_paths": 0,
+    "single_segment_paths": 28,
+    "tokens": [
+     "A",
+     "42D",
+     "CE",
+     "N"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-43CB--E-N",
+    "n_paths": 453,
+    "n_segments": 619,
+    "total_length_pt": 4937.9,
+    "kinds": {
+     "s": 453
+    },
+    "widths": {
+     "0.36": 453
+    },
+    "colors": {
+     "(1.0, 0.0, 0.0)": 453
+    },
+    "styles": {
+     "s|w0.36|c(1.0, 0.0, 0.0)": 453
+    },
+    "n_curves": 0,
+    "small_paths": 336,
+    "tiny_paths": 149,
+    "long_paths": 0,
+    "single_segment_paths": 374,
+    "tokens": [
+     "A",
+     "43CB",
+     "E",
+     "N"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-43CB--H-",
+    "n_paths": 132,
+    "n_segments": 324,
+    "total_length_pt": 2505.6,
+    "kinds": {
+     "s": 132
+    },
+    "widths": {
+     "0.36": 132
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 132
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 132
+    },
+    "n_curves": 0,
+    "small_paths": 116,
+    "tiny_paths": 115,
+    "long_paths": 2,
+    "single_segment_paths": 68,
+    "tokens": [
+     "A",
+     "43CB",
+     "H"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-43CC-CE-N",
+    "n_paths": 240,
+    "n_segments": 836,
+    "total_length_pt": 836.1,
+    "kinds": {
+     "s": 240
+    },
+    "widths": {
+     "0.36": 240
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 240
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 240
+    },
+    "n_curves": 56,
+    "small_paths": 240,
+    "tiny_paths": 158,
+    "long_paths": 0,
+    "single_segment_paths": 64,
+    "tokens": [
+     "A",
+     "43CC",
+     "CE",
+     "N"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-44D---E-",
+    "n_paths": 87,
+    "n_segments": 90,
+    "total_length_pt": 1589.6,
+    "kinds": {
+     "s": 87
+    },
+    "widths": {
+     "0.36": 87
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 87
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 87
+    },
+    "n_curves": 0,
+    "small_paths": 86,
+    "tiny_paths": 0,
+    "long_paths": 1,
+    "single_segment_paths": 86,
+    "tokens": [
+     "A",
+     "44D",
+     "E"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "A-46B--BE-N",
+    "n_paths": 527,
+    "n_segments": 1225,
+    "total_length_pt": 16890.9,
+    "kinds": {
+     "s": 527
+    },
+    "widths": {
+     "0.00": 16,
+     "0.36": 507,
+     "0.72": 4
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 527
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 507,
+     "s|w0.00|c(0.502, 0.502, 0.502)": 16,
+     "s|w0.72|c(0.502, 0.502, 0.502)": 4
+    },
+    "n_curves": 133,
+    "small_paths": 371,
+    "tiny_paths": 218,
+    "long_paths": 95,
+    "single_segment_paths": 404,
+    "tokens": [
+     "A",
+     "46B",
+     "BE",
+     "N"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-46B--BE-T",
+    "n_paths": 156,
+    "n_segments": 512,
+    "total_length_pt": 83.9,
+    "kinds": {
+     "s": 156
+    },
+    "widths": {
+     "0.36": 156
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 156
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 156
+    },
+    "n_curves": 104,
+    "small_paths": 156,
+    "tiny_paths": 156,
+    "long_paths": 0,
+    "single_segment_paths": 84,
+    "tokens": [
+     "A",
+     "46B",
+     "BE",
+     "T"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-46C---E-N",
+    "n_paths": 18,
+    "n_segments": 54,
+    "total_length_pt": 213.0,
+    "kinds": {
+     "s": 18
+    },
+    "widths": {
+     "0.36": 18
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 18
+    },
+    "styles": {
+     "s|w0.36|c(0.502, 0.502, 0.502)": 18
+    },
+    "n_curves": 2,
+    "small_paths": 16,
+    "tiny_paths": 9,
+    "long_paths": 0,
+    "single_segment_paths": 5,
+    "tokens": [
+     "A",
+     "46C",
+     "E",
+     "N"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "A-5-----E-N",
+    "n_paths": 1905,
+    "n_segments": 5052,
+    "total_length_pt": 3664.6,
+    "kinds": {
+     "s": 1905
+    },
+    "widths": {
+     "0.36": 813,
+     "0.72": 1092
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 1905
+    },
+    "styles": {
+     "s|w0.72|c(0.502, 0.502, 0.502)": 1092,
+     "s|w0.36|c(0.502, 0.502, 0.502)": 813
+    },
+    "n_curves": 828,
+    "small_paths": 1876,
+    "tiny_paths": 1672,
+    "long_paths": 0,
+    "single_segment_paths": 1164,
+    "tokens": [
+     "A",
+     "5",
+     "E",
+     "N"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-B-B---E-",
+    "n_paths": 50,
+    "n_segments": 180,
+    "total_length_pt": 2514.2,
+    "kinds": {
+     "fs": 26,
+     "s": 24
+    },
+    "widths": {
+     "0.00": 46,
+     "0.36": 4
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 50
+    },
+    "styles": {
+     "fs|w0.00|c(0.0, 0.0, 0.0)": 26,
+     "s|w0.00|c(0.0, 0.0, 0.0)": 20,
+     "s|w0.36|c(0.0, 0.0, 0.0)": 4
+    },
+    "n_curves": 0,
+    "small_paths": 26,
+    "tiny_paths": 24,
+    "long_paths": 0,
+    "single_segment_paths": 24,
+    "tokens": [
+     "A",
+     "B",
+     "B",
+     "E"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "A-B-B---T1",
+    "n_paths": 54,
+    "n_segments": 202,
+    "total_length_pt": 47.9,
+    "kinds": {
+     "s": 54
+    },
+    "widths": {
+     "0.36": 54
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 54
+    },
+    "styles": {
+     "s|w0.36|c(0.0, 0.0, 0.0)": 54
+    },
+    "n_curves": 42,
+    "small_paths": 54,
+    "tiny_paths": 54,
+    "long_paths": 0,
+    "single_segment_paths": 22,
+    "tokens": [
+     "A",
+     "B",
+     "B",
+     "T1"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "AO logga",
+    "n_paths": 7,
+    "n_segments": 60,
+    "total_length_pt": 776.2,
+    "kinds": {
+     "fs": 7
+    },
+    "widths": {
+     "0.00": 7
+    },
+    "colors": {
+     "(0.1608, 0.6823, 0.3686)": 5,
+     "(0.9804, 0.9804, 0.9804)": 2
+    },
+    "styles": {
+     "fs|w0.00|c(0.1608, 0.6823, 0.3686)": 5,
+     "fs|w0.00|c(0.9804, 0.9804, 0.9804)": 2
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 0,
+    "tokens": [
+     "AO",
+     "logga"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Allmän väg belagd",
+    "n_paths": 91,
+    "n_segments": 115,
+    "total_length_pt": 544.0,
+    "kinds": {
+     "s": 87,
+     "fs": 4
+    },
+    "widths": {
+     "0.00": 6,
+     "0.24": 85
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 91
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 85,
+     "fs|w0.00|c(0.0, 0.0, 0.0)": 4,
+     "s|w0.00|c(0.0, 0.0, 0.0)": 2
+    },
+    "n_curves": 0,
+    "small_paths": 90,
+    "tiny_paths": 1,
+    "long_paths": 0,
+    "single_segment_paths": 84,
+    "tokens": [
+     "Allmän",
+     "väg",
+     "belagd"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Allvädersbeläggning röd linjer",
+    "n_paths": 14,
+    "n_segments": 169,
+    "total_length_pt": 6726.6,
+    "kinds": {
+     "s": 14
+    },
+    "widths": {
+     "0.00": 14
+    },
+    "colors": {
+     "(1.0, 0.0, 0.0)": 14
+    },
+    "styles": {
+     "s|w0.00|c(1.0, 0.0, 0.0)": 14
+    },
+    "n_curves": 10,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 14,
+    "single_segment_paths": 6,
+    "tokens": [
+     "Allvädersbeläggning",
+     "röd",
+     "linjer"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Arbetområde",
+    "n_paths": 6,
+    "n_segments": 31,
+    "total_length_pt": 166.0,
+    "kinds": {
+     "fs": 5,
+     "s": 1
+    },
+    "widths": {
+     "0.00": 6
+    },
+    "colors": {
+     "(1.0, 0.0, 1.0)": 6
+    },
+    "styles": {
+     "fs|w0.00|c(1.0, 0.0, 1.0)": 5,
+     "s|w0.00|c(1.0, 0.0, 1.0)": 1
+    },
+    "n_curves": 0,
+    "small_paths": 6,
+    "tiny_paths": 1,
+    "long_paths": 0,
+    "single_segment_paths": 1,
+    "tokens": [
+     "Arbetområde"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "B-3772",
+    "n_paths": 210,
+    "n_segments": 611,
+    "total_length_pt": 140.4,
+    "kinds": {
+     "s": 210
+    },
+    "widths": {
+     "0.72": 210
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 210
+    },
+    "styles": {
+     "s|w0.72|c(0.502, 0.502, 0.502)": 210
+    },
+    "n_curves": 126,
+    "small_paths": 210,
+    "tiny_paths": 210,
+    "long_paths": 0,
+    "single_segment_paths": 89,
+    "tokens": [
+     "B",
+     "3772"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Banmarkeringar",
+    "n_paths": 247,
+    "n_segments": 1915,
+    "total_length_pt": 41231.4,
+    "kinds": {
+     "s": 247
+    },
+    "widths": {
+     "0.00": 247
+    },
+    "colors": {
+     "(1.0, 1.0, 1.0)": 247
+    },
+    "styles": {
+     "s|w0.00|c(1.0, 1.0, 1.0)": 247
+    },
+    "n_curves": 105,
+    "small_paths": 115,
+    "tiny_paths": 26,
+    "long_paths": 73,
+    "single_segment_paths": 28,
+    "tokens": [
+     "Banmarkeringar"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Banmarkeringar ifyllnad",
+    "n_paths": 17586,
+    "n_segments": 107142,
+    "total_length_pt": 160788.3,
+    "kinds": {
+     "fs": 17586
+    },
+    "widths": {
+     "0.00": 17586
+    },
+    "colors": {
+     "(1.0, 1.0, 1.0)": 17586
+    },
+    "styles": {
+     "fs|w0.00|c(1.0, 1.0, 1.0)": 17586
+    },
+    "n_curves": 0,
+    "small_paths": 17276,
+    "tiny_paths": 15497,
+    "long_paths": 30,
+    "single_segment_paths": 24,
+    "tokens": [
+     "Banmarkeringar",
+     "ifyllnad"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Belysningsmast",
+    "n_paths": 4297,
+    "n_segments": 28696,
+    "total_length_pt": 21007.8,
+    "kinds": {
+     "fs": 4297
+    },
+    "widths": {
+     "0.00": 4297
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 4297
+    },
+    "styles": {
+     "fs|w0.00|c(0.3294, 0.3294, 0.3294)": 4297
+    },
+    "n_curves": 0,
+    "small_paths": 4297,
+    "tiny_paths": 4173,
+    "long_paths": 0,
+    "single_segment_paths": 1,
+    "tokens": [
+     "Belysningsmast"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Bostad",
+    "n_paths": 3,
+    "n_segments": 23,
+    "total_length_pt": 867.5,
+    "kinds": {
+     "s": 3
+    },
+    "widths": {
+     "0.24": 3
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 3
+    },
+    "styles": {
+     "s|w0.24|c(0.3294, 0.3294, 0.3294)": 3
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 3,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Bostad"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Bostadskryss",
+    "n_paths": 6,
+    "n_segments": 6,
+    "total_length_pt": 558.9,
+    "kinds": {
+     "s": 6
+    },
+    "widths": {
+     "0.12": 6
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 6
+    },
+    "styles": {
+     "s|w0.12|c(0.0, 0.0, 0.0)": 6
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 6,
+    "single_segment_paths": 6,
+    "tokens": [
+     "Bostadskryss"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Bro",
+    "n_paths": 2,
+    "n_segments": 8,
+    "total_length_pt": 971.2,
+    "kinds": {
+     "s": 2
+    },
+    "widths": {
+     "0.24": 2
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 2
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 2
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 2,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Bro"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Elskåp",
+    "n_paths": 2,
+    "n_segments": 10,
+    "total_length_pt": 58.6,
+    "kinds": {
+     "fs": 1,
+     "s": 1
+    },
+    "widths": {
+     "0.00": 1,
+     "0.72": 1
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 2
+    },
+    "styles": {
+     "fs|w0.00|c(0.3294, 0.3294, 0.3294)": 1,
+     "s|w0.72|c(0.3294, 0.3294, 0.3294)": 1
+    },
+    "n_curves": 0,
+    "small_paths": 2,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Elskåp"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Fastighetsgräns",
+    "n_paths": 71,
+    "n_segments": 72,
+    "total_length_pt": 1135.7,
+    "kinds": {
+     "s": 71
+    },
+    "widths": {
+     "0.36": 71
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 71
+    },
+    "styles": {
+     "s|w0.36|c(0.0, 0.0, 0.0)": 71
+    },
+    "n_curves": 0,
+    "small_paths": 3,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 70,
+    "tokens": [
+     "Fastighetsgräns"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Fotboll spellinjer 11 plan",
+    "n_paths": 2433,
+    "n_segments": 15411,
+    "total_length_pt": 50985.7,
+    "kinds": {
+     "fs": 2390,
+     "s": 43
+    },
+    "widths": {
+     "0.00": 2433
+    },
+    "colors": {
+     "(1.0, 1.0, 1.0)": 2433
+    },
+    "styles": {
+     "fs|w0.00|c(1.0, 1.0, 1.0)": 2390,
+     "s|w0.00|c(1.0, 1.0, 1.0)": 43
+    },
+    "n_curves": 24,
+    "small_paths": 2306,
+    "tiny_paths": 1831,
+    "long_paths": 59,
+    "single_segment_paths": 13,
+    "tokens": [
+     "Fotboll",
+     "spellinjer",
+     "11",
+     "plan"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Fundament",
+    "n_paths": 48,
+    "n_segments": 96,
+    "total_length_pt": 184.5,
+    "kinds": {
+     "s": 48
+    },
+    "widths": {
+     "0.24": 48
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 48
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 48
+    },
+    "n_curves": 0,
+    "small_paths": 47,
+    "tiny_paths": 19,
+    "long_paths": 0,
+    "single_segment_paths": 21,
+    "tokens": [
+     "Fundament"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Förklaring",
+    "n_paths": 3,
+    "n_segments": 96,
+    "total_length_pt": 134.4,
+    "kinds": {
+     "s": 3
+    },
+    "widths": {
+     "0.00": 3
+    },
+    "colors": {
+     "(0.0, 0.0, 1.0)": 1,
+     "(1.0, 0.0, 0.0)": 1,
+     "(0.0, 1.0, 0.0)": 1
+    },
+    "styles": {
+     "s|w0.00|c(0.0, 0.0, 1.0)": 1,
+     "s|w0.00|c(1.0, 0.0, 0.0)": 1,
+     "s|w0.00|c(0.0, 1.0, 0.0)": 1
+    },
+    "n_curves": 12,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Förklaring"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "GC-väg obelagd",
+    "n_paths": 9,
+    "n_segments": 32,
+    "total_length_pt": 42.9,
+    "kinds": {
+     "fs": 5,
+     "s": 4
+    },
+    "widths": {
+     "0.00": 9
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 9
+    },
+    "styles": {
+     "fs|w0.00|c(0.0, 0.0, 0.0)": 5,
+     "s|w0.00|c(0.0, 0.0, 0.0)": 4
+    },
+    "n_curves": 0,
+    "small_paths": 9,
+    "tiny_paths": 6,
+    "long_paths": 0,
+    "single_segment_paths": 3,
+    "tokens": [
+     "GC",
+     "väg",
+     "obelagd"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Garage",
+    "n_paths": 3,
+    "n_segments": 15,
+    "total_length_pt": 532.9,
+    "kinds": {
+     "s": 3
+    },
+    "widths": {
+     "0.24": 3
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 3
+    },
+    "styles": {
+     "s|w0.24|c(0.3294, 0.3294, 0.3294)": 3
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 1,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Garage"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Gränspunkt",
+    "n_paths": 17,
+    "n_segments": 272,
+    "total_length_pt": 197.4,
+    "kinds": {
+     "s": 17
+    },
+    "widths": {
+     "0.12": 17
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 17
+    },
+    "styles": {
+     "s|w0.12|c(0.3294, 0.3294, 0.3294)": 17
+    },
+    "n_curves": 68,
+    "small_paths": 17,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Gränspunkt"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Indraget husliv",
+    "n_paths": 66,
+    "n_segments": 69,
+    "total_length_pt": 268.6,
+    "kinds": {
+     "s": 66
+    },
+    "widths": {
+     "0.24": 66
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 66
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 66
+    },
+    "n_curves": 0,
+    "small_paths": 66,
+    "tiny_paths": 1,
+    "long_paths": 0,
+    "single_segment_paths": 63,
+    "tokens": [
+     "Indraget",
+     "husliv"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Kulvert Vägtrumma",
+    "n_paths": 5,
+    "n_segments": 5,
+    "total_length_pt": 30.3,
+    "kinds": {
+     "s": 5
+    },
+    "widths": {
+     "0.12": 5
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 5
+    },
+    "styles": {
+     "s|w0.12|c(0.0, 0.0, 0.0)": 5
+    },
+    "n_curves": 0,
+    "small_paths": 5,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 5,
+    "tokens": [
+     "Kulvert",
+     "Vägtrumma"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Kvartersgräns",
+    "n_paths": 40,
+    "n_segments": 57,
+    "total_length_pt": 1710.0,
+    "kinds": {
+     "s": 40
+    },
+    "widths": {
+     "0.48": 40
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 40
+    },
+    "styles": {
+     "s|w0.48|c(0.0, 0.0, 0.0)": 40
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 4,
+    "single_segment_paths": 31,
+    "tokens": [
+     "Kvartersgräns"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Läktare",
+    "n_paths": 5,
+    "n_segments": 20,
+    "total_length_pt": 3230.1,
+    "kinds": {
+     "s": 5
+    },
+    "widths": {
+     "0.72": 5
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 5
+    },
+    "styles": {
+     "s|w0.72|c(0.3294, 0.3294, 0.3294)": 5
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 5,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Läktare"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Markvärme fördelningsrör framledning",
+    "n_paths": 240,
+    "n_segments": 635,
+    "total_length_pt": 2556.2,
+    "kinds": {
+     "s": 240
+    },
+    "widths": {
+     "0.00": 240
+    },
+    "colors": {
+     "(1.0, 0.0, 0.0)": 240
+    },
+    "styles": {
+     "s|w0.00|c(1.0, 0.0, 0.0)": 240
+    },
+    "n_curves": 98,
+    "small_paths": 234,
+    "tiny_paths": 230,
+    "long_paths": 4,
+    "single_segment_paths": 107,
+    "tokens": [
+     "Markvärme",
+     "fördelningsrör",
+     "framledning"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Markvärme fördelningsrör returledning",
+    "n_paths": 55,
+    "n_segments": 138,
+    "total_length_pt": 3424.7,
+    "kinds": {
+     "s": 55
+    },
+    "widths": {
+     "0.00": 54,
+     "0.12": 1
+    },
+    "colors": {
+     "(0.0, 0.498, 1.0)": 55
+    },
+    "styles": {
+     "s|w0.00|c(0.0, 0.498, 1.0)": 54,
+     "s|w0.12|c(0.0, 0.498, 1.0)": 1
+    },
+    "n_curves": 20,
+    "small_paths": 45,
+    "tiny_paths": 40,
+    "long_paths": 9,
+    "single_segment_paths": 29,
+    "tokens": [
+     "Markvärme",
+     "fördelningsrör",
+     "returledning"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Markvärme planvärmerör zon 1",
+    "n_paths": 312,
+    "n_segments": 1905,
+    "total_length_pt": 156640.0,
+    "kinds": {
+     "s": 312
+    },
+    "widths": {
+     "0.00": 312
+    },
+    "colors": {
+     "(1.0, 0.0, 1.0)": 312
+    },
+    "styles": {
+     "s|w0.00|c(1.0, 0.0, 1.0)": 312
+    },
+    "n_curves": 212,
+    "small_paths": 104,
+    "tiny_paths": 2,
+    "long_paths": 201,
+    "single_segment_paths": 199,
+    "tokens": [
+     "Markvärme",
+     "planvärmerör",
+     "zon",
+     "1"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Markvärme planvärmerör zon 2",
+    "n_paths": 147,
+    "n_segments": 936,
+    "total_length_pt": 65970.6,
+    "kinds": {
+     "s": 147
+    },
+    "widths": {
+     "0.00": 147
+    },
+    "colors": {
+     "(1.0, 0.0, 0.0)": 147
+    },
+    "styles": {
+     "s|w0.00|c(1.0, 0.0, 0.0)": 147
+    },
+    "n_curves": 106,
+    "small_paths": 54,
+    "tiny_paths": 4,
+    "long_paths": 85,
+    "single_segment_paths": 84,
+    "tokens": [
+     "Markvärme",
+     "planvärmerör",
+     "zon",
+     "2"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Måttsättning markvärme",
+    "n_paths": 97,
+    "n_segments": 293,
+    "total_length_pt": 885.9,
+    "kinds": {
+     "s": 93,
+     "fs": 4
+    },
+    "widths": {
+     "0.00": 4,
+     "0.72": 93
+    },
+    "colors": {
+     "(0.0, 0.498, 1.0)": 97
+    },
+    "styles": {
+     "s|w0.72|c(0.0, 0.498, 1.0)": 93,
+     "fs|w0.00|c(0.0, 0.498, 1.0)": 4
+    },
+    "n_curves": 46,
+    "small_paths": 95,
+    "tiny_paths": 51,
+    "long_paths": 2,
+    "single_segment_paths": 38,
+    "tokens": [
+     "Måttsättning",
+     "markvärme"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "Norrpil",
+    "n_paths": 156,
+    "n_segments": 1033,
+    "total_length_pt": 1830.1,
+    "kinds": {
+     "fs": 144,
+     "s": 12
+    },
+    "widths": {
+     "0.00": 144,
+     "0.72": 12
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 156
+    },
+    "styles": {
+     "fs|w0.00|c(0.0, 0.0, 0.0)": 144,
+     "s|w0.72|c(0.0, 0.0, 0.0)": 12
+    },
+    "n_curves": 15,
+    "small_paths": 143,
+    "tiny_paths": 115,
+    "long_paths": 0,
+    "single_segment_paths": 2,
+    "tokens": [
+     "Norrpil"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "P-1------utr",
+    "n_paths": 81,
+    "n_segments": 536,
+    "total_length_pt": 316.2,
+    "kinds": {
+     "s": 81
+    },
+    "widths": {
+     "0.72": 81
+    },
+    "colors": {
+     "(0.502, 0.502, 0.502)": 81
+    },
+    "styles": {
+     "s|w0.72|c(0.502, 0.502, 0.502)": 81
+    },
+    "n_curves": 36,
+    "small_paths": 81,
+    "tiny_paths": 72,
+    "long_paths": 0,
+    "single_segment_paths": 9,
+    "tokens": [
+     "P",
+     "1",
+     "utr"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "RAM",
+    "n_paths": 14,
+    "n_segments": 19,
+    "total_length_pt": 8885.0,
+    "kinds": {
+     "s": 14
+    },
+    "widths": {
+     "0.72": 14
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 14
+    },
+    "styles": {
+     "s|w0.72|c(0.3294, 0.3294, 0.3294)": 14
+    },
+    "n_curves": 0,
+    "small_paths": 4,
+    "tiny_paths": 0,
+    "long_paths": 2,
+    "single_segment_paths": 13,
+    "tokens": [
+     "RAM"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "RITHUVUD",
+    "n_paths": 700,
+    "n_segments": 2461,
+    "total_length_pt": 9640.3,
+    "kinds": {
+     "s": 700
+    },
+    "widths": {
+     "0.72": 700
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 700
+    },
+    "styles": {
+     "s|w0.72|c(0.3294, 0.3294, 0.3294)": 700
+    },
+    "n_curves": 313,
+    "small_paths": 637,
+    "tiny_paths": 254,
+    "long_paths": 14,
+    "single_segment_paths": 326,
+    "tokens": [
+     "RITHUVUD"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Ramp",
+    "n_paths": 2,
+    "n_segments": 10,
+    "total_length_pt": 119.4,
+    "kinds": {
+     "s": 2
+    },
+    "widths": {
+     "0.24": 2
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 2
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 2
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 1,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Ramp"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Räcke",
+    "n_paths": 568,
+    "n_segments": 8348,
+    "total_length_pt": 12418.8,
+    "kinds": {
+     "fs": 282,
+     "s": 286
+    },
+    "widths": {
+     "0.00": 285,
+     "0.60": 9,
+     "0.72": 274
+    },
+    "colors": {
+     "(0.0, 0.0, 1.0)": 568
+    },
+    "styles": {
+     "fs|w0.00|c(0.0, 0.0, 1.0)": 282,
+     "s|w0.72|c(0.0, 0.0, 1.0)": 274,
+     "s|w0.60|c(0.0, 0.0, 1.0)": 9,
+     "s|w0.00|c(0.0, 0.0, 1.0)": 3
+    },
+    "n_curves": 1112,
+    "small_paths": 567,
+    "tiny_paths": 285,
+    "long_paths": 0,
+    "single_segment_paths": 4,
+    "tokens": [
+     "Räcke"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Ränndalssten",
+    "n_paths": 16,
+    "n_segments": 268,
+    "total_length_pt": 11254.9,
+    "kinds": {
+     "s": 16
+    },
+    "widths": {
+     "0.36": 16
+    },
+    "colors": {
+     "(0.5961, 0.5961, 0.5961)": 16
+    },
+    "styles": {
+     "s|w0.36|c(0.5961, 0.5961, 0.5961)": 16
+    },
+    "n_curves": 16,
+    "small_paths": 2,
+    "tiny_paths": 2,
+    "long_paths": 14,
+    "single_segment_paths": 6,
+    "tokens": [
+     "Ränndalssten"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Ränndalssten ifyllnad",
+    "n_paths": 2114,
+    "n_segments": 12879,
+    "total_length_pt": 40995.0,
+    "kinds": {
+     "fs": 2114
+    },
+    "widths": {
+     "0.00": 2114
+    },
+    "colors": {
+     "(0.7294, 0.7294, 0.7294)": 2114
+    },
+    "styles": {
+     "fs|w0.00|c(0.7294, 0.7294, 0.7294)": 2114
+    },
+    "n_curves": 0,
+    "small_paths": 2002,
+    "tiny_paths": 1311,
+    "long_paths": 3,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Ränndalssten",
+     "ifyllnad"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Sarg",
+    "n_paths": 12,
+    "n_segments": 134,
+    "total_length_pt": 4840.3,
+    "kinds": {
+     "s": 12
+    },
+    "widths": {
+     "0.00": 12
+    },
+    "colors": {
+     "(1.0, 1.0, 1.0)": 12
+    },
+    "styles": {
+     "s|w0.00|c(1.0, 1.0, 1.0)": 12
+    },
+    "n_curves": 8,
+    "small_paths": 2,
+    "tiny_paths": 2,
+    "long_paths": 10,
+    "single_segment_paths": 6,
+    "tokens": [
+     "Sarg"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Sarg ifyllnad",
+    "n_paths": 1812,
+    "n_segments": 11444,
+    "total_length_pt": 15688.6,
+    "kinds": {
+     "fs": 1812
+    },
+    "widths": {
+     "0.00": 1812
+    },
+    "colors": {
+     "(0.8588, 0.8588, 0.8588)": 1812
+    },
+    "styles": {
+     "fs|w0.00|c(0.8588, 0.8588, 0.8588)": 1812
+    },
+    "n_curves": 0,
+    "small_paths": 1793,
+    "tiny_paths": 1690,
+    "long_paths": 2,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Sarg",
+     "ifyllnad"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Skallinjal",
+    "n_paths": 26,
+    "n_segments": 56,
+    "total_length_pt": 1561.0,
+    "kinds": {
+     "fs": 6,
+     "s": 20
+    },
+    "widths": {
+     "0.00": 6,
+     "0.72": 20
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 26
+    },
+    "styles": {
+     "s|w0.72|c(0.3294, 0.3294, 0.3294)": 20,
+     "fs|w0.00|c(0.3294, 0.3294, 0.3294)": 6
+    },
+    "n_curves": 0,
+    "small_paths": 20,
+    "tiny_paths": 0,
+    "long_paths": 1,
+    "single_segment_paths": 20,
+    "tokens": [
+     "Skallinjal"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Skallinjal text",
+    "n_paths": 75,
+    "n_segments": 345,
+    "total_length_pt": 389.2,
+    "kinds": {
+     "s": 75
+    },
+    "widths": {
+     "0.72": 75
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 75
+    },
+    "styles": {
+     "s|w0.72|c(0.3294, 0.3294, 0.3294)": 75
+    },
+    "n_curves": 59,
+    "small_paths": 75,
+    "tiny_paths": 36,
+    "long_paths": 0,
+    "single_segment_paths": 22,
+    "tokens": [
+     "Skallinjal",
+     "text"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Skärmtak mindre",
+    "n_paths": 48,
+    "n_segments": 69,
+    "total_length_pt": 365.4,
+    "kinds": {
+     "s": 48
+    },
+    "widths": {
+     "0.24": 48
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 48
+    },
+    "styles": {
+     "s|w0.24|c(0.3294, 0.3294, 0.3294)": 48
+    },
+    "n_curves": 0,
+    "small_paths": 48,
+    "tiny_paths": 1,
+    "long_paths": 0,
+    "single_segment_paths": 27,
+    "tokens": [
+     "Skärmtak",
+     "mindre"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Släntfot",
+    "n_paths": 17,
+    "n_segments": 110,
+    "total_length_pt": 2629.4,
+    "kinds": {
+     "s": 12,
+     "fs": 5
+    },
+    "widths": {
+     "0.00": 9,
+     "0.24": 8
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 17
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 8,
+     "fs|w0.00|c(0.0, 0.0, 0.0)": 5,
+     "s|w0.00|c(0.0, 0.0, 0.0)": 4
+    },
+    "n_curves": 0,
+    "small_paths": 3,
+    "tiny_paths": 3,
+    "long_paths": 8,
+    "single_segment_paths": 3,
+    "tokens": [
+     "Släntfot"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Släntkrön",
+    "n_paths": 12,
+    "n_segments": 48,
+    "total_length_pt": 924.0,
+    "kinds": {
+     "s": 7,
+     "fs": 5
+    },
+    "widths": {
+     "0.00": 9,
+     "0.24": 3
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 12
+    },
+    "styles": {
+     "fs|w0.00|c(0.0, 0.0, 0.0)": 5,
+     "s|w0.00|c(0.0, 0.0, 0.0)": 4,
+     "s|w0.24|c(0.0, 0.0, 0.0)": 3
+    },
+    "n_curves": 0,
+    "small_paths": 9,
+    "tiny_paths": 3,
+    "long_paths": 3,
+    "single_segment_paths": 3,
+    "tokens": [
+     "Släntkrön"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Släntskraffering",
+    "n_paths": 212,
+    "n_segments": 216,
+    "total_length_pt": 3414.4,
+    "kinds": {
+     "s": 212
+    },
+    "widths": {
+     "0.12": 212
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 212
+    },
+    "styles": {
+     "s|w0.12|c(0.0, 0.0, 0.0)": 212
+    },
+    "n_curves": 0,
+    "small_paths": 104,
+    "tiny_paths": 2,
+    "long_paths": 2,
+    "single_segment_paths": 208,
+    "tokens": [
+     "Släntskraffering"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Sporthall",
+    "n_paths": 4,
+    "n_segments": 12,
+    "total_length_pt": 1746.2,
+    "kinds": {
+     "s": 4
+    },
+    "widths": {
+     "0.24": 4
+    },
+    "colors": {
+     "(1.0, 1.0, 0.0)": 4
+    },
+    "styles": {
+     "s|w0.24|c(1.0, 1.0, 0.0)": 4
+    },
+    "n_curves": 0,
+    "small_paths": 1,
+    "tiny_paths": 1,
+    "long_paths": 3,
+    "single_segment_paths": 1,
+    "tokens": [
+     "Sporthall"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Staket",
+    "n_paths": 42,
+    "n_segments": 388,
+    "total_length_pt": 4902.2,
+    "kinds": {
+     "s": 42
+    },
+    "widths": {
+     "0.72": 42
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 42
+    },
+    "styles": {
+     "s|w0.72|c(0.0, 0.0, 0.0)": 42
+    },
+    "n_curves": 28,
+    "small_paths": 1,
+    "tiny_paths": 0,
+    "long_paths": 21,
+    "single_segment_paths": 12,
+    "tokens": [
+     "Staket"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Strandlinje",
+    "n_paths": 1,
+    "n_segments": 34,
+    "total_length_pt": 429.7,
+    "kinds": {
+     "s": 1
+    },
+    "widths": {
+     "0.24": 1
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 1
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 1
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 1,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Strandlinje"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Stödmur",
+    "n_paths": 7,
+    "n_segments": 9,
+    "total_length_pt": 315.5,
+    "kinds": {
+     "s": 7
+    },
+    "widths": {
+     "0.60": 7
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 7
+    },
+    "styles": {
+     "s|w0.60|c(0.0, 0.0, 0.0)": 7
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 1,
+    "single_segment_paths": 5,
+    "tokens": [
+     "Stödmur"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Terrängpunkt",
+    "n_paths": 16,
+    "n_segments": 16,
+    "total_length_pt": 71.9,
+    "kinds": {
+     "s": 16
+    },
+    "widths": {
+     "0.12": 16
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 16
+    },
+    "styles": {
+     "s|w0.12|c(0.0, 0.0, 0.0)": 16
+    },
+    "n_curves": 0,
+    "small_paths": 16,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 16,
+    "tokens": [
+     "Terrängpunkt"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "Terrängtrappa",
+    "n_paths": 4,
+    "n_segments": 30,
+    "total_length_pt": 1002.3,
+    "kinds": {
+     "s": 4
+    },
+    "widths": {
+     "0.24": 4
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 4
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 4
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 3,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Terrängtrappa"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Traktgräns",
+    "n_paths": 9,
+    "n_segments": 35,
+    "total_length_pt": 712.1,
+    "kinds": {
+     "fs": 5,
+     "s": 4
+    },
+    "widths": {
+     "0.00": 9
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 9
+    },
+    "styles": {
+     "fs|w0.00|c(0.0, 0.0, 0.0)": 5,
+     "s|w0.00|c(0.0, 0.0, 0.0)": 4
+    },
+    "n_curves": 0,
+    "small_paths": 3,
+    "tiny_paths": 3,
+    "long_paths": 0,
+    "single_segment_paths": 3,
+    "tokens": [
+     "Traktgräns"
+    ],
+    "role": "CONNECTOR"
+   },
+   {
+    "layer": "Trappa",
+    "n_paths": 3,
+    "n_segments": 16,
+    "total_length_pt": 431.9,
+    "kinds": {
+     "s": 3
+    },
+    "widths": {
+     "0.24": 3
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 3
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 3
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 1,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Trappa"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Uterum",
+    "n_paths": 1,
+    "n_segments": 5,
+    "total_length_pt": 192.7,
+    "kinds": {
+     "s": 1
+    },
+    "widths": {
+     "0.24": 1
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 1
+    },
+    "styles": {
+     "s|w0.24|c(0.3294, 0.3294, 0.3294)": 1
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 1,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Uterum"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Vägräcke",
+    "n_paths": 52,
+    "n_segments": 60,
+    "total_length_pt": 113.8,
+    "kinds": {
+     "s": 52
+    },
+    "widths": {
+     "0.72": 52
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 52
+    },
+    "styles": {
+     "s|w0.72|c(0.0, 0.0, 0.0)": 52
+    },
+    "n_curves": 0,
+    "small_paths": 52,
+    "tiny_paths": 40,
+    "long_paths": 0,
+    "single_segment_paths": 44,
+    "tokens": [
+     "Vägräcke"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "jämn höjdkurva",
+    "n_paths": 20,
+    "n_segments": 634,
+    "total_length_pt": 5900.9,
+    "kinds": {
+     "s": 20
+    },
+    "widths": {
+     "0.12": 20
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 20
+    },
+    "styles": {
+     "s|w0.12|c(0.0, 0.0, 0.0)": 20
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 9,
+    "single_segment_paths": 0,
+    "tokens": [
+     "jämn",
+     "höjdkurva"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "ojämn höjdkurva",
+    "n_paths": 17,
+    "n_segments": 572,
+    "total_length_pt": 5004.4,
+    "kinds": {
+     "s": 17
+    },
+    "widths": {
+     "0.12": 17
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 17
+    },
+    "styles": {
+     "s|w0.12|c(0.0, 0.0, 0.0)": 17
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 15,
+    "single_segment_paths": 0,
+    "tokens": [
+     "ojämn",
+     "höjdkurva"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Ägoslagsgräns",
+    "n_paths": 1,
+    "n_segments": 6,
+    "total_length_pt": 1.1,
+    "kinds": {
+     "fs": 1
+    },
+    "widths": {
+     "0.00": 1
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 1
+    },
+    "styles": {
+     "fs|w0.00|c(0.0, 0.0, 0.0)": 1
+    },
+    "n_curves": 0,
+    "small_paths": 1,
+    "tiny_paths": 1,
+    "long_paths": 0,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Ägoslagsgräns"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Övrig byggn mindre",
+    "n_paths": 17,
+    "n_segments": 85,
+    "total_length_pt": 1360.8,
+    "kinds": {
+     "s": 17
+    },
+    "widths": {
+     "0.24": 17
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 17
+    },
+    "styles": {
+     "s|w0.24|c(0.3294, 0.3294, 0.3294)": 17
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Övrig",
+     "byggn",
+     "mindre"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Övrig byggn större",
+    "n_paths": 3,
+    "n_segments": 15,
+    "total_length_pt": 794.0,
+    "kinds": {
+     "s": 3
+    },
+    "widths": {
+     "0.24": 3
+    },
+    "colors": {
+     "(0.3294, 0.3294, 0.3294)": 3
+    },
+    "styles": {
+     "s|w0.24|c(0.3294, 0.3294, 0.3294)": 3
+    },
+    "n_curves": 0,
+    "small_paths": 0,
+    "tiny_paths": 0,
+    "long_paths": 3,
+    "single_segment_paths": 0,
+    "tokens": [
+     "Övrig",
+     "byggn",
+     "större"
+    ],
+    "role": "UNKNOWN"
+   },
+   {
+    "layer": "Övrig väg belagd",
+    "n_paths": 47,
+    "n_segments": 51,
+    "total_length_pt": 283.2,
+    "kinds": {
+     "s": 47
+    },
+    "widths": {
+     "0.24": 47
+    },
+    "colors": {
+     "(0.0, 0.0, 0.0)": 47
+    },
+    "styles": {
+     "s|w0.24|c(0.0, 0.0, 0.0)": 47
+    },
+    "n_curves": 0,
+    "small_paths": 46,
+    "tiny_paths": 0,
+    "long_paths": 0,
+    "single_segment_paths": 43,
+    "tokens": [
+     "Övrig",
+     "väg",
+     "belagd"
+    ],
+    "role": "UNKNOWN"
+   }
+  ],
+  "annotation_layers": {}
+ },
+ "text_structure": {
+  "searchable_spans": 55,
+  "searchable_rows": 47,
+  "vector_glyph_rows": 595,
+  "glyph_components": 6197,
+  "glyphs": 3634,
+  "glyph_families": 1668,
+  "unknown_glyph_families": 729,
+  "size_families_pt": [
+   1.5,
+   9.0,
+   6.0,
+   3.25,
+   7.0,
+   3.75
+  ],
+  "text_families": [
+   {
+    "family": "vector:Räcke:s|w0.72:1.5",
+    "occurrences": 193
+   },
+   {
+    "family": "vector:Räcke:s|w0.72:1.6",
+    "occurrences": 81
+   },
+   {
+    "family": "text:ArialMT",
+    "occurrences": 41
+   },
+   {
+    "family": "vector:A-43CB--H-:s|w0.36:1.2",
+    "occurrences": 21
+   },
+   {
+    "family": "vector:Gränspunkt:s|w0.12:3.7",
+    "occurrences": 17
+   },
+   {
+    "family": "vector:A-4-----T1:s|w0.36:1.3",
+    "occurrences": 16
+   },
+   {
+    "family": "vector:A-4-----T1:s|w0.36:1.4",
+    "occurrences": 14
+   },
+   {
+    "family": "vector:A-5-----E-N:s|w0.36:0.8",
+    "occurrences": 12
+   },
+   {
+    "family": "vector:A-43CB--H-:s|w0.36:1.3",
+    "occurrences": 10
+   },
+   {
+    "family": "vector:A-43CB--H-:s|w0.36:1.1",
+    "occurrences": 10
+   },
+   {
+    "family": "vector:RITHUVUD:s|w0.72:4.5",
+    "occurrences": 9
+   },
+   {
+    "family": "vector:A-46B--BE-T:s|w0.36:0.8",
+    "occurrences": 9
+   },
+   {
+    "family": "vector:A-------G1:s|w0.36:1.7",
+    "occurrences": 8
+   },
+   {
+    "family": "vector:P-1------utr:s|w0.72:5.3",
+    "occurrences": 8
+   },
+   {
+    "family": "vector:Belysningsmast:fs|w0.00:8.3",
+    "occurrences": 7
+   },
+   {
+    "family": "text:SymbolMT",
+    "occurrences": 6
+   },
+   {
+    "family": "vector:A-4-----T1:s|w0.00:1.3",
+    "occurrences": 6
+   },
+   {
+    "family": "vector:RITHUVUD:s|w0.72:5.2",
+    "occurrences": 5
+   },
+   {
+    "family": "vector:Markvärme planvärmerör zon 1:s|w0.00:4.5",
+    "occurrences": 5
+   },
+   {
+    "family": "vector:Skallinjal text:s|w0.72:9.0",
+    "occurrences": 5
+   }
+  ],
+  "marks": 519,
+  "rejected_rows": 509
+ },
+ "annotation_structure": {
+  "blocks": 625,
+  "designation_grammar_families": [
+   {
+    "family": "grammar:A9-",
+    "occurrences": 7,
+    "processed": 7,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 7,
+    "examples": [
+     "H5-",
+     "H6-"
+    ]
+   },
+   {
+    "family": "grammar:A-9A-9-A9",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1,
+    "examples": [
+     "M-1O-1-OO2"
+    ]
+   },
+   {
+    "family": "grammar:A/A9",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1,
+    "examples": [
+     "TV/RADI0"
+    ]
+   },
+   {
+    "family": "grammar:A/A9A",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1,
+    "examples": [
+     "RITAD/K0NSTR"
+    ]
+   },
+   {
+    "family": "grammar://9A",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1,
+    "examples": [
+     "//4GNWG"
+    ]
+   },
+   {
+    "family": "grammar:9A9-A9-A9",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1,
+    "examples": [
+     "2O26-O3-O5"
+    ]
+   }
+  ],
+  "grammar": {
+   "families": [
+    {
+     "pattern": "A9",
+     "count": 15,
+     "examples": [
+      "EI50",
+      "G6",
+      "W5",
+      "I37",
+      "NV11",
+      "A0"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A9A",
+     "count": 9,
+     "examples": [
+      "IIWIIINIIII1IIIIIIII",
+      "AV5ER",
+      "RITNING5NR",
+      "FINNVED5VALLEN",
+      "D4M",
+      "UPPDRAG5GIVARE"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A9-",
+     "count": 7,
+     "examples": [
+      "H5-",
+      "H6-"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "9A",
+     "count": 5,
+     "examples": [
+      "8BBBBBB",
+      "5KALA",
+      "5PEAKERRUM",
+      "5IGN"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": ")A)A9A",
+     "count": 1,
+     "examples": [
+      ")IIII)IIII1IIIIWIIINII"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "//9A",
+     "count": 1,
+     "examples": [
+      "//4GNWG"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "9.9A",
+     "count": 1,
+     "examples": [
+      "21.2m"
+     ],
+     "numeric_positions": {
+      "0": 1
+     },
+     "dn_token_index": null
+    },
+    {
+     "pattern": "9A)A)A",
+     "count": 1,
+     "examples": [
+      "1IIII)IIIINIIIWIIII)II"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "9A9-A9-A9",
+     "count": 1,
+     "examples": [
+      "2O26-O3-O5"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "9]]9A",
+     "count": 1,
+     "examples": [
+      "1]]4GWNG"
+     ],
+     "numeric_positions": {
+      "0": 1
+     },
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A-9A-9-A9",
+     "count": 1,
+     "examples": [
+      "M-1O-1-OO2"
+     ],
+     "numeric_positions": {
+      "2": 1
+     },
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A/A9",
+     "count": 1,
+     "examples": [
+      "TV/RADI0"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A/A9A",
+     "count": 1,
+     "examples": [
+      "RITAD/K0NSTR"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A/A9[A9",
+     "count": 1,
+     "examples": [
+      "Be/In1[I9"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A9(A",
+     "count": 1,
+     "examples": [
+      "PR0(EKTNUMMER"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A9A)A",
+     "count": 1,
+     "examples": [
+      "IIIINIIINIIII1IIII)III"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A9]A",
+     "count": 1,
+     "examples": [
+      "PR0]EKTBENANNING"
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A[A9/9",
+     "count": 1,
+     "examples": [
+      "e[U1/99"
+     ],
+     "numeric_positions": {
+      "2": 1
+     },
+     "dn_token_index": null
+    },
+    {
+     "pattern": "A[A9A9[",
+     "count": 1,
+     "examples": [
+      "e[Cen1r9["
+     ],
+     "numeric_positions": {},
+     "dn_token_index": null
+    }
+   ]
+  },
+  "leader_families": [
+   {
+    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 67,
+    "processed": 67,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 67
+   },
+   {
+    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 44,
+    "processed": 44,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 44
+   },
+   {
+    "family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 36,
+    "processed": 36,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 36
+   },
+   {
+    "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 36,
+    "processed": 36,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 36
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 34,
+    "processed": 34,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 34
+   },
+   {
+    "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 26,
+    "processed": 26,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 26
+   },
+   {
+    "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 24,
+    "processed": 24,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 24
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 20,
+    "processed": 20,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 20
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 16,
+    "processed": 16,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 16
+   },
+   {
+    "family": "straight|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 13,
+    "processed": 13,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 13
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 10,
+    "processed": 10,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 10
+   },
+   {
+    "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 9,
+    "processed": 9,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 9
+   },
+   {
+    "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 8,
+    "processed": 8,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 8
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 8,
+    "processed": 8,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 8
+   },
+   {
+    "family": "multi-bend|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 8,
+    "processed": 8,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 8
+   },
+   {
+    "family": "multi-bend|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 8,
+    "processed": 8,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 8
+   },
+   {
+    "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 8,
+    "processed": 8,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 8
+   },
+   {
+    "family": "straight|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 8,
+    "processed": 8,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 8
+   },
+   {
+    "family": "multi-bend|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 7,
+    "processed": 7,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 7
+   },
+   {
+    "family": "multi-bend|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 7,
+    "processed": 7,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 7
+   },
+   {
+    "family": "straight|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
+    "occurrences": 7,
+    "processed": 7,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 7
+   },
+   {
+    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 7,
+    "processed": 7,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 7
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+    "occurrences": 6,
+    "processed": 6,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 6
+   },
+   {
+    "family": "multi-bend|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
+    "occurrences": 6,
+    "processed": 6,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 6
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
+    "occurrences": 6,
+    "processed": 6,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 6
+   },
+   {
+    "family": "bent|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 5,
+    "processed": 5,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 5
+   },
+   {
+    "family": "multi-bend|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
+    "occurrences": 5,
+    "processed": 5,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 5
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 5,
+    "processed": 5,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 5
+   },
+   {
+    "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "bent|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "bent|diagonal|underline_end|plain-end|crossing-ticks|w0.36",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.24",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "bent|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "multi-bend|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "straight|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
+    "occurrences": 4,
+    "processed": 4,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 4
+   },
+   {
+    "family": "bent|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "bent|diagonal|box_corner|end-tick|no-crossing-ticks|w0.00",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "bent|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "bent|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "bent|horizontal|bbox_corner|end-tick|no-crossing-ticks|w0.00",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "multi-bend|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "multi-bend|horizontal|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 3,
+    "processed": 3,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 3
+   },
+   {
+    "family": "bent|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.00",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "bent|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "bent|diagonal|underline_end|end-tick|crossing-ticks|w0.36",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.60",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "multi-bend|diagonal|box_corner|plain-end|crossing-ticks|w0.36",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "multi-bend|diagonal|underline_touch|end-tick|crossing-ticks|w0.36",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "multi-bend|vertical|underline_end|plain-end|no-crossing-ticks|w0.24",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "split-path|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "split-path|diagonal|box_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "split-path|vertical|underline_touch|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "straight|diagonal|box_corner|end-tick|no-crossing-ticks|w0.00",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.72",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.00",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "straight|vertical|underline_end|plain-end|no-crossing-ticks|w0.24",
+    "occurrences": 2,
+    "processed": 2,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 2
+   },
+   {
+    "family": "bent|diagonal|bbox_corner|end-tick|crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "bent|diagonal|bbox_corner|plain-end|crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "bent|diagonal|box_corner|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "bent|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "bent|vertical|bbox_corner|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "bent|vertical|underline_touch|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|end-tick|crossing-ticks|w0.00",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "multi-bend|diagonal|bbox_corner|end-tick|no-crossing-ticks|w0.00",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "multi-bend|diagonal|underline_end|plain-end|crossing-ticks|w0.24",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "multi-bend|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.00",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "multi-bend|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "multi-bend|horizontal|bbox_corner|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "multi-bend|horizontal|box_corner|plain-end|crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "multi-bend|vertical|bbox_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "multi-bend|vertical|underline_end|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "split-path|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.24",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "split-path|diagonal|box_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "split-path|diagonal|underline_end|end-tick|no-crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "split-path|diagonal|underline_touch|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|diagonal|bbox_corner|plain-end|no-crossing-ticks|w0.12",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|diagonal|box_corner|plain-end|no-crossing-ticks|w0.00",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.24",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|diagonal|underline_touch|end-tick|no-crossing-ticks|w0.00",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|diagonal|underline_touch|plain-end|crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|horizontal|box_corner|plain-end|no-crossing-ticks|w0.36",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|horizontal|underline_end|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   },
+   {
+    "family": "straight|vertical|underline_touch|plain-end|no-crossing-ticks|w0.72",
+    "occurrences": 1,
+    "processed": 1,
+    "confirmed": 0,
+    "ambiguous": 0,
+    "unsupported": 1
+   }
+  ],
+  "marker_families": [
+   {
+    "family": "end-tick|A-27E---E-|s|w0.36",
+    "occurrences": 71
+   },
+   {
+    "family": "end-tick|A-43CB--H-|s|w0.36",
+    "occurrences": 55
+   },
+   {
+    "family": "crossing-tick|A-B-B---E-|s|w0.00",
+    "occurrences": 45
+   },
+   {
+    "family": "end-tick|A-43CB--E-N|s|w0.36",
+    "occurrences": 26
+   },
+   {
+    "family": "end-tick|A-46B--BE-N|s|w0.36",
+    "occurrences": 25
+   },
+   {
+    "family": "crossing-tick|A-27C---E-N|s|w0.36",
+    "occurrences": 21
+   },
+   {
+    "family": "crossing-tick|A-43CB--E-N|s|w0.36",
+    "occurrences": 18
+   },
+   {
+    "family": "crossing-tick|A-42D--BE-N|s|w0.36",
+    "occurrences": 17
+   },
+   {
+    "family": "end-tick|A-------G1|s|w0.36",
+    "occurrences": 11
+   },
+   {
+    "family": "crossing-tick|A-27E---E-|s|w0.36",
+    "occurrences": 10
+   },
+   {
+    "family": "end-tick|A-42D--BE-N|s|w0.36",
+    "occurrences": 10
+   },
+   {
+    "family": "crossing-tick|A-43CB--H-|s|w0.36",
+    "occurrences": 7
+   },
+   {
+    "family": "end-tick|A-27C---E-N|s|w0.36",
+    "occurrences": 6
+   },
+   {
+    "family": "crossing-tick|A-46B--BE-N|s|w0.36",
+    "occurrences": 4
+   },
+   {
+    "family": "end-tick|A-B-B---E-|s|w0.00",
+    "occurrences": 3
+   },
+   {
+    "family": "end-tick|A-46B--BE-T|s|w0.36",
+    "occurrences": 3
+   },
+   {
+    "family": "crossing-tick|A-43CC-CE-N|s|w0.36",
+    "occurrences": 2
+   },
+   {
+    "family": "end-tick|A-42D--CE-N|s|w0.36",
+    "occurrences": 2
+   },
+   {
+    "family": "crossing-tick|A-46B--BE-N|s|w0.00",
+    "occurrences": 2
+   },
+   {
+    "family": "end-tick|A-5-----E-N|s|w0.72",
+    "occurrences": 2
+   },
+   {
+    "family": "end-tick|A-43CC-CE-N|s|w0.36",
+    "occurrences": 2
+   },
+   {
+    "family": "crossing-tick|Måttsättning markvärme|s|w0.72",
+    "occurrences": 2
+   },
+   {
+    "family": "end-tick|Terrängpunkt|s|w0.12",
+    "occurrences": 2
+   },
+   {
+    "family": "end-tick|A-46B--BE-N|s|w0.00",
+    "occurrences": 2
+   },
+   {
+    "family": "end-tick||s|w0.00",
+    "occurrences": 1
+   },
+   {
+    "family": "end-tick|Traktgräns|s|w0.00",
+    "occurrences": 1
+   },
+   {
+    "family": "crossing-tick|Terrängpunkt|s|w0.12",
+    "occurrences": 1
+   }
+  ],
+  "dn_layouts": {
+   "none": 12
+  }
+ },
+ "pipe_structure": {
+  "representation_families": [],
+  "contact_votes": {
+   "votes": {
+    "A-5-----E-N|s|w0.36": 19.0,
+    "A-43CB--E-N|s|w0.36": 16.0,
+    "A-27E---E-|s|w0.36": 9.0,
+    "A-43CB--H-|s|w0.36": 8.0,
+    "A-46B--BE-N|s|w0.36": 6.0,
+    "A-46B--BE-N|s|w0.00": 5.0,
+    "A-43CC-CE-N|s|w0.36": 4.0,
+    "A-27C---E-N|s|w0.36": 2.0,
+    "A-46B--BE-T|s|w0.36": 1.0
+   },
+   "token_votes": {},
+   "candidate_families": [],
+   "tick_votes": {
+    "A-5-----E-N|s|w0.36": 19,
+    "A-43CB--E-N|s|w0.36": 15,
+    "A-27E---E-|s|w0.36": 9,
+    "A-43CB--H-|s|w0.36": 8,
+    "A-46B--BE-N|s|w0.36": 6,
+    "A-46B--BE-N|s|w0.00": 5,
+    "A-27C---E-N|s|w0.36": 2,
+    "A-46B--BE-T|s|w0.36": 1
+   }
+  },
+  "junction_convention": "shared endpoints and endpoint-on-interior T contacts are nodes; crossings are never connections"
+ },
+ "measurement": {
+  "scale": {
+   "meters_per_pdf_point": null,
+   "scope": "none",
+   "state": "NONE",
+   "reason": "no_scale_evidence_found",
+   "evidence": []
+  },
+  "vertical_evidence": {
+   "kind": "elevation annotations in label units",
+   "anchors_with_elevation": 0
+  }
+ },
+ "unknown_structure": {
+  "unsupported_families": [
+   {
+    "family": "grammar:A9-",
+    "kind": "code family without any verified pipe attachment (component tags / non-pipe codes)",
+    "occurrences": 7,
+    "examples": [
+     "H5-",
+     "H6-"
+    ]
+   }
+  ],
+  "unresolved_anchor_reasons": {
+   "leader_endpoint_touches_no_pipe_geometry": 9
+  }
+ }
+}

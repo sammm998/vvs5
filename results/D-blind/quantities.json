@@ -1,0 +1,17 @@
+{
+ "scale": {
+  "meters_per_pdf_point": null,
+  "scope": "none",
+  "state": "NONE",
+  "reason": "no_scale_evidence_found",
+  "evidence": []
+ },
+ "rows": [],
+ "totals": {
+  "physical_pipes": 0,
+  "confirmed_horizontal_m": 0,
+  "confirmed_vertical_m": 0,
+  "confirmed_total_m": 0,
+  "ambiguous_m": 0
+ }
+}

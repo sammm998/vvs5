@@ -1,0 +1,11 @@
+{
+ "state": "VALID",
+ "raw_relevant_pipe_geometry_pt": 0.0,
+ "confirmed_pt": 0.0,
+ "ambiguous_pt": 0.0,
+ "unowned_pt": 0.0,
+ "residual_pt": 0.0,
+ "double_counted_prims": 0,
+ "families": [],
+ "note": "physical pipe lengths additionally include bridged micro-gaps of the line style (reported separately)"
+}

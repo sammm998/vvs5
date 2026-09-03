@@ -1,0 +1,51 @@
+production source unchanged before run: True 6cc76e220a7caaa6 6cc76e220a7caaa6
+[READING_PDF]
+[DISCOVERING_DRAWING_GRAMMAR]
+[RECONSTRUCTING_TEXT]
+[READING_DESIGNATIONS]
+[FINDING_LEADERS]
+[BUILDING_TOPOLOGY]
+[BUILDING_PHYSICAL_PIPES]
+[MEASURING]
+[GENERATING_OVERLAYS]
+[COMPLETED]
+{
+ "source_unchanged_before_run": true,
+ "source_hash_before_run": "6cc76e220a7caaa67be407b7b59b09f6ff6a8fe205c038274126dfe9eef7489e",
+ "frozen_source_hash": "6cc76e220a7caaa67be407b7b59b09f6ff6a8fe205c038274126dfe9eef7489e",
+ "total_seconds": 76.1,
+ "summary": {
+  "designations": 12,
+  "with_dn": 0,
+  "blocks": 625,
+  "leaders": 579,
+  "designation_leaders": 9,
+  "anchors": {
+   "NO_PIPE_ATTACHMENT": 9
+  },
+  "pipe_families": {},
+  "ownership": {},
+  "physical_pipes": 0,
+  "scale": "NONE",
+  "confirmed_horizontal_m": 0,
+  "ambiguous_m": 0,
+  "timings_ms": {
+   "profile_ms": 330,
+   "text_ms": 12510,
+   "designation_ms": 245,
+   "leader_ms": 0,
+   "leader_attachment_ms": 2029,
+   "topology_ms": 0,
+   "physical_pipes_ms": 0,
+   "measurement_ms": 92,
+   "text_components_ms": 1298,
+   "text_rows_ms": 397,
+   "text_raster_ms": 2272,
+   "text_classify_ms": 8467,
+   "text_assemble_ms": 53
+  }
+ },
+ "determinism": "PASS",
+ "contamination": "PASS"
+}
+exit 0

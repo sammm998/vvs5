@@ -1,0 +1,2681 @@
+{
+ "source": "data/openworld_quarantine/DRAWING_D.pdf",
+ "n_pages": 1,
+ "metadata": {
+  "format": "PDF 1.7",
+  "title": "M-10-1-002",
+  "creator": "AutoCAD LT 2026 - English 2026 (25.1s (LMS Tech))",
+  "producer": "pdfplot17.hdi 17.01.164.00000",
+  "creationDate": "D:20260301193222Z",
+  "modDate": "D:20260301193235+01'00'"
+ },
+ "ocgs": [
+  {
+   "xref": 4,
+   "name": "0",
+   "on": true
+  },
+  {
+   "xref": 11,
+   "name": "Sarg",
+   "on": true
+  },
+  {
+   "xref": 15,
+   "name": "Allvädersbeläggning röd",
+   "on": true
+  },
+  {
+   "xref": 16,
+   "name": "Allvädersbeläggning röd linjer",
+   "on": true
+  },
+  {
+   "xref": 17,
+   "name": "Ränndalssten ifyllnad",
+   "on": true
+  },
+  {
+   "xref": 18,
+   "name": "Ränndalssten",
+   "on": true
+  },
+  {
+   "xref": 19,
+   "name": "Sarg ifyllnad",
+   "on": true
+  },
+  {
+   "xref": 20,
+   "name": "Banmarkeringar ifyllnad",
+   "on": true
+  },
+  {
+   "xref": 21,
+   "name": "Banmarkeringar",
+   "on": true
+  },
+  {
+   "xref": 22,
+   "name": "Måttsättning markvärme",
+   "on": true
+  },
+  {
+   "xref": 24,
+   "name": "Räcke",
+   "on": true
+  },
+  {
+   "xref": 25,
+   "name": "Fotboll spellinjer 11 plan",
+   "on": true
+  },
+  {
+   "xref": 26,
+   "name": "Sporthall",
+   "on": true
+  },
+  {
+   "xref": 27,
+   "name": "Belysningsmast",
+   "on": true
+  },
+  {
+   "xref": 28,
+   "name": "Släntskraffering",
+   "on": true
+  },
+  {
+   "xref": 29,
+   "name": "Släntkrön",
+   "on": true
+  },
+  {
+   "xref": 30,
+   "name": "Släntfot",
+   "on": true
+  },
+  {
+   "xref": 31,
+   "name": "Terrängpunkt",
+   "on": true
+  },
+  {
+   "xref": 38,
+   "name": "HöjdkurveText 2m",
+   "on": true
+  },
+  {
+   "xref": 39,
+   "name": "HöjdkurveText 1m",
+   "on": true
+  },
+  {
+   "xref": 40,
+   "name": "jämn höjdkurva",
+   "on": true
+  },
+  {
+   "xref": 41,
+   "name": "ojämn höjdkurva",
+   "on": true
+  },
+  {
+   "xref": 42,
+   "name": "5 m höjdkurva",
+   "on": true
+  },
+  {
+   "xref": 43,
+   "name": "Ägoslagsgräns",
+   "on": true
+  },
+  {
+   "xref": 44,
+   "name": "Strandlinje",
+   "on": true
+  },
+  {
+   "xref": 45,
+   "name": "Övrig väg belagd",
+   "on": true
+  },
+  {
+   "xref": 46,
+   "name": "Allmän väg belagd",
+   "on": true
+  },
+  {
+   "xref": 47,
+   "name": "GC-väg obelagd",
+   "on": true
+  },
+  {
+   "xref": 48,
+   "name": "Kulvert Vägtrumma",
+   "on": true
+  },
+  {
+   "xref": 49,
+   "name": "Vägräcke",
+   "on": true
+  },
+  {
+   "xref": 50,
+   "name": "Gatunamn",
+   "on": true
+  },
+  {
+   "xref": 51,
+   "name": "Övrig byggn mindre",
+   "on": true
+  },
+  {
+   "xref": 52,
+   "name": "Bostad",
+   "on": true
+  },
+  {
+   "xref": 53,
+   "name": "Övrig byggn större",
+   "on": true
+  },
+  {
+   "xref": 54,
+   "name": "Garage",
+   "on": true
+  },
+  {
+   "xref": 55,
+   "name": "Skärmtak mindre",
+   "on": true
+  },
+  {
+   "xref": 56,
+   "name": "Uterum",
+   "on": true
+  },
+  {
+   "xref": 57,
+   "name": "Bro",
+   "on": true
+  },
+  {
+   "xref": 58,
+   "name": "Fundament",
+   "on": true
+  },
+  {
+   "xref": 59,
+   "name": "Staket",
+   "on": true
+  },
+  {
+   "xref": 60,
+   "name": "Stödmur",
+   "on": true
+  },
+  {
+   "xref": 61,
+   "name": "Bostadskryss",
+   "on": true
+  },
+  {
+   "xref": 62,
+   "name": "Ramp",
+   "on": true
+  },
+  {
+   "xref": 63,
+   "name": "Terrängtrappa",
+   "on": true
+  },
+  {
+   "xref": 64,
+   "name": "Trappa",
+   "on": true
+  },
+  {
+   "xref": 65,
+   "name": "Indraget husliv",
+   "on": true
+  },
+  {
+   "xref": 66,
+   "name": "Traktgräns",
+   "on": true
+  },
+  {
+   "xref": 67,
+   "name": "Kvartersgräns",
+   "on": true
+  },
+  {
+   "xref": 68,
+   "name": "Fastighetsgräns",
+   "on": true
+  },
+  {
+   "xref": 69,
+   "name": "Gränspunkt",
+   "on": true
+  },
+  {
+   "xref": 70,
+   "name": "Tomtnummer",
+   "on": true
+  },
+  {
+   "xref": 71,
+   "name": "Kvartersnamn",
+   "on": true
+  },
+  {
+   "xref": 72,
+   "name": "Läktare",
+   "on": true
+  },
+  {
+   "xref": 79,
+   "name": "A-27C---E-N",
+   "on": true
+  },
+  {
+   "xref": 80,
+   "name": "A-43CB--E-N",
+   "on": true
+  },
+  {
+   "xref": 81,
+   "name": "A-42D--BE-N",
+   "on": true
+  },
+  {
+   "xref": 82,
+   "name": "A-43CC-CE-N",
+   "on": true
+  },
+  {
+   "xref": 83,
+   "name": "A-42D--CE-N",
+   "on": true
+  },
+  {
+   "xref": 84,
+   "name": "A-4-----T1",
+   "on": true
+  },
+  {
+   "xref": 173,
+   "name": "A-46B--BE-N",
+   "on": true
+  },
+  {
+   "xref": 174,
+   "name": "A-------F3",
+   "on": true
+  },
+  {
+   "xref": 175,
+   "name": "A-5-----E-N",
+   "on": true
+  },
+  {
+   "xref": 176,
+   "name": "A-------G1",
+   "on": true
+  },
+  {
+   "xref": 179,
+   "name": "A-43CB--H-",
+   "on": true
+  },
+  {
+   "xref": 180,
+   "name": "A-46C---E-N",
+   "on": true
+  },
+  {
+   "xref": 182,
+   "name": "A-27G---E-N",
+   "on": true
+  },
+  {
+   "xref": 209,
+   "name": "A-46B--BE-T",
+   "on": true
+  },
+  {
+   "xref": 211,
+   "name": "A-B-B---E-",
+   "on": true
+  },
+  {
+   "xref": 212,
+   "name": "A-B-B---T1",
+   "on": true
+  },
+  {
+   "xref": 215,
+   "name": "P-1------utr",
+   "on": true
+  },
+  {
+   "xref": 216,
+   "name": "A-27E---E-",
+   "on": true
+  },
+  {
+   "xref": 217,
+   "name": "A-44D---E-",
+   "on": true
+  },
+  {
+   "xref": 221,
+   "name": "B-3772",
+   "on": true
+  },
+  {
+   "xref": 225,
+   "name": "A-3770-00-",
+   "on": true
+  },
+  {
+   "xref": 255,
+   "name": "A-3760-T3",
+   "on": true
+  },
+  {
+   "xref": 266,
+   "name": "Förklaring",
+   "on": true
+  },
+  {
+   "xref": 280,
+   "name": "Markvärme planvärmerör zon 2",
+   "on": true
+  },
+  {
+   "xref": 284,
+   "name": "Markvärme fördelningsrör returledning",
+   "on": true
+  },
+  {
+   "xref": 294,
+   "name": "Markvärme fördelningsrör framledning",
+   "on": true
+  },
+  {
+   "xref": 331,
+   "name": "Markvärme planvärmerör zon 1",
+   "on": true
+  },
+  {
+   "xref": 348,
+   "name": "RAM",
+   "on": true
+  },
+  {
+   "xref": 349,
+   "name": "Skallinjal",
+   "on": true
+  },
+  {
+   "xref": 350,
+   "name": "Skallinjal text",
+   "on": true
+  },
+  {
+   "xref": 359,
+   "name": "Norrpil",
+   "on": true
+  },
+  {
+   "xref": 360,
+   "name": "RITHUVUD",
+   "on": true
+  },
+  {
+   "xref": 378,
+   "name": "AO logga",
+   "on": true
+  },
+  {
+   "xref": 399,
+   "name": "Arbetområde",
+   "on": true
+  },
+  {
+   "xref": 406,
+   "name": "Elskåp",
+   "on": true
+  }
+ ],
+ "pages": [
+  {
+   "page": 0,
+   "width": 2384.0,
+   "height": 1684.0,
+   "rotation": 0,
+   "mediabox": [
+    0.0,
+    0.0,
+    2384.0,
+    1684.0
+   ],
+   "cropbox": [
+    0.0,
+    0.0,
+    2384.0,
+    1684.0
+   ],
+   "n_paths": 40259,
+   "n_segments": 221576,
+   "n_curve_items": 4861,
+   "n_text_spans": 55,
+   "n_text_chars": 376,
+   "n_images": 71,
+   "n_annotations": 208,
+   "n_xobjects": 0,
+   "xobjects": [],
+   "fonts": [
+    {
+     "xref": 37,
+     "ext": "ttf",
+     "type": "Type0",
+     "basefont": "ArialMT",
+     "name": "F1",
+     "encoding": "Identity-H"
+    },
+    {
+     "xref": 373,
+     "ext": "ttf",
+     "type": "Type0",
+     "basefont": "SymbolMT",
+     "name": "F2",
+     "encoding": "Identity-H"
+    }
+   ],
+   "annotations": [
+    {
+     "type": "Square",
+     "rect": [
+      803.0,
+      1006.0,
+      890.0,
+      1035.0
+     ],
+     "content": "Värmezon 1 - 50.2 m"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      496.0,
+      1142.0,
+      505.0,
+      1159.0
+     ],
+     "content": "OMKLÄDNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      497.0,
+      1150.0,
+      506.0,
+      1160.0
+     ],
+     "content": "102"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      539.0,
+      1131.0,
+      552.0,
+      1164.0
+     ],
+     "content": "SITTPLATSLÄKTARE SÖDER, 137"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      647.0,
+      684.0,
+      660.0,
+      717.0
+     ],
+     "content": "SITTPLATSLÄKTARE NORR, 159"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      508.0,
+      1067.0,
+      517.0,
+      1084.0
+     ],
+     "content": "OMKLÄDNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      510.0,
+      1075.0,
+      519.0,
+      1085.0
+     ],
+     "content": "108"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      502.0,
+      1047.0,
+      511.0,
+      1061.0
+     ],
+     "content": "TVAGNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      504.0,
+      1053.0,
+      512.0,
+      1063.0
+     ],
+     "content": "109"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      519.0,
+      1053.0,
+      527.0,
+      1062.0
+     ],
+     "content": "HWC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      521.0,
+      1053.0,
+      530.0,
+      1063.0
+     ],
+     "content": "110"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      532.0,
+      1052.0,
+      541.0,
+      1065.0
+     ],
+     "content": "FÖRRÅD"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      535.0,
+      1057.0,
+      542.0,
+      1065.0
+     ],
+     "content": "111"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      523.0,
+      1033.0,
+      531.0,
+      1043.0
+     ],
+     "content": "HWC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      526.0,
+      1035.0,
+      533.0,
+      1043.0
+     ],
+     "content": "114"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      536.0,
+      1035.0,
+      545.0,
+      1046.0
+     ],
+     "content": "STÄD"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      539.0,
+      1038.0,
+      547.0,
+      1046.0
+     ],
+     "content": "112"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      506.0,
+      1028.0,
+      514.0,
+      1042.0
+     ],
+     "content": "TVAGNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      508.0,
+      1035.0,
+      515.0,
+      1043.0
+     ],
+     "content": "115"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      526.0,
+      1136.0,
+      535.0,
+      1150.0
+     ],
+     "content": "PASSAGE"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      528.0,
+      1141.0,
+      536.0,
+      1150.0
+     ],
+     "content": "136"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      520.0,
+      1010.0,
+      529.0,
+      1026.0
+     ],
+     "content": "OMKLÄDNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      522.0,
+      1018.0,
+      530.0,
+      1026.0
+     ],
+     "content": "113"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      525.0,
+      986.0,
+      534.0,
+      1002.0
+     ],
+     "content": "OMKLÄDNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      527.0,
+      994.0,
+      535.0,
+      1002.0
+     ],
+     "content": "116"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      518.0,
+      964.0,
+      527.0,
+      978.0
+     ],
+     "content": "TVAGNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      521.0,
+      971.0,
+      528.0,
+      979.0
+     ],
+     "content": "117"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      532.0,
+      973.0,
+      540.0,
+      981.0
+     ],
+     "content": "WC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      535.0,
+      973.0,
+      542.0,
+      981.0
+     ],
+     "content": "118"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      538.0,
+      943.0,
+      546.0,
+      951.0
+     ],
+     "content": "WC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      540.0,
+      944.0,
+      548.0,
+      952.0
+     ],
+     "content": "122"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      545.0,
+      959.0,
+      554.0,
+      974.0
+     ],
+     "content": "TEKNIKRUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      548.0,
+      966.0,
+      555.0,
+      974.0
+     ],
+     "content": "119"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      522.0,
+      945.0,
+      531.0,
+      959.0
+     ],
+     "content": "TVAGNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      525.0,
+      951.0,
+      532.0,
+      959.0
+     ],
+     "content": "123"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      537.0,
+      925.0,
+      546.0,
+      941.0
+     ],
+     "content": "OMKLÄDNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      539.0,
+      934.0,
+      547.0,
+      942.0
+     ],
+     "content": "121"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      558.0,
+      821.0,
+      567.0,
+      835.0
+     ],
+     "content": "SJUKRUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      561.0,
+      826.0,
+      568.0,
+      834.0
+     ],
+     "content": "133"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      580.0,
+      800.0,
+      589.0,
+      811.0
+     ],
+     "content": "HWC 3"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      583.0,
+      803.0,
+      590.0,
+      811.0
+     ],
+     "content": "135"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      563.0,
+      802.0,
+      571.0,
+      813.0
+     ],
+     "content": "KIOSK"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      565.0,
+      805.0,
+      572.0,
+      813.0
+     ],
+     "content": "134"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      581.0,
+      862.0,
+      590.0,
+      876.0
+     ],
+     "content": "PASSAGE"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      584.0,
+      867.0,
+      591.0,
+      876.0
+     ],
+     "content": "136"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      557.0,
+      755.0,
+      567.0,
+      773.0
+     ],
+     "content": "BILJETTKIOSK 1"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      560.0,
+      765.0,
+      567.0,
+      773.0
+     ],
+     "content": "161"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      563.0,
+      727.0,
+      573.0,
+      745.0
+     ],
+     "content": "BILJETTKIOSK 2"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      565.0,
+      737.0,
+      573.0,
+      746.0
+     ],
+     "content": "162"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      574.0,
+      676.0,
+      584.0,
+      697.0
+     ],
+     "content": "ALLM. WC. HERRAR"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      576.0,
+      689.0,
+      584.0,
+      697.0
+     ],
+     "content": "138"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      602.0,
+      682.0,
+      613.0,
+      703.0
+     ],
+     "content": "ALLM. WC. DAMER"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      605.0,
+      695.0,
+      612.0,
+      703.0
+     ],
+     "content": "139"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      620.0,
+      648.0,
+      629.0,
+      662.0
+     ],
+     "content": "PASSAGE"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      623.0,
+      654.0,
+      630.0,
+      662.0
+     ],
+     "content": "157"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      590.0,
+      652.0,
+      599.0,
+      667.0
+     ],
+     "content": "PRESSRUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      593.0,
+      659.0,
+      600.0,
+      667.0
+     ],
+     "content": "143"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      586.0,
+      631.0,
+      594.0,
+      643.0
+     ],
+     "content": "PENTRY"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      588.0,
+      635.0,
+      596.0,
+      644.0
+     ],
+     "content": "144"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      597.0,
+      639.0,
+      605.0,
+      649.0
+     ],
+     "content": "WC 7"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      599.0,
+      641.0,
+      607.0,
+      649.0
+     ],
+     "content": "141"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      599.0,
+      629.0,
+      607.0,
+      640.0
+     ],
+     "content": "STÄD"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      602.0,
+      631.0,
+      609.0,
+      640.0
+     ],
+     "content": "142"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      608.0,
+      636.0,
+      616.0,
+      647.0
+     ],
+     "content": "ENTRÈ"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      610.0,
+      637.0,
+      619.0,
+      647.0
+     ],
+     "content": "140"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      603.0,
+      599.0,
+      611.0,
+      614.0
+     ],
+     "content": "KLUBBRUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      605.0,
+      606.0,
+      613.0,
+      614.0
+     ],
+     "content": "145"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      600.0,
+      553.0,
+      609.0,
+      571.0
+     ],
+     "content": "PERSONALRUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      602.0,
+      562.0,
+      610.0,
+      571.0
+     ],
+     "content": "146"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      610.0,
+      580.0,
+      618.0,
+      589.0
+     ],
+     "content": "WC 8"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      612.0,
+      582.0,
+      620.0,
+      590.0
+     ],
+     "content": "149"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      617.0,
+      545.0,
+      625.0,
+      555.0
+     ],
+     "content": "WC 9"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      620.0,
+      547.0,
+      627.0,
+      555.0
+     ],
+     "content": "152"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      612.0,
+      569.0,
+      620.0,
+      582.0
+     ],
+     "content": "DUSCH 1"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      614.0,
+      573.0,
+      622.0,
+      582.0
+     ],
+     "content": "148"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      615.0,
+      553.0,
+      624.0,
+      565.0
+     ],
+     "content": "DUSCH 2"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      617.0,
+      558.0,
+      625.0,
+      566.0
+     ],
+     "content": "151"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      614.0,
+      562.0,
+      622.0,
+      573.0
+     ],
+     "content": "PASS."
+    },
+    {
+     "type": "Square",
+     "rect": [
+      616.0,
+      563.0,
+      624.0,
+      573.0
+     ],
+     "content": "150"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      625.0,
+      572.0,
+      635.0,
+      593.0
+     ],
+     "content": "OMKL. PERS. HERR"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      628.0,
+      585.0,
+      635.0,
+      593.0
+     ],
+     "content": "147"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      630.0,
+      548.0,
+      640.0,
+      568.0
+     ],
+     "content": "OMKL. PERS. DAM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      632.0,
+      561.0,
+      640.0,
+      569.0
+     ],
+     "content": "153"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      622.0,
+      516.0,
+      631.0,
+      531.0
+     ],
+     "content": "VERKSTAD"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      624.0,
+      523.0,
+      632.0,
+      532.0
+     ],
+     "content": "154"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      631.0,
+      472.0,
+      640.0,
+      489.0
+     ],
+     "content": "KALLFÖRRÅD"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      633.0,
+      481.0,
+      641.0,
+      490.0
+     ],
+     "content": "155"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      656.0,
+      409.0,
+      667.0,
+      435.0
+     ],
+     "content": "KALLFÖRRÅD & GARAGE"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      658.0,
+      426.0,
+      666.0,
+      435.0
+     ],
+     "content": "156"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      500.0,
+      967.0,
+      509.0,
+      979.0
+     ],
+     "content": "DEL 2"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      499.0,
+      976.0,
+      507.0,
+      987.0
+     ],
+     "content": "DEL 1"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      551.0,
+      976.0,
+      559.0,
+      985.0
+     ],
+     "content": "EL-C"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      519.0,
+      1112.0,
+      527.0,
+      1125.0
+     ],
+     "content": "FÖRRUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      521.0,
+      1116.0,
+      529.0,
+      1126.0
+     ],
+     "content": "101"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      491.0,
+      1099.0,
+      500.0,
+      1113.0
+     ],
+     "content": "TVAGNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      493.0,
+      1105.0,
+      501.0,
+      1115.0
+     ],
+     "content": "103"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      501.0,
+      1123.0,
+      509.0,
+      1131.0
+     ],
+     "content": "WC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      503.0,
+      1122.0,
+      512.0,
+      1132.0
+     ],
+     "content": "104"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      507.0,
+      1114.0,
+      515.0,
+      1122.0
+     ],
+     "content": "WC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      509.0,
+      1113.0,
+      518.0,
+      1123.0
+     ],
+     "content": "105"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      509.0,
+      1106.0,
+      517.0,
+      1114.0
+     ],
+     "content": "WC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      511.0,
+      1105.0,
+      519.0,
+      1116.0
+     ],
+     "content": "106"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      522.0,
+      1093.0,
+      531.0,
+      1107.0
+     ],
+     "content": "MASSAGE"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      524.0,
+      1099.0,
+      533.0,
+      1109.0
+     ],
+     "content": "107"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      546.0,
+      892.0,
+      555.0,
+      909.0
+     ],
+     "content": "OMKLÄDNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      548.0,
+      901.0,
+      556.0,
+      909.0
+     ],
+     "content": "125"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      569.0,
+      862.0,
+      578.0,
+      875.0
+     ],
+     "content": "FÖRRUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      572.0,
+      867.0,
+      579.0,
+      875.0
+     ],
+     "content": "124"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      541.0,
+      849.0,
+      550.0,
+      863.0
+     ],
+     "content": "TVAGNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      544.0,
+      855.0,
+      551.0,
+      864.0
+     ],
+     "content": "126"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      552.0,
+      873.0,
+      559.0,
+      881.0
+     ],
+     "content": "WC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      554.0,
+      873.0,
+      562.0,
+      881.0
+     ],
+     "content": "127"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      558.0,
+      864.0,
+      566.0,
+      872.0
+     ],
+     "content": "WC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      560.0,
+      864.0,
+      568.0,
+      873.0
+     ],
+     "content": "128"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      560.0,
+      856.0,
+      567.0,
+      864.0
+     ],
+     "content": "WC"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      562.0,
+      856.0,
+      569.0,
+      864.0
+     ],
+     "content": "129"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      573.0,
+      843.0,
+      582.0,
+      857.0
+     ],
+     "content": "MASSAGE"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      575.0,
+      848.0,
+      584.0,
+      858.0
+     ],
+     "content": "130"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      500.0,
+      1128.0,
+      507.0,
+      1135.0
+     ],
+     "content": "WB"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      512.0,
+      1175.0,
+      522.0,
+      1187.0
+     ],
+     "content": "EI30"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      524.0,
+      1177.0,
+      533.0,
+      1189.0
+     ],
+     "content": "EI30"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      550.0,
+      945.0,
+      558.0,
+      954.0
+     ],
+     "content": "FRD"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      552.0,
+      945.0,
+      561.0,
+      955.0
+     ],
+     "content": "120"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      623.0,
+      678.0,
+      638.0,
+      723.0
+     ],
+     "content": "SITTPLATSER FÖR PRESSFOLK CA 15 PLATSER"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      631.0,
+      660.0,
+      641.0,
+      677.0
+     ],
+     "content": "SPEAKERRUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      634.0,
+      669.0,
+      642.0,
+      677.0
+     ],
+     "content": "158"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      635.0,
+      641.0,
+      644.0,
+      655.0
+     ],
+     "content": "TV/RADIO"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      551.0,
+      878.0,
+      557.0,
+      885.0
+     ],
+     "content": "WB"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      606.0,
+      989.0,
+      615.0,
+      1000.0
+     ],
+     "content": "DEL 2"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      604.0,
+      997.0,
+      613.0,
+      1008.0
+     ],
+     "content": "DEL 1"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      646.0,
+      791.0,
+      654.0,
+      803.0
+     ],
+     "content": "DEL 3"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      644.0,
+      799.0,
+      653.0,
+      810.0
+     ],
+     "content": "DEL 2"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      540.0,
+      770.0,
+      549.0,
+      781.0
+     ],
+     "content": "DEL 3"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      539.0,
+      778.0,
+      547.0,
+      789.0
+     ],
+     "content": "DEL 2"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      686.0,
+      594.0,
+      694.0,
+      605.0
+     ],
+     "content": "DEL 4"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      684.0,
+      602.0,
+      693.0,
+      613.0
+     ],
+     "content": "DEL 3"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      580.0,
+      573.0,
+      589.0,
+      584.0
+     ],
+     "content": "DEL 4"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      579.0,
+      580.0,
+      587.0,
+      592.0
+     ],
+     "content": "DEL 3"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      517.0,
+      1131.0,
+      524.0,
+      1139.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      492.0,
+      1126.0,
+      499.0,
+      1134.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      484.0,
+      1125.0,
+      492.0,
+      1133.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      504.0,
+      1063.0,
+      512.0,
+      1070.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      497.0,
+      1061.0,
+      504.0,
+      1069.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      521.0,
+      979.0,
+      529.0,
+      987.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      515.0,
+      978.0,
+      522.0,
+      986.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      523.0,
+      934.0,
+      531.0,
+      942.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      530.0,
+      936.0,
+      537.0,
+      943.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      542.0,
+      876.0,
+      550.0,
+      884.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      535.0,
+      875.0,
+      542.0,
+      882.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      568.0,
+      881.0,
+      575.0,
+      889.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      601.0,
+      492.0,
+      610.0,
+      504.0
+     ],
+     "content": "EI60"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      593.0,
+      534.0,
+      602.0,
+      546.0
+     ],
+     "content": "EI60"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      510.0,
+      1130.0,
+      517.0,
+      1138.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      560.0,
+      880.0,
+      568.0,
+      888.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      506.0,
+      1018.0,
+      514.0,
+      1025.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      513.0,
+      1019.0,
+      521.0,
+      1027.0
+     ],
+     "content": "HS"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      561.0,
+      804.0,
+      568.0,
+      810.0
+     ],
+     "content": "C"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      558.0,
+      806.0,
+      565.0,
+      812.0
+     ],
+     "content": "D"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      556.0,
+      803.0,
+      563.0,
+      810.0
+     ],
+     "content": "A"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      559.0,
+      801.0,
+      566.0,
+      808.0
+     ],
+     "content": "B"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1052.0,
+      1056.0,
+      1138.0,
+      1085.0
+     ],
+     "content": "Värmezon 2 - 21.2 m"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      667.0,
+      506.0,
+      683.0,
+      516.0
+     ],
+     "content": "Framledning zon 1"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      667.0,
+      504.0,
+      684.0,
+      513.0
+     ],
+     "content": "Returledning zon 1"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      667.0,
+      501.0,
+      684.0,
+      510.0
+     ],
+     "content": "Framledning zon 2"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      667.0,
+      499.0,
+      685.0,
+      508.0
+     ],
+     "content": "Returledning zon 2"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1671.0,
+      1599.0,
+      1740.0,
+      1617.0
+     ],
+     "content": "SKALA 1:400"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1741.0,
+      1588.0,
+      1772.0,
+      1601.0
+     ],
+     "content": "METER"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1725.0,
+      1611.0,
+      1760.0,
+      1634.0
+     ],
+     "content": "0"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2012.0,
+      1611.0,
+      2048.0,
+      1634.0
+     ],
+     "content": "40"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1798.0,
+      1611.0,
+      1834.0,
+      1634.0
+     ],
+     "content": "10"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1870.0,
+      1611.0,
+      1906.0,
+      1634.0
+     ],
+     "content": "20"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1941.0,
+      1611.0,
+      1976.0,
+      1634.0
+     ],
+     "content": "30"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      1773.0,
+      1615.0,
+      1783.0,
+      1630.0
+     ],
+     "content": "5"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2157.0,
+      1489.0,
+      2210.0,
+      1502.0
+     ],
+     "content": "RITAD/KONSTR AV"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2157.0,
+      1515.0,
+      2188.0,
+      1528.0
+     ],
+     "content": "ANSVARIG"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2253.0,
+      1490.0,
+      2301.0,
+      1500.0
+     ],
+     "content": "PROJEKTNUMMER"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2063.0,
+      1490.0,
+      2101.0,
+      1500.0
+     ],
+     "content": "UPPDRAG NR"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2063.0,
+      1516.0,
+      2086.0,
+      1526.0
+     ],
+     "content": "DATUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2157.0,
+      1608.0,
+      2191.0,
+      1621.0
+     ],
+     "content": "RITNINGSNR"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2095.0,
+      1608.0,
+      2119.0,
+      1621.0
+     ],
+     "content": "SKALA"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2063.0,
+      1323.0,
+      2120.0,
+      1334.0
+     ],
+     "content": "PROJEKTBENÄMNING"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2063.0,
+      1351.0,
+      2114.0,
+      1364.0
+     ],
+     "content": "UPPDRAGSGIVARE"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2063.0,
+      1295.0,
+      2107.0,
+      1308.0
+     ],
+     "content": "HANDLINGSTYP"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2063.0,
+      1609.0,
+      2089.0,
+      1619.0
+     ],
+     "content": "FORMAT"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2313.0,
+      1609.0,
+      2328.0,
+      1619.0
+     ],
+     "content": "REV"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2253.0,
+      1515.0,
+      2281.0,
+      1528.0
+     ],
+     "content": "DISCIPLIN"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2083.0,
+      1056.0,
+      2102.0,
+      1067.0
+     ],
+     "content": "ANT"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2063.0,
+      1056.0,
+      2081.0,
+      1067.0
+     ],
+     "content": "BET"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2110.0,
+      1054.0,
+      2178.0,
+      1069.0
+     ],
+     "content": "ÄNDRINGEN AVSER"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2309.0,
+      1054.0,
+      2331.0,
+      1069.0
+     ],
+     "content": "SIGN"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2265.0,
+      1056.0,
+      2293.0,
+      1067.0
+     ],
+     "content": "DATUM"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2065.0,
+      1299.0,
+      2283.0,
+      1330.0
+     ],
+     "content": "FÖRFRÅGNINGSUNDERLAG"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2065.0,
+      1329.0,
+      2342.0,
+      1359.0
+     ],
+     "content": "MARKVÄRME OCH HYBRIDGRÄSPLAN"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2158.0,
+      1499.0,
+      2178.0,
+      1514.0
+     ],
+     "content": "AO"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2058.0,
+      1521.0,
+      2142.0,
+      1543.0
+     ],
+     "content": "2026-03-05"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2064.0,
+      1539.0,
+      2282.0,
+      1561.0
+     ],
+     "content": "MARKVÄRME OCH HYBRIDGRÄSPLAN"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2064.0,
+      1556.0,
+      2235.0,
+      1578.0
+     ],
+     "content": "FINNVEDSVALLEN VÄRNAMO"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2064.0,
+      1590.0,
+      2236.0,
+      1612.0
+     ],
+     "content": "MARKVÄRMESYSTEM I MARK"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2064.0,
+      1624.0,
+      2081.0,
+      1639.0
+     ],
+     "content": "A1"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2098.0,
+      1620.0,
+      2144.0,
+      1643.0
+     ],
+     "content": "1:400"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2158.0,
+      1620.0,
+      2234.0,
+      1643.0
+     ],
+     "content": "M-10-1-002"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2154.0,
+      57.0,
+      2251.0,
+      77.0
+     ],
+     "content": "FÖRKLARINGAR"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2128.0,
+      103.0,
+      2192.0,
+      120.0
+     ],
+     "content": "Arbetsområde"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2128.0,
+      132.0,
+      2156.0,
+      144.0
+     ],
+     "content": "Räcke"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2128.0,
+      158.0,
+      2227.0,
+      176.0
+     ],
+     "content": "Nytt skåp med eluttag"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2128.0,
+      187.0,
+      2204.0,
+      204.0
+     ],
+     "content": "Bevattningspump"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2128.0,
+      216.0,
+      2223.0,
+      230.0
+     ],
+     "content": "Ny fjärrvärmecentral"
+    },
+    {
+     "type": "Square",
+     "rect": [
+      2128.0,
+      244.0,
+      2210.0,
+      259.0
+     ],
+     "content": "Befintlig elcentral"
+    }
+   ],
+   "path_kinds": {
+    "s": 11170,
+    "fs": 29089
+   },
+   "layers": {
+    "": 724,
+    "0": 651,
+    "5 m höjdkurva": 6,
+    "A-------F3": 1,
+    "A-------G1": 174,
+    "A-27C---E-N": 196,
+    "A-27E---E-": 116,
+    "A-27G---E-N": 71,
+    "A-3760-T3": 20,
+    "A-3770-00-": 1,
+    "A-4-----T1": 1913,
+    "A-42D--BE-N": 571,
+    "A-42D--CE-N": 62,
+    "A-43CB--E-N": 453,
+    "A-43CB--H-": 132,
+    "A-43CC-CE-N": 240,
+    "A-44D---E-": 87,
+    "A-46B--BE-N": 527,
+    "A-46B--BE-T": 156,
+    "A-46C---E-N": 18,
+    "A-5-----E-N": 1905,
+    "A-B-B---E-": 50,
+    "A-B-B---T1": 54,
+    "AO logga": 7,
+    "Allmän väg belagd": 91,
+    "Allvädersbeläggning röd linjer": 14,
+    "Arbetområde": 6,
+    "B-3772": 210,
+    "Banmarkeringar": 247,
+    "Banmarkeringar ifyllnad": 17586,
+    "Belysningsmast": 4297,
+    "Bostad": 3,
+    "Bostadskryss": 6,
+    "Bro": 2,
+    "Elskåp": 2,
+    "Fastighetsgräns": 71,
+    "Fotboll spellinjer 11 plan": 2433,
+    "Fundament": 48,
+    "Förklaring": 3,
+    "GC-väg obelagd": 9,
+    "Garage": 3,
+    "Gränspunkt": 17,
+    "Indraget husliv": 66,
+    "Kulvert Vägtrumma": 5,
+    "Kvartersgräns": 40,
+    "Läktare": 5,
+    "Markvärme fördelningsrör framledning": 240,
+    "Markvärme fördelningsrör returledning": 55,
+    "Markvärme planvärmerör zon 1": 312,
+    "Markvärme planvärmerör zon 2": 147,
+    "Måttsättning markvärme": 97,
+    "Norrpil": 156,
+    "P-1------utr": 81,
+    "RAM": 14,
+    "RITHUVUD": 700,
+    "Ramp": 2,
+    "Räcke": 568,
+    "Ränndalssten": 16,
+    "Ränndalssten ifyllnad": 2114,
+    "Sarg": 12,
+    "Sarg ifyllnad": 1812,
+    "Skallinjal": 26,
+    "Skallinjal text": 75,
+    "Skärmtak mindre": 48,
+    "Släntfot": 17,
+    "Släntkrön": 12,
+    "Släntskraffering": 212,
+    "Sporthall": 4,
+    "Staket": 42,
+    "Strandlinje": 1,
+    "Stödmur": 7,
+    "Terrängpunkt": 16,
+    "Terrängtrappa": 4,
+    "Traktgräns": 9,
+    "Trappa": 3,
+    "Uterum": 1,
+    "Vägräcke": 52,
+    "jämn höjdkurva": 20,
+    "ojämn höjdkurva": 17,
+    "Ägoslagsgräns": 1,
+    "Övrig byggn mindre": 17,
+    "Övrig byggn större": 3,
+    "Övrig väg belagd": 47
+   },
+   "stroke_widths": {
+    "0.00": 30731,
+    "0.12": 300,
+    "0.24": 712,
+    "0.36": 5601,
+    "0.48": 40,
+    "0.60": 16,
+    "0.72": 2859
+   }
+  }
+ ]
+}

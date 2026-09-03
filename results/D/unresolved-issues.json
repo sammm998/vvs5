@@ -1,0 +1,1648 @@
+{
+ "issues": [
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "041460a5e973",
+   "alternatives": [
+    [
+     "X",
+     0.186
+    ],
+    [
+     "N",
+     0.1923
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "05b5562dd10c",
+   "alternatives": [
+    [
+     "5",
+     0.1429
+    ],
+    [
+     "2",
+     0.146
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "0775fccc1708",
+   "alternatives": [
+    [
+     "8",
+     0.1876
+    ],
+    [
+     "B",
+     0.2015
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "096be2089dca",
+   "alternatives": [
+    [
+     "4",
+     0.1808
+    ],
+    [
+     "G",
+     0.2006
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 42,
+   "family": "0984fb4f9e9c",
+   "alternatives": [
+    [
+     "+",
+     0.2476
+    ],
+    [
+     ".",
+     0.2541
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "0f679d4b4981",
+   "alternatives": [
+    [
+     "0",
+     0.1434
+    ],
+    [
+     "D",
+     0.1492
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "12f17ed1dcad",
+   "alternatives": [
+    [
+     "A",
+     0.1567
+    ],
+    [
+     "4",
+     0.1654
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "179373e5aec3",
+   "alternatives": [
+    [
+     "i",
+     0.4455
+    ],
+    [
+     "Ö",
+     0.447
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 15,
+   "family": "17bf2a54dd80",
+   "alternatives": [
+    [
+     "+",
+     0.2468
+    ],
+    [
+     "*",
+     0.2649
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "1b68b92e29b6",
+   "alternatives": [
+    [
+     "2",
+     0.1564
+    ],
+    [
+     "7",
+     0.1681
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "1fffda046b11",
+   "alternatives": [
+    [
+     "+",
+     0.2487
+    ],
+    [
+     "*",
+     0.2637
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "216e884cf031",
+   "alternatives": [
+    [
+     "+",
+     0.2299
+    ],
+    [
+     "*",
+     0.2408
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "243cfc89d4c2",
+   "alternatives": [
+    [
+     "E",
+     0.1424
+    ],
+    [
+     "F",
+     0.1536
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "27329b9fb677",
+   "alternatives": [
+    [
+     "A",
+     0.1651
+    ],
+    [
+     "D",
+     0.1667
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "2993a57d9f93",
+   "alternatives": [
+    [
+     "L",
+     0.1914
+    ],
+    [
+     "2",
+     0.2024
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "2a4d747edf18",
+   "alternatives": [
+    [
+     "W",
+     0.151
+    ],
+    [
+     "m",
+     0.1633
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "2c449e87588f",
+   "alternatives": [
+    [
+     "+",
+     0.2309
+    ],
+    [
+     ".",
+     0.2399
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "30939eb56959",
+   "alternatives": [
+    [
+     "R",
+     0.2492
+    ],
+    [
+     "6",
+     0.2496
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "318c727f825c",
+   "alternatives": [
+    [
+     "D",
+     0.1449
+    ],
+    [
+     "0",
+     0.1474
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 6,
+   "family": "329b36fae6c4",
+   "alternatives": [
+    [
+     "D",
+     0.1959
+    ],
+    [
+     "Ø",
+     0.211
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "34134e6d98b2",
+   "alternatives": [
+    [
+     "D",
+     0.168
+    ],
+    [
+     "Q",
+     0.1681
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "3531ed845f9a",
+   "alternatives": [
+    [
+     "4",
+     0.1417
+    ],
+    [
+     "A",
+     0.1701
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 8,
+   "family": "3958ae6b9b05",
+   "alternatives": [
+    [
+     "N",
+     0.1425
+    ],
+    [
+     "H",
+     0.1558
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "3e5039738940",
+   "alternatives": [
+    [
+     "H",
+     0.2109
+    ],
+    [
+     "+",
+     0.2492
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "42e58f304894",
+   "alternatives": [
+    [
+     "+",
+     0.238
+    ],
+    [
+     ".",
+     0.2491
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "43609641068c",
+   "alternatives": [
+    [
+     ".",
+     0.2215
+    ],
+    [
+     "+",
+     0.2243
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "439f8ca01b2f",
+   "alternatives": [
+    [
+     "6",
+     0.1695
+    ],
+    [
+     "9",
+     0.1823
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "47632d2c8610",
+   "alternatives": [
+    [
+     "+",
+     0.2284
+    ],
+    [
+     ".",
+     0.2326
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
+   "family": "4973a9b61d2a",
+   "alternatives": [
+    [
+     "X",
+     0.1852
+    ],
+    [
+     "N",
+     0.1971
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "4a4d05684c2d",
+   "alternatives": [
+    [
+     "H",
+     0.2081
+    ],
+    [
+     "+",
+     0.249
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "4a52df0ea9b3",
+   "alternatives": [
+    [
+     "%",
+     0.2124
+    ],
+    [
+     "B",
+     0.2293
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "5426f22fca86",
+   "alternatives": [
+    [
+     "N",
+     0.1519
+    ],
+    [
+     "W",
+     0.1564
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "546fca99b195",
+   "alternatives": [
+    [
+     "8",
+     0.2135
+    ],
+    [
+     "4",
+     0.2165
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "554f8f98e2e1",
+   "alternatives": [
+    [
+     "W",
+     0.1646
+    ],
+    [
+     "T",
+     0.1719
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "5581838535f5",
+   "alternatives": [
+    [
+     ".",
+     0.1829
+    ],
+    [
+     "Y",
+     0.2164
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "57fdf8d64344",
+   "alternatives": [
+    [
+     "=",
+     0.164
+    ],
+    [
+     ",",
+     0.2056
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "5813dcf4851f",
+   "alternatives": [
+    [
+     "X",
+     0.2077
+    ],
+    [
+     "N",
+     0.2196
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "5eeaab0fd26d",
+   "alternatives": [
+    [
+     "J",
+     0.1598
+    ],
+    [
+     "3",
+     0.1647
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "5fbf7d8cfe46",
+   "alternatives": [
+    [
+     "X",
+     0.2115
+    ],
+    [
+     "N",
+     0.2234
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
+   "family": "600ef1fd921a",
+   "alternatives": [
+    [
+     "Ø",
+     0.1878
+    ],
+    [
+     "W",
+     0.1889
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "600f71384b49",
+   "alternatives": [
+    [
+     "1",
+     0.1489
+    ],
+    [
+     ")",
+     0.1502
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "65fa143b7031",
+   "alternatives": [
+    [
+     "8",
+     0.1647
+    ],
+    [
+     "B",
+     0.1732
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "665c93ee97dd",
+   "alternatives": [
+    [
+     "Z",
+     0.167
+    ],
+    [
+     "/",
+     0.1945
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "67510350051f",
+   "alternatives": [
+    [
+     "B",
+     0.151
+    ],
+    [
+     "8",
+     0.1789
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "68894b0c5966",
+   "alternatives": [
+    [
+     "F",
+     0.1588
+    ],
+    [
+     "R",
+     0.1625
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "70c6f404ad78",
+   "alternatives": [
+    [
+     "X",
+     0.1875
+    ],
+    [
+     "N",
+     0.1994
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
+   "family": "7f166ea4d23d",
+   "alternatives": [
+    [
+     "+",
+     0.2487
+    ],
+    [
+     "*",
+     0.265
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "7fa61527e305",
+   "alternatives": [
+    [
+     "+",
+     0.2294
+    ],
+    [
+     ".",
+     0.2334
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "7fe15b0fb666",
+   "alternatives": [
+    [
+     "N",
+     0.1704
+    ],
+    [
+     "G",
+     0.1738
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "80e228b4305e",
+   "alternatives": [
+    [
+     "1",
+     0.1794
+    ],
+    [
+     "]",
+     0.1951
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 18,
+   "family": "88ac78c6cb56",
+   "alternatives": [
+    [
+     "+",
+     0.2476
+    ],
+    [
+     ".",
+     0.2541
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 53,
+   "family": "8ab8365f2ca1",
+   "alternatives": [
+    [
+     "+",
+     0.2468
+    ],
+    [
+     "*",
+     0.2649
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "8fbdf78d0631",
+   "alternatives": [
+    [
+     "N",
+     0.1425
+    ],
+    [
+     "H",
+     0.1558
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "9141c0295a59",
+   "alternatives": [
+    [
+     "+",
+     0.2378
+    ],
+    [
+     ".",
+     0.2489
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "93c7059f03ce",
+   "alternatives": [
+    [
+     "8",
+     0.1925
+    ],
+    [
+     "B",
+     0.2119
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "97b61136ed96",
+   "alternatives": [
+    [
+     "X",
+     0.1856
+    ],
+    [
+     "N",
+     0.1918
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "997a62063776",
+   "alternatives": [
+    [
+     "%",
+     0.2136
+    ],
+    [
+     "B",
+     0.2299
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "9d6ce4f2f417",
+   "alternatives": [
+    [
+     "W",
+     0.1655
+    ],
+    [
+     "/",
+     0.1745
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
+   "family": "9e2d3200a3e0",
+   "alternatives": [
+    [
+     "W",
+     0.1433
+    ],
+    [
+     "N",
+     0.15
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "9f773570f8d2",
+   "alternatives": [
+    [
+     "-",
+     0.2137
+    ],
+    [
+     "=",
+     0.2141
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "a053cf56dc7a",
+   "alternatives": [
+    [
+     "=",
+     0.2011
+    ],
+    [
+     ".",
+     0.2159
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "a46caad47c58",
+   "alternatives": [
+    [
+     ".",
+     0.2487
+    ],
+    [
+     "X",
+     0.2585
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "a712e537254a",
+   "alternatives": [
+    [
+     "+",
+     0.2394
+    ],
+    [
+     ".",
+     0.2518
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "a89b7bb3d479",
+   "alternatives": [
+    [
+     "+",
+     0.2304
+    ],
+    [
+     ".",
+     0.2422
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "ab99ee5c94d2",
+   "alternatives": [
+    [
+     "U",
+     0.1754
+    ],
+    [
+     "N",
+     0.1758
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "ac37648143d3",
+   "alternatives": [
+    [
+     ".",
+     0.2422
+    ],
+    [
+     "X",
+     0.2608
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "ad3abc75cc88",
+   "alternatives": [
+    [
+     ".",
+     0.1864
+    ],
+    [
+     "+",
+     0.2154
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "b6230da9e41d",
+   "alternatives": [
+    [
+     "E",
+     0.1422
+    ],
+    [
+     "F",
+     0.153
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "bda555292f2a",
+   "alternatives": [
+    [
+     "%",
+     0.2058
+    ],
+    [
+     "B",
+     0.2154
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 6,
+   "family": "c050faa44c57",
+   "alternatives": [
+    [
+     "D",
+     0.1915
+    ],
+    [
+     "Ø",
+     0.2017
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "c15d38fa41da",
+   "alternatives": [
+    [
+     "N",
+     0.1659
+    ],
+    [
+     "H",
+     0.1676
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "c7505237695c",
+   "alternatives": [
+    [
+     "X",
+     0.191
+    ],
+    [
+     "N",
+     0.2029
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "cea63b2aa429",
+   "alternatives": [
+    [
+     "/",
+     0.1514
+    ],
+    [
+     ")",
+     0.1784
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "d01cfd2e2c87",
+   "alternatives": [
+    [
+     "%",
+     0.1749
+    ],
+    [
+     "8",
+     0.2125
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "d167033decaf",
+   "alternatives": [
+    [
+     "m",
+     0.2005
+    ],
+    [
+     "n",
+     0.2167
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 9,
+   "family": "d550fea7f590",
+   "alternatives": [
+    [
+     "+",
+     0.2472
+    ],
+    [
+     "*",
+     0.2647
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "d7779fa4b32d",
+   "alternatives": [
+    [
+     ".",
+     0.2609
+    ],
+    [
+     "X",
+     0.2836
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 30,
+   "family": "d7dc9cb47767",
+   "alternatives": [
+    [
+     "+",
+     0.2476
+    ],
+    [
+     ".",
+     0.2541
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "dab5d1058254",
+   "alternatives": [
+    [
+     "F",
+     0.1566
+    ],
+    [
+     "H",
+     0.1571
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 7,
+   "family": "ddb152a3d07f",
+   "alternatives": [
+    [
+     "+",
+     0.2476
+    ],
+    [
+     "*",
+     0.2644
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 7,
+   "family": "e6b5c05e995d",
+   "alternatives": [
+    [
+     "L",
+     0.1885
+    ],
+    [
+     "2",
+     0.1993
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "ec8e0cbb37cd",
+   "alternatives": [
+    [
+     "N",
+     0.1518
+    ],
+    [
+     "M",
+     0.1657
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "ee74fa122fce",
+   "alternatives": [
+    [
+     "i",
+     0.4455
+    ],
+    [
+     "Ö",
+     0.4469
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
+   "family": "f022f678e702",
+   "alternatives": [
+    [
+     "4",
+     0.1411
+    ],
+    [
+     "A",
+     0.192
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "f18c91a74d08",
+   "alternatives": [
+    [
+     "T",
+     0.1639
+    ],
+    [
+     "Y",
+     0.2118
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
+   "family": "f4dab344f9b3",
+   "alternatives": []
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "f56a2c3c69a5",
+   "alternatives": [
+    [
+     "H",
+     0.1762
+    ],
+    [
+     "N",
+     0.1782
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "fae74e4c0862",
+   "alternatives": [
+    [
+     "D",
+     0.1961
+    ],
+    [
+     "Ø",
+     0.2134
+    ]
+   ]
+  },
+  {
+   "kind": "missing_dn",
+   "text": "M-1O-1-OO2",
+   "bbox": [
+    2161.159912109375,
+    1626.239990234375,
+    2225.7193603515625,
+    1635.239990234375
+   ],
+   "id": "des_0a721677747f"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "H6-",
+   "bbox": [
+    513.3199462890625,
+    1131.9599609375,
+    514.3845825195312,
+    1134.239990234375
+   ],
+   "id": "des_18f751e7ffa3"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "TV/RADI0",
+   "bbox": [
+    638.8399658203125,
+    643.4400024414062,
+    641.714075088501,
+    651.3600463867188
+   ],
+   "id": "des_38abc57caa20"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "RITAD/K0NSTR",
+   "bbox": [
+    2160.320068359375,
+    1492.6800537109375,
+    2207.119873046875,
+    1496.6400146484375
+   ],
+   "id": "des_3f4bc2c2f4d3"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "H5-",
+   "bbox": [
+    500.47998046875,
+    1063.080078125,
+    501.5445556640625,
+    1065.3599853515625
+   ],
+   "id": "des_509254bcbb8a"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "H5-",
+   "bbox": [
+    545.719970703125,
+    878.1600341796875,
+    546.7846069335938,
+    880.4400024414062
+   ],
+   "id": "des_51da1a52bcd7"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "H5-",
+   "bbox": [
+    538.3999633789062,
+    876.7200317382812,
+    539.4781656265259,
+    879.0
+   ],
+   "id": "des_726f5021e1e2"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "//4GNWG",
+   "bbox": [
+    521.9599609375,
+    966.6000366210938,
+    525.7999877929688,
+    975.1199951171875
+   ],
+   "id": "des_8c1d07144381"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "H5-",
+   "bbox": [
+    487.8799743652344,
+    1126.800048828125,
+    488.9581890106201,
+    1129.080078125
+   ],
+   "id": "des_9ab429526d6a"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "H5-",
+   "bbox": [
+    507.67999267578125,
+    1064.6400146484375,
+    508.74456787109375,
+    1066.800048828125
+   ],
+   "id": "des_a12aa0ed827b"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "2O26-O3-O5",
+   "bbox": [
+    2067.56005859375,
+    1527.0,
+    2134.159912109375,
+    1536.0
+   ],
+   "id": "des_c14ebaa0d64b"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "H5-",
+   "bbox": [
+    495.1999816894531,
+    1128.239990234375,
+    496.2645568847656,
+    1130.52001953125
+   ],
+   "id": "des_c73b466df9f9"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "M-1O-1-OO2",
+   "bbox": [
+    2161.159912109375,
+    1626.239990234375,
+    2225.7193603515625,
+    1635.239990234375
+   ],
+   "id": "des_0a721677747f"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "H6-",
+   "bbox": [
+    513.3199462890625,
+    1131.9599609375,
+    514.3845825195312,
+    1134.239990234375
+   ],
+   "id": "des_18f751e7ffa3"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "TV/RADI0",
+   "bbox": [
+    638.8399658203125,
+    643.4400024414062,
+    641.714075088501,
+    651.3600463867188
+   ],
+   "id": "des_38abc57caa20"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "RITAD/K0NSTR",
+   "bbox": [
+    2160.320068359375,
+    1492.6800537109375,
+    2207.119873046875,
+    1496.6400146484375
+   ],
+   "id": "des_3f4bc2c2f4d3"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "H5-",
+   "bbox": [
+    500.47998046875,
+    1063.080078125,
+    501.5445556640625,
+    1065.3599853515625
+   ],
+   "id": "des_509254bcbb8a"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "//4GNWG",
+   "bbox": [
+    521.9599609375,
+    966.6000366210938,
+    525.7999877929688,
+    975.1199951171875
+   ],
+   "id": "des_8c1d07144381"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "H5-",
+   "bbox": [
+    507.67999267578125,
+    1064.6400146484375,
+    508.74456787109375,
+    1066.800048828125
+   ],
+   "id": "des_a12aa0ed827b"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "2O26-O3-O5",
+   "bbox": [
+    2067.56005859375,
+    1527.0,
+    2134.159912109375,
+    1536.0
+   ],
+   "id": "des_c14ebaa0d64b"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    560.0399780273438,
+    875.7999877929688,
+    570.0399780273438,
+    885.7999877929688
+   ],
+   "id": "anc_3937cb03cdc8"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    509.52001953125,
+    1125.8800048828125,
+    519.52001953125,
+    1135.8800048828125
+   ],
+   "id": "anc_41a3589db4e8"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    534.3599853515625,
+    870.52001953125,
+    544.3599853515625,
+    880.52001953125
+   ],
+   "id": "anc_48e1013295bd"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    483.8399963378906,
+    1120.60009765625,
+    493.8399963378906,
+    1130.60009765625
+   ],
+   "id": "anc_517847f51279"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    491.5199890136719,
+    1122.1600341796875,
+    501.5199890136719,
+    1132.1600341796875
+   ],
+   "id": "anc_54d679d9c9b6"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    531.239990234375,
+    869.9200439453125,
+    541.239990234375,
+    879.9200439453125
+   ],
+   "id": "anc_847c197154fb"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    531.0,
+    871.0,
+    541.0,
+    881.0
+   ],
+   "id": "anc_9081c94b461e"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    561.1199951171875,
+    866.6799926757812,
+    571.1199951171875,
+    876.6799926757812
+   ],
+   "id": "anc_f5fa73ac96bc"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "H5-",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    510.5999755859375,
+    1116.6400146484375,
+    520.5999755859375,
+    1126.6400146484375
+   ],
+   "id": "anc_fe703579b01e"
+  },
+  {
+   "kind": "unsupported_structural_family",
+   "text": "scale: no_scale_evidence_found",
+   "id": "scale"
+  }
+ ]
+}
