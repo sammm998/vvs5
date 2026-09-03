@@ -7,3 +7,4 @@ backend/data/
 data/openworld_quarantine/
 scratch/
 *.egg-info/
+data/validation_A/
