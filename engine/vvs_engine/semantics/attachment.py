@@ -125,9 +125,7 @@ class GeometryIndex:
     def __init__(self, page: RawPage, exclude_families: set[str], exclude_pids: set[str]):
         self.idx = GridIndex(cell=12.0)
         self.items: list[tuple[RawPath, int, Seg]] = []
-        # rasterised input: traced skeletons sit at stroke centres while the drawn contact is at the ink edge
-        self.raster = getattr(page, "input_mode", "vector") == "raster"
-        self.tol = CONTACT_TOL + (1.4 if self.raster else 0.0)
+        self.tol = CONTACT_TOL
         # closed small symbols (riser marks, end circles, fittings) are indexed from ALL stroke paths: a circle
         # read as a text glyph ('O', '0') is still the symbol a leader may point at
         self.symbols: list[RawPath] = []
@@ -160,7 +158,7 @@ class GeometryIndex:
             if skip_pids and p.pid in skip_pids:
                 continue
             d, t = point_seg_distance(x, y, s)
-            if d <= tol + (0.5 * p.width if self.raster else min(0.5 * p.width, 0.5)):
+            if d <= tol + min(0.5 * p.width, 0.5):
                 out.append((p, k, d))
         out.sort(key=lambda h: (h[0].pid, h[1]))
         return out

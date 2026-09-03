@@ -95,9 +95,15 @@ class RawPage:
     info: PageInfo
     paths: list[RawPath]
     spans: list[TextSpan]
-    input_mode: str = "vector"                 # 'vector' | 'raster' (vectorised + OCR)
-    raster_report: dict | None = None
-    input_class: dict | None = None
+    input_class: dict | None = None            # how the page was classified before it was accepted
+
+
+class UnsupportedInputError(Exception):
+    """The PDF carries no page the engine can read: every page is a scan, an image or empty."""
+
+    def __init__(self, message: str, classifications: list[dict]):
+        super().__init__(message)
+        self.classifications = classifications
 
 
 @dataclass
@@ -107,6 +113,7 @@ class RawDocument:
     metadata: dict
     ocgs: dict[int, dict]
     pages: list[RawPage] = field(default_factory=list)
+    skipped_pages: list[dict] = field(default_factory=list)   # scanned / image-only pages, with the reason
 
     def inventory(self) -> dict[str, Any]:
         out = {"source": self.path, "n_pages": self.n_pages, "metadata": self.metadata,
@@ -198,9 +205,12 @@ def _color(c) -> tuple | None:
     return tuple(round(float(v), 4) for v in c)
 
 
-def extract_document(pdf_path: str, pages: list[int] | None = None, mode: str = "auto", progress=None) -> RawDocument:
-    """mode: 'auto' classifies every page (vector / raster) and routes rasterised pages through the raster path;
-    'vector' forces the vector extractor; 'raster' forces vectorisation + OCR."""
+def extract_document(pdf_path: str, pages: list[int] | None = None, progress=None) -> RawDocument:
+    """Read the vector content of every page: paths with their segments, layers, stroke widths and text spans.
+
+    Only vector pages are analysed. A page whose content is a scan or an image is classified as such and skipped,
+    because reading it would mean guessing at pixels instead of the drawing's own geometry; a PDF with no vector
+    page at all raises UnsupportedInputError."""
     doc = pymupdf.open(pdf_path)
     try:
         ocgs_raw = doc.get_ocgs() or {}
@@ -215,14 +225,8 @@ def extract_document(pdf_path: str, pages: list[int] | None = None, mode: str = 
         page = doc[pno]
         from .classify import classify_page
         klass = classify_page(page)
-        use_raster = mode == "raster" or (mode == "auto" and klass.mode == "raster")
-        if use_raster:
-            from ..raster.adapter import raster_page
-            if progress:
-                progress("RASTERISED_INPUT_OCR")
-            rpage, _ = raster_page(page, pno, progress)
-            rpage.input_class = klass.as_dict()
-            rd.pages.append(rpage)
+        if klass.mode in ("raster", "empty"):
+            rd.skipped_pages.append({"page": pno, **klass.as_dict()})
             continue
         rot = page.rotation
         # Work in the displayed (rotated) page space: PyMuPDF get_drawings/get_text return unrotated
@@ -280,6 +284,11 @@ def extract_document(pdf_path: str, pages: list[int] | None = None, mode: str = 
         rp.input_class = klass.as_dict()
         rd.pages.append(rp)
     doc.close()
+    if not rd.pages:
+        which = ", ".join(f"page {c['page'] + 1}: {'; '.join(c['reasons'])}" for c in rd.skipped_pages) or "no pages"
+        raise UnsupportedInputError(
+            "The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never "
+            f"guesses at pixels, so a scanned or image-only PDF cannot be measured ({which}).", rd.skipped_pages)
     return rd
 
 

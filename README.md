@@ -48,19 +48,17 @@ The root `Dockerfile` builds the frontend, installs the engine and the API and s
 FastAPI (`railway.json` points Railway at it). Environment: `PORT` (honoured), `VVS_SECRET_KEY`, optionally
 `VVS_DATABASE_URL` (PostgreSQL) and a volume at `/data` for uploads and the SQLite database.
 
-## Scanned / rasterised drawings
+## Vector PDFs only
 
-Every page is classified from its own content (`vvs_engine/pdf/classify.py`): vector paths and text characters
-against embedded images and their page coverage. A clean vector page goes straight to the vector engine. A page
-that is only an image (scan, rasterised export) goes through the raster path (`vvs_engine/raster/`): the page is
-binarised, its text is read with OCR (RapidOCR, ONNX on CPU, tiled at 300 dpi), glyph ink is masked out, the
-remaining ink is skeletonised and traced into stroke polylines with measured widths, and drawing-local width
-classes become the vector families. From there the same designation grammar, leader, attachment, topology,
-ownership and measurement code runs unchanged. The result is labelled "skannad/rastrerad (OCR)" with the OCR
-confidence and the share of ink explained by traced strokes; expect lower fidelity than a vector PDF (on a 300 dpi
-scan of drawing A the engine reads 139 designations, as many as the vector original, verifies the scale, attaches 73 labels and owns about
-half of the pipe length that the vector original yields, with a further seventh reported as ambiguous), and check
-designations and scale in the "Ej lösta" view.
+The engine reads the drawing's own vector content: every path operator with its segments, layer, stroke width and
+colour, plus the text objects and the stroke-font glyph outlines. Nothing is inferred from a rendered image, and
+there is no OCR anywhere in the pipeline.
+
+Every page is therefore classified first (`vvs_engine/pdf/classify.py`) from vector paths and text characters
+against embedded images and their page coverage. A vector page is analysed; a scanned or image-only page is
+skipped and reported, and a PDF with no vector page at all is rejected with `UnsupportedInputError` rather than
+measured from pixels. In the web application that becomes a plain message: export the drawing as a vector PDF
+from CAD instead of scanning it.
 
 ## Quantities: horizontal, hatched areas, risers
 

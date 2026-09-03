@@ -21,7 +21,7 @@ TOUCH_TOL = 0.15
 
 @dataclass(frozen=True)
 class GraphTolerances:
-    """Geometric precision of the source: exported vectors are exact; traced raster skeletons wobble."""
+    """Geometric precision the graph builder may assume of the source (exported vectors are exact)."""
     ang_tol: float = 1.5        # degrees, collinear continuation across a micro gap
     off_tol: float = 0.35       # pt, lateral offset of the continuation
     gap_slack: float = 0.5      # fraction of the gap mode accepted as deviation
@@ -29,11 +29,10 @@ class GraphTolerances:
 
 
 VECTOR_TOL = GraphTolerances()
-RASTER_TOL = GraphTolerances(ang_tol=7.0, off_tol=1.2, gap_slack=0.8, max_gap=16.0)
 
 
 def graph_tolerances(page) -> GraphTolerances:
-    return RASTER_TOL if getattr(page, "input_mode", "vector") == "raster" else VECTOR_TOL
+    return VECTOR_TOL
 
 
 @dataclass

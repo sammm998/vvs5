@@ -86,8 +86,7 @@ def drawing_profile(pa, doc) -> dict[str, Any]:
         "engine_version": __version__,
         "page_structure": {"page": page.info.index, "width_pt": page.info.width, "height_pt": page.info.height, "rotation": page.info.rotation,
                            "mediabox": page.info.mediabox, "cropbox": page.info.cropbox, "n_pages": doc.n_pages, "format": _fmt(page)},
-        "input": {"mode": getattr(page, "input_mode", "vector"), "classification": getattr(page, "input_class", None),
-                  "raster": getattr(page, "raster_report", None)},
+        "input": {"mode": "vector", "classification": getattr(page, "input_class", None)},
         "cad_structure": {"n_ocgs": len(doc.ocgs), "n_layers_with_geometry": len(pa.layer_stats), "n_xobjects": page.info.n_xobjects,
                           "layers": layers, "annotation_layers": pa.ann_layers},
         "text_structure": {"searchable_spans": len(page.spans), "searchable_rows": len(pa.srows), "vector_glyph_rows": len(pa.vtext.rows),
@@ -218,10 +217,6 @@ def why(pa, pipe_id: str) -> dict[str, Any]:
 
 def unresolved_issues(pa) -> list[dict]:
     issues = []
-    if getattr(pa.page, "input_mode", "vector") == "raster":
-        rep = pa.page.raster_report or {}
-        issues.append({"kind": "rasterised_input", "reason": f"OCR mean confidence {rep.get('ocr_mean_confidence')}, {rep.get('ocr_low_confidence_lines')} low-confidence lines, "
-                                                           f"{rep.get('ink_explained_by_strokes')} of line ink traced", "count": rep.get("ocr_lines")})
     for f in pa.vtext.families.values():
         if f.char == "?" and f.n_members >= 2:
             issues.append({"kind": "unknown_glyph", "count": f.n_members, "family": f.family_id, "alternatives": f.alternatives[:2]})

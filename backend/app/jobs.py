@@ -43,6 +43,7 @@ def _progress_cb(job_id: str):
 
 def run_job(job_id: str) -> None:
     from vvs_engine.cli import analyze_pdf
+    from vvs_engine.pdf.extract import UnsupportedInputError
     with SessionLocal() as db:
         job = db.get(AnalysisJob, job_id)
         if job is None:
@@ -58,6 +59,12 @@ def run_job(job_id: str) -> None:
                               contamination=True, progress=_progress_cb(job_id))
         _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
              summary={"total_seconds": summary["total_seconds"], **summary["summary"]})
+    except UnsupportedInputError as e:
+        # not a defect: the PDF carries no vector drawing, so there is nothing to read
+        _set(job_id, status="FAILED", stage="FAILED", finished_at=dt.datetime.now(dt.timezone.utc),
+             error="Ritningen är inte en vektor-PDF. Systemet läser ritningens egna vektorkoder och gissar aldrig "
+                   "utifrån bildpunkter, så en skannad eller bildbaserad PDF kan inte mängdas. Ladda upp filen som "
+                   f"vektor-PDF (exporterad från CAD, inte skannad). Klassificering: {e}")
     except Exception as e:  # noqa: BLE001
         _set(job_id, status="FAILED", stage="FAILED", error=f"{e}\n{traceback.format_exc()[-4000:]}", finished_at=dt.datetime.now(dt.timezone.utc))
 

@@ -1,8 +1,8 @@
-"""Input classification per page: clean vector, rasterised (scanned) or mixed.
+"""Input classification per page: clean vector, scanned (raster) or mixed.
 
 Decided from the PDF content itself: stroke paths and text characters versus embedded images and their coverage
-of the page. A page with a large image and no usable vector content is analysed through the raster path
-(vectorisation + OCR); a page with vector content is analysed directly.
+of the page. Only a page with usable vector content is analysed; a scanned or image-only page is skipped and
+reported, because the engine reads the drawing's own geometry rather than guessing at pixels.
 """
 from __future__ import annotations
 

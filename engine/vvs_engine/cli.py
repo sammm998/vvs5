@@ -45,8 +45,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     timings["artifacts_ms"] = (time.perf_counter() - t0) * 1000
     summary = {"name": name, "pages": len(doc.pages), "summary": summarize(analyses[0]), "determinism": det["state"] if det else None,
                "contamination": cont["state"] if cont else None, "files": files, "total_seconds": round(timings["total_s"], 2),
-               "input_mode": getattr(doc.pages[0], "input_mode", "vector"), "input": getattr(doc.pages[0], "input_class", None),
-               "raster": getattr(doc.pages[0], "raster_report", None)}
+               "input": getattr(doc.pages[0], "input_class", None), "skipped_pages": doc.skipped_pages}
     with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=1, default=str)
     if progress:

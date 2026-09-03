@@ -107,7 +107,6 @@ export default function AnalysisPage() {
         {tab === "mangder" && (
           <div className="card">
             {covWarn && <p className="badge warn">Semantisk täckning är låg – mängderna täcker inte alla rör på ritningen.</p>}
-            {result.input?.mode === "raster" && <p className="badge warn">Skannad/rastrerad ritning: linjer vektoriserade och text OCR-läst (OCR-säkerhet {Math.round((result.input.raster?.ocr_mean_confidence ?? 0) * 100)} %, {result.input.raster?.ocr_low_confidence_lines ?? 0} osäkra rader). Kontrollera beteckningar och skala.</p>}
             <div className="row" style={{ marginBottom: 8, alignItems: "center", gap: 8 }}>
               <label style={{ fontSize: 12 }}>Våningshöjd för stigare (m): <input style={{ width: 70 }} value={floorHeight} placeholder="t.ex. 2,8"
                 onChange={(e) => { setFloorHeight(e.target.value); try { localStorage.setItem("vvs.floorHeight", e.target.value); } catch {} }} /></label>
@@ -156,7 +155,7 @@ export default function AnalysisPage() {
               <div className="card"><div className="v">{c.unsupported_families}</div><div className="l">Unsupported styles</div></div>
               <div className="card"><div className="v">{c.ambiguous_attachments + c.no_attachments}</div><div className="l">Ej anslutna beteckningar</div></div>
             </div>
-            <p style={{ marginTop: 12 }}>Indata: <b>{result.input?.mode === "raster" ? "skannad/rastrerad (OCR)" : "ren vektor"}</b> · Skala: <b>{result.scale.state}</b> ({result.scale.reason}) · Reconciliation: <b>{c.reconciliation}</b> · Determinism: <b>{c.determinism ?? "ej körd"}</b> · Contamination: <b>{c.contamination}</b></p>
+            <p style={{ marginTop: 12 }}>Indata: <b>ren vektor</b> ({result.input?.classification?.n_paths ?? "?"} vektorobjekt, {result.input?.classification?.n_chars ?? 0} söktecken) · Skala: <b>{result.scale.state}</b> ({result.scale.reason}) · Reconciliation: <b>{c.reconciliation}</b> · Determinism: <b>{c.determinism ?? "ej körd"}</b> · Contamination: <b>{c.contamination}</b></p>
             <p className="muted">Sida {result.page.width_pt}×{result.page.height_pt} pt ({result.page.format}) · analys {result.performance.total_seconds} s · {result.performance.counts.raw_vector_objects} vektorobjekt · {result.performance.counts.glyphs} glyfer i {result.performance.counts.glyph_families} familjer</p>
           </div>
         )}
