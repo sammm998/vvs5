@@ -68,7 +68,8 @@ def _vertical(p: PhysicalPipe, elevations: dict[str, list[dict]]):
 
 
 def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: float | None,
-              risers: dict[str, list[dict]] | None = None, label_counts: dict[str, int] | None = None) -> list[dict[str, Any]]:
+              risers: dict[str, list[dict]] | None = None, label_counts: dict[str, int] | None = None,
+              label_risers: dict[str, list[dict]] | None = None) -> list[dict[str, Any]]:
     """label_counts: identity key -> number of verified labels on the drawing, which is what a reader counts;
     physical_pipe_count is the number of connected runs the network resolves into, which is usually smaller."""
     rows: dict[str, dict[str, Any]] = {}
@@ -101,6 +102,9 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
     for k, n in (label_counts or {}).items():
         if k in rows:
             rows[k]["label_count"] = n
+    for k, lst in (label_risers or {}).items():
+        if k in rows:
+            rows[k]["riser_count_from_labels"] = len(lst)
     for k, lst in (risers or {}).items():
         r = rows.setdefault(k, {"designation": k.split("|DN")[0], "base": k.split("|DN")[0], "dn": _dn_from_key(k), "system": "", "physical_pipe_count": 0,
                                 "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0, "confirmed_total_m": 0.0,
@@ -110,6 +114,7 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
     for k in sorted(rows):
         r = rows[k]
         r.setdefault("riser_count", 0)
+        r.setdefault("riser_count_from_labels", len((label_risers or {}).get(k, [])))
         r.setdefault("label_count", (label_counts or {}).get(k, 0))
         r.setdefault("in_hatched_area_m", 0.0)
         if r["physical_pipe_count"] == 0 and r["ambiguous_m"] == 0 and r["riser_count"] > 0:

@@ -235,6 +235,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             hatched_pt[pp.physical_pipe_id] = sum(g.prims[pid].seg.length for pid in pp.prim_ids if inside_hatch(hatch, *g.prims[pid].seg.mid) is not None)
     measures = measure_pipes(ownership, scale, elevations, hatched_pt)
     risers = _riser_symbols(page, ann_layers, glyph_pids, graphs, ownership, anchors, identities)
+    label_risers = _risers_from_dn_rows(designations, anchors, leaders, identities)
     amb_pt: Counter = Counter()
     for fk, g in graphs.items():
         for pid, st in ownership.prim_states[fk].items():
@@ -246,7 +247,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     for a in anchors:
         if a.state == "VERIFIED_PIPE_ATTACHMENT" and a.anchor_id in identities:
             label_counts[identities[a.anchor_id].key] += 1
-    quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers, dict(label_counts))
+    quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers, dict(label_counts), label_risers)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
     return PageAnalysis(page=page, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
@@ -254,6 +255,39 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,
                         timings=timings, hatch_families=hatch, risers=risers, ocr_assist=ocr_report)
+
+
+SAME_RISER = 15.0        # pt: a label's leader ends at the riser symbol it names, not exactly on its centre
+
+
+def _risers_from_dn_rows(designations, anchors, leaders, identities) -> dict[str, list[dict]]:
+    """Risers the drawing names outright: a label whose dimension stands on the row below states the size of the
+    VERTICAL pipe at that point (the drop to a drain, a stack), while a dimension inline names the horizontal run.
+
+    Reported alongside the risers found from drawn symbols rather than merged into them. Against the reference
+    takeoff of drawing A the two sources disagree - symbols 58, labels 41, reference 55 - and their union (68) is
+    further off than either, so the operator chooses which one the quantity uses.
+    """
+    des = {d.did: d for d in designations}
+    ends = {l.lid: l.end for l in leaders}
+    labelled: dict[str, list[dict]] = {}
+    for a in sorted(anchors, key=lambda x: x.anchor_id):
+        if a.state != "VERIFIED_PIPE_ATTACHMENT":
+            continue
+        d = des.get(a.designation_id)
+        if d is None or not _is_vertical_label(d):
+            continue
+        pt = ends.get(a.leader_id)
+        ident = identities.get(a.anchor_id)
+        if pt is None or ident is None:
+            continue
+        key = f"{ident.base}|DN{d.dn}"
+        lst = labelled.setdefault(key, [])
+        if any(dist(tuple(r["point"]), pt) <= 3.0 for r in lst):
+            continue                      # two leaders of one label onto the same riser
+        lst.append({"designation": d.text, "dn": d.dn, "point": [round(pt[0], 2), round(pt[1], 2)],
+                    "evidence": "dimension_on_the_row_below_states_a_vertical_pipe", "designation_id": d.did})
+    return labelled
 
 
 def _riser_symbols(page: RawPage, ann_layers, glyph_pids, graphs, ownership, anchors, identities) -> dict[str, list[dict]]:
@@ -399,7 +433,7 @@ def _split_at_tick_contacts(page: RawPage, graphs: dict, pipe_families: dict, an
     return graphs, pipe_families
 
 
-def _pipe_identities(designations, anchors, grammar) -> dict[str, Identity]:
+def _pipe_identities(designations, anchors, grammar, vertical_dn_rows: bool = True) -> dict[str, Identity]:
     """Anchors of pipe-designation grammar families: a family qualifies when >= 50 % of its members carry a DN
     (inline or DN row) or >= 50 % of its verified attachments have layer-token support. Other code families
     (component tags) never seed pipe ownership."""
@@ -440,6 +474,20 @@ def _pipe_identities(designations, anchors, grammar) -> dict[str, Identity]:
             dn_idx = cand[0] if cand else None
         out[a.anchor_id] = identity_of(a, dn_idx)
     return out
+
+
+def _is_vertical_label(d) -> bool:
+    """A label whose dimension stands on the row below names a vertical pipe at that point: the drop to a drain,
+    a stack. A label with the dimension inline names the horizontal run.
+
+    The exception is a count prefix ("2xKV1-X31" over "16"): that counts parallel pipes running together, a
+    bundle along the horizontal run, not a stack - and the reference takeoff of drawing A gives exactly that
+    label 0 vertical metres.
+
+    The vertical reading decides how many risers the identity has. It does not take the size away from the run
+    the leader touches: measured against the reference, stripping it fragments the horizontal quantity (213.4 m
+    of reference became 205.8 m), because a drain connection is usually drawn on a branch of its own size."""
+    return d.dn_source == "row" and d.dn is not None and d.multiplier <= 1
 
 
 ELEV_TAG_RE = __import__("re").compile(r"^([A-ZÅÄÖ]{1,4})\s*([+\-]?)\s*(\d+[.,]?\d*)$")

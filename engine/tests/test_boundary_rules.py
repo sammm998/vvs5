@@ -245,3 +245,34 @@ def test_unlabeled_branch_takes_the_only_junction_identity(tmp_path):
     q = {(r["base"], r["dn"]): r for r in pa.quantities}
     assert abs(q[("S3-R8", 110)]["confirmed_horizontal_m"] - (600 - 60 + 180) / 56.69) < 0.25
     assert abs(q[("S3-R8", 75)]["confirmed_horizontal_m"] - 60 / 56.69) < 0.25
+
+
+def test_dimension_on_the_row_below_is_a_vertical_pipe(tmp_path):
+    """Two label forms mean two different things: the dimension inline names the horizontal run, the dimension on
+    the row below names the vertical pipe at that point. A count prefix is the exception - it bundles parallel
+    pipes along the run, and the reference takeoff gives such a label no vertical metres at all."""
+    from vvs_engine.pipeline import _is_vertical_label
+
+    class D:
+        def __init__(self, src, dn, mult=1):
+            self.dn_source, self.dn, self.multiplier = src, dn, mult
+
+    assert _is_vertical_label(D("row", 75))
+    assert not _is_vertical_label(D("inline", 75))
+    assert not _is_vertical_label(D("row", 16, mult=2)), "2xKV1-X31 over 16 is a horizontal bundle"
+    assert not _is_vertical_label(D("row", None))
+
+
+def test_both_riser_sources_are_reported_side_by_side(tmp_path):
+    """The drawn symbols and the row-below labels disagree, so the quantity carries both counts and the operator
+    picks; neither is silently merged into the other."""
+    path = os.path.join(tmp_path, "riser.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    make_dashed_line(shape, (100, 300), (700, 300))
+    _label(page, shape, 120, 200, "S3-R8-110", leader_to=(200, 300))
+    _label(page, shape, 560, 200, "S3-R8", dn_row="75", leader_to=(640, 300))
+    _scale(page)
+    shape.commit(); doc.save(path); doc.close()
+    pa = analyze_page(extract_document(path).pages[0])
+    assert all("riser_count" in r and "riser_count_from_labels" in r for r in pa.quantities)
+    assert sum(r["riser_count_from_labels"] for r in pa.quantities) >= 1

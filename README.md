@@ -81,6 +81,12 @@ from CAD instead of scanning it.
   (wall sections, adjacent sheet parts) is measured too and reported separately as "varav i skrafferat område".
   It stays out of the total unless the checkbox "Räkna med skrafferade ytor" is ticked (`?include_hatched=true` on
   Excel/CSV export). Measuring the reference markup of drawing A shows the takeoff excludes it: 0.25 m of 213.4 m.
+* Two label forms mean two different things: a dimension inline ("S3-R8-75") names the horizontal run, a
+  dimension on the row below ("S3-R8" over "75") names the vertical pipe at that point. A count prefix is the
+  exception - "2xKV1-X31" over "16" bundles parallel pipes along the run, and the reference takeoff of drawing A
+  gives that label no vertical metres. Both riser sources are reported per row and the operator picks which one
+  the vertical quantity uses: on drawing A the drawn symbols give 58 and the row-below labels 41, against 55 in
+  the reference, and their union (68) is further off than either.
 * Risers are counted from the drawn riser marks per designation. The drawing carries no floor height, so vertical
   metres are computed only when the user enters a floor height (Mängder tab; `?floor_height=` on Excel/CSV export).
 * DN changes are placed at drawn tick marks; labels pointing at a riser mark describe the riser, not the run.

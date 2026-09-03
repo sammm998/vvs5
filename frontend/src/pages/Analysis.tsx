@@ -29,6 +29,7 @@ export default function AnalysisPage() {
   const [nPages, setNPages] = useState(1);
   const [floorHeight, setFloorHeight] = useState<string>(() => { try { return localStorage.getItem("vvs.floorHeight") ?? ""; } catch { return ""; } });
   const [includeHatched, setIncludeHatched] = useState<boolean>(() => { try { return localStorage.getItem("vvs.includeHatched") === "1"; } catch { return false; } });
+  const [riserSource, setRiserSource] = useState<string>(() => { try { return localStorage.getItem("vvs.riserSource") ?? "symbols"; } catch { return "symbols"; } });
   const exportQuery = [floorHeight.trim() && !Number.isNaN(Number(floorHeight.replace(",", "."))) ? `floor_height=${Number(floorHeight.replace(",", "."))}` : "", includeHatched ? "include_hatched=true" : ""].filter(Boolean).join("&");
   const fh = floorHeight.trim() ? Number(floorHeight.replace(",", ".")) : NaN;
   const floorH = Number.isFinite(fh) && fh > 0 ? fh : null;
@@ -119,10 +120,16 @@ export default function AnalysisPage() {
             <div className="row" style={{ marginBottom: 8, alignItems: "center", gap: 8 }}>
               <label style={{ fontSize: 12 }}>Våningshöjd för stigare (m): <input style={{ width: 70 }} value={floorHeight} placeholder="t.ex. 2,8"
                 onChange={(e) => { setFloorHeight(e.target.value); try { localStorage.setItem("vvs.floorHeight", e.target.value); } catch {} }} /></label>
+              <label style={{ fontSize: 12 }}>Stigare räknas från:{" "}
+                <select value={riserSource} onChange={(e) => { setRiserSource(e.target.value); try { localStorage.setItem("vvs.riserSource", e.target.value); } catch {} }}>
+                  <option value="symbols">ritade stigarsymboler</option>
+                  <option value="labels">etiketter med dimension på raden under</option>
+                </select></label>
               <span className="muted" style={{ fontSize: 12 }}>Vertikalt = antal stigare × våningshöjd (ritningen anger ingen höjd). Rör i skrafferade ytor mäts alltid men räknas in bara om du kryssar i rutan.</span>
             </div>
             <QuantityTable rows={result.quantities} selected={selIdent} onSelect={(k) => { setSelIdent(k); setSelPipe(null); setWhy(null); }} floorHeight={floorH}
-              includeHatched={includeHatched} onIncludeHatched={(v) => { setIncludeHatched(v); try { localStorage.setItem("vvs.includeHatched", v ? "1" : "0"); } catch {} }} />
+              includeHatched={includeHatched} onIncludeHatched={(v) => { setIncludeHatched(v); try { localStorage.setItem("vvs.includeHatched", v ? "1" : "0"); } catch {} }}
+              riserSource={riserSource} />
             {why && (
               <div style={{ marginTop: 12 }}>
                 <h4>Varför? {why.pipe.designation} DN{why.pipe.dn ?? "?"} · {typeof why.pipe.horizontal_m === "number" ? `${why.pipe.horizontal_m.toFixed(2)} m` : "ingen skala"}</h4>
