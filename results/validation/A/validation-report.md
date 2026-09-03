@@ -88,15 +88,15 @@ areas reported separately, riser counting). Validation of the regenerated artifa
 - Physical pipe match per reference measurement (78): full 64, partial 2, miss 12 (was 39 / 6 / 33)
 - Length audit: correctly owned 171.6 m (was 92.3), wrongly owned 7.4 m (was 33.0), missed 11.3 m (was 105.1),
   ambiguous near reference 3.0 m, unowned near reference 0.5 m (was 54.2)
-- Horizontal total 211.3 m vs 213.4 m of reference markup (-0.98 %), nothing left ambiguous. A further 12.2 m of
-  drawn pipe runs inside hatched areas and is reported separately; measuring the reference's own polylines shows
-  only 0.25 m of it lies inside hatching, so excluding it is what the takeoff does
-- Coverage of the reference markup, sampled every 1 pt: 213.3 m of 213.4 m is covered by primitives the engine
-  owns. 0.63 m stays UNOWNED, 0.23 m is inside hatching, 0.05 m has no primitive within 3 pt. The rest of the
-  difference is run ends: the reference clicks to the centre of a drain or fitting, the engine measures the drawn
-  line, which stops 1-2 pt short
-- Per-designation the engine differs from the reference by at most 1.3 m; ~7 m sits on the other side of a DN
-  boundary on branches carrying several size labels, which changes the split between DN110 and DN75 but not the total
+- Horizontal total 212.0 m vs 213.4 m of reference markup (-0.63 %), nothing ambiguous, nothing unowned. A
+  further 12.2 m of drawn pipe runs inside hatched areas and is reported separately; measuring the reference's own
+  polylines shows only 0.25 m of it lies inside hatching, so excluding it is what the takeoff does
+- Coverage of the reference markup, sampled every 1 pt: 213.10 m of its 213.38 m is owned and counted, 0.23 m is
+  inside hatching and 0.05 m has no primitive within 3 pt. The remaining 1.3 m is run ends, where the reference
+  clicks to a leader contact or a fitting centre a point or two beyond where the drawn line stops
+- Of the 19 DN boundaries the reference marks, 16 sit exactly (within 0.1 pt) on a leader end mark of the drawing
+- Per designation the largest deviation is 1.1 m; about 5 m sits on the other side of a DN boundary on branches
+  carrying several size labels, which shifts the split between DN110 and DN75 but not the total
 - Risers: 55 counted vs 55 in the reference (150.8 m / 2.8 m per floor); vertical metres need a floor height that
   the drawing does not carry - the application computes them from a user-entered floor height
 - Scale: the drawn scale bar is 283.56 pt for 5 m, i.e. exactly 1:50; the label glyph centres implied 1:50.5
@@ -108,11 +108,11 @@ areas reported separately, riser counting). Validation of the regenerated artifa
 | S1-P2-110 | 9.8 | 10.19 | +0.38 | 2.63 |
 | S1-P2-75 | 4.8 | 4.16 | -0.62 | 4.62 |
 | S3-P2-160 | 16.9 | 16.83 | -0.04 | 0.00 |
-| S3-R8-110 | 59.9 | 58.61 | -1.30 | 1.42 |
-| S3-R8-160 | 16.3 | 16.66 | +0.40 | 0.00 |
-| S3-R8-75 | 20.9 | 20.71 | -0.22 | 0.00 |
+| S3-R8-110 | 59.9 | 59.94 | +0.02 | 1.42 |
+| S3-R8-160 | 16.3 | 16.99 | +0.73 | 0.00 |
+| S3-R8-75 | 20.9 | 19.81 | -1.12 | 0.00 |
 | VV1-X31-16 | 34.1 | 33.92 | -0.22 | 0.00 |
-| SUMMA | 213.4 | 211.29 | -2.09 | 12.16 |
+| SUMMA | 213.4 | 212.04 | -1.34 | 12.16 |
 
 Remaining differences: 5.2 m of stubs owned as S3-R8-75 from the first tick after the junction where the takeoff
 keeps 110 up to the last tick before the riser (label reading vs takeoff convention); 1.7 m of ambiguous DN

@@ -147,3 +147,19 @@ def test_systematic_twin_ambiguity_resolves_to_nominal_size():
         g2.observe(r)
     assert g2.choose(rds2[3]).text == "VS31-K2-20-W40"
     assert g2.choose(rds2[0]).text == "KV01-X7-40-W40"
+
+
+def test_dashed_run_is_bridged_around_a_corner():
+    """A dashed line that turns a corner inside a gap leaves two free ends that are not collinear. Their outward
+    rays meet one gap away, which is the drawing's own evidence that the run continues around the bend."""
+    segs = [Seg(x, 0, x + 12, 0) for x in range(0, 60, 15)]              # dash 12, gap 3, running east
+    segs += [Seg(58.5, 1.5, 58.5, 13.5), Seg(58.5, 16.5, 58.5, 28.5)]   # turns south inside the gap
+    g = build_graph(_prims(segs), "L|s|w1.44")
+    assert g.gap_mode == 3.0
+    assert any(b.get("kind") == "corner" for b in g.bridges), "the bend must be bridged"
+    assert len(chains(g)) == 1, "the whole run is one chain"
+
+    apart = [Seg(x, 0, x + 12, 0) for x in range(0, 60, 15)]
+    apart += [Seg(70.0, 12.0, 70.0, 24.0)]                              # too far: no corner evidence
+    g2 = build_graph(_prims(apart), "L|s|w1.44")
+    assert not any(b.get("kind") == "corner" for b in g2.bridges)

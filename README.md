@@ -69,6 +69,8 @@ from CAD instead of scanning it.
 * Risers are counted from the drawn riser marks per designation. The drawing carries no floor height, so vertical
   metres are computed only when the user enters a floor height (Mängder tab; `?floor_height=` on Excel/CSV export).
 * DN changes are placed at drawn tick marks; labels pointing at a riser mark describe the riser, not the run.
+* Dashed runs are chained across the line style's own gap, including where the run turns a corner inside a gap:
+  the two free ends' outward rays must meet one gap away, which is the drawing's own evidence for the bend.
 * A branch with no size label of its own, off a junction where every labelled arm carries the same identity, is
   that identity: a size change is always drawn with its own label. A junction with two competing identities leaves
   the branch AMBIGUOUS rather than guessing.

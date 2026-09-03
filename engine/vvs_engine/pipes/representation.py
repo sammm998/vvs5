@@ -192,6 +192,65 @@ def _apply_cuts(prims: list[Prim], cuts: dict[int, list[float]]) -> list[Prim]:
     return out
 
 
+def _merge_nodes(nodes, prim_nodes, nid: int, tn: int) -> None:
+    for p in nodes[tn].prims:
+        nodes[nid].prims.append(p)
+        prim_nodes[p] = [nid if x == tn else x for x in prim_nodes[p]]
+    nodes[tn].prims = []
+
+
+def _outward(node, prim) -> tuple[float, float] | None:
+    """Unit direction of the line leaving `node` along `prim`, pointing away from the primitive."""
+    far = prim.b if dist(prim.a, (node.x, node.y)) < dist(prim.b, (node.x, node.y)) else prim.a
+    dx, dy = node.x - far[0], node.y - far[1]
+    L = math.hypot(dx, dy)
+    return (dx / L, dy / L) if L > 1e-9 else None
+
+
+def _corner_bridges(nodes, pmap, prim_nodes, idx, gap_mode: float, gtol: float, tol: GraphTolerances):
+    """Pairs of free ends whose outward rays meet at a corner one gap away. Each end may take part in one
+    corner only; a contested end is left open."""
+    free = [n for n in nodes.values() if n.degree == 1]
+    cands: dict[tuple[int, int], tuple[int, int, float, str]] = {}
+    use: Counter = Counter()
+    for n in free:
+        u = _outward(n, pmap[n.prims[0]])
+        if u is None:
+            continue
+        for m in free:
+            if m.nid <= n.nid or not m.prims:
+                continue
+            if abs(m.x - n.x) > gap_mode + gtol or abs(m.y - n.y) > gap_mode + gtol:
+                continue
+            v = _outward(m, pmap[m.prims[0]])
+            if v is None:
+                continue
+            turn = abs(((math.degrees(math.atan2(u[1], u[0]) - math.atan2(v[1], v[0])) + 180) % 360) - 180)
+            if turn > 180 - 15.0:
+                continue                      # the two ends face each other head-on: the collinear rule owns this
+            den = u[0] * (-v[1]) - u[1] * (-v[0])
+            if abs(den) < 1e-9:
+                continue
+            wx, wy = m.x - n.x, m.y - n.y
+            t = (wx * (-v[1]) - wy * (-v[0])) / den      # along n's ray
+            r = (u[0] * wy - u[1] * wx) / den            # along m's ray
+            if t <= 0.2 or r <= 0.2 or t > tol.max_gap or r > tol.max_gap:
+                continue
+            if abs(t + r - gap_mode) > gtol:
+                continue                      # the bend must span exactly one gap of this line style
+            key = (min(n.nid, m.nid), max(n.nid, m.nid))
+            if key not in cands or t + r < cands[key][2]:
+                cands[key] = (n.nid, m.nid, t + r, "corner")
+            use[n.nid] += 1; use[m.nid] += 1
+    out = []
+    for key in sorted(cands):
+        a, b = key
+        if use[a] > 1 or use[b] > 1:
+            continue
+        out.append(cands[key])
+    return out
+
+
 def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = None) -> PipeGraph:
     """Nodes: shared endpoints (within TOUCH_TOL) incl. proven T-junctions. Then bridge collinear micro-gaps
     with unique continuation."""
@@ -294,12 +353,16 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
             if node_use[a] > 1 or node_use[b] > 1:
                 continue  # competing continuations -> no bridge (ambiguous)
             nid, tn, pid2, g = by_target[key][0]
-            # merge node tn into nid
-            for p in nodes[tn].prims:
-                nodes[nid].prims.append(p)
-                prim_nodes[p] = [nid if x == tn else x for x in prim_nodes[p]]
-            nodes[tn].prims = []
-            bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
+            _merge_nodes(nodes, prim_nodes, nid, tn)
+            bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": "collinear",
+                            "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
+        # corner bridges: a dashed run that turns a corner inside a gap leaves two free ends that are not
+        # collinear. Their outward rays meet at the corner, and the two legs together span exactly one gap of
+        # this line style - the drawing's own evidence that the run continues around the bend.
+        for nid, tn, g, kind in _corner_bridges(nodes, pmap, prim_nodes, idx, gap_mode, gtol, tol):
+            _merge_nodes(nodes, prim_nodes, nid, tn)
+            bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": kind,
+                            "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
     # remove emptied nodes
     nodes = {k: v for k, v in nodes.items() if v.prims}
     pn = {k: (v[0], v[1]) for k, v in prim_nodes.items()}
