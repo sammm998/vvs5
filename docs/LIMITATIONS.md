@@ -42,6 +42,10 @@
   unlabeled loop pipes; no VVS designation grammar exists, so no pipes are owned. The engine reports UNSUPPORTED
   structure and zero false ownership. Post-freeze, per-glyph O/0 twin substitution lets the vector scale bar
   (0 5 10 20 30 METER) be read (BAR_ONLY, 1:400).
+* **Unreadable characters are only partly recoverable.** The OCR-assisted pass fills a '?' only where OCR reads
+  the same word and agrees with it character for character. On dense drawings much of the small text is beyond
+  OCR too, so unreadable characters remain; the unresolved list now says how many sit inside a designation (which
+  costs a takeoff row) and how many sit in legend or note text (which costs nothing).
 * **The review agents are deterministic checks, not a language model.** They compare the result against the
   drawing's own evidence and report where to look; they do not reason about intent, and they never edit a
   measurement. The OCR cross-check reads the rendered page only to ask whether a designation exists where the

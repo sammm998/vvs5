@@ -16,7 +16,8 @@ ENGINE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..",
 if ENGINE_DIR not in sys.path:
     sys.path.insert(0, ENGINE_DIR)
 
-STAGE_ORDER = ["QUEUED", "READING_PDF", "DISCOVERING_DRAWING_GRAMMAR", "EXTRACTING_VECTORS", "RECONSTRUCTING_TEXT", "READING_DESIGNATIONS",
+STAGE_ORDER = ["QUEUED", "READING_PDF", "DISCOVERING_DRAWING_GRAMMAR", "EXTRACTING_VECTORS", "RECONSTRUCTING_TEXT",
+               "RESOLVING_UNREADABLE_TEXT", "READING_DESIGNATIONS",
                "FINDING_LEADERS", "RESOLVING_PIPE_REPRESENTATION", "ATTACHING_PIPES", "BUILDING_TOPOLOGY", "BUILDING_PHYSICAL_PIPES",
                "MEASURING", "REVIEWING", "GENERATING_OVERLAYS", "COMPLETED"]
 
@@ -57,7 +58,8 @@ def run_job(job_id: str) -> None:
     try:
         summary = analyze_pdf(pdf_path, out_dir, name=os.path.splitext(drawing.filename)[0], determinism=settings.run_determinism,
                               contamination=True, progress=_progress_cb(job_id),
-                              review=settings.run_review, review_ocr=settings.review_ocr)
+                              review=settings.run_review, review_ocr=settings.review_ocr,
+                              ocr_assist=settings.ocr_assist)
         _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
              summary={"total_seconds": summary["total_seconds"], **summary["summary"]})
     except UnsupportedInputError as e:

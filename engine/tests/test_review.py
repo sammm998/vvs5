@@ -35,3 +35,52 @@ def test_review_never_changes_the_measurement(synthetic_pdf):
     before = [dict(r) for r in pa.quantities]
     run_review(pa, ocr=False)
     assert [dict(r) for r in pa.quantities] == before
+
+
+def test_ocr_assist_reports_when_it_cannot_run(synthetic_pdf, monkeypatch):
+    """Without the OCR extra the resolver says so and leaves the reading untouched; it never invents a character."""
+    import vvs_engine.text.ocr_assist as oa
+    from vvs_engine.pdf.extract import extract_document as ed
+    page = ed(synthetic_pdf).pages[0]
+
+    class Row:
+        def __init__(self):
+            self.glyphs = [type("G", (), {"char": "?", "bbox": (0, 0, 5, 7), "source": "stroke", "score": 0.5})()]
+            self.bbox = (0, 0, 5, 7)
+            self.text = "?"
+            self.unknown_chars = 1
+
+    monkeypatch.setattr("vvs_engine.review.ocr_check.ocr_words", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("no engine")))
+    rows = [Row()]
+    rep = oa.resolve_unknown_glyphs(page, rows)
+    assert rep["state"] == "unavailable" and rep["resolved"] == 0
+    assert rows[0].glyphs[0].char == "?", "an unreadable character stays unreadable"
+
+
+def test_ocr_assist_only_fills_a_word_that_lines_up(synthetic_pdf, monkeypatch):
+    """OCR may fill an unknown position only when the rest of the word agrees with the vector reading."""
+    import vvs_engine.text.ocr_assist as oa
+    from vvs_engine.pdf.extract import extract_document as ed
+    page = ed(synthetic_pdf).pages[0]
+
+    def row(chars):
+        gs = [type("G", (), {"char": c, "bbox": (10.0 * i, 0.0, 10.0 * i + 8, 7.0), "source": "stroke", "score": 0.5})()
+              for i, c in enumerate(chars)]
+        r = type("R", (), {})()
+        r.glyphs = gs
+        r.bbox = (0.0, 0.0, 10.0 * len(chars), 7.0)
+        r.text = "".join(chars)
+        r.unknown_chars = sum(1 for c in chars if c == "?")
+        return r
+
+    monkeypatch.setattr("vvs_engine.review.ocr_check.ocr_words",
+                        lambda *a, **k: [("VG+1.44", [0.0, 0.0, 70.0, 7.0], 0.95)])
+    ok = row(list("VG+1.?4"))
+    rep = oa.resolve_unknown_glyphs(page, [ok])
+    assert rep["resolved"] == 1 and ok.text == "VG+1.44"
+
+    monkeypatch.setattr("vvs_engine.review.ocr_check.ocr_words",
+                        lambda *a, **k: [("XY+9.44", [0.0, 0.0, 70.0, 7.0], 0.95)])
+    bad = row(list("VG+1.?4"))
+    rep = oa.resolve_unknown_glyphs(page, [bad])
+    assert rep["resolved"] == 0 and bad.text == "VG+1.?4", "a disagreeing OCR word may not fill anything"

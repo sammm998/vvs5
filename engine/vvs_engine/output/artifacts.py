@@ -217,9 +217,21 @@ def why(pa, pipe_id: str) -> dict[str, Any]:
 
 def unresolved_issues(pa) -> list[dict]:
     issues = []
-    for f in pa.vtext.families.values():
-        if f.char == "?" and f.n_members >= 2:
-            issues.append({"kind": "unknown_glyph", "count": f.n_members, "family": f.family_id, "alternatives": f.alternatives[:2]})
+    # Unknown glyph shapes: hundreds of one-line entries drown the list, and most sit in legend text or notes that
+    # never reach the takeoff. Report one entry for the shapes that break a designation and one for the rest.
+    unknown_fams = [f for f in pa.vtext.families.values() if f.char == "?" and f.n_members >= 2]
+    if unknown_fams:
+        in_designation = sum(d.unknown_chars for d in pa.designations)
+        total = sum(f.n_members for f in unknown_fams)
+        if in_designation:
+            first = next((d for d in pa.designations if d.unknown_chars), None)
+            issues.append({"kind": "unknown_glyph_in_designation", "count": in_designation,
+                           "families": len(unknown_fams), "bbox": list(first.bbox) if first else None,
+                           "reason": "tecken som inte kunde namnges sitter i en beteckning och gör den oläsbar"})
+        rest = total - in_designation
+        if rest > 0:
+            issues.append({"kind": "unknown_glyph_elsewhere", "count": rest, "families": len(unknown_fams),
+                           "reason": "tecken som inte kunde namnges i legend, noter eller ramtext; påverkar inte mängden"})
     for d in pa.designations:
         if d.unknown_chars:
             issues.append({"kind": "uncertain_designation", "text": d.text, "bbox": list(d.bbox), "id": d.did})
@@ -303,6 +315,8 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     W("unresolved-issues.json", {"issues": unresolved_issues(pa)})
     if review is not None:
         W("review-findings.json", review)
+    if getattr(pa, "ocr_assist", None) is not None:
+        W("ocr-assisted-characters.json", pa.ocr_assist)
     W("evidence-graph.json", evidence_graph(pa))
     from ..reconcile import reconcile
     W("reconciliation.json", reconcile(pa))

@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     run_determinism: bool = False
     run_review: bool = True       # review agents check the finished result
     review_ocr: bool = True       # let the review read the page with OCR as an independent second opinion
+    ocr_assist: bool = True       # let OCR name the characters the stroke recogniser could not
     cors_origins: str = "http://localhost:5173,http://localhost:8080"
     allow_registration: bool = True
     static_dir: str = ""          # built frontend (frontend/dist); served by the API when present

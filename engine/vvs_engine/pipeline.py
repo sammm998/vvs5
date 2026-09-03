@@ -56,6 +56,7 @@ class PageAnalysis:
     timings: dict[str, float] = field(default_factory=dict)
     hatch_families: list[HatchFamily] = field(default_factory=list)
     risers: dict[str, list[dict]] = field(default_factory=dict)     # identity key -> riser symbols
+    ocr_assist: dict | None = None                                  # report of the OCR-assisted glyph resolution
 
 
 def _t(timings: dict, key: str, t0: float) -> float:
@@ -64,7 +65,7 @@ def _t(timings: dict, key: str, t0: float) -> float:
     return now
 
 
-def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -> PageAnalysis:
+def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False) -> PageAnalysis:
     timings: dict[str, float] = {}
     t0 = time.perf_counter()
     if progress:
@@ -77,6 +78,15 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
     vtext = vector_text_rows(page, vt_timing)
     srows = searchable_rows(page)
     t0 = _t(timings, "text_ms", t0)
+    ocr_report = None
+    if ocr_assist:
+        # characters the stroke recogniser could not name are filled from an OCR pass over the same page, and
+        # only where the OCR word lines up character for character with what the vector reader already read
+        if progress:
+            progress("RESOLVING_UNREADABLE_TEXT")
+        from .text.ocr_assist import resolve_unknown_glyphs
+        ocr_report = resolve_unknown_glyphs(page, vtext.rows)
+        t0 = _t(timings, "ocr_assist_ms", t0)
     if progress:
         progress("READING_DESIGNATIONS")
     lines = merge_lines(srows + vtext.rows, page.info.index)
@@ -243,7 +253,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None) -
                         designations=designations, grammar=grammar, ann_layers=ann_layers, leaders=leaders,
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,
-                        timings=timings, hatch_families=hatch, risers=risers)
+                        timings=timings, hatch_families=hatch, risers=risers, ocr_assist=ocr_report)
 
 
 def _riser_symbols(page: RawPage, ann_layers, glyph_pids, graphs, ownership, anchors, identities) -> dict[str, list[dict]]:

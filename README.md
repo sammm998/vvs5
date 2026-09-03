@@ -105,13 +105,25 @@ a review that could edit the result would hide the disagreement it exists to sur
 
 The findings are written to `review-findings.json` and shown in the application's "Granskning" tab.
 
+### Resolving what the vector reader could not name
+
+Where a glyph's shape matches no reference letter the row keeps a '?', and everything built on it - the
+designation, its dimension, the pipe it labels - is lost. An opt-in pass (`VVS_OCR_ASSIST`, on by default when the
+`review` extra is installed) renders the page, reads it in overlapping tiles and fills in those positions, but only
+where an OCR word lines up character for character with a vector-read word and agrees everywhere both readings are
+sure. Every adopted character is written to `ocr-assisted-characters.json` with its confidence and position.
+
+It resolves what OCR can actually see and no more: on drawing A it named 18 of 56 unreadable characters, on
+drawings C and W-50-1-A-0014 none, because OCR finds no text at those positions either. The measured quantities on
+all three are unchanged, since those characters sit in legend text and notes rather than in designations.
+
 ## Artifacts per drawing (results/<name>/)
 
 drawing-profile.json, drawing-profile-report.md, raw-vector-inventory.json, cad-layer-map.json,
 vector-designations.json, designation-overlay.pdf, leader-forensics.json, leader-family-report.json,
 pipe-code-anchors.json, endpoint-pipe-attachment-overlay.pdf, pipe-representation-families.json,
 pipe-geometry-inventory.json, pipe-topology.json, physical-pipes.json, quantities.json, unresolved-issues.json,
-evidence-graph.json, reconciliation.json, review-findings.json, determinism.json, contamination-report.json, performance-report.json,
+evidence-graph.json, reconciliation.json, review-findings.json, ocr-assisted-characters.json, determinism.json, contamination-report.json, performance-report.json,
 production-overlay.pdf (+ topology/ambiguous/unsupported-style overlays), analysis-report.md, freeze-manifest.json.
 
 ## Principles enforced by the engine

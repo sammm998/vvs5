@@ -19,7 +19,8 @@ CONFIG = {"contact_tolerance_pt": 0.6, "touch_tolerance_pt": 0.15, "unknown_glyp
 
 
 def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinism: bool = True, contamination: bool = True,
-                progress=None, pages: list[int] | None = None, review: bool = True, review_ocr: bool = True) -> dict:
+                progress=None, pages: list[int] | None = None, review: bool = True, review_ocr: bool = True,
+                ocr_assist: bool = False) -> dict:
     t_all = time.perf_counter()
     name = name or os.path.splitext(os.path.basename(pdf_path))[0]
     os.makedirs(out_dir, exist_ok=True)
@@ -31,7 +32,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     timings["extract_ms"] = (time.perf_counter() - t0) * 1000
     analyses: list[PageAnalysis] = []
     for pg in doc.pages:
-        analyses.append(analyze_page(pg, progress))
+        analyses.append(analyze_page(pg, progress, ocr_assist=ocr_assist))
     if progress:
         progress("GENERATING_OVERLAYS")
     t0 = time.perf_counter()
@@ -54,7 +55,8 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     summary = {"name": name, "pages": len(doc.pages), "summary": summarize(analyses[0]), "determinism": det["state"] if det else None,
                "contamination": cont["state"] if cont else None, "files": files, "total_seconds": round(timings["total_s"], 2),
                "input": getattr(doc.pages[0], "input_class", None), "skipped_pages": doc.skipped_pages,
-               "review": {"state": rev["state"], "n_findings": rev["n_findings"], "agents": rev["agents"]} if rev else None}
+               "review": {"state": rev["state"], "n_findings": rev["n_findings"], "agents": rev["agents"]} if rev else None,
+               "ocr_assist": analyses[0].ocr_assist}
     with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=1, default=str)
     if progress:

@@ -6,7 +6,9 @@ import QuantityTable from "../components/QuantityTable";
 import { StatusBadge, STAGE_LABELS } from "../components/Status";
 
 const ISSUE_LABELS: Record<string, string> = {
-  unknown_glyph: "Okänt tecken", uncertain_designation: "Osäker beteckning", missing_dn: "Saknad DN", ambiguous_leader: "Tvetydig hänvisning",
+  unknown_glyph: "Okänt tecken", unknown_glyph_in_designation: "Olästa tecken i beteckningar",
+  unknown_glyph_elsewhere: "Olästa tecken utanför beteckningarna", uncertain_designation: "Osäker beteckning",
+  missing_dn: "Saknad DN", ambiguous_leader: "Tvetydig hänvisning",
   missing_leader: "Saknad hänvisningslinje", ambiguous_pipe_attachment: "Tvetydig röranslutning", missing_pipe_attachment: "Saknad röranslutning",
   unsupported_pipe_representation: "Rörrepresentation stöds ej", topology_conflict: "Topologikonflikt", branch_conflict: "Grenkonflikt", dn_conflict: "DN-konflikt",
   unowned_geometry: "Oidentifierad geometri", unsupported_structural_family: "Strukturfamilj stöds ej",
@@ -139,7 +141,7 @@ export default function AnalysisPage() {
           <div className="card">
             {result.issues.map((it: any, i: number) => (
               <div key={i} className="issue" onClick={() => it.bbox && viewer.current?.zoomTo(it.bbox)}>
-                <b>{ISSUE_LABELS[it.kind] || it.kind}</b> {it.text ? `· ${it.text}` : ""} {it.reason ? <span className="muted">({it.reason})</span> : ""}
+                <b>{ISSUE_LABELS[it.kind] || it.kind}</b> {it.text ? `· ${it.text}` : ""} {it.count ? `· ${it.count} st` : ""} {it.reason ? <span className="muted">({it.reason})</span> : ""}
                 {it.count ? <span className="muted"> · {it.count} st</span> : ""} {it.length_pt ? <span className="muted"> · {it.length_pt} pt</span> : ""}
               </div>
             ))}
