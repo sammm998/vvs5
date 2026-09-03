@@ -58,7 +58,7 @@ remaining ink is skeletonised and traced into stroke polylines with measured wid
 classes become the vector families. From there the same designation grammar, leader, attachment, topology,
 ownership and measurement code runs unchanged. The result is labelled "skannad/rastrerad (OCR)" with the OCR
 confidence and the share of ink explained by traced strokes; expect lower fidelity than a vector PDF (on a 300 dpi
-scan of drawing A the engine reads 139 designations, as many as the vector original, verifies the scale, attaches 72 labels and owns about
+scan of drawing A the engine reads 139 designations, as many as the vector original, verifies the scale, attaches 73 labels and owns about
 half of the pipe length that the vector original yields, with a further seventh reported as ambiguous), and check
 designations and scale in the "Ej lösta" view.
 
