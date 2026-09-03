@@ -1,0 +1,62 @@
+{
+ "state": "VALID",
+ "raw_relevant_pipe_geometry_pt": 10782.459,
+ "confirmed_pt": 7498.154,
+ "ambiguous_pt": 165.723,
+ "unowned_pt": 3118.582,
+ "residual_pt": -0.0,
+ "double_counted_prims": 0,
+ "families": [
+  {
+   "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44",
+   "raw_pt": 1574.635,
+   "confirmed_pt": 298.743,
+   "ambiguous_pt": 0.0,
+   "unowned_pt": 1275.892,
+   "physical_pipe_raw_pt": 298.743,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44",
+   "raw_pt": 1629.679,
+   "confirmed_pt": 288.73,
+   "ambiguous_pt": 0.0,
+   "unowned_pt": 1340.949,
+   "physical_pipe_raw_pt": 288.73,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "268140-W-50-P-A-00|V-53BB-FE--S1-|s|w2.04",
+   "raw_pt": 1032.998,
+   "confirmed_pt": 1032.998,
+   "ambiguous_pt": 0.0,
+   "unowned_pt": 0.0,
+   "physical_pipe_raw_pt": 1032.998,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04",
+   "raw_pt": 5594.999,
+   "confirmed_pt": 5402.517,
+   "ambiguous_pt": 165.723,
+   "unowned_pt": 26.76,
+   "physical_pipe_raw_pt": 5402.517,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44",
+   "raw_pt": 950.146,
+   "confirmed_pt": 475.166,
+   "ambiguous_pt": 0.0,
+   "unowned_pt": 474.98,
+   "physical_pipe_raw_pt": 475.166,
+   "double_counted_prims": 0,
+   "valid": true
+  }
+ ],
+ "note": "physical pipe lengths additionally include bridged micro-gaps of the line style (reported separately)"
+}

@@ -1,0 +1,82 @@
+{
+ "state": "VALID",
+ "raw_relevant_pipe_geometry_pt": 8448.6,
+ "confirmed_pt": 2633.247,
+ "ambiguous_pt": 193.159,
+ "unowned_pt": 5622.194,
+ "residual_pt": -0.0,
+ "double_counted_prims": 0,
+ "families": [
+  {
+   "family": "V-52B--FE-_Vxx-KV|s|w1.44",
+   "raw_pt": 869.291,
+   "confirmed_pt": 598.469,
+   "ambiguous_pt": 0.0,
+   "unowned_pt": 270.822,
+   "physical_pipe_raw_pt": 598.469,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "V-53BBBFE-_Sxx|s|w2.88",
+   "raw_pt": 491.984,
+   "confirmed_pt": 99.04,
+   "ambiguous_pt": 0.0,
+   "unowned_pt": 392.944,
+   "physical_pipe_raw_pt": 99.04,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "V-56B--FE-_VPxx-|s|w1.44",
+   "raw_pt": 1730.161,
+   "confirmed_pt": 750.694,
+   "ambiguous_pt": 0.0,
+   "unowned_pt": 979.467,
+   "physical_pipe_raw_pt": 750.694,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "V-56B--FE-_VS2x-|s|w1.44",
+   "raw_pt": 2154.718,
+   "confirmed_pt": 592.157,
+   "ambiguous_pt": 192.919,
+   "unowned_pt": 1369.641,
+   "physical_pipe_raw_pt": 592.157,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "V-56B--FE-_VS3x-|s|w1.44",
+   "raw_pt": 1485.898,
+   "confirmed_pt": 592.887,
+   "ambiguous_pt": 0.24,
+   "unowned_pt": 892.771,
+   "physical_pipe_raw_pt": 592.887,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "V-52B--FE-_Vxx-VVCXX|s|w1.44",
+   "raw_pt": 856.232,
+   "confirmed_pt": 0.0,
+   "ambiguous_pt": 0.0,
+   "unowned_pt": 856.232,
+   "physical_pipe_raw_pt": 0,
+   "double_counted_prims": 0,
+   "valid": true
+  },
+  {
+   "family": "V-52B--FE-_Vxx-VV|s|w1.44",
+   "raw_pt": 860.316,
+   "confirmed_pt": 0.0,
+   "ambiguous_pt": 0.0,
+   "unowned_pt": 860.316,
+   "physical_pipe_raw_pt": 0,
+   "double_counted_prims": 0,
+   "valid": true
+  }
+ ],
+ "note": "physical pipe lengths additionally include bridged micro-gaps of the line style (reported separately)"
+}

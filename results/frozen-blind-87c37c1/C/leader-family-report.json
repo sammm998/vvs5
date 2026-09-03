@@ -1,0 +1,57 @@
+{
+ "n_leaders": 19,
+ "families": [
+  {
+   "family": "split-path|vertical|underline_end|end-tick|crossing-ticks|w0.72",
+   "occurrences": 4
+  },
+  {
+   "family": "bent|diagonal|underline_end|plain-end|no-crossing-ticks|w0.72",
+   "occurrences": 3
+  },
+  {
+   "family": "bent|horizontal|underline_end|end-tick|crossing-ticks|w0.72",
+   "occurrences": 2
+  },
+  {
+   "family": "bent|diagonal|bbox_corner|plain-end|crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "bent|horizontal|bbox_corner|end-tick|crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "bent|vertical|underline_end|end-tick|crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "bent|vertical|underline_end|plain-end|no-crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "split-path|diagonal|underline_end|end-tick|crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "split-path|horizontal|underline_end|end-tick|crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "split-path|vertical|box_corner|end-tick|crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "straight|diagonal|bbox_corner|plain-end|crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "straight|diagonal|underline_end|end-tick|no-crossing-ticks|w0.72",
+   "occurrences": 1
+  },
+  {
+   "family": "straight|diagonal|underline_end|plain-end|no-crossing-ticks|w0.72",
+   "occurrences": 1
+  }
+ ]
+}

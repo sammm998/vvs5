@@ -215,9 +215,16 @@ def vector_text_rows(page: RawPage, timing: dict | None = None) -> VectorTextRes
                        font=f"vector:{rc.style}", family=f"vector:{rc.layer}:{rc.style}:{rc.height:.1f}")
         if _is_junk_row(row):
             rejected.append(row)
+            # its components are geometry after all: small straight ones are marker candidates (ticks, dots)
+            for g in rc.glyphs:
+                for c in g.comps:
+                    if len(c.segs) <= 2 and all(p.n_curves == 0 for p in c.paths) and max(c.w, c.h) <= 12.0:
+                        marks.append(Mark(mid=stable_id("mark", page.info.index, c.cid), layer=c.layer, style=c.style, bbox=c.bbox,
+                                          segs=c.segs, path_ids=[p.pid for p in c.paths]))
             continue
         rows.append(row)
     rows.sort(key=lambda r: r.rid)
+    marks.sort(key=lambda m: m.mid)
     t5 = time.perf_counter()
     if timing is not None:
         timing.update({"components_ms": (t1 - t0) * 1000, "rows_ms": (t2 - t1) * 1000, "raster_ms": (t3 - t2) * 1000,

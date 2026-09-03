@@ -114,9 +114,8 @@ def _numeric_words(lines: list[TextRow]) -> list[_Label]:
         for g in list(ln.glyphs) + [None]:
             if g is None or g.char == " ":
                 if cur:
-                    t = "".join(x.char for x in cur)
-                    if t == "O" and any(a == "0" for a, _ in cur[0].alternatives):
-                        t = "0"   # twin shape: a lone O where the recognizer also offers 0
+                    # twin shapes inside scale-bar labels: an O whose recognizer alternatives include 0 reads as 0
+                    t = "".join("0" if (x.char == "O" and any(a == "0" for a, _ in x.alternatives)) else x.char for x in cur)
                     m = re.fullmatch(r"(\d{1,3})(m|M|cm|mm)?", t)
                     if m:
                         t = m.group(1)

@@ -1,0 +1,1352 @@
+{
+ "issues": [
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
+   "family": "096be2089dca",
+   "alternatives": [
+    [
+     "4",
+     0.1808
+    ],
+    [
+     "G",
+     0.2006
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "1818ca1806c8",
+   "alternatives": [
+    [
+     "G",
+     0.179
+    ],
+    [
+     "M",
+     0.179
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "1a236a0de02f",
+   "alternatives": [
+    [
+     "X",
+     0.1826
+    ],
+    [
+     "N",
+     0.1945
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "20ac958e46d8",
+   "alternatives": [
+    [
+     ".",
+     0.2065
+    ],
+    [
+     "+",
+     0.2214
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "3ddb9316ddd8",
+   "alternatives": [
+    [
+     "V",
+     0.1603
+    ],
+    [
+     "P",
+     0.1881
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "4973a9b61d2a",
+   "alternatives": [
+    [
+     "X",
+     0.1829
+    ],
+    [
+     "N",
+     0.1948
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "6ad62e02a763",
+   "alternatives": [
+    [
+     "4",
+     0.175
+    ],
+    [
+     "5",
+     0.1995
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 11,
+   "family": "6b881b650119",
+   "alternatives": [
+    [
+     "3",
+     0.1497
+    ],
+    [
+     "5",
+     0.1623
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 12,
+   "family": "76f122bc18bb",
+   "alternatives": [
+    [
+     "O",
+     1.2654
+    ],
+    [
+     "8",
+     1.2839
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "88144fdd529e",
+   "alternatives": [
+    [
+     "X",
+     0.1796
+    ],
+    [
+     "N",
+     0.1915
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "88e9410b1bb7",
+   "alternatives": [
+    [
+     ".",
+     0.2434
+    ],
+    [
+     "X",
+     0.2661
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "8bb0c2b38c1f",
+   "alternatives": [
+    [
+     "3",
+     0.1544
+    ],
+    [
+     "5",
+     0.1703
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "8c483ce36a65",
+   "alternatives": [
+    [
+     "4",
+     0.176
+    ],
+    [
+     "5",
+     0.1999
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "97cd34e19881",
+   "alternatives": [
+    [
+     "C",
+     0.1559
+    ],
+    [
+     "L",
+     0.1581
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "ac131ae5569f",
+   "alternatives": [
+    [
+     ".",
+     0.2433
+    ],
+    [
+     "X",
+     0.2596
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "ac37648143d3",
+   "alternatives": [
+    [
+     ".",
+     0.2402
+    ],
+    [
+     "X",
+     0.263
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "ad4e52eab01d",
+   "alternatives": [
+    [
+     ".",
+     0.2275
+    ],
+    [
+     "+",
+     0.2318
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 5,
+   "family": "b67285f1bcbe",
+   "alternatives": [
+    [
+     "V",
+     0.1547
+    ],
+    [
+     "P",
+     0.1892
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 4,
+   "family": "bb29ba1b22bd",
+   "alternatives": [
+    [
+     "4",
+     0.1818
+    ],
+    [
+     "5",
+     0.1949
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "c5b90fde447d",
+   "alternatives": [
+    [
+     "3",
+     0.2125
+    ],
+    [
+     "5",
+     0.2233
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 5,
+   "family": "cea63b2aa429",
+   "alternatives": [
+    [
+     "/",
+     0.1511
+    ],
+    [
+     ")",
+     0.1787
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "d1f52fa2c591",
+   "alternatives": [
+    [
+     "X",
+     0.1789
+    ],
+    [
+     "N",
+     0.1857
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "d1feb51b6637",
+   "alternatives": [
+    [
+     "4",
+     0.1816
+    ],
+    [
+     "G",
+     0.2009
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 2,
+   "family": "d6e4c84d6130",
+   "alternatives": [
+    [
+     "W",
+     0.1602
+    ],
+    [
+     "M",
+     0.1609
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 9,
+   "family": "e4041d88ebbc",
+   "alternatives": [
+    [
+     "/",
+     0.1523
+    ],
+    [
+     ")",
+     0.1686
+    ]
+   ]
+  },
+  {
+   "kind": "unknown_glyph",
+   "count": 3,
+   "family": "f595fc26f811",
+   "alternatives": [
+    [
+     "M",
+     0.2102
+    ],
+    [
+     "G",
+     0.2104
+    ]
+   ]
+  },
+  {
+   "kind": "missing_dn",
+   "text": "S3-R8",
+   "bbox": [
+    1144.3790283203125,
+    629.80029296875,
+    1168.43994140625,
+    636.280029296875
+   ],
+   "id": "des_0512235e6954"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "S3-P2",
+   "bbox": [
+    301.9790954589844,
+    300.0401611328125,
+    326.03997802734375,
+    306.52001953125
+   ],
+   "id": "des_1ccc77b6a967"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "V5-INSTALLATIONER",
+   "bbox": [
+    2051.0400390625,
+    1546.84033203125,
+    2172.119873046875,
+    1555.8399658203125
+   ],
+   "id": "des_2f6cbb6b0ac9"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "S1-P2",
+   "bbox": [
+    303.4190979003906,
+    368.9200439453125,
+    326.03997802734375,
+    375.4000244140625
+   ],
+   "id": "des_352dc2e74184"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "-25O",
+   "bbox": [
+    1199.8800048828125,
+    1031.320068359375,
+    1236.719970703125,
+    1039.840087890625
+   ],
+   "id": "des_4466e13596f8"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "D8XXX",
+   "bbox": [
+    2052.83984375,
+    597.0400390625,
+    2076.719970703125,
+    603.52001953125
+   ],
+   "id": "des_66ccc9729bee"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "O5-O7",
+   "bbox": [
+    2276.7598876953125,
+    1474.0,
+    2308.43994140625,
+    1483.0
+   ],
+   "id": "des_721c28835837"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "I251I",
+   "bbox": [
+    746.0399475097656,
+    1480.4876708984375,
+    763.8000183105469,
+    1488.2723388671875
+   ],
+   "id": "des_749ba7fa3d4d"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "D0LDA",
+   "bbox": [
+    2052.239990234375,
+    886.9600219726562,
+    2078.159912109375,
+    893.4400024414062
+   ],
+   "id": "des_95cf24261f62"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "S3-R8",
+   "bbox": [
+    301.85906982421875,
+    1324.240234375,
+    325.91998291015625,
+    1330.719970703125
+   ],
+   "id": "des_ba77be147843"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "C0C",
+   "bbox": [
+    1038.9600219726562,
+    946.8400115966797,
+    1054.8599853515625,
+    958.7200317382812
+   ],
+   "id": "des_c534ec443873"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "S3-R8",
+   "bbox": [
+    850.807523727417,
+    741.8801879882812,
+    874.9199829101562,
+    748.3600463867188
+   ],
+   "id": "des_c5dc326b7ca1"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "VL0XXX",
+   "bbox": [
+    2051.8798828125,
+    702.4000244140625,
+    2103.119873046875,
+    708.760009765625
+   ],
+   "id": "des_c9e65abf0eeb"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "XXO0-X00-00O/X0O",
+   "bbox": [
+    2055.0,
+    142.840087890625,
+    2140.6798706054688,
+    149.56005859375
+   ],
+   "id": "des_cf7a81916bf5"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "KOMBI-MA5KIN",
+   "bbox": [
+    2086.679931640625,
+    633.6400146484375,
+    2146.43994140625,
+    640.0
+   ],
+   "id": "des_db60801d95da"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "-25O",
+   "bbox": [
+    1199.8800048828125,
+    985.239990234375,
+    1236.719970703125,
+    993.760009765625
+   ],
+   "id": "des_e0b2c8dbbb2b"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "KV/VVI1-2I-X31",
+   "bbox": [
+    2083.079833984375,
+    886.4097290039062,
+    2149.199951171875,
+    894.1103515625
+   ],
+   "id": "des_e3388e24a0f7"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "B8-GOLVRÄNNA",
+   "bbox": [
+    637.5599975585938,
+    1479.1600341796875,
+    703.4400024414062,
+    1487.6800537109375
+   ],
+   "id": "des_e5d88dc37fc3"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "T5XXX",
+   "bbox": [
+    2051.8798828125,
+    688.2400512695312,
+    2075.760009765625,
+    694.6000366210938
+   ],
+   "id": "des_ea7e437b8451"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "SOOX300",
+   "bbox": [
+    708.47998046875,
+    1481.199951171875,
+    741.1199798583984,
+    1487.6800537109375
+   ],
+   "id": "des_ec46dda71f3d"
+  },
+  {
+   "kind": "missing_dn",
+   "text": "O3-O1",
+   "bbox": [
+    2177.6399536132812,
+    1473.4000244140625,
+    2207.280029296875,
+    1482.4000244140625
+   ],
+   "id": "des_f7dfb81e6cef"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "VV1-X31",
+   "bbox": [
+    1437.8399658203125,
+    737.3200073242188,
+    1471.7999267578125,
+    743.800048828125
+   ],
+   "id": "des_10ea5db03a86"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "KV2-X31",
+   "bbox": [
+    1437.1199951171875,
+    798.5200805664062,
+    1471.919921875,
+    805.0
+   ],
+   "id": "des_11a90ccb445b"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "V5-INSTALLATIONER",
+   "bbox": [
+    2051.0400390625,
+    1546.84033203125,
+    2172.119873046875,
+    1555.8399658203125
+   ],
+   "id": "des_2f6cbb6b0ac9"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "-25O",
+   "bbox": [
+    1199.8800048828125,
+    1031.320068359375,
+    1236.719970703125,
+    1039.840087890625
+   ],
+   "id": "des_4466e13596f8"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "S3-R8",
+   "bbox": [
+    1123.4990234375,
+    940.1201782226562,
+    1147.5599365234375,
+    946.6000366210938
+   ],
+   "id": "des_4e44d0ab07ae"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "KV2-X31",
+   "bbox": [
+    1035.5999755859375,
+    1254.64013671875,
+    1070.280029296875,
+    1261.1199951171875
+   ],
+   "id": "des_5a49db8f44d8"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "S3-R8",
+   "bbox": [
+    674.3390502929688,
+    673.4802856445312,
+    698.3999633789062,
+    679.9600219726562
+   ],
+   "id": "des_5fcce3908d4b"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "D8XXX",
+   "bbox": [
+    2052.83984375,
+    597.0400390625,
+    2076.719970703125,
+    603.52001953125
+   ],
+   "id": "des_66ccc9729bee"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "VV1-X31",
+   "bbox": [
+    1276.679931640625,
+    1085.080078125,
+    1310.6400146484375,
+    1091.43994140625
+   ],
+   "id": "des_6a54f3cc7483"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "VV1-X31",
+   "bbox": [
+    752.3999633789062,
+    1027.239990234375,
+    786.3599853515625,
+    1033.719970703125
+   ],
+   "id": "des_70104159406d"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "O5-O7",
+   "bbox": [
+    2276.7598876953125,
+    1474.0,
+    2308.43994140625,
+    1483.0
+   ],
+   "id": "des_721c28835837"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "S3-R8-110",
+   "bbox": [
+    947.8190307617188,
+    387.760009765625,
+    988.9199676513672,
+    394.239990234375
+   ],
+   "id": "des_79f4efd44bea"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "S3-R8",
+   "bbox": [
+    1115.6990966796875,
+    1090.1201171875,
+    1139.760009765625,
+    1096.60009765625
+   ],
+   "id": "des_7fa770872809"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "S3-R8-110",
+   "bbox": [
+    991.9790649414062,
+    712.3600463867188,
+    1033.0798950195312,
+    718.8400268554688
+   ],
+   "id": "des_826d09ec376a"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "S3-R8",
+   "bbox": [
+    1006.6190185546875,
+    1203.760009765625,
+    1030.679931640625,
+    1210.239990234375
+   ],
+   "id": "des_85298627f8a6"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "D0LDA",
+   "bbox": [
+    2052.239990234375,
+    886.9600219726562,
+    2078.159912109375,
+    893.4400024414062
+   ],
+   "id": "des_95cf24261f62"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "VV1-X31",
+   "bbox": [
+    906.47998046875,
+    849.52001953125,
+    950.3999633789062,
+    855.8800048828125
+   ],
+   "id": "des_9886e58cab35"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "KV2-X31",
+   "bbox": [
+    791.760009765625,
+    1027.239990234375,
+    826.5599975585938,
+    1033.719970703125
+   ],
+   "id": "des_9cb51745e296"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "KV2-X31",
+   "bbox": [
+    1236.47998046875,
+    1084.9600830078125,
+    1271.280029296875,
+    1091.43994140625
+   ],
+   "id": "des_9f0b1d928534"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "S1-P2-110",
+   "bbox": [
+    904.8590698242188,
+    221.68017578125,
+    944.5199890136719,
+    228.1600341796875
+   ],
+   "id": "des_a8066475ddb2"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "C0C",
+   "bbox": [
+    1038.9600219726562,
+    946.8400115966797,
+    1054.8599853515625,
+    958.7200317382812
+   ],
+   "id": "des_c534ec443873"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "VL0XXX",
+   "bbox": [
+    2051.8798828125,
+    702.4000244140625,
+    2103.119873046875,
+    708.760009765625
+   ],
+   "id": "des_c9e65abf0eeb"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "XXO0-X00-00O/X0O",
+   "bbox": [
+    2055.0,
+    142.840087890625,
+    2140.6798706054688,
+    149.56005859375
+   ],
+   "id": "des_cf7a81916bf5"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "AN5L",
+   "bbox": [
+    2052.239990234375,
+    898.8400268554688,
+    2090.159912109375,
+    905.2000122070312
+   ],
+   "id": "des_d4172a68cf86"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "KV2-X31",
+   "bbox": [
+    1397.6400146484375,
+    737.3200073242188,
+    1432.43994140625,
+    743.800048828125
+   ],
+   "id": "des_d93ab648bd99"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "S3-R8-75",
+   "bbox": [
+    999.1790161132812,
+    788.3200073242188,
+    1038.1199951171875,
+    794.800048828125
+   ],
+   "id": "des_dab361f5acac"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "KOMBI-MA5KIN",
+   "bbox": [
+    2086.679931640625,
+    633.6400146484375,
+    2146.43994140625,
+    640.0
+   ],
+   "id": "des_db60801d95da"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "-25O",
+   "bbox": [
+    1199.8800048828125,
+    985.239990234375,
+    1236.719970703125,
+    993.760009765625
+   ],
+   "id": "des_e0b2c8dbbb2b"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "KV/VVI1-2I-X31",
+   "bbox": [
+    2083.079833984375,
+    886.4097290039062,
+    2149.199951171875,
+    894.1103515625
+   ],
+   "id": "des_e3388e24a0f7"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "T5XXX",
+   "bbox": [
+    2051.8798828125,
+    688.2400512695312,
+    2075.760009765625,
+    694.6000366210938
+   ],
+   "id": "des_ea7e437b8451"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "O3-O1",
+   "bbox": [
+    2177.6399536132812,
+    1473.4000244140625,
+    2207.280029296875,
+    1482.4000244140625
+   ],
+   "id": "des_f7dfb81e6cef"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "VV1-X31",
+   "bbox": [
+    996.239990234375,
+    1254.760009765625,
+    1030.199951171875,
+    1261.1199951171875
+   ],
+   "id": "des_fa73298dab05"
+  },
+  {
+   "kind": "missing_leader",
+   "text": "VV1-X31",
+   "bbox": [
+    1397.760009765625,
+    798.6400146484375,
+    1431.8399658203125,
+    805.0
+   ],
+   "id": "des_fba5230ce2bc"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S1-P2-75",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    805.1199951171875,
+    355.280029296875,
+    815.1199951171875,
+    365.280029296875
+   ],
+   "id": "anc_0741268c0e16"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "B8-GOLVRÄNNA",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    629.3200073242188,
+    1439.239990234375,
+    639.3200073242188,
+    1449.239990234375
+   ],
+   "id": "anc_0790435e4542"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-R8",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1108.0,
+    1094.239990234375,
+    1118.0,
+    1104.239990234375
+   ],
+   "id": "anc_2083f80067ff"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-P2-160",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    323.91998291015625,
+    773.9600219726562,
+    333.91998291015625,
+    783.9600219726562
+   ],
+   "id": "anc_357c80bdc690"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S1-P2",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    497.44000244140625,
+    494.1199951171875,
+    507.44000244140625,
+    504.1199951171875
+   ],
+   "id": "anc_35a88012ae8f"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-R8-75",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1481.0799560546875,
+    901.760009765625,
+    1491.0799560546875,
+    911.760009765625
+   ],
+   "id": "anc_3dcd44f4fdb0"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-R8-75",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1026.0399169921875,
+    934.0400390625,
+    1036.0399169921875,
+    944.0400390625
+   ],
+   "id": "anc_3fbaff5b5e4f"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-R8-75",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    323.91998291015625,
+    1255.760009765625,
+    333.91998291015625,
+    1265.760009765625
+   ],
+   "id": "anc_4054929c476a"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "I251I",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    629.3200073242188,
+    1486.0400390625,
+    639.3200073242188,
+    1496.0400390625
+   ],
+   "id": "anc_538a2fb6ec07"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-R8-75",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    532.47998046875,
+    813.9200439453125,
+    542.47998046875,
+    823.9200439453125
+   ],
+   "id": "anc_54075a70bfc9"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "B8-GOLVRÄNNA",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    629.3200073242188,
+    1486.0400390625,
+    639.3200073242188,
+    1496.0400390625
+   ],
+   "id": "anc_789e91b70970"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "KV2-X31-16",
+   "reason": "multi_row_no_compatible_layer_group",
+   "bbox": [
+    978.0399780273438,
+    1002.3200073242188,
+    988.0399780273438,
+    1012.3200073242188
+   ],
+   "id": "anc_8c0d79d97458"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S1-P2-75",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    323.91998291015625,
+    377.0,
+    333.91998291015625,
+    387.0
+   ],
+   "id": "anc_8ffbdd0cb6f8"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "VV1-X31-16",
+   "reason": "multi_row_no_compatible_layer_group",
+   "bbox": [
+    994.8399658203125,
+    1003.0400390625,
+    1004.8399658203125,
+    1013.0400390625
+   ],
+   "id": "anc_9835b14f176f"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S1-P2-110",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    534.8800048828125,
+    593.719970703125,
+    544.8800048828125,
+    603.719970703125
+   ],
+   "id": "anc_9985e9fa478a"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "SOOX300",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    629.3200073242188,
+    1486.0400390625,
+    639.3200073242188,
+    1496.0400390625
+   ],
+   "id": "anc_9f38f4c4b327"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "I251I",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    629.3200073242188,
+    1439.239990234375,
+    639.3200073242188,
+    1449.239990234375
+   ],
+   "id": "anc_a86e1410943a"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "SOOX300",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    629.3200073242188,
+    1439.239990234375,
+    639.3200073242188,
+    1449.239990234375
+   ],
+   "id": "anc_aba835766025"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-P2",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    787.1199951171875,
+    317.719970703125,
+    797.1199951171875,
+    327.719970703125
+   ],
+   "id": "anc_abaefa2fdbd5"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S1-P2",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    579.3999633789062,
+    625.1600341796875,
+    589.3999633789062,
+    635.1600341796875
+   ],
+   "id": "anc_acbbf5db6150"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-R8-75",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    1040.5599365234375,
+    730.4000244140625,
+    1050.5599365234375,
+    740.4000244140625
+   ],
+   "id": "anc_c4dd4e7a0f38"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-R8-75",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    925.5999755859375,
+    730.1600341796875,
+    935.5999755859375,
+    740.1600341796875
+   ],
+   "id": "anc_d2f5281d8962"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "KV2-X31-16",
+   "reason": "multi_row_no_compatible_layer_group",
+   "bbox": [
+    994.8399658203125,
+    1003.0400390625,
+    1004.8399658203125,
+    1013.0400390625
+   ],
+   "id": "anc_eecd4bb825d0"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "S3-R8",
+   "reason": "leader_endpoint_touches_no_pipe_geometry",
+   "bbox": [
+    323.91998291015625,
+    717.2000122070312,
+    333.91998291015625,
+    727.2000122070312
+   ],
+   "id": "anc_ef2f78250bb8"
+  },
+  {
+   "kind": "missing_pipe_attachment",
+   "text": "VV1-X31-16",
+   "reason": "multi_row_no_compatible_layer_group",
+   "bbox": [
+    978.0399780273438,
+    1002.3200073242188,
+    988.0399780273438,
+    1012.3200073242188
+   ],
+   "id": "anc_f751554947b4"
+  },
+  {
+   "kind": "unowned_geometry",
+   "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44",
+   "count": 166,
+   "length_pt": 1275.9,
+   "bbox": [
+    1235.679931640625,
+    791.239990234375,
+    1262.5999755859375,
+    801.239990234375
+   ],
+   "id": "unowned:268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44"
+  },
+  {
+   "kind": "unowned_geometry",
+   "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44",
+   "count": 173,
+   "length_pt": 1340.9,
+   "bbox": [
+    978.0399780273438,
+    953.8400268554688,
+    988.0399780273438,
+    980.8800048828125
+   ],
+   "id": "unowned:268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44"
+  },
+  {
+   "kind": "branch_conflict",
+   "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04",
+   "count": 17,
+   "bbox": [
+    1038.280029296875,
+    946.1600341796875,
+    1051.6400146484375,
+    959.52001953125
+   ],
+   "id": "branch:268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04"
+  },
+  {
+   "kind": "unowned_geometry",
+   "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04",
+   "count": 8,
+   "length_pt": 26.8,
+   "bbox": [
+    1059.760009765625,
+    950.9600219726562,
+    1061.8399658203125,
+    960.9600219726562
+   ],
+   "id": "unowned:268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04"
+  },
+  {
+   "kind": "unowned_geometry",
+   "family": "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44",
+   "count": 38,
+   "length_pt": 475.0,
+   "bbox": [
+    1283.679931640625,
+    917.8400268554688,
+    1310.719970703125,
+    927.8400268554688
+   ],
+   "id": "unowned:268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44"
+  }
+ ]
+}
