@@ -268,14 +268,23 @@ def cluster_rows(page: RawPage, comps: list[StrokeComponent], H: float) -> list[
     # drawing-local text orientations: clusters with >= 4 tall components estimate their axis robustly; weaker
     # clusters (2-3 glyphs, PCA of few centers) adopt the nearest robust orientation within 20 degrees
     robust: Counter = Counter()
+    n_clusters: Counter = Counter()
     for cs, ang, strength in clusters:
         if strength >= 4:
-            robust[round(ang) % 180] += 1
-    prefs = [a for a, n in robust.items() if n >= 2] or sorted(robust)
+            robust[round(ang) % 180] += len(cs)
+            n_clusters[round(ang) % 180] += 1
+    total = sum(robust.values()) or 1
+    order = sorted(robust.items(), key=lambda kv: (-kv[1], kv[0]))
+    prefs = [a for a, w in order if w >= 0.02 * total and n_clusters[a] >= 2] or [a for a, _ in order]
     rows: list[RowCluster] = []
     for cs, ang, strength in clusters:
-        if strength < 4:
-            ang = _snap_angle(ang, prefs if prefs else [0.0, 90.0], 20.0)
+        # A drawing writes its text along a few directions, and its own long rows establish them. A cluster
+        # whose axis is near none of those is not text at a new angle: it is two short rows standing above each
+        # other read as one column - a legend's codes, a stack of dimensions - so it is read along the
+        # direction the drawing writes in, which splits it back into the rows it was.
+        ang = _snap_angle(ang, prefs if prefs else [0.0, 90.0], 20.0)
+        if prefs and not _near_any(ang, prefs, 20.0):
+            ang = prefs[0]
         rows.extend(_split_and_order(page, cs, H, ang))
     rows.sort(key=lambda r: r.rcid)
     return rows
@@ -286,6 +295,10 @@ def _angle_support(cs: list[StrokeComponent]) -> int:
         return 0
     hmax = max(max(c.h, c.w) for c in cs)
     return sum(1 for c in cs if max(c.h, c.w) >= 0.6 * hmax)
+
+
+def _near_any(ang: float, prefs, tol: float) -> bool:
+    return any(abs((ang - p + 90.0) % 180.0 - 90.0) <= tol for p in prefs)
 
 
 def _snap_angle(ang: float, prefs, tol: float) -> float:
