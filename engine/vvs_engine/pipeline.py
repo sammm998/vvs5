@@ -14,6 +14,7 @@ from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
 from .geometry.core import GridIndex, dist
 from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family, family_key,
+                                   stroke_family,
                                    graph_tolerances, split_prims_at_points)
 from .profile.layers import compute_layer_stats
 from .profile.hatch import HatchFamily, discover_hatch, inside_hatch
@@ -130,7 +131,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 if c.kind in ("end_tick", "crossing_tick"):
                     tick_votes[c.family] += 1
         # the vector families carrying the designation leaders themselves are annotation geometry, never pipes
-        leader_fams = {f"{ld.layer}|s|w{ld.width:.2f}" for ld in des_leaders} | (set(ann_layers) if ann_layers else set())
+        leader_fams = {stroke_family(ld.layer, ld.width, ld.color) for ld in des_leaders} | (set(ann_layers) if ann_layers else set())
         # evaluate the vector structure of every voted family first (kind: fragmented-dashed / continuous / sparse)
         voted = sorted(f for f in votes if f not in leader_fams)
         prims_all = collect_prims(page, set(voted))
@@ -196,15 +197,15 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         if a.state != "VERIFIED_PIPE_ATTACHMENT":
             continue
         ld = next(l for l in leaders if l.lid == a.leader_id)
-        ann_layers[f"{ld.layer}|s|w{ld.width:.2f}"] += 1
+        ann_layers[stroke_family(ld.layer, ld.width, ld.color)] += 1
         b = block_by_id[a.block_id]
         for r in b.rows:
             for u in r.underline:
-                ann_layers[f"{u.layer}|s|w{u.width:.2f}"] += 1
+                ann_layers[stroke_family(u.layer, u.width, u.color)] += 1
             if r.line.source != "text" and r.line.font.startswith("vector:"):
                 ann_layers[f"{r.line.layer}|{r.line.font[len('vector:'):]}"] += 1
         for sgm in b.box_segs:
-            ann_layers[f"{sgm.layer}|s|w{sgm.width:.2f}"] += 1
+            ann_layers[stroke_family(sgm.layer, sgm.width, sgm.color)] += 1
     if ann_layers:
         # a vector family accepted as pipe geometry in pass 1 is never an annotation family (an underline bar that
         # happens to share the pipes' stroke class must not remove the pipes)
@@ -299,7 +300,7 @@ def _riser_symbols(page: RawPage, ann_layers, glyph_pids, graphs, ownership, anc
     from .geometry.core import dist as _dist
     from .pipes.ownership import _merge_identity, _seed_prims
     gidx = GeometryIndex(page, set(ann_layers) if ann_layers else set(), glyph_pids)
-    syms = [s for s in gidx.symbols if 1.5 <= max(s.bbox[2] - s.bbox[0], s.bbox[3] - s.bbox[1]) <= 14.0 and f"{s.layer}|s|w{s.width:.2f}" not in graphs]
+    syms = [s for s in gidx.symbols if 1.5 <= max(s.bbox[2] - s.bbox[0], s.bbox[3] - s.bbox[1]) <= 14.0 and family_key(s) not in graphs]
     groups: list[dict] = []
     for s in sorted(syms, key=lambda s: s.pid):
         cx, cy = (s.bbox[0] + s.bbox[2]) / 2, (s.bbox[1] + s.bbox[3]) / 2

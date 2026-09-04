@@ -14,6 +14,7 @@ from typing import Any
 
 from ..geometry.core import GridIndex, Seg, point_seg_distance
 from ..pdf.extract import RawPage
+from ..pipes.representation import stroke_family
 
 
 @dataclass
@@ -35,7 +36,7 @@ def discover_hatch(page: RawPage, pipe_families: set[str]) -> list[HatchFamily]:
     for p in page.paths:
         if p.kind != "s":
             continue
-        fk = f"{p.layer}|s|w{p.width:.2f}"
+        fk = stroke_family(p.layer, p.width, p.color)
         if fk in pipe_families:
             continue
         for s in p.segs:

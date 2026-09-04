@@ -102,8 +102,17 @@ class RepresentationFamily:
                 "n_chains": self.n_chains, "longest_chain_pt": round(self.longest_chain, 1), "kind": self.kind, "description": self.description}
 
 
+def stroke_family(layer: str, width: float, color) -> str:
+    """A drawn line's family: the layer it is on, its stroke width, and its colour.
+
+    Colour is part of how a CAD file separates its lines. A flattened export that carries no layers at all still
+    draws the building in grey and the installation in black, so two lines of the same width in different colours
+    are not one family - reading them as one hands the pipes' vote to the walls."""
+    return f"{layer}|s|w{width:.2f}|c{color if color else '-'}"
+
+
 def family_key(p: RawPath) -> str:
-    return f"{p.layer}|s|w{p.width:.2f}"
+    return stroke_family(p.layer, p.width, p.color)
 
 
 def collect_prims(page: RawPage, families: set[str]) -> dict[str, list[Prim]]:

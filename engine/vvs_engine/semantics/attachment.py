@@ -189,7 +189,8 @@ class GeometryIndex:
 
 
 def family_of(p: RawPath) -> str:
-    return f"{p.layer}|s|w{p.width:.2f}"
+    from ..pipes.representation import stroke_family
+    return stroke_family(p.layer, p.width, p.color)
 
 
 def _dash_gap_hits(pt: tuple[float, float], gidx: GeometryIndex, pipe_families: set[str] | None,

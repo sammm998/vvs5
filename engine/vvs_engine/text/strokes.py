@@ -164,7 +164,10 @@ def build_components(page: RawPage, max_diag: float = 40.0, tol: float = 0.12) -
         bbox = bbox_union([p.bbox for p in paths])
         p0 = paths[0]
         cid = stable_id("comp", page.info.index, *(p.pid for p in paths))
-        comps.append(StrokeComponent(cid=cid, layer=p0.layer, style=f"{p0.kind}|w{p0.width:.2f}", paths=paths, segs=segs, bbox=bbox, kind=p0.kind))
+        # the style carries colour as well as width, so that "layer|style" is the same family key the pipe and
+        # leader families are keyed by: a tick mark and the line it marks must land in the same family
+        comps.append(StrokeComponent(cid=cid, layer=p0.layer, style=f"{p0.kind}|w{p0.width:.2f}|c{p0.color if p0.color else '-'}",
+                                     paths=paths, segs=segs, bbox=bbox, kind=p0.kind))
     comps.sort(key=lambda c: c.cid)
     return comps
 

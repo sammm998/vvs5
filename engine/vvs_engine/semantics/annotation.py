@@ -116,6 +116,7 @@ class FreeSeg:
     layer: str
     width: float
     n_path_segs: int
+    color: tuple | None = None
 
 
 def free_segments(page: RawPage, consumed_pids: set[str]) -> list[FreeSeg]:
@@ -130,7 +131,8 @@ def free_segments(page: RawPage, consumed_pids: set[str]) -> list[FreeSeg]:
         for k, s in enumerate(p.segs):
             if s.length < 0.3:
                 continue
-            out.append(FreeSeg(fid=fid, pid=p.pid, seg_index=k, seg=s, layer=p.layer, width=round(p.width, 2), n_path_segs=len(p.segs)))
+            out.append(FreeSeg(fid=fid, pid=p.pid, seg_index=k, seg=s, layer=p.layer, width=round(p.width, 2),
+                               n_path_segs=len(p.segs), color=p.color))
             fid += 1
     return out
 
@@ -238,8 +240,14 @@ class Designation:
         rows are joined by the separator the code itself uses between its tokens."""
         if self.dn_source != "row" or not self.dn_row_text:
             return self.text
-        m = re.findall(r"[\-/+.,:]", self.text)
-        return f"{self.text}{m[-1] if m else '-'}{self.dn_row_text}"
+        seps = re.findall(r"[\-/+.,:]", self.text)
+        sep = seps[0] if seps else "-"
+        # a code may end with a short medium qualifier written off with a separator; the dimension goes in front
+        # of it, where the drawing puts it when it writes the whole label on one line
+        tail = re.search(r"[\-/+.,:][A-ZÅÄÖa-zåäö]{1,3}$", self.text)
+        if tail:
+            return f"{self.text[:tail.start()]}{sep}{self.dn_row_text}{tail.group(0)}"
+        return f"{self.text}{sep}{self.dn_row_text}"
 
     def as_dict(self) -> dict[str, Any]:
         return {"did": self.did, "page": self.page, "block_id": self.block_id, "row_index": self.row_index, "text": self.text,
@@ -251,7 +259,11 @@ class Designation:
                 "evidence": self.evidence, "family": self.family}
 
 
-ELEV_RE = re.compile(r"^([A-ZÅÄÖ]{1,4})\s*([+\-]?\s*\d+[.,]?\d*)$")
+# An elevation is a tag and a level: the level carries a sign or a decimal separator ("VG+1.67", "FG-0.25",
+# "VG1.67"), or the two are written apart ("CL 2690", handled separately). A tag and a bare integer run together
+# is a code, not a level - a system code names itself that way ("S12", "DBA1"), and reading those as elevations
+# hides every designation a drawing writes without a separator.
+ELEV_RE = re.compile(r"^([A-ZÅÄÖ]{1,4})\s*([+\-]\s*\d+[.,]?\d*|\d+[.,]\d+)$")
 
 
 def _norm_number(t: str) -> str:
@@ -285,7 +297,10 @@ def build_blocks(page: RawPage, lines: list[TextRow], free: list[FreeSeg]) -> li
                 continue
             a0 = min(project((s.x0, s.y0), d), project((s.x1, s.y1), d)); a1 = max(project((s.x0, s.y0), d), project((s.x1, s.y1), d))
             ov = min(a1, s1) - max(a0, s0)
-            if ov >= 0.5 * (s1 - s0):
+            # an underline underlines this row: it may run past the text a little, but a line many times the
+            # row's own length that happens to pass beneath it is a border or a wall, and taking it for the
+            # label's frame hands the label every stroke that touches that line anywhere on the sheet
+            if ov >= 0.5 * (s1 - s0) and (a1 - a0) <= 2.0 * (s1 - s0) + 2.0 * H:
                 found.append(f)
         if found:
             underline_of[ln.rid] = sorted(found, key=lambda f: (f.pid, f.seg_index))

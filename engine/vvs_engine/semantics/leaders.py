@@ -13,6 +13,7 @@ from typing import Any
 
 from ..geometry.core import GridIndex, Seg, bbox_expand, dist, point_seg_distance, stable_id
 from ..pdf.extract import RawPage
+from ..pipes.representation import stroke_family
 from ..text.vector_text import Mark
 from .annotation import AnnotationBlock, FreeSeg
 
@@ -33,6 +34,7 @@ class Leader:
     start_type: str                     # underline_end | box_corner | bbox_corner | underline_touch
     layer: str
     width: float
+    color: tuple | None = None
     end_marks: list[Mark] = field(default_factory=list)
     crossing_marks: list[Mark] = field(default_factory=list)
     family: str = ""
@@ -98,7 +100,8 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
                 frame_ids.add(u.fid)
         for s in b.box_segs:
             frame_ids.add(s.fid)
-    cands = [f for f in free if f.fid not in frame_ids and (not ann_layers or f"{f.layer}|s|w{f.width:.2f}" in ann_layers)]
+    cands = [f for f in free if f.fid not in frame_ids
+             and (not ann_layers or stroke_family(f.layer, f.width, f.color) in ann_layers)]
     fmap = {f.fid: f for f in cands}
     # endpoint index for chain growth
     ep_idx = GridIndex(cell=10.0)
@@ -186,7 +189,8 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
         end = points[-1]
         lid = stable_id("ldr", page.info.index, b.bid, *(f"{s.pid}#{s.seg_index}" for s in chain))
         ld = Leader(lid=lid, page=page.info.index, block_id=b.bid, segs=chain, points=points, start=points[0], end=end,
-                    start_type=ptype, layer=chain[0].layer, width=chain[0].width, truncated_reason=reason)
+                    start_type=ptype, layer=chain[0].layer, width=chain[0].width, color=chain[0].color,
+                    truncated_reason=reason)
         _attach_marks(ld, mark_idx, mark_keys, mmap)
         if not ld.end_marks:
             _attach_free_ticks(ld, ep_idx, fmap, H)
