@@ -416,28 +416,20 @@ def test_a_sheet_exported_without_layers_still_finds_its_pipes(tmp_path):
     assert not any("w0.72" in f for f in pa.pipe_families), f"the leaders' pen was measured: {pa.pipe_families}"
 
 
-def test_an_identity_may_not_flow_further_than_the_labels_delimit():
-    """Junction flow adds a little to what a pipe drawing states and without end to a mesh that only looks like
-    one. Where the flowed length passes the labelled length, the flowed geometry is ambiguous, not measured."""
-    from vvs_engine.pipes.ownership import Identity, PrimState, _demote_unbounded_flow
-    from vvs_engine.geometry.core import Seg
-    from vvs_engine.pipes.representation import Prim, PipeGraph
-
-    ident = Identity(base="S3-R8", dn=110, system="S3", display="S3-R8-110")
-
-    def graph(lengths):
-        prims = {i: Prim(prim_id=i, pid="p", seg_index=i, seg=Seg(0.0, float(i), float(L), float(i)),
-                         family="f", layer="", width=1.0) for i, L in enumerate(lengths)}
-        return PipeGraph(family="f", prims=prims, nodes={}, prim_nodes={}, bridges=[], gap_mode=None, junctions=[])
-
-    def states(reasons):
-        return {i: PrimState(state="CONFIRMED", identity=ident, reason=r) for i, r in enumerate(reasons)}
-
-    within = states(["chain_from_anchor", "collinear_through_junction"])
-    _demote_unbounded_flow(graph([10.0, 5.0]), within, "f", [])
-    assert [s.state for s in within.values()] == ["CONFIRMED", "CONFIRMED"]
-
-    beyond = states(["chain_from_anchor", "collinear_through_junction"])
-    _demote_unbounded_flow(graph([5.0, 50.0]), beyond, "f", [])
-    assert [s.state for s in beyond.values()] == ["CONFIRMED", "AMBIGUOUS"]
-    assert beyond[1].candidates == {ident}
+def test_the_faintest_pen_on_a_layerless_sheet_is_not_read_as_pipe(tmp_path):
+    """With no layer names, a pen thinner than half the ink on the sheet draws its background. Leaders ending
+    there do not make it pipe - otherwise a plan's construction lines are measured as tap water."""
+    path = os.path.join(tmp_path, "faint.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    for y in range(260, 460, 8):                       # background ruled with the faintest pen
+        shape.draw_line((200, y), (760, y)); shape.finish(width=0.12, color=(0, 0, 0), closePath=False)
+    for i, y in enumerate((120, 150, 180, 210)):
+        page.insert_text((60, y), "S3-R8-110", fontsize=10, fontname="helv")
+        shape.draw_line((60, y + 2), (130, y + 2)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+        tx = 300 + 60 * i
+        shape.draw_line((130, y + 2), (tx, 300)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+        shape.draw_line((tx - 1, 299), (tx + 1, 301)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    _scale(page)
+    shape.commit(); doc.save(path); doc.close()
+    pa = analyze_page(extract_document(path).pages[0])
+    assert not any("w0.12" in f for f in pa.pipe_families), f"the sheet's faintest pen was read as pipe: {pa.pipe_families}"

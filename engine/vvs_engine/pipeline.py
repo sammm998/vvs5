@@ -68,6 +68,16 @@ class PageAnalysis:
     legend: DrawingLegend = field(default_factory=DrawingLegend)    # the sheet's own designation list
 
 
+def _width_lengths(page: RawPage) -> dict[float, float]:
+    """Drawn stroke length per pen width on the page."""
+    out: dict[float, float] = {}
+    for p in page.paths:
+        if p.kind == "s":
+            w = round(p.width, 2)
+            out[w] = out.get(w, 0.0) + p.length
+    return out
+
+
 def _t(timings: dict, key: str, t0: float) -> float:
     now = time.perf_counter()
     timings[key] = timings.get(key, 0.0) + (now - t0) * 1000.0
@@ -184,6 +194,16 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         token_layers = [f.split("|s|")[0] for f in token_fams]
         total_ticks = sum(tick_votes.values()) or 1
         voted_ticks = sum(tick_votes[v] for v in voted if chain_like(v)) or 1
+        # the sheet's middle pen by drawn length: half the ink on the page is thinner than this
+        by_width = sorted(_width_lengths(page).items())
+        half = 0.5 * sum(L for _, L in by_width)
+        median_width = 0.0
+        run = 0.0
+        for w, L in by_width:
+            run += L
+            if run >= half:
+                median_width = w
+                break
         pipe_families: dict[str, RepresentationFamily] = {}
         graphs: dict[str, Any] = {}
         for f in voted:
@@ -193,6 +213,11 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             if not layer and tick_votes[f] < TICK_MAJORITY * voted_ticks:
                 # nothing but a pen width to go by, and the leaders end on this family no more than on the others:
                 # the sheet has not said which of them its labels describe, and guessing would measure the walls
+                continue
+            if not layer and desc[f][0].width < median_width:
+                # and with no layer name, a pen thinner than half the ink on the sheet draws its background -
+                # construction lines, hatching, grids. The pipes are what the sheet is for; they are not its
+                # faintest pen.
                 continue
             similar = any(_layer_template_similar(layer, tl) for tl in token_layers)
             accept = (token_votes[f] >= 1) or (tick_votes[f] >= 2 and similar) \
