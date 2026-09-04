@@ -10,7 +10,7 @@ export default function Login() {
   const nav = useNavigate();
   const submit = async (e: React.FormEvent) => {
     e.preventDefault(); setErr("");
-    try { if (mode === "login") await api.login(email, password); else await api.register(email, password); nav("/"); }
+    try { if (mode === "login") await api.login(email, password); else await api.register(email, password); nav("/projekt"); }
     catch (ex: any) { setErr(ex.message); }
   };
   return (

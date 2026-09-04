@@ -19,7 +19,7 @@ export default function ProjectPage() {
   if (!project) return <main>{err ? <p className="error">{err}</p> : "Laddar…"}</main>;
   return (
     <main>
-      <p><Link to="/">← Projekt</Link></p>
+      <p><Link to="/projekt">← Projekt</Link></p>
       <h2>{project.name}</h2>
       <p className="muted">{project.description}</p>
       <div className="card row">
