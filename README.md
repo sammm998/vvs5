@@ -141,17 +141,39 @@ all three are unchanged, since those characters sit in legend text and notes rat
 
 ## Validation against reference takeoffs
 
-Two drawings have a reference takeoff (`results/validation/`). Neither is read by production code; the
+Four drawings have a reference takeoff (`results/validation/`). None is read by production code; the
 contamination scan fails the build if the package ever imports from the validation directories.
 
-| | reference H | engine H | deviation | reference vertical | from labels | from symbols |
-|---|---|---|---|---|---|---|
-| W-50-1-A-0011 (full markup) | 213.4 m | 212.0 m | -0.6 % | 55 | 41 | 58 |
-| W-50-1-A-0012 (two systems) | 17.6 m | 17.2 m | -2.1 % | 4 | 4 | 1 |
+| | reference | engine | deviation | per-designation error | reference risers | from labels | from symbols |
+|---|---|---|---|---|---|---|---|
+| W-50-1-A-0011 (full markup) | 213.70 m | 212.58 m | -0.5 % | 3.90 m | 55 | 38 | 58 |
+| W-50-1-A-0012 (two systems) | 17.60 m | 17.38 m | -1.3 % | 0.23 m | 4 | 4 | 1 |
+| W-50-1-A-0013 (eight systems) | 112.90 m | 112.44 m | -0.4 % | 9.52 m | 24 | 25 | 25 |
+| W-50-1-A-0014 (run blind first) | 50.90 m | 50.16 m | -1.5 % | 2.60 m | 16 | 21 | 22 |
 
-On both, sampling the reference polylines every point shows the engine owns essentially all of the geometry they
-mark: 213.10 m of 213.38 m on the first, 17.46 m of 17.72 m on the second, with the remainder inside hatching or
-at run ends where the reference clicks a point or two past where the drawn line stops.
+Sampling the reference polylines point by point shows the engine owns essentially all of the geometry they mark;
+what remains sits inside hatching, or at run ends where the reference clicks a point or two past where the drawn
+line stops. The per-designation error on W-50-1-A-0013 is almost entirely one size boundary on a single stack:
+the reference puts the change at the smaller size's tick, and the engine carries the smaller size on to the next
+junction, because that rule currently applies only where both labels sit on one chain.
+
+W-50-1-A-0014 was run blind - the engine's numbers were written down before the reference was opened
+(`results/validation/W501A0014/blind-run.md`).
+
+## Drawing styles the engine has been read against
+
+Beyond the reference set, three sheets in other drawing styles were used to find defects that only appear
+outside one office's conventions (no reference takeoff exists for them, so they are read qualitatively):
+
+| sheet | style | what the engine makes of it |
+|---|---|---|
+| V53.1-1944, Plan 10 Del 44 | no optional-content layers, real text, one dashed system | scale verified, 51 designations, 13 of 17 leaders attached, 52.68 m on one system, 1.23 m unowned |
+| V53.1-1842, Plan 09 Del 42 | as above, dash-dot lines, dimension on the row below | scale verified, 44 designations, four sizes measured, 11.13 m confirmed and 15.14 m still unowned |
+| W--50-1-0501112 | no layers, several systems in one plan, leaders ending in circles | scale from the printed ratio only, 49 designations, two systems measured; the pipe families are not yet separated from the sheet's other black line work |
+
+These three drove the layer-less reading: colour as part of a line's family, a tag with a bare integer read as a
+code rather than a level, an underline that may not be a border line, and every recurring gap of a line style
+being bridged rather than the commonest one alone.
 
 ## Artifacts per drawing (results/<name>/)
 
