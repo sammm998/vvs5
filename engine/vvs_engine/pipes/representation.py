@@ -352,26 +352,39 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
         # the commonest gap keeps the family's own slack; a further gap of the pattern is matched tightly, since
         # it is evidence of a repeat and not a licence to close any distance
         bands = [(gap_mode, gtol)] + [(g, max(0.6, 0.25 * g)) for g in gap_modes[1:]]
-        # unique continuation: the partner endpoint must itself be a degree-1 node and there must be no competing bridge
-        by_target: dict[tuple[int, int], list] = defaultdict(list)
+        # unique continuation: each free end names the nearest collinear end ahead of it within the family's own
+        # gap; the two ends of one break name each other, and that mutual naming is the drawing's own statement
+        # that the run continues there. A third end further back that also names one of them is looking past the
+        # break, not competing for it, so it must not stop the pair from being joined. A one-sided claim only
+        # bridges when nothing else claims either end.
+        claim: dict[int, tuple[int, str, float]] = {}
         for (nid, pid2, ep, g) in cand_bridges:
             if not any(abs(g - m) <= t for m, t in bands):
                 continue
             tn = find_node(ep[0], ep[1])
             if tn is None or tn == nid:
                 continue
-            # the partner endpoint may sit at a junction (a branch leaving exactly at a dash gap); uniqueness of the
-            # collinear continuation is enforced below through node_use
-            key = (min(nid, tn), max(nid, tn))
-            by_target[key].append((nid, tn, pid2, g))
-        node_use: Counter = Counter()
-        for key, lst in by_target.items():
-            node_use[key[0]] += 1; node_use[key[1]] += 1
-        for key in sorted(by_target):
-            a, b = key
-            if node_use[a] > 1 or node_use[b] > 1:
-                continue  # competing continuations -> no bridge (ambiguous)
-            nid, tn, pid2, g = by_target[key][0]
+            claim[nid] = (tn, pid2, g)
+        pairs: dict[tuple[int, int], tuple[int, int, str, float]] = {}
+        for nid in sorted(claim):
+            tn, pid2, g = claim[nid]
+            if nid in claim.get(tn, (None, None, None))[:1]:
+                pairs.setdefault((min(nid, tn), max(nid, tn)), (nid, tn, pid2, g))
+        taken = {n for key in pairs for n in key}
+        one_sided: dict[int, list[tuple[int, int, str, float]]] = defaultdict(list)
+        for nid in sorted(claim):
+            tn, pid2, g = claim[nid]
+            if nid in taken or tn in taken:
+                continue
+            one_sided[tn].append((nid, tn, pid2, g))
+        for tn in sorted(one_sided):
+            lst = one_sided[tn]
+            if len(lst) != 1 or lst[0][0] in taken or tn in taken:
+                continue    # competing continuations -> no bridge (ambiguous)
+            pairs[(min(lst[0][0], tn), max(lst[0][0], tn))] = lst[0]
+            taken |= {lst[0][0], tn}
+        for key in sorted(pairs):
+            nid, tn, pid2, g = pairs[key]
             _merge_nodes(nodes, prim_nodes, nid, tn)
             bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": "collinear",
                             "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})

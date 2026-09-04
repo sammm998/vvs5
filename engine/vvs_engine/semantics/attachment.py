@@ -93,8 +93,15 @@ def layer_system_tokens(page) -> frozenset[str]:
     return frozenset(out)
 
 
-def system_layer_match(system_token: str, layer: str, spelled_out: frozenset[str] = frozenset()) -> str | None:
-    """Return the matching layer token if the layer name structurally carries the designation's system token.
+# how exactly a layer token names a system: the name itself, a numbered pattern, the letters alone, a tail
+MATCH_EXACT, MATCH_PATTERN, MATCH_ALPHA, MATCH_TAIL = 0, 1, 2, 3
+
+
+def system_layer_rank(system_token: str, layer: str, spelled_out: frozenset[str] = frozenset()) -> tuple[int, str] | None:
+    """The strongest statement the layer name makes about this system: (how exactly it names it, the token).
+
+    A layer that writes the system's own name says more about it than one that only carries its letters, so where
+    a drawing has both, the exact one is the layer the designation belongs to.
 
     spelled_out: the system names the drawing writes in full on some layer of its own. A designation whose system
     is among them is not read as an abbreviation of a shorter token, because the file already says where that
@@ -110,25 +117,32 @@ def system_layer_match(system_token: str, layer: str, spelled_out: frozenset[str
         m2 = re.fullmatch(r"([A-ZÅÄÖ]+)(\d+)", TU)
         if m2 and m2.group(1) == alpha and digits and m2.group(2) != digits:
             return None
+    best: tuple[int, str] | None = None
     for T in toks:
         TU = T.upper()
         if len(TU) < 2:
             continue
+        r = None
         if TU == S:
-            return T
-        if "X" in TU and re.fullmatch(r"[A-ZÅÄÖ0-9]+", TU):
-            pat = "".join(r"\d" if c == "X" and i >= 1 else re.escape(c) for i, c in enumerate(TU))
-            if re.fullmatch(pat, S):
-                return T
-        if TU == alpha and len(alpha) >= 2:
-            return T
+            r = MATCH_EXACT
+        elif "X" in TU and re.fullmatch(r"[A-ZÅÄÖ0-9]+", TU) and \
+                re.fullmatch("".join(r"\d" if c == "X" and i >= 1 else re.escape(c) for i, c in enumerate(TU)), S):
+            r = MATCH_PATTERN
+        elif TU == alpha and len(alpha) >= 2:
+            r = MATCH_ALPHA
         # abbreviated system token: the layer token is the tail of the designation's system token with the same
         # digits (KV2 -> V2, VV1 -> V1); a token of another alpha family with other digits was excluded above
-        if len(TU) >= 2 and len(S) > len(TU) and S.endswith(TU) and re.fullmatch(r"[A-ZÅÄÖ]+\d+", TU):
-            if S in spelled_out:
-                continue        # the drawing gives this system a layer of its own: a shorter token is another system
-            return T
-    return None
+        elif len(S) > len(TU) and S.endswith(TU) and re.fullmatch(r"[A-ZÅÄÖ]+\d+", TU) and S not in spelled_out:
+            r = MATCH_TAIL
+        if r is not None and (best is None or r < best[0]):
+            best = (r, T)
+    return best
+
+
+def system_layer_match(system_token: str, layer: str, spelled_out: frozenset[str] = frozenset()) -> str | None:
+    """Return the matching layer token if the layer name structurally carries the designation's system token."""
+    best = system_layer_rank(system_token, layer, spelled_out)
+    return best[1] if best else None
 
 
 def contact_points(ld: Leader) -> list[tuple[tuple[float, float], str, str | None]]:
@@ -439,9 +453,14 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
     if not gkeys:
         return [mk(d, "NO_PIPE_ATTACHMENT", "leader_endpoint_touches_no_pipe_geometry", []) for d in rows]
     # token matches
+    # a row belongs to the group whose layer names its system most exactly: where the drawing gives a system a
+    # layer of its own AND a shared one, the row is on the layer that names it, and the shared layer is left to
+    # the rows that have nothing more exact - which is what tells two rows of one alpha family apart
     match: dict[str, list[str]] = {}
     for d in rows:
-        match[d.did] = [g for g in gkeys if system_layer_match(d.system_token, g.split("|s|")[0], spelled_out)]
+        rk = {g: system_layer_rank(d.system_token, g.split("|s|")[0], spelled_out) for g in gkeys}
+        rk = {g: v[0] for g, v in rk.items() if v is not None}
+        match[d.did] = [g for g in gkeys if g in rk and rk[g] == min(rk.values())] if rk else []
     if len(rows) == 1:
         d = rows[0]
         if len(gkeys) == 1:
