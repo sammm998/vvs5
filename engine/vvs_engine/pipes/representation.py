@@ -115,6 +115,20 @@ def family_key(p: RawPath) -> str:
     return stroke_family(p.layer, p.width, p.color)
 
 
+def is_sheet_border(p: RawPath, page: RawPage) -> bool:
+    """A few square-on segments ruled around nearly the whole sheet: the drawing's own border, never a pipe.
+
+    On a sheet exported without layers the border shares its pen with the pipes, and a note in the title block
+    pointing at it would otherwise be measured as a pipe the length of the paper."""
+    w = page.info.width or 0.0
+    h = page.info.height or 0.0
+    if w <= 0 or h <= 0 or len(p.segs) > 6 or not p.segs:
+        return False
+    if p.bbox[2] - p.bbox[0] < 0.85 * w or p.bbox[3] - p.bbox[1] < 0.85 * h:
+        return False
+    return all(min(sg.angle, 180.0 - sg.angle) <= 1.0 or abs(sg.angle - 90.0) <= 1.0 for sg in p.segs)
+
+
 def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | None = None) -> dict[str, list[Prim]]:
     """Primitives of the given families. exclude_pids drops individual paths - the leader lines of the drawing,
     which on a sheet without layers are drawn with the same pen as the pipes and would otherwise be measured."""
@@ -124,6 +138,8 @@ def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | No
         if p.kind != "s":
             continue
         if exclude_pids and p.pid in exclude_pids:
+            continue
+        if is_sheet_border(p, page):
             continue
         fk = family_key(p)
         if fk not in families:

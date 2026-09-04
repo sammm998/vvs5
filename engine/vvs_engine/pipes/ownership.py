@@ -147,6 +147,8 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
         _resolve_family(g, states[fk], seeds[fk], ambiguous_runs, fk)
     for fk, g in graphs.items():
         _family_uniform_identity(fk, states[fk], anchors, identities, spelled_out)
+    for fk, g in graphs.items():
+        _demote_unbounded_flow(g, states[fk], fk, ambiguous_runs)
     pipes: list[PhysicalPipe] = []
     for fk, g in graphs.items():
         pipes.extend(_build_pipes(g, states[fk], fk, page))
@@ -156,6 +158,45 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
         for st in states[fk].values():
             stats[st.state] += 1
     return OwnershipResult(prim_states=states, pipes=pipes, ambiguous_runs=ambiguous_runs, stats=dict(stats))
+
+
+# the two rules that carry an identity into geometry no label touched and no drawn boundary delimits
+FLOWED_REASONS = ("collinear_through_junction", "unlabeled_branch_takes_the_only_junction_identity")
+
+
+def _demote_unbounded_flow(g: PipeGraph, st: dict[int, PrimState], fk: str, ambiguous_runs: list[dict]) -> None:
+    """An identity may run on through a junction into geometry the drawing does not name - a straight run through
+    a tee, an unnamed branch off a labelled one. On a pipe network that adds a little to what the labels say. On
+    a mesh of geometry that only looks like a network it adds without end, and every metre of it is a guess.
+
+    So the flow has to stay within what the drawing itself states: where a family's flowed length exceeds the
+    length its labels delimit, the flow is not evidence and the geometry it took is AMBIGUOUS, not measured.
+    """
+    labelled = flowed = 0.0
+    for pid, s in st.items():
+        if s.state != "CONFIRMED":
+            continue
+        if s.reason in FLOWED_REASONS:
+            flowed += g.prims[pid].seg.length
+        else:
+            labelled += g.prims[pid].seg.length
+    if flowed <= labelled:
+        return
+    n = 0
+    for pid in sorted(st):
+        s = st[pid]
+        if s.state != "CONFIRMED" or s.reason not in FLOWED_REASONS:
+            continue
+        ident = s.identity
+        s.state, s.identity, s.reason = "AMBIGUOUS", None, "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS"
+        s.candidates = {ident} if ident is not None else set()
+        s.evidence.append("identity_flowed_further_than_the_labels_of_this_family_delimit")
+        n += 1
+    if n:
+        ambiguous_runs.append({"family": fk, "chain": -1, "from_prim": -1, "to_prim": -1,
+                               "reason": "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS",
+                               "identities": sorted({c.key for s in st.values() for c in s.candidates}),
+                               "n_primitives": n, "flowed_pt": round(flowed, 1), "labelled_pt": round(labelled, 1)})
 
 
 def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[PipeCodeAnchor], identities: dict[str, Identity],

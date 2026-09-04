@@ -29,6 +29,11 @@ from .measure.scale import ScaleResult, discover_scale
 from .measure.measure import PipeMeasure, aggregate, measure_pipes
 from .pipes.ownership import Identity, OwnershipResult, identity_of, propagate
 
+# a drawing draws its leaders alike: a family carrying this share of the leaders is where it draws them
+LEADER_MIN_SHARE = 0.25
+# and with no layer name to go by, the leaders must point at one family more than at all the others together
+TICK_MAJORITY = 0.6
+
 STAGES = ["READING_PDF", "DISCOVERING_DRAWING_GRAMMAR", "EXTRACTING_VECTORS", "RECONSTRUCTING_TEXT", "READING_DESIGNATIONS",
           "FINDING_LEADERS", "RESOLVING_PIPE_REPRESENTATION", "ATTACHING_PIPES", "BUILDING_TOPOLOGY", "BUILDING_PHYSICAL_PIPES",
           "MEASURING", "GENERATING_OVERLAYS", "COMPLETED"]
@@ -139,19 +144,26 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             for c in leader_contacts(ld, gidx, None, paths):
                 if c.kind in ("end_tick", "crossing_tick"):
                     tick_votes[c.family] += 1
-        # The leader lines themselves are annotation geometry, never pipes. Where the drawing carries layers they
-        # form families of their own and the whole family goes; where it does not, the draughtsman draws leaders
-        # and pipes with the same pen, and dropping that family would drop the pipes with it. So a family is
-        # excluded only when the leaders are most of it, and otherwise the leader paths alone are.
-        # The leader lines are annotation geometry, never pipes, and neither are the label frames: the families
-        # that carry them are excluded, and the paths themselves are dropped from whatever family they land in,
-        # so a leader drawn with the pipes' own pen is never measured as pipe.
+        # The leader lines themselves are annotation geometry, never pipes, and neither are the label frames: the
+        # paths are dropped from whatever family they land in, so a leader drawn with the pipes' own pen is never
+        # measured as pipe. Beyond that, a drawing draws its leaders alike - on one layer, or with one pen - and
+        # those families are excluded whole, because they also carry the leaders the tracer missed. A family that
+        # carries a handful of leaders while another carries most of them is not where this drawing draws them:
+        # those few are strays, a label's bounding box touching a pipe, and excluding the family on their account
+        # would drop the pipes with them. On a sheet exported without layers that is the difference between
+        # reading the pipes and reading nothing.
         annotation_pids = {pid for ld in leaders for pid in ld.path_ids}
         for b in blocks:
             for r in b.rows:
                 annotation_pids |= {u.pid for u in r.underline}
             annotation_pids |= {sg.pid for sg in b.box_segs}
-        leader_fams = {stroke_family(ld.layer, ld.width, ld.color) for ld in des_leaders} \
+        lead_count: Counter = Counter()
+        for ld in des_leaders:
+            lead_count[stroke_family(ld.layer, ld.width, ld.color)] += 1
+        top = max(lead_count.values(), default=0)
+        # a layer name is the drawing's own statement about what that geometry is for, so a named family carrying
+        # leaders is a leader family however few it carries; a pen width says nothing, and there the count decides
+        leader_fams = {f for f, c in lead_count.items() if f.split("|s|")[0] or c >= LEADER_MIN_SHARE * top} \
             | (set(ann_layers) if ann_layers else set())
         # evaluate the vector structure of every voted family first (kind: fragmented-dashed / continuous / sparse)
         voted = sorted(f for f in votes if f not in leader_fams)
@@ -171,12 +183,17 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         token_styles = {f.split("|s|")[1] for f in token_fams if votes[f] >= max(2.0, 0.05 * total_votes)}
         token_layers = [f.split("|s|")[0] for f in token_fams]
         total_ticks = sum(tick_votes.values()) or 1
+        voted_ticks = sum(tick_votes[v] for v in voted if chain_like(v)) or 1
         pipe_families: dict[str, RepresentationFamily] = {}
         graphs: dict[str, Any] = {}
         for f in voted:
             if not chain_like(f):
                 continue
             layer, style = f.split("|s|")
+            if not layer and tick_votes[f] < TICK_MAJORITY * voted_ticks:
+                # nothing but a pen width to go by, and the leaders end on this family no more than on the others:
+                # the sheet has not said which of them its labels describe, and guessing would measure the walls
+                continue
             similar = any(_layer_template_similar(layer, tl) for tl in token_layers)
             accept = (token_votes[f] >= 1) or (tick_votes[f] >= 2 and similar) \
                 or (tick_votes[f] >= 3 and style in token_styles) or (tick_votes[f] >= 5 and tick_votes[f] / total_ticks >= 0.15) \
