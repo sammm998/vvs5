@@ -334,18 +334,24 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
             gaps.append(best[0])
             cand_bridges.append((n.nid, best[1], best[2], best[0]))
     gap_mode = None
+    gap_modes: list[float] = []
     if len(gaps) >= 6:
         hist = Counter(round(g * 4) / 4 for g in gaps)
-        gap_mode, cnt = hist.most_common(1)[0]
-        if cnt < 0.15 * len(gaps):
-            gap_mode = None
+        # A dash-dot line has more than one gap in its pattern - dash to dot and dot to dash, or a dot the export
+        # never drew as a stroke of its own - so every gap size that recurs through the family belongs to its
+        # style. Taking only the commonest one leaves every second continuation of such a line unbridged.
+        gap_modes = [g for g, cnt in hist.most_common(3) if cnt >= 0.15 * len(gaps)]
+        gap_mode = gap_modes[0] if gap_modes else None
     bridges = []
     if gap_mode is not None:
         gtol = max(0.6, tol.gap_slack * gap_mode)
+        # the commonest gap keeps the family's own slack; a further gap of the pattern is matched tightly, since
+        # it is evidence of a repeat and not a licence to close any distance
+        bands = [(gap_mode, gtol)] + [(g, max(0.6, 0.25 * g)) for g in gap_modes[1:]]
         # unique continuation: the partner endpoint must itself be a degree-1 node and there must be no competing bridge
         by_target: dict[tuple[int, int], list] = defaultdict(list)
         for (nid, pid2, ep, g) in cand_bridges:
-            if abs(g - gap_mode) > gtol:
+            if not any(abs(g - m) <= t for m, t in bands):
                 continue
             tn = find_node(ep[0], ep[1])
             if tn is None or tn == nid:

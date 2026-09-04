@@ -193,6 +193,27 @@ def family_of(p: RawPath) -> str:
     return stroke_family(p.layer, p.width, p.color)
 
 
+def _symbol_hits(symbol: RawPath, gidx: "GeometryIndex", skip: set[str]) -> list[tuple[RawPath, int, float]]:
+    """Segments that run through a closed symbol a leader points at.
+
+    A leader ending inside a small circle or square is pointing at what that symbol sits on, and the line it
+    marks runs through the symbol - it need not pass within a hair of the leader's last point. The symbol's own
+    size is the reach: nothing outside it is contacted."""
+    cx = (symbol.bbox[0] + symbol.bbox[2]) / 2
+    cy = (symbol.bbox[1] + symbol.bbox[3]) / 2
+    r = 0.5 * max(symbol.bbox[2] - symbol.bbox[0], symbol.bbox[3] - symbol.bbox[1])
+    out: list[tuple[RawPath, int, float]] = []
+    for i in gidx.idx.query_point(cx, cy, r + 1.0):
+        p, k, sg = gidx.items[i]
+        if p.pid in skip or p.pid == symbol.pid:
+            continue
+        d, _ = point_seg_distance(cx, cy, sg)
+        if d <= r + CONTACT_TOL:
+            out.append((p, k, d))
+    out.sort(key=lambda t: (t[0].pid, t[1]))
+    return out
+
+
 def _dash_gap_hits(pt: tuple[float, float], gidx: GeometryIndex, pipe_families: set[str] | None,
                    skip: set[str]) -> list[tuple[RawPath, int, float]]:
     """Segments of a dashed run whose drawn gap the point falls into.
@@ -268,7 +289,9 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
             else:
                 others.append((p, k, d))
         if symbol is not None and pt == ld.end:
-            for p, k, d in direct:
+            through = [(p, k, d) for (p, k, d) in _symbol_hits(symbol, gidx, skip)
+                       if pipe_families is None or family_of(p) in pipe_families]
+            for p, k, d in direct + [t for t in through if (t[0].pid, t[1]) not in {(q.pid, kk) for q, kk, _ in direct}]:
                 if (p.pid, k) in seen:
                     continue
                 seen.add((p.pid, k))
