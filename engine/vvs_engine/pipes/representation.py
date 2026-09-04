@@ -115,11 +115,15 @@ def family_key(p: RawPath) -> str:
     return stroke_family(p.layer, p.width, p.color)
 
 
-def collect_prims(page: RawPage, families: set[str]) -> dict[str, list[Prim]]:
+def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | None = None) -> dict[str, list[Prim]]:
+    """Primitives of the given families. exclude_pids drops individual paths - the leader lines of the drawing,
+    which on a sheet without layers are drawn with the same pen as the pipes and would otherwise be measured."""
     out: dict[str, list[Prim]] = defaultdict(list)
     pid_counter = 0
     for p in sorted(page.paths, key=lambda p: p.pid):
         if p.kind != "s":
+            continue
+        if exclude_pids and p.pid in exclude_pids:
             continue
         fk = family_key(p)
         if fk not in families:

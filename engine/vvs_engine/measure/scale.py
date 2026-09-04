@@ -68,11 +68,36 @@ def discover_scale(page: RawPage, lines: list[TextRow]) -> ScaleResult:
                 if abs(t.value - b.value) / b.value <= 0.03:
                     # the printed ratio is exact; the bar confirms it geometrically
                     return ScaleResult(t.value, "page", "VERIFIED", [t, b], "scale_text_and_scale_bar_agree")
+        # a ratio printed for another sheet format, rescaled to this one, may be the one the bar agrees with
+        for b in bars:
+            for t in texts:
+                r = _ratio_for_other_format(page, t)
+                if r is not None and abs(r[0] - b.value) / b.value <= 0.03:
+                    return ScaleResult(r[0], "page", "VERIFIED", [t, b],
+                                       f"scale_text_for_{r[1]}_rescaled_to_{r[2]}_agrees_with_scale_bar")
         return ScaleResult(bars[0].value, "page", "CONFLICT", ev, "scale_bar_disagrees_with_scale_text; bar (geometric) used")
     if bars:
         return ScaleResult(bars[0].value, "page", "BAR_ONLY", ev, "vector_scale_bar_only")
     if texts:
         vals = sorted({round(t.value, 9) for t in texts})
+        # a scale bar whose numbers are too small to read is still drawn: its length in metres under a given
+        # ratio must come out whole, which is enough to confirm one printed ratio or to tell two apart
+        tick = find_tick_bar(page)
+        whole = [t for t in texts if tick and _whole_metres(tick[1] * t.value)] if tick else []
+        if tick and len({round(t.value, 9) for t in whole}) == 1:
+            t = whole[0]
+            note = ("scale_text_and_unlabelled_scale_bar_agree" if len(vals) == 1 else
+                    f"scale_text_selected_by_unlabelled_scale_bar ({round(tick[1] * t.value)} m over {tick[1]:.1f} pt)")
+            return ScaleResult(t.value, "page", "VERIFIED", ev, note)
+        # a row that states a ratio for another sheet format ("1:50 i A1-format") applies to this sheet scaled by
+        # the step between the two formats; the bar has to confirm the result before it is used
+        if tick:
+            for t in texts:
+                r = _ratio_for_other_format(page, t)
+                if r is not None and _whole_metres(tick[1] * r[0]):
+                    return ScaleResult(r[0], "page", "VERIFIED", ev,
+                                       f"scale_text_for_{r[1]}_rescaled_to_{r[2]}_and_confirmed_by_scale_bar "
+                                       f"({round(tick[1] * r[0])} m over {tick[1]:.1f} pt)")
         if len(vals) == 1:
             return ScaleResult(vals[0], "page", "TEXT_ONLY", ev, "scale_text_only (no vector scale bar found)")
         # several ratios (e.g. '1:50 (1:100)'): prefer the one whose qualifier matches the page format
@@ -161,6 +186,86 @@ def _numeric_words(lines: list[TextRow]) -> list[_Label]:
             else:
                 cur.append(g)
     return out
+
+
+A_SERIES = {"A0": 0, "A1": 1, "A2": 2, "A3": 3, "A4": 4}
+
+
+def _ratio_for_other_format(page: RawPage, t: ScaleEvidence) -> tuple[float, str, str] | None:
+    """The metres per point this sheet would have if its printed ratio is stated for another sheet format.
+
+    A title block often gives one ratio per print format. Where only one format is legible and it is not this
+    sheet's, the ratio beside it still applies, scaled by the step between the two formats - each A step halves
+    the sheet's area, so its linear size changes by the square root of two."""
+    fmt = _page_format(page)
+    if not fmt or fmt not in A_SERIES:
+        return None
+    found = {m.group(0).upper() for m in re.finditer(r"A[0-4]", (t.text or "").upper())}
+    if len(found) != 1:
+        return None
+    other = found.pop()
+    if other == fmt or other not in A_SERIES:
+        return None
+    factor = 2.0 ** ((A_SERIES[fmt] - A_SERIES[other]) / 2.0)
+    return t.value * factor, other, fmt
+
+
+def _whole_metres(v: float) -> bool:
+    """A scale bar spans a whole number of metres - never 2.5 of them."""
+    return v >= 0.95 and abs(v - round(v)) <= 0.02 * max(v, 1.0)
+
+
+def find_tick_bar(page: RawPage) -> tuple[float, float] | None:
+    """A scale bar read as geometry, without reading the numbers under it.
+
+    A scale bar is a baseline with tick marks crossing it at one spacing. That much is drawn, and it survives
+    where the labels are too small for any reader: it gives the bar's drawn length and the length of one of its
+    divisions, which is enough to tell two printed ratios apart. Returns (division in points, bar length)."""
+    best = None
+    for p in page.paths:
+        if p.kind == "f":
+            continue
+        for s in p.segs:
+            if not (30.0 <= s.length <= 900.0):
+                continue
+            ang = s.angle % 180.0
+            if min(ang, 180.0 - ang) > 2.0 and abs(ang - 90.0) > 2.0:
+                continue                    # a scale bar lies along the sheet
+            d, n = row_axes(ang if min(ang, 180 - ang) <= 2.0 else 0.0)
+            base = project(s.mid, n)
+            lo = min(project((s.x0, s.y0), d), project((s.x1, s.y1), d))
+            hi = max(project((s.x0, s.y0), d), project((s.x1, s.y1), d))
+            ticks: list[float] = []
+            for q in page.paths:
+                if q.kind == "f":
+                    continue
+                for t in q.segs:
+                    if not (1.5 <= t.length <= 30.0):
+                        continue
+                    a0 = project((t.x0, t.y0), n); a1 = project((t.x1, t.y1), n)
+                    if abs(a1 - a0) < 0.6 * t.length:
+                        continue            # not across the baseline
+                    if not (min(a0, a1) - 1.0 <= base <= max(a0, a1) + 1.0):
+                        continue
+                    c = project(t.mid, d)
+                    if lo - 1.0 <= c <= hi + 1.0:
+                        ticks.append(c)
+            ticks.sort()
+            merged: list[float] = []
+            for c in ticks:
+                if not merged or c - merged[-1] > 1.0:
+                    merged.append(c)
+            if len(merged) < 5:
+                continue
+            gaps = [merged[i + 1] - merged[i] for i in range(len(merged) - 1)]
+            step = max(gaps)
+            major = [g for g in gaps if abs(g - step) <= 0.05 * step]
+            if len(major) < 3 or sum(major) < 0.6 * (hi - lo):
+                continue                    # the ticks do not divide the bar evenly
+            span = hi - lo
+            if best is None or span > best[1]:
+                best = (step, span)
+    return best
 
 
 def _find_scale_bar(page: RawPage, lines: list[TextRow]) -> ScaleEvidence | None:
