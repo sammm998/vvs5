@@ -310,12 +310,14 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
                     continue
                 seen.add((p.pid, k))
                 out.append(Contact(point=pt, kind="via_symbol", family=family_of(p), pid=p.pid, seg_index=k, distance=d, mark_id=mid, via=symbol.pid))
-            if pipe_families:
-                for p in _marker_cluster([symbol], gidx, pipe_families, skip):
-                    for q, kk, de, ep in _pipe_ends_at_marker(p, gidx, pipe_families, skip):
-                        if (q.pid, kk) not in seen:
-                            seen.add((q.pid, kk))
-                            out.append(Contact(point=ep, kind="via_symbol", family=family_of(q), pid=q.pid, seg_index=kk, distance=de, mark_id=mid, via=p.pid))
+            # a run drawn up to the symbol rather than through it: whatever ENDS at the marker is what the
+            # leader points at. This has to hold while the pipe families are still being voted for, or a drawing
+            # whose runs all stop at a connection circle never votes for the pen it draws them with.
+            for p in _marker_cluster([symbol], gidx, pipe_families, skip):
+                for q, kk, de, ep in _pipe_ends_at_marker(p, gidx, pipe_families, skip):
+                    if (q.pid, kk) not in seen:
+                        seen.add((q.pid, kk))
+                        out.append(Contact(point=ep, kind="via_symbol", family=family_of(q), pid=q.pid, seg_index=kk, distance=de, mark_id=mid, via=p.pid))
             continue
         for p, k, d in direct:
             if (p.pid, k) in seen:
@@ -388,7 +390,7 @@ def _enclosing_symbol(pt: tuple[float, float], gidx: GeometryIndex, pipe_familie
     return best[1] if best else None
 
 
-def _pipe_ends_at_marker(p: RawPath, gidx: GeometryIndex, pipe_families: set[str], skip: set[str]) -> list[tuple[RawPath, int, float, tuple[float, float]]]:
+def _pipe_ends_at_marker(p: RawPath, gidx: GeometryIndex, pipe_families: set[str] | None, skip: set[str]) -> list[tuple[RawPath, int, float, tuple[float, float]]]:
     """Pipe primitives whose END lies at the marker's edge (within half its size + 1 pt of its centre), with the
     end point (the contact point on the pipe)."""
     mx, my = (p.bbox[0] + p.bbox[2]) / 2, (p.bbox[1] + p.bbox[3]) / 2
@@ -396,7 +398,7 @@ def _pipe_ends_at_marker(p: RawPath, gidx: GeometryIndex, pipe_families: set[str
     R = max(2.5, 0.5 * size + 1.0)
     ends = []
     for q, kk, dd in gidx.hits(mx, my, tol=R, skip_pids=skip | {p.pid}):
-        if family_of(q) not in pipe_families:
+        if pipe_families is not None and family_of(q) not in pipe_families:
             continue
         sg = q.segs[kk]
         cands = [((sg.x0, sg.y0), dist((mx, my), (sg.x0, sg.y0))), ((sg.x1, sg.y1), dist((mx, my), (sg.x1, sg.y1)))]
@@ -407,7 +409,7 @@ def _pipe_ends_at_marker(p: RawPath, gidx: GeometryIndex, pipe_families: set[str
     return ends
 
 
-def _marker_cluster(seeds: list[RawPath], gidx: GeometryIndex, pipe_families: set[str], skip: set[str], limit: int = 16) -> list[RawPath]:
+def _marker_cluster(seeds: list[RawPath], gidx: GeometryIndex, pipe_families: set[str] | None, skip: set[str], limit: int = 16) -> list[RawPath]:
     cluster: dict[str, RawPath] = {}
     frontier: list[RawPath] = []
     for p in sorted(seeds, key=lambda p: p.pid):
@@ -420,7 +422,7 @@ def _marker_cluster(seeds: list[RawPath], gidx: GeometryIndex, pipe_families: se
         size = max(p.bbox[2] - p.bbox[0], p.bbox[3] - p.bbox[1])
         neighbours = [q for q, _, _ in gidx.hits(mx, my, tol=2.5 + size, skip_pids=skip)] + gidx.symbols_near(mx, my, 2.5 + size)
         for q in sorted(neighbours, key=lambda q: q.pid):
-            if q.pid in cluster or q.pid in skip or family_of(q) in pipe_families or q.kind == "f":
+            if q.pid in cluster or q.pid in skip or (pipe_families and family_of(q) in pipe_families) or q.kind == "f":
                 continue
             qsize = max(q.bbox[2] - q.bbox[0], q.bbox[3] - q.bbox[1])
             if qsize > MARKER_MAX:

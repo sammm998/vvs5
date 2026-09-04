@@ -31,8 +31,6 @@ from .pipes.ownership import Identity, OwnershipResult, identity_of, propagate
 
 # a drawing draws its leaders alike: a family carrying this share of the leaders is where it draws them
 LEADER_MIN_SHARE = 0.25
-# and with no layer name to go by, the leaders must point at one family more than at all the others together
-TICK_MAJORITY = 0.6
 
 STAGES = ["READING_PDF", "DISCOVERING_DRAWING_GRAMMAR", "EXTRACTING_VECTORS", "RECONSTRUCTING_TEXT", "READING_DESIGNATIONS",
           "FINDING_LEADERS", "RESOLVING_PIPE_REPRESENTATION", "ATTACHING_PIPES", "BUILDING_TOPOLOGY", "BUILDING_PHYSICAL_PIPES",
@@ -139,20 +137,28 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         des_leaders = [ld for ld in leaders if ld.block_id in des_by_block]
         votes: Counter = Counter()
         token_votes: Counter = Counter()
+        # one leader meeting one drawn object is one vote for that object's family, however many segments the
+        # object is exported as: a symbol drawn as sixteen little strokes is not sixteen pieces of evidence
         for ld in des_leaders:
             if not any(d.did in pipe_labels for d in des_by_block[ld.block_id]):
                 continue
+            seen_obj: dict[tuple[str, str], float] = {}
             for c in leader_contacts(ld, gidx, None, paths):
                 w = 1.0 if c.kind in ("end_tick", "crossing_tick") else 0.5
-                votes[c.family] += w
+                key = (c.family, c.pid)
+                seen_obj[key] = max(seen_obj.get(key, 0.0), w)
+            for (fam, _), w in seen_obj.items():
+                votes[fam] += w
                 for d in des_by_block[ld.block_id]:
-                    if system_layer_match(d.system_token, c.family.split("|s|")[0], spelled_out):
-                        token_votes[c.family] += 1
+                    if system_layer_match(d.system_token, fam.split("|s|")[0], spelled_out):
+                        token_votes[fam] += 1
         total = sum(votes.values()) or 1.0
         tick_votes: Counter = Counter()
         for ld in des_leaders:
+            seen_tick: set[tuple[str, str]] = set()
             for c in leader_contacts(ld, gidx, None, paths):
-                if c.kind in ("end_tick", "crossing_tick"):
+                if c.kind in ("end_tick", "crossing_tick") and (c.family, c.pid) not in seen_tick:
+                    seen_tick.add((c.family, c.pid))
                     tick_votes[c.family] += 1
         # The leader lines themselves are annotation geometry, never pipes, and neither are the label frames: the
         # paths are dropped from whatever family they land in, so a leader drawn with the pipes' own pen is never
@@ -193,7 +199,6 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         token_styles = {f.split("|s|")[1] for f in token_fams if votes[f] >= max(2.0, 0.05 * total_votes)}
         token_layers = [f.split("|s|")[0] for f in token_fams]
         total_ticks = sum(tick_votes.values()) or 1
-        voted_ticks = sum(tick_votes[v] for v in voted if chain_like(v)) or 1
         # the sheet's middle pen by drawn length: half the ink on the page is thinner than this
         by_width = sorted(_width_lengths(page).items())
         half = 0.5 * sum(L for _, L in by_width)
@@ -210,10 +215,6 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             if not chain_like(f):
                 continue
             layer, style = f.split("|s|")
-            if not layer and tick_votes[f] < TICK_MAJORITY * voted_ticks:
-                # nothing but a pen width to go by, and the leaders end on this family no more than on the others:
-                # the sheet has not said which of them its labels describe, and guessing would measure the walls
-                continue
             if not layer and desc[f][0].width < median_width:
                 # and with no layer name, a pen thinner than half the ink on the sheet draws its background -
                 # construction lines, hatching, grids. The pipes are what the sheet is for; they are not its

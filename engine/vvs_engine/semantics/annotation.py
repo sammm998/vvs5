@@ -399,7 +399,6 @@ def _span_bbox(bbox, d):
 COUNT_RE = re.compile(r"^(\d{1,2})[xX](.+)$")
 # a dimension row may carry a short medium qualifier after the size, bracketed or written off with a
 # separator: the size is the dimension, the qualifier belongs to the designation
-DN_QUALIFIER_RE = re.compile(r"^(\d{1,4})[-/]?[(\[]?[A-ZÅÄÖ]{1,3}[)\]]?$")
 
 
 def _words(line: TextRow) -> list[list[Glyph]]:
@@ -580,12 +579,16 @@ def _row_role(text: str, br: BlockRow, b: AnnotationBlock) -> str:
     if not t:
         return "text"
     words = t.split(" ")
-    # pure number row (possibly underlined) -> dn candidate; a nominal size followed by a short bracketed or
-    # bare letter qualifier ("75(L)") is a dn row as well
+    # pure number row (possibly underlined) -> dn candidate. A row that opens with a nominal size and carries
+    # only a short wordless tail after it is a dimension row too, whatever that tail is: the drawing writes the
+    # medium or the laying after the size in whatever bracket it likes ("75 (L)", "75/W", "50-F"), and the
+    # recogniser does not always read a bracket as a bracket. The size is the content; the tail is a qualifier.
     if len(words) == 1 and re.fullmatch(r"\d{1,4}", words[0]):
         return "dn"
-    mq = DN_QUALIFIER_RE.match(t.replace(" ", ""))
-    if mq and len(words) <= 2 and int(mq.group(1)) in NOMINAL_SIZES:
+    packed = t.replace(" ", "")
+    mq = re.match(r"(\d{1,4})(.*)$", packed)
+    if mq and int(mq.group(1)) in NOMINAL_SIZES and len(mq.group(2)) <= 4 \
+            and not any(c.isdigit() for c in mq.group(2)):
         return "dn"
     # elevation: short letter tag + signed number (VG+1.67, CL 4000, FG +19.82)
     if ELEV_RE.match(t.replace(" ", "")) or (len(words) == 2 and re.fullmatch(r"[A-ZÅÄÖ]{1,4}", words[0]) and re.fullmatch(r"[+\-]?\d+[.,]?\d*", words[1])):
