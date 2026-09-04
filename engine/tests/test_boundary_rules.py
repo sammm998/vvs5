@@ -366,3 +366,30 @@ def test_legend_is_read_from_its_shape_and_roles_from_how_the_drawing_uses_it():
     assert not lg.names_a_pipe(D("TS1", "TS1", None, out_on_the_drawing))
     assert code_matches("BL3", "BLxxx") and not code_matches("BL3", "TS1")
     assert is_code_token("KV01") and not is_code_token("TAPPVATTENSYSTEM")
+
+
+def test_a_label_written_on_a_line_that_runs_to_the_pipe_speaks_for_its_own_row(tmp_path):
+    """Two labels stacked close enough to read as one block, each written on a line that carries on to its own
+    pipe. The line names the row it runs from, so each pipe gets the label written above it, not both."""
+    path = os.path.join(tmp_path, "baseline.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    make_dashed_line(shape, (300, 300), (700, 300))            # upper run
+    make_dashed_line(shape, (300, 380), (700, 380))            # lower run
+    for y, text, to in ((200, "S3-R8-110", (400, 300)), (216, "S3-R8-75", (400, 380))):
+        page.insert_text((100, y), text, fontsize=10, fontname="helv")
+        base = y + 2
+        shape.draw_line((100, base), (180, base)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+        shape.draw_line((180, base), to); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+        shape.draw_line((to[0] - 1, to[1] - 1), (to[0] + 1, to[1] + 1))
+        shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    _scale(page)
+    shape.commit(); doc.save(path); doc.close()
+    pa = analyze_page(extract_document(path).pages[0])
+    per_leader = {}
+    for a in pa.anchors:
+        per_leader.setdefault(a.leader_id, set()).add(a.designation)
+    reaching = [ds for lid, ds in per_leader.items()
+                if any(a.state == "VERIFIED_PIPE_ATTACHMENT" for a in pa.anchors if a.leader_id == lid)]
+    assert reaching, "no leader reached a pipe"
+    assert all(len(ds) == 1 for ds in reaching), f"a leader spoke for several labels: {reaching}"
+    assert {next(iter(ds)) for ds in reaching} == {"S3-R8-110", "S3-R8-75"}

@@ -191,7 +191,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         pf = set(pipe_families)
         for ld in des_leaders:
             block = block_by_id[ld.block_id]
-            unit = block.unit_for_point(ld.start)
+            # a leader that starts on one row's own line speaks for that row's label, whatever else the block holds
+            unit = block.unit_of_row(ld.start_row) if ld.start_row is not None else block.unit_for_point(ld.start)
             rows = sorted(des_by_block[ld.block_id], key=lambda d: d.row_index)
             if unit is not None:
                 rows = [d for d in rows if d.row_index in unit]

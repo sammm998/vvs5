@@ -54,7 +54,7 @@ def merge_lines(rows: list[TextRow], page: int) -> list[TextRow]:
             if abs(project((q.cx, q.cy), n) - project((r.cx, r.cy), n)) > 0.35 * H:
                 continue
             # gap along d
-            r0, r1 = _span(r, d); q0, q1 = _span(q, d)
+            r0, r1 = row_span(r, d); q0, q1 = row_span(q, d)
             gap = max(q0 - r1, r0 - q1)
             if -0.3 * H <= gap <= 1.6 * H:
                 pa, pb = find(i), find(j)
@@ -70,12 +70,12 @@ def merge_lines(rows: list[TextRow], page: int) -> list[TextRow]:
             continue
         r0 = g[0]
         d, n = row_axes(r0.angle)
-        g_sorted = sorted(g, key=lambda r: _span(r, d)[0])
+        g_sorted = sorted(g, key=lambda r: row_span(r, d)[0])
         glyphs: list[Glyph] = []
         for k, r in enumerate(g_sorted):
             if k > 0:
                 prev = g_sorted[k - 1]
-                gap = _span(r, d)[0] - _span(prev, d)[1]
+                gap = row_span(r, d)[0] - row_span(prev, d)[1]
                 if gap > 0.25 * r0.height and glyphs and glyphs[-1].char != " ":
                     glyphs.append(Glyph(gid=r.rid + "_sp", char=" ", bbox=(r.bbox[0], r.bbox[1], r.bbox[0], r.bbox[3]), source=r.source, layer=r.layer))
             glyphs.extend(r.glyphs)
@@ -85,7 +85,7 @@ def merge_lines(rows: list[TextRow], page: int) -> list[TextRow]:
     return out
 
 
-def _span(r: TextRow, d) -> tuple[float, float]:
+def row_span(r: TextRow, d) -> tuple[float, float]:
     """Extent of a row along axis d, from glyph centers +- half glyph size (robust for rotated text)."""
     gl = [g for g in r.glyphs if g.char != " "]
     if not gl:
@@ -282,8 +282,8 @@ def build_blocks(page: RawPage, lines: list[TextRow], free: list[FreeSeg]) -> li
     for ln in lines:
         d, n = row_axes(ln.angle)
         H = max(ln.height, 1.0)
-        s0, s1 = _span(ln, d)
-        base = _span(ln, n)[1]
+        s0, s1 = row_span(ln, d)
+        base = row_span(ln, n)[1]
         found = []
         for fid in seg_idx.query(bbox_expand(ln.bbox, 0.8 * H)):
             f = fmap[fid]
@@ -329,7 +329,7 @@ def build_blocks(page: RawPage, lines: list[TextRow], free: list[FreeSeg]) -> li
                 continue
             if abs(q.height - ln.height) > 0.35 * max(ln.height, q.height):
                 continue
-            a0, a1 = _span(ln, d); b0, b1 = _span(q, d)
+            a0, a1 = row_span(ln, d); b0, b1 = row_span(q, d)
             ov = min(a1, b1) - max(a0, b0)
             left_aligned = abs(a0 - b0) <= 0.6 * H
             if ov < 0.3 * min(a1 - a0, b1 - b0) and not left_aligned:
@@ -353,8 +353,8 @@ def build_blocks(page: RawPage, lines: list[TextRow], free: list[FreeSeg]) -> li
         bbox = bbox_union([ln.bbox for ln in g_sorted])
         H = sorted(ln.height for ln in g_sorted)[len(g_sorted) // 2]
         # block frame extents in the row frame
-        s0 = min(_span(ln, d)[0] for ln in g_sorted); s1 = max(_span(ln, d)[1] for ln in g_sorted)
-        n0 = min(_span(ln, n)[0] for ln in g_sorted); n1 = max(_span(ln, n)[1] for ln in g_sorted)
+        s0 = min(row_span(ln, d)[0] for ln in g_sorted); s1 = max(row_span(ln, d)[1] for ln in g_sorted)
+        n0 = min(row_span(ln, n)[0] for ln in g_sorted); n1 = max(row_span(ln, n)[1] for ln in g_sorted)
         for ln in g_sorted:
             for u in underline_of.get(ln.rid, []):
                 s0 = min(s0, project((u.seg.x0, u.seg.y0), d), project((u.seg.x1, u.seg.y1), d))
