@@ -8,6 +8,7 @@ import sys
 import time
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
+from types import SimpleNamespace
 from typing import Any, Callable
 
 from .geometry.core import stable_id
@@ -28,6 +29,7 @@ from .text.vector_text import VectorTextResult, vector_text_rows
 from .measure.scale import ScaleResult, discover_scale
 from .measure.measure import PipeMeasure, aggregate, measure_pipes
 from .pipes.ownership import Identity, OwnershipResult, identity_of, propagate
+from .routes import apply_routes, cross_check, review, run_routes
 
 # a drawing draws its leaders alike: a family carrying this share of the leaders is where it draws them
 LEADER_MIN_SHARE = 0.25
@@ -63,6 +65,8 @@ class PageAnalysis:
     hatch_families: list[HatchFamily] = field(default_factory=list)
     risers: dict[str, list[dict]] = field(default_factory=dict)     # identity key -> riser symbols
     ocr_assist: dict | None = None                                  # report of the OCR-assisted glyph resolution
+    crosscheck: dict = field(default_factory=dict)                  # the routes side by side, and where they differ
+    review_findings: dict = field(default_factory=dict)             # what the reading did not reach, and why
     legend: DrawingLegend = field(default_factory=DrawingLegend)    # the sheet's own designation list
 
 
@@ -295,6 +299,15 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         progress("MEASURING")
     scale = discover_scale(page, lines)
     elevations = _elevations(blocks, anchors)
+    # read the sheet again by the other routes, put the answers side by side, and let a second route add what the
+    # first missed or take out what it contradicts
+    _read = SimpleNamespace(graphs=graphs, ownership=ownership, scale=scale, designations=designations,
+                            anchors=anchors, legend=legend, pipe_families=pipe_families, page=page)
+    route_reports = run_routes(_read)
+    crosscheck = cross_check(_read, route_reports)
+    crosscheck["applied"] = apply_routes(_read, route_reports)
+    review_findings = review(_read, crosscheck)
+    t0 = _t(timings, "routes_ms", t0)
     hatch = discover_hatch(page, set(pipe_families))
     hatched_pt: dict[str, float] = {}
     if hatch:
@@ -322,7 +335,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                         designations=designations, grammar=grammar, ann_layers=ann_layers, leaders=leaders,
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,
-                        timings=timings, hatch_families=hatch, risers=risers, ocr_assist=ocr_report)
+                        timings=timings, hatch_families=hatch, risers=risers, ocr_assist=ocr_report,
+                        crosscheck=crosscheck, review_findings=review_findings)
 
 
 SAME_RISER = 15.0        # pt: a label's leader ends at the riser symbol it names, not exactly on its centre

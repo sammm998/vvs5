@@ -433,3 +433,25 @@ def test_the_faintest_pen_on_a_layerless_sheet_is_not_read_as_pipe(tmp_path):
     shape.commit(); doc.save(path); doc.close()
     pa = analyze_page(extract_document(path).pages[0])
     assert not any("w0.12" in f for f in pa.pipe_families), f"the sheet's faintest pen was read as pipe: {pa.pipe_families}"
+
+
+def test_a_second_route_may_add_a_run_but_never_rename_one(tmp_path):
+    """The routes are put side by side. One may name a run the others missed; where two name it differently the
+    run leaves the quantity. What no route reached is listed with its reason rather than passed over."""
+    from vvs_engine.routes import ROUTES
+    path = os.path.join(tmp_path, "routes.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    make_dashed_line(shape, (200, 300), (700, 300))
+    make_dashed_line(shape, (200, 420), (700, 420))           # a second run no label points at
+    _label(page, shape, 120, 200, "S3-R8-110", leader_to=(400, 300))
+    _label(page, shape, 120, 230, "S3-R8-110", leader_to=(500, 300))
+    _scale(page)
+    shape.commit(); doc.save(path); doc.close()
+    pa = analyze_page(extract_document(path).pages[0])
+    cross, rev = pa.crosscheck, pa.review_findings
+    assert set(cross["routes"]) == set(ROUTES)
+    assert cross["in_conflict_m"] == 0.0
+    assert cross["applied"]["made_ambiguous_m"] == 0.0
+    # the unlabelled run is reported, not silently dropped
+    assert rev["n_unnamed_runs"] >= 1 and rev["unnamed_m"] > 0
+    assert rev["named_m"] > 0 and 0 <= rev["coverage_pct"] <= 100

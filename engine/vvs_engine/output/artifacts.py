@@ -321,6 +321,8 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     W("evidence-graph.json", evidence_graph(pa))
     from ..reconcile import reconcile
     W("reconciliation.json", reconcile(pa))
+    W("route-crosscheck.json", pa.crosscheck)
+    W("reading-review.json", pa.review_findings)
     if determinism is not None:
         W("determinism.json", determinism)
     if contamination is not None:

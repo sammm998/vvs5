@@ -79,6 +79,11 @@ class OwnershipResult:
 
 
 def identity_of(a: PipeCodeAnchor, dn_token_index: int | None) -> Identity:
+    """The identity an anchor's label names (see identity_from_text)."""
+    return identity_from_text(a.designation_display or a.designation, a.dn, a.system_token, dn_token_index)
+
+
+def identity_from_text(text: str, dn: int | None, system_token: str, dn_token_index: int | None) -> Identity:
     """The identity a label names: its designation without the dimension token, plus the dimension.
 
     The name is read from the designation as the drawing states it - with a dimension row folded in - so that the
@@ -87,13 +92,12 @@ def identity_of(a: PipeCodeAnchor, dn_token_index: int | None) -> Identity:
     after the system token that spells the dimension itself.
     """
     from ..semantics.grammar import split_tokens
-    text = a.designation_display or a.designation
     toks = split_tokens(text)
     idx = dn_token_index
-    if not (idx is not None and 0 < idx < len(toks) and toks[idx].isdigit() and a.dn is not None and int(toks[idx]) == a.dn):
+    if not (idx is not None and 0 < idx < len(toks) and toks[idx].isdigit() and dn is not None and int(toks[idx]) == dn):
         idx = None
-        if a.dn is not None:
-            pat = re.compile(re.escape(str(a.dn)) + r"[A-Za-zÅÄÖÅäö]{0,3}")
+        if dn is not None:
+            pat = re.compile(re.escape(str(dn)) + r"[A-Za-zÅÄÖÅäö]{0,3}")
             idx = next((i for i, t in enumerate(toks) if i > 0 and pat.fullmatch(t)), None)
     base_toks = list(toks)
     if idx is not None:
@@ -103,7 +107,7 @@ def identity_of(a: PipeCodeAnchor, dn_token_index: int | None) -> Identity:
         while end < len(toks) and len(toks[end]) <= 3 and toks[end].isalpha():
             end += 1
         base_toks = toks[:idx] + toks[end:]
-    return Identity(base="-".join(base_toks), dn=a.dn, system=a.system_token, display=text)
+    return Identity(base="-".join(base_toks), dn=dn, system=system_token, display=text)
 
 
 TICK_KINDS = ("end_tick", "crossing_tick")
