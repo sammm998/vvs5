@@ -115,9 +115,6 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # anywhere, so they say nothing about what pipe geometry looks like
     pipe_labels = {d.did for d in designations if legend.names_a_pipe(d) and (d.text or "").upper() not in legend.components()}
     spelled_out = layer_system_tokens(page)      # the system names the file writes on layers of its own
-    # a flattened export names no layer at all: there, leaders and pipes are drawn with the same pen, so a
-    # family cannot be dismissed for carrying leaders - only the leader paths themselves can be
-    unlayered = not any((p.layer or "").strip() for p in page.paths)
 
     def run_pass(ann_layers: dict[str, int] | None):
         ann_marks = [m for m in vtext.marks if f"{m.layer}|{m.style}" in ann_layers] if ann_layers else vtext.marks
@@ -146,10 +143,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         # form families of their own and the whole family goes; where it does not, the draughtsman draws leaders
         # and pipes with the same pen, and dropping that family would drop the pipes with it. So a family is
         # excluded only when the leaders are most of it, and otherwise the leader paths alone are.
-        # The leader lines are annotation geometry, never pipes, and neither are the label frames. Where the
-        # drawing carries layers they form families of their own and the whole family goes. Where it does not,
-        # the draughtsman draws leaders and pipes with the same pen: dropping that family would drop the pipes
-        # with it, so such a family is kept and judged on what is left of it once the annotation paths are out.
+        # The leader lines are annotation geometry, never pipes, and neither are the label frames: the families
+        # that carry them are excluded, and the paths themselves are dropped from whatever family they land in,
+        # so a leader drawn with the pipes' own pen is never measured as pipe.
         annotation_pids = {pid for ld in leaders for pid in ld.path_ids}
         for b in blocks:
             for r in b.rows:
@@ -158,7 +154,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         leader_fams = {stroke_family(ld.layer, ld.width, ld.color) for ld in des_leaders} \
             | (set(ann_layers) if ann_layers else set())
         # evaluate the vector structure of every voted family first (kind: fragmented-dashed / continuous / sparse)
-        voted = sorted(votes) if unlayered else sorted(f for f in votes if f not in leader_fams)
+        voted = sorted(f for f in votes if f not in leader_fams)
         prims_all = collect_prims(page, set(voted), exclude_pids=annotation_pids)
         desc: dict[str, tuple] = {}
         for fk in voted:
@@ -169,10 +165,6 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             desc[fk] = (rf, g)
         def chain_like(fk):
             return fk in desc and desc[fk][0].kind != "sparse" and desc[fk][0].longest_chain >= 25 and desc[fk][0].total_length >= 60
-        # a family that carries the leaders themselves is annotation unless what remains of it, with every leader
-        # and label frame taken out, still reads as a run of pipe
-        if unlayered:
-            voted = [f for f in voted if f not in leader_fams or chain_like(f)]
         token_fams = {f for f in voted if token_votes[f] >= 1 and chain_like(f)}
         total_votes = sum(votes.values()) or 1.0
         # styles that may vouch for name-less families: only strongly supported token families
