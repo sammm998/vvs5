@@ -19,7 +19,7 @@ from .annotation import AnnotationBlock, FreeSeg
 
 TOUCH_TOL = 0.15      # PDF export precision for shared endpoints
 MAX_SEGMENTS = 8
-START_PRIORITY = {"underline_end": 0, "box_corner": 0, "underline_touch": 1, "bbox_corner": 2}
+START_PRIORITY = {"underline_end": 0, "box_corner": 0, "underline_touch": 1, "bbox_corner": 2, "bbox_edge": 3}
 
 
 @dataclass
@@ -137,6 +137,21 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
                         if inside:
                             continue
                         starts.append((f, ep, ptype))
+        # a leader may meet the label at the side of its box rather than at a corner or an underline end: the
+        # draughtsman runs it to whichever edge faces the pipe. This is the weakest start there is, so it only
+        # produces a leader where no stronger claim takes the segment.
+        for fid in ep_idx.query(bbox_expand(b.bbox, tol_start)):
+            f = fmap[fid]
+            if f.fid in used_fids:
+                continue
+            for ep in _endpoints(f):
+                if _box_outline_distance(ep, b.bbox) > tol_start:
+                    continue
+                other = _other(f, ep)
+                if b.bbox[0] - 0.3 * H <= other[0] <= b.bbox[2] + 0.3 * H and \
+                        b.bbox[1] - 0.3 * H <= other[1] <= b.bbox[3] + 0.3 * H:
+                    continue
+                starts.append((f, ep, "bbox_edge"))
         # also: leader touching an underline segment in its interior (T-start)
         for r in b.rows:
             for u in r.underline:
@@ -199,6 +214,20 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
         ld.family = leader_family(ld)
     leaders.sort(key=lambda l: l.lid)
     return leaders
+
+
+def _box_outline_distance(pt, box) -> float:
+    """Distance from a point to the outline of a box (zero on the edge, positive inside and outside)."""
+    x, y = pt
+    x0, y0, x1, y1 = box
+    inside = x0 <= x <= x1 and y0 <= y <= y1
+    dx = min(abs(x - x0), abs(x - x1))
+    dy = min(abs(y - y0), abs(y - y1))
+    if inside:
+        return min(dx, dy)
+    ox = 0.0 if x0 <= x <= x1 else dx
+    oy = 0.0 if y0 <= y <= y1 else dy
+    return math.hypot(ox, oy)
 
 
 def _leaves_block(b: AnnotationBlock, f: FreeSeg, ep: tuple[float, float]) -> bool:

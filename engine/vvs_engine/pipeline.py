@@ -476,7 +476,14 @@ def _pipe_identities(designations, anchors, grammar, vertical_dn_rows: bool = Tr
         if a.state != "VERIFIED_PIPE_ATTACHMENT":
             continue
         d = des_by_id.get(a.designation_id)
-        if d is None or d.family not in pipe_fams:
+        if d is None:
+            continue
+        # A pattern is a weak test of whether a code names a pipe: on a sheet where the component tags happen to
+        # share the shape of the system codes, the whole shape fails the test and the systems go with it. The
+        # sheet's own designation list settles it directly, so a code it lists as a system qualifies whatever the
+        # pattern statistics say - and a code it lists as an object never does.
+        by_legend = legend is not None and legend.systems() and legend.names_a_pipe(d)
+        if d.family not in pipe_fams and not by_legend:
             continue
         if legend is not None and (d.text or "").upper() in legend.components():
             continue        # the legend says this code names an object, not a pipe
