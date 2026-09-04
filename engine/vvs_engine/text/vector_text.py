@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from typing import Any
@@ -77,6 +78,104 @@ def _structural_char(g: GlyphCandidate, rc: RowCluster) -> str | None:
                     side = -side
                 return "(" if side < 0 else ")"
     return None
+
+
+BRACKETS = "()[]{}"
+_PARTNER = {"(": ")", ")": "(", "[": "]", "]": "[", "{": "}", "}": "{"}
+
+
+def _drop_unpaired_brackets(rows) -> None:
+    """A bracket comes in pairs. A single curved stroke that reads as one, with no partner anywhere in its row,
+    is not a bracket - in these drawings it is a digit of the stroke font ('5' and ')' share an arc). Such a glyph
+    is re-read as its best non-bracket candidate, and left unknown when none is close enough."""
+    for row in rows:
+        chars = [g.char for g in row.glyphs]
+        for i, g in enumerate(row.glyphs):
+            if g.char not in BRACKETS:
+                continue
+            partner = _PARTNER[g.char]
+            if partner in chars[i + 1:] or partner in chars[:i]:
+                continue                        # a real pair: leave it
+            alt = next(((c, sc) for c, sc in g.alternatives if c not in BRACKETS), None)
+            if alt is not None and alt[1] <= UNKNOWN_THRESHOLD:
+                g.char, g.score = alt[0], alt[1]
+            else:
+                g.char, g.score = "?", 99.0
+        row.text = "".join(g.char for g in row.glyphs)
+        row.unknown_chars = sum(1 for g in row.glyphs if g.char == "?")
+
+
+_LAYER_SEP = re.compile(r"[^A-Za-z0-9]+")
+_WORD = re.compile(r"[A-Za-z0-9?]+")
+
+
+def layer_vocabulary(page: RawPage) -> set[str]:
+    """The code-like words the file writes about itself.
+
+    A CAD file names its layers, and a layer name is machine-written text, not drawn geometry: it carries the very
+    system codes the drawn labels repeat. Only tokens that mix letters and digits are kept, because those are the
+    system codes; plain words would match too easily."""
+    words: set[str] = set()
+    for p in page.paths:
+        for t in _LAYER_SEP.split(p.layer or ""):
+            if len(t) >= 3 and any(c.isalpha() for c in t) and any(c.isdigit() for c in t):
+                words.add(t.upper())
+    return words
+
+
+def _name_unknown_from_layers(page: RawPage, rows: list[TextRow]) -> list[dict[str, Any]]:
+    """Name glyph shapes the reference alphabet cannot, from the file's own layer names.
+
+    A drawing may write its labels in a typeface no reference alphabet holds - and embed only the handful of
+    glyphs its remaining real text used - so a character can be drawn plainly and still match nothing. Where a
+    word is unknown in exactly one place and exactly one layer name of the file spells it out, that name says
+    what the shape is. The reading is adopted for the whole glyph family, since one shape is one character
+    throughout a drawing, and every character taken this way is recorded with the name it came from.
+    """
+    vocab = layer_vocabulary(page)
+    if not vocab:
+        return []
+    votes: dict[str, Counter] = defaultdict(Counter)
+    evidence: dict[str, set[str]] = defaultdict(set)
+    for row in rows:
+        text = row.text
+        for m in _WORD.finditer(text):
+            word = m.group(0).upper()
+            if word.count("?") != 1 or len(word) - 1 < 3:
+                continue
+            k = word.index("?")
+            found = {t[k] for t in vocab
+                     if len(t) == len(word) and all(t[j] == word[j] for j in range(len(word)) if j != k)}
+            if len(found) != 1:
+                continue                        # ambiguous, or the file never spells this word: say nothing
+            g = row.glyphs[m.start() + k]
+            if g.char != "?":
+                continue
+            ch = found.pop()
+            votes[g.family_id][ch] = votes[g.family_id][ch] + 1
+            evidence[g.family_id].add(word.replace("?", ch))
+    adopted: list[dict[str, Any]] = []
+    named: dict[str, str] = {}
+    for fid, counter in votes.items():
+        if len(counter) != 1:
+            continue                            # the same shape read two ways: no reading
+        named[fid] = next(iter(counter))
+    if not named:
+        return []
+    for row in rows:
+        changed = False
+        for g in row.glyphs:
+            ch = named.get(g.family_id)
+            if ch is None or g.char != "?":
+                continue
+            g.char, g.score, g.source = ch, 0.0, f"{g.source}+layer"
+            changed = True
+        if changed:
+            row.text = "".join(g.char for g in row.glyphs)
+            row.unknown_chars = sum(1 for g in row.glyphs if g.char == "?")
+    for fid, ch in sorted(named.items()):
+        adopted.append({"family_id": fid, "char": ch, "from_layer_names": sorted(evidence[fid])})
+    return adopted
 
 
 def _is_junk_row(row: TextRow) -> bool:
@@ -232,10 +331,13 @@ def vector_text_rows(page: RawPage, timing: dict | None = None) -> VectorTextRes
     if timing is not None:
         timing.update({"components_ms": (t1 - t0) * 1000, "rows_ms": (t2 - t1) * 1000, "raster_ms": (t3 - t2) * 1000,
                        "classify_ms": (t4 - t3) * 1000, "assemble_ms": (t5 - t4) * 1000})
+    _drop_unpaired_brackets(rows)
+    named = _name_unknown_from_layers(page, rows)
     return VectorTextResult(rows=rows, families=families, size_families=sizes, n_components=len(comps),
                             n_glyphs=sum(len(rc.glyphs) for rc in clusters), marks=marks, rejected_rows=rejected,
                             stats={"n_clusters": len(clusters), "n_families": len(families),
-                                   "unknown_families": sum(1 for f in families.values() if f.char == "?")})
+                                   "unknown_families": sum(1 for f in families.values() if f.char == "?"),
+                                   "named_from_layer_names": named})
 
 
 def _inject_spaces(glyphs: list[Glyph], rc: RowCluster) -> list[Glyph]:

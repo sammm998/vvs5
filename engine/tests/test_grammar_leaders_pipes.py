@@ -71,10 +71,12 @@ def test_full_pipeline_on_synthetic_drawing(synthetic_pdf):
     assert {a.designation for a in ver} >= {"KV01-X7-40-W40", "VS21-S13"}
     assert pa.scale.state == "VERIFIED" and abs(pa.scale.meters_per_pt - 1 / 56.69) / (1 / 56.69) < 0.03
     q = {r["designation"]: r for r in pa.quantities}
+    # the second label writes its dimension on the row below, so the quantity is named with it folded in
+    assert "VS21-S13-15" in q and "VS21-S13" not in q
     # pipe 1 is 500 pt long -> 8.82 m ; pipe 2 is 200 pt -> 3.53 m (T-junction: pipe 2 becomes AMBIGUOUS_BRANCH? no: it has its own anchor)
     assert abs(q["KV01-X7-40-W40"]["confirmed_horizontal_m"] - 500 / 56.69) < 0.3
-    assert abs(q["VS21-S13"]["confirmed_horizontal_m"] - 200 / 56.69) < 0.3
-    assert q["VS21-S13"]["vertical_m"] == "UNKNOWN"
+    assert abs(q["VS21-S13-15"]["confirmed_horizontal_m"] - 200 / 56.69) < 0.3
+    assert q["VS21-S13-15"]["vertical_m"] == "UNKNOWN"
     from vvs_engine.reconcile import reconcile
     assert reconcile(pa)["state"] == "VALID"
 

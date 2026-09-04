@@ -308,8 +308,17 @@ def _render_reference(ch: str, font: str, buffer: bytes | None = None):
     ys, xs = np.where(ink)
     if len(xs) == 0:
         return None, 1.0
-    y0, y1, x0, x1 = ys.min(), ys.max(), xs.min(), xs.max()
-    crop = ink[y0:y1 + 1, x0:x1 + 1]
+    crop = ink[ys.min():ys.max() + 1, xs.min():xs.max() + 1].astype(np.uint8)
+    # Thin at render resolution and re-measure the skeleton's own extent. A drawn glyph reaches us as centre
+    # lines, and is normalized by those; a reference rendered from a font arrives as filled outlines, whose box
+    # is wider than its centre lines by one stroke width. Normalizing the reference by its outline would set the
+    # two shapes side by side at different scales - visible as a crossbar or a stem sitting a step off - so the
+    # reference is reduced to centre lines first and normalized by the same measure as the drawing.
+    sk_full = zhang_suen(crop)
+    sy_, sx_ = np.where(sk_full)
+    if len(sx_) == 0:
+        return None, 1.0
+    crop = sk_full[sy_.min():sy_.max() + 1, sx_.min():sx_.max() + 1]
     h, w = crop.shape
     sx, sy = _norm_scales(w, h)
     th, tw = max(1, int(round(h * sy))), max(1, int(round(w * sx)))
@@ -319,7 +328,8 @@ def _render_reference(ch: str, font: str, buffer: bytes | None = None):
     for i, yy in enumerate(ys2):
         for j, xx in enumerate(xs2):
             y_end = int(min(h, (i + 1) * (h / th))); x_end = int(min(w, (j + 1) * (w / tw)))
-            small[i, j] = 1 if crop[yy:max(yy + 1, y_end), xx:max(xx + 1, x_end)].mean() > 0.35 else 0
+            # a centre line is one pixel wide: a block keeps the line when any of it is inked, never by majority
+            small[i, j] = 1 if crop[yy:max(yy + 1, y_end), xx:max(xx + 1, x_end)].any() else 0
     sk = zhang_suen(small)
     img = np.zeros((GRID, GRID), dtype=np.uint8)
     oy = (GRID - th) // 2; ox = (GRID - tw) // 2

@@ -276,3 +276,55 @@ def test_both_riser_sources_are_reported_side_by_side(tmp_path):
     pa = analyze_page(extract_document(path).pages[0])
     assert all("riser_count" in r and "riser_count_from_labels" in r for r in pa.quantities)
     assert sum(r["riser_count_from_labels"] for r in pa.quantities) >= 1
+
+
+def test_dimension_row_is_folded_into_the_name():
+    """A dimension written on the row below belongs to the code above it: one identity, named with the size."""
+    from vvs_engine.semantics.annotation import Designation
+
+    def des(text, dn, src, row_text):
+        return Designation(did="d", page=0, block_id="b", row_index=0, text=text, raw_text=text, pattern="",
+                           tokens=[], system_token=text.split("-")[0], dn=dn, dn_source=src, dn_row_index=1,
+                           dn_row_text=row_text, multiplier=1, bbox=(0, 0, 1, 1), angle=0.0, layer="", source="",
+                           glyph_scores=[], unknown_chars=0)
+    assert des("KV01-X7", 16, "row", "16").display_text == "KV01-X7-16"
+    assert des("KV01-X7", 50, "row", "50/W").display_text == "KV01-X7-50/W"
+    assert des("KV01-X7-16", 16, "inline", None).display_text == "KV01-X7-16"
+    assert des("KV01-X7", None, None, None).display_text == "KV01-X7"
+
+
+def test_one_pipe_written_two_ways_is_one_identity():
+    """The same pipe labelled inline and with the dimension on the row below must give one identity key, and a
+    medium qualifier the recogniser reads badly must not split it in two."""
+    from vvs_engine.pipes.ownership import identity_of
+    from vvs_engine.semantics.attachment import PipeCodeAnchor
+
+    def anc(designation, display, dn):
+        return PipeCodeAnchor(anchor_id="a", page=0, designation_id="d", designation=designation,
+                              designation_display=display, system_token=designation.split("-")[0], dn=dn,
+                              multiplier=1, block_id="b", leader_id="l", leader_paths=[], endpoint=(0.0, 0.0),
+                              state="VERIFIED_PIPE_ATTACHMENT", reason="")
+    inline = identity_of(anc("KV01-X7-50/W", "KV01-X7-50/W", 50), 2)
+    row = identity_of(anc("KV01-X7", "KV01-X7-50/W", 50), None)
+    assert inline.key == row.key == "KV01-X7|DN50"
+    assert inline.display == "KV01-X7-50/W"
+    misread = identity_of(anc("KV01-X7", "KV01-X7-50ILI", 50), None)
+    assert misread.key == "KV01-X7|DN50"
+
+
+def test_a_word_that_starts_with_a_digit_is_not_a_code():
+    """The leading letter separates a designation from a misread word or a date in the title block."""
+    from vvs_engine.semantics.grammar import is_code_like
+    assert is_code_like("KV01-X7-40") and is_code_like("2xKV01-X7")
+    assert not is_code_like("53-R8-75") and not is_code_like("2024-O4-19") and not is_code_like("5PILLVAT")
+
+
+def test_a_system_with_its_own_layer_is_not_an_abbreviation():
+    """A layer token that a longer system name merely ends with is another system when the file names that
+    system in full on a layer of its own."""
+    from vvs_engine.semantics.attachment import system_layer_match
+    assert system_layer_match("KV1", "V-52BB-FE--V1-") == "V1"
+    assert system_layer_match("KV1", "V-52BB-FE--V1-", frozenset({"V1"})) == "V1"
+    assert system_layer_match("KV1", "V-52BB-FE--V1-", frozenset({"V1", "KV1"})) is None
+    assert system_layer_match("FJV1", "V-52BB-FE--V1-", frozenset({"V1", "FJV1"})) is None
+    assert system_layer_match("FJV1", "V-56B--FE--FJV1-", frozenset({"V1", "FJV1"})) == "FJV1"

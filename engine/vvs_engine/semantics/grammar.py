@@ -18,6 +18,7 @@ from ..text.model import Glyph, TextRow
 TWINS = {"O": "0", "0": "O", "I": "1", "1": "I", "S": "5", "5": "S", "B": "8", "8": "B", "Z": "2", "2": "Z", "G": "6", "6": "G"}
 SEPARATORS = "-/+.,:()[]"
 MARGIN = 0.07
+PATTERN_FLOOR = 2.0       # words: below this a drawing-local pattern is a one-off, not structure
 
 
 def char_class(c: str) -> str:
@@ -29,6 +30,8 @@ def char_class(c: str) -> str:
 
 
 COUNT_PREFIX_RE = re.compile(r"^(\d{1,2})[xX](.+)$")
+# a whole word that is a size and nothing more, with an optional short medium qualifier: a dimension row
+DIM_ROW_RE = re.compile(r"^(\d{1,4})(?:[-/]?[(\[]?[A-ZÅÄÖ]{1,3}[)\]]?)?$")
 
 
 def strip_count_prefix(word: str) -> tuple[int, str]:
@@ -60,14 +63,23 @@ def compress_pattern(word: str) -> str:
 
 
 def is_code_like(word: str) -> bool:
-    """Structural test: letters AND digits present, only code characters, starts with a letter or a count prefix."""
+    """Structural test: letters AND digits present, only code characters, starts with a letter or a count prefix.
+
+    The opening letter is what the rule has always said and is worth enforcing: a code names its system first,
+    before any count prefix is stripped. Without it every word whose leading letter the recogniser read as its
+    twin digit - a plain word, a date in the title block - counts as a code and teaches the drawing-local grammar
+    a pattern that then outvotes the real labels."""
     if len(word) < 2 or len(word) > 24:
         return False
     if not re.fullmatch(r"[A-Za-zÅÄÖØ0-9\-/+.,:()\[\]]+", word):
         return False
     has_a = any(c.isalpha() for c in word)
     has_d = any(c.isdigit() for c in word)
-    return has_a and has_d
+    if not (has_a and has_d):
+        return False
+    m = COUNT_PREFIX_RE.match(word)
+    head = m.group(2) if m else word
+    return bool(head) and head[0].isalpha()
 
 
 @dataclass
@@ -137,7 +149,10 @@ class DesignationGrammar:
 
     @staticmethod
     def _admissible(r: "WordReading") -> bool:
-        return is_code_like(r.text) or r.text.isdigit() or re.fullmatch(r"\d[\d.,:+\-/]*\d", r.text) is not None
+        """Readings a label may consist of: a code, a number, or a bare dimension with its medium qualifier."""
+        return (is_code_like(r.text) or r.text.isdigit()
+                or re.fullmatch(r"\d[\d.,:+\-/]*\d", r.text) is not None
+                or DIM_ROW_RE.fullmatch(r.text.upper()) is not None)
 
     def observe(self, readings: list[WordReading]) -> None:
         """Only words whose recognizer reading (0 flips) is code-like or a pure number contribute; their
@@ -168,17 +183,31 @@ class DesignationGrammar:
 
     @staticmethod
     def nominal_tokens(text: str) -> int:
-        """Number of pure-digit tokens after the first that read as a generic nominal pipe size."""
+        """Digit tokens that read as a generic nominal pipe size.
+
+        Any token after the first counts, and the first one too when the whole word is nothing but a size with an
+        optional short medium qualifier: such a word is a dimension row, where the size is the entire content,
+        so between two twin readings of it the one that spells a size is the one that says something."""
         _, core = strip_count_prefix(text)
-        return sum(1 for i, t in enumerate(split_tokens(core)) if i > 0 and t.isdigit() and int(t) in NOMINAL_SIZES)
+        n = sum(1 for i, t in enumerate(split_tokens(core)) if i > 0 and t.isdigit() and int(t) in NOMINAL_SIZES)
+        m = DIM_ROW_RE.fullmatch(core.upper())
+        if m and int(m.group(1)) in NOMINAL_SIZES:
+            n += 1
+        return n
 
     def choose(self, readings: list[WordReading]) -> WordReading:
         """Pick the reading with the most frequent drawing-local pattern, then the most typical token shapes.
         When the drawing itself cannot separate the readings (every word carries the same twin ambiguity, so the
         alternative patterns tie), the reading whose size token is a nominal pipe size wins (11O -> 110); only
         then fewer twin flips, lower cost, then text."""
+        def weight(r: WordReading) -> float:
+            # a pattern carried by fewer than two words is no evidence: often the only word carrying it IS this
+            # word, whose reading would then be voting for itself (the same floor typicality already applies)
+            w = self.pattern_weight.get(self._base(r.pattern), 0.0)
+            return w if w >= PATTERN_FLOOR else 0.0
+
         def key(r: WordReading):
-            return (-self.pattern_weight.get(self._base(r.pattern), 0.0), -round(self.typicality(r), 3),
+            return (-weight(r), -round(self.typicality(r), 3),
                     -self.nominal_tokens(r.text), r.flips, r.cost, r.text)
         code = [r for r in readings if self._admissible(r)]
         pool = code if code else readings

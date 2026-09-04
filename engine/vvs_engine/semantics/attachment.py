@@ -7,6 +7,7 @@ compatibility, and the mapping must be a bijection; otherwise the attachment is 
 """
 from __future__ import annotations
 
+import math
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
@@ -20,6 +21,7 @@ from .leaders import Leader
 
 CONTACT_TOL = 0.6
 MARKER_MAX = 3.0          # pt: closed end markers (dots, small circles) of pipes
+DASH_GAP_MAX = 8.0        # pt: the widest drawn gap in a dashed run a leader end may land in
 
 
 @dataclass
@@ -44,6 +46,7 @@ class PipeCodeAnchor:
     page: int
     designation_id: str
     designation: str
+    designation_display: str        # with a dimension row folded in, the name the drawing states
     system_token: str
     dn: int | None
     multiplier: int
@@ -63,6 +66,7 @@ class PipeCodeAnchor:
 
     def as_dict(self):
         return {"anchor_id": self.anchor_id, "page": self.page, "designation_id": self.designation_id, "designation": self.designation,
+                "designation_display": self.designation_display,
                 "system": self.system_token, "dn": self.dn, "multiplier": self.multiplier, "block_id": self.block_id,
                 "leader_id": self.leader_id, "leader_source_paths": self.leader_paths,
                 "leader_endpoint": [round(self.endpoint[0], 2), round(self.endpoint[1], 2)], "state": self.state, "reason": self.reason,
@@ -75,8 +79,26 @@ class PipeCodeAnchor:
 # system token <-> layer token compatibility (drawing-derived; wildcard x/X in layer tokens matches digits)
 # ---------------------------------------------------------------------------------------------------------------
 
-def system_layer_match(system_token: str, layer: str) -> str | None:
-    """Return the matching layer token if the layer name structurally carries the designation's system token."""
+def layer_system_tokens(page) -> frozenset[str]:
+    """Every layer-name token of the page shaped like a system code (letters then digits).
+
+    These are the system names the file writes about itself, and they decide when a shorter token is an
+    abbreviation of a designation and when it is a different system altogether."""
+    out: set[str] = set()
+    for p in page.paths:
+        for t in layer_tokens(p.layer or ""):
+            TU = t.upper()
+            if re.fullmatch(r"[A-ZÅÄÖ]+\d+", TU):
+                out.add(TU)
+    return frozenset(out)
+
+
+def system_layer_match(system_token: str, layer: str, spelled_out: frozenset[str] = frozenset()) -> str | None:
+    """Return the matching layer token if the layer name structurally carries the designation's system token.
+
+    spelled_out: the system names the drawing writes in full on some layer of its own. A designation whose system
+    is among them is not read as an abbreviation of a shorter token, because the file already says where that
+    system lives: a system with a layer of its own is not the shorter system whose name it happens to end with."""
     S = system_token.upper()
     m = re.match(r"([A-ZÅÄÖ]+)(\d*)", S)
     alpha = m.group(1) if m else S
@@ -103,6 +125,8 @@ def system_layer_match(system_token: str, layer: str) -> str | None:
         # abbreviated system token: the layer token is the tail of the designation's system token with the same
         # digits (KV2 -> V2, VV1 -> V1); a token of another alpha family with other digits was excluded above
         if len(TU) >= 2 and len(S) > len(TU) and S.endswith(TU) and re.fullmatch(r"[A-ZÅÄÖ]+\d+", TU):
+            if S in spelled_out:
+                continue        # the drawing gives this system a layer of its own: a shorter token is another system
             return T
     return None
 
@@ -168,6 +192,58 @@ def family_of(p: RawPath) -> str:
     return f"{p.layer}|s|w{p.width:.2f}"
 
 
+def _dash_gap_hits(pt: tuple[float, float], gidx: GeometryIndex, pipe_families: set[str] | None,
+                   skip: set[str]) -> list[tuple[RawPath, int, float]]:
+    """Segments of a dashed run whose drawn gap the point falls into.
+
+    A dashed pipe is ink and gaps; where the leader lands is where the draughtsman aimed, not where the dash
+    pattern happens to be. Two ends of the same family, a short gap apart, collinear with each other and with the
+    point between them, are one run interrupted by its own pattern - so the point touches that run.
+    """
+    ends: list[tuple[RawPath, int, Seg, tuple[float, float]]] = []
+    for i in gidx.idx.query_point(pt[0], pt[1], DASH_GAP_MAX + 2):
+        p, k, sg = gidx.items[i]
+        if p.pid in skip or (pipe_families is not None and family_of(p) not in pipe_families):
+            continue
+        if sg.length < 1e-6:
+            continue
+        for e in ((sg.x0, sg.y0), (sg.x1, sg.y1)):
+            if dist(e, pt) <= DASH_GAP_MAX:
+                ends.append((p, k, sg, e))
+    best: dict[str, tuple[float, tuple, tuple]] = {}
+    for i in range(len(ends)):
+        for j in range(i + 1, len(ends)):
+            a, b = ends[i], ends[j]
+            if family_of(a[0]) != family_of(b[0]) or (a[0].pid == b[0].pid and a[1] == b[1]):
+                continue
+            gap = dist(a[3], b[3])
+            if gap < 1e-6 or gap > DASH_GAP_MAX:
+                continue
+            ux, uy = (b[3][0] - a[3][0]) / gap, (b[3][1] - a[3][1]) / gap
+            t = (pt[0] - a[3][0]) * ux + (pt[1] - a[3][1]) * uy
+            if t < -0.5 or t > gap + 0.5:
+                continue                                    # the point is not inside the gap
+            if abs(-(pt[1] - a[3][1]) * ux + (pt[0] - a[3][0]) * uy) > CONTACT_TOL + 0.5 * max(a[0].width, b[0].width):
+                continue                                    # the point is beside the run, not on it
+            if _angle_to(a[2], ux, uy) > 5.0 or _angle_to(b[2], ux, uy) > 5.0:
+                continue                                    # the two dashes do not continue one straight line
+            fk = family_of(a[0])
+            if fk not in best or gap < best[fk][0]:
+                best[fk] = (gap, a, b)
+    out: list[tuple[RawPath, int, float]] = []
+    for fk in sorted(best):
+        gap, a, b = best[fk]
+        out.append((a[0], a[1], dist(a[3], pt)))
+        out.append((b[0], b[1], dist(b[3], pt)))
+    return out
+
+
+def _angle_to(sg: Seg, ux: float, uy: float) -> float:
+    """Angle in degrees between a segment's line and a direction, folded into [0, 90]."""
+    a = math.degrees(math.atan2(sg.y1 - sg.y0, sg.x1 - sg.x0) - math.atan2(uy, ux)) % 180.0
+    return min(a, 180.0 - a)
+
+
 def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | None, all_paths: dict[str, RawPath]) -> list[Contact]:
     """Contacts at each attachment point.
 
@@ -231,6 +307,16 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
                             if family_of(q) in pipe_families and (q.pid, kk) not in seen:
                                 seen.add((q.pid, kk))
                                 out.append(Contact(point=(ep[0], ep[1]), kind="via_fitting", family=family_of(q), pid=q.pid, seg_index=kk, distance=dd, mark_id=mid, via=p.pid))
+    if not out and pipe_families:
+        # last resort - the leader touched nothing at all: it may have landed in the drawn gap of a dashed run
+        # (see _dash_gap_hits). Only a leader with nothing else to point at is read this way, so a run that was
+        # already touched keeps its contacts exactly as drawn.
+        for (pt, kind, mid) in contact_points(ld):
+            for q, kk, dd in _dash_gap_hits(pt, gidx, pipe_families, skip):
+                if (q.pid, kk) in seen:
+                    continue
+                seen.add((q.pid, kk))
+                out.append(Contact(point=pt, kind=kind, family=family_of(q), pid=q.pid, seg_index=kk, distance=dd, mark_id=mid))
     out.sort(key=lambda c: (c.pid, c.seg_index))
     return out
 
@@ -310,7 +396,7 @@ def _marker_cluster(seeds: list[RawPath], gidx: GeometryIndex, pipe_families: se
 
 
 def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, contacts: list[Contact],
-                  system_tokens_in_drawing: set[str]) -> list[PipeCodeAnchor]:
+                  system_tokens_in_drawing: set[str], spelled_out: frozenset[str] = frozenset()) -> list[PipeCodeAnchor]:
     """Map designation rows of a block to contacted vector-family groups (bijection required)."""
     groups: dict[str, list[Contact]] = defaultdict(list)
     for c in contacts:
@@ -320,7 +406,8 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
 
     def mk(d: Designation, state: str, reason: str, cs: list[Contact], extra: dict | None = None) -> PipeCodeAnchor:
         aid = stable_id("anc", d.page, d.did, ld.lid)
-        return PipeCodeAnchor(anchor_id=aid, page=d.page, designation_id=d.did, designation=d.text, system_token=d.system_token,
+        return PipeCodeAnchor(anchor_id=aid, page=d.page, designation_id=d.did, designation=d.text,
+                              designation_display=d.display_text, system_token=d.system_token,
                               dn=d.dn, multiplier=d.multiplier, block_id=block.bid, leader_id=ld.lid, leader_paths=ld.path_ids,
                               endpoint=ld.end, state=state, reason=reason, contacts=cs, candidate_families=gkeys,
                               evidence={"n_rows": len(rows), "n_groups": len(gkeys), "leader_family": ld.family, "row_index": d.row_index, **(extra or {})})
@@ -330,12 +417,12 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
     # token matches
     match: dict[str, list[str]] = {}
     for d in rows:
-        match[d.did] = [g for g in gkeys if system_layer_match(d.system_token, g.split("|s|")[0])]
+        match[d.did] = [g for g in gkeys if system_layer_match(d.system_token, g.split("|s|")[0], spelled_out)]
     if len(rows) == 1:
         d = rows[0]
         if len(gkeys) == 1:
             g = gkeys[0]
-            conflict = _system_conflict(d, g, system_tokens_in_drawing)
+            conflict = _system_conflict(d, g, system_tokens_in_drawing, spelled_out)
             if conflict:
                 return [mk(d, "AMBIGUOUS_PIPE_ATTACHMENT", f"system_conflict:{conflict}", groups[g])]
             return [mk(d, "VERIFIED_PIPE_ATTACHMENT", "single_row_single_group", groups[g], {"layer_token": match[d.did][0].split('|s|')[0] if match[d.did] else None})]
@@ -375,13 +462,13 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
     return anchors
 
 
-def _system_conflict(d: Designation, family: str, tokens: set[str]) -> str | None:
+def _system_conflict(d: Designation, family: str, tokens: set[str], spelled_out: frozenset[str] = frozenset()) -> str | None:
     """A conflict exists when the layer carries a system token matching ANOTHER designation family but not this one."""
     layer = family.split("|s|")[0]
-    if system_layer_match(d.system_token, layer):
+    if system_layer_match(d.system_token, layer, spelled_out):
         return None
     for t in sorted(tokens):
-        if t != d.system_token and system_layer_match(t, layer):
+        if t != d.system_token and system_layer_match(t, layer, spelled_out):
             m = re.match(r"([A-ZÅÄÖ]+)", t.upper()); m2 = re.match(r"([A-ZÅÄÖ]+)", d.system_token.upper())
             if m and m2 and m.group(1) != m2.group(1):
                 return f"layer_matches_{t}_not_{d.system_token}"

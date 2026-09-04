@@ -18,7 +18,8 @@ from .pipes.representation import (Prim, RepresentationFamily, build_graph, chai
 from .profile.layers import compute_layer_stats
 from .profile.hatch import HatchFamily, discover_hatch, inside_hatch
 from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, extract_designations, free_segments, merge_lines)
-from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, leader_contacts, resolve_block, system_layer_match)
+from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, layer_system_tokens, leader_contacts,
+                                   resolve_block, system_layer_match)
 from .semantics.leaders import Leader, annotation_layers, discover_leaders, leader_family_report
 from .text.searchable import searchable_rows
 from .text.vector_text import VectorTextResult, vector_text_rows
@@ -105,6 +106,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     block_by_id = {b.bid: b for b in blocks}
     # NOTE: consumed (for free segments) still excludes marks; the geometry index only excludes accepted text glyphs
     system_tokens = {d.system_token for d in designations}
+    spelled_out = layer_system_tokens(page)      # the system names the file writes on layers of its own
 
     def run_pass(ann_layers: dict[str, int] | None):
         ann_marks = [m for m in vtext.marks if f"{m.layer}|{m.style}" in ann_layers] if ann_layers else vtext.marks
@@ -119,7 +121,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 w = 1.0 if c.kind in ("end_tick", "crossing_tick") else 0.5
                 votes[c.family] += w
                 for d in des_by_block[ld.block_id]:
-                    if system_layer_match(d.system_token, c.family.split("|s|")[0]):
+                    if system_layer_match(d.system_token, c.family.split("|s|")[0], spelled_out):
                         token_votes[c.family] += 1
         total = sum(votes.values()) or 1.0
         tick_votes: Counter = Counter()
@@ -177,7 +179,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             contacts = leader_contacts(ld, gidx, pf, paths)
             if not contacts and ld.length < 2.5 * max(block.height, 1.0) and not ld.end_marks:
                 continue        # dangling frame stub, not a leader
-            anchors.extend(resolve_block(block, rows, ld, contacts, system_tokens))
+            anchors.extend(resolve_block(block, rows, ld, contacts, system_tokens, spelled_out))
         anchors.sort(key=lambda a: a.anchor_id)
         stats = {"votes": dict(votes.most_common()), "token_votes": dict(token_votes.most_common()), "candidate_families": sorted(pipe_families), "tick_votes": dict(tick_votes.most_common())}
         if os.environ.get("VVS_DEBUG_PASS"):
@@ -221,7 +223,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     if progress:
         progress("BUILDING_PHYSICAL_PIPES")
     identities = _pipe_identities(designations, anchors, grammar)
-    ownership = propagate(graphs, anchors, page.info.index, identities)
+    ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     t0 = _t(timings, "physical_pipes_ms", t0)
     if progress:
         progress("MEASURING")
@@ -544,11 +546,26 @@ def _generalize_families(page: RawPage, pipe_families: dict, graphs: dict):
     from .profile.layers import layer_tokens
     templates = set()
     styles = set()
+    tokenised: list[list[str]] = []
     for fk in pipe_families:
         layer, _, style = fk.partition("|s|")
         toks = layer_tokens(layer)
         templates.add((len(toks), tuple(t if i != len(toks) - 1 else "*" for i, t in enumerate(toks))))
         styles.add(style)
+        tokenised.append(toks)
+    # A layer name may name its system in more than one place - a discipline code and the system code itself.
+    # Every position that already varies among the accepted pipe layers is therefore a variable of the template
+    # rather than part of it; the constant positions still have to carry the template, so a name with more
+    # variables than constants is no template at all.
+    by_len: dict[int, list[list[str]]] = defaultdict(list)
+    for toks in tokenised:
+        by_len[len(toks)].append(toks)
+    for n, group in by_len.items():
+        if len(group) < 2:
+            continue
+        tpl = tuple("*" if len({g[i].upper() for g in group}) > 1 else group[0][i] for i in range(n))
+        if sum(1 for t in tpl if t == "*") <= n // 2:
+            templates.add((n, tpl))
     all_fams = Counter()
     for p in page.paths:
         if p.kind == "s":

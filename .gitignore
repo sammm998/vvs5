@@ -9,3 +9,4 @@ scratch/
 *.egg-info/
 data/validation_A/
 data/validation_C/
+data/validation_D/

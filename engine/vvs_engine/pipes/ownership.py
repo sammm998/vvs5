@@ -9,6 +9,8 @@ AMBIGUOUS_BRANCH. Every primitive ends as CONFIRMED, AMBIGUOUS or UNOWNED.
 """
 from __future__ import annotations
 
+import re
+
 import math
 from collections import Counter, defaultdict, deque
 from dataclasses import dataclass, field
@@ -77,12 +79,31 @@ class OwnershipResult:
 
 
 def identity_of(a: PipeCodeAnchor, dn_token_index: int | None) -> Identity:
+    """The identity a label names: its designation without the dimension token, plus the dimension.
+
+    The name is read from the designation as the drawing states it - with a dimension row folded in - so that the
+    two ways of writing one pipe, all on one line or the dimension on the row below, give the same identity and
+    are not measured as two. The dimension token is the one the grammar points at, and otherwise the first token
+    after the system token that spells the dimension itself.
+    """
     from ..semantics.grammar import split_tokens
-    toks = split_tokens(a.designation)
+    text = a.designation_display or a.designation
+    toks = split_tokens(text)
+    idx = dn_token_index
+    if not (idx is not None and 0 < idx < len(toks) and toks[idx].isdigit() and a.dn is not None and int(toks[idx]) == a.dn):
+        idx = None
+        if a.dn is not None:
+            pat = re.compile(re.escape(str(a.dn)) + r"[A-Za-zÅÄÖÅäö]{0,3}")
+            idx = next((i for i, t in enumerate(toks) if i > 0 and pat.fullmatch(t)), None)
     base_toks = list(toks)
-    if dn_token_index is not None and dn_token_index < len(toks) and toks[dn_token_index].isdigit():
-        base_toks = [t for i, t in enumerate(toks) if i != dn_token_index]
-    return Identity(base="-".join(base_toks), dn=a.dn, system=a.system_token, display=a.designation)
+    if idx is not None:
+        # the dimension token goes, and with it a short qualifier written after it: the medium belongs to the
+        # dimension, so a qualifier the recogniser reads badly cannot split one pipe into two
+        end = idx + 1
+        while end < len(toks) and len(toks[end]) <= 3 and toks[end].isalpha():
+            end += 1
+        base_toks = toks[:idx] + toks[end:]
+    return Identity(base="-".join(base_toks), dn=a.dn, system=a.system_token, display=text)
 
 
 TICK_KINDS = ("end_tick", "crossing_tick")
@@ -110,7 +131,7 @@ def _seed_prims(a: PipeCodeAnchor, graphs: dict[str, PipeGraph]) -> dict[str, li
 
 
 def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page: int,
-              identities: dict[str, Identity]) -> OwnershipResult:
+              identities: dict[str, Identity], spelled_out: frozenset[str] = frozenset()) -> OwnershipResult:
     """identities: anchor_id -> Identity (only anchors that are verified AND belong to pipe-designation families)."""
     states: dict[str, dict[int, PrimState]] = {fk: {pid: PrimState() for pid in g.prims} for fk, g in graphs.items()}
     seeds: dict[str, dict[int, list[tuple[Identity, str, str, tuple[float, float]]]]] = {fk: defaultdict(list) for fk in graphs}
@@ -125,7 +146,7 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
     for fk, g in graphs.items():
         _resolve_family(g, states[fk], seeds[fk], ambiguous_runs, fk)
     for fk, g in graphs.items():
-        _family_uniform_identity(fk, states[fk], anchors, identities)
+        _family_uniform_identity(fk, states[fk], anchors, identities, spelled_out)
     pipes: list[PhysicalPipe] = []
     for fk, g in graphs.items():
         pipes.extend(_build_pipes(g, states[fk], fk, page))
@@ -137,7 +158,8 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
     return OwnershipResult(prim_states=states, pipes=pipes, ambiguous_runs=ambiguous_runs, stats=dict(stats))
 
 
-def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[PipeCodeAnchor], identities: dict[str, Identity]) -> None:
+def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[PipeCodeAnchor], identities: dict[str, Identity],
+                             spelled_out: frozenset[str] = frozenset()) -> None:
     """A vector family whose layer name structurally carries one system token (exact or abbreviated tail, never a
     wildcard) and whose verified anchors (>= 2) all agree on one designation AND DN is a single-system, single-size
     layer: its unlabeled runs carry that identity (evidence: layer token + every anchor of the family)."""
@@ -151,7 +173,7 @@ def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[Pi
     if uni is None or uni.dn is None:
         return
     layer = fk.split("|s|")[0]
-    tok = system_layer_match(uni.system, layer)
+    tok = system_layer_match(uni.system, layer, spelled_out)
     if not tok:
         return
     S, TU = uni.system.upper(), tok.upper()
