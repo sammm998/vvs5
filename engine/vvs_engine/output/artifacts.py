@@ -284,6 +284,7 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     W("cad-layer-map.json", {"layers": [{"layer": k, **v.as_dict(), "role": next((l["role"] for l in prof["cad_structure"]["layers"] if l["layer"] == k), "UNKNOWN")} for k, v in sorted(pa.layer_stats.items())],
                               "annotation_layers": pa.ann_layers, "pipe_families": sorted(pa.pipe_families)})
     W("vector-designations.json", {"designations": [d.as_dict() for d in pa.designations], "text_rows": [r.as_dict() for r in pa.lines]})
+    W("drawing-legend.json", pa.legend.as_dict())
     W("leader-forensics.json", {"leaders": [l.as_dict() for l in pa.leaders]})
     W("leader-family-report.json", leader_family_report(pa.leaders))
     W("pipe-code-anchors.json", {"anchors": [a.as_dict() for a in pa.anchors]})

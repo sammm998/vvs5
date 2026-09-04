@@ -328,3 +328,41 @@ def test_a_system_with_its_own_layer_is_not_an_abbreviation():
     assert system_layer_match("KV1", "V-52BB-FE--V1-", frozenset({"V1", "KV1"})) is None
     assert system_layer_match("FJV1", "V-52BB-FE--V1-", frozenset({"V1", "FJV1"})) is None
     assert system_layer_match("FJV1", "V-56B--FE--FJV1-", frozenset({"V1", "FJV1"})) == "FJV1"
+
+
+def test_legend_is_read_from_its_shape_and_roles_from_how_the_drawing_uses_it():
+    """A designation list is a stack of short codes each with a description; a code's role comes from the
+    drawing, not from the words: opening a dimensioned label makes it a system, standing alone makes it a tag."""
+    from vvs_engine.semantics.legend import read_legend, assign_roles, code_matches, is_code_token
+    from vvs_engine.text.model import Glyph, TextRow
+
+    def row(text, x, y, h=8.0):
+        gl = [Glyph(gid=f"g{i}", char=c, bbox=(x + i * 5.0, y, x + i * 5.0 + 4.0, y + h), source="text")
+              for i, c in enumerate(text)]
+        return TextRow(rid=f"r{x}_{y}_{text[:4]}", page=0, glyphs=gl, text=text, angle=0.0, height=h,
+                       bbox=(x, y, x + 5.0 * len(text), y + h), source="text", font="f", family="f")
+
+    lines = [row("TAPPVATTENSYSTEM", 500, 10)]
+    for i, (code, desc) in enumerate([("KV01", "Tappkallvatten"), ("VV01", "Tappvarmvatten"),
+                                      ("S01", "Spillvatten"), ("X31", "PEX-ror"), ("G3", "MA-ror"),
+                                      ("BLxxx", "Blandare"), ("TS1", "Tvattstall")]):
+        lines.append(row(f"{code} {desc}", 500, 30 + 12 * i))
+    lg = read_legend(lines)
+    assert {e.code for e in lg.entries} == {"KV01", "VV01", "S01", "X31", "G3", "BLxxx", "TS1"}
+    assert all(e.heading == "TAPPVATTENSYSTEM" for e in lg.entries)
+
+    class D:
+        def __init__(self, text, head, dn, bbox):
+            self.text, self.system_token, self.dn, self.bbox = text, head, dn, bbox
+    out_on_the_drawing = (50.0, 400.0, 90.0, 408.0)
+    assign_roles(lg, [D("KV01-X31-16", "KV01", 16, out_on_the_drawing),
+                      D("S01-G3-110", "S01", 110, out_on_the_drawing),
+                      D("BL3", "BL3", None, out_on_the_drawing),
+                      D("TS1", "TS1", None, out_on_the_drawing)])
+    assert lg.systems() == {"KV01", "S01"}
+    assert lg.components() == {"BLXXX", "TS1"}          # BL3 matches the placeholder code BLxxx
+    assert {e.code for e in lg.entries if e.role == "material"} == {"VV01", "X31", "G3"}
+    assert lg.names_a_pipe(D("S01-G3-110", "S01", 110, out_on_the_drawing))
+    assert not lg.names_a_pipe(D("TS1", "TS1", None, out_on_the_drawing))
+    assert code_matches("BL3", "BLxxx") and not code_matches("BL3", "TS1")
+    assert is_code_token("KV01") and not is_code_token("TAPPVATTENSYSTEM")

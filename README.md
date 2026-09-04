@@ -139,6 +139,23 @@ It resolves what OCR can actually see and no more: on drawing A it named 18 of 5
 drawings C and W-50-1-A-0014 none, because OCR finds no text at those positions either. The measured quantities on
 all three are unchanged, since those characters sit in legend text and notes rather than in designations.
 
+## The sheet's own designation list
+
+Every one of these drawings carries a legend - a column of short codes, each with the words that say what it is,
+under headings that group them. The engine reads it (`drawing-legend.json`) and uses it as the drawing's own
+vocabulary.
+
+It is found by shape, not by words: a stack of rows sharing a left edge, each a short code beside a description,
+with the rows on that edge that are not codes taken as the headings above them. A code's role then comes from
+how the drawing itself uses it - a code that opens a designation carrying a dimension is a system, a code that
+stands alone as a whole label out on the drawing is a component tag, the rest are materials and insulation
+classes. A legend that writes the varying part of a tag as placeholders matches the numbers the drawing writes.
+
+What it decides: a label the legend defines as a component describes an object - a floor drain, a mixer - so it
+never seeds pipe ownership and never votes for what pipe geometry looks like on the sheet. Read on four office
+styles it names, for example, the systems KV01/KV02/VV01/VVC01/S01/SF01/VP01/VS21/VS31 of one and the components
+GB1/TS2/TS3/VK2/VK3 of another, with the pipe materials of each kept apart from both.
+
 ## Validation against reference takeoffs
 
 Four drawings have a reference takeoff (`results/validation/`). None is read by production code; the

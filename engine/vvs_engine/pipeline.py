@@ -21,6 +21,7 @@ from .profile.hatch import HatchFamily, discover_hatch, inside_hatch
 from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, extract_designations, free_segments, merge_lines)
 from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, layer_system_tokens, leader_contacts,
                                    resolve_block, system_layer_match)
+from .semantics.legend import DrawingLegend, assign_roles, read_legend
 from .semantics.leaders import Leader, annotation_layers, discover_leaders, leader_family_report
 from .text.searchable import searchable_rows
 from .text.vector_text import VectorTextResult, vector_text_rows
@@ -59,6 +60,7 @@ class PageAnalysis:
     hatch_families: list[HatchFamily] = field(default_factory=list)
     risers: dict[str, list[dict]] = field(default_factory=dict)     # identity key -> riser symbols
     ocr_assist: dict | None = None                                  # report of the OCR-assisted glyph resolution
+    legend: DrawingLegend = field(default_factory=DrawingLegend)    # the sheet's own designation list
 
 
 def _t(timings: dict, key: str, t0: float) -> float:
@@ -96,6 +98,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     free = free_segments(page, consumed)
     blocks = build_blocks(page, lines, free)
     designations, grammar, _ = extract_designations(page, blocks)
+    legend = read_legend(lines)                  # the sheet's own designation list
+    assign_roles(legend, designations)
     t0 = _t(timings, "designation_ms", t0)
     if progress:
         progress("FINDING_LEADERS")
@@ -107,6 +111,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     block_by_id = {b.bid: b for b in blocks}
     # NOTE: consumed (for free segments) still excludes marks; the geometry index only excludes accepted text glyphs
     system_tokens = {d.system_token for d in designations}
+    # the sheet's own designation list says which labels name pipes; the rest describe objects and may sit
+    # anywhere, so they say nothing about what pipe geometry looks like
+    pipe_labels = {d.did for d in designations if legend.names_a_pipe(d) and (d.text or "").upper() not in legend.components()}
     spelled_out = layer_system_tokens(page)      # the system names the file writes on layers of its own
 
     def run_pass(ann_layers: dict[str, int] | None):
@@ -118,6 +125,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         votes: Counter = Counter()
         token_votes: Counter = Counter()
         for ld in des_leaders:
+            if not any(d.did in pipe_labels for d in des_by_block[ld.block_id]):
+                continue
             for c in leader_contacts(ld, gidx, None, paths):
                 w = 1.0 if c.kind in ("end_tick", "crossing_tick") else 0.5
                 votes[c.family] += w
@@ -223,7 +232,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     t0 = _t(timings, "topology_ms", t0)
     if progress:
         progress("BUILDING_PHYSICAL_PIPES")
-    identities = _pipe_identities(designations, anchors, grammar)
+    identities = _pipe_identities(designations, anchors, grammar, legend=legend)
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     t0 = _t(timings, "physical_pipes_ms", t0)
     if progress:
@@ -253,7 +262,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers, dict(label_counts), label_risers)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
-    return PageAnalysis(page=page, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
+    return PageAnalysis(page=page, legend=legend, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
                         designations=designations, grammar=grammar, ann_layers=ann_layers, leaders=leaders,
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,
@@ -436,7 +445,7 @@ def _split_at_tick_contacts(page: RawPage, graphs: dict, pipe_families: dict, an
     return graphs, pipe_families
 
 
-def _pipe_identities(designations, anchors, grammar, vertical_dn_rows: bool = True) -> dict[str, Identity]:
+def _pipe_identities(designations, anchors, grammar, vertical_dn_rows: bool = True, legend=None) -> dict[str, Identity]:
     """Anchors of pipe-designation grammar families: a family qualifies when >= 50 % of its members carry a DN
     (inline or DN row) or >= 50 % of its verified attachments have layer-token support. Other code families
     (component tags) never seed pipe ownership."""
@@ -469,6 +478,8 @@ def _pipe_identities(designations, anchors, grammar, vertical_dn_rows: bool = Tr
         d = des_by_id.get(a.designation_id)
         if d is None or d.family not in pipe_fams:
             continue
+        if legend is not None and (d.text or "").upper() in legend.components():
+            continue        # the legend says this code names an object, not a pipe
         gf = grammar.families.get(d.pattern)
         dn_idx = gf.dn_token_index if gf is not None else None
         if dn_idx is None and d.dn_source == "inline":
