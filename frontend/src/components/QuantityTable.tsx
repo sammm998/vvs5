@@ -6,7 +6,7 @@ const STATE_LABELS: Record<string, string> = { CONFIRMED: "BEKRÄFTAD", AMBIGUOU
 
 export const riserCount = (r: any, source: string) => (source === "labels" ? r.riser_count_from_labels : r.riser_count) ?? 0;
 
-export function withFloorHeight(rows: any[], floorHeight: number | null, includeHatched = false, riserSource = "symbols"): any[] {
+export function withFloorHeight(rows: any[], floorHeight: number | null, includeHatched = false, riserSource = "labels"): any[] {
   // vertical metres are never assumed by the engine; with a user-given floor height each riser counts height metres.
   // pipe drawn inside hatched areas is measured but kept out of the total unless the takeoff includes those areas.
   return rows.map((r) => {

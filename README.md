@@ -85,8 +85,9 @@ from CAD instead of scanning it.
   dimension on the row below ("S3-R8" over "75") names the vertical pipe at that point. A count prefix is the
   exception - "2xKV1-X31" over "16" bundles parallel pipes along the run, and the reference takeoff of drawing A
   gives that label no vertical metres. Both riser sources are reported per row and the operator picks which one
-  the vertical quantity uses: on drawing A the drawn symbols give 58 and the row-below labels 41, against 55 in
-  the reference, and their union (68) is further off than either.
+  the vertical quantity uses. Labels are the default: on W-50-1-A-0012 they give exactly the reference's 2 + 2
+  where the drawn symbols give 1 + 0, and on drawing A the two are equally far off overall (deviation 20 against
+  21 across the nine identities) while the labels match four identities exactly that the symbols get wrong.
 * Risers are counted from the drawn riser marks per designation. The drawing carries no floor height, so vertical
   metres are computed only when the user enters a floor height (Mängder tab; `?floor_height=` on Excel/CSV export).
 * DN changes are placed at drawn tick marks; labels pointing at a riser mark describe the riser, not the run.
@@ -137,6 +138,20 @@ sure. Every adopted character is written to `ocr-assisted-characters.json` with 
 It resolves what OCR can actually see and no more: on drawing A it named 18 of 56 unreadable characters, on
 drawings C and W-50-1-A-0014 none, because OCR finds no text at those positions either. The measured quantities on
 all three are unchanged, since those characters sit in legend text and notes rather than in designations.
+
+## Validation against reference takeoffs
+
+Two drawings have a reference takeoff (`results/validation/`). Neither is read by production code; the
+contamination scan fails the build if the package ever imports from the validation directories.
+
+| | reference H | engine H | deviation | reference vertical | from labels | from symbols |
+|---|---|---|---|---|---|---|
+| W-50-1-A-0011 (full markup) | 213.4 m | 212.0 m | -0.6 % | 55 | 41 | 58 |
+| W-50-1-A-0012 (two systems) | 17.6 m | 17.2 m | -2.1 % | 4 | 4 | 1 |
+
+On both, sampling the reference polylines every point shows the engine owns essentially all of the geometry they
+mark: 213.10 m of 213.38 m on the first, 17.46 m of 17.72 m on the second, with the remainder inside hatching or
+at run ends where the reference clicks a point or two past where the drawn line stops.
 
 ## Artifacts per drawing (results/<name>/)
 

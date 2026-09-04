@@ -8,3 +8,4 @@ data/openworld_quarantine/
 scratch/
 *.egg-info/
 data/validation_A/
+data/validation_C/
