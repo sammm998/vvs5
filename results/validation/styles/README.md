@@ -1,48 +1,47 @@
 # Drawing styles read without a reference takeoff
 
-Three sheets from other projects were run to find defects that only show up outside one office's conventions.
-No reference takeoff exists for them, so nothing here is a measured accuracy: it is what the engine makes of
-each sheet, and where it still stops short.
+Five sheets from other projects, in three drawing styles, none of which has a reference takeoff. Nothing here is
+a measured accuracy. It is what the engine makes of each sheet, checked two ways that need no facit.
 
-All three are vector pages with real text (not stroke-exploded labels) and, unlike the reference set, **carry no
-optional-content layers at all**. Everything the engine knows about which line is which has to come from stroke
-width, colour and structure.
+**How they are checked.** First, the designations: the sheet's own designation list names its systems, so every
+word out on the drawing that opens with one of those system codes is a pipe label, and each one either became a
+designation and reached a pipe, or did not. Second, the pipes: the engine's result is drawn back onto the
+drawing - every primitive of the accepted pipe families coloured by which identity owns it, unowned in magenta,
+each leader endpoint circled by its state - and the picture is compared with what is drawn. Both checks were
+first run on the four sheets that do have a reference takeoff, where they agree with it: 100 % of the marked
+geometry owned on three of them, 99 % on the fourth.
 
-## V53.1-1944 - Plan 10, Del 44, Spillvattenanläggning
+| sheet | pipe geometry | owned | pipe labels | reached a pipe |
+|---|---|---|---|---|
+| W-50-1-A-0011 (has a facit) | 190.2 m | 190.2 m | 100 % | 125 | 114 |
+| W-50-1-A-0012 (has a facit) | 20.7 m | 20.7 m | 100 % | 22 | 9 |
+| W-50-1-A-0013 (has a facit) | 99.6 m | 98.3 m | 99 % | 80 | 67 |
+| W-50-1-A-0014 (has a facit) | 75.8 m | 75.8 m | 100 % | 70 | 62 |
+| V53.1-1944, Plan 10 Del 44 | 43.9 m | 42.7 m | **97 %** | 13 | 8 |
+| V53.1-1842, Plan 09 Del 42 | 26.3 m | 12.6 m | **48 %** | 31 | 12 |
+| W--50-1-0501112 | 282.9 m | 11.7 m | **4 %** | 10 | 4 |
 
-Roof drainage, one system, labels `DBA1-110` over two note rows, leaders with end ticks.
+## V53.1-1944 - Plan 10, Del 44
 
-- Scale VERIFIED 1:50 (printed ratio and scale bar agree).
-- 51 designations read; 13 of 17 leaders attached to pipe geometry.
-- One pipe family, `w1.98` black: 52.68 m confirmed, 1.23 m unowned, nothing ambiguous.
-- Reconciliation VALID.
+Roof drainage, one system, `DBA1-110` labels with end ticks. The overlay shows the whole drawn network covered,
+end to end: 42.7 m of 43.9 m owned, one roof drain left unowned. All 13 labels read; 8 reach a pipe. This sheet
+reads as well as the reference set.
 
-Reads essentially cleanly. Before this session it found 5 attachments and read all system codes as elevations.
+## V53.1-1842 - Plan 09, Del 42
 
-## V53.1-1842 - Plan 09, Del 42, Spillvattenanläggning
+A toilet block, dash-dot pipes, the two-row label form. Every drawn pipe is found - the overlay colours all of
+it - but only half carries an identity. What the picture shows is that the runs the engine did not claim are the
+ones no leader reached: the network is drawn in 237 separate pieces because of its dash-dot pattern and its
+bends, so an identity reaches only as far as the piece its own label touches.
 
-A toilet block drawn at 1:50 with dash-dot pipes and the two-row label form (`S12` over `75`).
+The remaining work here is connectivity, not reading.
 
-- Scale VERIFIED 1:50.
-- 44 designations read, including the row-below dimensions; four sizes measured (S12-160, S12-110, S12-75,
-  DBA1-110), 8.42 m in total.
-- One pipe family, `w1.92` black: 11.13 m confirmed, 15.14 m unowned.
-- 21 of 30 anchors reach no pipe - most of them component tags in the room schedule boxes, which have no pipe to
-  reach and are correctly left unattached.
+## W--50-1-0501112
 
-The remaining gap is ownership, not reading: the pipes are found and the labels are read, but a little over half
-the network is not claimed by any label. That is reported as unowned rather than guessed.
+Heating, tap water and waste in one plan; leaders end in small circles on the pipe. Three systems are now
+measured (14.2 m) where two were before. The family the leaders vote for is `w0.96` black, which on this sheet
+is the title block's rules and headings with one dashed pipe run inside it, so 271 m is carried as unowned. The
+sheet's designation list is also only half read - nine of its system and material codes are still unreadable
+where two legend rows stand close enough to be read as one column.
 
-## W--50-1-0501112 - Plan 05, Del 2
-
-Heating, tap water and waste in one plan, leaders ending in small circles on the pipe.
-
-- Scale TEXT_ONLY 1:50 - the printed ratio is there, the scale bar is not vector geometry on this sheet.
-- 49 designations read, including `RAD2-S13/W` over `35` and `S1-G3` over `75 (L)`.
-- Two systems measured (9.73 m); the family the leaders vote for is `w0.96` black, which on this sheet is mostly
-  title-block line work with one dashed pipe run in it, so 275 m is carried as unowned.
-
-This sheet is the one still to solve: the pipes are drawn in `w1.44` and `w2.04` black, and the leaders reach
-them through circle symbols rather than by touching the line, so the family vote never sees them. It is an
-honest failure - the engine reports two systems and 275 m of unowned line work rather than inventing a number -
-but it is a failure.
+This is the sheet still to solve, and it says so rather than inventing a number.
