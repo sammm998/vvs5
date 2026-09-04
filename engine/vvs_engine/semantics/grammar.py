@@ -206,8 +206,21 @@ class DesignationGrammar:
             w = self.pattern_weight.get(self._base(r.pattern), 0.0)
             return w if w >= PATTERN_FLOOR else 0.0
 
+        def dimension(r: WordReading) -> int:
+            """How completely the whole word reads as a dimension: 2 for a bare generic nominal size, 1 for one
+            with a short medium qualifier after it, 0 otherwise.
+
+            A drawing-local pattern is evidence about how this drawing structures its codes; a word that is
+            nothing but a size has no structure to speak of, so there the size itself is the stronger reading.
+            A size that needs no qualifier to be a size outranks one that reads a trailing letter into it, which
+            is how a size and its twin ("160" against "16O") separate at all."""
+            m = DIM_ROW_RE.fullmatch(r.text.upper())
+            if not m or int(m.group(1)) not in NOMINAL_SIZES:
+                return 0
+            return 2 if r.text.isdigit() else 1
+
         def key(r: WordReading):
-            return (-weight(r), -round(self.typicality(r), 3),
+            return (-dimension(r), -weight(r), -round(self.typicality(r), 3),
                     -self.nominal_tokens(r.text), r.flips, r.cost, r.text)
         code = [r for r in readings if self._admissible(r)]
         pool = code if code else readings
