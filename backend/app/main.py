@@ -36,7 +36,9 @@ def _startup():
 def _build_stamp() -> dict:
     """Which code produced this reading. A number on screen is only checkable if you can tell what made it."""
     from vvs_engine import __version__
-    build = os.environ.get("VVS_BUILD") or ""
+    # the image carries no .git, so take the build from whatever the platform exposes before falling back to git
+    build = (os.environ.get("VVS_BUILD") or os.environ.get("RAILWAY_GIT_COMMIT_SHA")
+             or os.environ.get("SOURCE_COMMIT") or os.environ.get("GIT_COMMIT") or "")[:12]
     if not build:
         try:
             build = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
