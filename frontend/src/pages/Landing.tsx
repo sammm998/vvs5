@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../landing.css";
 
@@ -99,63 +99,87 @@ export default function Landing() {
     document.body.classList.add("lp-dark");
     return () => document.body.classList.remove("lp-dark");
   }, []);
+  const [menu, setMenu] = useState(false);
   return (
     <div className="lp">
-      <nav className="lp-nav">
-        <span className="lp-logo">
-          <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
-            <path d="M3 15 H8 V7 H14 V15 H19" stroke="#6ee7a5" strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx="3" cy="15" r="2" fill="#6ee7a5" />
-            <circle cx="19" cy="15" r="2" fill="#6ee7a5" />
+      <div className="lp-corners">
+        <button className="lp-pill" aria-expanded={menu} aria-label={menu ? "Stäng menyn" : "Öppna menyn"}
+          onClick={() => setMenu(!menu)}>
+          <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+            {menu
+              ? <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" />
+              : <path d="M2 4.5h12M2 11.5h12" stroke="currentColor" strokeWidth="1.5" />}
+          </svg>
+        </button>
+        <span className="lp-logo lp-pill static">
+          <svg width="16" height="16" viewBox="0 0 22 22" aria-hidden="true">
+            <path d="M3 15 H8 V7 H14 V15 H19" stroke="#6ee7a5" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           VVS Mängdning
         </span>
-        <span className="lp-links">
-          <a href="#hur">Så fungerar det</a>
-          <a href="#ror">Rörtyper</a>
-          <a href="#belagg">Beläggen</a>
-        </span>
         <span className="lp-sp" />
-        <Link className="lp-btn ghost" to="/login">
-          Logga in
+        <Link className="lp-pill lp-start" to="/login">
+          Starta projekt <span className="plus">+</span>
         </Link>
-      </nav>
+      </div>
 
-      <header className="lp-hero lp-wrap">
-        <span className="lp-eyebrow lp-rise">
-          <span className="dot" />
-          Läser vektorn i PDF:en — ingen OCR i mätvägen
-        </span>
-        <h1 className="lp-rise d1">
-          Mängda rören ur ritningen.
-          <br />
-          <span className="soft">Inte ur en gissning.</span>
-        </h1>
-        <p className="lp-lede lp-rise d2">
-          Ladda upp en VVS-ritning. Systemet läser sidans egen beteckningslista, följer varje ledarlinje till
-          det rör den pekar på, och mäter i ritningens egen skala. Det som ritningen inte säger blir aldrig en
-          siffra — det blir en fråga.
-        </p>
-        <div className="lp-cta lp-rise d3">
-          <Link className="lp-btn primary lg" to="/login">
-            Kom igång
-          </Link>
-          <a className="lp-btn ghost lg" href="#hur">
-            Se hur det läser
-          </a>
+      {menu && (
+        <div className="lp-menu">
+          <a href="#hur" onClick={() => setMenu(false)}>Så fungerar det</a>
+          <a href="#ror" onClick={() => setMenu(false)}>Rörtyper</a>
+          <a href="#belagg" onClick={() => setMenu(false)}>Beläggen</a>
+          <Link to="/login" onClick={() => setMenu(false)}>Logga in</Link>
         </div>
-        <p className="lp-under lp-rise d3">Svenska ritningar · DWG-exporterad PDF · svar på minuter</p>
+      )}
 
-        <div className="lp-shot lp-rise d4">
-          <div className="lp-shot-inner">
-            <div className="lp-shot-bar">
-              <span>V-50-1-A0122 · Plan 1 · Skala 1:50 verifierad mot skalstocken</span>
-              <span className="lp-tag">4 system · 12 rörfamiljer</span>
-            </div>
-            <Drawing />
-          </div>
+      <header className="lp-stage">
+        <div className="lp-stage-art" aria-hidden="true"><Drawing /></div>
+        <h1 className="lp-huge">
+          Mängden som<br />ritningen<br />redan säger
+        </h1>
+        <div className="lp-stage-foot">
+          <p className="lp-mono">
+            AI-plattform för VVS-mängdning ur ren vektor.<br />
+            Ingen OCR i mätvägen — identitet endast via ledarlinjer.
+          </p>
+          <a className="lp-mono lp-arrow" href="#hur">Se hur det läser <span>→</span></a>
         </div>
       </header>
+
+      <section className="lp-band">
+        <p className="lp-band-lede">
+          Ladda upp en VVS-ritning. Systemet läser sidans egen beteckningslista, följer varje ledarlinje till det
+          rör den pekar på, och mäter i ritningens egen skala.
+        </p>
+        <div className="lp-screens">
+          <figure>
+            <div className="lp-screen"><Drawing /></div>
+            <figcaption><b>Mängdning</b> beteckningsdriven tolkning direkt på ritningen</figcaption>
+          </figure>
+          <figure>
+            <div className="lp-screen lp-screen-table">
+              <div className="lp-row head"><span>Beteckning</span><span>Sträckor</span><span>Totalt</span></div>
+              {[["S3-R8-110", "5", "46,39"], ["KV1-X31-16", "3", "17,11"], ["VV1-X31-16", "5", "33,92"],
+                ["S3-R8-75", "20", "22,42"], ["S1-P2-110", "1", "9,64"]].map((r) => (
+                <div className="lp-row" key={r[0]}><span>{r[0]}</span><span>{r[1]}</span><span>{r[2]}</span></div>
+              ))}
+              <div className="lp-row sum"><span>Summa</span><span>34</span><span>212,57</span></div>
+            </div>
+            <figcaption><b>Mängder</b> varje meter med sitt belägg kvar</figcaption>
+          </figure>
+          <figure>
+            <div className="lp-screen lp-screen-check">
+              <div className="lp-row head"><span>Beteckning</span><span>Facit</span><span>Vårt</span><span>Avvikelse</span></div>
+              {[["KV1-X31-16", "17,40", "17,10", "−0,30"], ["S3-R8-160", "16,30", "16,43", "+0,13"],
+                ["VV1-X31-16", "34,10", "33,92", "−0,18"]].map((r) => (
+                <div className="lp-row" key={r[0]}><span>{r[0]}</span><span>{r[1]}</span><span>{r[2]}</span><span>{r[3]}</span></div>
+              ))}
+              <div className="lp-ok">3,69 m samlad avvikelse på 213,70 m</div>
+            </div>
+            <figcaption><b>Facitkontroll</b> varje körning mäts mot handmängdad ritning</figcaption>
+          </figure>
+        </div>
+      </section>
 
       <section className="lp-wrap">
         <div className="lp-figures">

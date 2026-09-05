@@ -386,3 +386,25 @@ tr.run:hover td { background: #f2f2f2; }
 tr.run td:first-child { color: var(--muted); font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; }
 button.drill { padding: 3px 8px; font-size: 10px; letter-spacing: 0.06em; color: var(--ink); }
 button.drill:hover { background: var(--chip); opacity: 1; }
+
+/* ---------- the sidebar folds to a rail, the takeoff panel narrows or closes ---------- */
+
+.side { position: relative; }
+.railbtn { position: absolute; top: 18px; right: 12px; color: var(--faint); }
+.railbtn:hover { color: var(--ink); }
+.app.railed { grid-template-columns: 66px minmax(0, 1fr); }
+.app.railed .side { padding: 30px 12px 22px; align-items: center; }
+.app.railed .wide { display: none; }
+.app.railed .railbtn { position: static; margin: 0 0 8px; }
+.app.railed .brand { justify-content: center; }
+.app.railed nav a { justify-content: center; padding: 15px 0; }
+.app.railed .foot button { padding: 8px 10px; }
+
+.panelbar { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.panelbar .spacer { flex: 1; }
+.analysis.closed { grid-template-columns: minmax(0, 1fr) !important; }
+.analysis.closed .splitter, .analysis.closed .right { display: none; }
+.reopen {
+  position: absolute; top: 20px; right: 20px; z-index: 5;
+}
+.analysis .left { position: relative; }

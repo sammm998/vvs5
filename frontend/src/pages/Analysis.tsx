@@ -33,6 +33,13 @@ export default function AnalysisPage() {
   // wide drawing while tracing a run, wide table while reading the takeoff. The choice is remembered.
   const [corrections, setCorrections] = useState<any[]>([]);
   const [drawKind, setDrawKind] = useState<string | null>(null);
+  const [panelOpen, setPanelOpen] = useState<boolean>(() => {
+    try { return localStorage.getItem("vvs.panelOpen") !== "0"; } catch { return true; }
+  });
+  const setOpen = (v: boolean) => {
+    setPanelOpen(v);
+    try { localStorage.setItem("vvs.panelOpen", v ? "1" : "0"); } catch { /* private window */ }
+  };
   const [draft, setDraft] = useState<{ points: number[][] } | null>(null);
   const [panel, setPanel] = useState<number>(() => {
     const v = Number((() => { try { return localStorage.getItem("vvs.panel"); } catch { return null; } })());
@@ -118,8 +125,12 @@ export default function AnalysisPage() {
   const pipesOnPage = result.pipes.filter((p: any) => p.page === page);
   const covWarn = c.designations > 0 && c.verified_attachments / Math.max(c.designations, 1) < 0.5;
   return (
-    <div className="analysis" style={{ gridTemplateColumns: `minmax(0, 1fr) 6px ${panel}px` }}>
+    <div className={`analysis${panelOpen ? "" : " closed"}`}
+      style={{ gridTemplateColumns: `minmax(0, 1fr) 6px ${panel}px` }}>
       <div className="left">
+        {!panelOpen && (
+          <button className="secondary small reopen" onClick={() => setOpen(true)}>Visa mängder</button>
+        )}
         <div className="toolbar">
           <Link to={`/drawings/${job.drawing_id}`}>← Ritning</Link>
           <button className="secondary small" onClick={() => viewer.current?.zoomIn()}>Zooma in</button>
@@ -142,6 +153,15 @@ export default function AnalysisPage() {
         onMouseDown={() => { dragging.current = true; document.body.classList.add("resizing"); }}
         onDoubleClick={() => setPanel(480)} />
       <div className="right">
+        <div className="panelbar">
+          <button className="ghost small" onClick={() => setPanel(Math.max(360, panel - 140))}
+            title="Smalare">−</button>
+          <button className="ghost small" onClick={() => setPanel(Math.min(Math.max(window.innerWidth - 380, 360), panel + 140))}
+            title="Bredare">+</button>
+          <button className="ghost small" onClick={() => setPanel(480)} title="Återställ bredden">Återställ</button>
+          <span className="spacer" />
+          <button className="ghost small" onClick={() => setOpen(false)} title="Stäng fältet">Stäng ✕</button>
+        </div>
         <div className="tabs">
           <button className={tab === "mangder" ? "active" : ""} onClick={() => setTab("mangder")}>Mängder</button>
           <button className={tab === "ejlosta" ? "active" : ""} onClick={() => setTab("ejlosta")}>Ej lösta ({result.issues.filter((i: any) => i.severity === "blocking").length})</button>

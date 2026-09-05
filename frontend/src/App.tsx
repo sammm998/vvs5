@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { getToken, setToken, currentEmail } from "./api";
 import Landing from "./pages/Landing";
@@ -28,6 +29,15 @@ function IconProjects() {
   );
 }
 
+function IconRail() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <rect x="2.5" y="3.5" width="13" height="11" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M7 3.5v11" stroke="currentColor" strokeWidth="1.3" />
+    </svg>
+  );
+}
+
 function IconOut() {
   return (
     <svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -50,26 +60,36 @@ const ROUTES = (
 export default function App() {
   const nav = useNavigate();
   const { pathname } = useLocation();
+  const [rail, setRail] = useState<boolean>(() => {
+    try { return localStorage.getItem("vvs.rail") === "1"; } catch { return false; }
+  });
+  const toggleRail = () => setRail((v) => {
+    try { localStorage.setItem("vvs.rail", v ? "0" : "1"); } catch { /* private window */ }
+    return !v;
+  });
   // the landing page and the login screen bring their own layout
   if (pathname === "/" || pathname === "/login") return ROUTES;
   const email = currentEmail();
   return (
-    <div className="app">
+    <div className={`app${rail ? " railed" : ""}`}>
       <aside className="side">
+        <button className="ghost small railbtn" onClick={toggleRail}
+          title={rail ? "Visa sidopanelen" : "Fäll ihop sidopanelen"}
+          aria-label={rail ? "Visa sidopanelen" : "Fäll ihop sidopanelen"}><IconRail /></button>
         <div>
-          <Link to="/projekt" className="brand"><Mark /> VVS Mängdning</Link>
-          <div className="org" style={{ marginTop: 10 }}>Mängdning ur ren vektor</div>
+          <Link to="/projekt" className="brand"><Mark /> <span className="wide">VVS Mängdning</span></Link>
+          <div className="org wide" style={{ marginTop: 10 }}>Mängdning ur ren vektor</div>
         </div>
         <nav>
           <Link to="/projekt" className={pathname.startsWith("/projekt") || pathname.startsWith("/projects") ? "on" : ""}>
-            <IconProjects /> Projekt
+            <IconProjects /> <span className="wide">Projekt</span>
           </Link>
         </nav>
         <div className="foot">
-          {email && <div className="who">{email}</div>}
+          {email && <div className="who wide">{email}</div>}
           <button className="secondary small" style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8 }}
             onClick={() => { setToken(null); nav("/"); }}>
-            <IconOut /> Logga ut
+            <IconOut /> <span className="wide">Logga ut</span>
           </button>
         </div>
       </aside>
