@@ -129,11 +129,18 @@ def is_sheet_border(p: RawPath, page: RawPage) -> bool:
     return all(min(sg.angle, 180.0 - sg.angle) <= 1.0 or abs(sg.angle - 90.0) <= 1.0 for sg in p.segs)
 
 
+def _stamp(s: Seg) -> tuple:
+    """A segment's identity on the page, direction-free and rounded to a twentieth of a point."""
+    a = (round(s.x0 * 20), round(s.y0 * 20))
+    b = (round(s.x1 * 20), round(s.y1 * 20))
+    return (a, b) if a <= b else (b, a)
+
+
 def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | None = None) -> dict[str, list[Prim]]:
     """Primitives of the given families. exclude_pids drops individual paths - the leader lines of the drawing,
     which on a sheet without layers are drawn with the same pen as the pipes and would otherwise be measured."""
     out: dict[str, list[Prim]] = defaultdict(list)
-    pid_counter = 0
+    seen: dict[str, set[tuple]] = defaultdict(set)
     for p in sorted(page.paths, key=lambda p: p.pid):
         if p.kind != "s":
             continue
@@ -147,6 +154,10 @@ def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | No
         for k, s in enumerate(p.segs):
             if s.length < 1e-6:
                 continue
+            if _stamp(s) in seen[fk]:
+                # the same line drawn a second time on the same pen: one pipe, not two
+                continue
+            seen[fk].add(_stamp(s))
             out[fk].append(Prim(prim_id=0, pid=p.pid, seg_index=k, seg=s, family=fk, layer=p.layer, width=p.width))
     # deterministic prim ids by content order
     for fk in out:

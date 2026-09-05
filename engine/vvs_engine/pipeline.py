@@ -33,6 +33,9 @@ from .routes import apply_routes, cross_check, review, run_routes
 
 # a drawing draws its leaders alike: a family carrying this share of the leaders is where it draws them
 LEADER_MIN_SHARE = 0.25
+# and with no layer name to vouch for it, this share of the sheet's own pipe labels must have reached it
+LABELS_MUST_REACH = 0.15
+LABELS_MIN = 20
 
 STAGES = ["READING_PDF", "DISCOVERING_DRAWING_GRAMMAR", "EXTRACTING_VECTORS", "RECONSTRUCTING_TEXT", "READING_DESIGNATIONS",
           "FINDING_LEADERS", "RESOLVING_PIPE_REPRESENTATION", "ATTACHING_PIPES", "BUILDING_TOPOLOGY", "BUILDING_PHYSICAL_PIPES",
@@ -283,6 +286,16 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         ann_layers = keep
     else:
         ann_layers = {}
+    # A sheet labels the pipes it draws. Where the families accepted carry no layer name to vouch for them, and
+    # the sheet's own pipe labels overwhelmingly failed to reach them, the wrong geometry was accepted: had it
+    # been the pipes, the labels would have found it. Measured over the style library, a sheet reading its own
+    # pipes places a quarter of its pipe labels or better; the one reading its building outline placed 6 %.
+    if pipe_families and not any(f.split("|s|")[0] for f in pipe_families) and len(pipe_labels) >= LABELS_MIN:
+        placed = {a.designation_id for a in anchors if a.state == "VERIFIED_PIPE_ATTACHMENT"} & pipe_labels
+        if len(placed) < LABELS_MUST_REACH * len(pipe_labels):
+            if os.environ.get("VVS_DEBUG_PASS"):
+                print(f"[drop] only {len(placed)}/{len(pipe_labels)} pipe labels reached {sorted(pipe_families)}", file=sys.stderr)
+            pipe_families, graphs, anchors, contact_stats = {}, {}, [], dict(contact_stats, dropped_by_label_reach=True)
     timings["leader_ms"] = 0.0
     t0 = _t(timings, "leader_attachment_ms", t0)
     if progress:

@@ -152,6 +152,8 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
     for fk, g in graphs.items():
         _family_uniform_identity(fk, states[fk], anchors, identities, spelled_out)
     for fk, g in graphs.items():
+        _demote_sliver_outlines(g, states[fk], fk, ambiguous_runs)
+    for fk, g in graphs.items():
         _bound_junction_flow(g, states[fk], fk, ambiguous_runs)
     pipes: list[PhysicalPipe] = []
     for fk, g in graphs.items():
@@ -206,6 +208,67 @@ def _bound_junction_flow(g: PipeGraph, st: dict[int, PrimState], fk: str, ambigu
                                "identities": sorted({c.key for s in st.values() for c in s.candidates}),
                                "n_primitives": n, "flowed_pt": round(flowed, 1), "labelled_pt": round(labelled, 1)})
 
+
+
+# Two lines a reader has to tell apart cannot be drawn closer than about a millimetre of paper; below that they
+# read as one thick line, or as the two edges of one thin drawn object. Measured over the reference drawings:
+# every confirmed run that has a parallel neighbour running its whole length keeps at least 3.3 pt of daylight,
+# and never runs together more than five times that gap. A radiator body, a duct edge or a bench outline sits at
+# half a point with the pair running hundreds of times its own width.
+SLIVER_GAP = 2.83                  # 1 mm on paper
+SLIVER_ELONGATION = 20.0           # the pair runs this many times further than it is wide
+SLIVER_COVER = 0.8
+
+
+def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, ambiguous_runs: list[dict]) -> None:
+    """A pipe is drawn as one line down its middle. A thin object - a radiator, a bench, a duct seen edge on - is
+    drawn as its two long sides, and those sides are pipe-thin geometry on the same pen as the pipes.
+
+    Where a confirmed run has a parallel twin of its own family a hair away, covering it end to end, the two are
+    the sides of something drawn, not two pipes: the drawing gives no room to read them apart. Such a run is
+    AMBIGUOUS - the geometry stays on the page for a human to name, but its length is not anyone's pipe.
+    """
+    idx = GridIndex(cell=20.0)
+    for pid, prim in g.prims.items():
+        idx.insert(pid, prim.seg.bbox())
+    caught: list[int] = []
+    for pid in sorted(st):
+        s = st[pid]
+        if s.state != "CONFIRMED":
+            continue
+        seg = g.prims[pid].seg
+        if seg.length < SLIVER_ELONGATION * 0.5:
+            continue
+        ux, uy = (seg.x1 - seg.x0) / seg.length, (seg.y1 - seg.y0) / seg.length
+        x0, y0, x1, y1 = seg.bbox()
+        for tid in idx.query((x0 - SLIVER_GAP, y0 - SLIVER_GAP, x1 + SLIVER_GAP, y1 + SLIVER_GAP)):
+            if tid == pid:
+                continue
+            t = g.prims[tid].seg
+            if t.length < seg.length * SLIVER_COVER:
+                continue
+            vx, vy = (t.x1 - t.x0) / t.length, (t.y1 - t.y0) / t.length
+            if abs(ux * vx + uy * vy) < 0.999:                       # parallel within ~2.5 degrees
+                continue
+            mx, my = (t.x0 + t.x1) / 2, (t.y0 + t.y1) / 2
+            gap = abs((mx - seg.x0) * -uy + (my - seg.y0) * ux)
+            if not 1e-6 < gap <= SLIVER_GAP or seg.length < SLIVER_ELONGATION * gap:
+                continue
+            lo, hi = sorted(((t.x0 - seg.x0) * ux + (t.y0 - seg.y0) * uy,
+                             (t.x1 - seg.x0) * ux + (t.y1 - seg.y0) * uy))
+            if max(0.0, min(hi, seg.length) - max(lo, 0.0)) < seg.length * SLIVER_COVER:
+                continue
+            ident = s.identity
+            s.state, s.identity, s.reason = "AMBIGUOUS", None, "AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE"
+            s.candidates = {ident} if ident is not None else set()
+            s.evidence.append(f"parallel_twin_of_the_same_family_{gap:.2f}pt_away_covers_this_run_end_to_end")
+            caught.append(pid)
+            break
+    if caught:
+        ambiguous_runs.append({"family": fk, "chain": -1, "from_prim": caught[0], "to_prim": caught[-1],
+                               "reason": "AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE",
+                               "identities": sorted({c.key for p in caught for c in st[p].candidates}),
+                               "n_primitives": len(caught)})
 
 def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[PipeCodeAnchor], identities: dict[str, Identity],
                              spelled_out: frozenset[str] = frozenset()) -> None:

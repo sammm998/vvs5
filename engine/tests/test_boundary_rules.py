@@ -455,3 +455,66 @@ def test_a_second_route_may_add_a_run_but_never_rename_one(tmp_path):
     # the unlabelled run is reported, not silently dropped
     assert rev["n_unnamed_runs"] >= 1 and rev["unnamed_m"] > 0
     assert rev["named_m"] > 0 and 0 <= rev["coverage_pct"] <= 100
+
+
+def test_geometry_the_sheets_own_labels_cannot_reach_is_not_read_as_pipe(tmp_path):
+    """With no layer name to vouch for a family, the sheet's own pipe labels have to reach it. A page whose
+    labels almost all fail to land on what was accepted accepted the wrong geometry - had it been the pipes,
+    the labels would have found it."""
+    path = os.path.join(tmp_path, "reach.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    # a mesh of rooms, and two leaders that happen to end on it
+    for x in range(200, 700, 100):
+        shape.draw_line((x, 240), (x, 470)); shape.finish(width=1.44, color=(0, 0, 0), closePath=False)
+    for y in range(240, 500, 60):
+        shape.draw_line((200, y), (660, y)); shape.finish(width=1.44, color=(0, 0, 0), closePath=False)
+    for i in range(2):
+        _label(page, shape, 60, 120 + 22 * i, "S3-R8-110", leader_to=(300 + 100 * i, 240))
+    # and many more pipe labels that reach nothing at all
+    for i in range(24):
+        page.insert_text((60 + 90 * (i % 8), 520 + 14 * (i // 8)), f"S3-R8-{[75, 110, 160][i % 3]}", fontsize=9, fontname="helv")
+    _scale(page)
+    shape.commit(); doc.save(path); doc.close()
+    pa = analyze_page(extract_document(path).pages[0])
+    assert pa.pipe_families == {}, f"a mesh its own labels cannot reach was read as pipe: {pa.pipe_families}"
+    assert not pa.quantities
+
+
+def test_the_two_sides_of_a_thin_drawn_object_are_not_two_pipes(tmp_path):
+    """A radiator, a bench, a duct seen edge on: drawn as two long sides a hair apart, on the same pen as the
+    pipes. A label whose leader lands on one of them must not turn the object's outline into measured pipe -
+    the drawing gives no room to read the two sides apart, so their length is nobody's."""
+    path = os.path.join(tmp_path, "sliver.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    make_dashed_line(shape, (100, 300), (400, 300))                  # a real run
+    for dy in (0, 1):                                # the object: two sides 1 pt apart, on the pipes' own pen
+        shape.draw_line((450, 200 + dy), (700, 200 + dy)); shape.finish(width=1.44, color=(0, 0, 0), closePath=False)
+    _label(page, shape, 120, 200, "S3-R8-110", leader_to=(200, 300))
+    _label(page, shape, 300, 150, "S3-R8-110", leader_to=(460, 200))  # this one lands on the object
+    _scale(page)
+    shape.commit(); doc.save(path); doc.close()
+    pa = analyze_page(extract_document(path).pages[0])
+    q = {(r["base"], r["dn"]): r for r in pa.quantities}
+    assert ("S3-R8", 110) in q
+    # the 300 pt run is measured; the 2 x 250 pt of outline is not
+    assert abs(q[("S3-R8", 110)]["confirmed_horizontal_m"] - 300 / 56.69) < 0.35
+    reasons = {s.reason for st in pa.ownership.prim_states.values() for s in st.values()}
+    assert "AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE" in reasons
+
+
+def test_parallel_pipes_a_readable_gap_apart_are_still_two_pipes(tmp_path):
+    """The other side of the same rule: a tap-water bundle runs parallel for its whole length, and those are
+    real pipes. Only a gap too small to read apart marks an outline."""
+    path = os.path.join(tmp_path, "bundle.pdf")
+    doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
+    make_dashed_line(shape, (100, 300), (500, 300))
+    make_dashed_line(shape, (100, 306), (500, 306))                  # 6 pt apart: a reader tells them apart
+    _label(page, shape, 120, 200, "KV1-X31-16", leader_to=(250, 300))
+    _label(page, shape, 120, 400, "VV1-X31-16", leader_to=(250, 306))
+    _scale(page)
+    shape.commit(); doc.save(path); doc.close()
+    pa = analyze_page(extract_document(path).pages[0])
+    q = {r["designation"]: r for r in pa.quantities}
+    assert "KV1-X31-16" in q and "VV1-X31-16" in q
+    for name in ("KV1-X31-16", "VV1-X31-16"):
+        assert abs(q[name]["confirmed_horizontal_m"] - 400 / 56.69) < 0.5, (name, q[name])
