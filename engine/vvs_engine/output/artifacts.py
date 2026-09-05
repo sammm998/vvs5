@@ -232,14 +232,30 @@ def unresolved_issues(pa) -> list[dict]:
         if rest > 0:
             issues.append({"kind": "unknown_glyph_elsewhere", "count": rest, "families": len(unknown_fams),
                            "reason": "tecken som inte kunde namnges i legend, noter eller ramtext; påverkar inte mängden"})
+    # The unresolved list is for what could still change a metre. A sheet's own designation list is not a set of
+    # labels that failed - its rows sit in the legend block, name a code rather than a run, and will never carry
+    # a dimension or a leader. Counting them buried the handful of real failures under a hundred false ones.
+    lg = pa.legend
+    lbox = lg.bbox()
+    components = lg.components()
+
+    def _in_legend(d) -> bool:
+        if lbox is None:
+            return False
+        cx, cy = (d.bbox[0] + d.bbox[2]) / 2, (d.bbox[1] + d.bbox[3]) / 2
+        return lbox[0] - 2 <= cx <= lbox[2] + 2 and lbox[1] - 2 <= cy <= lbox[3] + 2
+
+    def _could_be_a_pipe_label(d) -> bool:
+        return lg.names_a_pipe(d) and (d.text or "").upper() not in components and not _in_legend(d)
+
     for d in pa.designations:
         if d.unknown_chars:
             issues.append({"kind": "uncertain_designation", "text": d.text, "bbox": list(d.bbox), "id": d.did})
-        elif d.dn is None:
+        elif d.dn is None and _could_be_a_pipe_label(d):
             issues.append({"kind": "missing_dn", "text": d.text, "bbox": list(d.bbox), "id": d.did})
     with_leader = {a.designation_id for a in pa.anchors}
     for d in pa.designations:
-        if d.did not in with_leader:
+        if d.did not in with_leader and _could_be_a_pipe_label(d):
             issues.append({"kind": "missing_leader", "text": d.text, "bbox": list(d.bbox), "id": d.did})
     for a in pa.anchors:
         if a.state == "AMBIGUOUS_PIPE_ATTACHMENT":

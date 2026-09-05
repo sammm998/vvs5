@@ -15,6 +15,8 @@ COPY engine /app/engine
 COPY backend /app/backend
 RUN pip install --no-cache-dir -e /app/engine
 COPY --from=frontend /fe/dist /app/frontend/dist
+ARG VVS_BUILD=unknown
+ENV VVS_BUILD=${VVS_BUILD}
 ENV VVS_STATIC_DIR=/app/frontend/dist \
     VVS_STORAGE_ROOT=/data/storage \
     VVS_DATABASE_URL=sqlite:////data/vvs.db

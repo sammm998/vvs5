@@ -6,6 +6,8 @@ import os
 import shutil
 import tempfile
 
+import subprocess
+from functools import lru_cache
 from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Response
@@ -30,6 +32,21 @@ def _startup():
 
 
 # ---------------------------------------------------------------- health / auth
+@lru_cache(maxsize=1)
+def _build_stamp() -> dict:
+    """Which code produced this reading. A number on screen is only checkable if you can tell what made it."""
+    from vvs_engine import __version__
+    build = os.environ.get("VVS_BUILD") or ""
+    if not build:
+        try:
+            build = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
+                                   timeout=2, cwd=os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+                                   ).stdout.strip() or "unknown"
+        except Exception:
+            build = "unknown"
+    return {"engine": __version__, "build": build}
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "app": settings.app_name}
@@ -255,6 +272,7 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
         "unowned_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "family": g["family"]} for g in unowned],
         "hatched_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "identity": g["identity"]} for g in hatched],
         "issues": issues,
+        "build": _build_stamp(),
         "coverage": {
             "designations": len(des), "with_dn": sum(1 for d in des if d["dn"] is not None), "leaders": len(leaders),
             "verified_attachments": sum(1 for a in anchors if a["state"] == "VERIFIED_PIPE_ATTACHMENT"),
