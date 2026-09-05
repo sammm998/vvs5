@@ -178,13 +178,23 @@ def _settle_bundles_by_elimination(anchors, ownership, graphs) -> int:
         named[free_slots[0]] = free_codes[0]
         if sorted(x for x in named if x) != sorted(codes):
             continue
+        # Elimination says which code is left over; it must not be what makes the identity. Each label of the
+        # bundle keeps its own contact with the run it is being given, so what settles the case is a leader
+        # touching that line plus the constraint - never the arithmetic on its own.
+        assign = []
         for a in group:
             code = (a.designation_display or a.designation or "").upper()
             idx = named.index(code)
+            touching = [c for c in a.contacts if [c.pid, c.seg_index] in runs[idx]]
+            if not touching:
+                break
+            assign.append((a, idx, touching))
+        if len(assign) != len(group):
+            continue                      # a code with no line of its own under it: not settled, still ambiguous
+        for a, idx, touching in assign:
             a.state = "VERIFIED_PIPE_ATTACHMENT"
             a.reason = "multi_row_bundle_settled_by_elimination"
-            a.contacts = [c for c in a.contacts
-                          if [c.pid, c.seg_index] in runs[idx]]
+            a.contacts = touching
             a.evidence["settled_against"] = {"run": idx, "named_by_the_sheet": [n for n in named]}
             settled += 1
     return settled

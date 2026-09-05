@@ -210,38 +210,82 @@ def _bound_junction_flow(g: PipeGraph, st: dict[int, PrimState], fk: str, ambigu
 
 
 
-# Two lines a reader has to tell apart cannot be drawn closer than about a millimetre of paper; below that they
-# read as one thick line, or as the two edges of one thin drawn object. Measured over the reference drawings:
-# every confirmed run that has a parallel neighbour running its whole length keeps at least 3.3 pt of daylight,
-# and never runs together more than five times that gap. A radiator body, a duct edge or a bench outline sits at
-# half a point with the pair running hundreds of times its own width.
-SLIVER_GAP = 2.83                  # 1 mm on paper
+# A pipe is drawn as one line down its middle; a thin object - a radiator, a bench, a duct seen edge on - is
+# drawn as its two long sides, and those sides are pipe-thin geometry on the same pen.
+#
+# What tells them apart is not a distance in millimetres of paper. A drawing states its own unit of "too close
+# to read apart": the pen it draws with. Two centres within a couple of pen widths lay ink on the same place,
+# whatever the paper size or the scale the sheet was plotted at, and an office that draws thicker draws its
+# objects thicker too. So the reach is the family's own stroke width, and the run's own length: a pair only
+# reads as one drawn thing while it runs many times further than it is wide.
+#
+# The drawing has a second thing to say, which is recorded rather than required: a spacing it comes back to
+# again and again is its way of drawing an object, while a one-off is where two pipes happened to pass close.
 SLIVER_ELONGATION = 20.0           # the pair runs this many times further than it is wide
 SLIVER_COVER = 0.8
+SLIVER_PENS = 2.0                  # ... and their centres lie within this many of the family's own pen widths
+SLIVER_SPREAD = 0.15               # gaps within this much of each other are the same spacing (relative: scale-free)
+SLIVER_MIN_REPEATS = 4             # a spacing the family returns to this often is how it draws an object
+SLIVER_MIN_SHARE = 0.10            # ... and carries this share of the family's close parallel pairs
+
+
+def _recurring_gaps(gaps: list[float]) -> list[tuple[float, float]]:
+    """The parallel spacings this family draws over and over, as (centre, slack) bands.
+
+    Clustered on the values themselves with a relative tolerance, so a band means the same thing on a sheet drawn
+    at 1:50 and one at 1:100. A cluster the drawing returns to is its own statement about how it draws an object;
+    a one-off is where two pipes passed close."""
+    if len(gaps) < SLIVER_MIN_REPEATS:
+        return []
+    clusters: list[list[float]] = []
+    for v in sorted(gaps):
+        if clusters and v <= clusters[-1][0] * (1.0 + SLIVER_SPREAD):
+            clusters[-1].append(v)
+        else:
+            clusters.append([v])
+    bands = []
+    for c in clusters:
+        if len(c) < SLIVER_MIN_REPEATS or len(c) < SLIVER_MIN_SHARE * len(gaps):
+            continue
+        mid = c[len(c) // 2]
+        bands.append((mid, max(c[-1] - mid, mid - c[0])))
+    return bands
 
 
 def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, ambiguous_runs: list[dict]) -> None:
     """A pipe is drawn as one line down its middle. A thin object - a radiator, a bench, a duct seen edge on - is
     drawn as its two long sides, and those sides are pipe-thin geometry on the same pen as the pipes.
 
-    Where a confirmed run has a parallel twin of its own family a hair away, covering it end to end, the two are
-    the sides of something drawn, not two pipes: the drawing gives no room to read them apart. Such a run is
-    AMBIGUOUS - the geometry stays on the page for a human to name, but its length is not anyone's pipe.
+    Where a confirmed run has a parallel twin of its own family covering it end to end, at a spacing this drawing
+    uses again and again, the two are the sides of something drawn, not two pipes. Such a run is AMBIGUOUS - the
+    geometry stays on the page for a human to name, but its length is not anyone's pipe.
+
+    The spacing is never a fixed number of points: it is read off the drawing in a first pass, so a sheet at
+    another scale, or an office that draws its radiators wider, is read on its own terms.
     """
     idx = GridIndex(cell=20.0)
     for pid, prim in g.prims.items():
         idx.insert(pid, prim.seg.bbox())
-    caught: list[int] = []
-    for pid in sorted(st):
-        s = st[pid]
-        if s.state != "CONFIRMED":
-            continue
+    # the pen this family draws with, as the drawing itself set it
+    pen = max((g.prims[pid].width for pid in g.prims), default=0.0)
+    if pen <= 0:
+        return
+
+    def twin_gap(pid: int) -> float | None:
+        """The distance to a parallel same-family twin that covers this run end to end, if there is one.
+
+        How far to look is set by the run itself: a pair only reads as one drawn object while it runs many times
+        further than it is wide, so nothing beyond that ratio is a candidate and no paper measure is needed."""
         seg = g.prims[pid].seg
         if seg.length < SLIVER_ELONGATION * 0.5:
-            continue
+            return None
+        # both bounds come off the drawing: its own pen, and this run's own length
+        reach = min(seg.length / SLIVER_ELONGATION, SLIVER_PENS * pen)
+        if reach <= 0:
+            return None
         ux, uy = (seg.x1 - seg.x0) / seg.length, (seg.y1 - seg.y0) / seg.length
         x0, y0, x1, y1 = seg.bbox()
-        for tid in idx.query((x0 - SLIVER_GAP, y0 - SLIVER_GAP, x1 + SLIVER_GAP, y1 + SLIVER_GAP)):
+        for tid in sorted(idx.query((x0 - reach, y0 - reach, x1 + reach, y1 + reach))):
             if tid == pid:
                 continue
             t = g.prims[tid].seg
@@ -252,18 +296,38 @@ def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, amb
                 continue
             mx, my = (t.x0 + t.x1) / 2, (t.y0 + t.y1) / 2
             gap = abs((mx - seg.x0) * -uy + (my - seg.y0) * ux)
-            if not 1e-6 < gap <= SLIVER_GAP or seg.length < SLIVER_ELONGATION * gap:
+            if not 1e-6 < gap <= reach:
                 continue
             lo, hi = sorted(((t.x0 - seg.x0) * ux + (t.y0 - seg.y0) * uy,
                              (t.x1 - seg.x0) * ux + (t.y1 - seg.y0) * uy))
             if max(0.0, min(hi, seg.length) - max(lo, 0.0)) < seg.length * SLIVER_COVER:
                 continue
-            ident = s.identity
-            s.state, s.identity, s.reason = "AMBIGUOUS", None, "AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE"
-            s.candidates = {ident} if ident is not None else set()
-            s.evidence.append(f"parallel_twin_of_the_same_family_{gap:.2f}pt_away_covers_this_run_end_to_end")
-            caught.append(pid)
-            break
+            return gap
+        return None
+
+    # first pass: what close parallel spacings does this family use at all
+    pairs: list[tuple[int, float]] = []
+    for pid in sorted(st):
+        if st[pid].state != "CONFIRMED":
+            continue
+        gap = twin_gap(pid)
+        if gap is not None:
+            pairs.append((pid, gap))
+    bands = _recurring_gaps([gap for _, gap in pairs])
+
+    caught: list[int] = []
+    for pid, gap in pairs:
+        repeated = any(abs(gap - mid) <= slack for mid, slack in bands)
+        s = st[pid]
+        ident = s.identity
+        s.state, s.identity, s.reason = "AMBIGUOUS", None, "AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE"
+        s.candidates = {ident} if ident is not None else set()
+        s.evidence.append(f"parallel_twin_of_the_same_family_{gap:.2f}pt_away_covers_this_run_end_to_end")
+        s.evidence.append(f"closer_than_{SLIVER_PENS:g}_pen_widths_of_this_family_{pen:.2f}pt")
+        if repeated:
+            s.evidence.append("and_that_spacing_recurs_on_this_sheet_"
+                              + "_".join(f"{m:.2f}" for m, _ in bands))
+        caught.append(pid)
     if caught:
         ambiguous_runs.append({"family": fk, "chain": -1, "from_prim": caught[0], "to_prim": caught[-1],
                                "reason": "AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE",

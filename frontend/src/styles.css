@@ -438,3 +438,6 @@ button.drill:hover { background: var(--chip); opacity: 1; }
 
 /* no text selection while a gesture is being dragged across the sheet */
 .page.editing { user-select: none; }
+
+/* a vertical metre that came from a typed floor height, not from the drawing */
+.assumed { color: var(--warn, #b45309); font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; }

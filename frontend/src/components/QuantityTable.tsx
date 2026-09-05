@@ -73,7 +73,14 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
                 ? (r.risers_calc > 0
                   ? <span className="muted" title="Stigarna är hittade; ange våningshöjd för att räkna om dem till meter">{`${r.risers_calc} st × höjd`}</span>
                   : <span className="muted" title="Ritningen anger ingen höjd och inga stigare hittades">okänt</span>)
-                : Number(r.vertical_calc).toFixed(2)}</td>
+                : <>
+                    {Number(r.vertical_calc).toFixed(2)}
+                    {/* a height the reader typed is an assumption about the building, not something the sheet
+                        says: the metre is shown, and marked for what it is */}
+                    {floorHeight && r.risers_calc > 0 && (
+                      <span className="assumed" title={`Antaget: ${r.risers_calc} stigare × ${String(floorHeight).replace(".", ",")} m våningshöjd. Ritningen anger ingen höjd.`}> ant.</span>
+                    )}
+                  </>}</td>
               <td className="num strong">{r.total_calc.toFixed(2)}</td>
               <td className="num">{r.ambiguous_m > 0 ? r.ambiguous_m.toFixed(2) : "–"}</td>
               <td className="num">{(r.in_hatched_area_m ?? 0) > 0 ? Number(r.in_hatched_area_m).toFixed(2) : "–"}</td>

@@ -10,7 +10,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
 
-HEADERS = ["Beteckning", "DN", "Beteckningar på ritningen", "Sammanhängande rörsträckor", "Horisontellt m", "Vertikalt m", "Totalt m", "Tvetydigt m", "Varav i skrafferat område m", "Stigare (symboler)", "Stigare (etiketter)", "Status"]
+HEADERS = ["Beteckning", "DN", "Beteckningar på ritningen", "Sammanhängande rörsträckor", "Horisontellt m", "Vertikalt m", "Vertikalt ursprung", "Totalt m", "Tvetydigt m", "Varav i skrafferat område m", "Stigare (symboler)", "Stigare (etiketter)", "Status"]
 
 
 def _rows(result_dir: str, floor_height: float | None = None, include_hatched: bool = False) -> list[dict]:
@@ -25,6 +25,10 @@ def _rows(result_dir: str, floor_height: float | None = None, include_hatched: b
                 r["confirmed_total_m"] = round(r["confirmed_horizontal_m"] + float(r["vertical_m"]), 3)
             else:
                 r["confirmed_total_m"] = r["confirmed_horizontal_m"]
+        # Where the vertical metres came from travels with them. A height the reader typed is an assumption
+        # about the building, not something the drawing states, and a takeoff that cannot tell the two apart
+        # invites an assumed metre to be priced as a measured one.
+        r["vertical_source"] = "OKÄNT" if r["vertical_m"] == "UNKNOWN" else "MÄTT"
         if floor_height:
             # vertical metres from the user's floor height: every riser counts one floor height
             risers = int(r.get("riser_count", 0) or 0)
@@ -32,6 +36,8 @@ def _rows(result_dir: str, floor_height: float | None = None, include_hatched: b
                 known = 0.0 if r["vertical_m"] == "UNKNOWN" else float(r["vertical_m"])
                 r["vertical_m"] = round(known + risers * floor_height, 3)
                 r["confirmed_total_m"] = round(r["confirmed_horizontal_m"] + r["vertical_m"], 3)
+                r["vertical_source"] = (f"ANTAGET ({risers} stigare x {floor_height:g} m)" if known == 0.0
+                                        else f"MÄTT + ANTAGET ({risers} stigare x {floor_height:g} m)")
     return rows
 
 
@@ -48,7 +54,8 @@ def to_xlsx(result_dir: str, floor_height: float | None = None, include_hatched:
         c.font = Font(bold=True)
     for r in _rows(result_dir, floor_height, include_hatched):
         ws.append([r["designation"], r["dn"] if r["dn"] is not None else "?", r.get("label_count", 0), r["physical_pipe_count"], round(r["confirmed_horizontal_m"], 2),
-                   _fmt(r["vertical_m"]) if r["vertical_m"] == "UNKNOWN" else round(r["vertical_m"], 2), round(r["confirmed_total_m"], 2),
+                   _fmt(r["vertical_m"]) if r["vertical_m"] == "UNKNOWN" else round(r["vertical_m"], 2),
+                   r["vertical_source"], round(r["confirmed_total_m"], 2),
                    round(r["ambiguous_m"], 2), round(r.get("in_hatched_area_m", 0.0), 2), r.get("riser_count", 0),
                    r.get("riser_count_from_labels", 0), r["state"]])
     for i, _ in enumerate(HEADERS, 1):
@@ -64,7 +71,8 @@ def to_csv(result_dir: str, floor_height: float | None = None, include_hatched: 
     w.writerow(HEADERS)
     for r in _rows(result_dir, floor_height, include_hatched):
         w.writerow([r["designation"], r["dn"] if r["dn"] is not None else "?", r.get("label_count", 0), r["physical_pipe_count"], f"{r['confirmed_horizontal_m']:.2f}",
-                    _fmt(r["vertical_m"]) if r["vertical_m"] == "UNKNOWN" else f"{r['vertical_m']:.2f}", f"{r['confirmed_total_m']:.2f}",
+                    _fmt(r["vertical_m"]) if r["vertical_m"] == "UNKNOWN" else f"{r['vertical_m']:.2f}",
+                    r["vertical_source"], f"{r['confirmed_total_m']:.2f}",
                     f"{r['ambiguous_m']:.2f}", f"{r.get('in_hatched_area_m', 0.0):.2f}", r.get("riser_count", 0),
                     r.get("riser_count_from_labels", 0), r["state"]])
     return buf.getvalue()
