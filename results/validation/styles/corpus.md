@@ -106,5 +106,25 @@ to be named. That is the cost of the gate, paid on a 10 m sheet to stop a 664 m 
   systems on the ninth. Left unresolved rather than guessed.
 - **Two styles still read nothing at all** (`z/5`, 49 pages, and `z/6`, 5 pages). On `z/5` the pipes, the
   leaders, the dimension lines and the hatching all share one pen and the leaders end on all of them alike; the
-  sheet has not said which geometry its labels describe. On `z/6` no designation list is found at all.
+  sheet has not said which geometry its labels describe.
+
+  On `z/6` the cause is now known. The sheets embed no font and carry no text at all - every glyph is stroked
+  vector geometry - so the only route is shape recognition, and this typeface puts several characters within a
+  hair of each other. Reading `R1402`, fourteen distinct shape families all come back as `0`, and their own
+  runner-up scores are near-ties: the family of 43 glyphs scores `0:0.053` against `D:0.060` and spells
+  `0I? FLÖOE` where the drawing wrote `DIM FLÖDE`; the family of 30 scores `0:0.053` against `O:0.071` and
+  appears in `VV OCH VVC`; the family of 5 spells `0ATU?`, `UN0EPGPUPP`, `6YGGNA0` for `DATUM`, `UNDERGRUPP`,
+  `BYGGNAD`. The family of 252 that spells `S?-?00` and `CL 3300` is the real zero. No family reads as `D` at
+  all, on a Swedish drawing.
+
+  The shape of the fix is a constraint the drawing itself provides: one typeface has one glyph per character, so
+  within a size class two distinct shape families are two distinct characters. Three rules were measured against
+  that evidence and none is safe yet. Letting the lowest-scoring family keep the character hands `0` to a
+  single-glyph family and moves the 252-glyph one. Letting the largest family keep it and moving the near-tied
+  rest is right for the three families above but wrong for two small numeral families (`?50, 02, ?0` and
+  `0?, ?0, 06, 05`) that are near-tied on `O` and really are zeros. A one-to-one assignment weighted by member
+  count breaks those same two, because once `0`, `O` and `D` are taken they are pushed onto whatever is free.
+  What separates the true cases from the false ones is that the drawing has no `D` family anywhere - and that is
+  knowledge about Swedish, not about the drawing. Recorded rather than shipped: a confidently wrong character
+  splits an identity in two, which is worse than an unnamed one.
 - **Four pages exceed a 300 second budget** and are recorded as timeouts.
