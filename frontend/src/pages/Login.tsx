@@ -5,7 +5,7 @@ import { api } from "../api";
 /* The same run as on the front page, drawn small: a labelled pipe and one the drawing does not name. */
 function Motif() {
   return (
-    <svg viewBox="0 0 460 190" role="img" aria-label="Rör markerade och mätta ur en ritning">
+    <svg viewBox="0 0 470 190" role="img" aria-label="Rör markerade och mätta ur en ritning">
       <g stroke="#2f343d" strokeWidth="1.2" fill="none">
         <path d="M20 24 H300 V166 H20 Z M160 24 V166 M20 100 H160" />
       </g>
@@ -20,10 +20,10 @@ function Motif() {
         <circle cx="286" cy="138" r="4" stroke="#60a5fa" />
       </g>
       <g fontFamily="ui-monospace, SFMono-Regular, monospace">
-        <path d="M258 44 H330 M330 44 L330 66" stroke="#6ee7a5" strokeOpacity="0.45" strokeWidth="1" fill="none" />
-        <text x="258" y="38" fill="#f0f2f5" fontSize="12.5">S1-P5-110</text>
+        <path d="M414 62 H344 L332 70" stroke="#6ee7a5" strokeOpacity="0.45" strokeWidth="1" fill="none" />
+        <text x="344" y="40" fill="#f0f2f5" fontSize="12.5">S1-P5-110</text>
+        <text x="344" y="56" fill="#8b929e" fontSize="11.5">24,8 m</text>
         <text x="348" y="122" fill="#5b616c" fontSize="11.5">onämnd</text>
-        <text x="258" y="56" fill="#8b929e" fontSize="11.5">24,8 m</text>
       </g>
     </svg>
   );

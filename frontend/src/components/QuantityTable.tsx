@@ -28,8 +28,11 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
     return l;
   }, [rows, q, status, sort, floorHeight, includeHatched, riserSource]);
   const hatchedTotal = rows.reduce((s, r) => s + Number(r.in_hatched_area_m ?? 0), 0);
-  const th = (k: string, label: string) => (
-    <th onClick={() => setSort((s) => ({ k, dir: s.k === k ? (s.dir === 1 ? -1 : 1) : 1 }))}>{label}{sort.k === k ? (sort.dir === 1 ? " ▲" : " ▼") : ""}</th>
+  const th = (k: string, label: string, unit?: string) => (
+    <th onClick={() => setSort((s) => ({ k, dir: s.k === k ? (s.dir === 1 ? -1 : 1) : 1 }))}>
+      {label}{sort.k === k ? (sort.dir === 1 ? " ▲" : " ▼") : ""}
+      {unit && <span className="unit">{unit}</span>}
+    </th>
   );
   const tot = (f: string) => list.reduce((s, r) => s + (typeof r[f] === "number" ? r[f] : 0), 0);
   return (
@@ -47,27 +50,27 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
         )}
       </div>
       <table>
-        <thead><tr>{th("designation", "Beteckning")}{th("dn", "DN")}{th("label_count", "Beteckningar")}{th("physical_pipe_count", "Rörsträckor")}{th("confirmed_horizontal_m", "Horisontellt")}{th("vertical_calc", "Vertikalt")}{th("total_calc", "Totalt")}{th("ambiguous_m", "Tvetydigt")}{th("in_hatched_area_m", "Varav skrafferat")}{th("risers_calc", "Stigare")}{th("state", "Status")}</tr></thead>
+        <thead><tr>{th("designation", "Beteckning")}{th("dn", "DN")}{th("label_count", "Etiketter")}{th("physical_pipe_count", "Sträckor")}{th("confirmed_horizontal_m", "Horisontellt", "m")}{th("vertical_calc", "Vertikalt", "m")}{th("total_calc", "Totalt", "m")}{th("ambiguous_m", "Tvetydigt", "m")}{th("in_hatched_area_m", "Skrafferat", "m")}{th("risers_calc", "Stigare")}{th("state", "Status")}</tr></thead>
         <tbody>
           {list.map((r) => (
             <tr key={identityKey(r)} className={`selectable ${selected === identityKey(r) ? "selected" : ""}`} onClick={() => onSelect(selected === identityKey(r) ? null : identityKey(r))}>
               <td><span style={{ display: "inline-block", width: 12, height: 12, borderRadius: 2, background: identityColor(identityKey(r)), marginRight: 6, verticalAlign: "middle" }} />{r.designation}</td><td>{r.dn ?? "?"}</td><td className="num" title="Antal verifierade beteckningar på ritningen för denna identitet">{r.label_count ?? "–"}</td>
               <td className="num" title="Antal sammanhängande rörsträckor som nätet löser upp i (en sträcka bär oftast flera beteckningar)">{r.physical_pipe_count}</td>
-              <td className="num">{r.horizontal_calc.toFixed(2)} m</td>
+              <td className="num">{r.horizontal_calc.toFixed(2)}</td>
               <td className="num">{r.vertical_calc == null
                 ? (r.risers_calc > 0
                   ? <span className="muted" title="Stigarna är hittade; ange våningshöjd för att räkna om dem till meter">{`${r.risers_calc} st × höjd`}</span>
                   : <span className="muted" title="Ritningen anger ingen höjd och inga stigare hittades">okänt</span>)
-                : `${Number(r.vertical_calc).toFixed(2)} m`}</td>
-              <td className="num">{r.total_calc.toFixed(2)} m</td>
-              <td className="num">{r.ambiguous_m > 0 ? `${r.ambiguous_m.toFixed(2)} m` : "–"}</td>
-              <td className="num">{(r.in_hatched_area_m ?? 0) > 0 ? `${Number(r.in_hatched_area_m).toFixed(2)} m` : "–"}</td>
+                : Number(r.vertical_calc).toFixed(2)}</td>
+              <td className="num strong">{r.total_calc.toFixed(2)}</td>
+              <td className="num">{r.ambiguous_m > 0 ? r.ambiguous_m.toFixed(2) : "–"}</td>
+              <td className="num">{(r.in_hatched_area_m ?? 0) > 0 ? Number(r.in_hatched_area_m).toFixed(2) : "–"}</td>
               <td className="num" title={`Ritade stigarsymboler: ${r.riser_count ?? 0} · etiketter med dimension på raden under: ${r.riser_count_from_labels ?? 0}`}>{r.risers_calc > 0 ? r.risers_calc : "–"}</td>
               <td><span className={`badge ${r.state === "CONFIRMED" ? "ok" : r.state === "AMBIGUOUS" || r.state === "RISER_LABELS_ONLY" ? "warn" : "bad"}`}>{STATE_LABELS[r.state] ?? r.state}</span></td>
             </tr>
           ))}
         </tbody>
-        <tfoot><tr><th>Summa</th><th></th><th className="num">{tot("label_count")}</th><th className="num">{tot("physical_pipe_count")}</th><th className="num">{tot("horizontal_calc").toFixed(2)} m</th><th className="num">{tot("vertical_calc").toFixed(2)} m</th><th className="num">{tot("total_calc").toFixed(2)} m</th><th className="num">{tot("ambiguous_m").toFixed(2)} m</th><th className="num">{tot("in_hatched_area_m").toFixed(2)} m</th><th className="num">{tot("risers_calc")}</th><th></th></tr></tfoot>
+        <tfoot><tr><th>Summa</th><th></th><th className="num">{tot("label_count")}</th><th className="num">{tot("physical_pipe_count")}</th><th className="num">{tot("horizontal_calc").toFixed(2)}</th><th className="num">{tot("vertical_calc").toFixed(2)}</th><th className="num strong">{tot("total_calc").toFixed(2)}</th><th className="num">{tot("ambiguous_m").toFixed(2)}</th><th className="num">{tot("in_hatched_area_m").toFixed(2)}</th><th className="num">{tot("risers_calc")}</th><th></th></tr></tfoot>
       </table>
     </div>
   );

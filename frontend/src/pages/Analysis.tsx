@@ -26,6 +26,13 @@ export default function AnalysisPage() {
   const [selPipe, setSelPipe] = useState<any>(null);
   const [why, setWhy] = useState<any>(null);
   const [page, setPage] = useState(0);
+  // The quantity table has more columns than any fixed panel width fits, so the split is the reader's to set:
+  // wide drawing while tracing a run, wide table while reading the takeoff. The choice is remembered.
+  const [panel, setPanel] = useState<number>(() => {
+    const v = Number((() => { try { return localStorage.getItem("vvs.panel"); } catch { return null; } })());
+    return v >= 360 && v <= 1400 ? v : 480;
+  });
+  const dragging = useRef(false);
   const [nPages, setNPages] = useState(1);
   const [floorHeight, setFloorHeight] = useState<string>(() => { try { return localStorage.getItem("vvs.floorHeight") ?? ""; } catch { return ""; } });
   const [includeHatched, setIncludeHatched] = useState<boolean>(() => { try { return localStorage.getItem("vvs.includeHatched") === "1"; } catch { return false; } });
@@ -77,12 +84,29 @@ export default function AnalysisPage() {
       </main>
     );
   }
+  useEffect(() => {
+    const move = (e: MouseEvent) => {
+      if (!dragging.current) return;
+      e.preventDefault();
+      setPanel(Math.min(Math.max(window.innerWidth - e.clientX, 360), Math.max(window.innerWidth - 380, 360)));
+    };
+    const up = () => {
+      if (!dragging.current) return;
+      dragging.current = false;
+      document.body.classList.remove("resizing");
+      try { localStorage.setItem("vvs.panel", String(panel)); } catch { /* private window */ }
+    };
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up); };
+  }, [panel]);
+
   if (!result) return <main>Laddar resultat…</main>;
   const c = result.coverage;
   const pipesOnPage = result.pipes.filter((p: any) => p.page === page);
   const covWarn = c.designations > 0 && c.verified_attachments / Math.max(c.designations, 1) < 0.5;
   return (
-    <div className="analysis">
+    <div className="analysis" style={{ gridTemplateColumns: `minmax(0, 1fr) 6px ${panel}px` }}>
       <div className="left">
         <div className="toolbar">
           <Link to={`/drawings/${job.drawing_id}`}>← Ritning</Link>
@@ -100,6 +124,9 @@ export default function AnalysisPage() {
           designations={result.designations} leaders={result.leaders} anchors={result.anchors} hatched={result.hatched_geometry ?? []} selectedIdentity={selIdent}
           selectedPipe={selPipe?.physical_pipe_id ?? null} layers={layers} onPipeClick={onPipeClick} onPageCount={setNPages} />
       </div>
+      <div className="splitter" role="separator" aria-orientation="vertical" aria-label="Dra för att ändra bredd"
+        onMouseDown={() => { dragging.current = true; document.body.classList.add("resizing"); }}
+        onDoubleClick={() => setPanel(480)} />
       <div className="right">
         <div className="tabs">
           <button className={tab === "mangder" ? "active" : ""} onClick={() => setTab("mangder")}>Mängder</button>

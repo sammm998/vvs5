@@ -147,6 +147,23 @@ tr.selectable:hover { background: rgba(255, 255, 255, 0.035); }
 tr.selected { background: var(--accent-dim); }
 tr.selected td { color: var(--text); }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
+.num.strong { color: var(--text); }
+th .unit { display: block; font-size: 10.5px; letter-spacing: 0.04em; opacity: 0.65; }
+
+/* The quantity table has more columns than a side panel is wide, and the unit sits in the header rather than on
+   every row. What is left still scrolls, so the beteckning stays pinned: whichever column you have scrolled to,
+   you can still see whose metres you are reading. */
+.analysis .right th, .analysis .right td { padding: 7px 8px; }
+.analysis .right table { border-collapse: separate; border-spacing: 0; }
+.analysis .right th, .analysis .right td { border-bottom: 1px solid var(--line); }
+.analysis .right th:first-child, .analysis .right td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--panel-solid);
+  box-shadow: 1px 0 0 var(--line);
+}
+.analysis .right tr.selected td:first-child { background: #16261d; }
 
 /* ---------- badges ---------- */
 .badge {
@@ -171,13 +188,22 @@ tr.selected td { color: var(--text); }
 /* ---------- analysis workspace ---------- */
 .analysis {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 470px;
+  grid-template-columns: minmax(0, 1fr) 6px 480px;   /* the middle track is the splitter; Analysis sets the width */
   gap: 14px;
   height: calc(100vh - 56px);
   padding: 14px;
   max-width: none;
 }
 .analysis .left { display: flex; flex-direction: column; min-width: 0; }
+.splitter {
+  cursor: col-resize;
+  border-radius: 999px;
+  background: var(--line);
+  transition: background 0.12s;
+}
+.splitter:hover { background: var(--accent); }
+body.resizing { cursor: col-resize; user-select: none; }
+body.resizing .splitter { background: var(--accent); }
 .analysis .right { overflow: auto; padding-right: 2px; }
 .analysis .right::-webkit-scrollbar { width: 10px; }
 .analysis .right::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.11); border-radius: 999px; border: 3px solid var(--bg); }
