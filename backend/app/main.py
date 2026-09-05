@@ -16,9 +16,11 @@ from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
 from . import exports, jobs
+from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
+from vvs_engine.learning import lessons, situation
 from .auth import create_token, current_user, hash_password, verify_password
 from .config import settings
-from .db import AnalysisJob, Drawing, Project, User, get_db, init_db
+from .db import Correction, AnalysisJob, Drawing, Project, User, get_db, init_db
 from .storage import storage
 
 app = FastAPI(title=settings.app_name, version="0.1.0")
@@ -221,6 +223,94 @@ def job_status(job_id: str, user: User = Depends(current_user), db: Session = De
     return _job_out(_job(db, user, job_id))
 
 
+def _situation_of(db: Session, user: User, job_id: str | None, designation: str | None) -> dict:
+    """The case a correction was made in, taken from the reading rather than from the browser.
+
+    The pen the run was drawn with and the reason the engine gave are what make this case what it is, and both
+    are in the result. Where they cannot be read the situation stays empty, which means the correction applies
+    to this drawing and teaches nothing - the honest outcome when we cannot say what the case was.
+    """
+    if not job_id or not designation:
+        return {}
+    try:
+        j = _job(db, user, job_id)
+        rd = _result_dir(j)
+        pipes = _load(rd, "physical-pipes.json")["pipes"]
+        anchors = _load(rd, "pipe-code-anchors.json")["anchors"]
+    except Exception:
+        return {}
+    want = designation.upper()
+    family = next((p.get("family", "") for p in pipes
+                   if (p.get("identity") or "").replace("|DN", "-").upper() == want), "")
+    reason = next((a.get("reason", "") for a in anchors
+                   if (a.get("designation") or "").upper() in (want, want.rsplit("-", 1)[0])
+                   and a.get("state") != "VERIFIED_PIPE_ATTACHMENT"), "")
+    return situation(family=family, reason=reason, designation=designation)
+
+
+class CorrectionIn(BaseModel):
+    kind: str
+    designation: str | None = None
+    page: int = 0
+    payload: dict = {}
+    situation: dict = {}
+    note: str | None = None
+    job_id: str | None = None
+
+
+def _correction_out(c: Correction) -> dict:
+    return {"id": c.id, "drawing_id": c.drawing_id, "job_id": c.job_id, "page": c.page, "kind": c.kind,
+            "designation": c.designation, "payload": c.payload, "situation": c.situation, "note": c.note,
+            "undone": c.undone, "created_at": c.created_at.isoformat()}
+
+
+@app.get("/api/drawings/{drawing_id}/corrections")
+def list_corrections(drawing_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    _drawing(db, user, drawing_id)
+    rows = db.query(Correction).filter(Correction.drawing_id == drawing_id).order_by(Correction.created_at).all()
+    return [_correction_out(c) for c in rows]
+
+
+@app.post("/api/drawings/{drawing_id}/corrections")
+def add_correction(drawing_id: str, body: CorrectionIn, user: User = Depends(current_user),
+                   db: Session = Depends(get_db)):
+    _drawing(db, user, drawing_id)
+    if body.kind not in CORRECTION_KINDS:
+        raise HTTPException(400, f"Okänd rättelsetyp: {body.kind}")
+    sit = body.situation or {}
+    if not all(sit.get(k) for k in ("family_style", "reason", "designation_shape")):
+        sit = _situation_of(db, user, body.job_id, body.designation)
+    c = Correction(drawing_id=drawing_id, job_id=body.job_id, user_id=user.id, page=body.page, kind=body.kind,
+                   designation=body.designation, payload=body.payload, situation=sit, note=body.note)
+    db.add(c); db.commit()
+    return _correction_out(c)
+
+
+@app.delete("/api/drawings/{drawing_id}/corrections/{correction_id}")
+def undo_correction(drawing_id: str, correction_id: str, user: User = Depends(current_user),
+                    db: Session = Depends(get_db)):
+    _drawing(db, user, drawing_id)
+    c = db.get(Correction, correction_id)
+    if c is None or c.drawing_id != drawing_id:
+        raise HTTPException(404, "Rättelsen finns inte")
+    # kept rather than deleted: what a person changed and then changed back is itself worth having
+    c.undone = True
+    db.commit()
+    return _correction_out(c)
+
+
+@app.get("/api/lessons")
+def my_lessons(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """What this account's corrections have taught, and how often each answer was given.
+
+    A lesson never measures anything on its own; it can only settle a case the engine already called ambiguous,
+    and only where the pen, the reason and the shape of the name are the same.
+    """
+    mine = (db.query(Correction).join(Drawing, Correction.drawing_id == Drawing.id)
+            .join(Project, Drawing.project_id == Project.id).filter(Project.user_id == user.id).all())
+    return {"lessons": lessons([_correction_out(c) for c in mine]), "corrections": len(mine)}
+
+
 @app.get("/api/jobs/{job_id}/film")
 def job_film(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
     """What each stage of the reading found, as far as it has got. Available while the job is still running."""
@@ -280,8 +370,16 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
     hatched = [g for g in geom if g["state"] == "CONFIRMED" and g.get("in_hatch")]
     mpp = quantities["scale"].get("meters_per_pdf_point")
     page = prof["page_structure"]
+    # what a person changed is layered over the reading, never into it: the engine's own figure stays on every row
+    corr = [_correction_out(c) for c in
+            db.query(Correction).filter(Correction.drawing_id == j.drawing_id, Correction.undone == False).all()]  # noqa: E712
+    layered = apply_corrections(quantities["rows"], corr, mpp)
+    rows = layered["quantities"] if corr else quantities["rows"]
     return {
-        "job": _job_out(j), "page": page, "input": prof.get("input"), "scale": quantities["scale"], "quantities": quantities["rows"], "totals": quantities["totals"],
+        "job": _job_out(j), "page": page, "input": prof.get("input"), "scale": quantities["scale"], "quantities": rows, "totals": quantities["totals"],
+        "corrections": corr,
+        "corrections_applied": layered["applied"] if corr else [],
+        "corrected_total_m": layered["corrected_total_m"] if corr else None,
         "pipes": [{k: v for k, v in p.items() if k not in ("source_segments",)} for p in pipes],
         "designations": [{"id": d["did"], "text": d["text"], "dn": d["dn"], "bbox": d["bbox"], "source": d["source"]} for d in des],
         "leaders": [{"id": l["lid"], "points": l["points"], "family": l["family"]} for l in leaders],

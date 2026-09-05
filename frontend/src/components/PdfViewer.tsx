@@ -29,6 +29,10 @@ export interface ViewerProps {
   layers: Record<Layer, boolean>;
   onPipeClick: (pipe: any) => void;
   onPageCount: (n: number) => void;
+  /** When set, clicks draw a polyline on the sheet instead of selecting runs. */
+  drawing?: boolean;
+  onDrawn?: (points: number[][]) => void;
+  corrections?: { id: string; kind: string; designation: string | null; payload: any }[];
 }
 
 export interface ViewerHandle {
@@ -41,6 +45,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [doc, setDoc] = useState<any>(null);
   const [scale, setScale] = useState(0.5);
+  const [pending, setPending] = useState<number[][]>([]);
   const [vp, setVp] = useState<{ w: number; h: number } | null>(null);
   const renderTask = useRef<any>(null);
 
@@ -93,9 +98,25 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
 
   const w = vp ? vp.w * scale : 0, h = vp ? vp.h * scale : 0;
   const sw = (pt: number) => pt / scale;
+
+  // While drawing, a click drops a point and a double click ends the line. The points are page coordinates, so
+  // a correction means the same thing at any zoom and survives a re-analysis.
+  const put = (e: React.MouseEvent) => {
+    if (!props.drawing || !vp) return;
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const pt = [Number(((e.clientX - r.left) / scale).toFixed(2)), Number(((e.clientY - r.top) / scale).toFixed(2))];
+    setPending((q) => [...q, pt]);
+  };
+  const finish = () => {
+    if (!props.drawing || pending.length < 2) return;
+    props.onDrawn?.(pending);
+    setPending([]);
+  };
+
   return (
     <div className="viewer" ref={container}>
-      <div className="page" style={{ width: w, height: h }}>
+      <div className="page" style={{ width: w, height: h, cursor: props.drawing ? "crosshair" : undefined }}
+        onClick={put} onDoubleClick={finish}>
         <canvas ref={canvasRef} />
         {vp && (
           <svg width={w} height={h} viewBox={`0 0 ${vp.w} ${vp.h}`} style={{ pointerEvents: "none" }}>
@@ -123,6 +144,21 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
             {props.layers.designations && props.designations.map((d) => (
               <rect key={d.id} x={d.bbox[0] - 1} y={d.bbox[1] - 1} width={d.bbox[2] - d.bbox[0] + 2} height={d.bbox[3] - d.bbox[1] + 2}
                 fill="none" stroke={d.dn != null ? "#0b5cad" : "#c77800"} strokeWidth={sw(1)} />
+            ))}
+            {(props.corrections ?? []).map((c) => (
+              (c.payload?.points?.length ?? 0) >= 2 && (
+                <polyline key={c.id} points={c.payload.points.map((q: number[]) => q.join(",")).join(" ")} fill="none"
+                  stroke={c.kind === "erase" ? "#b42318" : "#0d0d0d"} strokeWidth={sw(4)} strokeOpacity={0.9}
+                  strokeDasharray={c.kind === "erase" ? `${sw(6)} ${sw(4)}` : undefined}
+                  strokeLinecap="round" strokeLinejoin="round" />
+              )
+            ))}
+            {pending.length > 0 && (
+              <polyline points={pending.map((q) => q.join(",")).join(" ")} fill="none" stroke="#0d0d0d"
+                strokeWidth={sw(4)} strokeDasharray={`${sw(5)} ${sw(4)}`} strokeLinecap="round" />
+            )}
+            {pending.map((q, i) => (
+              <circle key={`pp${i}`} cx={q[0]} cy={q[1]} r={sw(3)} fill="#0d0d0d" />
             ))}
             {props.layers.anchors && props.anchors.map((a) => (
               <circle key={a.id} cx={a.endpoint[0]} cy={a.endpoint[1]} r={sw(4)} fill="none"

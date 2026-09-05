@@ -75,6 +75,28 @@ class AnalysisJob(Base):
     drawing: Mapped[Drawing] = relationship(back_populates="jobs")
 
 
+class Correction(Base):
+    """One thing a person changed about a reading.
+
+    Stored against the drawing rather than the job, so a re-analysis keeps them, and with the situation the
+    correction was made in - the pen the run was drawn with, the reason the engine gave, the designation - so a
+    later reading can tell whether it is looking at the same case or merely a similar-looking one.
+    """
+    __tablename__ = "corrections"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    drawing_id: Mapped[str] = mapped_column(ForeignKey("drawings.id"), index=True)
+    job_id: Mapped[str | None] = mapped_column(ForeignKey("analysis_jobs.id"), nullable=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    page: Mapped[int] = mapped_column(Integer, default=0)
+    kind: Mapped[str] = mapped_column(String(32))          # extend | draw | erase | retag | quantity
+    designation: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    situation: Mapped[dict] = mapped_column(JSON, default=dict)
+    note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    undone: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
 def init_db() -> None:
     Base.metadata.create_all(engine)
 

@@ -4,6 +4,7 @@ import { api } from "../api";
 import PdfViewer, { Layer, ViewerHandle } from "../components/PdfViewer";
 import QuantityTable from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
+import Corrections from "../components/Corrections";
 import { StatusBadge, STAGE_LABELS } from "../components/Status";
 
 const ISSUE_LABELS: Record<string, string> = {
@@ -23,13 +24,16 @@ export default function AnalysisPage() {
   const [result, setResult] = useState<any>(null);
   const [pdf, setPdf] = useState<ArrayBuffer | null>(null);
   const [err, setErr] = useState("");
-  const [tab, setTab] = useState<"mangder" | "ejlosta" | "granskning" | "oversikt" | "artefakter">("mangder");
+  const [tab, setTab] = useState<"mangder" | "ejlosta" | "granskning" | "oversikt" | "artefakter" | "rattelser">("mangder");
   const [selIdent, setSelIdent] = useState<string | null>(null);
   const [selPipe, setSelPipe] = useState<any>(null);
   const [why, setWhy] = useState<any>(null);
   const [page, setPage] = useState(0);
   // The quantity table has more columns than any fixed panel width fits, so the split is the reader's to set:
   // wide drawing while tracing a run, wide table while reading the takeoff. The choice is remembered.
+  const [corrections, setCorrections] = useState<any[]>([]);
+  const [drawKind, setDrawKind] = useState<string | null>(null);
+  const [draft, setDraft] = useState<{ points: number[][] } | null>(null);
   const [panel, setPanel] = useState<number>(() => {
     const v = Number((() => { try { return localStorage.getItem("vvs.panel"); } catch { return null; } })());
     return v >= 360 && v <= 1400 ? v : 480;
@@ -57,6 +61,7 @@ export default function AnalysisPage() {
             const r = await api.result(id!); setResult(r);
             const b = await api.fetchBlob(api.fileUrl(j.drawing_id)); setPdf(await b.arrayBuffer());
             setArtifacts(await api.artifacts(id!));
+            try { setCorrections(await api.corrections(j.drawing_id)); } catch { /* corrections are optional */ }
           }
         } else if (j.status !== "FAILED") t = setTimeout(poll, 1500);
       } catch (e: any) { setErr(e.message); }
@@ -129,7 +134,9 @@ export default function AnalysisPage() {
         </div>
         <PdfViewer ref={viewer} data={pdf} page={page} pipes={pipesOnPage} ambiguous={result.ambiguous_geometry} unowned={result.unowned_geometry}
           designations={result.designations} leaders={result.leaders} anchors={result.anchors} hatched={result.hatched_geometry ?? []} selectedIdentity={selIdent}
-          selectedPipe={selPipe?.physical_pipe_id ?? null} layers={layers} onPipeClick={onPipeClick} onPageCount={setNPages} />
+          selectedPipe={selPipe?.physical_pipe_id ?? null} layers={layers} onPipeClick={onPipeClick} onPageCount={setNPages}
+          drawing={!!drawKind} onDrawn={(points) => setDraft({ points })}
+          corrections={corrections.filter((c: any) => !c.undone && c.page === page)} />
       </div>
       <div className="splitter" role="separator" aria-orientation="vertical" aria-label="Dra för att ändra bredd"
         onMouseDown={() => { dragging.current = true; document.body.classList.add("resizing"); }}
@@ -140,6 +147,9 @@ export default function AnalysisPage() {
           <button className={tab === "ejlosta" ? "active" : ""} onClick={() => setTab("ejlosta")}>Ej lösta ({result.issues.filter((i: any) => i.severity === "blocking").length})</button>
           <button className={tab === "granskning" ? "active" : ""} onClick={() => setTab("granskning")}>
             Granskning{result.review ? ` (${result.review.findings.filter((f: any) => f.severity !== "INFO").length})` : ""}
+          </button>
+          <button className={tab === "rattelser" ? "active" : ""} onClick={() => setTab("rattelser")}>
+            Rätta{corrections.filter((c: any) => !c.undone).length ? ` (${corrections.filter((c: any) => !c.undone).length})` : ""}
           </button>
           <button className={tab === "oversikt" ? "active" : ""} onClick={() => setTab("oversikt")}>Översikt</button>
           <button className={tab === "artefakter" ? "active" : ""} onClick={() => setTab("artefakter")}>Export</button>
@@ -204,6 +214,15 @@ export default function AnalysisPage() {
             </>
           );
         })()}
+        {tab === "rattelser" && (
+          <Corrections drawingId={job.drawing_id} jobId={id!} page={page} quantities={result.quantities}
+            corrections={corrections} draft={draft} drawing={drawKind}
+            onDrawingChange={setDrawKind} onDraftClear={() => setDraft(null)}
+            onChanged={async () => {
+              setCorrections(await api.corrections(job.drawing_id));
+              setResult(await api.result(id!));
+            }} />
+        )}
         {tab === "granskning" && (
           <div className="card">
             {!result.review && <p className="muted">Granskningen kördes inte för det här jobbet.</p>}

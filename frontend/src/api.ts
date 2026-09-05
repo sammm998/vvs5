@@ -58,6 +58,12 @@ export const api = {
   exportUrl: (jobId: string, fmt: string) => `/api/jobs/${jobId}/export/${fmt}`,
   artifactUrl: (jobId: string, name: string) => `/api/jobs/${jobId}/artifacts/${name}`,
   film: (jobId: string) => req(`/api/jobs/${jobId}/film`),
+  corrections: (drawingId: string) => req(`/api/drawings/${drawingId}/corrections`),
+  addCorrection: (drawingId: string, body: any) =>
+    req(`/api/drawings/${drawingId}/corrections`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  undoCorrection: (drawingId: string, id: string) =>
+    req(`/api/drawings/${drawingId}/corrections/${id}`, { method: "DELETE" }),
+  lessons: () => req("/api/lessons"),
   fetchBlob: async (path: string) => { const res = await fetch(path, { headers: { Authorization: `Bearer ${getToken()}` } }); if (!res.ok) throw new Error("Hämtning misslyckades"); return res.blob(); },
 };
 
