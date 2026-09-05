@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview --host"
+    "build": "eslint src --max-warnings=0 && tsc --noEmit && vite build",
+    "preview": "vite preview --host",
+    "lint": "eslint src --max-warnings=0"
   },
   "dependencies": {
     "pdfjs-dist": "4.7.76",
@@ -15,10 +16,14 @@
     "react-router-dom": "6.26.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.11.1",
     "@types/react": "18.3.5",
     "@types/react-dom": "18.3.0",
     "@vitejs/plugin-react": "4.3.1",
+    "eslint": "^9.11.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
     "typescript": "5.5.4",
+    "typescript-eslint": "^8.7.0",
     "vite": "5.4.6"
   }
 }

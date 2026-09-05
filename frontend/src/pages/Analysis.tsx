@@ -68,23 +68,6 @@ export default function AnalysisPage() {
     setSelPipe(p); setSelIdent(p.identity); setTab("mangder");
     try { setWhy(await api.why(id!, p.physical_pipe_id)); } catch { setWhy(null); }
   };
-  const dl = async (path: string, name: string) => { const b = await api.fetchBlob(path); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = name; a.click(); };
-
-  if (err) return <main><p className="error">{err}</p></main>;
-  if (!job) return <main>Laddar…</main>;
-  if (job.status !== "COMPLETED") {
-    return (
-      <main>
-        <p><Link to={`/drawings/${job.drawing_id}`}>← Ritning</Link></p>
-        <div className="card">
-          <h3>Analys pågår</h3>
-          <div className="progress"><div style={{ width: `${Math.round(job.progress * 100)}%` }} /></div>
-          <p><StatusBadge job={job} /> {STAGE_LABELS[job.stage] || job.stage}</p>
-          {job.status === "FAILED" && <pre className="error">{job.error}</pre>}
-        </div>
-      </main>
-    );
-  }
   useEffect(() => {
     const move = (e: MouseEvent) => {
       if (!dragging.current) return;
@@ -102,6 +85,23 @@ export default function AnalysisPage() {
     return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up); };
   }, [panel]);
 
+  const dl = async (path: string, name: string) => { const b = await api.fetchBlob(path); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = name; a.click(); };
+
+  if (err) return <main><p className="error">{err}</p></main>;
+  if (!job) return <main>Laddar…</main>;
+  if (job.status !== "COMPLETED") {
+    return (
+      <main>
+        <p><Link to={`/drawings/${job.drawing_id}`}>← Ritning</Link></p>
+        <div className="card">
+          <h3>Analys pågår</h3>
+          <div className="progress"><div style={{ width: `${Math.round(job.progress * 100)}%` }} /></div>
+          <p><StatusBadge job={job} /> {STAGE_LABELS[job.stage] || job.stage}</p>
+          {job.status === "FAILED" && <pre className="error">{job.error}</pre>}
+        </div>
+      </main>
+    );
+  }
   if (!result) return <main>Laddar resultat…</main>;
   const c = result.coverage;
   const pipesOnPage = result.pipes.filter((p: any) => p.page === page);
@@ -147,16 +147,16 @@ export default function AnalysisPage() {
             )}
             <div className="row" style={{ marginBottom: 8, alignItems: "center", gap: 8 }}>
               <label style={{ fontSize: 12 }}>Våningshöjd för stigare (m): <input style={{ width: 70 }} value={floorHeight} placeholder="t.ex. 2,8"
-                onChange={(e) => { setFloorHeight(e.target.value); try { localStorage.setItem("vvs.floorHeight", e.target.value); } catch {} }} /></label>
+                onChange={(e) => { setFloorHeight(e.target.value); try { localStorage.setItem("vvs.floorHeight", e.target.value); } catch { /* private window: the setting just does not persist */ } }} /></label>
               <label style={{ fontSize: 12 }}>Stigare räknas från:{" "}
-                <select value={riserSource} onChange={(e) => { setRiserSource(e.target.value); try { localStorage.setItem("vvs.riserSource", e.target.value); } catch {} }}>
+                <select value={riserSource} onChange={(e) => { setRiserSource(e.target.value); try { localStorage.setItem("vvs.riserSource", e.target.value); } catch { /* private window: the setting just does not persist */ } }}>
                   <option value="labels">etiketter med dimension på raden under</option>
                   <option value="symbols">ritade stigarsymboler</option>
                 </select></label>
               <span className="muted" style={{ fontSize: 12 }}>Vertikalt = antal stigare × våningshöjd (ritningen anger ingen höjd). Rör i skrafferade ytor mäts alltid men räknas in bara om du kryssar i rutan.</span>
             </div>
             <QuantityTable rows={result.quantities} selected={selIdent} onSelect={(k) => { setSelIdent(k); setSelPipe(null); setWhy(null); }} floorHeight={floorH}
-              includeHatched={includeHatched} onIncludeHatched={(v) => { setIncludeHatched(v); try { localStorage.setItem("vvs.includeHatched", v ? "1" : "0"); } catch {} }}
+              includeHatched={includeHatched} onIncludeHatched={(v) => { setIncludeHatched(v); try { localStorage.setItem("vvs.includeHatched", v ? "1" : "0"); } catch { /* private window: the setting just does not persist */ } }}
               riserSource={riserSource} />
             {why && (
               <div style={{ marginTop: 12 }}>
