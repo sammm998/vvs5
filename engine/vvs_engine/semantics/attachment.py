@@ -435,8 +435,49 @@ def _marker_cluster(seeds: list[RawPath], gidx: GeometryIndex, pipe_families: se
     return [cluster[k] for k in sorted(cluster)]
 
 
+
+# A bundle is drawn tight - the runs have to be told apart by eye, so they sit a few points from each other and
+# not a few tens. Beyond this the lines near a leader endpoint are separate runs that happen to be parallel.
+BUNDLE_SPAN = 34.0
+
+
+def parallel_runs(contacts: list[Contact], paths: dict) -> list[list[Contact]] | None:
+    """The contacts split into the distinct parallel runs they sit on, ordered across the bundle.
+
+    A bundle is several runs drawn side by side and named by one stacked label. Returns None when the contacts
+    are not a bundle - not parallel, or spread too far to be one - because then there is nothing to order.
+    """
+    segs = []
+    for c in contacts:
+        p = paths.get(c.pid)
+        if p is None or c.seg_index >= len(p.segs):
+            return None
+        s = p.segs[c.seg_index]
+        if s.length < 1e-6:
+            return None
+        segs.append((c, s))
+    if len(segs) < 2:
+        return None
+    angs = [math.degrees(math.atan2(s.y1 - s.y0, s.x1 - s.x0)) % 180 for _, s in segs]
+    a0 = angs[0]
+    if any(min(abs(a - a0), 180 - abs(a - a0)) > 6.0 for a in angs):
+        return None                       # not one bundle: the lines run different ways
+    th = math.radians(a0)
+    nx, ny = -math.sin(th), math.cos(th)
+    off = [((s.x0 + s.x1) / 2 * nx + (s.y0 + s.y1) / 2 * ny) for _, s in segs]
+    if max(off) - min(off) > BUNDLE_SPAN:
+        return None                       # too far apart to be drawn as one bundle
+    runs: list[tuple[float, list[Contact]]] = []
+    for (c, _), o in sorted(zip(segs, off), key=lambda z: z[1]):
+        if runs and abs(o - runs[-1][0]) <= 1.2:      # the same run, touched twice
+            runs[-1][1].append(c)
+        else:
+            runs.append((o, [c]))
+    return [r for _, r in runs]
+
 def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, contacts: list[Contact],
-                  system_tokens_in_drawing: set[str], spelled_out: frozenset[str] = frozenset()) -> list[PipeCodeAnchor]:
+                  system_tokens_in_drawing: set[str], spelled_out: frozenset[str] = frozenset(),
+                  paths: dict | None = None) -> list[PipeCodeAnchor]:
     """Map designation rows of a block to contacted vector-family groups (bijection required)."""
     groups: dict[str, list[Contact]] = defaultdict(list)
     for c in contacts:
@@ -496,12 +537,32 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
                 else:
                     out.append(mk(d, "AMBIGUOUS_PIPE_ATTACHMENT", "multi_row_equal_counts_no_discrimination", [c for g in by_count[d.multiplier] for c in groups[g]]))
             return out
+    # Nothing in the layer names tells the rows apart, but the drawing may still: the runs of a bundle are
+    # separate lines, and one of them is often named on its own somewhere else on the sheet. Hand the ordered
+    # runs on and let the sheet settle it once ownership is known.
+    if paths is not None and not any(match[d.did] for d in rows):
+        runs = parallel_runs([c for g in gkeys for c in groups[g]], paths)
+        if runs is not None and len(runs) == len(rows):
+            order = sorted(rows, key=lambda d: d.row_index)
+            return [mk(d, "AMBIGUOUS_PIPE_ATTACHMENT", "multi_row_bundle_awaiting_elimination",
+                       [c for r in runs for c in r],
+                       {"bundle": {"pos": i, "n": len(order),
+                                   "runs": [[[c.pid, c.seg_index] for c in r] for r in runs]}})
+                    for i, d in enumerate(order)]
     for d in rows:
         ms = match[d.did]
         if len(ms) == 1 and len(owner[ms[0]]) == 1:
             anchors.append(mk(d, "VERIFIED_PIPE_ATTACHMENT", "multi_row_layer_token_bijection", groups[ms[0]], {"layer_token_match": ms[0]}))
         elif len(ms) == 0:
-            anchors.append(mk(d, "NO_PIPE_ATTACHMENT", "multi_row_no_compatible_layer_group", []))
+            # The label names more systems than the drawing draws lines here: several pipes drawn as one run and
+            # named together. Their lengths cannot be split between the codes without inventing a rule, so the
+            # run is not owned - but the contacts are recorded, so the case is visible and can be pointed at
+            # rather than quietly costing the sheet its metres. An ambiguous anchor seeds no identity.
+            shared = len(gkeys) < len(rows)
+            anchors.append(mk(d, "AMBIGUOUS_PIPE_ATTACHMENT" if shared else "NO_PIPE_ATTACHMENT",
+                              "multi_row_label_shares_one_run" if shared else "multi_row_no_compatible_layer_group",
+                              [c for g in gkeys for c in groups[g]] if shared else [],
+                              {"codes_sharing_the_run": sorted({r.display_text or r.text for r in rows})} if shared else None))
         else:
             anchors.append(mk(d, "AMBIGUOUS_PIPE_ATTACHMENT", "multi_row_token_match_not_unique", [c for g in ms for c in groups[g]]))
     return anchors

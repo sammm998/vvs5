@@ -86,3 +86,39 @@ def test_a_case_with_no_situation_is_never_settled_by_a_lesson():
     taught = lessons([{"kind": "retag", "designation": "KV1-X31-16",
                        "situation": situation(family="f", reason="r", designation="KV1-X31-16")}])
     assert settle([{"id": "x", "candidates": ["KV1-X31-16"]}], taught) == []
+
+
+def test_the_loop_closes_only_where_the_situation_is_the_same():
+    """A correction on one drawing, a proposal on the next - and silence everywhere else.
+
+    This is the whole learning contract in one place: a person answers a case, the answer becomes a lesson for
+    that exact situation, and on a later reading it is offered back as a proposal for a case the engine itself
+    could not settle. It is never offered for a different pen, a differently shaped name, or an answer the later
+    drawing does not itself put forward.
+    """
+    sit = situation(family="V-52|s|w1.44|c(0,0,0)", reason="multi_row_label_shares_one_run",
+                    designation="KV1-X31-16")
+    taught = lessons([{"kind": "retag", "designation": "KV1-X31-16", "situation": sit}])
+    assert taught, "one answer in one situation is already a lesson"
+
+    same = {"id": "later", "situation": situation(family="V-52|s|w1.44|c(0,0,0)",
+                                                  reason="multi_row_label_shares_one_run",
+                                                  designation="KV2-X31-25"),          # same shape, other numbers
+            "candidates": ["KV1-X31-16", "VV1-X31-16"]}
+    got = settle([same], taught)
+    assert [p["answer"] for p in got] == ["KV1-X31-16"]
+
+    for wrong in (
+        {"id": "pen", "situation": situation(family="V-52|s|w0.24|c(0,0,0)",
+                                             reason="multi_row_label_shares_one_run", designation="KV1-X31-16"),
+         "candidates": ["KV1-X31-16"]},
+        {"id": "reason", "situation": situation(family="V-52|s|w1.44|c(0,0,0)",
+                                                reason="leader_endpoint_touches_no_pipe_geometry",
+                                                designation="KV1-X31-16"),
+         "candidates": ["KV1-X31-16"]},
+        {"id": "shape", "situation": situation(family="V-52|s|w1.44|c(0,0,0)",
+                                               reason="multi_row_label_shares_one_run", designation="S3-R8-110"),
+         "candidates": ["KV1-X31-16"]},
+        {"id": "not-offered", "situation": same["situation"], "candidates": ["S1-P2-110"]},
+    ):
+        assert settle([wrong], taught) == [], f"a lesson spoke where it had no business: {wrong['id']}"

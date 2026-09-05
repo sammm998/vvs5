@@ -379,3 +379,10 @@ pre { white-space: pre-wrap; word-break: break-word; background: var(--bg-2); bo
 @media (max-width: 900px) { .film { grid-template-columns: 1fr; } }
 
 .issue.done-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+
+/* a run of a designation, opened out from the count in the takeoff */
+tr.run td { background: var(--bg-2); font-size: 12.5px; cursor: pointer; }
+tr.run:hover td { background: #f2f2f2; }
+tr.run td:first-child { color: var(--muted); font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; }
+button.drill { padding: 3px 8px; font-size: 10px; letter-spacing: 0.06em; color: var(--ink); }
+button.drill:hover { background: var(--chip); opacity: 1; }

@@ -172,6 +172,7 @@ export default function AnalysisPage() {
               <span className="muted" style={{ fontSize: 12 }}>Vertikalt = antal stigare × våningshöjd (ritningen anger ingen höjd). Rör i skrafferade ytor mäts alltid men räknas in bara om du kryssar i rutan.</span>
             </div>
             <QuantityTable rows={result.quantities} selected={selIdent} onSelect={(k) => { setSelIdent(k); setSelPipe(null); setWhy(null); }} floorHeight={floorH}
+              pipes={result.pipes} meterPerPt={result.scale?.meters_per_pdf_point ?? null} onPipeClick={onPipeClick}
               includeHatched={includeHatched} onIncludeHatched={(v) => { setIncludeHatched(v); try { localStorage.setItem("vvs.includeHatched", v ? "1" : "0"); } catch { /* private window: the setting just does not persist */ } }}
               riserSource={riserSource} />
             {why && (
@@ -216,7 +217,7 @@ export default function AnalysisPage() {
         })()}
         {tab === "rattelser" && (
           <Corrections drawingId={job.drawing_id} jobId={id!} page={page} quantities={result.quantities}
-            corrections={corrections} draft={draft} drawing={drawKind}
+            corrections={corrections} draft={draft} drawing={drawKind} proposals={result.proposals ?? []}
             onDrawingChange={setDrawKind} onDraftClear={() => setDraft(null)}
             onChanged={async () => {
               setCorrections(await api.corrections(job.drawing_id));

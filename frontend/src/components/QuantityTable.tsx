@@ -18,8 +18,13 @@ export function withFloorHeight(rows: any[], floorHeight: number | null, include
   });
 }
 
-export default function QuantityTable({ rows, selected, onSelect, floorHeight, includeHatched, onIncludeHatched, riserSource }: { rows: any[]; selected: string | null; onSelect: (key: string | null) => void; floorHeight: number | null; includeHatched: boolean; onIncludeHatched: (v: boolean) => void; riserSource: string }) {
+export default function QuantityTable({ rows, selected, onSelect, floorHeight, includeHatched, onIncludeHatched, riserSource,
+  pipes = [], onPipeClick, meterPerPt }: {
+    rows: any[]; selected: string | null; onSelect: (key: string | null) => void; floorHeight: number | null;
+    includeHatched: boolean; onIncludeHatched: (v: boolean) => void; riserSource: string;
+    pipes?: any[]; onPipeClick?: (p: any) => void; meterPerPt?: number | null }) {
   const [q, setQ] = useState("");
+  const [open, setOpen] = useState<string | null>(null);
   const [status, setStatus] = useState("");
   const [sort, setSort] = useState<{ k: string; dir: 1 | -1 }>({ k: "designation", dir: 1 });
   const list = useMemo(() => {
@@ -52,10 +57,17 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
       <table>
         <thead><tr>{th("designation", "Beteckning")}{th("dn", "DN")}{th("label_count", "Etiketter")}{th("physical_pipe_count", "Sträckor")}{th("confirmed_horizontal_m", "Horisontellt", "m")}{th("vertical_calc", "Vertikalt", "m")}{th("total_calc", "Totalt", "m")}{th("ambiguous_m", "Tvetydigt", "m")}{th("in_hatched_area_m", "Skrafferat", "m")}{th("risers_calc", "Stigare")}{th("state", "Status")}</tr></thead>
         <tbody>
-          {list.map((r) => (
+          {list.flatMap((r) => [
             <tr key={identityKey(r)} className={`selectable ${selected === identityKey(r) ? "selected" : ""}`} onClick={() => onSelect(selected === identityKey(r) ? null : identityKey(r))}>
               <td><span style={{ display: "inline-block", width: 12, height: 12, borderRadius: 2, background: identityColor(identityKey(r)), marginRight: 6, verticalAlign: "middle" }} />{r.designation}</td><td>{r.dn ?? "?"}</td><td className="num" title="Antal verifierade beteckningar på ritningen för denna identitet">{r.label_count ?? "–"}</td>
-              <td className="num" title="Antal sammanhängande rörsträckor som nätet löser upp i (en sträcka bär oftast flera beteckningar)">{r.physical_pipe_count}</td>
+              <td className="num">
+                {r.physical_pipe_count > 0 ? (
+                  <button className="ghost small drill" title="Visa varje sträcka för sig"
+                    onClick={(e) => { e.stopPropagation(); setOpen(open === identityKey(r) ? null : identityKey(r)); }}>
+                    {r.physical_pipe_count} {open === identityKey(r) ? "▾" : "▸"}
+                  </button>
+                ) : r.physical_pipe_count}
+              </td>
               <td className="num">{r.horizontal_calc.toFixed(2)}</td>
               <td className="num">{r.vertical_calc == null
                 ? (r.risers_calc > 0
@@ -67,8 +79,29 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
               <td className="num">{(r.in_hatched_area_m ?? 0) > 0 ? Number(r.in_hatched_area_m).toFixed(2) : "–"}</td>
               <td className="num" title={`Ritade stigarsymboler: ${r.riser_count ?? 0} · etiketter med dimension på raden under: ${r.riser_count_from_labels ?? 0}`}>{r.risers_calc > 0 ? r.risers_calc : "–"}</td>
               <td><span className={`badge ${r.state === "CONFIRMED" ? "ok" : r.state === "AMBIGUOUS" || r.state === "RISER_LABELS_ONLY" ? "warn" : "bad"}`}>{STATE_LABELS[r.state] ?? r.state}</span></td>
-            </tr>
-          ))}
+            </tr>,
+            ...(open === identityKey(r)
+              ? pipes.filter((p: any) => p.identity === identityKey(r))
+                  .sort((a: any, b: any) => (b.length_pt ?? 0) - (a.length_pt ?? 0))
+                  .map((p: any, i: number) => (
+                    <tr key={`${identityKey(r)}-run-${p.physical_pipe_id}`} className="run"
+                      onClick={() => onPipeClick?.(p)}>
+                      <td>{String(i + 1).padStart(2, "0")} · sträcka</td>
+                      <td colSpan={2} className="muted">
+                        sida {(p.page ?? 0) + 1} · {p.anchor_ids?.length ?? 0} etikett{(p.anchor_ids?.length ?? 0) === 1 ? "" : "er"}
+                      </td>
+                      <td className="num muted">{p.nodes?.length ?? ""}</td>
+                      <td className="num">{meterPerPt ? ((p.length_pt ?? 0) * meterPerPt).toFixed(2) : "–"}</td>
+                      <td colSpan={2} className="muted" style={{ fontSize: 12 }}>
+                        {p.frontier_reasons?.length ? p.frontier_reasons[0] : ""}
+                      </td>
+                      <td colSpan={4} className="muted" style={{ fontSize: 12 }}>
+                        {p.bridged_gap_pt ? `${(p.bridged_gap_pt * (meterPerPt ?? 0)).toFixed(2)} m överbryggade streckglapp` : ""}
+                      </td>
+                    </tr>
+                  ))
+              : []),
+          ])}
         </tbody>
         <tfoot><tr><th>Summa</th><th></th><th className="num">{tot("label_count")}</th><th className="num">{tot("physical_pipe_count")}</th><th className="num">{tot("horizontal_calc").toFixed(2)}</th><th className="num">{tot("vertical_calc").toFixed(2)}</th><th className="num strong">{tot("total_calc").toFixed(2)}</th><th className="num">{tot("ambiguous_m").toFixed(2)}</th><th className="num">{tot("in_hatched_area_m").toFixed(2)}</th><th className="num">{tot("risers_calc")}</th><th></th></tr></tfoot>
       </table>

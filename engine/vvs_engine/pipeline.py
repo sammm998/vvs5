@@ -124,6 +124,71 @@ def _close_labels_on_owned_runs(anchors, ownership, graphs) -> None:
         if best is not None and best <= CLOSE_ON_OWNED_TOL:
             a.evidence["closed_on_owned_run"] = {"identity": stated, "distance_pt": round(best, 2)}
 
+
+def _settle_bundles_by_elimination(anchors, ownership, graphs) -> int:
+    """A bundle of parallel runs named by one stacked label, settled by what the rest of the sheet already says.
+
+    The label lists its codes in order and the runs lie side by side, but nothing in the label says which code is
+    which line - and guessing by a drawing convention swaps identities between systems on the sheet where the
+    convention does not hold. What does say it is the drawing: a run of the bundle usually carries on and is
+    named on its own somewhere else. Every run the sheet has already named pins its code, and where that leaves
+    one code and one run over, the last one is determined rather than chosen.
+
+    Runs before ownership is recomputed, so what it settles is seeded like any other reading. A bundle the sheet
+    does not name enough of stays ambiguous.
+    """
+    owner: dict[tuple[str, int], str] = {}
+    prim_of: dict[tuple[str, str, int], int] = {}
+    for fk, g in graphs.items():
+        for pid, prim in g.prims.items():
+            prim_of[(fk, prim.pid, prim.seg_index)] = pid
+    for p in ownership.pipes:
+        for i in p.prim_ids:
+            owner[(p.family, i)] = p.identity.key.replace("|DN", "-").upper()
+
+    by_block: dict[str, list] = defaultdict(list)
+    for a in anchors:
+        if a.reason == "multi_row_bundle_awaiting_elimination" and a.evidence.get("bundle"):
+            by_block[(a.block_id, a.leader_id)].append(a)
+    settled = 0
+    for key, group in sorted(by_block.items(), key=lambda kv: str(kv[0])):
+        b = group[0].evidence["bundle"]
+        runs = b["runs"]
+        if len(group) != b["n"] or len(runs) != b["n"]:
+            continue
+        group.sort(key=lambda a: a.evidence["bundle"]["pos"])
+        codes = [(a.designation_display or a.designation or "").upper() for a in group]
+        if len(set(codes)) != len(codes):
+            continue                      # the same code twice: order says nothing about which line is which
+        # what the sheet already calls each run of the bundle
+        named: list[str | None] = []
+        for run in runs:
+            got = set()
+            for fam_pid, seg in run:
+                for fk in graphs:
+                    pid = prim_of.get((fk, fam_pid, seg))
+                    if pid is not None and (fk, pid) in owner:
+                        got.add(owner[(fk, pid)])
+            named.append(got.pop() if len(got) == 1 else None)
+        fixed = {n for n in named if n is not None}
+        free_codes = [c for c in codes if c not in fixed]
+        free_slots = [i for i, n in enumerate(named) if n is None]
+        if len(free_codes) != len(free_slots) or len(free_slots) != 1:
+            continue                      # not down to one: the sheet has not said enough
+        named[free_slots[0]] = free_codes[0]
+        if sorted(x for x in named if x) != sorted(codes):
+            continue
+        for a in group:
+            code = (a.designation_display or a.designation or "").upper()
+            idx = named.index(code)
+            a.state = "VERIFIED_PIPE_ATTACHMENT"
+            a.reason = "multi_row_bundle_settled_by_elimination"
+            a.contacts = [c for c in a.contacts
+                          if [c.pid, c.seg_index] in runs[idx]]
+            a.evidence["settled_against"] = {"run": idx, "named_by_the_sheet": [n for n in named]}
+            settled += 1
+    return settled
+
 def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
                  film_sink: Callable[[str, dict], None] | None = None) -> PageAnalysis:
     film = Film(film_sink)
@@ -292,7 +357,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             contacts = leader_contacts(ld, gidx, pf, paths)
             if not contacts and ld.length < 2.5 * max(block.height, 1.0) and not ld.end_marks:
                 continue        # dangling frame stub, not a leader
-            anchors.extend(resolve_block(block, rows, ld, contacts, system_tokens, spelled_out))
+            anchors.extend(resolve_block(block, rows, ld, contacts, system_tokens, spelled_out, paths))
         anchors.sort(key=lambda a: a.anchor_id)
         stats = {"votes": dict(votes.most_common()), "token_votes": dict(token_votes.most_common()), "candidate_families": sorted(pipe_families), "tick_votes": dict(tick_votes.most_common())}
         if os.environ.get("VVS_DEBUG_PASS"):
@@ -349,6 +414,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         progress("BUILDING_PHYSICAL_PIPES")
     identities = _pipe_identities(designations, anchors, grammar, legend=legend)
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
+    if _settle_bundles_by_elimination(anchors, ownership, graphs):
+        identities = _pipe_identities(designations, anchors, grammar, legend=legend)
+        ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     _close_labels_on_owned_runs(anchors, ownership, graphs)
     film.pipes(ownership.pipes)
     t0 = _t(timings, "physical_pipes_ms", t0)

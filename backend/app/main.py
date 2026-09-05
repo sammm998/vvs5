@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from . import exports, jobs
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
-from vvs_engine.learning import lessons, situation
+from vvs_engine.learning import lessons, settle, situation
 from .auth import create_token, current_user, hash_password, verify_password
 from .config import settings
 from .db import Correction, AnalysisJob, Drawing, Project, User, get_db, init_db
@@ -223,6 +223,36 @@ def job_status(job_id: str, user: User = Depends(current_user), db: Session = De
     return _job_out(_job(db, user, job_id))
 
 
+def _proposals(db: Session, user: User, anchors: list, pipes: list) -> list[dict]:
+    """What this account's earlier corrections would say about the cases this reading could not settle.
+
+    Proposals, never decisions. A lesson may speak only where the engine itself called the case ambiguous and
+    only when the answer is among the candidates the drawing offers; accepting one is a correction a person
+    makes, recorded like any other, so the takeoff never moves on a lesson alone.
+    """
+    open_cases = [a for a in anchors if a["state"] == "AMBIGUOUS_PIPE_ATTACHMENT"]
+    if not open_cases:
+        return []
+    mine = (db.query(Correction).join(Drawing, Correction.drawing_id == Drawing.id)
+            .join(Project, Drawing.project_id == Project.id)
+            .filter(Project.user_id == user.id, Correction.undone == False).all())  # noqa: E712
+    taught = lessons([_correction_out(c) for c in mine])
+    if not taught:
+        return []
+    fam_of = {}
+    for p in pipes:
+        fam_of[(p.get("identity") or "").replace("|DN", "-").upper()] = p.get("family", "")
+    cases = []
+    for a in open_cases:
+        name = (a.get("designation") or "").upper()
+        cases.append({"id": a["anchor_id"], "designation": a.get("designation"),
+                      "situation": situation(family=fam_of.get(name, ""), reason=a.get("reason", ""),
+                                             designation=a.get("designation") or ""),
+                      "candidates": sorted({(c or "").upper() for c in (a.get("candidate_designations") or [])}
+                                           or {name})})
+    return settle(cases, taught)
+
+
 def _situation_of(db: Session, user: User, job_id: str | None, designation: str | None) -> dict:
     """The case a correction was made in, taken from the reading rather than from the browser.
 
@@ -388,6 +418,7 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
         "unowned_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "family": g["family"]} for g in unowned],
         "hatched_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "identity": g["identity"]} for g in hatched],
         "issues": issues,
+        "proposals": _proposals(db, user, anchors, pipes),
         "build": _build_stamp(),
         "coverage": {
             "designations": len(des), "with_dn": sum(1 for d in des if d["dn"] is not None), "leaders": len(leaders),

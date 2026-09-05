@@ -12,9 +12,9 @@ const KINDS: { k: string; label: string; help: string }[] = [
 ];
 
 export default function Corrections({ drawingId, jobId, page, quantities, corrections, draft, drawing,
-  onDrawingChange, onDraftClear, onChanged }: {
+  proposals = [], onDrawingChange, onDraftClear, onChanged }: {
     drawingId: string; jobId: string; page: number; quantities: any[];
-    corrections: any[]; draft: Draft; drawing: string | null;
+    corrections: any[]; draft: Draft; drawing: string | null; proposals?: any[];
     onDrawingChange: (kind: string | null) => void; onDraftClear: () => void; onChanged: () => void;
   }) {
   const [designation, setDesignation] = useState("");
@@ -48,6 +48,30 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
 
   return (
     <>
+      {proposals.length > 0 && (
+        <div className="card">
+          <h3>Från tidigare rättelser <span className="badge">{proposals.length}</span></h3>
+          <p className="muted" style={{ marginTop: 0 }}>
+            Förslag, inte beslut. En läxa får bara tala där motorn själv kallade fallet tvetydigt, och bara med ett
+            svar ritningen erbjuder. Mängden flyttar sig först när du säger till.
+          </p>
+          {proposals.map((pr: any) => (
+            <div key={pr.case} className="issue done-row">
+              <div>
+                <b>{pr.answer}</b>
+                <div className="muted">{pr.why} · {pr.times} gång{pr.times === 1 ? "" : "er"}</div>
+              </div>
+              <button className="secondary small" onClick={async () => {
+                await api.addCorrection(drawingId, {
+                  kind: "retag", designation: pr.answer, page, job_id: jobId, payload: {},
+                  situation: pr.situation, note: "godtaget förslag från en tidigare rättelse",
+                });
+                onChanged();
+              }}>Använd</button>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="card">
         <h3>Rätta läsningen</h3>
         <p className="muted" style={{ marginTop: 0 }}>
