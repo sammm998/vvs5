@@ -1,41 +1,90 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 
+const DATE = new Intl.DateTimeFormat("sv-SE", { day: "2-digit", month: "short", year: "numeric" });
+
 export default function Projects() {
   const [projects, setProjects] = useState<any[]>([]);
+  const [q, setQ] = useState("");
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
   const load = () => api.projects().then(setProjects).catch((e) => setErr(e.message));
   useEffect(() => { load(); }, []);
+
   const create = async (e: React.FormEvent) => {
     e.preventDefault();
-    try { await api.createProject(name, desc); setName(""); setDesc(""); load(); } catch (ex: any) { setErr(ex.message); }
+    setBusy(true);
+    try {
+      await api.createProject(name, desc);
+      setName(""); setDesc(""); setOpen(false); setErr("");
+      load();
+    } catch (ex: any) { setErr(ex.message); } finally { setBusy(false); }
   };
+
+  const shown = useMemo(() => {
+    const needle = q.trim().toLowerCase();
+    if (!needle) return projects;
+    return projects.filter((p) => `${p.name} ${p.description ?? ""}`.toLowerCase().includes(needle));
+  }, [projects, q]);
+
   return (
     <main>
-      <h2>Projekt</h2>
-      <form className="card row" onSubmit={create}>
-        <input placeholder="Projektnamn" value={name} onChange={(e) => setName(e.target.value)} required />
-        <input placeholder="Beskrivning" value={desc} onChange={(e) => setDesc(e.target.value)} />
-        <button type="submit">Skapa projekt</button>
-      </form>
-      {err && <p className="error">{err}</p>}
-      <div className="card">
-        <table>
-          <thead><tr><th>Namn</th><th>Beskrivning</th><th>Ritningar</th><th>Skapad</th><th></th></tr></thead>
-          <tbody>
-            {projects.map((p) => (
-              <tr key={p.id}>
-                <td><Link to={`/projects/${p.id}`}>{p.name}</Link></td><td>{p.description}</td><td>{p.n_drawings}</td>
-                <td className="muted">{new Date(p.created_at).toLocaleString("sv-SE")}</td>
-                <td><button className="secondary small" onClick={async () => { if (confirm("Ta bort projektet?")) { await api.deleteProject(p.id); load(); } }}>Ta bort</button></td>
-              </tr>
-            ))}
-            {projects.length === 0 && <tr><td colSpan={5} className="muted">Inga projekt ännu.</td></tr>}
-          </tbody>
-        </table>
+      <p className="crumb">/ Projekt</p>
+      <div className="head">
+        <div>
+          <h1>Projekt</h1>
+          <p className="lead">Mängder ur ritningen, med belägg för varje meter</p>
+        </div>
+        <button onClick={() => setOpen(!open)}>{open ? "Avbryt" : "+ Nytt projekt"}</button>
+      </div>
+
+      {open && (
+        <form className="card" style={{ marginTop: 28, maxWidth: 560 }} onSubmit={create}>
+          <div className="field">
+            <label htmlFor="p-name">Projektnamn</label>
+            <input id="p-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Kv. Badhuset, etapp 2" required autoFocus />
+          </div>
+          <div className="field">
+            <label htmlFor="p-desc">Beskrivning</label>
+            <input id="p-desc" value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Valfritt" />
+          </div>
+          <button type="submit" disabled={busy}>{busy ? "Skapar…" : "Skapa projekt"}</button>
+        </form>
+      )}
+
+      {err && <p className="error" style={{ marginTop: 20 }}>{err}</p>}
+
+      <div className="rule" />
+      <div className="row" style={{ margin: "22px 0 6px" }}>
+        <input style={{ flex: 1, minWidth: 260 }} placeholder="Sök projekt eller beskrivning" value={q} onChange={(e) => setQ(e.target.value)} />
+        <span className="badge">{shown.length} {shown.length === 1 ? "projekt" : "projekt"}</span>
+      </div>
+      <div className="rule" style={{ margin: 0 }} />
+
+      <div className="list">
+        {shown.map((p, i) => (
+          <article className="item" key={p.id}>
+            <div className="no">{String(i + 1).padStart(2, "0")}</div>
+            <div>
+              <Link className="ttl" to={`/projects/${p.id}`}>{p.name}</Link>
+              <div className="sub">{p.description || "—"}</div>
+            </div>
+            <div className="meta">
+              <button className="ghost act" onClick={async () => {
+                if (confirm(`Ta bort ${p.name}?`)) { await api.deleteProject(p.id); load(); }
+              }}>Ta bort</button>
+              <span className="badge">{p.n_drawings} {p.n_drawings === 1 ? "ritning" : "ritningar"}</span>
+              <span className="when">{DATE.format(new Date(p.created_at))}</span>
+            </div>
+          </article>
+        ))}
+        {shown.length === 0 && (
+          <div className="empty">{projects.length ? "Inget projekt matchar sökningen." : "Inga projekt ännu — skapa det första."}</div>
+        )}
       </div>
     </main>
   );

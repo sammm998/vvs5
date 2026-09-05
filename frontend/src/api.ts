@@ -2,6 +2,19 @@ const TOKEN_KEY = "vvs_token";
 export function getToken(): string | null { return localStorage.getItem(TOKEN_KEY); }
 export function setToken(t: string | null) { if (t) localStorage.setItem(TOKEN_KEY, t); else localStorage.removeItem(TOKEN_KEY); }
 
+/** The signed-in address, read out of the token the server issued. Display only - the server checks the token. */
+export function currentEmail(): string | null {
+  const t = getToken();
+  if (!t) return null;
+  try {
+    const p = t.split(".")[1];
+    const json = atob(p.replace(/-/g, "+").replace(/_/g, "/"));
+    return JSON.parse(decodeURIComponent(escape(json))).email ?? null;
+  } catch {
+    return null;
+  }
+}
+
 async function req(path: string, init: RequestInit = {}): Promise<any> {
   const headers: Record<string, string> = { ...(init.headers as any) };
   const tok = getToken();
@@ -46,3 +59,9 @@ export const api = {
   artifactUrl: (jobId: string, name: string) => `/api/jobs/${jobId}/artifacts/${name}`,
   fetchBlob: async (path: string) => { const res = await fetch(path, { headers: { Authorization: `Bearer ${getToken()}` } }); if (!res.ok) throw new Error("Hämtning misslyckades"); return res.blob(); },
 };
+
+/** File size the way a person reads it, not in raw kilobytes. */
+export function fileSize(bytes: number): string {
+  if (bytes >= 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1).replace(".", ",")} MB`;
+  return `${Math.round(bytes / 1024)} kB`;
+}

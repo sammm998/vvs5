@@ -5,7 +5,13 @@ export const STAGE_LABELS: Record<string, string> = {
   BUILDING_PHYSICAL_PIPES: "Bygger fysiska rör", MEASURING: "Mäter", GENERATING_OVERLAYS: "Skapar markeringar", COMPLETED: "Klar", FAILED: "Misslyckades",
 };
 
+const STATUS_LABELS: Record<string, string> = { COMPLETED: "Klar", FAILED: "Misslyckades", RUNNING: "Kör", QUEUED: "Köad" };
+
 export function StatusBadge({ job }: { job: any }) {
   const cls = job.status === "COMPLETED" ? "ok" : job.status === "FAILED" ? "bad" : "warn";
-  return <span className={`badge ${cls}`}>{STAGE_LABELS[job.stage] || job.stage}</span>;
+  // a finished job is described by its outcome, not by the stage it happened to stop on; and a stage we have
+  // no word for still has a status we do
+  const done = job.status === "COMPLETED" || job.status === "FAILED";
+  const text = (done ? STATUS_LABELS[job.status] : STAGE_LABELS[job.stage]) || STATUS_LABELS[job.status] || "Okänt läge";
+  return <span className={`badge ${cls}`}>{text}</span>;
 }
