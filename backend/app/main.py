@@ -235,7 +235,7 @@ def _proposals(db: Session, user: User, anchors: list, pipes: list) -> list[dict
         return []
     mine = (db.query(Correction).join(Drawing, Correction.drawing_id == Drawing.id)
             .join(Project, Drawing.project_id == Project.id)
-            .filter(Project.user_id == user.id, Correction.undone == False).all())  # noqa: E712
+            .filter(Project.owner_id == user.id, Correction.undone == False).all())  # noqa: E712
     taught = lessons([_correction_out(c) for c in mine])
     if not taught:
         return []
@@ -337,7 +337,7 @@ def my_lessons(user: User = Depends(current_user), db: Session = Depends(get_db)
     and only where the pen, the reason and the shape of the name are the same.
     """
     mine = (db.query(Correction).join(Drawing, Correction.drawing_id == Drawing.id)
-            .join(Project, Drawing.project_id == Project.id).filter(Project.user_id == user.id).all())
+            .join(Project, Drawing.project_id == Project.id).filter(Project.owner_id == user.id).all())
     return {"lessons": lessons([_correction_out(c) for c in mine]), "corrections": len(mine)}
 
 

@@ -82,24 +82,28 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
             </tr>,
             ...(open === identityKey(r)
               ? pipes.filter((p: any) => p.identity === identityKey(r))
-                  .sort((a: any, b: any) => (b.length_pt ?? 0) - (a.length_pt ?? 0))
-                  .map((p: any, i: number) => (
-                    <tr key={`${identityKey(r)}-run-${p.physical_pipe_id}`} className="run"
-                      onClick={() => onPipeClick?.(p)}>
-                      <td>{String(i + 1).padStart(2, "0")} · sträcka</td>
-                      <td colSpan={2} className="muted">
-                        sida {(p.page ?? 0) + 1} · {p.anchor_ids?.length ?? 0} etikett{(p.anchor_ids?.length ?? 0) === 1 ? "" : "er"}
-                      </td>
-                      <td className="num muted">{p.nodes?.length ?? ""}</td>
-                      <td className="num">{meterPerPt ? ((p.length_pt ?? 0) * meterPerPt).toFixed(2) : "–"}</td>
-                      <td colSpan={2} className="muted" style={{ fontSize: 12 }}>
-                        {p.frontier_reasons?.length ? p.frontier_reasons[0] : ""}
-                      </td>
-                      <td colSpan={4} className="muted" style={{ fontSize: 12 }}>
-                        {p.bridged_gap_pt ? `${(p.bridged_gap_pt * (meterPerPt ?? 0)).toFixed(2)} m överbryggade streckglapp` : ""}
-                      </td>
-                    </tr>
-                  ))
+                  .sort((a: any, b: any) => (b.horizontal_m ?? 0) - (a.horizontal_m ?? 0))
+                  .map((p: any, i: number) => {
+                    const labels = p.supporting_anchors?.length ?? 0;
+                    const bridged = (p.bridged_gap_pt ?? 0) * (meterPerPt ?? 0);
+                    return (
+                      <tr key={`${identityKey(r)}-run-${p.physical_pipe_id}`} className="run"
+                        onClick={() => onPipeClick?.(p)}>
+                        <td>{String(i + 1).padStart(2, "0")} · sträcka</td>
+                        <td colSpan={2} className="muted">
+                          sida {(p.page ?? 0) + 1} · {labels} etikett{labels === 1 ? "" : "er"}
+                        </td>
+                        <td className="num muted">{p.graph_nodes?.length ?? ""}</td>
+                        <td className="num">{p.horizontal_m == null ? "–" : p.horizontal_m.toFixed(2)}</td>
+                        <td className="num muted">{typeof p.vertical_m === "number" ? p.vertical_m.toFixed(2) : "–"}</td>
+                        <td className="num strong">{p.total_m == null ? "–" : p.total_m.toFixed(2)}</td>
+                        <td colSpan={4} className="muted" style={{ fontSize: 12 }}>
+                          {(p.reasons ?? []).slice(0, 2).join(" · ")}
+                          {bridged > 0.005 ? `${p.reasons?.length ? " · " : ""}${bridged.toFixed(2)} m överbryggade streckglapp` : ""}
+                        </td>
+                      </tr>
+                    );
+                  })
               : []),
           ])}
         </tbody>
