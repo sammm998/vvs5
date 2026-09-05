@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../landing.css";
+import LandingScene from "../components/LandingScene";
+import { useCountUp, useInView, useScrollProgress } from "../components/lp-motion";
 
 /* The drawing in the hero is the product's own subject: a dash-dot waste run with a branch, two labels on
    leaders, and the marks the engine puts back on the paper. It draws itself in once, then the labels land. */
@@ -94,12 +96,37 @@ const LINES: { code: string; name: string; line: string; color: string; dash: st
   { code: "SP / G / TA", name: "Sprinkler, gas och tryckluft", line: "Egen linjetyp per system", color: "#fb923c", dash: "20 5 3 5 3 5" },
 ];
 
+function Figure({ to, suffix, decimals, label }: { to: number; suffix?: string; decimals?: number; label: string }) {
+  const { ref, seen } = useInView<HTMLDivElement>();
+  const n = useCountUp(to, seen);
+  return (
+    <div ref={ref} className={`lp-fig${seen ? " in" : ""}`}>
+      <div className="n">{n.toFixed(decimals ?? 0).replace(".", ",")}{suffix ?? ""}</div>
+      <div className="l">{label}</div>
+    </div>
+  );
+}
+
+function Figures() {
+  return (
+    <section className="lp-wrap">
+      <div className="lp-figures">
+        <Figure to={15.63} decimals={2} suffix=" m" label="samlad avvikelse mot facit över fyra referensritningar" />
+        <Figure to={377} label="sidor i stilbiblioteket, körda sida för sida vid varje ändring" />
+        <Figure to={69} label="tester som måste hålla innan en siffra får ändras" />
+        <Figure to={0} label="gissningar — identitet endast via riktiga ledarlinjer, aldrig närmaste rör" />
+      </div>
+    </section>
+  );
+}
+
 export default function Landing() {
   useEffect(() => {
     document.body.classList.add("lp-dark");
     return () => document.body.classList.remove("lp-dark");
   }, []);
   const [menu, setMenu] = useState(false);
+  const scrolled = useScrollProgress();
   return (
     <div className="lp">
       <div className="lp-corners">
@@ -123,17 +150,26 @@ export default function Landing() {
         </Link>
       </div>
 
+      <div className="lp-rail" aria-hidden="true">
+        <div className="lp-rail-fill" style={{ transform: `scaleY(${scrolled})` }} />
+      </div>
+      <div className="lp-scrollpct" aria-hidden="true">Skroll · {Math.round(scrolled * 100)} %</div>
+
       {menu && (
         <div className="lp-menu">
           <a href="#hur" onClick={() => setMenu(false)}>Så fungerar det</a>
           <a href="#ror" onClick={() => setMenu(false)}>Rörtyper</a>
           <a href="#belagg" onClick={() => setMenu(false)}>Beläggen</a>
+          <Link to="/dokumentation" onClick={() => setMenu(false)}>Dokumentation</Link>
           <Link to="/login" onClick={() => setMenu(false)}>Logga in</Link>
         </div>
       )}
 
       <header className="lp-stage">
-        <div className="lp-stage-art" aria-hidden="true"><Drawing /></div>
+        <div className="lp-stage-art" aria-hidden="true">
+          <video className="lp-video" src="/hero.mp4" autoPlay muted loop playsInline preload="auto" />
+          <div className="lp-stage-draw"><Drawing /></div>
+        </div>
         <h1 className="lp-huge">
           Mängden som<br />ritningen<br />redan säger
         </h1>
@@ -181,51 +217,9 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="lp-wrap">
-        <div className="lp-figures">
-          <div>
-            <div className="n">15,6 m</div>
-            <div className="l">samlad avvikelse mot facit över fyra referensritningar</div>
-          </div>
-          <div>
-            <div className="n">215</div>
-            <div className="l">sidor i stilbiblioteket, körda sida för sida vid varje ändring</div>
-          </div>
-          <div>
-            <div className="n">100 %</div>
-            <div className="l">av det markerade rörnätet ägt på tre av fyra referensritningar</div>
-          </div>
-          <div>
-            <div className="n">0</div>
-            <div className="l">gissningar — identitet endast via riktiga ledarlinjer, aldrig närmaste rör</div>
-          </div>
-        </div>
-      </section>
+      <Figures />
 
-      <section className="lp-sec lp-wrap" id="hur">
-        <div className="lp-sec-head">
-          <div className="lp-kicker">Så fungerar det</div>
-          <h2>Ritningen får berätta själv</h2>
-          <p>
-            Ingen mall, inget lagerantagande, ingen inlärd ritningsstil. Varje sida analyseras på sina egna
-            villkor — och läses sedan om längs andra vägar för att se om svaren håller.
-          </p>
-        </div>
-        <div className="lp-steps">
-          {[
-            ["01", "Läser vektorn", "Varje streck, dess penna, färg och lager tas direkt ur PDF:en. Text som ritats som streck byggs tillbaka till bokstäver."],
-            ["02", "Hittar beteckningslistan", "Sidans egen lista uppe till höger säger vilka koder som är system och vilka som är objekt. Ritningens ordbok, inte vår."],
-            ["03", "Följer ledarlinjerna", "Från etikettens understrykning eller ram till den geometri linjen faktiskt rör — eller symbolen den slutar i."],
-            ["04", "Mäter och granskar", "I skalstockens egen skala. Sedan en granskning som listar varje rör och varje etikett som inte nåddes, med skäl."],
-          ].map(([no, h, p]) => (
-            <div className="lp-step" key={no}>
-              <div className="no">{no}</div>
-              <h3>{h}</h3>
-              <p>{p}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <LandingScene />
 
       <section className="lp-sec lp-wrap" id="ror">
         <div className="lp-sec-head">
@@ -326,6 +320,7 @@ export default function Landing() {
           <span className="sp" />
           <a href="#hur">Så fungerar det</a>
           <a href="#ror">Rörtyper</a>
+          <Link to="/dokumentation">Dokumentation</Link>
           <Link to="/login">Logga in</Link>
         </div>
       </footer>

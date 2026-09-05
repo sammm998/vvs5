@@ -3,6 +3,7 @@ import { Link, Navigate, Route, Routes, useLocation, useNavigate } from "react-r
 import { getToken, setToken, currentEmail } from "./api";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import Docs from "./pages/Docs";
 import Projects from "./pages/Projects";
 import ProjectPage from "./pages/Project";
 import DrawingPage from "./pages/Drawing";
@@ -50,6 +51,7 @@ const ROUTES = (
   <Routes>
     <Route path="/" element={<Landing />} />
     <Route path="/login" element={<Login />} />
+    <Route path="/dokumentation" element={<Docs />} />
     <Route path="/projekt" element={<Guard><Projects /></Guard>} />
     <Route path="/projects/:id" element={<Guard><ProjectPage /></Guard>} />
     <Route path="/drawings/:id" element={<Guard><DrawingPage /></Guard>} />
@@ -68,7 +70,9 @@ export default function App() {
     return !v;
   });
   // the landing page and the login screen bring their own layout
-  if (pathname === "/" || pathname === "/login") return ROUTES;
+  // a trailing slash is the same page: without this, /dokumentation/ fell through and got the app's sidebar
+  const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+  if (path === "" || path === "/" || path === "/login" || path === "/dokumentation") return ROUTES;
   const email = currentEmail();
   return (
     <div className={`app${rail ? " railed" : ""}`}>
@@ -81,7 +85,7 @@ export default function App() {
           <div className="org wide" style={{ marginTop: 10 }}>Mängdning ur ren vektor</div>
         </div>
         <nav>
-          <Link to="/projekt" className={pathname.startsWith("/projekt") || pathname.startsWith("/projects") ? "on" : ""}>
+          <Link to="/projekt" className={path.startsWith("/projekt") || path.startsWith("/projects") ? "on" : ""}>
             <IconProjects /> <span className="wide">Projekt</span>
           </Link>
         </nav>
