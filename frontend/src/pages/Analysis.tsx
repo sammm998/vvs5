@@ -131,7 +131,7 @@ export default function AnalysisPage() {
       <div className="right">
         <div className="tabs">
           <button className={tab === "mangder" ? "active" : ""} onClick={() => setTab("mangder")}>Mängder</button>
-          <button className={tab === "ejlosta" ? "active" : ""} onClick={() => setTab("ejlosta")}>Ej lösta ({result.issues.length})</button>
+          <button className={tab === "ejlosta" ? "active" : ""} onClick={() => setTab("ejlosta")}>Ej lösta ({result.issues.filter((i: any) => i.severity === "blocking").length})</button>
           <button className={tab === "granskning" ? "active" : ""} onClick={() => setTab("granskning")}>
             Granskning{result.review ? ` (${result.review.findings.filter((f: any) => f.severity !== "INFO").length})` : ""}
           </button>
@@ -172,17 +172,32 @@ export default function AnalysisPage() {
             )}
           </div>
         )}
-        {tab === "ejlosta" && (
-          <div className="card">
-            {result.issues.map((it: any, i: number) => (
-              <div key={i} className="issue" onClick={() => it.bbox && viewer.current?.zoomTo(it.bbox)}>
-                <b>{ISSUE_LABELS[it.kind] || it.kind}</b> {it.text ? `· ${it.text}` : ""} {it.count ? `· ${it.count} st` : ""} {it.reason ? <span className="muted">({it.reason})</span> : ""}
-                {it.count ? <span className="muted"> · {it.count} st</span> : ""} {it.length_pt ? <span className="muted"> · {it.length_pt} pt</span> : ""}
+        {tab === "ejlosta" && (() => {
+          const blocking = result.issues.filter((i: any) => i.severity === "blocking");
+          const advisory = result.issues.filter((i: any) => i.severity !== "blocking");
+          const row = (it: any, i: number) => (
+            <div key={i} className="issue" onClick={() => it.bbox && viewer.current?.zoomTo(it.bbox)}>
+              <b>{ISSUE_LABELS[it.kind] || it.kind}</b> {it.text ? `· ${it.text}` : ""} {it.reason ? <span className="muted">({it.reason})</span> : ""}
+              {it.count ? <span className="muted"> · {it.count} st</span> : ""} {it.length_pt ? <span className="muted"> · {it.length_pt} pt</span> : ""}
+            </div>
+          );
+          return (
+            <>
+              <div className="card">
+                <h3>Att åtgärda <span className="badge warn">{blocking.length}</span></h3>
+                <p className="muted" style={{ marginTop: 0 }}>Rör som ritningen namnger men som inte fått en meter.</p>
+                {blocking.map(row)}
+                {blocking.length === 0 && <p className="muted">Inget. Varje rör ritningen namnger har fått sin längd.</p>}
               </div>
-            ))}
-            {result.issues.length === 0 && <p className="muted">Inga olösta problem.</p>}
-          </div>
-        )}
+              <div className="card">
+                <h3>Noterat <span className="badge">{advisory.length}</span></h3>
+                <p className="muted" style={{ marginTop: 0 }}>Sådant mängden överlever: en etikett till för en sträcka som redan är mätt, tecken utanför beteckningarna.</p>
+                {advisory.map(row)}
+                {advisory.length === 0 && <p className="muted">Inget noterat.</p>}
+              </div>
+            </>
+          );
+        })()}
         {tab === "granskning" && (
           <div className="card">
             {!result.review && <p className="muted">Granskningen kördes inte för det här jobbet.</p>}

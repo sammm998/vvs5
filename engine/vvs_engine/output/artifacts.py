@@ -246,7 +246,9 @@ def unresolved_issues(pa) -> list[dict]:
         return lbox[0] - 2 <= cx <= lbox[2] + 2 and lbox[1] - 2 <= cy <= lbox[3] + 2
 
     def _could_be_a_pipe_label(d) -> bool:
-        return lg.names_a_pipe(d) and (d.text or "").upper() not in components and not _in_legend(d)
+        text = (d.text or "").upper()
+        return (lg.names_a_pipe(d) and text not in components
+                and not lg.names_a_component(text) and not _in_legend(d))
 
     for d in pa.designations:
         if d.unknown_chars:
@@ -257,7 +259,13 @@ def unresolved_issues(pa) -> list[dict]:
     for d in pa.designations:
         if d.did not in with_leader and _could_be_a_pipe_label(d):
             issues.append({"kind": "missing_leader", "text": d.text, "bbox": list(d.bbox), "id": d.did})
+    by_did = {d.did: d for d in pa.designations}
     for a in pa.anchors:
+        d = by_did.get(a.designation_id)
+        if d is not None and not _could_be_a_pipe_label(d):
+            continue        # a fitting tag whose leader lands on the run it connects to is not a failure
+        if a.evidence.get("closed_on_owned_run"):
+            continue        # the drawing repeating a name over a run it already named
         if a.state == "AMBIGUOUS_PIPE_ATTACHMENT":
             issues.append({"kind": "ambiguous_pipe_attachment", "text": a.designation, "reason": a.reason, "bbox": [a.endpoint[0] - 5, a.endpoint[1] - 5, a.endpoint[0] + 5, a.endpoint[1] + 5], "id": a.anchor_id})
         elif a.state == "NO_PIPE_ATTACHMENT":
@@ -284,6 +292,13 @@ def unresolved_issues(pa) -> list[dict]:
             issues.append({"kind": "unowned_geometry", "family": fk, "count": len(un), "length_pt": round(L, 1), "bbox": [s.x0 - 5, s.y0 - 5, s.x1 + 5, s.y1 + 5], "id": f"unowned:{fk}"})
     if pa.scale.state in ("NONE", "CONFLICT"):
         issues.append({"kind": "unsupported_structural_family", "text": f"scale: {pa.scale.reason}", "id": "scale"})
+    measured = {q["designation"] for q in pa.quantities if q.get("confirmed_total_m", 0) > 0}
+    for it in issues:
+        # blocking: a pipe the sheet names and we have no metres for. advisory: everything the takeoff survives.
+        t = (it.get("text") or "").upper()
+        it["severity"] = "blocking" if (t and t not in measured and it["kind"] in
+                                        ("missing_pipe_attachment", "ambiguous_pipe_attachment",
+                                         "missing_leader", "missing_dn", "uncertain_designation")) else "advisory"
     return issues
 
 

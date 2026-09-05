@@ -13,7 +13,7 @@ from typing import Any, Callable
 
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
-from .geometry.core import GridIndex, dist
+from .geometry.core import GridIndex, dist, point_seg_distance
 from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family, family_key,
                                    stroke_family,
                                    graph_tolerances, split_prims_at_points)
@@ -88,6 +88,40 @@ def _t(timings: dict, key: str, t0: float) -> float:
     timings[key] = timings.get(key, 0.0) + (now - t0) * 1000.0
     return now
 
+
+
+# A leader that ends this close to a run is on it; the tolerance is the pen, not a search radius. Measured over
+# the reference drawings, the endpoints that sit on geometry their own designation already owns are at 0.0-6.7 pt
+# and the next one is at 13, so nothing is reached for.
+CLOSE_ON_OWNED_TOL = 8.0
+
+
+def _close_labels_on_owned_runs(anchors, ownership, graphs) -> None:
+    """A label the drawing repeats over a run it already named is not an unresolved case.
+
+    Runs after ownership, so it cannot add a metre: it only records that a label which failed to attach names
+    the very identity that already owns the geometry under its leader. Where the nearest owned geometry belongs
+    to a different identity - another system, another dimension - nothing is claimed and the case stays open.
+    """
+    owned: dict[str, list[tuple[str, int]]] = {}
+    for p in ownership.pipes:
+        owned.setdefault(p.identity.key, []).extend((p.family, i) for i in p.prim_ids)
+    if not owned:
+        return
+    for a in anchors:
+        if a.state == "VERIFIED_PIPE_ATTACHMENT" or not a.endpoint:
+            continue
+        stated = (a.designation_display or a.designation or "").upper()
+        best = None
+        for key, prims in owned.items():
+            if key.replace("|DN", "-").upper() != stated:
+                continue
+            for fk, i in prims:
+                d = point_seg_distance(a.endpoint[0], a.endpoint[1], graphs[fk].prims[i].seg)[0]
+                if best is None or d < best:
+                    best = d
+        if best is not None and best <= CLOSE_ON_OWNED_TOL:
+            a.evidence["closed_on_owned_run"] = {"identity": stated, "distance_pt": round(best, 2)}
 
 def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False) -> PageAnalysis:
     timings: dict[str, float] = {}
@@ -307,6 +341,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         progress("BUILDING_PHYSICAL_PIPES")
     identities = _pipe_identities(designations, anchors, grammar, legend=legend)
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
+    _close_labels_on_owned_runs(anchors, ownership, graphs)
     t0 = _t(timings, "physical_pipes_ms", t0)
     if progress:
         progress("MEASURING")

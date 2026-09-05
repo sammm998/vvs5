@@ -90,10 +90,36 @@ class DrawingLegend:
         if not systems:
             return True
         head = (getattr(designation, "system_token", "") or "").upper()
+        if self.names_a_component(getattr(designation, "text", "") or head):
+            return False
         return any(head == c or head.startswith(c) for c in systems)
 
     def components(self) -> set[str]:
         return {e.code.upper() for e in self.entries if e.role == "component"}
+
+    def names_a_component(self, text: str) -> bool:
+        """Whether the sheet's own list says this label is a fitting rather than a run.
+
+        A designation list does not write out every floor drain it has; it writes the family once, with the
+        drawing's own placeholder for the number that varies: `BXXX GOLVBRUNN`, `TSXXX TVATTSTALL`,
+        `RLX RENSROR MED LOCK`. So `B1`, `B10` and `B221BL` are that entry, and comparing the text letter for
+        letter never finds them. A trailing run of X after at least one other character is that placeholder;
+        `X31`, whose X leads, is not. A label that also opens with a system code stays a pipe."""
+        head = (text or "").upper().strip()
+        if not head:
+            return False
+        if any(head == c or head.startswith(c) for c in self.systems()):
+            return False
+        for code in self.components():
+            stem = code.rstrip("X")
+            if not stem or stem == code:                     # no trailing placeholder: an exact code
+                if head == code:
+                    return True
+                continue
+            rest = head[len(stem):]
+            if head.startswith(stem) and rest[:1].isdigit():
+                return True
+        return False
 
     def bbox(self) -> tuple[float, float, float, float] | None:
         """The block the legend occupies, so its own rows can be told from labels out on the drawing."""
