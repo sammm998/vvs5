@@ -20,6 +20,7 @@ CONFIG = {"contact_tolerance_pt": 0.6, "touch_tolerance_pt": 0.15, "unknown_glyp
 
 def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinism: bool = True, contamination: bool = True,
                 progress=None, pages: list[int] | None = None, review: bool = True, review_ocr: bool = True,
+                film_sink=None,
                 ocr_assist: bool = False) -> dict:
     t_all = time.perf_counter()
     name = name or os.path.splitext(os.path.basename(pdf_path))[0]
@@ -32,7 +33,8 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     timings["extract_ms"] = (time.perf_counter() - t0) * 1000
     analyses: list[PageAnalysis] = []
     for pg in doc.pages:
-        analyses.append(analyze_page(pg, progress, ocr_assist=ocr_assist))
+        analyses.append(analyze_page(pg, progress, ocr_assist=ocr_assist,
+                                     film_sink=film_sink if pg.info.index == 0 else None))
     if progress:
         progress("GENERATING_OVERLAYS")
     t0 = time.perf_counter()

@@ -57,6 +57,7 @@ export const api = {
   fileUrl: (drawingId: string) => `/api/drawings/${drawingId}/file`,
   exportUrl: (jobId: string, fmt: string) => `/api/jobs/${jobId}/export/${fmt}`,
   artifactUrl: (jobId: string, name: string) => `/api/jobs/${jobId}/artifacts/${name}`,
+  film: (jobId: string) => req(`/api/jobs/${jobId}/film`),
   fetchBlob: async (path: string) => { const res = await fetch(path, { headers: { Authorization: `Bearer ${getToken()}` } }); if (!res.ok) throw new Error("Hämtning misslyckades"); return res.blob(); },
 };
 

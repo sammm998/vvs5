@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import PdfViewer, { Layer, ViewerHandle } from "../components/PdfViewer";
 import QuantityTable from "../components/QuantityTable";
+import AnalysisFilm from "../components/AnalysisFilm";
 import { StatusBadge, STAGE_LABELS } from "../components/Status";
 
 const ISSUE_LABELS: Record<string, string> = {
@@ -92,13 +93,18 @@ export default function AnalysisPage() {
   if (job.status !== "COMPLETED") {
     return (
       <main>
-        <p><Link to={`/drawings/${job.drawing_id}`}>← Ritning</Link></p>
-        <div className="card">
-          <h3>Analys pågår</h3>
-          <div className="progress"><div style={{ width: `${Math.round(job.progress * 100)}%` }} /></div>
-          <p><StatusBadge job={job} /> {STAGE_LABELS[job.stage] || job.stage}</p>
-          {job.status === "FAILED" && <pre className="error">{job.error}</pre>}
+        <p className="crumb"><Link to={`/drawings/${job.drawing_id}`}>Ritning</Link> / Analys</p>
+        <div className="head">
+          <div>
+            <h1>Läser ritningen</h1>
+            <p className="lead">{STAGE_LABELS[job.stage] || job.stage}</p>
+          </div>
+          <StatusBadge job={job} />
         </div>
+        <div className="rule" style={{ marginBottom: 26 }} />
+        {job.status === "FAILED"
+          ? <pre className="error">{job.error}</pre>
+          : <AnalysisFilm jobId={id!} stage={job.stage} progress={job.progress} />}
       </main>
     );
   }

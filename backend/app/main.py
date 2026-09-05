@@ -221,6 +221,22 @@ def job_status(job_id: str, user: User = Depends(current_user), db: Session = De
     return _job_out(_job(db, user, job_id))
 
 
+@app.get("/api/jobs/{job_id}/film")
+def job_film(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """What each stage of the reading found, as far as it has got. Available while the job is still running."""
+    j = _job(db, user, job_id)
+    if not j.result_key:
+        return {"frames": []}
+    path = os.path.join(storage.path(j.result_key), "film.json")
+    if not os.path.exists(path):
+        return {"frames": []}
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except (OSError, ValueError):
+        return {"frames": []}          # a frame caught mid-write; the next poll gets it
+
+
 def _result_dir(j: AnalysisJob) -> str:
     if j.status != "COMPLETED" or not j.result_key:
         raise HTTPException(409, "Analysen är inte klar")

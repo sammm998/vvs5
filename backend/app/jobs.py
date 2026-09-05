@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import datetime as dt
 import os
+import time
+import json
 import sys
 import threading
 import traceback
@@ -42,6 +44,26 @@ def _progress_cb(job_id: str):
     return cb
 
 
+def _film_sink(out_dir: str):
+    """Write each stage's frame as it lands, so the browser can watch the reading happen.
+
+    The whole film is rewritten every frame: a frame is a few hundred shapes, the sheet has a dozen stages, and
+    a single replace is cheaper to reason about than an append the reader might catch half-written.
+    """
+    frames: list[dict] = []
+    path = os.path.join(out_dir, "film.json")
+
+    def sink(stage: str, payload: dict) -> None:
+        frames.append({"stage": stage, "at": round(time.time(), 2), **payload})
+        os.makedirs(out_dir, exist_ok=True)
+        tmp = path + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump({"frames": frames}, fh, ensure_ascii=False)
+        os.replace(tmp, path)
+
+    return sink
+
+
 def run_job(job_id: str) -> None:
     from vvs_engine.cli import analyze_pdf
     from vvs_engine.pdf.extract import UnsupportedInputError
@@ -59,7 +81,7 @@ def run_job(job_id: str) -> None:
         summary = analyze_pdf(pdf_path, out_dir, name=os.path.splitext(drawing.filename)[0], determinism=settings.run_determinism,
                               contamination=True, progress=_progress_cb(job_id),
                               review=settings.run_review, review_ocr=settings.review_ocr,
-                              ocr_assist=settings.ocr_assist)
+                              ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir))
         _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
              summary={"total_seconds": summary["total_seconds"], **summary["summary"]})
     except UnsupportedInputError as e:

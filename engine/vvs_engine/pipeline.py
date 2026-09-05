@@ -29,6 +29,7 @@ from .text.vector_text import VectorTextResult, vector_text_rows
 from .measure.scale import ScaleResult, discover_scale
 from .measure.measure import PipeMeasure, aggregate, measure_pipes
 from .pipes.ownership import Identity, OwnershipResult, identity_of, propagate
+from .film import Film
 from .routes import apply_routes, cross_check, review, run_routes
 
 # a drawing draws its leaders alike: a family carrying this share of the leaders is where it draws them
@@ -123,7 +124,10 @@ def _close_labels_on_owned_runs(anchors, ownership, graphs) -> None:
         if best is not None and best <= CLOSE_ON_OWNED_TOL:
             a.evidence["closed_on_owned_run"] = {"identity": stated, "distance_pt": round(best, 2)}
 
-def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False) -> PageAnalysis:
+def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
+                 film_sink: Callable[[str, dict], None] | None = None) -> PageAnalysis:
+    film = Film(film_sink)
+    film.page(page)
     timings: dict[str, float] = {}
     t0 = time.perf_counter()
     if progress:
@@ -135,6 +139,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     vt_timing: dict = {}
     vtext = vector_text_rows(page, vt_timing)
     srows = searchable_rows(page)
+    film.text(vtext.rows)
     t0 = _t(timings, "text_ms", t0)
     ocr_report = None
     if ocr_assist:
@@ -154,6 +159,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     designations, grammar, _ = extract_designations(page, blocks)
     legend = read_legend(lines)                  # the sheet's own designation list
     assign_roles(legend, designations)
+    film.designations(designations)
     t0 = _t(timings, "designation_ms", t0)
     if progress:
         progress("FINDING_LEADERS")
@@ -330,6 +336,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             if os.environ.get("VVS_DEBUG_PASS"):
                 print(f"[drop] only {len(placed)}/{len(pipe_labels)} pipe labels reached {sorted(pipe_families)}", file=sys.stderr)
             pipe_families, graphs, anchors, contact_stats = {}, {}, [], dict(contact_stats, dropped_by_label_reach=True)
+    film.leaders(leaders)
+    film.families(pipe_families, graphs)
     timings["leader_ms"] = 0.0
     t0 = _t(timings, "leader_attachment_ms", t0)
     if progress:
@@ -342,6 +350,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     identities = _pipe_identities(designations, anchors, grammar, legend=legend)
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     _close_labels_on_owned_runs(anchors, ownership, graphs)
+    film.pipes(ownership.pipes)
     t0 = _t(timings, "physical_pipes_ms", t0)
     if progress:
         progress("MEASURING")
@@ -377,6 +386,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         if a.state == "VERIFIED_PIPE_ATTACHMENT" and a.anchor_id in identities:
             label_counts[identities[a.anchor_id].key] += 1
     quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers, dict(label_counts), label_risers)
+    film.measured(quantities, scale)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
     return PageAnalysis(page=page, legend=legend, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,

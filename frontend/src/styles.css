@@ -337,3 +337,43 @@ pre { white-space: pre-wrap; word-break: break-word; background: var(--bg-2); bo
   .analysis { grid-template-columns: 1fr; height: auto; }
   .splitter { display: none; }
 }
+
+/* ---------- the film: the reading, while it is still happening ---------- */
+
+.film { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+.film-stage {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  background: var(--bg-2);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+.film-stage svg { max-width: 100%; height: auto; }
+
+.film-total .v { font-size: 34px; font-weight: 500; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.film-total .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+
+.film-stages { list-style: none; margin: 22px 0; padding: 0; }
+.film-stages li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 0; color: var(--faint);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.film-stages .dot { width: 6px; height: 6px; border-radius: 999px; background: currentColor; opacity: 0.35; flex: none; }
+.film-stages li.done { color: var(--ink); }
+.film-stages li.done .dot { opacity: 1; }
+.film-stages li.now { color: var(--ink); }
+.film-stages li.now .dot { opacity: 1; animation: film-pulse 1s ease-in-out infinite; }
+.film-stages .nm { flex: 1; }
+.film-stages .ct { font-variant-numeric: tabular-nums; opacity: 0.6; }
+@keyframes film-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(2.1); } }
+
+.film-q { list-style: none; margin: 0 0 18px; padding: 0; }
+.film-q li { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 12.5px; }
+.film-q .sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.film-q .dq { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.film-q .mq { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+
+@media (max-width: 900px) { .film { grid-template-columns: 1fr; } }
