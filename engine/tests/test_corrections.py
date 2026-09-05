@@ -122,3 +122,30 @@ def test_the_loop_closes_only_where_the_situation_is_the_same():
         {"id": "not-offered", "situation": same["situation"], "candidates": ["S1-P2-110"]},
     ):
         assert settle([wrong], taught) == [], f"a lesson spoke where it had no business: {wrong['id']}"
+
+
+def test_erasing_removes_the_pipe_under_the_stroke_not_the_stroke():
+    """The reader drags a band along the run; the band wanders and is longer than what it covers.
+
+    What comes off the takeoff is the pipe the band was over, measured from the run's own geometry, which the
+    viewer sends with the correction. Taking the stroke's length instead would erase whatever the hand did."""
+    scribble = [[0.0, 0.0], [40.0, 6.0], [80.0, -4.0], [120.0, 3.0]]     # ~121 pt of hand movement
+    out = apply([_q("S3-R8-110", 10.0)],
+                [{"id": "c1", "kind": "erase", "designation": "S3-R8-110",
+                  "payload": {"points": scribble, "meters": 1.5}}], MPP)
+    row = out["quantities"][0]
+    assert row["confirmed_total_m"] == 8.5
+    assert row["engine_total_m"] == 10.0
+
+
+def test_an_erase_recorded_without_a_metre_count_still_falls_back_to_the_stroke():
+    pts = [[0.0, 0.0], [100.0, 0.0]]
+    out = apply([_q("S3-R8-110", 10.0)],
+                [{"id": "c1", "kind": "erase", "designation": "S3-R8-110", "payload": {"points": pts}}], MPP)
+    assert out["quantities"][0]["confirmed_total_m"] == round(10.0 - 100 * MPP, 3)
+
+
+def test_an_erase_never_drives_a_row_below_zero():
+    out = apply([_q("S3-R8-110", 1.0)],
+                [{"id": "c1", "kind": "erase", "designation": "S3-R8-110", "payload": {"meters": 4.0}}], MPP)
+    assert out["quantities"][0]["confirmed_total_m"] == 0.0

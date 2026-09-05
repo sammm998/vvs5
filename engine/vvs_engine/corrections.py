@@ -54,7 +54,11 @@ def apply(quantities: list[dict], corrections: list[dict], meters_per_pt: float 
             r = row(name)
             r["confirmed_horizontal_m"] = round(r.get("confirmed_horizontal_m", 0.0) + delta, 3)
         elif kind == "erase" and name:
-            delta = -_length_m(p.get("points") or [], mpp) if p.get("points") else -float(p.get("meters") or 0.0)
+            # what an erase removes is the pipe under the stroke, not the stroke: the reader drags a band along
+            # the run and the metres of the segments it actually covered come with the correction. The stroke's
+            # own length is only a fallback for a correction recorded without them.
+            m = p.get("meters")
+            delta = -float(m) if m is not None else -_length_m(p.get("points") or [], mpp)
             r = row(name)
             r["confirmed_horizontal_m"] = round(max(0.0, r.get("confirmed_horizontal_m", 0.0) + delta), 3)
         elif kind == "retag" and name:

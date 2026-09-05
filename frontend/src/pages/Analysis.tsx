@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
-import PdfViewer, { Layer, ViewerHandle } from "../components/PdfViewer";
+import PdfViewer, { Drawn, EditKind, Layer, ViewerHandle } from "../components/PdfViewer";
 import QuantityTable from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
-import Corrections from "../components/Corrections";
+import Corrections, { Draft } from "../components/Corrections";
 import { StatusBadge, STAGE_LABELS } from "../components/Status";
 
 const ISSUE_LABELS: Record<string, string> = {
@@ -40,7 +40,7 @@ export default function AnalysisPage() {
     setPanelOpen(v);
     try { localStorage.setItem("vvs.panelOpen", v ? "1" : "0"); } catch { /* private window */ }
   };
-  const [draft, setDraft] = useState<{ points: number[][] } | null>(null);
+  const [draft, setDraft] = useState<Draft>(null);
   const [panel, setPanel] = useState<number>(() => {
     const v = Number((() => { try { return localStorage.getItem("vvs.panel"); } catch { return null; } })());
     return v >= 360 && v <= 1400 ? v : 480;
@@ -78,7 +78,9 @@ export default function AnalysisPage() {
   }, [id]);
 
   const onPipeClick = async (p: any) => {
-    setSelPipe(p); setSelIdent(p.identity); setTab("mangder");
+    setSelPipe(p); setSelIdent(p.identity);
+    // while correcting, the click picks the run to correct: staying on the takeoff tab would hide the tools
+    if (tab !== "rattelser") setTab("mangder");
     try { setWhy(await api.why(id!, p.physical_pipe_id)); } catch { setWhy(null); }
   };
   useEffect(() => {
@@ -146,7 +148,9 @@ export default function AnalysisPage() {
         <PdfViewer ref={viewer} data={pdf} page={page} pipes={pipesOnPage} ambiguous={result.ambiguous_geometry} unowned={result.unowned_geometry}
           designations={result.designations} leaders={result.leaders} anchors={result.anchors} hatched={result.hatched_geometry ?? []} selectedIdentity={selIdent}
           selectedPipe={selPipe?.physical_pipe_id ?? null} layers={layers} onPipeClick={onPipeClick} onPageCount={setNPages}
-          drawing={!!drawKind} onDrawn={(points) => setDraft({ points })}
+          editKind={(drawKind === "extend" || drawKind === "draw" || drawKind === "erase" ? drawKind : null) as EditKind}
+          editPipe={selPipe} meterPerPt={result.scale?.meters_per_pdf_point ?? null}
+          onDrawn={(d: Drawn) => setDraft({ points: d.points, meters: d.meters, hits: d.hits })}
           corrections={corrections.filter((c: any) => !c.undone && c.page === page)} />
       </div>
       <div className="splitter" role="separator" aria-orientation="vertical" aria-label="Dra för att ändra bredd"
@@ -237,8 +241,8 @@ export default function AnalysisPage() {
         })()}
         {tab === "rattelser" && (
           <Corrections drawingId={job.drawing_id} jobId={id!} page={page} quantities={result.quantities}
-            corrections={corrections} draft={draft} drawing={drawKind} proposals={result.proposals ?? []}
-            onDrawingChange={setDrawKind} onDraftClear={() => setDraft(null)}
+            corrections={corrections} draft={draft} kind={drawKind} pipe={selPipe} proposals={result.proposals ?? []}
+            onKindChange={setDrawKind} onDraftClear={() => setDraft(null)}
             onChanged={async () => {
               setCorrections(await api.corrections(job.drawing_id));
               setResult(await api.result(id!));

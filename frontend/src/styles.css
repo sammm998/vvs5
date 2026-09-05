@@ -408,3 +408,33 @@ button.drill:hover { background: var(--chip); opacity: 1; }
   position: absolute; top: 20px; right: 20px; z-index: 5;
 }
 .analysis .left { position: relative; }
+
+/* ---------- correcting the reading, on the drawing itself ---------- */
+
+/* the run the edit applies to, named at the top of the panel so nothing has to be typed */
+.subject {
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 12px; margin-bottom: 14px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--card-2, rgba(0, 0, 0, 0.02));
+  font-size: 14px;
+}
+.subject .sw { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.subject .muted { flex: 1; }
+
+.tools { gap: 8px; margin-bottom: 12px; }
+.tools button:disabled { opacity: 0.4; cursor: not-allowed; }
+.hint { margin-top: 0; }
+
+/* what the gesture is about to change, in metres, before it is saved */
+.draftbox {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px; margin-bottom: 14px; border-radius: 10px;
+  border: 1px solid transparent; font-size: 14px;
+}
+.draftbox.pos { background: rgba(18, 162, 75, 0.1); border-color: rgba(18, 162, 75, 0.35); }
+.draftbox.neg { background: rgba(180, 35, 24, 0.1); border-color: rgba(180, 35, 24, 0.35); }
+.draftbox .muted { flex: 1; }
+
+/* no text selection while a gesture is being dragged across the sheet */
+.page.editing { user-select: none; }

@@ -1,50 +1,63 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../api";
+import { identityColor } from "./PdfViewer";
 
-type Draft = { points: number[][] } | null;
+export type Draft = { points: number[][]; meters: number; hits?: string[] } | null;
 
-const KINDS: { k: string; label: string; help: string }[] = [
-  { k: "extend", label: "Förläng rör", help: "Rita vidare där sträckan fortsätter men motorn slutade." },
-  { k: "draw", label: "Rita rör", help: "Rita en sträcka motorn inte såg alls." },
-  { k: "erase", label: "Sudda", help: "Rita över det som mätts men inte är rör." },
-  { k: "retag", label: "Byt beteckning", help: "Flytta meter från en beteckning till en annan." },
-  { k: "quantity", label: "Rätta mängd", help: "Sätt längden för hand när ritningen säger något annat." },
-];
+const HELP: Record<string, string> = {
+  extend: "Dra från den röda punkten i sträckans ände, dit röret fortsätter. Längden räknas medan du drar.",
+  draw: "Klicka längs röret. Backsteg tar bort senaste punkten, Esc avbryter, dubbelklick eller Enter avslutar.",
+  erase: "Dra suddet längs det som mätts men inte är rör. Det som försvinner blir rött medan du drar.",
+  retag: "Flytta hela sträckans meter till en annan beteckning.",
+  quantity: "Sätt längden för hand när ritningen säger något annat.",
+};
 
-export default function Corrections({ drawingId, jobId, page, quantities, corrections, draft, drawing,
-  proposals = [], onDrawingChange, onDraftClear, onChanged }: {
+export default function Corrections({ drawingId, jobId, page, quantities, corrections, draft, kind, pipe,
+  proposals = [], onKindChange, onDraftClear, onChanged }: {
     drawingId: string; jobId: string; page: number; quantities: any[];
-    corrections: any[]; draft: Draft; drawing: string | null; proposals?: any[];
-    onDrawingChange: (kind: string | null) => void; onDraftClear: () => void; onChanged: () => void;
+    corrections: any[]; draft: Draft; kind: string | null; pipe: any | null; proposals?: any[];
+    onKindChange: (kind: string | null) => void; onDraftClear: () => void; onChanged: () => void;
   }) {
-  const [designation, setDesignation] = useState("");
-  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
   const [meters, setMeters] = useState("");
   const [note, setNote] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const kind = drawing;
-  const needsLine = kind === "extend" || kind === "draw" || kind === "erase";
-  const ready = !!kind && !!designation && (needsLine ? !!draft : !!meters) && (kind !== "retag" || !!from);
+  // The run you clicked is the subject of the edit; picking another one starts over. A correction is filed
+  // under the designation as the takeoff writes it, not the internal identity key, or the row would not match.
+  const subject: string | null = pipe?.designation ?? pipe?.identity ?? null;
+  useEffect(() => { onDraftClear(); setMeters(""); setTo(""); }, [pipe?.physical_pipe_id]);
+
+  const designation = kind === "draw" ? to : (subject ?? "");
+  const ready = !!kind && !!designation
+    && (kind === "extend" || kind === "draw" ? !!draft
+      : kind === "erase" ? (!!draft || !!meters)
+      : kind === "retag" ? !!to
+      : !!meters);
 
   const save = async () => {
     if (!kind || !ready) return;
     setBusy(true); setErr("");
     try {
-      const payload: any = needsLine ? { points: draft!.points } : {};
-      if (kind === "retag") { payload.from = from; payload.meters = Number(meters.replace(",", ".")) || 0; }
+      const payload: any = {};
+      if (draft) { payload.points = draft.points; payload.meters = Number(draft.meters.toFixed(3)); }
+      if (kind === "retag") { payload.from = subject; payload.meters = Number(meters.replace(",", ".")) || pipe?.total_m || 0; }
       if (kind === "quantity" || (kind === "erase" && !draft)) payload.meters = Number(meters.replace(",", ".")) || 0;
       await api.addCorrection(drawingId, {
-        kind, designation, page, payload, note: note || null, job_id: jobId,
+        kind, designation: kind === "retag" ? to : designation, page, payload, note: note || null, job_id: jobId,
         // the situation the correction was made in, so a later reading can tell this case from a similar-looking one
-        situation: { family_style: "", reason: "", designation_shape: "" },
+        situation: { family_style: pipe?.family ?? "", reason: (pipe?.reasons ?? [])[0] ?? "", designation_shape: "" },
       });
-      setNote(""); setMeters(""); onDraftClear(); onDrawingChange(null); onChanged();
+      setNote(""); setMeters(""); setTo(""); onDraftClear(); onKindChange(null); onChanged();
     } catch (e: any) { setErr(e.message); } finally { setBusy(false); }
   };
 
   const live = corrections.filter((c) => !c.undone);
+  const tool = (k: string, label: string) => (
+    <button key={k} className={kind === k ? "" : "secondary"} disabled={needsRunFor(k) && !subject}
+      onClick={() => { onKindChange(kind === k ? null : k); onDraftClear(); }}>{label}</button>
+  );
 
   return (
     <>
@@ -72,47 +85,71 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
           ))}
         </div>
       )}
+
       <div className="card">
         <h3>Rätta läsningen</h3>
-        <p className="muted" style={{ marginTop: 0 }}>
-          Det du ändrar läggs ovanpå motorns läsning. Motorns egen siffra står kvar på varje rad, så det syns
-          alltid vad som lästes och vad som rättades.
-        </p>
-        <div className="row" style={{ marginBottom: 14 }}>
-          {KINDS.map((k) => (
-            <button key={k.k} className={kind === k.k ? "" : "secondary"} onClick={() => {
-              onDrawingChange(kind === k.k ? null : k.k); onDraftClear();
-            }}>{k.label}</button>
-          ))}
+        {!subject && (
+          <p className="muted" style={{ marginTop: 0 }}>
+            Klicka på ett rör i ritningen. Då gäller rättelsen den sträckan, och beteckningen behöver inte skrivas.
+            Vill du rita ett rör motorn aldrig såg går det utan att välja något.
+          </p>
+        )}
+        {subject && (
+          <div className="subject">
+            <span className="sw" style={{ background: identityColor(subject) }} />
+            <b>{subject}</b>
+            <span className="muted">
+              {pipe.total_m != null ? ` · ${Number(pipe.total_m).toFixed(2).replace(".", ",")} m` : ""}
+              {` · sida ${(pipe.page ?? 0) + 1}`}
+            </span>
+            <button className="ghost small" onClick={() => onKindChange(null)}>Avmarkera</button>
+          </div>
+        )}
+        <div className="row tools">
+          {tool("extend", "Förläng")}
+          {tool("erase", "Sudda")}
+          {tool("draw", "Rita nytt rör")}
+          {tool("retag", "Byt beteckning")}
+          {tool("quantity", "Rätta mängd")}
         </div>
+
         {kind && (
           <>
-            <p className="muted" style={{ marginTop: 0 }}>{KINDS.find((k) => k.k === kind)!.help}</p>
-            {needsLine && (
-              <p className="muted">
-                {draft ? `${draft.points.length} punkter ritade.` : "Klicka längs sträckan på ritningen, dubbelklicka för att avsluta."}
-              </p>
+            <p className="muted hint">{HELP[kind]}</p>
+
+            {draft && (
+              <div className={`draftbox ${kind === "erase" ? "neg" : "pos"}`}>
+                {/* the same rounding the correction is stored with, so the panel and the list agree */}
+                <b>{kind === "erase" ? "−" : "+"} {Number(draft.meters.toFixed(3)).toFixed(2).replace(".", ",")} m</b>
+                <span className="muted">
+                  {kind === "erase"
+                    ? ` från ${(draft.hits ?? [subject]).filter(Boolean).join(", ") || "mängden"}`
+                    : ` på ${designation || "vald beteckning"}`}
+                </span>
+                <button className="ghost small" onClick={onDraftClear}>Gör om</button>
+              </div>
             )}
-            <div className="field">
-              <label htmlFor="c-des">{kind === "retag" ? "Till beteckning" : "Beteckning"}</label>
-              <input id="c-des" list="c-des-list" value={designation} onChange={(e) => setDesignation(e.target.value)}
-                placeholder="t.ex. S3-R8-110" />
-              <datalist id="c-des-list">
-                {quantities.map((q) => <option key={q.designation} value={q.designation} />)}
-              </datalist>
-            </div>
+
+            {kind === "draw" && (
+              <div className="field">
+                <label htmlFor="c-des">Beteckning</label>
+                <input id="c-des" list="c-des-list" value={to} onChange={(e) => setTo(e.target.value)} placeholder="t.ex. S3-R8-110" />
+              </div>
+            )}
             {kind === "retag" && (
               <div className="field">
-                <label htmlFor="c-from">Från beteckning</label>
-                <input id="c-from" list="c-des-list" value={from} onChange={(e) => setFrom(e.target.value)} />
+                <label htmlFor="c-to">Till beteckning</label>
+                <input id="c-to" list="c-des-list" value={to} onChange={(e) => setTo(e.target.value)} placeholder="t.ex. VV1-X31-16" />
               </div>
             )}
-            {(kind === "retag" || kind === "quantity" || (kind === "erase" && !draft)) && (
+            {(kind === "quantity" || kind === "retag" || (kind === "erase" && !draft)) && (
               <div className="field">
                 <label htmlFor="c-m">Meter</label>
-                <input id="c-m" value={meters} onChange={(e) => setMeters(e.target.value)} placeholder="0,00" />
+                <input id="c-m" value={meters} onChange={(e) => setMeters(e.target.value)}
+                  placeholder={pipe?.total_m != null ? Number(pipe.total_m).toFixed(2).replace(".", ",") : "0,00"} />
               </div>
             )}
+            <datalist id="c-des-list">{quantities.map((q) => <option key={q.designation} value={q.designation} />)}</datalist>
             <div className="field">
               <label htmlFor="c-note">Varför</label>
               <input id="c-note" value={note} onChange={(e) => setNote(e.target.value)}
@@ -130,8 +167,8 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
         {live.map((c) => (
           <div key={c.id} className="issue done-row">
             <div>
-              <b>{KINDS.find((k) => k.k === c.kind)?.label ?? c.kind}</b> · {c.designation}
-              {c.payload?.meters != null && <> · {String(c.payload.meters).replace(".", ",")} m</>}
+              <b>{LABELS[c.kind] ?? c.kind}</b> · {c.designation}
+              {c.payload?.meters != null && <> · {Number(c.payload.meters).toFixed(2).replace(".", ",")} m</>}
               {c.payload?.from && <> · från {c.payload.from}</>}
               {c.note && <div className="muted">{c.note}</div>}
             </div>
@@ -142,4 +179,13 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
       </div>
     </>
   );
+}
+
+const LABELS: Record<string, string> = {
+  extend: "Förlängt", draw: "Ritat rör", erase: "Suddat", retag: "Bytt beteckning", quantity: "Rättad mängd",
+};
+
+/** Which tools need a run to be selected first: all but drawing a run the engine never saw. */
+function needsRunFor(k: string): boolean {
+  return k !== "draw";
 }
