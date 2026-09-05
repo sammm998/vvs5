@@ -30,6 +30,16 @@ STEP_PT = 1.0          # sample the geometry this often
 GROW = 6               # px: the annotator's brush is wider than a hairline, but not by much
 
 
+def bare(name: str) -> str:
+    """The designation without its insulation group.
+
+    The annotator writes VS1-S13-12/W where the engine writes VS1-S13-12 - the same run, differing only in
+    whether the insulation is carried in the name. Insulation does not change which line on the sheet this is,
+    and this check is about placement, so it is dropped from both sides before comparing.
+    """
+    return name.split("/")[0].strip().upper()
+
+
 def decode(rle: str, w: int, h: int) -> bytearray:
     """CVAT run lengths, background first, row-major inside the mask's own box."""
     out = bytearray(w * h)
@@ -89,7 +99,7 @@ def run(job_dir: str, pdf: str) -> dict | None:
     for p in pa.ownership.pipes:
         for i in p.prim_ids:
             # the display form is what the drawing states, and what the annotator typed as the label
-            own[(p.family, i)] = (p.identity.display or p.identity.key).upper()
+            own[(p.family, i)] = bare(p.identity.display or p.identity.key)
 
     # the annotator painted a region of the sheet, not all of it, so geometry outside that region says nothing
     # about agreement: only what falls inside the painted area is scored
@@ -117,14 +127,19 @@ def run(job_dir: str, pdf: str) -> dict | None:
                 if not (region[0] <= px <= region[2] and region[1] <= py <= region[3]):
                     tally["UTANFÖR"] += step_m
                     continue
-                labels = sheet.at(px, py)
+                labels = {bare(l) for l in sheet.at(px, py)}
+                # WALL and UNKNOWN are the annotator's own two non-answers and are taken out first: neither
+                # says our designation is wrong, only that theirs does not name a pipe here
+                named = labels - {"UNKNOWN", "WALL"}
                 if name in labels:
                     verdict = "RÄTT"
-                elif "WALL" in labels and len(labels) == 1:
+                elif labels == {"UNKNOWN"} or (not named and "UNKNOWN" in labels):
+                    verdict = "ONÄMND"        # the annotator marked a run here but could not name it either
+                elif not named and "WALL" in labels:
                     # the wall mask also covers the pipes that cross it; where our own hatch detection already
                     # says this run is drawn inside a hatched area, the two readings agree rather than differ
                     verdict = "I SKRAFFERING" if inside_hatch(pa.hatch_families, x, y) is not None else "VÄGG"
-                elif labels:
+                elif named:
                     verdict = "ANNAN"
                 else:
                     verdict = "OMÅLAT"
@@ -133,14 +148,14 @@ def run(job_dir: str, pdf: str) -> dict | None:
     total = sum(v for k, v in tally.items() if k != "UTANFÖR")
     return {"sheet": os.path.basename(pdf), "labels": len({m[0] for m in sheet.masks if m[0] != "WALL"}),
             "masks": len(sheet.masks), "measured_m": total,
-            "right": tally["RÄTT"], "other": tally["ANNAN"], "unpainted": tally["OMÅLAT"], "wall": tally["VÄGG"], "hatch": tally["I SKRAFFERING"], "outside": tally["UTANFÖR"],
+            "right": tally["RÄTT"], "other": tally["ANNAN"], "unpainted": tally["OMÅLAT"], "wall": tally["VÄGG"], "hatch": tally["I SKRAFFERING"], "unnamed": tally["ONÄMND"], "outside": tally["UTANFÖR"],
             "per_designation": {k: dict(v) for k, v in per_des.items()}}
 
 
 if __name__ == "__main__":
     jobs = sorted(glob.glob(os.path.join(CVAT, "*_cvat_job*")))
     want = sys.argv[1:]
-    print(f"{'ark':26s} {'bet':>4s} {'mätt m':>9s} {'rätt':>9s} {'annan':>7s} {'vägg':>6s} {'skraff':>7s} {'omålat':>8s}   träff")
+    print(f"{'ark':26s} {'bet':>4s} {'mätt m':>9s} {'rätt':>9s} {'annan':>7s} {'vägg':>6s} {'onämnd':>7s} {'omålat':>8s}   träff")
     tot = defaultdict(float)
     for j in jobs:
         base = os.path.basename(j).split("_cvat_job")[0]
@@ -154,12 +169,14 @@ if __name__ == "__main__":
             continue
         if r is None:
             continue
-        hit = 100 * r["right"] / r["measured_m"] if r["measured_m"] else 0.0
+        # the annotator's own unnamed runs and the wall band are not ours to be right or wrong about
+        judged = r["measured_m"] - r["unnamed"] - r["wall"]
+        hit = 100 * r["right"] / judged if judged > 0 else 0.0
         print(f"{base:26s} {r['labels']:4d} {r['measured_m']:9.1f} {r['right']:9.1f} {r['other']:7.1f} "
-              f"{r['wall']:6.1f} {r['hatch']:7.1f} {r['unpainted']:8.1f}   {hit:5.1f} %", flush=True)
-        for k in ("measured_m", "right", "other", "unpainted", "wall", "hatch"):
+              f"{r['wall']:6.1f} {r['unnamed']:7.1f} {r['unpainted']:8.1f}   {hit:5.1f} %", flush=True)
+        for k in ("measured_m", "right", "other", "unpainted", "wall", "hatch", "unnamed"):
             tot[k] += r[k]
     if tot["measured_m"]:
         print(f"{'SUMMA':26s} {'':4s} {tot['measured_m']:9.1f} {tot['right']:9.1f} {tot['other']:7.1f} "
-              f"{tot['wall']:6.1f} {tot['hatch']:7.1f} {tot['unpainted']:8.1f}   "
-              f"{100 * tot['right'] / tot['measured_m']:5.1f} %")
+              f"{tot['wall']:6.1f} {tot['unnamed']:7.1f} {tot['unpainted']:8.1f}   "
+              f"{100 * tot['right'] / max(tot['measured_m'] - tot['unnamed'] - tot['wall'], 1e-9):5.1f} %")

@@ -18,7 +18,9 @@ body.lp-dark { background: #07080a; }
   line-height: 1.55;
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden;
+  /* clip, not hidden: overflow:hidden on an ancestor silently kills position:sticky, which left the pinned
+     scene unpinned and a screenful of nothing where it should have been */
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -523,7 +525,7 @@ body.lp-dark { background: #07080a; }
 
 /* ---------- the pinned scene: the drawing reads itself as the page scrolls ---------- */
 
-.lp-scene { position: relative; height: 420vh; }
+.lp-scene { position: relative; height: 300vh; }
 .lp-scene-pin {
   position: sticky; top: 0; height: 100svh;
   display: flex; align-items: center;
@@ -675,3 +677,33 @@ body.lp-dark { background: #07080a; }
   .docs-nav { position: static; flex-direction: row; flex-wrap: wrap; gap: 4px 16px; }
   .docs-nav a { border-left: 0; padding: 6px 0; }
 }
+
+
+/* ---------- light sections, so the page is not one long dark corridor ---------- */
+
+.lp-light {
+  background: #f4f4f2;
+  color: #16181c;
+  position: relative;
+  z-index: 1;
+  padding-top: 104px;
+  padding-bottom: 104px;
+  /* the section keeps its reading width, but the paper it sits on runs edge to edge:
+     the shadow paints the margins and the clip lets it out past the max-width box */
+  box-shadow: 0 0 0 100vmax #f4f4f2;
+  clip-path: inset(0 -100vmax);
+}
+.lp-light + .lp-sec { padding-top: 108px; }
+.lp-light h2, .lp-light h3, .lp-light .n, .lp-light b, .lp-light strong { color: #0d0d0d; }
+.lp-light p, .lp-light li, .lp-light td, .lp-light .l { color: #4b5160; }
+.lp-light .lp-kicker { color: #0f7a4a; }
+.lp-light .lp-card, .lp-light .lp-step { background: #fff; border-color: rgba(0, 0, 0, 0.09); }
+.lp-light table, .lp-light th, .lp-light td { border-color: rgba(0, 0, 0, 0.1); }
+.lp-light th { color: #6b7280; }
+.lp-light a { color: #0d0d0d; }
+.lp-light .lp-legend td, .lp-light .lp-legend th { border-bottom-color: rgba(0, 0, 0, 0.1); }
+.lp-light .lp-quote, .lp-light blockquote { color: #0d0d0d; }
+.lp-light .lp-sec-head p, .lp-light .lp-lede, .lp-light .lp-under { color: #4b5160; }
+.lp-light .lp-legend td.code { color: #0d0d0d; }
+.lp-light .lp-legend th { background: rgba(0, 0, 0, 0.025); }
+.lp-light .lp-legend { border-color: rgba(0, 0, 0, 0.1); }

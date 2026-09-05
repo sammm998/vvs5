@@ -16,9 +16,18 @@ const RUNS: { d: string; c: string; m: number }[] = [
   { d: "M240 300 V444 H520", c: "#fbbf24", m: 12.1 },
 ];
 
-const WORDS = [
-  [148, 268, 74], [402, 154, 62], [648, 154, 58], [176, 340, 66], [500, 268, 70],
-  [700, 370, 54], [268, 412, 60], [560, 434, 66], [820, 268, 48], [360, 154, 44],
+/** Text rows the sheet carries. The four with `u` are pipe labels: their underline is where a leader starts. */
+const WORDS: { x: number; y: number; t: string; u?: number }[] = [
+  { x: 96, y: 128, t: "VVS PLAN 2" },
+  { x: 140, y: 270, t: "KV1-X31-16", u: 60 },
+  { x: 392, y: 156, t: "S1-P2-110", u: 56 },
+  { x: 646, y: 156, t: "VV1-X31-16", u: 60 },
+  { x: 256, y: 414, t: "S3-R8-75", u: 50 },
+  { x: 546, y: 292, t: "BETECKNINGAR" },
+  { x: 546, y: 314, t: "KV  TAPPKALLVATTEN" },
+  { x: 546, y: 336, t: "VV  TAPPVARMVATTEN" },
+  { x: 546, y: 358, t: "S   SPILLVATTEN" },
+  { x: 546, y: 392, t: "SKALA 1:50" },
 ];
 
 /** A short window of the scroll, eased, so each beat has its own stretch of the page. */
@@ -28,11 +37,11 @@ export default function LandingScene() {
   const { ref, p } = useSectionProgress<HTMLElement>();
   const beat = Math.min(BEATS.length - 1, Math.floor(p * BEATS.length * 0.999));
 
-  const text = win(p, 0.02, 0.24);
-  const words = win(p, 0.18, 0.40);
-  const leaders = win(p, 0.36, 0.58);
-  const pipes = win(p, 0.52, 0.80);
-  const measure = win(p, 0.76, 0.96);
+  const text = win(p, 0.02, 0.20);
+  const words = win(p, 0.14, 0.36);
+  const leaders = win(p, 0.32, 0.54);
+  const pipes = win(p, 0.48, 0.78);
+  const measure = win(p, 0.58, 0.92);
 
   return (
     <section className="lp-scene" ref={ref} id="hur">
@@ -41,19 +50,29 @@ export default function LandingScene() {
           <div className="lp-scene-art">
             <svg viewBox="0 0 940 520" role="img" aria-label="Ritningen läses steg för steg medan sidan skrollas">
               {/* the sheet */}
-              <g stroke="#1b1f26" strokeWidth="1.4" fill="none" opacity={0.5 + 0.5 * text}>
+              <g stroke="#232830" strokeWidth="1.6" fill="none" opacity={0.75 + 0.25 * text}>
                 <path d="M60 90 H880 V470 H60 Z M60 250 H520 M520 90 V470 M700 250 H880 M700 340 H880" />
               </g>
-              {/* text rows found */}
-              <g fill="#e8ecf1">
-                {WORDS.map(([x, y, w], i) => {
-                  const k = win(words, i / WORDS.length * 0.75, i / WORDS.length * 0.75 + 0.3);
-                  return <rect key={i} x={x} y={y} width={(w as number) * k} height="7" rx="1" opacity={0.12 + 0.2 * k} />;
+              {/* text rows put back together, letter by letter, the way the glyphs are reassembled */}
+              <g fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace" fontSize="12.5" letterSpacing="0.5">
+                {WORDS.map((w, i) => {
+                  const a = (i / WORDS.length) * 0.7;
+                  const k = win(words, a, a + 0.3);
+                  const shown = w.t.slice(0, Math.round(w.t.length * k));
+                  return (
+                    <g key={w.t} opacity={0.35 + 0.65 * k}>
+                      <text x={w.x} y={w.y} fill={w.u ? "#e8ecf1" : "#8b93a1"}>{shown}</text>
+                      {w.u ? (
+                        <line x1={w.x} y1={w.y + 5} x2={w.x + w.u * k} y2={w.y + 5}
+                          stroke="#e8ecf1" strokeWidth="1.1" opacity={0.7} />
+                      ) : null}
+                    </g>
+                  );
                 })}
               </g>
               {/* leaders reaching from the labels to the runs */}
               <g stroke="#c026d3" strokeWidth="1.3" fill="none" opacity={0.7}>
-                {[["M186 275 L246 299"], ["M436 161 L468 300"], ["M690 161 L622 187"], ["M300 419 L340 373"]].map((d, i) => {
+                {[["M200 275 L246 299"], ["M448 161 L468 300"], ["M706 161 L812 187"], ["M306 419 L330 444"]].map((d, i) => {
                   const k = win(leaders, i * 0.12, i * 0.12 + 0.5);
                   return <path key={i} d={d[0]} pathLength={1} strokeDasharray="1" strokeDashoffset={1 - k} />;
                 })}
@@ -64,7 +83,7 @@ export default function LandingScene() {
                   const k = win(pipes, i * 0.1, i * 0.1 + 0.62);
                   return (
                     <path key={i} d={r.d} stroke={r.c} pathLength={1} strokeDasharray="1"
-                      strokeDashoffset={1 - k} opacity={0.35 + 0.65 * k} />
+                      strokeDashoffset={1 - k} opacity={0.5 + 0.5 * k} />
                   );
                 })}
               </g>
@@ -94,7 +113,7 @@ export default function LandingScene() {
                 return (
                   <div key={i} className="lp-tally-row">
                     <span className="sw" style={{ background: r.c, opacity: 0.25 + 0.75 * k }} />
-                    <span className="dq">{["S1-P2-110", "KV1-X31-16", "VV1-X31-16", "S3-R8-75"][i]}</span>
+                    <span className="dq">{["KV1-X31-16", "S1-P2-110", "VV1-X31-16", "S3-R8-75"][i]}</span>
                     <span className="mq">{(r.m * k).toFixed(1).replace(".", ",")} m</span>
                   </div>
                 );

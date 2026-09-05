@@ -221,7 +221,7 @@ export default function Landing() {
 
       <LandingScene />
 
-      <section className="lp-sec lp-wrap" id="ror">
+      <section className="lp-sec lp-wrap lp-light" id="ror">
         <div className="lp-sec-head">
           <div className="lp-kicker">Rörtyper</div>
           <h2>Alla system på sidan, var för sig</h2>
@@ -289,7 +289,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="lp-sec lp-wrap">
+      <section className="lp-sec lp-wrap lp-light">
         <div className="lp-quote">
           <p>
             “Tvetydigt är ett giltigt svar. Fel säkerhet är det inte. Där ritningen inte säger vilket rör en
