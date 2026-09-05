@@ -249,7 +249,10 @@ def unresolved_issues(pa) -> list[dict]:
     for r in pa.ownership.ambiguous_runs:
         g = pa.graphs[r["family"]]
         s = g.prims[r["from_prim"]].seg
-        issues.append({"kind": "dn_conflict" if r["reason"] == "AMBIGUOUS_DN_BOUNDARY" else "topology_conflict", "reason": r["reason"], "identities": r["identities"],
+        kind = {"AMBIGUOUS_DN_BOUNDARY": "dn_conflict",
+                "AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE": "drawn_outline",
+                "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS": "flow_beyond_labels"}.get(r["reason"], "topology_conflict")
+        issues.append({"kind": kind, "reason": r["reason"], "identities": r["identities"],
                        "bbox": [s.x0 - 5, s.y0 - 5, s.x1 + 5, s.y1 + 5], "id": f"run:{r['family']}:{r['from_prim']}"})
     # branch conflicts + unowned geometry (aggregate per family chain)
     for fk, sts in pa.ownership.prim_states.items():
