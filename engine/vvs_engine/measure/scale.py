@@ -12,7 +12,10 @@ from ..pdf.extract import RawPage
 from ..text.model import TextRow, project, row_axes
 
 MM_PER_PT = 25.4 / 72.0
-SCALE_RE = re.compile(r"1\s*[:;]\s*([0-9Oo]{1,4})")
+# The denominator has to end where the number ends. Without the boundary "1:10000" matches its first four
+# digits and reads as 1:1000, which is not a refusal to understand an unsupported scale - it is a tenfold
+# error stated as confidently as a correct reading.
+SCALE_RE = re.compile(r"1\s*[:;]\s*([0-9Oo]{1,4})(?![0-9Oo])")
 FORMAT_RE = re.compile(r"\bA([0-4])\b")
 
 
