@@ -553,11 +553,28 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                 confirm([pid], grp.merged, "chain_from_anchor", grp.anchors)
             else:
                 ambiguous([pid], grp.ids, grp.anchors, _conflict_reason(grp.ids))
+        # A closed chain has no free ends: what looks like the run before the first seed and the run after the
+        # last is one span that joins them, and it sits between two seeds like any other. Confirming both halves
+        # from their nearest seed would hand that span to whichever seed the chain happens to start at.
+        closed = nodes[0] == nodes[-1] and len(c) > 1
         first, last = gs[0], gs[-1]
-        if first.merged is not None:
-            confirm(prims_between(-1.0, first.pos), first.merged, "chain_before_first_anchor", first.anchors)
-        if last.merged is not None:
-            confirm(prims_between(last.pos, len(c) + 1.0), last.merged, "chain_after_last_anchor", last.anchors)
+        if closed:
+            wrap = prims_between(last.pos, len(c) + 1.0) + prims_between(-1.0, first.pos)
+            joined = _merge_identity(first.ids + last.ids)
+            if wrap:
+                if joined is not None:
+                    confirm(wrap, joined, "closed_chain_between_agreeing_anchors", first.anchors | last.anchors)
+                else:
+                    reason = _conflict_reason(first.ids + last.ids)
+                    ambiguous(wrap, first.ids + last.ids, first.anchors | last.anchors, reason)
+                    ambiguous_runs.append({"family": fk, "chain": ci, "from_prim": wrap[0], "to_prim": wrap[-1],
+                                           "reason": reason,
+                                           "identities": sorted({i.key for i in first.ids + last.ids})})
+        else:
+            if first.merged is not None:
+                confirm(prims_between(-1.0, first.pos), first.merged, "chain_before_first_anchor", first.anchors)
+            if last.merged is not None:
+                confirm(prims_between(last.pos, len(c) + 1.0), last.merged, "chain_after_last_anchor", last.anchors)
         for gi in range(len(gs) - 1):
             A, B = gs[gi], gs[gi + 1]
             pids = prims_between(A.pos, B.pos)
