@@ -271,13 +271,18 @@ def unresolved_issues(pa) -> list[dict]:
         elif a.state == "NO_PIPE_ATTACHMENT":
             issues.append({"kind": "missing_pipe_attachment", "text": a.designation, "reason": a.reason, "bbox": [a.endpoint[0] - 5, a.endpoint[1] - 5, a.endpoint[0] + 5, a.endpoint[1] + 5], "id": a.anchor_id})
     for r in pa.ownership.ambiguous_runs:
-        g = pa.graphs[r["family"]]
-        s = g.prims[r["from_prim"]].seg
+        # An unresolved case is the least important thing in a reading and must never cost the reading itself.
+        # A record naming a family or a primitive this graph does not hold is a defect worth seeing, not a
+        # reason to lose the whole analysis, so it is reported without a place on the sheet.
+        g = pa.graphs.get(r.get("family"))
+        prim = g.prims.get(r.get("from_prim")) if g is not None else None
+        s = prim.seg if prim is not None else None
         kind = {"AMBIGUOUS_DN_BOUNDARY": "dn_conflict",
                 "AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE": "drawn_outline",
                 "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS": "flow_beyond_labels"}.get(r["reason"], "topology_conflict")
-        issues.append({"kind": kind, "reason": r["reason"], "identities": r["identities"],
-                       "bbox": [s.x0 - 5, s.y0 - 5, s.x1 + 5, s.y1 + 5], "id": f"run:{r['family']}:{r['from_prim']}"})
+        issues.append({"kind": kind, "reason": r["reason"], "identities": r.get("identities", []),
+                       "bbox": ([s.x0 - 5, s.y0 - 5, s.x1 + 5, s.y1 + 5] if s is not None else None),
+                       "id": f"run:{r.get('family')}:{r.get('from_prim')}"})
     # branch conflicts + unowned geometry (aggregate per family chain)
     for fk, sts in pa.ownership.prim_states.items():
         g = pa.graphs[fk]

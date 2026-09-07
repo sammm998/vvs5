@@ -192,7 +192,7 @@ def _bound_junction_flow(g: PipeGraph, st: dict[int, PrimState], fk: str, ambigu
             labelled += g.prims[pid].seg.length
     if flowed <= FLOW_LIMIT * labelled:
         return
-    n = 0
+    caught: list[int] = []
     for pid in sorted(st):
         s = st[pid]
         if s.state != "CONFIRMED" or s.reason not in FLOWED_REASONS:
@@ -201,12 +201,15 @@ def _bound_junction_flow(g: PipeGraph, st: dict[int, PrimState], fk: str, ambigu
         s.state, s.identity, s.reason = "AMBIGUOUS", None, "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS"
         s.candidates = {ident} if ident is not None else set()
         s.evidence.append("identity_flowed_far_past_what_the_labels_of_this_family_delimit")
-        n += 1
-    if n:
-        ambiguous_runs.append({"family": fk, "chain": -1, "from_prim": -1, "to_prim": -1,
+        caught.append(pid)
+    if caught:
+        # a real primitive, not a sentinel: every reader of an ambiguous run looks its geometry up to put the
+        # case on the drawing, and a placeholder id sends them looking for a primitive that does not exist
+        ambiguous_runs.append({"family": fk, "chain": -1, "from_prim": caught[0], "to_prim": caught[-1],
                                "reason": "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS",
                                "identities": sorted({c.key for s in st.values() for c in s.candidates}),
-                               "n_primitives": n, "flowed_pt": round(flowed, 1), "labelled_pt": round(labelled, 1)})
+                               "n_primitives": len(caught), "flowed_pt": round(flowed, 1),
+                               "labelled_pt": round(labelled, 1)})
 
 
 

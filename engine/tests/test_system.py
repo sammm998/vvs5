@@ -33,3 +33,39 @@ def test_determinism_and_cross_job_isolation(synthetic_pdf):
     analyze_page(other.pages[0])
     h2 = signature_hash(semantic_signature(analyze_page(extract_document(synthetic_pdf).pages[0])))
     assert h1 == h2
+
+
+def test_an_odd_unresolved_record_never_costs_the_whole_reading(synthetic_pdf):
+    """A production job died here: the flow bound filed its case under the primitive id -1, a placeholder that
+    meant "this is about the family, not one run", and the issue writer looked -1 up as a real primitive.
+
+    KeyError: -1, and the whole analysis was lost - every metre the sheet had given up, because a note about
+    something the reading could NOT do was malformed. The listing of unresolved cases is the least important
+    thing in a reading and must never be able to cost the reading itself.
+    """
+    from vvs_engine.output.artifacts import unresolved_issues
+
+    pa = analyze_page(extract_document(synthetic_pdf).pages[0])
+    n_before = len(unresolved_issues(pa))
+
+    pa.ownership.ambiguous_runs.append({"family": "en-familj-som-inte-finns", "chain": -1, "from_prim": -1,
+                                        "to_prim": -1, "reason": "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS",
+                                        "identities": ["X|DN10"]})
+    fk = sorted(pa.graphs)[0]
+    pa.ownership.ambiguous_runs.append({"family": fk, "chain": -1, "from_prim": -1, "to_prim": -1,
+                                        "reason": "AMBIGUOUS_DN_BOUNDARY", "identities": ["Y|DN20"]})
+
+    issues = unresolved_issues(pa)
+    assert len(issues) == n_before + 2, "both cases have to be reported, not dropped and not fatal"
+    placed = [i for i in issues[n_before:] if i.get("bbox")]
+    assert not placed, "a case with no primitive behind it has no place on the sheet, and says so"
+
+
+def test_every_unresolved_run_names_a_primitive_that_exists(synthetic_pdf):
+    """The invariant behind the crash above: a case about geometry has to name geometry that is there."""
+    pa = analyze_page(extract_document(synthetic_pdf).pages[0])
+    for r in pa.ownership.ambiguous_runs:
+        g = pa.graphs.get(r["family"])
+        assert g is not None, f"unresolved run names a family that is not in the reading: {r['family']}"
+        assert r["from_prim"] in g.prims, f"unresolved run names primitive {r['from_prim']}, which does not exist"
+        assert r["to_prim"] in g.prims, f"unresolved run names primitive {r['to_prim']}, which does not exist"
