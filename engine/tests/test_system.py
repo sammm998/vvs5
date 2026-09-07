@@ -1,3 +1,4 @@
+import pytest
 import os
 
 from vvs_engine.contamination import scan_source
@@ -69,3 +70,31 @@ def test_every_unresolved_run_names_a_primitive_that_exists(synthetic_pdf):
         assert g is not None, f"unresolved run names a family that is not in the reading: {r['family']}"
         assert r["from_prim"] in g.prims, f"unresolved run names primitive {r['from_prim']}, which does not exist"
         assert r["to_prim"] in g.prims, f"unresolved run names primitive {r['to_prim']}, which does not exist"
+
+
+def test_a_reading_that_runs_past_its_budget_refuses_instead_of_hanging(synthetic_pdf, tmp_path):
+    """Without a budget one dense page holds the worker thread and everything queued behind it.
+
+    The budget is checked between pages, so a single long page still finishes; what it bounds is a document that
+    would never end. And it refuses outright rather than saving what it managed - half a takeoff that looks whole
+    is worse than none, because nothing on the page says which half is missing.
+    """
+    import pymupdf
+    from vvs_engine.cli import AnalysisTookTooLong, analyze_pdf
+
+    # a two-page document, so there is a page boundary for the budget to be checked at
+    src = pymupdf.open(synthetic_pdf)
+    two = pymupdf.open()
+    two.insert_pdf(src); two.insert_pdf(src)
+    path = os.path.join(tmp_path, "two.pdf")
+    two.save(path); two.close(); src.close()
+
+    with pytest.raises(AnalysisTookTooLong) as e:
+        analyze_pdf(path, os.path.join(tmp_path, "out"), determinism=False, contamination=False,
+                    review=False, deadline_s=0.0)
+    assert "avbröts" in str(e.value)
+
+    # and with a budget it can meet, the same document reads normally
+    s = analyze_pdf(path, os.path.join(tmp_path, "out2"), determinism=False, contamination=False,
+                    review=False, deadline_s=600)
+    assert s["pages"] == 2

@@ -78,7 +78,8 @@ def run_job(job_id: str) -> None:
         db.commit()
     out_dir = storage.path(result_key)
     try:
-        summary = analyze_pdf(pdf_path, out_dir, name=os.path.splitext(drawing.filename)[0], determinism=settings.run_determinism,
+        summary = analyze_pdf(pdf_path, out_dir, name=os.path.splitext(drawing.filename)[0],
+                              deadline_s=settings.analysis_deadline_s, determinism=settings.run_determinism,
                               contamination=True, progress=_progress_cb(job_id),
                               review=settings.run_review, review_ocr=settings.review_ocr,
                               ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir))

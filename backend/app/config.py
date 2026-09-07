@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     access_token_minutes: int = 60 * 24
     worker_threads: int = 1
     run_determinism: bool = False
+    # a wall-clock budget for one analysis; without it a single dense page holds the worker forever
+    analysis_deadline_s: int = 1800
     run_review: bool = True       # review agents check the finished result
     review_ocr: bool = True       # let the review read the page with OCR as an independent second opinion
     ocr_assist: bool = True       # let OCR name the characters the stroke recogniser could not

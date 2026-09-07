@@ -18,10 +18,21 @@ from .pipeline import PageAnalysis, analyze_page, summarize
 CONFIG = {"contact_tolerance_pt": 0.6, "touch_tolerance_pt": 0.15, "unknown_glyph_threshold": 0.14, "grid": 32}
 
 
+class AnalysisTookTooLong(Exception):
+    """A reading that ran past its budget. Raised between pages, so what is reported is a refusal, not a guess."""
+
+
 def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinism: bool = True, contamination: bool = True,
                 progress=None, pages: list[int] | None = None, review: bool = True, review_ocr: bool = True,
                 film_sink=None,
-                ocr_assist: bool = False) -> dict:
+                ocr_assist: bool = False, deadline_s: float | None = None) -> dict:
+    """deadline_s: a wall-clock budget for the whole document, checked between pages.
+
+    A drawing set can carry a page dense enough that reading it takes longer than anyone will wait, and without a
+    budget that page does not just delay itself - it holds the worker thread and everything queued behind it. The
+    budget is checked between pages rather than inside one, so a single page that runs long still finishes; what
+    it bounds is a document that would never end.
+    """
     t_all = time.perf_counter()
     name = name or os.path.splitext(os.path.basename(pdf_path))[0]
     os.makedirs(out_dir, exist_ok=True)
@@ -33,6 +44,10 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     timings["extract_ms"] = (time.perf_counter() - t0) * 1000
     analyses: list[PageAnalysis] = []
     for pg in doc.pages:
+        if deadline_s is not None and time.perf_counter() - t_all > deadline_s and analyses:
+            raise AnalysisTookTooLong(
+                f"läsningen hann {len(analyses)} av {len(doc.pages)} sidor inom {deadline_s:.0f} s och avbröts; "
+                f"en halv mängd är sämre än ingen, så inget delresultat sparas")
         analyses.append(analyze_page(pg, progress, ocr_assist=ocr_assist,
                                      film_sink=film_sink if pg.info.index == 0 else None))
     if progress:
