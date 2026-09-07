@@ -217,6 +217,74 @@ const SECTIONS: Sec[] = [
           Facit och annoteringar ligger utanför koden och läses aldrig av motorn. En kontaminationskontroll körs
           vid varje analys och intygar att produktionspaketet inte importerar valideringsdata.
         </p>
+        <p>
+          Ett samlat felvärde döljer de två felen som betyder något åt var sitt håll. Meter som saknas kostar
+          kalkylatorn arbete; meter som systemet hittat på kostar pengar och förtroende, och ingen täckning i
+          världen betalar för dem. Därför redovisas de var för sig.
+        </p>
+        <table className="docs-metrics">
+          <thead>
+            <tr><th>Ritning</th><th>Bet. P</th><th>Bet. R</th><th>Facit m</th><th>Ägda m</th><th>Falska m</th><th>Missade m</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>A</td><td>100 %</td><td>100 %</td><td>213,70</td><td>212,52</td><td>0,05</td><td>2,41</td></tr>
+            <tr><td>C</td><td>100 %</td><td>100 %</td><td>17,60</td><td>17,38</td><td>0,00</td><td>0,23</td></tr>
+            <tr><td>D</td><td>100 %</td><td>100 %</td><td>112,90</td><td>110,09</td><td>2,34</td><td>4,99</td></tr>
+            <tr><td>E</td><td>100 %</td><td>100 %</td><td>50,90</td><td>49,93</td><td>0,30</td><td>1,43</td></tr>
+            <tr className="sum"><td>Alla</td><td>100 %</td><td>100 %</td><td>395,10</td><td>389,91</td><td>2,70</td><td>9,06</td></tr>
+          </tbody>
+        </table>
+        <p className="note">
+          Täckning 98,7 % och falskt ägda 0,7 % — nästan allt av det senare på ritning D, där skalan själv står
+          i konflikt. Av 477 beteckningar fästes 273 med verifierad ledarlinje, 28 lämnades tvetydiga och 54
+          utan fäste: hållna tillbaka i stället för gissade. Siffrorna kommer ur{" "}
+          <code>results/validation/metrics.py</code>, som körs på en blind körning och aldrig av motorn.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "ritningens-eget",
+    h: "Vad som är ritningens eget — och vad som är kodens",
+    body: (
+      <>
+        <p>
+          En mängdningsmotor som bär på en konstant från ett kontors ritstil läser det kontoret, inte ritningar.
+          Så gott som varje mått motorn arbetar med tas därför ur arket den läser.
+        </p>
+        <ul className="defs">
+          <li>
+            <b>Skalan</b> ur skalstocken och skaltexten, och de måste vara överens — annars sägs det.
+          </li>
+          <li>
+            <b>Grammatiken</b> i beteckningarna upptäcks som mönster på sidan (<code>A9-A9-9</code> och dess
+            släktingar) och räknas i frekvens. Det finns ingen inbyggd ordning system–material–dimension.
+          </li>
+          <li>
+            <b>Beteckningslistan</b> läses på sidan när den finns, och säger vilka koder som är system och vilka
+            som är objekt. Saknas den, eller ligger den på ett annat blad, faller läsningen tillbaka på
+            mönsterstatistiken: listan gör läsningen säkrare, den är inget krav.
+          </li>
+          <li>
+            <b>Glappen</b> i en streckad linje mäts på familjens egna avbrott och överbryggas bara i de avstånd
+            ritningen själv använder om och om igen.
+          </li>
+          <li>
+            <b>Hur nära två linjer får ligga</b> innan de läses som två sidor av ett ritat föremål sätts av
+            ritningens egen penna, inte av millimeter på papper.
+          </li>
+          <li>
+            <b>Linjetypen</b> läses — streck och glapp mäts per familj — men den delar inte familjen. I dessa
+            exporter finns ingen streckkod i PDF:en alls, och när mönstret ändå byggs upp visar det sig att de
+            heldragna bitarna inuti en streckad ledning är böjar och kopplingar på några tiotal punkter. Att
+            dela på linjetyp skulle klippa av rör precis där de tydligast fortsätter.
+          </li>
+        </ul>
+        <p className="note">
+          Kvar som fasta tal finns PDF:ens egen räknenoggrannhet, standardens nominella rördimensioner, och
+          statistiska trösklar av typen ”hur många gånger måste ritningen upprepa något innan det är ett mönster”.
+          Inget av dem är hämtat från ett visst kontors stil.
+        </p>
       </>
     ),
   },
@@ -227,10 +295,25 @@ const SECTIONS: Sec[] = [
       <>
         <ul className="defs">
           <li>Läser inte skannade ritningar. Utan vektorkoder finns inget att mäta.</li>
-          <li>Antar ingen våningshöjd. Stigare räknas som antal tills du anger en höjd.</li>
+          <li>
+            Antar ingen våningshöjd. Stigare räknas som antal tills du anger en höjd — och anger du en, följer
+            det med i exporten att metrarna är antagna och inte mätta.
+          </li>
           <li>Fördelar inte längden i en delad sträcka mellan systemen som delar den.</li>
           <li>Namnger inte geometri utifrån närhet, hur nära den än ligger.</li>
           <li>Låter inte en rättelse på en ritning bli en gissning på en annan.</li>
+          <li>
+            <b>Har en skala per sida, inte per ritningsdel.</b> Ett detaljutsnitt i egen skala mäts i planens
+            skala. Motstridiga skaluppgifter redovisas som konflikt, men delas inte upp per område.
+          </li>
+          <li>
+            <b>Överbryggar inte glapp i en böjd streckad linje.</b> Kurvor läses och mäts, men ett avbrott i en
+            streckad kurva sluts bara där bitarna ligger på linje eller möts i ett hörn.
+          </li>
+          <li>
+            <b>Delar inte en knippeetikett som räknar upp fler koder än ritningen ritar linjer.</b> Där räcker
+            eliminering inte till, och fallet lämnas tvetydigt i stället för att fördelas.
+          </li>
         </ul>
       </>
     ),

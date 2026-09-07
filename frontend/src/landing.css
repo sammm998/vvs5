@@ -707,3 +707,12 @@ body.lp-dark { background: #07080a; }
 .lp-light .lp-legend td.code { color: #0d0d0d; }
 .lp-light .lp-legend th { background: rgba(0, 0, 0, 0.025); }
 .lp-light .lp-legend { border-color: rgba(0, 0, 0, 0.1); }
+
+/* the validation figures, as a table rather than a claim */
+.docs-metrics { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 18px 0 6px; font-variant-numeric: tabular-nums; }
+.docs-metrics td { padding: 8px 10px; text-align: right; border-bottom: 1px solid rgba(255, 255, 255, 0.08); color: #c7cdd7; }
+.docs-metrics th { padding: 8px 10px; text-align: right; border-bottom: 1px solid rgba(255, 255, 255, 0.14); }
+.docs-metrics th:first-child, .docs-metrics td:first-child { text-align: left; }
+.docs-metrics td:first-child { color: #e8ecf1; font-weight: 500; }
+.docs-metrics th { color: var(--lp-faint); font-weight: 500; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; }
+.docs-metrics tr.sum td { border-bottom: 0; font-weight: 600; color: #fff; }

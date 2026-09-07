@@ -107,7 +107,18 @@ def stroke_family(layer: str, width: float, color) -> str:
 
     Colour is part of how a CAD file separates its lines. A flattened export that carries no layers at all still
     draws the building in grey and the installation in black, so two lines of the same width in different colours
-    are not one family - reading them as one hands the pipes' vote to the walls."""
+    are not one family - reading them as one hands the pipes' vote to the walls.
+
+    Linetype is deliberately not in this key, and that is a measured decision rather than an oversight. It is
+    read - `describe_family` reconstructs each family's dash and gap from the drawing, and `build_graph` uses
+    those to decide where a broken line continues - but it does not divide the family, for two reasons found in
+    the drawings themselves. First, these exports carry no PDF dash array at all: across the whole style library
+    every stroke is drawn solid and the dashes are separate short segments, so there is no linetype to key on
+    without reconstructing it. Second, when the reconstruction is done and a family's chains are sorted into
+    dashed and solid, the solid ones are almost always a bend or a fitting of a few dozen points sitting inside
+    a run of several thousand points of dashes. Splitting on linetype would cut those runs in half at exactly
+    the places where a pipe is most obviously continuous.
+    """
     return f"{layer}|s|w{width:.2f}|c{color if color else '-'}"
 
 
