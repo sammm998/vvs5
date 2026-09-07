@@ -74,6 +74,7 @@ class PageAnalysis:
     review_findings: dict = field(default_factory=dict)             # what the reading did not reach, and why
     legend: DrawingLegend = field(default_factory=DrawingLegend)    # the sheet's own designation list
     second_reader: dict | None = None       # bounded cases put to a second reader, and what it did with them
+    vision: dict | None = None              # what a look at the rendered page said the reading may have missed
 
 
 def _width_lengths(page: RawPage) -> dict[float, float]:

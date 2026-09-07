@@ -492,7 +492,13 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
             "physical_pipes": len(pipes),
             "unowned_m": round(rec["unowned_pt"] * mpp, 2) if mpp else None, "ambiguous_m": quantities["totals"]["ambiguous_m"],
             "unsupported_families": len(prof["unknown_structure"]["unsupported_families"]),
-            "reconciliation": rec["state"], "determinism": summary.get("determinism"), "contamination": summary.get("contamination"),
+            "reconciliation": rec["state"],
+            # Determinism is a property of the engine, checked in the test suite on every change. Re-running
+            # every production analysis twice to check it again would double what a reader waits for, so it is
+            # off unless asked for - and that is said here rather than left as an empty field that reads as a
+            # failed check.
+            "determinism": summary.get("determinism") or "NOT_RUN_FOR_THIS_JOB",
+            "contamination": summary.get("contamination"),
         },
         "performance": perf,
         "review": _load_optional(rd, "review-findings.json"),

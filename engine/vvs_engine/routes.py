@@ -348,11 +348,17 @@ def _further_questions(pa) -> dict[str, Any]:
 
     # 11. the sheet's own designation list: found, and what it was able to say
     lg = pa.legend
+    # a system the sheet's own list names, for which no label was ever read, is a system this reading missed
+    read_codes = {(d.display_text or d.text or "").upper() for d in pa.designations}
+    unseen_systems = sorted(c for c in lg.systems()
+                            if not any(t == c or t.startswith(c) for t in read_codes))
     out["legend"] = {"found": bool(lg.entries), "entries": len(lg.entries),
                      "systems": sorted(lg.systems()), "components": sorted(lg.components()),
+                     "systems_with_no_label_read": unseen_systems,
                      "reason": ("no_designation_list_found_on_this_page_the_reading_used_pattern_statistics_only"
                                 if not lg.entries else
-                                "found_but_named_no_systems" if not lg.systems() else "used")}
+                                "found_but_named_no_systems" if not lg.systems() else
+                                "listed_systems_this_reading_never_found_a_label_for" if unseen_systems else "used")}
 
     # 12. drawn families that look like pipe but no label ever reached: a style this reading does not support
     out["unsupported_style_candidates"] = [

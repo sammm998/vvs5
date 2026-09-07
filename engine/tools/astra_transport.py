@@ -58,3 +58,39 @@ def transport(effort: str = "low") -> Callable:
         finally:
             os.unlink(path)
     return ask
+
+
+def vision_transport(effort: str = "low") -> Callable:
+    """A callable for review.vision.look(ask=...). Images go up; only words come back.
+
+    Nothing this returns can become geometry - vision.look has no way to write into a reading - so the only
+    risk here is cost and latency, not a wrong metre.
+    """
+    import base64
+
+    def ask(prompt: str, images: list[bytes]) -> str:
+        content: list[dict] = [{"type": "input_text", "text": prompt}]
+        for png in images:
+            content.append({"type": "input_image",
+                            "image_url": "data:image/png;base64," + base64.b64encode(png).decode()})
+        body = {"model": MODEL, "input": [{"role": "user", "content": content}],
+                "max_output_tokens": 8000, "reasoning": {"effort": effort}, "background": True}
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
+            json.dump(body, fh)
+            path = fh.name
+        try:
+            d = _curl([API, "-H", "Content-Type: application/json", "-d", f"@{path}"], timeout=180)
+            if d.get("error"):
+                raise RuntimeError(str(d["error"])[:200])
+            rid = d["id"]
+            for _ in range(POLL_ROUNDS):
+                if d.get("status") in ("completed", "failed", "incomplete"):
+                    break
+                time.sleep(POLL_SECONDS)
+                d = _curl([f"{API}/{rid}"], timeout=60)
+            return "".join(c.get("text", "")
+                           for o in d.get("output", []) for c in (o.get("content") or [])
+                           if c.get("type") == "output_text")
+        finally:
+            os.unlink(path)
+    return ask
