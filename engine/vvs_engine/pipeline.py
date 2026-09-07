@@ -34,6 +34,7 @@ from .routes import apply_routes, cross_check, review, run_routes
 
 # a drawing draws its leaders alike: a family carrying this share of the leaders is where it draws them
 LEADER_MIN_SHARE = 0.25
+PEER_SHARE = 0.15          # a drawn family carrying this much of the best family's label ends is a peer of it
 # and with no layer name to vouch for it, this share of the sheet's own pipe labels must have reached it
 LABELS_MUST_REACH = 0.15
 LABELS_MIN = 20
@@ -333,6 +334,10 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 break
         pipe_families: dict[str, RepresentationFamily] = {}
         graphs: dict[str, Any] = {}
+        # the strongest evidence any single drawn family carries, which is what the others are compared with
+        chain_voted = [f for f in voted if chain_like(f)]
+        best_ticks = max((tick_votes[f] for f in chain_voted), default=0)
+        best_votes = max((votes[f] for f in chain_voted), default=0.0)
         for f in voted:
             if not chain_like(f):
                 continue
@@ -345,9 +350,14 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             similar = any(_layer_template_similar(layer, tl) for tl in token_layers)
             accept = (token_votes[f] >= 1) or (tick_votes[f] >= 2 and similar) \
                 or (tick_votes[f] >= 3 and style in token_styles) or (tick_votes[f] >= 5 and tick_votes[f] / total_ticks >= 0.15) \
-                or (not token_fams and tick_votes[f] >= 2 and tick_votes[f] / total_ticks >= 0.25) \
-                or (not token_fams and votes[f] >= 5 and votes[f] / total_votes >= 0.4) \
-                or (not token_fams and votes[f] >= 2 and votes[f] / total_votes >= 0.5)   # no layer names: leaders end mostly here
+                or (not token_fams and tick_votes[f] >= 2 and tick_votes[f] >= PEER_SHARE * best_ticks) \
+                or (not token_fams and votes[f] >= 5 and votes[f] >= PEER_SHARE * best_votes)
+            # A sheet with no layer names to vouch for anything used to need one family to carry a large share of
+            # every leader on the page. But a drawing that runs tap water, waste and heating draws them with
+            # their own pens, and then no single family holds a large share of the total - the votes are split
+            # between them and every one of them falls short. So a family is measured against the best family
+            # rather than against the sum: several pens carrying comparable numbers of label ends are several
+            # systems, while the sheet's background carries almost none however the rest is divided.
             if accept:
                 pipe_families[f] = desc[f][0]
                 graphs[f] = desc[f][1]
