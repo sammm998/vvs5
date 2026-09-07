@@ -19,6 +19,7 @@ rename a run another route confirmed, because then the two readings would no lon
 """
 from __future__ import annotations
 
+import math
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from typing import Any
@@ -282,4 +283,79 @@ def review(pa, cross: dict[str, Any]) -> dict[str, Any]:
         "pipe_labels_placed": sum(1 for d in pipe_labels if d.did in placed),
         "unplaced_labels": unplaced[:200],
         "unplaced_reasons": dict(reasons.most_common()),
+        **_further_questions(pa),
     }
+
+
+def _further_questions(pa) -> dict[str, Any]:
+    """The rest of what a reader should be told the reading could not settle.
+
+    Each of these is a way a takeoff can be quietly short without anything looking wrong: geometry the labels
+    clearly point at that was never accepted as pipe, runs that stop facing each other across a gap nobody
+    bridged, the same line drawn twice on two pens, a designation list that was never found. None of them is an
+    error the engine can fix on its own - they are stated so that what is missing is visible instead of absent.
+    """
+    from .pipes.representation import chains as graph_chains
+    out: dict[str, Any] = {}
+    stats = getattr(pa, "contact_stats", None) or {}
+    votes, ticks = stats.get("votes") or {}, stats.get("tick_votes") or {}
+    accepted = set(pa.pipe_families)
+
+    # 4. geometry the sheet's own labels point at, that was not accepted as pipe
+    rejected = []
+    for f, v in sorted(votes.items(), key=lambda kv: -kv[1]):
+        if f in accepted:
+            continue
+        t = ticks.get(f, 0)
+        if v >= 5 or t >= 3:
+            rejected.append({"family": f, "leader_ends": round(v, 1), "with_tick": t,
+                             "reason": "labels_end_here_but_it_was_not_accepted_as_pipe_geometry"})
+    out["rejected_families_labels_point_at"] = rejected[:20]
+
+    # 7. runs that stop facing another run of their own family, across a gap the reading did not bridge
+    broken = []
+    for fk, g in pa.graphs.items():
+        gap = g.gap_mode or 0.0
+        if gap <= 0:
+            continue
+        ends = []
+        for c in graph_chains(g):
+            for nid in (g.prim_nodes[c[0]][0], g.prim_nodes[c[-1]][1]):
+                if g.nodes[nid].degree == 1:
+                    ends.append((nid, g.nodes[nid]))
+        for i, (na, a) in enumerate(ends):
+            for nb, b in ends[i + 1:]:
+                d = math.hypot(a.x - b.x, a.y - b.y)
+                if gap * 1.5 < d <= gap * 6.0:
+                    broken.append({"family": fk, "at": [round(a.x, 1), round(a.y, 1)], "gap_pt": round(d, 1),
+                                   "this_familys_gap_pt": round(gap, 2),
+                                   "reason": "two_free_ends_face_each_other_further_apart_than_this_lines_own_gap"})
+                    break
+        if len(broken) > 40:
+            break
+    out["possible_lost_continuity"] = broken[:40]
+
+    # 9. the same line drawn twice on two different pens: measured once per family, so twice in total
+    stamps: dict[tuple, list[str]] = {}
+    for fk, g in pa.graphs.items():
+        for q in g.prims.values():
+            a = (round(q.seg.x0 * 4), round(q.seg.y0 * 4)); b = (round(q.seg.x1 * 4), round(q.seg.y1 * 4))
+            stamps.setdefault((a, b) if a <= b else (b, a), []).append(fk)
+    dup = [{"at": [k[0][0] / 4, k[0][1] / 4], "families": sorted(set(v)),
+            "reason": "one_drawn_line_appears_in_more_than_one_pipe_family"}
+           for k, v in sorted(stamps.items()) if len(set(v)) > 1]
+    out["possible_double_counted_geometry"] = dup[:40]
+
+    # 11. the sheet's own designation list: found, and what it was able to say
+    lg = pa.legend
+    out["legend"] = {"found": bool(lg.entries), "entries": len(lg.entries),
+                     "systems": sorted(lg.systems()), "components": sorted(lg.components()),
+                     "reason": ("no_designation_list_found_on_this_page_the_reading_used_pattern_statistics_only"
+                                if not lg.entries else
+                                "found_but_named_no_systems" if not lg.systems() else "used")}
+
+    # 12. drawn families that look like pipe but no label ever reached: a style this reading does not support
+    out["unsupported_style_candidates"] = [
+        {"family": f, "reason": "chain_like_geometry_no_label_ever_reached"}
+        for f in sorted(set(votes) - accepted) if votes.get(f, 0) < 5 and ticks.get(f, 0) == 0][:20]
+    return out

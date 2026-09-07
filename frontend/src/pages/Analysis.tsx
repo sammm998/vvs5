@@ -245,6 +245,44 @@ export default function AnalysisPage() {
                 {advisory.map(row)}
                 {advisory.length === 0 && <p className="muted">Inget noterat.</p>}
               </div>
+              {result.reading_review && (() => {
+                const rv = result.reading_review;
+                const lg = rv.legend || {};
+                const groups: [string, string, any[]][] = [
+                  ["Geometri som etiketterna pekar på men som inte togs som rör", "rejected_families_labels_point_at", rv.rejected_families_labels_point_at || []],
+                  ["Sträckor som slutar mot varandra över ett glapp som inte överbryggades", "possible_lost_continuity", rv.possible_lost_continuity || []],
+                  ["Samma ritade linje i mer än en rörfamilj", "possible_double_counted_geometry", rv.possible_double_counted_geometry || []],
+                  ["Ritningsstilar som ingen etikett nådde", "unsupported_style_candidates", rv.unsupported_style_candidates || []],
+                ];
+                const n = groups.reduce((t, g) => t + g[2].length, 0);
+                return (
+                  <div className="card">
+                    <h3>Vad läsningen själv frågar sig <span className="badge">{n}</span></h3>
+                    <p className="muted" style={{ marginTop: 0 }}>
+                      Sätt att en mängd kan bli tyst för kort utan att något ser fel ut. Inget av det är något motorn
+                      kan avgöra själv — det står här för att det ska synas i stället för att saknas.
+                    </p>
+                    <div className="issue">
+                      <b>Ritningens egen beteckningslista</b>{" "}
+                      {lg.found
+                        ? <span className="muted">{lg.entries} poster · system {(lg.systems || []).join(", ") || "inga"} · komponenter {(lg.components || []).join(", ") || "inga"}</span>
+                        : <span className="muted">hittades inte på den här sidan — läsningen gick på mönsterstatistik i stället</span>}
+                    </div>
+                    {groups.map(([title, key, list]) => list.length > 0 && (
+                      <div key={key} className="issue">
+                        <b>{title}</b> <span className="muted">· {list.length} st</span>
+                        <div className="muted" style={{ fontSize: 12 }}>
+                          {list.slice(0, 3).map((x: any, i: number) => (
+                            <div key={i}>{x.family ? x.family.slice(-34) : ""} {x.gap_pt ? `· glapp ${x.gap_pt} pt` : ""} {x.leader_ends ? `· ${x.leader_ends} ledaravslut` : ""}</div>
+                          ))}
+                          {list.length > 3 && <div>… och {list.length - 3} till</div>}
+                        </div>
+                      </div>
+                    ))}
+                    {n === 0 && <p className="muted">Inget av de här fallen finns på den här sidan.</p>}
+                  </div>
+                );
+              })()}
             </>
           );
         })()}
