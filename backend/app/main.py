@@ -535,6 +535,35 @@ def get_artifact(job_id: str, name: str, user: User = Depends(current_user), db:
     return FileResponse(p, media_type=media, filename=name)
 
 
+@app.post("/api/jobs/{job_id}/vision")
+def vision_check(job_id: str, page: int = 0, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """A second opinion by eye on a reading that is already finished.
+
+    Asked for, never automatic: it costs a call and a wait, and the reading does not depend on it. What comes
+    back are observations to check in the vector data - designations that look visible but were not read, drawn
+    pipe no overlay follows, an overlay running along something that is not a pipe. None of it can move a metre;
+    there is no path from a vision finding to a quantity, by construction.
+    """
+    j = _job(db, user, job_id)
+    if j.status != "COMPLETED":
+        raise HTTPException(409, "Analysen är inte klar")
+    try:
+        import pymupdf
+        from vvs_engine.pdf.extract import extract_document
+        from vvs_engine.pipeline import analyze_page
+        from vvs_engine.review import vision as vz
+        from tools.astra_transport import vision_transport
+    except Exception as e:
+        raise HTTPException(503, f"Vision är inte tillgänglig i den här installationen: {type(e).__name__}")
+    path = storage.path(j.drawing.storage_key)
+    doc = extract_document(path)
+    if page < 0 or page >= len(doc.pages):
+        raise HTTPException(404, "Sidan finns inte")
+    pa = analyze_page(doc.pages[page])
+    out = vz.look(pa, pymupdf.open(path), ask=vision_transport())
+    return out.as_dict()
+
+
 @app.get("/api/jobs/{job_id}/why/{pipe_id}")
 def why(job_id: str, pipe_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
     j = _job(db, user, job_id)

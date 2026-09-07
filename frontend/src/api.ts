@@ -54,6 +54,8 @@ export const api = {
   result: (id: string) => req(`/api/jobs/${id}/result`),
   artifacts: (id: string) => req(`/api/jobs/${id}/artifacts`),
   why: (jobId: string, pipeId: string) => req(`/api/jobs/${jobId}/why/${pipeId}`),
+  // a second opinion by eye on a finished reading; its findings never move a metre
+  vision: (jobId: string, page: number) => req(`/api/jobs/${jobId}/vision?page=${page}`, { method: "POST" }),
   fileUrl: (drawingId: string) => `/api/drawings/${drawingId}/file`,
   exportUrl: (jobId: string, fmt: string) => `/api/jobs/${jobId}/export/${fmt}`,
   artifactUrl: (jobId: string, name: string) => `/api/jobs/${jobId}/artifacts/${name}`,

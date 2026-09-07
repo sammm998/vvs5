@@ -7,6 +7,13 @@ import AnalysisFilm from "../components/AnalysisFilm";
 import Corrections, { Draft } from "../components/Corrections";
 import { StatusBadge, STAGE_LABELS } from "../components/Status";
 
+const VISION_LABELS: Record<string, string> = {
+  missed_labels: "Beteckning som syns men inte lästes",
+  missed_pipes: "Ritat rör som inget överlägg följer",
+  overlay_wrong: "Överlägg som följer något annat än ett rör",
+  paired_wall: "Två parallella linjer som är ett ritat föremål",
+};
+
 const ISSUE_LABELS: Record<string, string> = {
   unknown_glyph: "Okänt tecken", unknown_glyph_in_designation: "Olästa tecken i beteckningar",
   unknown_glyph_elsewhere: "Olästa tecken utanför beteckningarna", uncertain_designation: "Osäker beteckning",
@@ -32,6 +39,8 @@ export default function AnalysisPage() {
   // The quantity table has more columns than any fixed panel width fits, so the split is the reader's to set:
   // wide drawing while tracing a run, wide table while reading the takeoff. The choice is remembered.
   const [corrections, setCorrections] = useState<any[]>([]);
+  const [vision, setVision] = useState<any>(null);
+  const [visionBusy, setVisionBusy] = useState(false);
   const [drawKind, setDrawKind] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState<boolean>(() => {
     try { return localStorage.getItem("vvs.panelOpen") !== "0"; } catch { return true; }
@@ -283,6 +292,32 @@ export default function AnalysisPage() {
                   </div>
                 );
               })()}
+              <div className="card">
+                <h3>Andra åsikt: titta på ritningen</h3>
+                <p className="muted" style={{ marginTop: 0 }}>
+                  Läsningen är gjord ur vektorn. Det den inte kan göra är att märka att en hel rörfamilj aldrig
+                  togs med, eller att överlägget följer en vägg. Det ser man genom att titta. Iakttagelserna här
+                  är sådant att gå och kontrollera i vektordatan — de blir aldrig meter.
+                </p>
+                <button className="secondary" disabled={visionBusy} onClick={async () => {
+                  setVisionBusy(true);
+                  try { setVision(await api.vision(id!, page)); }
+                  catch (e: any) { setVision({ error: e.message }); }
+                  finally { setVisionBusy(false); }
+                }}>{visionBusy ? "Tittar…" : `Titta på sida ${page + 1}`}</button>
+                {vision?.error && <p className="error">{vision.error}</p>}
+                {vision && !vision.error && (
+                  <>
+                    <p className="muted">{vision.asked ? `${vision.n_findings} iakttagelser` : vision.note}</p>
+                    {(vision.findings || []).map((f: any, i: number) => (
+                      <div key={i} className="issue">
+                        <b>{VISION_LABELS[f.kind] || f.kind}</b>
+                        <div className="muted">{f.detail}{f.where ? ` — ${f.where}` : ""}</div>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
             </>
           );
         })()}
