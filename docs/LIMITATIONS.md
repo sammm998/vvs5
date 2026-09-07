@@ -57,3 +57,40 @@
   compose file are provided as written and the backend/frontend were verified with pytest and `npm run build`.
 * Multi-page PDFs are analysed page by page; overlays and artifacts are written for page 0 (the first analysed page)
   in the CLI and web application.
+
+## Added after the generality pass over four unseen drawing styles
+
+* **One scale per page, not per drawing region.** A detail box drawn at another scale is measured at the plan's
+  scale. Where the page states two ratios and no bar confirms either, the reading refuses rather than picks; where
+  a bar disagrees with the text, the bar is used, the state is CONFLICT, and every run measured that way now
+  carries the conflict in its reasons rather than reading as confidently measured.
+* **Curved dashed runs are not bridged around a bend.** Curves (Bezier, arc, polyline) are read and measured, but
+  a break in a dashed *curve* is only closed where the pieces are collinear or meet at a corner.
+* **A bundle label listing more codes than the sheet draws lines** is left ambiguous. Elimination settles it only
+  when every other run of the bundle is named elsewhere AND the remaining code's own leader touches the remaining
+  run; without that positive contact the case stays open rather than being split by a convention.
+* **Identity can still be decided by node ordering in one case.** The junction pass stops looking at a run once it
+  is confirmed, so an unnamed length between two junctions takes the identity of whichever end was reached first.
+  A pass demoting such runs where the far end disagrees was written, measured, and reverted: on the reference set
+  it cost correct metres and removed no wrong ones. The defect is real and unfixed.
+* **Material written after the dimension would merge two identities.** `identity_from_text` drops short alphabetic
+  tokens after the DN token, which is right for an insulation marker (`FJV1-S6-50/W`) and wrong for an office that
+  writes the material there (`VS1-20-CU` vs `VS1-20-PEX`). No sheet in the corpus writes it that way, so the change
+  cannot be tested and has not been made.
+* **Very large pages can exceed the analysis timeout.** Five of 212 pages in the style corpus did not finish inside
+  240 s. A page that times out is reported as TIMEOUT; it never produces a partial quantity.
+
+## What a language model is and is not allowed to do here
+
+The measurement path is vector geometry and nothing else. Two model-assisted passes exist, both fenced in code:
+
+* **A second reader** (`vvs_engine/semantics/astra.py`) may choose among candidates the drawing itself offers, for a
+  case the engine already declared AMBIGUOUS. `verify()` refuses any answer that is not one of those candidates, an
+  answer naming two of them stays ambiguous, and a chosen family is checked again at the point of use against the
+  geometry that leader actually touched. Without a transport nothing is asked, which is the default: the engine is
+  deterministic and needs no network.
+* **A look at the rendered page** (`vvs_engine/review/vision.py`) may report what the vector reading seems to have
+  missed. It cannot do anything else: there is no `apply()`, a finding carries no number, and nothing connects a
+  finding to a quantity. On its first run against the reference drawing it correctly spotted unread component tags
+  and also reported two systems as being in the designation list that are not in it. A model that can see is still
+  a model that can be wrong, which is why it cannot cost a metre.
