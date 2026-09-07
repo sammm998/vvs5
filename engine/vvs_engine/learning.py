@@ -8,30 +8,55 @@ A correction may only ever do one thing on a later sheet: settle a case the engi
 AMBIGUOUS, in favour of the answer a person gave in the same situation. It may never create a run, never name
 geometry no leader reached, never change a run the engine is confident about, and never outvote the drawing.
 
-"The same situation" is not a resemblance score. It is an exact match on the things that make the case what it
-is - the pen the geometry is drawn with, the reason the engine gave up, and the shape of the designation - all of
-which come from the drawing itself. Anything less and the lesson does not apply, because two sheets that merely
-look alike are two different drawings.
+"The same situation" is not a resemblance score. It is an exact match on everything that makes the case what it
+is, and every part of it is read off the drawing:
+
+  * family_style      the pen the geometry is drawn with - width and colour, without the layer
+  * leader_style      how this drawing draws the leader that reached the label - shape, ending, tick, width
+  * reason            the reason the engine itself gave for stopping
+  * designation_shape the shape of the name, letters and separators but not the numbers
+  * topology          the local shape of the case: label rows in the block, compatible groups at the leader end,
+                      and how many pieces of geometry the leader actually touched
+  * candidate_shape   what the drawing offered as answers - how many, and of what shape
+
+A lesson that matches on all six is a lesson about the same kind of case. Anything less and it does not apply,
+because two sheets that merely look alike are two different drawings. Widening the fingerprint can only make
+lessons speak less often, which is the direction that is safe to be wrong in. A correction recorded before a
+part of it existed carries no lesson at all, and is left as a statement about its own drawing.
 """
 from __future__ import annotations
 
 from typing import Any
 
 # What has to match, exactly, before a lesson from one sheet is allowed to speak about another.
-KEYS = ("family_style", "reason", "designation_shape")
+KEYS = ("family_style", "leader_style", "reason", "designation_shape", "topology", "candidate_shape")
 
 
-def situation(*, family: str = "", reason: str = "", designation: str = "") -> dict[str, str]:
-    """The fingerprint of a case: the pen, why the engine stopped, and the shape of the name.
+def _shape(text: str) -> str:
+    """A name with its numbers taken out: KV1-X31-16 and KV2-X31-25 are one shape, S3-R8-110 another."""
+    return "".join("9" if ch.isdigit() else ("A" if ch.isalpha() else ch) for ch in (text or "").upper())
+
+
+def situation(*, family: str = "", reason: str = "", designation: str = "", leader_family: str = "",
+              n_rows: int | None = None, n_groups: int | None = None, n_contacts: int | None = None,
+              candidates: list[str] | None = None) -> dict[str, str]:
+    """The fingerprint of a case, taken from the drawing.
 
     The pen is taken without the layer, because layer names are a project's habit and do not carry between
-    offices; the width and colour are how the drawing itself distinguishes one system from another. The
-    designation keeps its shape - letters, digits and separators - but not its numbers, so KV1-X31-16 and
-    KV2-X31-25 are the same shape and S3-R8-110 is not.
+    offices; the width and colour are how the drawing itself distinguishes one system from another. The topology
+    is written as counts rather than coordinates, so it says what kind of junction this was without tying the
+    lesson to one place on one sheet. An empty part makes the whole situation empty: a case we cannot describe
+    is a case we must not generalise from.
     """
     style = family.split("|s|")[-1] if "|s|" in family else family
-    shape = "".join("9" if ch.isdigit() else ("A" if ch.isalpha() else ch) for ch in (designation or "").upper())
-    return {"family_style": style, "reason": (reason or "").split(":")[0], "designation_shape": shape}
+    cands = sorted({_shape(c) for c in (candidates or []) if c})
+    topo = "-".join("?" if v is None else str(int(v)) for v in (n_rows, n_groups, n_contacts))
+    return {"family_style": style,
+            "leader_style": leader_family or "",
+            "reason": (reason or "").split(":")[0],
+            "designation_shape": _shape(designation),
+            "topology": topo if any(v is not None for v in (n_rows, n_groups, n_contacts)) else "",
+            "candidate_shape": f"{len(cands)}:" + "|".join(cands) if cands else ""}
 
 
 def lessons(corrections: list[dict]) -> list[dict]:

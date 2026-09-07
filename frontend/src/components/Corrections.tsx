@@ -46,8 +46,9 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
       if (kind === "quantity" || (kind === "erase" && !draft)) payload.meters = Number(meters.replace(",", ".")) || 0;
       await api.addCorrection(drawingId, {
         kind, designation: kind === "retag" ? to : designation, page, payload, note: note || null, job_id: jobId,
-        // the situation the correction was made in, so a later reading can tell this case from a similar-looking one
-        situation: { family_style: pipe?.family ?? "", reason: (pipe?.reasons ?? [])[0] ?? "", designation_shape: "" },
+        // The situation is taken from the reading on the server, not from here: the browser does not know which
+        // leader reached the label or what the drawing offered as answers, and a lesson built on a guess about
+        // that would speak in cases it has no business in.
       });
       setNote(""); setMeters(""); setTo(""); onDraftClear(); onKindChange(null); onChanged();
     } catch (e: any) { setErr(e.message); } finally { setBusy(false); }

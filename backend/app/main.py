@@ -245,12 +245,26 @@ def _proposals(db: Session, user: User, anchors: list, pipes: list) -> list[dict
     cases = []
     for a in open_cases:
         name = (a.get("designation") or "").upper()
+        cands = sorted({(c or "").upper() for c in (a.get("candidate_designations") or [])} or {name})
         cases.append({"id": a["anchor_id"], "designation": a.get("designation"),
-                      "situation": situation(family=fam_of.get(name, ""), reason=a.get("reason", ""),
-                                             designation=a.get("designation") or ""),
-                      "candidates": sorted({(c or "").upper() for c in (a.get("candidate_designations") or [])}
-                                           or {name})})
+                      "situation": situation(**_case_shape(a, fam_of.get(name, "")), candidates=cands),
+                      "candidates": cands})
     return settle(cases, taught)
+
+
+def _case_shape(anchor: dict, family: str) -> dict:
+    """Everything about an unresolved case that a later reading could recognise it by, read off the anchor.
+
+    The leader family is how this drawing draws the line that reached the label; the counts are the local shape
+    of the junction - label rows in the block, compatible groups at the leader end, pieces of geometry actually
+    touched. All of it comes from the reading, none of it from the browser.
+    """
+    ev = anchor.get("evidence") or {}
+    return {"family": family, "reason": anchor.get("reason", ""),
+            "designation": anchor.get("designation") or "",
+            "leader_family": ev.get("leader_family") or "",
+            "n_rows": ev.get("n_rows"), "n_groups": ev.get("n_groups"),
+            "n_contacts": len(anchor.get("contacts") or [])}
 
 
 def _situation_of(db: Session, user: User, job_id: str | None, designation: str | None) -> dict:
@@ -272,10 +286,14 @@ def _situation_of(db: Session, user: User, job_id: str | None, designation: str 
     want = designation.upper()
     family = next((p.get("family", "") for p in pipes
                    if (p.get("identity") or "").replace("|DN", "-").upper() == want), "")
-    reason = next((a.get("reason", "") for a in anchors
-                   if (a.get("designation") or "").upper() in (want, want.rsplit("-", 1)[0])
-                   and a.get("state") != "VERIFIED_PIPE_ATTACHMENT"), "")
-    return situation(family=family, reason=reason, designation=designation)
+    case = next((a for a in anchors
+                 if (a.get("designation") or "").upper() in (want, want.rsplit("-", 1)[0])
+                 and a.get("state") != "VERIFIED_PIPE_ATTACHMENT"), None)
+    if case is None:
+        # nothing in the reading was unresolved for this designation: the correction is about this drawing only
+        return {}
+    cands = sorted({(c or "").upper() for c in (case.get("candidate_designations") or [])})
+    return situation(**_case_shape(case, family), candidates=cands or [want])
 
 
 class CorrectionIn(BaseModel):
@@ -307,9 +325,10 @@ def add_correction(drawing_id: str, body: CorrectionIn, user: User = Depends(cur
     _drawing(db, user, drawing_id)
     if body.kind not in CORRECTION_KINDS:
         raise HTTPException(400, f"Okänd rättelsetyp: {body.kind}")
-    sit = body.situation or {}
-    if not all(sit.get(k) for k in ("family_style", "reason", "designation_shape")):
-        sit = _situation_of(db, user, body.job_id, body.designation)
+    # The situation always comes from the reading, never from the caller: what a lesson may be shown to apply to
+    # is a fact about the drawing, and taking it from the request would let a client widen its own lessons. A
+    # situation passed in is only kept when the reading has nothing to say - a proposal being accepted back.
+    sit = _situation_of(db, user, body.job_id, body.designation) or (body.situation or {})
     c = Correction(drawing_id=drawing_id, job_id=body.job_id, user_id=user.id, page=body.page, kind=body.kind,
                    designation=body.designation, payload=body.payload, situation=sit, note=body.note)
     db.add(c); db.commit()
