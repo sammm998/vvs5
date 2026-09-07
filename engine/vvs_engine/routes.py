@@ -361,6 +361,19 @@ def _further_questions(pa) -> dict[str, Any]:
                                 "listed_systems_this_reading_never_found_a_label_for" if unseen_systems else "used")}
 
     # 12. drawn families that look like pipe but no label ever reached: a style this reading does not support
+    # 1. text the reading put back together but could not name every character of. Shown as it was read, with
+    # the unread positions marked, because "F?V1" tells a reader what is missing and a count does not.
+    unread = []
+    for r in pa.lines:
+        t = (r.text or "")
+        if "?" not in t:
+            continue
+        unread.append({"read_as": t[:60], "at": [round(r.bbox[0], 1), round(r.bbox[1], 1)],
+                       "unknown_characters": t.count("?"),
+                       "reason": "the_shape_matched_no_reference_letter_closely_enough_to_be_named"})
+    out["text_with_unread_characters"] = sorted(unread, key=lambda x: -x["unknown_characters"])[:40]
+    out["n_text_with_unread_characters"] = len(unread)
+
     out["unsupported_style_candidates"] = [
         {"family": f, "reason": "chain_like_geometry_no_label_ever_reached"}
         for f in sorted(set(votes) - accepted) if votes.get(f, 0) < 5 and ticks.get(f, 0) == 0][:20]

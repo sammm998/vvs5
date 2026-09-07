@@ -520,7 +520,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # read the sheet again by the other routes, put the answers side by side, and let a second route add what the
     # first missed or take out what it contradicts
     _read = SimpleNamespace(graphs=graphs, ownership=ownership, scale=scale, designations=designations,
-                            anchors=anchors, legend=legend, pipe_families=pipe_families, page=page)
+                            anchors=anchors, legend=legend, pipe_families=pipe_families, page=page,
+                            lines=lines, contact_stats=contact_stats)
     route_reports = run_routes(_read)
     crosscheck = cross_check(_read, route_reports)
     crosscheck["applied"] = apply_routes(_read, route_reports)
