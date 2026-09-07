@@ -745,7 +745,14 @@ def _elevations(blocks, anchors) -> dict[str, list[dict]]:
                     continue
                 if m.group(2) == "-":
                     v = -v
-                ev.append({"tag": m.group(1), "value": v, "text": r.text_norm, "row_id": r.line.rid})
+                # The unit is what the drawing wrote, not what the number looks like. A decimal separator is a
+                # level in metres ("VG+1,67"); a whole number of a thousand or more is millimetres ("CL 4000").
+                # A bare small integer says neither, and guessing there turns 100 and 150 into fifty metres of
+                # pipe. Such a value is carried with no unit and no vertical length is claimed from it.
+                digits = m.group(3)
+                unit = "m" if ("." in digits or "," in digits) else ("mm" if abs(v) >= 1000 else None)
+                ev.append({"tag": m.group(1), "value": v, "unit": unit,
+                           "text": r.text_norm, "row_id": r.line.rid})
         if ev:
             out[a.anchor_id] = ev
     return out

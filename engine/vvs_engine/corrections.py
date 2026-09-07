@@ -28,7 +28,6 @@ def apply(quantities: list[dict], corrections: list[dict], meters_per_pt: float 
     correction that names a designation the engine never found adds a row for it, marked as drawn by a
     person rather than read off the sheet.
     """
-    mpp = meters_per_pt or 0.0
     rows = {q["designation"]: dict(q, engine_total_m=q.get("confirmed_total_m", 0.0)) for q in quantities}
     log: list[dict] = []
 
@@ -48,37 +47,65 @@ def apply(quantities: list[dict], corrections: list[dict], meters_per_pt: float 
         if kind not in KINDS:
             log.append({"id": c.get("id"), "kind": kind, "applied": False, "why": "okänd typ"})
             continue
+        if not name:
+            log.append({"id": c.get("id"), "kind": kind, "applied": False, "why": "beteckning saknas"})
+            continue
+        # A length in metres needs a scale. Without one the drawn line has no length we can defend, and writing
+        # zero would report the correction as applied while changing nothing.
+        if kind in ("extend", "draw") or (kind == "erase" and p.get("meters") is None):
+            if meters_per_pt is None:
+                log.append({"id": c.get("id"), "kind": kind, "designation": name, "applied": False,
+                            "why": "ritningens skala är inte fastställd, så sträckan har ingen längd att lägga till"})
+                continue
+        mpp = meters_per_pt or 0.0
+        given = p.get("meters")
+        if given is not None and float(given) < 0:
+            log.append({"id": c.get("id"), "kind": kind, "designation": name, "applied": False,
+                        "why": "negativ längd; en rättelse anger hur mycket, inte åt vilket håll"})
+            continue
+
         delta = 0.0
-        if kind in ("extend", "draw") and name:
+        if kind in ("extend", "draw"):
             delta = _length_m(p.get("points") or [], mpp)
             r = row(name)
             r["confirmed_horizontal_m"] = round(r.get("confirmed_horizontal_m", 0.0) + delta, 3)
-        elif kind == "erase" and name:
+        elif kind == "erase":
             # what an erase removes is the pipe under the stroke, not the stroke: the reader drags a band along
             # the run and the metres of the segments it actually covered come with the correction. The stroke's
             # own length is only a fallback for a correction recorded without them.
-            m = p.get("meters")
-            delta = -float(m) if m is not None else -_length_m(p.get("points") or [], mpp)
+            want = float(given) if given is not None else _length_m(p.get("points") or [], mpp)
             r = row(name)
-            r["confirmed_horizontal_m"] = round(max(0.0, r.get("confirmed_horizontal_m", 0.0) + delta), 3)
-        elif kind == "retag" and name:
+            before = r.get("confirmed_horizontal_m", 0.0)
+            r["confirmed_horizontal_m"] = round(max(0.0, before - want), 3)
+            delta = r["confirmed_horizontal_m"] - before          # what actually came off, not what was asked
+        elif kind == "retag":
+            # Retagging moves metres between two rows; it never mints them. What the source does not have
+            # cannot arrive anywhere, and a source the reading does not know is not a source at all.
             frm = p.get("from")
-            moved = float(p.get("meters") or 0.0)
-            if frm in rows and moved:
-                src = rows[frm]
-                src["confirmed_horizontal_m"] = round(max(0.0, src["confirmed_horizontal_m"] - moved), 3)
-                src["confirmed_total_m"] = round(src["confirmed_horizontal_m"] + (src.get("confirmed_vertical_m") or 0.0), 3)
-                src["corrected"] = True
+            want = float(given or 0.0)
+            src = rows.get(frm)
+            if src is None or want <= 0:
+                log.append({"id": c.get("id"), "kind": kind, "designation": name, "applied": False,
+                            "why": "det finns ingen mängd på beteckningen meter ska flyttas från"})
+                continue
+            moved = min(want, src.get("confirmed_horizontal_m", 0.0))
+            if moved <= 0:
+                log.append({"id": c.get("id"), "kind": kind, "designation": name, "applied": False,
+                            "why": f"{frm} har inga horisontella meter kvar att flytta"})
+                continue
+            src["confirmed_horizontal_m"] = round(src["confirmed_horizontal_m"] - moved, 3)
+            src["confirmed_total_m"] = round(src["confirmed_horizontal_m"] + (src.get("confirmed_vertical_m") or 0.0), 3)
+            src["corrected"] = True
             r = row(name)
             r["confirmed_horizontal_m"] = round(r.get("confirmed_horizontal_m", 0.0) + moved, 3)
             delta = moved
-        elif kind == "quantity" and name:
+        elif kind == "quantity":
             r = row(name)
             before = r.get("confirmed_horizontal_m", 0.0)
-            r["confirmed_horizontal_m"] = round(float(p.get("meters") or 0.0), 3)
+            r["confirmed_horizontal_m"] = round(float(given or 0.0), 3)
             delta = r["confirmed_horizontal_m"] - before
         else:
-            log.append({"id": c.get("id"), "kind": kind, "applied": False, "why": "beteckning saknas"})
+            log.append({"id": c.get("id"), "kind": kind, "applied": False, "why": "okänd typ"})
             continue
         r = rows[name]
         r["confirmed_total_m"] = round(r["confirmed_horizontal_m"] + (r.get("confirmed_vertical_m") or 0.0), 3)

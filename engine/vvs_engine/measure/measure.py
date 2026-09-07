@@ -29,6 +29,11 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
     hatched_pt: physical_pipe_id -> length (pdf units) of the pipe inside hatched areas."""
     out: list[PipeMeasure] = []
     mpp = scale.meters_per_pt if scale.state in ("VERIFIED", "TEXT_ONLY", "BAR_ONLY", "CONFLICT") and scale.meters_per_pt else None
+    # A sheet whose scale evidence disagrees still gets measured - the geometric bar is the better witness and
+    # the reason for choosing it is recorded - but every metre that comes out of it carries the conflict, so no
+    # single run can be read as confidently measured when the sheet's own scale is unsettled.
+    scale_note = (f"scale_{scale.state.lower()}:{scale.reason}"
+                  if scale.state not in ("VERIFIED",) and mpp is not None else None)
     for p in own.pipes:
         # hatched length is measured on drawn primitives; scale it by the bridged-gap share of the run
         factor = (p.length_pt / p.raw_length_pt) if p.raw_length_pt > 0 else 1.0
@@ -38,6 +43,8 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
         reasons = []
         if mpp is None:
             reasons.append("no_verified_scale")
+        elif scale_note:
+            reasons.append(scale_note)
         vert, vev = _vertical(p, elevations)
         total = (hm + (vert or 0.0)) if hm is not None else None
         state = "CONFIRMED" if hm is not None else "UNSUPPORTED_STYLE"
@@ -51,19 +58,32 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
 
 def _vertical(p: PhysicalPipe, elevations: dict[str, list[dict]]):
     """Vertical length only from explicit evidence: two elevation annotations with the same tag on the pipe's
-    supporting anchors (top/bottom levels). Otherwise UNKNOWN (None)."""
-    vals: dict[str, list[tuple[str, float]]] = defaultdict(list)
+    supporting anchors (top/bottom levels). Otherwise UNKNOWN (None).
+
+    The unit has to come from the drawing too. A level written with a decimal separator is metres, a whole
+    thousand or more is millimetres, and a bare small integer says neither - reading that as metres turns two
+    levels 50 mm apart into fifty metres of pipe. A tag whose levels do not agree on one unit is not evidence,
+    so the vertical stays UNKNOWN rather than being guessed at either scale.
+
+    What this reads is the span between the highest and lowest level on the run. A pipe that goes down and up
+    again passes the same levels twice and its true vertical length is larger; nothing in two levels says that
+    it did, so the span is what can be defended and the rest is not claimed.
+    """
+    vals: dict[str, list[tuple[str, float, str | None]]] = defaultdict(list)
     for aid in p.anchor_ids:
         for e in elevations.get(aid, []):
-            vals[e["tag"]].append((aid, e["value"]))
+            vals[e["tag"]].append((aid, e["value"], e.get("unit")))
     for tag, lst in sorted(vals.items()):
-        uniq = sorted({v for _, v in lst})
-        if len(uniq) >= 2:
-            diff = max(uniq) - min(uniq)
-            # values in mm if large
-            if max(abs(v) for v in uniq) > 200:
-                diff = diff / 1000.0
-            return round(diff, 3), {"kind": "elevation_difference_between_anchors", "tag": tag, "values": uniq, "anchors": sorted({a for a, _ in lst})}
+        uniq = sorted({v for _, v, _ in lst})
+        if len(uniq) < 2:
+            continue
+        units = {u for _, _, u in lst}
+        if len(units) != 1 or None in units:
+            continue                  # the sheet did not say what these numbers are; no vertical is claimed
+        unit = units.pop()
+        diff = (max(uniq) - min(uniq)) / (1000.0 if unit == "mm" else 1.0)
+        return round(diff, 3), {"kind": "elevation_difference_between_anchors", "tag": tag, "unit": unit,
+                                "values": uniq, "anchors": sorted({a for a, _, _ in lst})}
     return None, None
 
 
@@ -97,6 +117,9 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
                                 "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0, "confirmed_total_m": 0.0,
                                 "horizontal_pdf_units": 0.0, "ambiguous_m": 0.0, "vertical_known": False, "state": "AMBIGUOUS", "pipe_ids": []})
         r["ambiguous_m"] += pt * mpp if mpp else 0.0
+        # geometry the reading could not give to anyone exists whether or not there is a scale to measure it in;
+        # tracking it in the drawing's own units keeps a scaleless sheet from reporting the ambiguity away
+        r["ambiguous_pdf_units"] = r.get("ambiguous_pdf_units", 0.0) + pt
         if r["physical_pipe_count"] == 0:
             r["state"] = "AMBIGUOUS"
     for k, n in (label_counts or {}).items():
@@ -117,9 +140,11 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         r.setdefault("riser_count_from_labels", len((label_risers or {}).get(k, [])))
         r.setdefault("label_count", (label_counts or {}).get(k, 0))
         r.setdefault("in_hatched_area_m", 0.0)
-        if r["physical_pipe_count"] == 0 and r["ambiguous_m"] == 0 and r["riser_count"] > 0:
+        r.setdefault("ambiguous_pdf_units", 0.0)
+        if r["physical_pipe_count"] == 0 and r["ambiguous_pdf_units"] == 0 and r["riser_count"] > 0:
             r["state"] = "RISER_LABELS_ONLY"
-        for f in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m", "horizontal_pdf_units", "in_hatched_area_m"):
+        for f in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
+                  "horizontal_pdf_units", "in_hatched_area_m", "ambiguous_pdf_units"):
             r[f] = round(r[f], 3)
         r["vertical_m"] = r["confirmed_vertical_m"] if r["vertical_known"] else "UNKNOWN"
         out.append(r)

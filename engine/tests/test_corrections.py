@@ -175,3 +175,46 @@ def test_a_case_the_drawing_could_not_describe_teaches_nothing():
     taught = lessons([{"kind": "retag", "designation": "KV1-X31-16", "situation": full}])
     assert taught, "the same correction, fully described, is a lesson"
     assert settle([{"id": "x", "situation": thin, "candidates": ["KV1-X31-16"]}], taught) == []
+
+
+def test_a_retag_moves_metres_and_never_mints_them():
+    """Retagging is a transfer. The target can only receive what the source actually had."""
+    out = apply([_q("S3-R8-110", 2.0), _q("S3-R8-75", 0.0)],
+                [{"id": "c1", "kind": "retag", "designation": "S3-R8-75",
+                  "payload": {"from": "S3-R8-110", "meters": 5.0}}], MPP)
+    rows = {r["designation"]: r for r in out["quantities"]}
+    assert rows["S3-R8-110"]["confirmed_total_m"] == 0.0
+    assert rows["S3-R8-75"]["confirmed_total_m"] == 2.0, "only the two metres that existed may move"
+    assert sum(r["confirmed_total_m"] for r in out["quantities"]) == 2.0, "a transfer conserves the total"
+    assert out["applied"][0]["delta_m"] == 2.0
+
+
+def test_a_retag_from_a_designation_the_reading_never_found_is_refused():
+    out = apply([_q("S3-R8-75", 0.0)],
+                [{"id": "c1", "kind": "retag", "designation": "S3-R8-75",
+                  "payload": {"from": "FINNS-EJ", "meters": 5.0}}], MPP)
+    assert out["quantities"][0]["confirmed_total_m"] == 0.0
+    assert out["applied"][0]["applied"] is False
+
+
+def test_a_negative_length_is_refused_rather_than_reversed():
+    """An erase of minus four metres would otherwise add four metres of pipe nobody drew."""
+    out = apply([_q("S3-R8-110", 10.0)],
+                [{"id": "c1", "kind": "erase", "designation": "S3-R8-110", "payload": {"meters": -4.0}}], MPP)
+    assert out["quantities"][0]["confirmed_total_m"] == 10.0
+    assert out["applied"][0]["applied"] is False
+
+
+def test_a_drawn_correction_needs_a_scale_before_it_can_have_a_length():
+    """Without a scale the drawn line has no length we can defend, and zero is not the honest answer."""
+    pts = [[0.0, 0.0], [100.0, 0.0]]
+    out = apply([], [{"id": "c1", "kind": "draw", "designation": "KV1-X31-16", "payload": {"points": pts}}], None)
+    assert out["quantities"] == []
+    assert out["applied"][0]["applied"] is False and "skala" in out["applied"][0]["why"]
+
+
+def test_what_an_erase_actually_removed_is_what_it_reports():
+    out = apply([_q("S3-R8-110", 2.0)],
+                [{"id": "c1", "kind": "erase", "designation": "S3-R8-110", "payload": {"meters": 5.0}}], MPP)
+    assert out["quantities"][0]["confirmed_total_m"] == 0.0
+    assert out["applied"][0]["delta_m"] == -2.0, "the log has to say what came off, not what was asked for"
