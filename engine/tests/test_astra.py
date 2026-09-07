@@ -133,3 +133,32 @@ def test_a_case_the_engine_already_settled_is_never_overwritten():
     a = _A("x", "VERIFIED_PIPE_ATTACHMENT", "chain_from_anchor", [_C("f1"), _C("f2")])
     apply_answers([a], [Answer("x", "f2")])
     assert a.reason == "chain_from_anchor", "en läsning motorn kunde försvara får aldrig skrivas över"
+
+
+def test_the_pipeline_runs_the_second_reader_only_when_it_is_given_one(synthetic_pdf):
+    """The wiring, not the module: analyze_page must be unchanged without a transport, and must report with one.
+
+    This is the property every reference run depends on - the engine's answer is its own geometry - so it is
+    asserted against the real pipeline rather than trusted from the module's defaults.
+    """
+    from vvs_engine.pdf.extract import extract_document
+    from vvs_engine.pipeline import analyze_page
+
+    pg = extract_document(synthetic_pdf).pages[0]
+
+    plain = analyze_page(pg)
+    assert plain.second_reader is None, "utan transport ska ingen andra läsare ha varit inblandad"
+
+    asked: list = []
+
+    def never(q):
+        asked.append(q)
+        return "OKLART"
+
+    with_reader = analyze_page(pg, second_reader=never)
+    assert with_reader.second_reader is not None
+    assert with_reader.second_reader["settled"] == 0
+    # a reader that answers OKLART must leave the takeoff exactly as it was
+    a = {q["designation"]: q["confirmed_total_m"] for q in plain.quantities}
+    b = {q["designation"]: q["confirmed_total_m"] for q in with_reader.quantities}
+    assert a == b, "ett OKLART-svar får inte flytta en enda meter"
