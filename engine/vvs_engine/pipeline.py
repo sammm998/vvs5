@@ -73,6 +73,7 @@ class PageAnalysis:
     crosscheck: dict = field(default_factory=dict)                  # the routes side by side, and where they differ
     review_findings: dict = field(default_factory=dict)             # what the reading did not reach, and why
     legend: DrawingLegend = field(default_factory=DrawingLegend)    # the sheet's own designation list
+    second_reader: dict | None = None       # bounded cases put to a second reader, and what it did with them
 
 
 def _width_lengths(page: RawPage) -> dict[float, float]:
@@ -200,8 +201,66 @@ def _settle_bundles_by_elimination(anchors, ownership, graphs) -> int:
             settled += 1
     return settled
 
+SYSTEM_FAMILY_SHARE = 0.8   # the sheet places a system on one family this consistently
+SYSTEM_FAMILY_MIN = 3       # and has said so this many times before its habit counts as evidence
+
+
+def _settle_by_system_usage(anchors) -> int:
+    """Where a leader ends on several families at once, the sheet's own habit for that system decides.
+
+    A drawing draws a system with one pen. Where other labels of the same system have already been placed on
+    this sheet - each by its own leader, each verified on its own evidence - and they agree overwhelmingly on
+    one of the families THIS leader actually touched, that is the family this label means too.
+
+    It is the same kind of evidence as the designation list and the grammar: not a rule about VVS drawings, but
+    a reading of what this drawing does. Nothing is chosen that the leader did not touch, so no geometry is
+    claimed that the label never reached, and a sheet that has not said the same thing several times over
+    settles nothing.
+    """
+    habit: dict[str, Counter] = defaultdict(Counter)
+    for a in anchors:
+        if a.state != "VERIFIED_PIPE_ATTACHMENT" or not a.system_token:
+            continue
+        for fk in {c.family for c in a.contacts}:
+            habit[a.system_token.upper()][fk] += 1
+    settled = 0
+    for a in sorted(anchors, key=lambda a: a.anchor_id):
+        if a.state != "AMBIGUOUS_PIPE_ATTACHMENT" or not a.system_token:
+            continue
+        if not a.reason.startswith("several_vector_families_at_leader_no_token_discrimination"):
+            continue
+        touched = {c.family for c in a.contacts}
+        if len(touched) < 2:
+            continue
+        used = habit.get(a.system_token.upper())
+        if not used:
+            continue
+        among = {f: used.get(f, 0) for f in touched}
+        total = sum(among.values())
+        if total < SYSTEM_FAMILY_MIN:
+            continue
+        best, n = max(sorted(among.items()), key=lambda kv: kv[1])
+        if n < SYSTEM_FAMILY_SHARE * total:
+            continue                    # the sheet uses more than one family for this system: no habit to read
+        a.contacts = [c for c in a.contacts if c.family == best]
+        a.candidate_families = [best]
+        a.state = "VERIFIED_PIPE_ATTACHMENT"
+        a.reason = "family_this_sheet_uses_for_this_system"
+        a.evidence = dict(a.evidence or {}, system_usage={"family": best, "of": n, "seen": total})
+        settled += 1
+    return settled
+
+
 def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
-                 film_sink: Callable[[str, dict], None] | None = None) -> PageAnalysis:
+                 film_sink: Callable[[str, dict], None] | None = None,
+                 second_reader: Callable[[Any], str] | None = None) -> PageAnalysis:
+    """second_reader: an optional transport for putting the reading's own open cases to a language model.
+
+    Without it - the default, and what every test and every reference run uses - nothing is asked, the analysis
+    is deterministic and needs no network, and every ambiguous case stays ambiguous. With it, only cases the
+    engine itself gave up on are asked, only among candidates the drawing offers, and every answer is verified
+    against those candidates twice before it can move a metre.
+    """
     film = Film(film_sink)
     film.page(page)
     timings: dict[str, float] = {}
@@ -432,6 +491,19 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     t0 = _t(timings, "topology_ms", t0)
     if progress:
         progress("BUILDING_PHYSICAL_PIPES")
+    # what the rest of the sheet already says about where this system is drawn, before anyone is asked anything
+    _settle_by_system_usage(anchors)
+
+    # A second reader, where one is offered, sees the open cases before ownership is built - so anything it
+    # settles is seeded like any other reading and carried by the same rules, rather than pasted on afterwards.
+    second: dict | None = None
+    if second_reader is not None:
+        from .semantics.astra import Settlement, apply_answers, questions_for, settle as ask_settle
+        qs = questions_for(anchors)
+        st = Settlement(answers=ask_settle(qs, ask=second_reader))
+        second = dict(st.as_dict(), applied=apply_answers(anchors, st.answers))
+        anchors.sort(key=lambda a: a.anchor_id)
+
     identities = _pipe_identities(designations, anchors, grammar, legend=legend)
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     if _settle_bundles_by_elimination(anchors, ownership, graphs):
@@ -477,7 +549,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     film.measured(quantities, scale)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
-    return PageAnalysis(page=page, legend=legend, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
+    return PageAnalysis(page=page, legend=legend, second_reader=second, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
                         designations=designations, grammar=grammar, ann_layers=ann_layers, leaders=leaders,
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,
