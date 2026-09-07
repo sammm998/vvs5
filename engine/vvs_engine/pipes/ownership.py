@@ -256,12 +256,16 @@ def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, amb
     """A pipe is drawn as one line down its middle. A thin object - a radiator, a bench, a duct seen edge on - is
     drawn as its two long sides, and those sides are pipe-thin geometry on the same pen as the pipes.
 
-    Where a confirmed run has a parallel twin of its own family covering it end to end, at a spacing this drawing
-    uses again and again, the two are the sides of something drawn, not two pipes. Such a run is AMBIGUOUS - the
-    geometry stays on the page for a human to name, but its length is not anyone's pipe.
+    Where a confirmed run has a parallel twin of its own family covering it end to end, closer than a couple of
+    the family's own pen widths, the two are the sides of something drawn, not two pipes. Such a run is
+    AMBIGUOUS - the geometry stays on the page for a human to name, but its length is not anyone's pipe.
 
-    The spacing is never a fixed number of points: it is read off the drawing in a first pass, so a sheet at
-    another scale, or an office that draws its radiators wider, is read on its own terms.
+    The reach is never a fixed number of points: it is the drawing's own pen and the run's own length, so a sheet
+    at another scale, or an office that draws its radiators wider, is read on its own terms.
+
+    Whether the spacing is one the family returns to is measured too, but it is recorded as evidence rather than
+    required. A sheet that draws a single such object states nothing about repetition, and demanding it there
+    would hand that object's length back to a pipe on the strength of having only seen it once.
     """
     idx = GridIndex(cell=20.0)
     for pid, prim in g.prims.items():
@@ -305,7 +309,7 @@ def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, amb
             return gap
         return None
 
-    # first pass: what close parallel spacings does this family use at all
+    # first pass: which close parallel spacings does this family use, and which of them does it come back to
     pairs: list[tuple[int, float]] = []
     for pid in sorted(st):
         if st[pid].state != "CONFIRMED":

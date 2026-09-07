@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from . import exports, jobs
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
-from vvs_engine.learning import lessons, settle, situation
+from vvs_engine.learning import KEYS, lessons, settle, situation
 from .auth import create_token, current_user, hash_password, verify_password
 from .config import settings
 from .db import Correction, AnalysisJob, Drawing, Project, User, get_db, init_db
@@ -223,7 +223,7 @@ def job_status(job_id: str, user: User = Depends(current_user), db: Session = De
     return _job_out(_job(db, user, job_id))
 
 
-def _proposals(db: Session, user: User, anchors: list, pipes: list) -> list[dict]:
+def _proposals(db: Session, user: User, anchors: list, pipes: list, geom: list) -> list[dict]:
     """What this account's earlier corrections would say about the cases this reading could not settle.
 
     Proposals, never decisions. A lesson may speak only where the engine itself called the case ambiguous and
@@ -245,11 +245,32 @@ def _proposals(db: Session, user: User, anchors: list, pipes: list) -> list[dict
     cases = []
     for a in open_cases:
         name = (a.get("designation") or "").upper()
-        cands = sorted({(c or "").upper() for c in (a.get("candidate_designations") or [])} or {name})
+        cands = _candidates_of(a, geom) or [name]
         cases.append({"id": a["anchor_id"], "designation": a.get("designation"),
                       "situation": situation(**_case_shape(a, fam_of.get(name, "")), candidates=cands),
                       "candidates": cands})
     return settle(cases, taught)
+
+
+def _candidates_of(anchor: dict, geom: list) -> list[str]:
+    """The answers the drawing itself puts forward for an unresolved case.
+
+    An ambiguous anchor points at geometry the reading could not give to one identity, and that geometry carries
+    the identities that were still in play. Those are the candidates - not a list of every designation on the
+    sheet, and not the anchor's own name, which would let a lesson only ever agree with the reading.
+    """
+    touched = {(c.get("pid"), c.get("seg_index")) for c in (anchor.get("contacts") or [])}
+    if not touched:
+        return []
+    out: set[str] = set()
+    for g in geom:
+        if g.get("state") != "AMBIGUOUS":
+            continue
+        if (g.get("pid"), g.get("seg")) not in touched:
+            continue
+        for c in g.get("candidates") or []:
+            out.add(str(c).replace("|DN", "-").upper())
+    return sorted(out)
 
 
 def _case_shape(anchor: dict, family: str) -> dict:
@@ -279,8 +300,9 @@ def _situation_of(db: Session, user: User, job_id: str | None, designation: str 
     try:
         j = _job(db, user, job_id)
         rd = _result_dir(j)
-        pipes = _load(rd, "physical-pipes.json")["pipes"]
+        pipes = _load(rd, "physical-pipes.json")["physical_pipes"]
         anchors = _load(rd, "pipe-code-anchors.json")["anchors"]
+        geom = _load(rd, "pipe-geometry-inventory.json")["primitives"]
     except Exception:
         return {}
     want = designation.upper()
@@ -292,8 +314,28 @@ def _situation_of(db: Session, user: User, job_id: str | None, designation: str 
     if case is None:
         # nothing in the reading was unresolved for this designation: the correction is about this drawing only
         return {}
-    cands = sorted({(c or "").upper() for c in (case.get("candidate_designations") or [])})
-    return situation(**_case_shape(case, family), candidates=cands or [want])
+    cands = _candidates_of(case, geom) or [want]
+    return situation(**_case_shape(case, family), candidates=cands)
+
+
+def _is_our_proposal(db: Session, user: User, job_id: str | None, sit: dict) -> bool:
+    """Whether this fingerprint is one this reading actually put forward, rather than one a caller made up.
+
+    Accepting a proposal is the only way a situation may arrive from outside, so it is checked against the
+    proposals this job offers right now, computed here rather than trusted from the request.
+    """
+    if not job_id or not isinstance(sit, dict):
+        return False
+    try:
+        j = _job(db, user, job_id)
+        rd = _result_dir(j)
+        anchors = _load(rd, "pipe-code-anchors.json")["anchors"]
+        pipes = _load(rd, "physical-pipes.json")["physical_pipes"]
+        geom = _load(rd, "pipe-geometry-inventory.json")["primitives"]
+    except Exception:
+        return False
+    want = {k: sit.get(k) for k in KEYS}
+    return any(p.get("situation") == want for p in _proposals(db, user, anchors, pipes, geom))
 
 
 class CorrectionIn(BaseModel):
@@ -326,9 +368,12 @@ def add_correction(drawing_id: str, body: CorrectionIn, user: User = Depends(cur
     if body.kind not in CORRECTION_KINDS:
         raise HTTPException(400, f"Okänd rättelsetyp: {body.kind}")
     # The situation always comes from the reading, never from the caller: what a lesson may be shown to apply to
-    # is a fact about the drawing, and taking it from the request would let a client widen its own lessons. A
-    # situation passed in is only kept when the reading has nothing to say - a proposal being accepted back.
-    sit = _situation_of(db, user, body.job_id, body.designation) or (body.situation or {})
+    # is a fact about the drawing, and a caller who could supply one could forge a fingerprint, post it twice and
+    # have it settle real cases on someone else's later drawing. The only situation that may arrive from outside
+    # is one this server itself put forward, and it is taken only when it matches a live proposal exactly.
+    sit = _situation_of(db, user, body.job_id, body.designation)
+    if not sit and body.situation:
+        sit = body.situation if _is_our_proposal(db, user, body.job_id, body.situation) else {}
     c = Correction(drawing_id=drawing_id, job_id=body.job_id, user_id=user.id, page=body.page, kind=body.kind,
                    designation=body.designation, payload=body.payload, situation=sit, note=body.note)
     db.add(c); db.commit()
@@ -437,7 +482,7 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
         "unowned_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "family": g["family"]} for g in unowned],
         "hatched_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "identity": g["identity"]} for g in hatched],
         "issues": issues,
-        "proposals": _proposals(db, user, anchors, pipes),
+        "proposals": _proposals(db, user, anchors, pipes, geom),
         "build": _build_stamp(),
         "coverage": {
             "designations": len(des), "with_dn": sum(1 for d in des if d["dn"] is not None), "leaders": len(leaders),
@@ -507,18 +552,29 @@ def why(job_id: str, pipe_id: str, user: User = Depends(current_user), db: Sessi
 
 @app.get("/api/jobs/{job_id}/export/{fmt}")
 def export(job_id: str, fmt: str, floor_height: float | None = None, include_hatched: bool = False,
+           riser_source: str = "labels",
            user: User = Depends(current_user), db: Session = Depends(get_db)):
     j = _job(db, user, job_id)
     rd = _result_dir(j)
     base = os.path.splitext(j.drawing.filename)[0]
     fh = floor_height if floor_height and floor_height > 0 else None
+    # An export carries the reading as it stands, corrections included. Leaving them out would hand back the
+    # figure the reader already rejected on screen, in the file they price from.
+    quantities = _load(rd, "quantities.json")
+    corr = [_correction_out(c) for c in
+            db.query(Correction).filter(Correction.drawing_id == j.drawing_id, Correction.undone == False).all()]  # noqa: E712
+    rows = (apply_corrections(quantities["rows"], corr, quantities["scale"].get("meters_per_pdf_point"))["quantities"]
+            if corr else quantities["rows"])
     if fmt == "xlsx":
-        return Response(exports.to_xlsx(rd, fh, include_hatched), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        return Response(exports.to_xlsx(rd, fh, include_hatched, rows, riser_source), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         headers={"Content-Disposition": f'attachment; filename="{base}-mangder.xlsx"'})
     if fmt == "csv":
-        return Response(exports.to_csv(rd, fh, include_hatched).encode("utf-8-sig"), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="{base}-mangder.csv"'})
+        return Response(exports.to_csv(rd, fh, include_hatched, rows, riser_source).encode("utf-8-sig"), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="{base}-mangder.csv"'})
     if fmt == "json":
-        return FileResponse(os.path.join(rd, "quantities.json"), media_type="application/json", filename=f"{base}-quantities.json")
+        return Response(json.dumps({**quantities, "rows": rows, "corrections_applied": len(corr)},
+                                   ensure_ascii=False, indent=1).encode("utf-8"),
+                        media_type="application/json",
+                        headers={"Content-Disposition": f'attachment; filename="{base}-quantities.json"'})
     if fmt == "report":
         return FileResponse(os.path.join(rd, "analysis-report.md"), media_type="text/markdown", filename=f"{base}-analysrapport.md")
     if fmt == "pdf":

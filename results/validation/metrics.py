@@ -14,6 +14,7 @@ Reads a recorded blind run and the facit. The engine is never invoked here, so n
 measurement; this runs after the blind pass, exactly like the scorer beside it.
 """
 import json
+import os
 import sys
 
 import openpyxl
@@ -28,23 +29,43 @@ def fl(v):
         return 0.0
 
 
+ROOT = os.environ.get("VVS_ROOT", os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+
 def facit(tag):
-    ws = openpyxl.load_workbook(f"/home/user/vvs5/data/validation_{tag}/facit.xlsx", data_only=True).worksheets[0]
+    """The hand takeoff, split the way the workbook splits it.
+
+    `Längd` is the length of the polyline the estimator drew on the sheet - the horizontal run plus whatever
+    riser drops the marker walked - and that is the quantity the engine produces. `Total_vertikalhöjd_VS` is a
+    separate column: riser count times a floor height the estimator assumed, which the engine refuses to invent
+    without being given one. Both are returned so the report can say which of the two it is scoring against
+    instead of quietly presenting one as the whole facit.
+    """
+    path = os.path.join(ROOT, "data", f"validation_{tag}", "facit.xlsx")
+    ws = openpyxl.load_workbook(path, data_only=True).worksheets[0]
     hdr = [str(v or "").strip() for v in next(ws.iter_rows(min_row=1, max_row=1, values_only=True))]
     col = {h: i for i, h in enumerate(hdr)}
-    c_subj, c_len = col.get("Ämne", 2), col.get("Längd", 7)
-    out = {}
+    # the subject column is headed "Ämne" on some sheets and "Subject" on others; a missing one is an error,
+    # never a guessed index, because scoring against the wrong column reports confident nonsense
+    c_subj = next((col[h] for h in ("Ämne", "Subject") if h in col), None)
+    c_len = col.get("Längd")
+    c_vert = col.get("Total_vertikalhöjd_VS")
+    if c_subj is None or c_len is None:
+        raise SystemExit(f"facit {tag}: hittar inte kolumnerna (rubriker: {hdr})")
+    horiz, vert = {}, {}
     for r in ws.iter_rows(min_row=2, values_only=True):
         s = r[c_subj]
         if not s or s == "Markera":
             continue
         name = str(s).replace(" Vertikal", "").replace(" VERTIKAL", "").strip()
-        out[name] = out.get(name, 0.0) + fl(r[c_len])
-    return out
+        horiz[name] = horiz.get(name, 0.0) + fl(r[c_len])
+        if c_vert is not None:
+            vert[name] = vert.get(name, 0.0) + fl(r[c_vert])
+    return horiz, vert
 
 
 def score_one(tag, rec):
-    fh = facit(tag)
+    fh, fv = facit(tag)
     ours = {q["designation"]: q["confirmed_total_m"] for q in rec["quantities"]}
     # a row of 0.00 m is not a claim about the drawing, it is a designation read with no metres behind it
     ours = {k: v for k, v in ours.items() if v > 0.005}
@@ -54,7 +75,9 @@ def score_one(tag, rec):
     invented_names = set(ours) - set(fh)
     missed_names = set(fh) - set(ours)
 
-    owned = sum(min(ours[k], fh[k] * (1 + MATCH_TOL)) for k in hit)
+    # capped at the facit, not at the facit plus tolerance: metres the drawing does not contain are never
+    # coverage, however small the overshoot. The tolerance decides only when an overshoot counts as invented.
+    owned = sum(min(ours[k], fh[k]) for k in hit)
     over = sum(max(0.0, ours[k] - fh[k] * (1 + MATCH_TOL)) for k in hit)
     false_owned = over + sum(ours[k] for k in invented_names)
     missed = sum(max(0.0, fh[k] - ours[k]) for k in hit) + sum(fh[k] for k in missed_names)
@@ -68,7 +91,9 @@ def score_one(tag, rec):
                          "invented": sorted(invented_names), "missed": sorted(missed_names)},
         "metres": {"facit": sum(fh.values()), "owned": owned, "false_owned": false_owned, "missed": missed,
                    "coverage": owned / sum(fh.values()) if fh else 0.0,
-                   "false_rate": false_owned / sum(fh.values()) if fh else 0.0},
+                   "false_rate": false_owned / sum(fh.values()) if fh else 0.0,
+                   # what the engine does not claim at all, so that it is stated rather than left out
+                   "facit_vertical_not_claimed": sum(fv.values())},
         "reach": {"labels": cov.get("designations"), "with_dn": cov.get("with_dn"),
                   "leaders": cov.get("leaders"), "verified": cov.get("verified_attachments"),
                   "ambiguous": cov.get("ambiguous_attachments"), "none": cov.get("no_attachments"),
@@ -106,6 +131,11 @@ def main(blind_path, tags):
     print(f"{'ALLA':4s} {'':10s} {n_hit / n_found if n_found else 0:7.1%} {n_hit / n_facit if n_facit else 0:7.1%} "
           f"{tot_f:9.2f} {tot_o:9.2f} {tot_x:9.2f} {tot_m:10.2f} "
           f"{tot_o / tot_f if tot_f else 0:9.1%} {tot_x / tot_f if tot_f else 0:8.1%}")
+    tot_v = sum(r["metres"]["facit_vertical_not_claimed"] for r in rows)
+    print(f"\nAllt ovan mäts mot facits Längd-kolumn - den utritade sträckan, som är det motorn tar fram.")
+    print(f"Facit har därutöver {tot_v:.2f} m i Total_vertikalhöjd_VS: stigare gånger en våningshöjd som "
+          f"mängdaren\nantagit. Motorn räknar inte fram dem utan att få höjden, så de ingår varken i täckningen "
+          f"eller i felet\n- de står här för att inte försvinna.")
 
     print("\nvad som saknas och vad som hittats på:")
     for r in rows:

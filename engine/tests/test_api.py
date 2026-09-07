@@ -96,3 +96,93 @@ def test_a_correction_layers_over_the_reading_without_replacing_it(client, synth
     other = client.post("/api/auth/register", json={"email": "annan@example.com", "password": "hemligt1"}).json()
     OH = {"Authorization": f"Bearer {other['access_token']}"}
     assert client.get(f"/api/drawings/{d['id']}/corrections", headers=OH).status_code == 404
+
+
+def test_a_correction_is_filed_with_the_situation_the_reading_actually_saw(client, synthetic_pdf):
+    """The server, not the browser, says what case a correction was made in - and it has to say something.
+
+    A situation that comes back empty is not a harmless default: `lessons()` drops every correction that has
+    one, so an empty fingerprint silently switches the whole learning loop off. This asserts the server reads a
+    real one off its own artifacts, and that a fingerprint invented by a caller is refused rather than stored.
+    """
+    r = client.post("/api/auth/register", json={"email": "sit@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Situation", "description": ""}, headers=H).json()
+    with open(synthetic_pdf, "rb") as fh:
+        d = client.post(f"/api/projects/{p['id']}/drawings",
+                        files={"file": ("s.pdf", fh, "application/pdf")}, headers=H).json()
+    j = client.post(f"/api/drawings/{d['id']}/analyze", headers=H).json()
+    for _ in range(120):
+        j = client.get(f"/api/jobs/{j['id']}", headers=H).json()
+        if j["status"] in ("COMPLETED", "FAILED"):
+            break
+        time.sleep(0.5)
+    assert j["status"] == "COMPLETED", j
+    res = client.get(f"/api/jobs/{j['id']}/result", headers=H).json()
+
+    # a designation the reading left unresolved, if this sheet has one: that is where a situation exists at all
+    open_names = {(a.get("designation") or "") for a in res["anchors"]
+                  if a["state"] != "VERIFIED_PIPE_ATTACHMENT"}
+    forged = {"family_style": "w9.99|c(1,1,1)", "leader_style": "påhittad", "reason": "påhittad",
+              "designation_shape": "AA9-A99-99", "topology": "1-1-1", "candidate_shape": "1:AA9-A99-99"}
+    name = sorted(open_names)[0] if open_names else res["quantities"][0]["designation"]
+    c = client.post(f"/api/drawings/{d['id']}/corrections", headers=H, json={
+        "kind": "retag", "designation": name, "job_id": j["id"],
+        "payload": {"from": name, "meters": 1.0}, "situation": forged}).json()
+    stored = next(x for x in client.get(f"/api/drawings/{d['id']}/corrections", headers=H).json()
+                  if x["id"] == c["id"])["situation"]
+    assert stored != forged, "a fingerprint the caller made up must never be stored as if the reading saw it"
+    if open_names:
+        assert stored.get("family_style") or stored.get("reason"), \
+            "the reading had an unresolved case for this designation, so the server owed it a real situation"
+
+
+def test_an_export_carries_the_corrected_reading_and_the_riser_source_on_screen(client, synthetic_pdf):
+    """A file someone prices from must not disagree with the screen it was taken from.
+
+    Two ways it used to: the export read the engine's own artifact and dropped every correction, and it counted
+    drawn riser symbols while the table counted labelled ones, so the assumed vertical metres differed too.
+    """
+    import csv as _csv
+    import io as _io
+    r = client.post("/api/auth/register", json={"email": "exp@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Export", "description": ""}, headers=H).json()
+    with open(synthetic_pdf, "rb") as fh:
+        d = client.post(f"/api/projects/{p['id']}/drawings",
+                        files={"file": ("e.pdf", fh, "application/pdf")}, headers=H).json()
+    j = client.post(f"/api/drawings/{d['id']}/analyze", headers=H).json()
+    for _ in range(120):
+        j = client.get(f"/api/jobs/{j['id']}", headers=H).json()
+        if j["status"] in ("COMPLETED", "FAILED"):
+            break
+        time.sleep(0.5)
+    assert j["status"] == "COMPLETED", j
+    res = client.get(f"/api/jobs/{j['id']}/result", headers=H).json()
+    name = res["quantities"][0]["designation"]
+    engine_m = res["quantities"][0]["confirmed_total_m"]
+
+    client.post(f"/api/drawings/{d['id']}/corrections", headers=H, json={
+        "kind": "quantity", "designation": name, "job_id": j["id"],
+        "payload": {"meters": engine_m + 7.0}, "note": "rättad för hand"})
+
+    def row_of(text):
+        rows = list(_csv.reader(_io.StringIO(text), delimiter=";"))
+        head = rows[0]
+        return dict(zip(head, next(r for r in rows[1:] if r and r[0] == name)))
+
+    got = row_of(client.get(f"/api/jobs/{j['id']}/export/csv", headers=H).content.decode("utf-8-sig"))
+    assert float(got["Totalt m"].replace(",", ".")) == round(engine_m + 7.0, 2), \
+        "the export handed back the engine's figure, not the one the reader corrected it to"
+    assert "Vertikalt ursprung" in got
+
+    # the two riser sources are counted separately, and the export must count the one it was asked for
+    q = next(x for x in res["quantities"] if x["designation"] == name)
+    for src in ("labels", "symbols"):
+        n = q["riser_count_from_labels"] if src == "labels" else q["riser_count"]
+        got = row_of(client.get(f"/api/jobs/{j['id']}/export/csv?floor_height=2.8&riser_source={src}",
+                                headers=H).content.decode("utf-8-sig"))
+        if n:
+            assert f"{n} stigare" in got["Vertikalt ursprung"], (src, n, got["Vertikalt ursprung"])
+        else:
+            assert "ANTAGET" not in got["Vertikalt ursprung"]

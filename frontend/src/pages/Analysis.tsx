@@ -50,7 +50,12 @@ export default function AnalysisPage() {
   const [floorHeight, setFloorHeight] = useState<string>(() => { try { return localStorage.getItem("vvs.floorHeight") ?? ""; } catch { return ""; } });
   const [includeHatched, setIncludeHatched] = useState<boolean>(() => { try { return localStorage.getItem("vvs.includeHatched") === "1"; } catch { return false; } });
   const [riserSource, setRiserSource] = useState<string>(() => { try { return localStorage.getItem("vvs.riserSource") ?? "labels"; } catch { return "labels"; } });
-  const exportQuery = [floorHeight.trim() && !Number.isNaN(Number(floorHeight.replace(",", "."))) ? `floor_height=${Number(floorHeight.replace(",", "."))}` : "", includeHatched ? "include_hatched=true" : ""].filter(Boolean).join("&");
+  // the export has to be given the same choices the table is showing, or the file states a different quantity
+  const exportQuery = [
+    floorHeight.trim() && !Number.isNaN(Number(floorHeight.replace(",", "."))) ? `floor_height=${Number(floorHeight.replace(",", "."))}` : "",
+    includeHatched ? "include_hatched=true" : "",
+    `riser_source=${riserSource}`,
+  ].filter(Boolean).join("&");
   const fh = floorHeight.trim() ? Number(floorHeight.replace(",", ".")) : NaN;
   const floorH = Number.isFinite(fh) && fh > 0 ? fh : null;
   const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, designations: true, leaders: true, anchors: true });
@@ -140,7 +145,11 @@ export default function AnalysisPage() {
           <button className="secondary small" onClick={() => viewer.current?.fitPage()}>Anpassa sida</button>
           <button className="secondary small" onClick={() => viewer.current?.fitWidth()}>Anpassa bredd</button>
           <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>Helskärm</button>
-          {nPages > 1 && <select value={page} onChange={(e) => setPage(Number(e.target.value))}>{Array.from({ length: nPages }, (_, i) => <option key={i} value={i}>Sida {i + 1}</option>)}</select>}
+          {nPages > 1 && <select value={page} onChange={(e) => {
+            // the selected run belongs to the page it was found on; carrying it across would put its ends,
+            // and any correction dragged from them, on geometry that is not it
+            setPage(Number(e.target.value)); setSelPipe(null); setWhy(null);
+          }}>{Array.from({ length: nPages }, (_, i) => <option key={i} value={i}>Sida {i + 1}</option>)}</select>}
           {(Object.keys(LAYER_LABELS) as Layer[]).map((l) => (
             <label key={l} style={{ fontSize: 12 }}><input type="checkbox" checked={layers[l]} onChange={(e) => setLayers({ ...layers, [l]: e.target.checked })} /> {LAYER_LABELS[l]}</label>
           ))}

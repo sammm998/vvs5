@@ -50,12 +50,16 @@ def situation(*, family: str = "", reason: str = "", designation: str = "", lead
     """
     style = family.split("|s|")[-1] if "|s|" in family else family
     cands = sorted({_shape(c) for c in (candidates or []) if c})
-    topo = "-".join("?" if v is None else str(int(v)) for v in (n_rows, n_groups, n_contacts))
+    # A junction we could only describe in part is a junction we cannot recognise again. Rendering the unknown
+    # parts as "?" would make two cases that share nothing but their own obscurity match each other exactly, so
+    # a missing count empties the whole fingerprint instead.
+    counts = (n_rows, n_groups, n_contacts)
+    topo = "-".join(str(int(v)) for v in counts) if all(v is not None for v in counts) else ""
     return {"family_style": style,
             "leader_style": leader_family or "",
             "reason": (reason or "").split(":")[0],
             "designation_shape": _shape(designation),
-            "topology": topo if any(v is not None for v in (n_rows, n_groups, n_contacts)) else "",
+            "topology": topo,
             "candidate_shape": f"{len(cands)}:" + "|".join(cands) if cands else ""}
 
 

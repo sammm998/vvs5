@@ -136,13 +136,15 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
 
   /** The ends of the run being extended: where a drag may start. */
   const handles: number[][] = useMemo(() => {
-    if (kind !== "extend" || !props.editPipe) return [];
+    // a run belongs to the page it was found on: its ends mean nothing over another page's geometry, and a drag
+    // from one would file a correction against this page using the other page's coordinates
+    if (kind !== "extend" || !props.editPipe || (props.editPipe.page ?? 0) !== props.page) return [];
     const out: number[][] = [];
     for (const pl of props.editPipe.geometry ?? []) {
       if (pl.length >= 2) { out.push(pl[0]); out.push(pl[pl.length - 1]); }
     }
     return out;
-  }, [kind, props.editPipe]);
+  }, [kind, props.editPipe, props.page]);
 
   /** What the eraser stroke is currently over: those segments, and the metres they carry. */
   const erased = useMemo(() => {
@@ -156,6 +158,15 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     let m = 0;
     // the eraser only takes from the run you picked: one correction, one designation, an exact metre count
     const only = props.editPipe?.identity ?? null;
+    // pipe inside a hatched area is measured but kept out of the row's horizontal metres, so erasing over it
+    // would subtract length the row never held. Those segments are skipped by their own coordinates.
+    const hatch = new Set((props.hatched ?? []).map((g: any) =>
+      `${Math.round(g.x0 * 20)},${Math.round(g.y0 * 20)},${Math.round(g.x1 * 20)},${Math.round(g.y1 * 20)}`));
+    const isHatched = (a: number[], b: number[]) => {
+      const k1 = `${Math.round(a[0] * 20)},${Math.round(a[1] * 20)},${Math.round(b[0] * 20)},${Math.round(b[1] * 20)}`;
+      const k2 = `${Math.round(b[0] * 20)},${Math.round(b[1] * 20)},${Math.round(a[0] * 20)},${Math.round(a[1] * 20)}`;
+      return hatch.has(k1) || hatch.has(k2);
+    };
     for (const p of props.pipes) {
       if (only && p.identity !== only) continue;
       for (const pl of p.geometry ?? []) {
@@ -165,6 +176,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
         for (let i = 1; i < pl.length; i++) {
           const a = pl[i - 1], b = pl[i];
           if (stroke.some((q) => segDist(q, a, b) <= r)) {
+            if (isHatched(a, b)) continue;
             segs.push([a, b]);
             m += len(a, b) * mpp;
             hits.add(p.designation ?? p.identity);
@@ -173,7 +185,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
       }
     }
     return { segs, meters: m, hits: [...hits] };
-  }, [kind, stroke, props.pipes, props.editPipe, scale, mpp]);
+  }, [kind, stroke, props.pipes, props.editPipe, props.hatched, scale, mpp]);
 
   // --- pointer plumbing ---------------------------------------------------
   const at = (e: React.MouseEvent): number[] => {
@@ -232,12 +244,13 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     if (kind !== "draw") return;
     const key = (e: KeyboardEvent) => {
       if (e.key === "Escape") setPending([]);
-      if (e.key === "Enter") { setPending((q) => { if (q.length >= 2) props.onDrawn?.({ points: q, meters: metres(q) }); return []; }); }
+      if (e.key === "Enter") finish();
       if (e.key === "Backspace") { e.preventDefault(); setPending((q) => q.slice(0, -1)); }
     };
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
-  }, [kind, mpp]);
+    // finish() reads the points placed so far, so the listener has to be rebound as they are placed
+  }, [kind, pending, mpp, props.onDrawn]);
 
   // the rubber band: from the last placed point (or the grabbed end) to where the hand is
   const band = pending.length > 0 && cursor ? [pending[pending.length - 1], cursor] : null;

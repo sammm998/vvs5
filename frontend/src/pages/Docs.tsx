@@ -227,18 +227,24 @@ const SECTIONS: Sec[] = [
             <tr><th>Ritning</th><th>Bet. P</th><th>Bet. R</th><th>Facit m</th><th>Ägda m</th><th>Falska m</th><th>Missade m</th></tr>
           </thead>
           <tbody>
-            <tr><td>A</td><td>100 %</td><td>100 %</td><td>213,70</td><td>212,52</td><td>0,05</td><td>2,41</td></tr>
+            <tr><td>A</td><td>100 %</td><td>100 %</td><td>213,70</td><td>211,29</td><td>0,05</td><td>2,41</td></tr>
             <tr><td>C</td><td>100 %</td><td>100 %</td><td>17,60</td><td>17,38</td><td>0,00</td><td>0,23</td></tr>
-            <tr><td>D</td><td>100 %</td><td>100 %</td><td>112,90</td><td>110,09</td><td>2,34</td><td>4,99</td></tr>
-            <tr><td>E</td><td>100 %</td><td>100 %</td><td>50,90</td><td>49,93</td><td>0,30</td><td>1,43</td></tr>
-            <tr className="sum"><td>Alla</td><td>100 %</td><td>100 %</td><td>395,10</td><td>389,91</td><td>2,70</td><td>9,06</td></tr>
+            <tr><td>D</td><td>100 %</td><td>100 %</td><td>112,90</td><td>107,91</td><td>2,34</td><td>4,99</td></tr>
+            <tr><td>E</td><td>100 %</td><td>100 %</td><td>50,90</td><td>49,47</td><td>0,30</td><td>1,43</td></tr>
+            <tr className="sum"><td>Alla</td><td>100 %</td><td>100 %</td><td>395,10</td><td>386,05</td><td>2,70</td><td>9,06</td></tr>
           </tbody>
         </table>
         <p className="note">
-          Täckning 98,7 % och falskt ägda 0,7 % — nästan allt av det senare på ritning D, där skalan själv står
+          Täckning 97,7 % och falskt ägda 0,7 % — nästan allt av det senare på ritning D, där skalan själv står
           i konflikt. Av 477 beteckningar fästes 273 med verifierad ledarlinje, 28 lämnades tvetydiga och 54
           utan fäste: hållna tillbaka i stället för gissade. Siffrorna kommer ur{" "}
           <code>results/validation/metrics.py</code>, som körs på en blind körning och aldrig av motorn.
+        </p>
+        <p className="note">
+          Tabellen mäts mot facits <b>Längd</b> — den utritade sträckan, som är det motorn tar fram. Facit har
+          därutöver 268,40 m i en egen kolumn för stigare: antal gånger en våningshöjd som mängdaren antagit.
+          Motorn räknar inte fram dem utan att få höjden, så de ingår varken i täckningen eller i felet. De står
+          här för att inte försvinna ur en siffra som annars såg fullständig ut.
         </p>
       </>
     ),

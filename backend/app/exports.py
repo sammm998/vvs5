@@ -13,9 +13,18 @@ from openpyxl.utils import get_column_letter
 HEADERS = ["Beteckning", "DN", "Beteckningar på ritningen", "Sammanhängande rörsträckor", "Horisontellt m", "Vertikalt m", "Vertikalt ursprung", "Totalt m", "Tvetydigt m", "Varav i skrafferat område m", "Stigare (symboler)", "Stigare (etiketter)", "Status"]
 
 
-def _rows(result_dir: str, floor_height: float | None = None, include_hatched: bool = False) -> list[dict]:
-    with open(os.path.join(result_dir, "quantities.json"), "r", encoding="utf-8") as fh:
-        rows = json.load(fh)["rows"]
+def _rows(result_dir: str, floor_height: float | None = None, include_hatched: bool = False,
+          rows: list[dict] | None = None, riser_source: str = "labels") -> list[dict]:
+    """The rows an export is built from.
+
+    `rows` is the corrected reading when the caller has one. Without it the engine's own reading is read off the
+    artifact, which is right only for a drawing nobody has corrected: an export that quietly drops a correction
+    is a priced spreadsheet that disagrees with the screen it was taken from.
+    """
+    if rows is None:
+        with open(os.path.join(result_dir, "quantities.json"), "r", encoding="utf-8") as fh:
+            rows = json.load(fh)["rows"]
+    rows = [dict(r) for r in rows]
     for r in rows:
         # pipe drawn inside hatched areas is measured but stays out of the total unless the takeoff includes it
         if include_hatched:
@@ -30,8 +39,11 @@ def _rows(result_dir: str, floor_height: float | None = None, include_hatched: b
         # invites an assumed metre to be priced as a measured one.
         r["vertical_source"] = "OKÄNT" if r["vertical_m"] == "UNKNOWN" else "MÄTT"
         if floor_height:
-            # vertical metres from the user's floor height: every riser counts one floor height
-            risers = int(r.get("riser_count", 0) or 0)
+            # vertical metres from the user's floor height: every riser counts one floor height. Which risers
+            # those are is the reader's choice on screen - drawn symbols or labels with the dimension on the row
+            # below - and the export has to count the same ones or it states a different quantity than they saw.
+            risers = int((r.get("riser_count_from_labels") if riser_source == "labels"
+                          else r.get("riser_count")) or 0)
             if risers > 0:
                 known = 0.0 if r["vertical_m"] == "UNKNOWN" else float(r["vertical_m"])
                 r["vertical_m"] = round(known + risers * floor_height, 3)
@@ -45,14 +57,15 @@ def _fmt(v):
     return v if v != "UNKNOWN" else "OKÄNT"
 
 
-def to_xlsx(result_dir: str, floor_height: float | None = None, include_hatched: bool = False) -> bytes:
+def to_xlsx(result_dir: str, floor_height: float | None = None, include_hatched: bool = False,
+          rows: list[dict] | None = None, riser_source: str = "labels") -> bytes:
     wb = Workbook()
     ws = wb.active
     ws.title = "Mängder"
     ws.append(HEADERS)
     for c in ws[1]:
         c.font = Font(bold=True)
-    for r in _rows(result_dir, floor_height, include_hatched):
+    for r in _rows(result_dir, floor_height, include_hatched, rows, riser_source):
         ws.append([r["designation"], r["dn"] if r["dn"] is not None else "?", r.get("label_count", 0), r["physical_pipe_count"], round(r["confirmed_horizontal_m"], 2),
                    _fmt(r["vertical_m"]) if r["vertical_m"] == "UNKNOWN" else round(r["vertical_m"], 2),
                    r["vertical_source"], round(r["confirmed_total_m"], 2),
@@ -65,11 +78,12 @@ def to_xlsx(result_dir: str, floor_height: float | None = None, include_hatched:
     return buf.getvalue()
 
 
-def to_csv(result_dir: str, floor_height: float | None = None, include_hatched: bool = False) -> str:
+def to_csv(result_dir: str, floor_height: float | None = None, include_hatched: bool = False,
+          rows: list[dict] | None = None, riser_source: str = "labels") -> str:
     buf = io.StringIO()
     w = csv.writer(buf, delimiter=";")
     w.writerow(HEADERS)
-    for r in _rows(result_dir, floor_height, include_hatched):
+    for r in _rows(result_dir, floor_height, include_hatched, rows, riser_source):
         w.writerow([r["designation"], r["dn"] if r["dn"] is not None else "?", r.get("label_count", 0), r["physical_pipe_count"], f"{r['confirmed_horizontal_m']:.2f}",
                     _fmt(r["vertical_m"]) if r["vertical_m"] == "UNKNOWN" else f"{r['vertical_m']:.2f}",
                     r["vertical_source"], f"{r['confirmed_total_m']:.2f}",

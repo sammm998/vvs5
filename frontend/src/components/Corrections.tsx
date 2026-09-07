@@ -42,7 +42,9 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
     try {
       const payload: any = {};
       if (draft) { payload.points = draft.points; payload.meters = Number(draft.meters.toFixed(3)); }
-      if (kind === "retag") { payload.from = subject; payload.meters = Number(meters.replace(",", ".")) || pipe?.total_m || 0; }
+      // a retag moves horizontal metres, because that is the field it lands in on both rows. Defaulting to
+      // total_m would drag the run's vertical metres across as horizontal pipe and stop the pair conserving.
+      if (kind === "retag") { payload.from = subject; payload.meters = Number(meters.replace(",", ".")) || pipe?.horizontal_m || 0; }
       if (kind === "quantity" || (kind === "erase" && !draft)) payload.meters = Number(meters.replace(",", ".")) || 0;
       await api.addCorrection(drawingId, {
         kind, designation: kind === "retag" ? to : designation, page, payload, note: note || null, job_id: jobId,
@@ -97,7 +99,9 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
         )}
         {subject && (
           <div className="subject">
-            <span className="sw" style={{ background: identityColor(subject) }} />
+            {/* hashed on the identity key, the same string the run on the sheet and the table hash, so the
+                chip is the colour of the run it names */}
+            <span className="sw" style={{ background: identityColor(pipe.identity ?? subject) }} />
             <b>{subject}</b>
             <span className="muted">
               {pipe.total_m != null ? ` · ${Number(pipe.total_m).toFixed(2).replace(".", ",")} m` : ""}
@@ -147,7 +151,8 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
               <div className="field">
                 <label htmlFor="c-m">Meter</label>
                 <input id="c-m" value={meters} onChange={(e) => setMeters(e.target.value)}
-                  placeholder={pipe?.total_m != null ? Number(pipe.total_m).toFixed(2).replace(".", ",") : "0,00"} />
+                  placeholder={(kind === "retag" ? pipe?.horizontal_m : pipe?.total_m) != null
+                    ? Number(kind === "retag" ? pipe.horizontal_m : pipe.total_m).toFixed(2).replace(".", ",") : "0,00"} />
               </div>
             )}
             <datalist id="c-des-list">{quantities.map((q) => <option key={q.designation} value={q.designation} />)}</datalist>
