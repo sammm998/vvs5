@@ -334,8 +334,7 @@ export default function AnalysisPage() {
               setAgentIds(ids);
               const first = result.pipes.find((p: any) => p.physical_pipe_id === ids[0]);
               if (first) { setSelIdent(first.identity); viewer.current?.zoomTo(first.bbox ?? null); }
-            }}
-            onZoom={(b) => viewer.current?.zoomTo(b)} />
+            }} />
         )}
         {tab === "ejlosta" && (() => {
           const blocking = result.issues.filter((i: any) => i.severity === "blocking");

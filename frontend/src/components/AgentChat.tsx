@@ -20,12 +20,11 @@ const QUICK = [
   "Förklara ritningens beteckningar",
 ];
 
-export default function AgentChat({ jobId, page, selection, onHighlight, onZoom }: {
+export default function AgentChat({ jobId, page, selection, onHighlight }: {
   jobId: string;
   page: number;
   selection: { pipeIds: string[]; bbox: number[] | null };
   onHighlight: (ids: string[]) => void;
-  onZoom?: (bbox: number[]) => void;
 }) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [text, setText] = useState("");
