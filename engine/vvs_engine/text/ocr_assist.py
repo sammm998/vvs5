@@ -44,7 +44,7 @@ def _words_of(row):
 
 
 def resolve_unknown_glyphs(page, rows, min_conf: float = 0.55, budget_s: float = 90.0,
-                           progress=None) -> dict[str, Any]:
+                           progress=None, seen=None) -> dict[str, Any]:
     """Fill '?' glyphs from an OCR pass over the same page. Returns a report; rows are edited in place.
 
     Matching is per word, not per row: OCR splits a line into words of its own, so only a word that lines up
@@ -69,7 +69,7 @@ def resolve_unknown_glyphs(page, rows, min_conf: float = 0.55, budget_s: float =
                for r in targets if r.glyphs]
     try:
         from ..review.ocr_check import ocr_words
-        words = ocr_words(page, regions=regions, budget_s=budget_s, progress=progress)
+        words = ocr_words(page, regions=regions, budget_s=budget_s, progress=progress, seen=seen)
     except Exception as e:                                   # pragma: no cover - optional dependency / runtime
         report["state"] = "unavailable"
         report["error"] = str(e)[:160]

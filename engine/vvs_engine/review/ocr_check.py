@@ -39,7 +39,7 @@ def _engine():
 
 
 def ocr_words(page, dpi: int = 300, progress=None, regions=None,
-              budget_s: float | None = None) -> list[tuple[str, list[float], float]]:
+              budget_s: float | None = None, seen=None) -> list[tuple[str, list[float], float]]:
     """Read the page with OCR. Returns (word, bbox in page points, confidence) in the page's display space.
 
     `regions` limits the work to the parts of the sheet that are worth reading - a pass that exists to name three
@@ -90,8 +90,10 @@ def ocr_words(page, dpi: int = 300, progress=None, regions=None,
                 ys = [clip_disp.y0 + float(q[1]) / s for q in box]
                 for w in str(text).split():
                     out.append((w, [min(xs), min(ys), max(xs), max(ys)], float(conf)))
+            if seen:
+                seen((clip_disp.x0, clip_disp.y0, clip_disp.x1, clip_disp.y1), out[-40:], i + 1, len(tiles))
             if progress:
-                progress(f"OCR {i + 1}/{len(tiles)}")
+                progress(f"ruta {i + 1}/{len(tiles)}")
         return _dedupe(out)
     finally:
         doc.close()

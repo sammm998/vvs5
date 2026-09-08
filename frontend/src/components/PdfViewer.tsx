@@ -329,10 +329,13 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                 );
               });
             })}
-            {/* the part of a run that lies inside a wall: drawn length, but already outside the horizontal
-                quantity, so it is marked only when a reader asks to see what is not counted */}
-            {props.layers.inWall && (props.hatched ?? []).map((g, i) => (
-              <line key={`h${i}`} x1={g.x0} y1={g.y0} x2={g.x1} y2={g.y1} stroke="#6b7280" strokeWidth={sw(3.4)} strokeDasharray={`${sw(4)} ${sw(3)}`} strokeOpacity={0.95} />
+            {/* The part of a run that lies inside a wall is drawn length that the horizontal quantity already
+                leaves out, so it may not wear the run's colour: painted over in the colour of what is not
+                counted, always, whatever else is switched on. The layer switch only makes it louder. */}
+            {(props.hatched ?? []).map((g, i) => (
+              <line key={`h${i}`} x1={g.x0} y1={g.y0} x2={g.x1} y2={g.y1}
+                stroke={props.layers.inWall ? "#6b7280" : "#c4c8cf"} strokeWidth={sw(props.layers.inWall ? 3.6 : 3.4)}
+                strokeDasharray={`${sw(4)} ${sw(3)}`} strokeOpacity={props.layers.inWall ? 0.95 : 0.85} />
             ))}
             {props.layers.leaders && props.leaders.filter((l) => props.layers.inWall || !l.in_wall).map((l) => (
               <polyline key={l.id} points={l.points.map((q: number[]) => q.join(",")).join(" ")} fill="none" stroke="#b000b0" strokeWidth={sw(1.2)} />

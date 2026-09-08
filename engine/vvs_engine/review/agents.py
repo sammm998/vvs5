@@ -212,7 +212,7 @@ def _ocr_crosscheck_agent(pa, progress=None) -> tuple[list[Finding], str]:
     if words is None:
         why = str(first)[:160] or first.__class__.__name__
         return [Finding("ocr_crosscheck", "INFO", "ocr_failed",
-                        f"OCR-kontrollen kunde inte genomföras: {why}",
+                        f"Synagenten kunde inte läsa sidan: {why}",
                         {"error": str(first)[:200], "type": type(first).__name__})], "failed"
     from ..semantics.grammar import compress_pattern
     ours = {d.text.upper() for d in pa.designations}
@@ -238,12 +238,12 @@ def _ocr_crosscheck_agent(pa, progress=None) -> tuple[list[Finding], str]:
         missed.append((t, box, conf))
     coarse = " vid nedsatt upplösning, sedan den vanliga inte gick att köra" if dpi_used < OCR_REVIEW_DPI[0] else ""
     out = [Finding("ocr_crosscheck", "INFO", "ocr_ran",
-                   f"OCR läste {len(words)} ord över samma sida som oberoende jämförelse{coarse}; "
+                   f"Synagenten läste {len(words)} ord över samma sida som oberoende jämförelse{coarse}; "
                    f"{len(pa.designations)} beteckningar lästes ur vektorkoden.",
                    {"ocr_words": len(words), "vector_designations": len(pa.designations), "dpi": dpi_used})]
     if missed:
         out.append(Finding("ocr_crosscheck", "WARN", "ocr_sees_extra_codes",
-                           f"OCR ser {len(missed)} beteckningar på platser där vektorläsningen inte har någon text alls.",
+                           f"Synagenten ser {len(missed)} beteckningar på platser där vektorläsningen inte har någon text alls.",
                            {"examples": [m[0] for m in missed[:8]], "count": len(missed)},
                            bbox=[round(v, 1) for v in missed[0][1]]))
     return out, "ok"

@@ -41,12 +41,12 @@ const LAYER_LABELS: Record<Layer, string> = { pipes: "Mätta rör", ambiguous: "
 const LAYER_HINTS: Record<Layer, string> = {
   pipes: "Sträckor som fått en identitet och en längd, en färg per beteckning",
   ambiguous: "Ritad linje som kunde tillhöra mer än en beteckning — mäts inte",
-  unowned: "Ritad linje i en accepterad rörfamilj som ingen beteckning nådde",
+  unowned: "Ritad linje i en accepterad rörfamilj som ingen beteckning nådde. Avstängt från början: det är ett fynd att titta på, inte ett fel i mätningen.",
   declined: "Ritad linje läsningen tittade på och inte tog som rör, med skälet",
   designations: "Alla lästa beteckningar på bladet",
   leaders: "Hänvisningslinjerna som ritningen drar från etikett till rör",
   anchors: "Där en beteckning faktiskt möter sitt rör",
-  inWall: "Rör och beteckningar inne i väggar. Längd i vägg ligger redan utanför den horisontella mängden, så den märks bara när du ber om att se det som inte räknas.",
+  inWall: "Rör i vägg ritas alltid i det ej räknades färg — längden ligger utanför den horisontella mängden. Det här lagret gör dem tydligare och visar även etiketterna där.",
 };
 
 export default function AnalysisPage() {
@@ -100,7 +100,10 @@ export default function AnalysisPage() {
   // The question a reader opens this page with is "did it get the pipes?", and that is a question about the
   // drawing with the reading on top of it - not about leaders, label boxes and attachment marks, which cover the
   // sheet so thickly that the runs underneath cannot be seen at all. They are diagnostics, and they start off.
-  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, declined: false, designations: false, leaders: false, anchors: false, inWall: false });
+  // The sheet opens showing what was measured. Ink the reading accepted as pipe but no label reached is a real
+  // finding and has its own switch - shown first it reads as a fault, and a grey tangle over a good reading is
+  // the fastest way to make a correct answer look wrong.
+  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: false, declined: false, designations: false, leaders: false, anchors: false, inWall: false });
   // which bortvald family the reader is pointing at, so the sheet can show that ink and not all of it at once
   const [selDeclined, setSelDeclined] = useState<string | null>(null);
   const [layersOpen, setLayersOpen] = useState(false);

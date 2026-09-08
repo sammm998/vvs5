@@ -39,8 +39,11 @@ def _set(job_id: str, **fields) -> None:
 
 def _progress_cb(job_id: str):
     def cb(stage: str):
-        idx = STAGE_ORDER.index(stage) if stage in STAGE_ORDER else 0
-        _set(job_id, stage=stage, progress=round(idx / (len(STAGE_ORDER) - 1), 3), status="RUNNING" if stage != "COMPLETED" else "COMPLETED")
+        # a stage may carry a detail after its name ("RESOLVING_UNREADABLE_TEXT ruta 3/7"); the name is what
+        # places it in the order, and without this split a slow step reported itself as no progress at all
+        name = stage.split(" ")[0]
+        idx = STAGE_ORDER.index(name) if name in STAGE_ORDER else 0
+        _set(job_id, stage=stage, progress=round(idx / (len(STAGE_ORDER) - 1), 3), status="RUNNING" if name != "COMPLETED" else "COMPLETED")
     return cb
 
 

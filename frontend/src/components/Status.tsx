@@ -1,5 +1,5 @@
 export const STAGE_LABELS: Record<string, string> = {
-  QUEUED: "Köad", READING_PDF: "Läser PDF", RESOLVING_UNREADABLE_TEXT: "Löser olästa tecken med OCR", REVIEWING: "Granskar resultatet", DISCOVERING_DRAWING_GRAMMAR: "Upptäcker ritningsgrammatik", EXTRACTING_VECTORS: "Extraherar vektorer",
+  QUEUED: "Köad", READING_PDF: "Läser PDF", RESOLVING_UNREADABLE_TEXT: "Synagenten läser olästa tecken", REVIEWING: "Granskar resultatet", DISCOVERING_DRAWING_GRAMMAR: "Upptäcker ritningsgrammatik", EXTRACTING_VECTORS: "Extraherar vektorer",
   RECONSTRUCTING_TEXT: "Rekonstruerar text", READING_DESIGNATIONS: "Läser beteckningar", FINDING_LEADERS: "Hittar hänvisningslinjer",
   RESOLVING_PIPE_REPRESENTATION: "Tolkar rörrepresentation", ATTACHING_PIPES: "Kopplar rör", BUILDING_TOPOLOGY: "Bygger topologi",
   BUILDING_PHYSICAL_PIPES: "Bygger fysiska rör", MEASURING: "Mäter", GENERATING_OVERLAYS: "Skapar markeringar", COMPLETED: "Klar", FAILED: "Misslyckades",
@@ -7,7 +7,7 @@ export const STAGE_LABELS: Record<string, string> = {
 
 const STATUS_LABELS: Record<string, string> = { COMPLETED: "Klar", FAILED: "Misslyckades", RUNNING: "Kör", QUEUED: "Köad" };
 
-/* A stage may carry a detail after its name - "RESOLVING_UNREADABLE_TEXT OCR 3/7" - so a slow step can say where
+/* A stage may carry a detail after its name - "RESOLVING_UNREADABLE_TEXT ruta 3/7" - so a slow step can say where
    it is instead of looking stuck. The name is the first word; the rest is shown as it comes. */
 export function stageText(stage: string): string | null {
   if (!stage) return null;

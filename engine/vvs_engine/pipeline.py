@@ -369,7 +369,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         # bounded, and it says where it is: an assist that holds a finished reading is worse than no assist
         ocr_report = resolve_unknown_glyphs(page, vtext.rows, budget_s=OCR_ASSIST_BUDGET_S,
                                             progress=(lambda t: progress(f"RESOLVING_UNREADABLE_TEXT {t}"))
-                                            if progress else None)
+                                            if progress else None,
+                                            seen=film.seeing if film else None)
         t0 = _t(timings, "ocr_assist_ms", t0)
     if progress:
         progress("READING_DESIGNATIONS")

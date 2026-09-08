@@ -71,6 +71,9 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
   }, [frames]);
 
   const by = useMemo(() => Object.fromEntries(frames.map((f) => [f.stage, f])), [frames]);
+  // where the vision agent has looked, and what it read there: one frame per tile, newest last
+  const seeing = useMemo(() => frames.filter((f) => f.stage === "SEEING"), [frames]);
+  const lastSeen = seeing.length ? seeing[seeing.length - 1] : null;
   const page = by.READING_PDF?.page ?? { w: 842, h: 595 };
   const scale = Math.min(w / page.w, 1.6);
   const H = page.h * scale;
@@ -128,6 +131,23 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
             <polyline key={`p${i}`} points={p.p.map((q: number[]) => q.join(",")).join(" ")} fill="none"
               stroke={`hsl(${hue(p.i)} 68% 42%)`} strokeWidth={2.4 / scale} strokeLinecap="round" strokeLinejoin="round" />
           ))}
+          {/* the vision agent at work: the boxes it has read, the one it is reading, and the words it found */}
+          {seeing.length > 0 && (
+            <g>
+              {seeing.map((f, i) => (
+                <rect key={`sr${i}`} x={f.region[0]} y={f.region[1]}
+                  width={Math.max(f.region[2] - f.region[0], 1)} height={Math.max(f.region[3] - f.region[1], 1)}
+                  fill="#c026d3" fillOpacity={i === seeing.length - 1 ? 0.1 : 0.035}
+                  stroke="#c026d3" strokeWidth={(i === seeing.length - 1 ? 1.6 : 0.7) / scale}
+                  strokeOpacity={i === seeing.length - 1 ? 0.9 : 0.35} />
+              ))}
+              {(lastSeen?.words ?? []).map((w: any, i: number) => (
+                <rect key={`sw${i}`} x={w.b[0]} y={w.b[1]}
+                  width={Math.max(w.b[2] - w.b[0], 0.8)} height={Math.max(w.b[3] - w.b[1], 0.8)}
+                  fill="none" stroke="#7c3aed" strokeWidth={0.8 / scale} strokeOpacity={0.85} />
+              ))}
+            </g>
+          )}
           {running && (
             <>
               <defs>

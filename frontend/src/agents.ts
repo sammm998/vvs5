@@ -7,6 +7,8 @@
 export type Agent = { stage: string; who: string; title: string; asks: string };
 
 export const AGENTS: Agent[] = [
+  { stage: "SEEING", who: "Synagenten", title: "Tittar på sidan som bild",
+    asks: "Står det något där vektorläsningen inte har någon text?" },
   { stage: "READING_PDF", who: "Vektorläsaren", title: "Läser PDF:en", asks: "Vilka streck finns ritade, på vilka lager och med vilka pennor?" },
   { stage: "RECONSTRUCTING_TEXT", who: "Textbyggaren", title: "Bygger texten ur streck", asks: "Vilka av strecken är bokstäver, och vilka rader bildar de?" },
   { stage: "READING_DESIGNATIONS", who: "Beteckningsläsaren", title: "Läser beteckningarna", asks: "Vilka rader är beteckningar, och vilken dimension bär de?" },
@@ -18,7 +20,7 @@ export const AGENTS: Agent[] = [
 
 export const AGENT_SV: Record<string, string> = {
   scale: "Skalagranskaren", coverage: "Täckningsgranskaren", plausibility: "Rimlighetsgranskaren",
-  topology: "Topologigranskaren", designation: "Beteckningsgranskaren", ocr_crosscheck: "OCR-korsprovet",
+  topology: "Topologigranskaren", designation: "Beteckningsgranskaren", ocr_crosscheck: "Synagentens korsprov",
 };
 
 /* What a stage reports, from its own frame and - where the reading is finished - from the result it produced. */
@@ -26,6 +28,9 @@ export function frameSays(stage: string, f: any, result?: any): string[] {
   const c = result?.coverage ?? {};
   if (!f) return [];
   switch (stage) {
+    case "SEEING":
+      return [`Läser ruta ${f.i} av ${f.n} och hittar ${(f.words ?? []).length} ord där.`,
+              "Den ser bilden, aldrig geometrin: ingenting den läser kan bli en meter."];
     case "READING_PDF":
       return [`${f.n_paths} ritade objekt på sidan, ${Math.round(f.page?.w ?? 0)} × ${Math.round(f.page?.h ?? 0)} punkter.`,
               "Inget är text ännu — en PDF från CAD skriver bokstäverna som streck."];

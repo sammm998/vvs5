@@ -50,6 +50,16 @@ class Film:
                                             "h": round(float(page.info.height), 1)},
                                    "n_paths": len(page.paths)})
 
+    def seeing(self, region, words, i: int, n: int) -> None:
+        """Where the vision agent is looking right now, and what it read there.
+
+        One frame per tile, so the sheet shows the pass happening rather than a percentage: the box being read,
+        and the words found in it. It is a view of a check, never an input to a measurement.
+        """
+        self.frame("SEEING", {"region": [round(float(v), 1) for v in region],
+                              "words": [{"t": w[:18], "b": _box(b)} for w, b, _c in words[:60]],
+                              "i": i, "n": n})
+
     def text(self, rows) -> None:
         self.frame("RECONSTRUCTING_TEXT",
                    {"rows": [_box(r.bbox) for r in _thin(rows)], "n": len(rows)})
