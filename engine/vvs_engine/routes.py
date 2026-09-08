@@ -424,4 +424,26 @@ def _further_questions(pa, confirmed: float = 0.0, ambiguous: float = 0.0) -> di
     out["unsupported_style_candidates"] = [
         {"family": f, "reason": "chain_like_geometry_no_label_ever_reached"}
         for f in sorted(set(votes) - accepted) if votes.get(f, 0) < 5 and ticks.get(f, 0) == 0][:20]
+
+    # 13. what the reading looked at and did not take. Drawn ink that never becomes pipe leaves the reading
+    # silently, and a reader looking at un-measured lines cannot tell a declined wall from a missed run. The
+    # families a leader end actually touched are the ones worth a second look, so they are named first.
+    mpp = pa.scale.meters_per_pt if pa.scale else None
+    dec = (pa.contact_stats or {}).get("declined_families") or {}
+    rows = [{"family": f, "why": v["why"], "kind": v["kind"], "leader_ends_touching": v["tick_votes"],
+             "label_votes": v["votes"], "n_segments": v["n_segments"],
+             "length_m": round(v["total_length_pt"] * mpp, 2) if mpp else None}
+            for f, v in dec.items()]
+    rows.sort(key=lambda r: (-r["leader_ends_touching"], -(r["length_m"] or 0.0)))
+    out["declined_families"] = rows[:20]
+    unc = (pa.contact_stats or {}).get("unconsidered_families") or {}
+    out["declined_families_total"] = {
+        "families": len(rows), "length_m": round(sum(r["length_m"] or 0.0 for r in rows), 2) if mpp else None,
+        "families_a_leader_end_touched": sum(1 for r in rows if r["leader_ends_touching"]),
+        "length_m_a_leader_end_touched": round(sum(r["length_m"] or 0.0 for r in rows if r["leader_ends_touching"]), 2) if mpp else None,
+        # ink no leader ever pointed at: it cannot become pipe, and it is still most of what a reader sees
+        "unconsidered_families": len(unc),
+        "unconsidered_length_m": round(sum(v["total_length_pt"] for v in unc.values()) * mpp, 2) if mpp else None,
+        "unconsidered_families_on_a_pipe_like_layer": sum(1 for v in unc.values() if v.get("on_a_pipe_like_layer")),
+        "unconsidered_length_m_on_a_pipe_like_layer": round(sum(v["total_length_pt"] for v in unc.values() if v.get("on_a_pipe_like_layer")) * mpp, 2) if mpp else None}
     return out

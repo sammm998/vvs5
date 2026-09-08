@@ -23,7 +23,7 @@ const ISSUE_LABELS: Record<string, string> = {
   unowned_geometry: "Oidentifierad geometri", unsupported_structural_family: "Strukturfamilj stöds ej",
   drawn_outline: "Ritat föremål, inte rör", flow_beyond_labels: "Identitet nådde längre än beteckningarna",
 };
-const LAYER_LABELS: Record<Layer, string> = { pipes: "PhysicalPipes", ambiguous: "Tvetydigt", unowned: "Oidentifierat", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar" };
+const LAYER_LABELS: Record<Layer, string> = { pipes: "PhysicalPipes", ambiguous: "Tvetydigt", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar" };
 
 export default function AnalysisPage() {
   const { id } = useParams();
@@ -67,7 +67,9 @@ export default function AnalysisPage() {
   ].filter(Boolean).join("&");
   const fh = floorHeight.trim() ? Number(floorHeight.replace(",", ".")) : NaN;
   const floorH = Number.isFinite(fh) && fh > 0 ? fh : null;
-  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, designations: true, leaders: true, anchors: true });
+  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, declined: false, designations: true, leaders: true, anchors: true });
+  // which bortvald family the reader is pointing at, so the sheet can show that ink and not all of it at once
+  const [selDeclined, setSelDeclined] = useState<string | null>(null);
   const [artifacts, setArtifacts] = useState<any[]>([]);
   const viewer = useRef<ViewerHandle>(null);
 
@@ -165,6 +167,7 @@ export default function AnalysisPage() {
         </div>
         <PdfViewer ref={viewer} data={pdf} page={page} pipes={pipesOnPage} ambiguous={result.ambiguous_geometry} unowned={result.unowned_geometry}
           designations={result.designations} leaders={result.leaders} anchors={result.anchors} hatched={result.hatched_geometry ?? []} selectedIdentity={selIdent}
+          declined={[...(result.declined_geometry?.families ?? []), ...(result.declined_geometry?.unconsidered ?? [])]} selectedDeclined={selDeclined}
           selectedPipe={selPipe?.physical_pipe_id ?? null} layers={layers} onPipeClick={onPipeClick} onPageCount={setNPages}
           editKind={(drawKind === "extend" || drawKind === "draw" || drawKind === "erase" ? drawKind : null) as EditKind}
           editPipe={selPipe} meterPerPt={result.scale?.meters_per_pdf_point ?? null}
@@ -289,6 +292,42 @@ export default function AnalysisPage() {
                       </div>
                     ))}
                     {n === 0 && <p className="muted">Inget av de här fallen finns på den här sidan.</p>}
+                  </div>
+                );
+              })()}
+              {(() => {
+                const dg = result.declined_geometry;
+                if (!dg || (!dg.families?.length && !dg.unconsidered?.length)) return null;
+                const t = dg.totals || {};
+                const unc = (dg.unconsidered ?? []).filter((f: any) => f.on_a_pipe_like_layer);
+                return (
+                  <div className="card">
+                    <h3>Bortvald geometri <span className="badge">{dg.families.length}</span></h3>
+                    <p className="muted" style={{ marginTop: 0 }}>
+                      Ritad linje som läsningen tittade på och inte tog som rör. Oftast rätt — väggar, stomme och
+                      raster ritas med samma penna som rören — men den försvinner tyst, och då ser en bortvald vägg
+                      likadan ut som ett missat rör. Klicka på en rad för att se just den linjen på ritningen.
+                      {t.length_m != null && <> Totalt {t.length_m} m{t.length_m_with_a_leader_end ? `, varav ${t.length_m_with_a_leader_end} m i familjer som en ledare faktiskt tog i` : ""}.</>}
+                    </p>
+                    {[...dg.families, ...unc].map((f: any) => (
+                      <div key={f.family} className="issue" style={{ cursor: "pointer", background: selDeclined === f.family ? "#ecfeff" : undefined }}
+                        onClick={() => { setSelDeclined(selDeclined === f.family ? null : f.family); setLayers({ ...layers, declined: true }); }}>
+                        <b>{f.layer || `penna ${f.width}`}</b>{" "}
+                        <span className="muted">{f.length_m != null ? `${f.length_m} m` : `${f.length_pt} pt`} · {f.n_segments} streck
+                          {f.leader_ends_touching ? ` · ${f.leader_ends_touching} ledaravslut tar i den` : ""}
+                          {f.on_a_pipe_like_layer ? " · lagernamn av samma sort som rörens" : ""}</span>
+                        <div className="muted" style={{ fontSize: 12 }}>{f.why_sv}{f.segments_truncated ? " · visar en del av strecken" : ""}</div>
+                      </div>
+                    ))}
+                    {t.unconsidered_length_m != null && (
+                      <p className="muted" style={{ fontSize: 12, marginBottom: 0 }}>
+                        Därutöver {t.unconsidered_length_m} m ritad linje som ingen ledare kom i närheten av —
+                        stomme, raster, ramar och text. {t.unconsidered_length_m_on_a_pipe_like_layer
+                          ? `Av den ligger ${t.unconsidered_length_m_on_a_pipe_like_layer} m på lager namngivna som rörens; de står i listan ovan.`
+                          : "Inget av den ligger på ett lager namngivet som rörens."}
+                        {" "}Utan en beteckning som pekar dit har en sträcka ingen identitet och kan inte mätas.
+                      </p>
+                    )}
                   </div>
                 );
               })()}

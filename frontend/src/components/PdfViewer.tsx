@@ -4,7 +4,7 @@ import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 (pdfjsLib as any).GlobalWorkerOptions.workerSrc = workerUrl;
 
-export type Layer = "pipes" | "ambiguous" | "unowned" | "designations" | "leaders" | "anchors";
+export type Layer = "pipes" | "ambiguous" | "unowned" | "declined" | "designations" | "leaders" | "anchors";
 export type EditKind = "extend" | "draw" | "erase" | null;
 
 /** What a finished edit gesture produced: the line drawn, and what it does to the measurement. */
@@ -46,6 +46,10 @@ export interface ViewerProps {
   leaders: any[];
   anchors: any[];
   hatched?: any[];
+  /** Ink that never became pipe: families weighed and set aside, and families no leader ever pointed at. */
+  declined?: { family: string; kind: string; segments: number[][] }[];
+  /** One declined family picked out of the rest, so a reader can see which ink a row is talking about. */
+  selectedDeclined?: string | null;
   selectedIdentity: string | null;
   selectedPipe: string | null;
   layers: Record<Layer, boolean>;
@@ -265,6 +269,18 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
         <canvas ref={canvasRef} />
         {vp && (
           <svg width={w} height={h} viewBox={`0 0 ${vp.w} ${vp.h}`} style={{ pointerEvents: "none" }}>
+            {/* Ink the reading declined, drawn faintly so it never competes with a measured run: it is here to
+                say "this was looked at and read as something other than pipe", not to be read as a quantity. */}
+            {props.layers.declined && (props.declined ?? []).map((f) =>
+              f.segments.map((g, i) => {
+                const on = props.selectedDeclined === f.family;
+                // ink the reading never weighed is drawn fainter than ink it weighed and set aside: the two are
+                // different answers and should not look like the same one
+                const seen = f.kind !== "not_examined";
+                return <line key={`d${f.family}-${i}`} x1={g[0]} y1={g[1]} x2={g[2]} y2={g[3]}
+                  stroke={on ? "#0891b2" : "#94a3b8"} strokeWidth={sw(on ? 3 : 1.6)}
+                  strokeDasharray={on ? undefined : `${sw(3)} ${sw(3)}`} strokeOpacity={on ? 0.95 : seen ? 0.5 : 0.28} />;
+              }))}
             {props.layers.unowned && props.unowned.map((g, i) => (
               <line key={`u${i}`} x1={g.x0} y1={g.y0} x2={g.x1} y2={g.y1} stroke="#8a8f99" strokeWidth={sw(2)} strokeOpacity={0.8} />
             ))}

@@ -197,7 +197,7 @@ being bridged rather than the commonest one alone.
 drawing-profile.json, drawing-profile-report.md, raw-vector-inventory.json, cad-layer-map.json,
 vector-designations.json, designation-overlay.pdf, leader-forensics.json, leader-family-report.json,
 pipe-code-anchors.json, endpoint-pipe-attachment-overlay.pdf, pipe-representation-families.json,
-pipe-geometry-inventory.json, pipe-topology.json, physical-pipes.json, quantities.json, unresolved-issues.json,
+pipe-geometry-inventory.json, declined-geometry.json, pipe-topology.json, physical-pipes.json, quantities.json, unresolved-issues.json,
 evidence-graph.json, reconciliation.json, review-findings.json, ocr-assisted-characters.json, determinism.json, contamination-report.json, performance-report.json,
 production-overlay.pdf (+ topology/ambiguous/unsupported-style overlays), analysis-report.md, freeze-manifest.json.
 
@@ -207,5 +207,8 @@ production-overlay.pdf (+ topology/ambiguous/unsupported-style overlays), analys
 * DrawingProfile is derived from the PDF only, per analysis job; nothing persists between drawings.
 * Ambiguity is a valid result (AMBIGUOUS_* states with machine-readable reasons); wrong certainty is not.
 * Geometry conservation: raw pipe geometry = confirmed + ambiguous + unowned, no double counting (reconciliation.json).
+* Every drawn line is accounted for: measured, weighed and set aside, or never pointed at by any label -
+  the last two with the reason, so ink missing from the takeoff is explained rather than silent
+  (declined-geometry.json, and the *Bortvald geometri* layer in the viewer).
 * Determinism: original / reversed / two shuffled object orders give identical semantic results (determinism.json).
 * Contamination firewall: the production package is scanned for drawing-specific literals and never imports validation data.

@@ -38,6 +38,11 @@ PEER_SHARE = 0.15          # a drawn family carrying this much of the best famil
 # and with no layer name to vouch for it, this share of the sheet's own pipe labels must have reached it
 LABELS_MUST_REACH = 0.15
 LABELS_MIN = 20
+DECLINED_SEGMENT_BUDGET = 8000        # strokes of declined families a reading carries, so they can be looked at
+DECLINED_SEGMENTS_PER_FAMILY = 3000   # and no single family may spend the whole budget
+UNCONSIDERED_SEGMENT_BUDGET = 4000    # and a smaller one for the ink no label ever pointed at
+UNCONSIDERED_SEGMENTS_PER_FAMILY = 1500
+UNCONSIDERED_PATHS_PER_FAMILY = 400
 
 STAGES = ["READING_PDF", "DISCOVERING_DRAWING_GRAMMAR", "EXTRACTING_VECTORS", "RECONSTRUCTING_TEXT", "READING_DESIGNATIONS",
           "FINDING_LEADERS", "RESOLVING_PIPE_REPRESENTATION", "ATTACHING_PIPES", "BUILDING_TOPOLOGY", "BUILDING_PHYSICAL_PIPES",
@@ -75,6 +80,54 @@ class PageAnalysis:
     legend: DrawingLegend = field(default_factory=DrawingLegend)    # the sheet's own designation list
     second_reader: dict | None = None       # bounded cases put to a second reader, and what it did with them
     vision: dict | None = None              # what a look at the rendered page said the reading may have missed
+
+
+def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_layers: dict, glyph_pids: set) -> dict:
+    """Drawn stroke families no label's leader ever came near, so the reading never weighed them at all.
+
+    These can never become pipe: identity comes from a leader, and nothing pointed here. But they are most of
+    the ink a reader sees on a sheet, and a line that is simply absent from the reading looks the same whether it
+    was judged and set aside or never looked at. Saying which of the two it was is the whole point. No graph is
+    built for them - that is what the reading does for a family a label reached, and doing it for the title
+    block would cost the reading its time for nothing.
+    """
+    known = set(pipe_families) | set(contact_stats.get("declined_families") or {}) | set(contact_stats.get("votes") or {}) | set(ann_layers or {})
+    fams: dict[str, dict] = {}
+    for pth in page.paths:
+        if pth.kind != "s" or pth.pid in glyph_pids:
+            continue
+        fk = stroke_family(pth.layer, pth.width, pth.color)
+        if fk in known:
+            continue
+        r = fams.setdefault(fk, {"family": fk, "why": "NO_LEADER_EVER_CAME_NEAR_IT", "width": round(pth.width, 2),
+                                 "total_length_pt": 0.0, "n_segments": 0, "paths": []})
+        r["total_length_pt"] += pth.length
+        r["n_segments"] += len(pth.segs)
+        if len(r["paths"]) < UNCONSIDERED_PATHS_PER_FAMILY:
+            r["paths"].append(pth)
+    budget = UNCONSIDERED_SEGMENT_BUDGET
+    for fk in sorted(fams, key=lambda k: -fams[k]["total_length_pt"]):
+        r = fams[fk]
+        segs = []
+        for pth in r["paths"]:
+            for sg in pth.segs:
+                if len(segs) >= min(budget, UNCONSIDERED_SEGMENTS_PER_FAMILY):
+                    break
+                segs.append([round(sg.x0, 2), round(sg.y0, 2), round(sg.x1, 2), round(sg.y1, 2)])
+        r["segments"] = segs
+        r["segments_truncated"] = len(segs) < r["n_segments"]
+        r["total_length_pt"] = round(r["total_length_pt"], 1)
+        # A family drawn on a layer named the way this drawing names its pipe layers is the one worth a second
+        # look: it is where the sheet puts pipes, and nothing pointed at it. It still cannot be measured - a run
+        # with no label has no identity - but "this looks like a pipe layer and no leader reached it" is a
+        # different sentence from "this is the title block", and a reader deserves to be told which one it is.
+        lay = fk.partition("|s|")[0]
+        r["on_a_pipe_like_layer"] = bool(lay) and any(_layer_template_similar(lay, pf.partition("|s|")[0])
+                                                      for pf in pipe_families if pf.partition("|s|")[0])
+        del r["paths"]
+        budget -= len(segs)
+    return fams
+
 
 
 def _width_lengths(page: RawPage) -> dict[float, float]:
@@ -422,6 +475,36 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 pipe_families[f] = desc[f][0]
                 graphs[f] = desc[f][1]
         pipe_families, graphs = _generalize_families(page, pipe_families, graphs)
+        # Every drawn family the reading looked at and did not take, with the reason it did not. A family that is
+        # declined is drawn on the sheet and simply absent from the reading afterwards, and geometry that is
+        # absent without a word is indistinguishable from geometry that was never seen. Declining is often
+        # right - walls and grids share a pen with pipes - so the point is not to take these, it is to say them.
+        declined: dict[str, dict] = {}
+        for f in voted:
+            if f in pipe_families or f not in desc:
+                continue
+            rf = desc[f][0]
+            layer, style = f.split("|s|")
+            if not chain_like(f):
+                why = "NO_CONTINUOUS_RUN"
+            elif not layer and rf.width < median_width:
+                why = "FAINTEST_PEN_ON_THE_SHEET"
+            else:
+                why = "NO_LABEL_REACHED_IT"
+            declined[f] = {"family": f, "kind": rf.kind, "why": why, "width": round(rf.width, 2),
+                           "longest_chain": round(rf.longest_chain, 1), "total_length_pt": round(rf.total_length, 1),
+                           "votes": round(votes.get(f, 0.0), 2), "tick_votes": tick_votes.get(f, 0),
+                           "n_segments": len(prims_all.get(f) or ())}
+        # Keep the drawn strokes of the declined families so a reader can see them, spending the budget on the
+        # ones a label came closest to: a wall layer holds tens of thousands of strokes and would drown both the
+        # payload and the eye, while the family that nearly became pipe is the one worth looking at.
+        budget = DECLINED_SEGMENT_BUDGET
+        for f in sorted(declined, key=lambda k: (-declined[k]["tick_votes"], -declined[k]["votes"], -declined[k]["total_length_pt"])):
+            take = min(budget, DECLINED_SEGMENTS_PER_FAMILY, declined[f]["n_segments"])
+            qs = (prims_all.get(f) or [])[:take]
+            declined[f]["segments"] = [[round(q.seg.x0, 2), round(q.seg.y0, 2), round(q.seg.x1, 2), round(q.seg.y1, 2)] for q in qs]
+            declined[f]["segments_truncated"] = take < declined[f]["n_segments"]
+            budget -= take
         anchors: list[PipeCodeAnchor] = []
         pf = set(pipe_families)
         for ld in des_leaders:
@@ -439,7 +522,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 continue        # dangling frame stub, not a leader
             anchors.extend(resolve_block(block, rows, ld, contacts, system_tokens, spelled_out, paths))
         anchors.sort(key=lambda a: a.anchor_id)
-        stats = {"votes": dict(votes.most_common()), "token_votes": dict(token_votes.most_common()), "candidate_families": sorted(pipe_families), "tick_votes": dict(tick_votes.most_common())}
+        stats = {"votes": dict(votes.most_common()), "token_votes": dict(token_votes.most_common()), "candidate_families": sorted(pipe_families), "tick_votes": dict(tick_votes.most_common()),
+                 "declined_families": declined}
         if os.environ.get("VVS_DEBUG_PASS"):
             print(f"[pass ann_layers={sorted(ann_layers) if ann_layers else None}] leaders={len(leaders)} des_leaders={len(des_leaders)} votes={dict(votes)} ticks={dict(tick_votes)} "
                   f"voted={voted} chain_like={[f for f in voted if chain_like(f)]} accepted={sorted(pipe_families)} anchors={Counter(a.state for a in anchors)}", file=sys.stderr)
@@ -489,6 +573,10 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         progress("BUILDING_TOPOLOGY")
     graphs, pipe_families = _split_at_tick_contacts(page, graphs, pipe_families, anchors)
     prims = {fk: graphs[fk].prims for fk in graphs}
+    # a family taken after the passes ran is not a declined one, whatever the pass that looked at it decided
+    if contact_stats.get("declined_families"):
+        contact_stats["declined_families"] = {k: v for k, v in contact_stats["declined_families"].items() if k not in pipe_families}
+    contact_stats["unconsidered_families"] = _unconsidered(page, pipe_families, contact_stats, ann_layers, glyph_pids)
     t0 = _t(timings, "topology_ms", t0)
     if progress:
         progress("BUILDING_PHYSICAL_PIPES")

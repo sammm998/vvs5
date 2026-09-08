@@ -80,6 +80,26 @@
 * **Very large pages can exceed the analysis timeout.** Five of 212 pages in the style corpus did not finish inside
   240 s. A page that times out is reported as TIMEOUT; it never produces a partial quantity.
 
+## Ink that never becomes pipe
+
+Most of the ink on a plan sheet is not pipe, and the reading has three different relationships to a drawn family:
+it measures it, it weighs it and sets it aside, or no label's leader ever comes near it and it is never weighed at
+all. Only the first produces metres. The other two used to leave the reading without a word, which made a declined
+wall and a missed run look identical on the sheet - both simply grey - so `declined-geometry.json` now carries both,
+with the reason and a bounded sample of the strokes, and the viewer draws them as *Bortvald geometri*.
+
+Two limits are worth stating plainly:
+
+* **A family no leader points at can never be measured, however much it looks like pipe.** Identity comes from a
+  designation and its real leader; a run with neither has no identity, and inventing one would be exactly the wrong
+  certainty. Such a family is reported - and marked when its layer is named the way this drawing names its pipe
+  layers, which is the case a reader most wants to look at - but it is never claimed. On the reference drawing that
+  is 36.9 m of ink on VVS-named layers, none of it in the hand takeoff.
+* **The strokes carried are bounded** (8 000 for weighed-and-declined families, 4 000 for unweighed ones, and no
+  single family may take more than 3 000 / 1 500). A building outline can hold tens of thousands of strokes; past
+  the budget a family reports its full length and segment count with `segments_truncated` set, so the number is
+  complete even when the picture is a sample.
+
 ## What a language model is and is not allowed to do here
 
 The measurement path is vector geometry and nothing else. Two model-assisted passes exist, both fenced in code:

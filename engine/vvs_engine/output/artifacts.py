@@ -307,6 +307,58 @@ def unresolved_issues(pa) -> list[dict]:
     return issues
 
 
+DECLINED_WHY = {
+    "NO_CONTINUOUS_RUN": "korta lösa streck, ingen sammanhängande sträcka",
+    "FAINTEST_PEN_ON_THE_SHEET": "ritningens tunnaste penna utan lagernamn - bakgrund",
+    "NO_LABEL_REACHED_IT": "ingen rörbeteckning når fram till den",
+    "NO_LEADER_EVER_CAME_NEAR_IT": "ingen ledare kom i närheten - läsningen vägde den aldrig",
+}
+
+
+def declined_geometry(pa) -> dict[str, Any]:
+    """The drawn families the reading looked at and did not take, with their strokes and the reason.
+
+    A declined family is simply absent from everything downstream, and geometry that disappears without a word
+    looks exactly like geometry that was never seen. Most declines are right - a wall shares a pen with a pipe -
+    so this is not a list of mistakes. It is the reading saying which ink it decided was not pipe, so that a
+    reader looking at un-measured lines on the sheet can see the reason instead of guessing at one.
+    """
+    mpp = pa.scale.meters_per_pt if pa.scale else None
+    dec = (pa.contact_stats or {}).get("declined_families") or {}
+    fams = []
+    for f in sorted(dec, key=lambda k: (-dec[k]["tick_votes"], -dec[k]["votes"], -dec[k]["total_length_pt"])):
+        v = dec[f]
+        layer, _, style = f.partition("|s|")
+        fams.append({"family": f, "layer": layer, "style": style, "kind": v["kind"], "why": v["why"],
+                     "why_sv": DECLINED_WHY.get(v["why"], v["why"]), "width": v["width"],
+                     "longest_chain_pt": v["longest_chain"], "length_pt": v["total_length_pt"],
+                     "length_m": round(v["total_length_pt"] * mpp, 2) if mpp else None,
+                     "n_segments": v["n_segments"], "leader_ends_touching": v["tick_votes"],
+                     "label_votes": v["votes"], "segments": v.get("segments") or [],
+                     "segments_truncated": bool(v.get("segments_truncated"))})
+    unc = (pa.contact_stats or {}).get("unconsidered_families") or {}
+    never = []
+    for f in sorted(unc, key=lambda k: -unc[k]["total_length_pt"]):
+        v = unc[f]
+        layer, _, style = f.partition("|s|")
+        never.append({"family": f, "layer": layer, "style": style, "kind": "not_examined", "why": v["why"],
+                      "why_sv": DECLINED_WHY.get(v["why"], v["why"]), "width": v["width"],
+                      "longest_chain_pt": None, "length_pt": v["total_length_pt"],
+                      "length_m": round(v["total_length_pt"] * mpp, 2) if mpp else None,
+                      "n_segments": v["n_segments"], "leader_ends_touching": 0, "label_votes": 0.0,
+                      "on_a_pipe_like_layer": bool(v.get("on_a_pipe_like_layer")),
+                      "segments": v.get("segments") or [], "segments_truncated": bool(v.get("segments_truncated"))})
+    return {"families": fams, "unconsidered": never,
+            "totals": {"families": len(fams), "segments": sum(f["n_segments"] for f in fams),
+                       "segments_carried": sum(len(f["segments"]) for f in fams),
+                       "length_m": round(sum(f["length_pt"] for f in fams) * mpp, 2) if mpp else None,
+                       "length_m_with_a_leader_end": round(sum(f["length_pt"] for f in fams if f["leader_ends_touching"]) * mpp, 2) if mpp else None,
+                       "unconsidered_families": len(never), "unconsidered_segments": sum(f["n_segments"] for f in never),
+                       "unconsidered_segments_carried": sum(len(f["segments"]) for f in never),
+                       "unconsidered_length_m": round(sum(f["length_pt"] for f in never) * mpp, 2) if mpp else None,
+                       "unconsidered_length_m_on_a_pipe_like_layer": round(sum(f["length_pt"] for f in never if f["on_a_pipe_like_layer"]) * mpp, 2) if mpp else None}}
+
+
 def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timings: dict, determinism: dict | None,
               contamination: dict | None, overlays: dict, config: dict, review: dict | None = None) -> dict[str, str]:
     os.makedirs(out_dir, exist_ok=True)
@@ -338,6 +390,7 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
                         "candidates": sorted(c.key for c in st.candidates), "reason": st.reason,
                         "in_hatch": bool(pa.hatch_families) and inside_hatch(pa.hatch_families, *q.seg.mid) is not None})
     W("pipe-geometry-inventory.json", {"primitives": inv})
+    W("declined-geometry.json", declined_geometry(pa))
     W("pipe-topology.json", {"families": [{"family": fk, "nodes": [{"id": n.nid, "x": round(n.x, 2), "y": round(n.y, 2), "degree": n.degree, "prims": n.prims} for n in g.nodes.values()],
                                             "edges": [{"prim": pid, "a": ab[0], "b": ab[1]} for pid, ab in g.prim_nodes.items()], "bridges": g.bridges, "junctions": g.junctions, "gap_mode": g.gap_mode}
                                            for fk, g in pa.graphs.items()]})

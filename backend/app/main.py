@@ -429,7 +429,7 @@ def _result_dir(j: AnalysisJob) -> str:
 
 ARTIFACTS = ["drawing-profile.json", "drawing-profile-report.md", "raw-vector-inventory.json", "cad-layer-map.json", "vector-designations.json",
              "designation-overlay.pdf", "leader-forensics.json", "leader-family-report.json", "pipe-code-anchors.json",
-             "endpoint-pipe-attachment-overlay.pdf", "pipe-representation-families.json", "pipe-geometry-inventory.json", "pipe-topology.json",
+             "endpoint-pipe-attachment-overlay.pdf", "pipe-representation-families.json", "pipe-geometry-inventory.json", "declined-geometry.json", "pipe-topology.json",
              "physical-pipes.json", "quantities.json", "unresolved-issues.json", "evidence-graph.json", "reconciliation.json",
              "route-crosscheck.json", "reading-review.json", "determinism.json",
              "contamination-report.json", "performance-report.json", "production-overlay.pdf", "topology-overlay.pdf", "ambiguous-overlay.pdf",
@@ -459,6 +459,7 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
     des = _load(rd, "vector-designations.json")["designations"]
     leaders = _load(rd, "leader-forensics.json")["leaders"]
     geom = _load(rd, "pipe-geometry-inventory.json")["primitives"]
+    declined = _load_optional(rd, "declined-geometry.json") or {"families": [], "totals": {}}
     unowned = [g for g in geom if g["state"] == "UNOWNED"]
     ambiguous = [g for g in geom if g["state"] == "AMBIGUOUS"]
     hatched = [g for g in geom if g["state"] == "CONFIRMED" and g.get("in_hatch")]
@@ -481,6 +482,9 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
         "ambiguous_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "candidates": g["candidates"], "reason": g["reason"]} for g in ambiguous],
         "unowned_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "family": g["family"]} for g in unowned],
         "hatched_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "identity": g["identity"]} for g in hatched],
+        # Ink the reading looked at and decided was not pipe. Without it a declined wall and a missed run look
+        # the same on the sheet - both are simply grey - and the reader has no way to tell which one they see.
+        "declined_geometry": declined,
         "issues": issues,
         "proposals": _proposals(db, user, anchors, pipes, geom),
         "build": _build_stamp(),
