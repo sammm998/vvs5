@@ -84,3 +84,40 @@ def test_ocr_assist_only_fills_a_word_that_lines_up(synthetic_pdf, monkeypatch):
     bad = row(list("VG+1.?4"))
     rep = oa.resolve_unknown_glyphs(page, [bad])
     assert rep["resolved"] == 0 and bad.text == "VG+1.?4", "a disagreeing OCR word may not fill anything"
+
+
+def test_a_repeated_label_is_not_a_pipe_without_metres(synthetic_pdf):
+    """"To fix" has to mean one thing: a pipe the sheet names that got no length.
+
+    A drawing labels the same run many times and most of those labels carry no dimension of their own - it sits on
+    the row below, or on the single label that states the size. Comparing the label's text with the measured
+    designations letter for letter called every one of those repeats a pipe with no metres: on the reference set
+    that was twelve of twenty-two, more than half of a list somebody is meant to work through.
+    """
+    from vvs_engine.output.artifacts import unresolved_issues
+
+    pa = analyze_page(extract_document(synthetic_pdf).pages[0])
+    measured = {q["designation"].upper() for q in pa.quantities if q.get("confirmed_total_m", 0) > 0}
+    assert measured, "the fixture measures something"
+    for it in unresolved_issues(pa):
+        t = (it.get("text") or "").upper()
+        if it["severity"] != "blocking":
+            continue
+        assert t not in measured
+        assert not any(m.startswith(t + "-") for m in measured), \
+            f"{t} har meter under sin dimension och är därför inget att åtgärda"
+
+
+def test_a_label_whose_metres_are_on_another_row_says_so(synthetic_pdf):
+    """And it says why it is only a note, so nobody has to work out where its metres went."""
+    from vvs_engine.output.artifacts import unresolved_issues
+
+    pa = analyze_page(extract_document(synthetic_pdf).pages[0])
+    measured = {q["designation"].upper() for q in pa.quantities if q.get("confirmed_total_m", 0) > 0}
+    for it in unresolved_issues(pa):
+        t = (it.get("text") or "").upper()
+        if t and any(m.startswith(t + "-") for m in measured) and it["kind"] in (
+                "missing_pipe_attachment", "ambiguous_pipe_attachment", "missing_leader", "missing_dn",
+                "uncertain_designation"):
+            assert it["severity"] == "advisory"
+            assert "upprepar" in (it.get("note") or "")

@@ -301,13 +301,27 @@ def unresolved_issues(pa) -> list[dict]:
             issues.append({"kind": "unowned_geometry", "family": fk, "count": len(un), "length_pt": round(L, 1), "bbox": [s.x0 - 5, s.y0 - 5, s.x1 + 5, s.y1 + 5], "id": f"unowned:{fk}"})
     if pa.scale.state in ("NONE", "CONFLICT"):
         issues.append({"kind": "unsupported_structural_family", "text": f"scale: {pa.scale.reason}", "id": "scale"})
-    measured = {q["designation"] for q in pa.quantities if q.get("confirmed_total_m", 0) > 0}
+    # Blocking means one thing: a pipe the sheet names, for which the takeoff has no length. Everything else is a
+    # note the takeoff survives, and the two must not be counted together - a list of things to fix that is mostly
+    # things that need no fixing is a list nobody works through.
+    #
+    # A sheet labels the same run many times, and most of those labels carry no dimension of their own: it sits on
+    # the row below, or on the one label that names the size. Comparing the label's text with the measured
+    # designations letter for letter therefore called every dimensionless repeat a pipe with no metres - twelve of
+    # the twenty-two on the reference set, which is more than half the list. A label whose system and material are
+    # measured under some dimension names a pipe that HAS its length; it is not blocking.
+    measured = {q["designation"].upper() for q in pa.quantities if q.get("confirmed_total_m", 0) > 0}
+    BLOCKING_KINDS = ("missing_pipe_attachment", "ambiguous_pipe_attachment",
+                      "missing_leader", "missing_dn", "uncertain_designation")
+
+    def has_metres(text: str) -> bool:
+        return bool(text) and (text in measured or any(m.startswith(text + "-") for m in measured))
+
     for it in issues:
-        # blocking: a pipe the sheet names and we have no metres for. advisory: everything the takeoff survives.
         t = (it.get("text") or "").upper()
-        it["severity"] = "blocking" if (t and t not in measured and it["kind"] in
-                                        ("missing_pipe_attachment", "ambiguous_pipe_attachment",
-                                         "missing_leader", "missing_dn", "uncertain_designation")) else "advisory"
+        it["severity"] = "blocking" if (t and not has_metres(t) and it["kind"] in BLOCKING_KINDS) else "advisory"
+        if t and has_metres(t) and it["kind"] in BLOCKING_KINDS:
+            it["note"] = "samma rör är mätt under sin dimension; den här etiketten upprepar bara beteckningen"
     return issues
 
 
