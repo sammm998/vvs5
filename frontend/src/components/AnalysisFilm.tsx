@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "../api";
 import { STAGE_LABELS } from "./Status";
+import { AGENTS, frameSays } from "../agents";
 
 type Frame = { stage: string; at: number; [k: string]: any };
 
@@ -77,6 +78,15 @@ export default function AnalysisFilm({ jobId, stage, progress }: { jobId: string
   void tick;   // the interval above is what re-runs beat() while a stage draws in
   const measured = by.MEASURING?.quantities ?? [];
   const total = by.MEASURING?.total_m ?? 0;
+  const running = stage !== "COMPLETED" && stage !== "FAILED";
+  // the sweep is the reading's own pace made visible: it crosses the sheet while a stage works, and stops when
+  // there is nothing left to read
+  const sweepY = running ? ((performance.now() / 2600) % 1) * page.h : 0;
+  const talk = AGENTS.map((a) => ({ stage: a.stage, who: a.who, lines: frameSays(a.stage, by[a.stage]) }))
+    .filter((t) => t.lines.length > 0)
+    .map((t, i, all) => ({ ...t, next: i < all.length - 1 ? all[i + 1].who : null }));
+  const spoken = new Set(talk.map((t) => t.stage));
+  const nextUp = AGENTS.find((a) => !spoken.has(a.stage))?.who ?? null;
 
   return (
     <div className="film">
@@ -104,7 +114,36 @@ export default function AnalysisFilm({ jobId, stage, progress }: { jobId: string
             <polyline key={`p${i}`} points={p.p.map((q: number[]) => q.join(",")).join(" ")} fill="none"
               stroke={`hsl(${hue(p.i)} 68% 42%)`} strokeWidth={2.4 / scale} strokeLinecap="round" strokeLinejoin="round" />
           ))}
+          {running && (
+            <>
+              <defs>
+                <linearGradient id="sweep" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stopColor="#0d0d0d" stopOpacity="0" />
+                  <stop offset="82%" stopColor="#0d0d0d" stopOpacity="0.05" />
+                  <stop offset="100%" stopColor="#0d0d0d" stopOpacity="0.16" />
+                </linearGradient>
+              </defs>
+              <rect x="0" y={Math.max(0, sweepY - page.h * 0.34)} width={page.w}
+                height={Math.min(page.h * 0.34, sweepY)} fill="url(#sweep)" />
+              <line x1="0" y1={sweepY} x2={page.w} y2={sweepY} stroke="#0d0d0d" strokeWidth={0.9 / scale} opacity="0.5" />
+            </>
+          )}
         </svg>
+      </div>
+
+      {/* what the readers are saying to each other while it runs: each stage reports what it found from its own
+          frame, then hands the sheet to the next. Nothing here is written for the screen - the numbers are the
+          ones the reading is working from. */}
+      <div className="film-talk">
+        {talk.length === 0 && <p className="muted">Läser in bladet…</p>}
+        {talk.map((t, i) => (
+          <div key={`${t.stage}-${i}`} className={`bubble${i === talk.length - 1 ? " fresh" : ""}`}>
+            <div className="who">{t.who}</div>
+            {t.lines.map((l, j) => <p key={j}>{l}</p>)}
+            {t.next && <div className="handoff">lämnar vidare till {t.next}</div>}
+          </div>
+        ))}
+        {running && nextUp && <div className="bubble waiting"><div className="who">{nextUp}</div><p className="dots"><i /><i /><i /></p></div>}
       </div>
 
       <div className="film-side">

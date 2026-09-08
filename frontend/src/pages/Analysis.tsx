@@ -5,6 +5,8 @@ import PdfViewer, { Drawn, EditKind, Layer, ViewerHandle } from "../components/P
 import QuantityTable from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
 import Corrections, { Draft } from "../components/Corrections";
+import LegendView from "../components/LegendView";
+import Reasoning from "../components/Reasoning";
 import { StatusBadge, STAGE_LABELS } from "../components/Status";
 
 const VISION_LABELS: Record<string, string> = {
@@ -53,6 +55,10 @@ export default function AnalysisPage() {
   const [pdf, setPdf] = useState<ArrayBuffer | null>(null);
   const [err, setErr] = useState("");
   const [tab, setTab] = useState<"mangder" | "ejlosta" | "granskning" | "oversikt" | "artefakter" | "rattelser">("mangder");
+  // The three things a reader comes here for, and they are not the same thing: what the drawing says its codes
+  // mean, the sheet with the reading drawn on it, and how the reading got there. Each had to be dug out of the
+  // side panel before; each is a view of its own now.
+  const [view, setView] = useState<"forklaring" | "analys" | "resonemang">("analys");
   const [selIdent, setSelIdent] = useState<string | null>(null);
   const [selPipe, setSelPipe] = useState<any>(null);
   const [why, setWhy] = useState<any>(null);
@@ -167,7 +173,37 @@ export default function AnalysisPage() {
   const c = result.coverage;
   const pipesOnPage = result.pipes.filter((p: any) => p.page === page);
   const covWarn = c.designations > 0 && c.verified_attachments / Math.max(c.designations, 1) < 0.5;
+  const viewtabs = (
+    <div className="viewtabs">
+      <button className={view === "forklaring" ? "active" : ""} onClick={() => setView("forklaring")}>
+        Förklaringslista{result.legend?.entries?.length ? ` (${result.legend.entries.length})` : ""}
+      </button>
+      <button className={view === "analys" ? "active" : ""} onClick={() => setView("analys")}>Analys</button>
+      <button className={view === "resonemang" ? "active" : ""} onClick={() => setView("resonemang")}>Agenternas resonemang</button>
+      <span className="spacer" />
+      <StatusBadge job={job} />
+    </div>
+  );
+  if (view === "forklaring") {
+    return (
+      <div className="workspace">
+        {viewtabs}
+        <LegendView legend={result.legend ?? { entries: [] }} designations={result.designations}
+          quantities={result.quantities} />
+      </div>
+    );
+  }
+  if (view === "resonemang") {
+    return (
+      <div className="workspace">
+        {viewtabs}
+        <Reasoning jobId={id!} result={result} />
+      </div>
+    );
+  }
   return (
+    <div className="workspace">
+    {viewtabs}
     <div className={`analysis${panelOpen ? "" : " closed"}`}
       style={{ gridTemplateColumns: `minmax(0, 1fr) 6px ${panel}px` }}>
       <div className="left">
@@ -538,6 +574,7 @@ export default function AnalysisPage() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }

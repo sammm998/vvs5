@@ -542,6 +542,9 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
         "review": _load_optional(rd, "review-findings.json"),
         "crosscheck": _load_optional(rd, "route-crosscheck.json"),
         "reading_review": _load_optional(rd, "reading-review.json"),
+        # the drawing's own designation list, as the reading understood it: which codes it took for systems,
+        # which for fittings, which for materials, and whether the page itself showed that or its own grouping did
+        "legend": _load_optional(rd, "drawing-legend.json") or {"n_entries": 0, "entries": []},
     }
 
 
