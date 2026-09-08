@@ -390,6 +390,21 @@ tr.selected td { color: var(--ink); }
 }
 .reasoning .handoff::before { content: "↓ "; }
 .agentcard { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+.roster { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 14px 0 26px; }
+.rosteritem {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.rosteritem:last-child { border-bottom: 0; }
+.rosteritem .rname { font-weight: 500; }
+.rosteritem .rwhat { color: var(--muted); }
+.rosteritem:not(.on) { opacity: 0.6; }
+@media (max-width: 820px) { .rosteritem { grid-template-columns: 1fr auto; } .rosteritem .rwhat { grid-column: 1 / -1; } }
 .agenthead { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
 
 .analysis {
@@ -503,6 +518,7 @@ pre { white-space: pre-wrap; word-break: break-word; background: var(--bg-2); bo
   margin-bottom: 3px;
 }
 .film-talk p { margin: 0 0 3px; font-size: 13.5px; }
+.film-talk .asking { color: var(--muted); font-style: italic; }
 .film-talk .handoff {
   margin-top: 6px;
   font-family: var(--mono);

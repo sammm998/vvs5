@@ -121,8 +121,14 @@ def run_job(job_id: str) -> None:
                               review=settings.run_review, review_ocr=settings.review_ocr,
                               ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir),
                               second_reader=_second_reader())
+        # which readers this installation actually had available, and by what name - a reading that quietly used a
+        # model, or quietly did without one, is not a reading anyone can check
+        on, why = second_reader_state()
+        sr = dict(summary["summary"].get("second_reader") or {})
+        sr.update({"enabled": on, "why": why,
+                   "model": os.environ.get("VVS_SECOND_READER_MODEL", "gpt-6-astra") if on else None})
         _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
-             summary={"total_seconds": summary["total_seconds"], **summary["summary"]})
+             summary={"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr})
     except UnsupportedInputError as e:
         # not a defect: the PDF carries no vector drawing, so there is nothing to read
         _set(job_id, status="FAILED", stage="FAILED", finished_at=dt.datetime.now(dt.timezone.utc),

@@ -30,10 +30,60 @@ export default function Reasoning({ jobId, result }: { jobId: string; result: an
     byAgent.get(k)!.push(f);
   }
   const sr = result?.coverage?.second_reader;
+  const ranReview: string[] = result?.review?.agents ?? [];
 
   return (
     <div className="sheetview">
       <div className="card reasoning">
+        <h3>Vilka läsare som användes</h3>
+        <p className="muted">
+          En läsning som tyst använde en modell, eller tyst klarade sig utan en, är ingen läsning någon kan
+          kontrollera. Här står vad som faktiskt kördes på det här jobbet.
+        </p>
+        <div className="roster">
+          {AGENTS.map((a) => (
+            <div key={a.stage} className={`rosteritem${byStage[a.stage] ? " on" : ""}`}>
+              <span className="rname">{a.who}</span>
+              <span className="rwhat">i motorn, ur ritningens vektorer</span>
+              <span className={`badge ${byStage[a.stage] ? "ok" : "warn"}`}>{byStage[a.stage] ? "kördes" : "inget att visa"}</span>
+            </div>
+          ))}
+          {ranReview.map((name) => {
+            const key = name.replace(/\(.*\)$/, "").replace(/_agent$/, "");
+            const state = /\((.*)\)$/.exec(name)?.[1];
+            return (
+              <div key={name} className="rosteritem on">
+                <span className="rname">{AGENT_SV[key] ?? key}</span>
+                <span className="rwhat">
+                  granskare, ändrar aldrig mätningen{state ? ` · ${state === "unavailable" ? "kunde inte laddas" : state === "failed" ? "kunde inte köras" : state}` : ""}
+                </span>
+                <span className={`badge ${state && state !== "ok" ? "warn" : "ok"}`}>kördes</span>
+              </div>
+            );
+          })}
+          <div className={`rosteritem${sr?.consulted ? " on" : ""}`}>
+            <span className="rname">Andraläsaren{sr?.model ? ` · ${sr.model}` : ""}</span>
+            <span className="rwhat">
+              {sr?.consulted
+                ? `tillfrågad i ${sr.asked ?? "?"} fall, avgjorde ${sr.settled ?? 0}, avstod ${sr.refused ?? 0}`
+                : sr?.enabled
+                  ? "tillgänglig men behövdes inte på det här bladet"
+                  : `av: ${sr?.why ?? "ingen modell konfigurerad"}`}
+            </span>
+            <span className={`badge ${sr?.consulted ? "warn" : "ok"}`}>
+              {sr?.consulted ? "användes" : sr?.enabled ? "tillgänglig" : "ej tillgänglig"}
+            </span>
+          </div>
+          <div className="rosteritem">
+            <span className="rname">Synläsaren{sr?.model ? ` · ${sr.model}` : ""}</span>
+            <span className="rwhat">
+              tittar på sidan som bild och namnger rutor att granska; flyttar aldrig en meter. Körs på begäran
+              från fliken Analys, aldrig som en del av mätningen.
+            </span>
+            <span className="badge ok">på begäran</span>
+          </div>
+        </div>
+
         <h3>Så kom läsningen fram till svaret</h3>
         <p className="muted">
           Varje steg lämnar sitt fynd vidare till nästa. Granskarna längst ned rör aldrig mätningen — de säger

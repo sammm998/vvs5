@@ -35,7 +35,9 @@ export default function AnalysisFilm({ jobId, stage, progress }: { jobId: string
       } catch { /* the film is a view; a failed fetch just means the next one */ }
     };
     get();
-    const beat = setInterval(get, 6000);
+    // a stage lands when it finishes, so the film is fetched when the stage moves - but the readers are talking
+    // to each other while it runs, and a line that arrives six seconds after it was said is not a conversation
+    const beat = setInterval(get, stage === "COMPLETED" || stage === "FAILED" ? 6000 : 1500);
     return () => { live = false; clearInterval(beat); };
   }, [jobId, stage]);
 
@@ -86,7 +88,10 @@ export default function AnalysisFilm({ jobId, stage, progress }: { jobId: string
     .filter((t) => t.lines.length > 0)
     .map((t, i, all) => ({ ...t, next: i < all.length - 1 ? all[i + 1].who : null }));
   const spoken = new Set(talk.map((t) => t.stage));
-  const nextUp = AGENTS.find((a) => !spoken.has(a.stage))?.who ?? null;
+  const nextUp = AGENTS.find((a) => !spoken.has(a.stage));
+  // what the reading is doing right now, said in the words of whoever is doing it
+  const nowWho = AGENTS.find((a) => a.stage === stage)?.who ?? nextUp?.who ?? null;
+  const nowAsks = AGENTS.find((a) => a.stage === stage)?.asks ?? nextUp?.asks ?? STAGE_LABELS[stage] ?? null;
 
   return (
     <div className="film">
@@ -143,7 +148,13 @@ export default function AnalysisFilm({ jobId, stage, progress }: { jobId: string
             {t.next && <div className="handoff">lämnar vidare till {t.next}</div>}
           </div>
         ))}
-        {running && nextUp && <div className="bubble waiting"><div className="who">{nextUp}</div><p className="dots"><i /><i /><i /></p></div>}
+        {running && nowWho && (
+          <div className="bubble waiting">
+            <div className="who">{nowWho}</div>
+            {nowAsks && <p className="asking">”{nowAsks}”</p>}
+            <p className="dots"><i /><i /><i /></p>
+          </div>
+        )}
       </div>
 
       <div className="film-side">
