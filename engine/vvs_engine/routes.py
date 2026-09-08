@@ -20,7 +20,7 @@ rename a run another route confirmed, because then the two readings would no lon
 from __future__ import annotations
 
 import math
-from collections import Counter, defaultdict
+from collections import Counter, deque, defaultdict
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -300,6 +300,51 @@ def _further_questions(pa) -> dict[str, Any]:
     stats = getattr(pa, "contact_stats", None) or {}
     votes, ticks = stats.get("votes") or {}, stats.get("tick_votes") or {}
     accepted = set(pa.pipe_families)
+
+    # 5b. the unnamed metres, split by whether they hang off pipe the reading did name.
+    #
+    # One number was hiding two very different things. Geometry in a component that also holds named pipe is
+    # pipe the reading did not reach - a branch it stopped at, a length past the last label - and it is coverage
+    # waiting to be won. Geometry in a component where nothing is named is something else: on a sheet with no
+    # layer names the pipe family is a pen and a colour, and a wall or a grid drawn with that pen lands in it.
+    # Reporting them together makes a reading of a busy sheet look far worse than it is, and hides which of the
+    # two a reader should do something about.
+    mpp = (pa.scale.meters_per_pt or 0.0) if getattr(pa, "scale", None) else 0.0
+    touching = apart = 0.0
+    n_touch = n_apart = 0
+    for fk, g in pa.graphs.items():
+        states = pa.ownership.prim_states[fk]
+        seen: set[int] = set()
+        for start in sorted(g.prims):
+            if start in seen:
+                continue
+            comp, dq = [], deque([start])
+            seen.add(start)
+            while dq:
+                q = dq.popleft()
+                comp.append(q)
+                for nid in g.prim_nodes[q]:
+                    for r2 in g.nodes[nid].prims:
+                        if r2 not in seen:
+                            seen.add(r2)
+                            dq.append(r2)
+            named = any(states[q].state in ("CONFIRMED", "AMBIGUOUS") for q in comp)
+            un = sum(g.prims[q].seg.length for q in comp if states[q].state == "UNOWNED") * mpp
+            if un <= 0:
+                continue
+            if named:
+                touching += un
+                n_touch += 1
+            else:
+                apart += un
+                n_apart += 1
+    out["unnamed_touching_named_pipe_m"] = round(touching, 2)
+    out["unnamed_touching_named_pipe_components"] = n_touch
+    out["unnamed_standalone_m"] = round(apart, 2)
+    out["unnamed_standalone_components"] = n_apart
+    out["unnamed_split_note"] = ("metres hanging off pipe the reading named are coverage it did not reach; "
+                                 "metres in components where nothing is named are geometry no label ever "
+                                 "touched, which on a sheet without layer names is often not pipe at all")
 
     # 4. geometry the sheet's own labels point at, that was not accepted as pipe
     rejected = []
