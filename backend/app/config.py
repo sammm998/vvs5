@@ -18,10 +18,14 @@ class Settings(BaseSettings):
     review_ocr: bool = True       # let the review read the page with OCR as an independent second opinion
     ocr_assist: bool = True       # let OCR name the characters the stroke recogniser could not
     # Ask a second reader about cases the geometry itself declared open, among the candidates the drawing offers.
-    # Off by default: it costs a call and a wait per open case, and the reading is complete without it. Turning it
-    # on also turns the determinism check off, because a reading that consulted another machine is not the same
-    # kind of answer as one that did not - which the result then says outright.
-    second_reader: bool = False
+    #
+    # Unset means: on where this installation holds an OPENAI_API_KEY, off where it does not. Putting that key
+    # into a service that has exactly one use for it is the operator saying yes; making them also set a second
+    # flag only produces the case where the key is there and nothing happens. `true` forces it on (a machine
+    # behind a proxy that attaches the credential has no key of its own), `false` forces it off whatever else is
+    # configured. Either way, a reading that consulted it says so, and reports no determinism state it cannot
+    # honestly claim.
+    second_reader: bool | None = None
     cors_origins: str = "http://localhost:5173,http://localhost:8080"
     allow_registration: bool = True
     static_dir: str = ""          # built frontend (frontend/dist); served by the API when present

@@ -15,7 +15,9 @@ COPY engine /app/engine
 COPY backend /app/backend
 RUN pip install --no-cache-dir -e /app/engine
 COPY --from=frontend /fe/dist /app/frontend/dist
-ARG VVS_BUILD=unknown
+# Left empty on purpose: an image that bakes in the word "unknown" answers the question "which code is running?"
+# with something that looks like an answer, and the platform's own commit variable is then never consulted.
+ARG VVS_BUILD=""
 ENV VVS_BUILD=${VVS_BUILD}
 ENV VVS_STATIC_DIR=/app/frontend/dist \
     VVS_STORAGE_ROOT=/data/storage \

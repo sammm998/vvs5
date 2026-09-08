@@ -71,17 +71,34 @@ def _second_reader():
     is deterministic and runs with no network at all. A configuration that asks for a second reader and cannot
     reach one says so in the log rather than failing an analysis over it - the takeoff does not depend on it.
     """
-    if not settings.second_reader:
+    on, why = second_reader_state()
+    if not on:
         return None
     try:
-        from tools.astra_transport import available, transport
+        from tools.astra_transport import transport
     except Exception:
         return None
-    ok, why = available()
-    if not ok:
-        print(f"[andraläsare] påslagen men inte nåbar: {why}", file=sys.stderr)
-        return None
     return transport()
+
+
+def second_reader_state() -> tuple[bool, str]:
+    """Whether this installation will consult a second reader, and the reason - the same answer everywhere.
+
+    Unset means yes where a key is present. Explicitly on means yes wherever the transport can reach the model at
+    all, which includes a machine behind a proxy that attaches the credential and holds no key itself.
+    """
+    if settings.second_reader is False:
+        return False, "avstängd i den här installationen (VVS_SECOND_READER=false)"
+    try:
+        from tools.astra_transport import available
+    except Exception as e:                                      # noqa: BLE001
+        return False, f"transporten kunde inte laddas: {type(e).__name__}"
+    has_key = bool(os.environ.get("OPENAI_API_KEY", "").strip())
+    if settings.second_reader is None:
+        return (True, "OPENAI_API_KEY finns i miljön") if has_key else \
+            (False, "ingen OPENAI_API_KEY i miljön; sätt den, eller VVS_SECOND_READER=true bakom en proxy")
+    ok, why = available()
+    return (ok, why) if ok else (False, f"påslagen men inte nåbar: {why}")
 
 
 def run_job(job_id: str) -> None:

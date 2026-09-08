@@ -164,29 +164,72 @@ def test_the_pipeline_runs_the_second_reader_only_when_it_is_given_one(synthetic
     assert a == b, "ett OKLART-svar får inte flytta en enda meter"
 
 
-def test_a_reading_is_offline_unless_this_installation_asks_for_a_second_reader(monkeypatch):
-    """The default has to be no network. A takeoff that quietly calls out is not one anybody can check."""
+def _backend():
     import sys as _sys
     _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "backend"))
     from app import jobs
     from app.config import settings
+    return jobs, settings
 
+
+def test_a_reading_is_offline_unless_this_installation_can_reach_a_second_reader(monkeypatch):
+    """No key and no proxy is no network. A takeoff that quietly calls out is not one anybody can check."""
+    jobs, settings = _backend()
+    monkeypatch.setattr(settings, "second_reader", None, raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("HTTPS_PROXY", raising=False)
+    monkeypatch.delenv("https_proxy", raising=False)
+    on, why = jobs.second_reader_state()
+    assert on is False and "OPENAI_API_KEY" in why
+    assert jobs._second_reader() is None
+
+
+def test_a_key_in_the_environment_is_the_operator_saying_yes(monkeypatch):
+    """The service has exactly one use for an OpenAI key. Requiring a second flag only makes the case where
+    someone sets the key and nothing whatsoever happens - which is what production did."""
+    jobs, settings = _backend()
+    monkeypatch.setattr(settings, "second_reader", None, raising=False)
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-inte-en-riktig-nyckel")
+    on, why = jobs.second_reader_state()
+    assert on is True and "OPENAI_API_KEY" in why
+
+
+def test_an_explicit_no_wins_over_a_key(monkeypatch):
+    """An operator who says false means false, whatever else is lying around in the environment."""
+    jobs, settings = _backend()
     monkeypatch.setattr(settings, "second_reader", False, raising=False)
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-inte-en-riktig-nyckel")
+    on, _ = jobs.second_reader_state()
+    assert on is False
     assert jobs._second_reader() is None
 
 
 def test_a_second_reader_that_cannot_be_reached_never_fails_the_analysis(monkeypatch):
     """Turned on and unreachable is a configuration problem, not a reason to lose a drawing's metres."""
-    import sys as _sys
-    _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "backend"))
-    from app import jobs
-    from app.config import settings
-
+    jobs, settings = _backend()
     monkeypatch.setattr(settings, "second_reader", True, raising=False)
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("HTTPS_PROXY", raising=False)
     monkeypatch.delenv("https_proxy", raising=False)
     assert jobs._second_reader() is None
+
+
+def test_the_build_stamp_never_reports_a_placeholder_as_an_answer(monkeypatch):
+    """The image bakes in a word when nothing was passed at build time. Taking it as an answer stopped the search
+    before the platform's own commit variable was ever read, and production reported "unknown" for weeks."""
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "backend"))
+    from app.main import _build_stamp
+
+    _build_stamp.cache_clear()      # the answer is cached for the life of the process; a test is not one process
+    monkeypatch.setenv("VVS_BUILD", "unknown")
+    monkeypatch.setenv("RAILWAY_GIT_COMMIT_SHA", "abc1234567890def")
+    assert _build_stamp()["build"] == "abc123456789"
+
+    _build_stamp.cache_clear()
+    monkeypatch.setenv("VVS_BUILD", "deadbeef")
+    assert _build_stamp()["build"] == "deadbeef"
+    _build_stamp.cache_clear()
 
 
 def test_the_transport_sends_a_key_only_when_this_machine_holds_one(monkeypatch):

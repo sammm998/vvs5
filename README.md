@@ -129,15 +129,18 @@ The findings are written to `review-findings.json` and shown in the application'
 
 ### A second reader, where the drawing itself leaves a choice
 
-`VVS_SECOND_READER=true` lets a language model (`VVS_SECOND_READER_MODEL`, default `gpt-6-astra`) answer the cases
-the geometry has already declared AMBIGUOUS - and only those. What it may answer is bounded by the drawing: a
+A language model (`VVS_SECOND_READER_MODEL`, default `gpt-6-astra`) may answer the cases the geometry has already
+declared AMBIGUOUS - and only those. It follows the key: on where `OPENAI_API_KEY` is present, off where it is
+not, since a service has exactly one use for that key. `VVS_SECOND_READER=true` forces it on for a machine behind
+a proxy that attaches the credential and holds no key itself; `false` forces it off. `GET /api/version` says which
+of those applies, in words, without logging in. What it may answer is bounded by the drawing: a
 question carries the families this leader's own end landed on, and `verify()` refuses, character for character,
 anything that is not one of them, so it cannot name a pipe, a leader, a DN, a coordinate or a metre the reading
 did not already put forward. An answer naming two candidates stays ambiguous. Every settled case records that a
 model chose it and from which candidates.
 
-It is off by default and the takeoff does not depend on it: with no transport nothing is asked, the engine runs
-with no network, and the result is the same. A job that did consult it says so - the result carries
+The takeoff does not depend on it: with no transport nothing is asked, the engine runs with no network, and the
+result is the same. A job that did consult it says so - the result carries
 `second_reader: {consulted, asked, settled, refused}` and reports determinism as
 `NOT_APPLICABLE_A_SECOND_READER_WAS_CONSULTED`, because a reading that asked another machine is not the same kind
 of answer as one that did not.

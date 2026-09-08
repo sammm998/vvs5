@@ -39,8 +39,12 @@ def _build_stamp() -> dict:
     """Which code produced this reading. A number on screen is only checkable if you can tell what made it."""
     from vvs_engine import __version__
     # the image carries no .git, so take the build from whatever the platform exposes before falling back to git
-    build = (os.environ.get("VVS_BUILD") or os.environ.get("RAILWAY_GIT_COMMIT_SHA")
-             or os.environ.get("SOURCE_COMMIT") or os.environ.get("GIT_COMMIT") or "")[:12]
+    # "unknown" is what the image bakes in when nothing was passed at build time, and it is not an answer: taking
+    # it as one stops the search before the platform's own variables are ever looked at, which is exactly what
+    # happened in production - the endpoint reported "unknown" while Railway knew the commit all along.
+    cand = [os.environ.get(k, "") for k in ("VVS_BUILD", "RAILWAY_GIT_COMMIT_SHA", "SOURCE_COMMIT", "GIT_COMMIT",
+                                            "RAILWAY_DEPLOYMENT_ID")]
+    build = next((v[:12] for v in cand if v.strip() and v.strip().lower() != "unknown"), "")
     if not build:
         try:
             build = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
@@ -69,22 +73,17 @@ def version():
     you can tell whether this installation is configured for one and can actually reach it. Both are said here as
     plain facts. No credential is returned, and none can be inferred beyond "there is one" or "there is not".
     """
-    reachable, why = (False, "andraläsaren är avstängd i den här installationen")
-    if settings.second_reader:
-        try:
-            from tools.astra_transport import MODEL, available
-            reachable, why = available()
-        except Exception as e:                                  # noqa: BLE001
-            reachable, why = False, f"transporten kunde inte laddas: {type(e).__name__}"
+    from .jobs import second_reader_state
+    on, why = second_reader_state()
     model = None
-    if settings.second_reader:
+    if on:
         try:
             from tools.astra_transport import MODEL as model
         except Exception:                                       # noqa: BLE001
             model = None
     return {**_build_stamp(),
-            "second_reader": {"enabled": settings.second_reader, "reachable": reachable, "reason": why,
-                              "model": model}}
+            "second_reader": {"enabled": on, "reason": why, "model": model,
+                              "setting": settings.second_reader}}
 
 
 class RegisterIn(BaseModel):
