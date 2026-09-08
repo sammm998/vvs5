@@ -35,6 +35,7 @@ from .routes import apply_routes, cross_check, review, run_routes
 # a drawing draws its leaders alike: a family carrying this share of the leaders is where it draws them
 LEADER_MIN_SHARE = 0.25
 PEER_SHARE = 0.15          # a drawn family carrying this much of the best family's label ends is a peer of it
+PEER_LABELS_MIN = 2        # and two of the sheet's own labels pointing at it is the least that can say so
 # and with no layer name to vouch for it, this share of the sheet's own pipe labels must have reached it
 LABELS_MUST_REACH = 0.15
 LABELS_MIN = 20
@@ -375,12 +376,14 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
 
     def run_pass(ann_layers: dict[str, int] | None):
         ann_marks = [m for m in vtext.marks if f"{m.layer}|{m.style}" in ann_layers] if ann_layers else vtext.marks
-        leaders = discover_leaders(page, blocks, free, ann_marks, ann_layers)
+        leaderless: dict[str, list[str]] = {}
+        leaders = discover_leaders(page, blocks, free, ann_marks, ann_layers, report=leaderless)
         exclude = set(ann_layers) if ann_layers else set()
         gidx = GeometryIndex(page, exclude, glyph_pids)
         des_leaders = [ld for ld in leaders if ld.block_id in des_by_block]
         votes: Counter = Counter()
         token_votes: Counter = Counter()
+        leader_votes: Counter = Counter()
         # one leader meeting one drawn object is one vote for that object's family, however many segments the
         # object is exported as: a symbol drawn as sixteen little strokes is not sixteen pieces of evidence
         for ld in des_leaders:
@@ -396,6 +399,11 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 for d in des_by_block[ld.block_id]:
                     if system_layer_match(d.system_token, fam.split("|s|")[0], spelled_out):
                         token_votes[fam] += 1
+            # how many of the sheet's own pipe labels point at this family, counted once per label however many
+            # of its objects that label's leader happens to run along. This is the quantity a reader would count
+            # off the drawing, and unlike a sum of contact weights it does not grow with how a family is exported.
+            for fam in {f for f, _ in seen_obj}:
+                leader_votes[fam] += 1
         total = sum(votes.values()) or 1.0
         tick_votes: Counter = Counter()
         for ld in des_leaders:
@@ -459,6 +467,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         chain_voted = [f for f in voted if chain_like(f)]
         best_ticks = max((tick_votes[f] for f in chain_voted), default=0)
         best_votes = max((votes[f] for f in chain_voted), default=0.0)
+        best_leaders = max((leader_votes[f] for f in chain_voted), default=0)
         for f in voted:
             if not chain_like(f):
                 continue
@@ -472,7 +481,15 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             accept = (token_votes[f] >= 1) or (tick_votes[f] >= 2 and similar) \
                 or (tick_votes[f] >= 3 and style in token_styles) or (tick_votes[f] >= 5 and tick_votes[f] / total_ticks >= 0.15) \
                 or (not token_fams and tick_votes[f] >= 2 and tick_votes[f] >= PEER_SHARE * best_ticks) \
-                or (not token_fams and votes[f] >= 5 and votes[f] >= PEER_SHARE * best_votes)
+                or (not token_fams and votes[f] >= 5 and votes[f] >= PEER_SHARE * best_votes) \
+                or (not token_fams and leader_votes[f] >= PEER_LABELS_MIN and leader_votes[f] >= PEER_SHARE * best_leaders)
+            # A leader that ends on a valve or a floor drain and only then reaches the pipe leaves no tick on the
+            # pipe itself, and a sum of contact weights counts one label several times when its leader runs along
+            # several pieces of the same family. Neither says what a reader would say, which is simply: how many
+            # of this sheet's labels point here. Counted that way, a third pipe size on a layer-less sheet that
+            # carried more labels than either family taken - and was refused for holding fewer than five contact
+            # weights, on a sheet whose best family held four - is a peer of them.
+            #
             # A sheet with no layer names to vouch for anything used to need one family to carry a large share of
             # every leader on the page. But a drawing that runs tap water, waste and heating draws them with
             # their own pens, and then no single family holds a large share of the total - the votes are split
@@ -502,6 +519,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             declined[f] = {"family": f, "kind": rf.kind, "why": why, "width": round(rf.width, 2),
                            "longest_chain": round(rf.longest_chain, 1), "total_length_pt": round(rf.total_length, 1),
                            "votes": round(votes.get(f, 0.0), 2), "tick_votes": tick_votes.get(f, 0),
+                           "leader_votes": leader_votes.get(f, 0),
                            "n_segments": len(prims_all.get(f) or ())}
         # Keep the drawn strokes of the declined families so a reader can see them, spending the budget on the
         # ones a label came closest to: a wall layer holds tens of thousands of strokes and would drown both the
@@ -531,7 +549,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             anchors.extend(resolve_block(block, rows, ld, contacts, system_tokens, spelled_out, paths))
         anchors.sort(key=lambda a: a.anchor_id)
         stats = {"votes": dict(votes.most_common()), "token_votes": dict(token_votes.most_common()), "candidate_families": sorted(pipe_families), "tick_votes": dict(tick_votes.most_common()),
-                 "declined_families": declined}
+                 "leader_votes": dict(leader_votes.most_common()), "declined_families": declined,
+                 "labels_without_a_leader": {b: sorted(set(v)) for b, v in leaderless.items()}}
         if os.environ.get("VVS_DEBUG_PASS"):
             print(f"[pass ann_layers={sorted(ann_layers) if ann_layers else None}] leaders={len(leaders)} des_leaders={len(des_leaders)} votes={dict(votes)} ticks={dict(tick_votes)} "
                   f"voted={voted} chain_like={[f for f in voted if chain_like(f)]} accepted={sorted(pipe_families)} anchors={Counter(a.state for a in anchors)}", file=sys.stderr)
