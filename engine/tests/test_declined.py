@@ -109,3 +109,33 @@ def test_filled_shapes_are_counted_and_never_offered_as_pipe(synthetic_pdf, tmp_
     art = declined_geometry(pa)
     assert art["totals"]["filled_shapes"] == fills
     assert not any(f["n_segments"] and f["kind"] == "filled" for f in art["families"] + art["unconsidered"])
+
+
+def test_a_mark_inside_a_wall_and_a_component_tag_are_both_labelled_as_such(synthetic_pdf):
+    """A ring on the sheet says a leader ended there. It must not read as "a pipe was measured here".
+
+    Two ways it used to. A leader ending inside a hatched area reaches length the horizontal quantity already
+    excludes, and a component tag reaches a floor drain or a mixer rather than a run - both were drawn exactly
+    like an attachment to a measured pipe. The reading now says which is which, per item, so the sheet can.
+    """
+    from vvs_engine.output.artifacts import write_all
+
+    import tempfile
+    pa = analyze_page(extract_document(synthetic_pdf).pages[0])
+    doc = extract_document(synthetic_pdf)
+    with tempfile.TemporaryDirectory() as out:
+        files = write_all(synthetic_pdf, doc, [pa], out, "t", {}, None, None, {}, {})
+        import json
+        des = json.load(open(files["vector-designations.json"]))["designations"]
+        anc = json.load(open(files["pipe-code-anchors.json"]))["anchors"]
+        lds = json.load(open(files["leader-forensics.json"]))["leaders"]
+    assert des and all("in_wall" in d and "names_a_pipe" in d for d in des)
+    assert all("in_wall" in l for l in lds)
+    assert anc and all("in_wall" in a and "names_a_pipe" in a for a in anc)
+    # the flags are booleans, not a truthy accident that a viewer would read as "yes" for everything
+    assert all(isinstance(d["in_wall"], bool) and isinstance(d["names_a_pipe"], bool) for d in des)
+    # and an anchor's answer matches its own designation's
+    by_did = {d["did"]: d["names_a_pipe"] for d in des}
+    for a in anc:
+        if a["designation_id"] in by_did:
+            assert a["names_a_pipe"] == by_did[a["designation_id"]]

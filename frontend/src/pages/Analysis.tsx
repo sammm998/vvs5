@@ -34,7 +34,7 @@ const NO_LEADER_SV: Record<string, string> = {
   the_row_rule_never_leaves_the_label: "radens linjal lämnar aldrig etiketten",
 };
 
-const LAYER_LABELS: Record<Layer, string> = { pipes: "Mätta rör", ambiguous: "Tvetydigt", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar" };
+const LAYER_LABELS: Record<Layer, string> = { pipes: "Mätta rör", ambiguous: "Tvetydigt", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar", inWall: "I vägg (räknas ej)" };
 const LAYER_HINTS: Record<Layer, string> = {
   pipes: "Sträckor som fått en identitet och en längd, en färg per beteckning",
   ambiguous: "Ritad linje som kunde tillhöra mer än en beteckning — mäts inte",
@@ -43,6 +43,7 @@ const LAYER_HINTS: Record<Layer, string> = {
   designations: "Alla lästa beteckningar på bladet",
   leaders: "Hänvisningslinjerna som ritningen drar från etikett till rör",
   anchors: "Där en beteckning faktiskt möter sitt rör",
+  inWall: "Rör och beteckningar inne i väggar. Längd i vägg ligger redan utanför den horisontella mängden, så den märks bara när du ber om att se det som inte räknas.",
 };
 
 export default function AnalysisPage() {
@@ -90,7 +91,7 @@ export default function AnalysisPage() {
   // The question a reader opens this page with is "did it get the pipes?", and that is a question about the
   // drawing with the reading on top of it - not about leaders, label boxes and attachment marks, which cover the
   // sheet so thickly that the runs underneath cannot be seen at all. They are diagnostics, and they start off.
-  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, declined: false, designations: false, leaders: false, anchors: false });
+  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, declined: false, designations: false, leaders: false, anchors: false, inWall: false });
   // which bortvald family the reader is pointing at, so the sheet can show that ink and not all of it at once
   const [selDeclined, setSelDeclined] = useState<string | null>(null);
   const [artifacts, setArtifacts] = useState<any[]>([]);
@@ -452,6 +453,21 @@ export default function AnalysisPage() {
               <div className="card"><div className="v">{c.unowned_m ?? "?"} m</div><div className="l">Oidentifierad geometri</div></div>
               <div className="card"><div className="v">{c.unsupported_families}</div><div className="l">Unsupported styles</div></div>
               <div className="card"><div className="v">{c.ambiguous_attachments + c.no_attachments}</div><div className="l">Ej anslutna beteckningar</div></div>
+              {(() => {
+                // length the drawing puts inside walls: drawn, measured, and outside the horizontal quantity by
+                // design. Stated rather than hidden, because a number that is left out silently is a number a
+                // reader will one day find and not be able to place.
+                const inWall = (result.quantities || []).reduce((t: number, r: any) => t + (r.in_hatched_area_m || 0), 0);
+                return inWall > 0.005
+                  ? <div className="card"><div className="v">{inWall.toFixed(1)} m</div><div className="l">I vägg (utanför mängden)</div></div>
+                  : null;
+              })()}
+              {(() => {
+                const tags = (result.designations || []).filter((d: any) => d.names_a_pipe === false).length;
+                return tags > 0
+                  ? <div className="card"><div className="v">{tags}</div><div className="l">Komponentbeteckningar</div></div>
+                  : null;
+              })()}
             </div>
             <p style={{ marginTop: 12 }}>Indata: <b>ren vektor</b> ({result.input?.classification?.n_paths ?? "?"} vektorobjekt, {result.input?.classification?.n_chars ?? 0} söktecken) · Skala: <b>{result.scale.state}</b> ({result.scale.reason}) · Reconciliation: <b>{c.reconciliation}</b> · Determinism: <b>{c.determinism ?? "ej körd"}</b> · Contamination: <b>{c.contamination}</b> · Andraläsare: <b>{c.second_reader?.consulted ? `tillfrågad (${c.second_reader.asked} fall, ${c.second_reader.settled} avgjorda)` : "ej tillfrågad"}</b> · Motor: <b>{result.build?.engine ?? "?"}</b> (bygge <code>{result.build?.build ?? "okänt"}</code>)</p>
             <p className="muted">Sida {result.page.width_pt}×{result.page.height_pt} pt ({result.page.format}) · analys {result.performance.total_seconds} s · {result.performance.counts.raw_vector_objects} vektorobjekt · {result.performance.counts.glyphs} glyfer i {result.performance.counts.glyph_families} familjer</p>

@@ -61,6 +61,32 @@ def api_health():
     return {"status": "ok"}
 
 
+@app.get("/api/version")
+def version():
+    """What is running here, and what it can reach - answerable without logging in.
+
+    A reading is only checkable if you can tell which code produced it, and a second reader is only verifiable if
+    you can tell whether this installation is configured for one and can actually reach it. Both are said here as
+    plain facts. No credential is returned, and none can be inferred beyond "there is one" or "there is not".
+    """
+    reachable, why = (False, "andraläsaren är avstängd i den här installationen")
+    if settings.second_reader:
+        try:
+            from tools.astra_transport import MODEL, available
+            reachable, why = available()
+        except Exception as e:                                  # noqa: BLE001
+            reachable, why = False, f"transporten kunde inte laddas: {type(e).__name__}"
+    model = None
+    if settings.second_reader:
+        try:
+            from tools.astra_transport import MODEL as model
+        except Exception:                                       # noqa: BLE001
+            model = None
+    return {**_build_stamp(),
+            "second_reader": {"enabled": settings.second_reader, "reachable": reachable, "reason": why,
+                              "model": model}}
+
+
 class RegisterIn(BaseModel):
     email: EmailStr
     password: str
@@ -476,9 +502,15 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
         "corrections_applied": layered["applied"] if corr else [],
         "corrected_total_m": layered["corrected_total_m"] if corr else None,
         "pipes": [{k: v for k, v in p.items() if k not in ("source_segments",)} for p in pipes],
-        "designations": [{"id": d["did"], "text": d["text"], "dn": d["dn"], "bbox": d["bbox"], "source": d["source"]} for d in des],
-        "leaders": [{"id": l["lid"], "points": l["points"], "family": l["family"]} for l in leaders],
-        "anchors": [{"id": a["anchor_id"], "designation": a["designation"], "dn": a["dn"], "state": a["state"], "reason": a["reason"], "endpoint": a["leader_endpoint"]} for a in anchors],
+        # in_wall: the mark sits inside a hatched area, and pipe length in a wall is already outside the
+        # horizontal quantity - so a mark drawn there points at something the takeoff does not count.
+        # names_a_pipe: false for a component tag, whose leader reaches a floor drain or a mixer, not a run.
+        "designations": [{"id": d["did"], "text": d["text"], "dn": d["dn"], "bbox": d["bbox"], "source": d["source"],
+                          "in_wall": d.get("in_wall", False), "names_a_pipe": d.get("names_a_pipe", True)} for d in des],
+        "leaders": [{"id": l["lid"], "points": l["points"], "family": l["family"], "in_wall": l.get("in_wall", False)} for l in leaders],
+        "anchors": [{"id": a["anchor_id"], "designation": a["designation"], "dn": a["dn"], "state": a["state"], "reason": a["reason"],
+                     "endpoint": a["leader_endpoint"], "in_wall": a.get("in_wall", False),
+                     "names_a_pipe": a.get("names_a_pipe", True)} for a in anchors],
         "ambiguous_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "candidates": g["candidates"], "reason": g["reason"]} for g in ambiguous],
         "unowned_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "family": g["family"]} for g in unowned],
         "hatched_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "identity": g["identity"]} for g in hatched],

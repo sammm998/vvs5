@@ -4,7 +4,7 @@ import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 (pdfjsLib as any).GlobalWorkerOptions.workerSrc = workerUrl;
 
-export type Layer = "pipes" | "ambiguous" | "unowned" | "declined" | "designations" | "leaders" | "anchors";
+export type Layer = "pipes" | "ambiguous" | "unowned" | "declined" | "designations" | "leaders" | "anchors" | "inWall";
 export type EditKind = "extend" | "draw" | "erase" | null;
 
 /** What a finished edit gesture produced: the line drawn, and what it does to the measurement. */
@@ -308,15 +308,18 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                 );
               });
             })}
-            {props.layers.pipes && (props.hatched ?? []).map((g, i) => (
+            {/* the part of a run that lies inside a wall: drawn length, but already outside the horizontal
+                quantity, so it is marked only when a reader asks to see what is not counted */}
+            {props.layers.inWall && (props.hatched ?? []).map((g, i) => (
               <line key={`h${i}`} x1={g.x0} y1={g.y0} x2={g.x1} y2={g.y1} stroke="#6b7280" strokeWidth={sw(3.4)} strokeDasharray={`${sw(4)} ${sw(3)}`} strokeOpacity={0.95} />
             ))}
-            {props.layers.leaders && props.leaders.map((l) => (
+            {props.layers.leaders && props.leaders.filter((l) => props.layers.inWall || !l.in_wall).map((l) => (
               <polyline key={l.id} points={l.points.map((q: number[]) => q.join(",")).join(" ")} fill="none" stroke="#b000b0" strokeWidth={sw(1.2)} />
             ))}
-            {props.layers.designations && props.designations.map((d) => (
+            {props.layers.designations && props.designations.filter((d) => props.layers.inWall || !d.in_wall).map((d) => (
               <rect key={d.id} x={d.bbox[0] - 1} y={d.bbox[1] - 1} width={d.bbox[2] - d.bbox[0] + 2} height={d.bbox[3] - d.bbox[1] + 2}
-                fill="none" stroke={d.dn != null ? "#0b5cad" : "#c77800"} strokeWidth={sw(1)} />
+                fill="none" stroke={!d.names_a_pipe ? "#9aa3af" : d.dn != null ? "#0b5cad" : "#c77800"}
+                strokeWidth={sw(1)} strokeDasharray={d.names_a_pipe ? undefined : `${sw(3)} ${sw(2)}`} />
             ))}
             {(props.corrections ?? []).map((c) => (
               (c.payload?.points?.length ?? 0) >= 2 && (
@@ -368,9 +371,15 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
               </g>
             )}
 
-            {props.layers.anchors && props.anchors.map((a) => (
-              <circle key={a.id} cx={a.endpoint[0]} cy={a.endpoint[1]} r={sw(4)} fill="none"
-                stroke={a.state === "VERIFIED_PIPE_ATTACHMENT" ? "#12a24b" : a.state === "AMBIGUOUS_PIPE_ATTACHMENT" ? "#ff9500" : "#b42318"} strokeWidth={sw(1.5)} />
+            {/* A ring says a label's leader ended here. It is not a claim that a pipe was measured: a component
+                tag reaches a floor drain or a mixer, and a leader ending inside a wall reaches length the
+                quantity already excludes. Both used to be drawn exactly like an attachment to a measured run. */}
+            {props.layers.anchors && props.anchors.filter((a) => props.layers.inWall || !a.in_wall).map((a) => (
+              <circle key={a.id} cx={a.endpoint[0]} cy={a.endpoint[1]} r={sw(a.names_a_pipe === false ? 2.5 : 4)} fill="none"
+                stroke={a.names_a_pipe === false ? "#9aa3af"
+                  : a.state === "VERIFIED_PIPE_ATTACHMENT" ? "#12a24b" : a.state === "AMBIGUOUS_PIPE_ATTACHMENT" ? "#ff9500" : "#b42318"}
+                strokeWidth={sw(a.names_a_pipe === false ? 1 : 1.5)}
+                strokeDasharray={a.names_a_pipe === false ? `${sw(2)} ${sw(2)}` : undefined} />
             ))}
           </svg>
         )}

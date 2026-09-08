@@ -368,6 +368,7 @@ def declined_geometry(pa) -> dict[str, Any]:
 
 def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timings: dict, determinism: dict | None,
               contamination: dict | None, overlays: dict, config: dict, review: dict | None = None) -> dict[str, str]:
+    from ..profile.hatch import inside_hatch
     os.makedirs(out_dir, exist_ok=True)
     pa = analyses[0]
     files: dict[str, str] = {}
@@ -381,14 +382,38 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     W("raw-vector-inventory.json", doc.inventory())
     W("cad-layer-map.json", {"layers": [{"layer": k, **v.as_dict(), "role": next((l["role"] for l in prof["cad_structure"]["layers"] if l["layer"] == k), "UNKNOWN")} for k, v in sorted(pa.layer_stats.items())],
                               "annotation_layers": pa.ann_layers, "pipe_families": sorted(pa.pipe_families)})
-    W("vector-designations.json", {"designations": [d.as_dict() for d in pa.designations], "text_rows": [r.as_dict() for r in pa.lines]})
+    # Where a mark sits matters as much as what it says. A label or a leader end inside a hatched area is inside
+    # a wall, and pipe length in a wall is already outside the horizontal quantity - so a mark drawn there claims
+    # something the takeoff does not count. And a leader from a component tag reaches a floor drain or a mixer,
+    # not a run: it is an attachment, but not an attachment to any pipe. Both are said per item, once, here,
+    # rather than left for a reader to work out from a coloured ring.
+    def _in_wall(x: float, y: float) -> bool:
+        return bool(pa.hatch_families) and inside_hatch(pa.hatch_families, x, y) is not None
+    des_out = []
+    for d in pa.designations:
+        dd = d.as_dict()
+        dd["in_wall"] = _in_wall((d.bbox[0] + d.bbox[2]) / 2, (d.bbox[1] + d.bbox[3]) / 2)
+        dd["names_a_pipe"] = bool(pa.legend.names_a_pipe(d)) and (d.text or "").upper() not in pa.legend.components()
+        des_out.append(dd)
+    W("vector-designations.json", {"designations": des_out, "text_rows": [r.as_dict() for r in pa.lines]})
     W("drawing-legend.json", pa.legend.as_dict())
-    W("leader-forensics.json", {"leaders": [l.as_dict() for l in pa.leaders]})
+    lead_out = []
+    for l in pa.leaders:
+        ld = l.as_dict()
+        ld["in_wall"] = _in_wall(*l.end)
+        lead_out.append(ld)
+    W("leader-forensics.json", {"leaders": lead_out})
     W("leader-family-report.json", leader_family_report(pa.leaders))
-    W("pipe-code-anchors.json", {"anchors": [a.as_dict() for a in pa.anchors]})
+    names_pipe = {d["did"]: d["names_a_pipe"] for d in des_out}
+    anc_out = []
+    for a in pa.anchors:
+        ad = a.as_dict()
+        ad["in_wall"] = _in_wall(*a.endpoint)
+        ad["names_a_pipe"] = bool(names_pipe.get(a.designation_id, False))
+        anc_out.append(ad)
+    W("pipe-code-anchors.json", {"anchors": anc_out})
     W("pipe-representation-families.json", {"families": [rf.as_dict() for rf in pa.pipe_families.values()]})
     inv = []
-    from ..profile.hatch import inside_hatch
     for fk, g in pa.graphs.items():
         for pid, q in g.prims.items():
             st = pa.ownership.prim_states[fk][pid]
