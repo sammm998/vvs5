@@ -260,8 +260,13 @@ def assign_roles(legend: DrawingLegend, designations) -> None:
         if len(evidenced) != 1:
             continue        # a section holding both kinds is not a section that says which one a code is
         role, n = evidenced.most_common(1)[0]
-        if n < 2 and len(group) > 3:
-            continue        # one code in a long section is not the section speaking
+        if 2 * n < len(group):
+            continue        # A section speaks when the page has shown most of it. Two codes out of nineteen is
+                            # not the section speaking: on a real sheet the section listing the sanitary fittings
+                            # - floor drain, mixer, washbasin, WC, water heater - carried a dimensioned label for
+                            # a shut-off valve and a slop hopper, and every fitting in it was promoted to a pipe
+                            # system. The page then named a hundred pipes it does not draw, each of them a
+                            # fitting, and reported every one as a pipe that never got a metre.
         for e in group:
             if e.role == "material":
                 e.role = role
