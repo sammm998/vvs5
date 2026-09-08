@@ -283,11 +283,11 @@ def review(pa, cross: dict[str, Any]) -> dict[str, Any]:
         "pipe_labels_placed": sum(1 for d in pipe_labels if d.did in placed),
         "unplaced_labels": unplaced[:200],
         "unplaced_reasons": dict(reasons.most_common()),
-        **_further_questions(pa),
+        **_further_questions(pa, confirmed_m, ambiguous_m),
     }
 
 
-def _further_questions(pa) -> dict[str, Any]:
+def _further_questions(pa, confirmed: float = 0.0, ambiguous: float = 0.0) -> dict[str, Any]:
     """The rest of what a reader should be told the reading could not settle.
 
     Each of these is a way a takeoff can be quietly short without anything looking wrong: geometry the labels
@@ -342,6 +342,8 @@ def _further_questions(pa) -> dict[str, Any]:
     out["unnamed_touching_named_pipe_components"] = n_touch
     out["unnamed_standalone_m"] = round(apart, 2)
     out["unnamed_standalone_components"] = n_apart
+    reach = confirmed + ambiguous + touching
+    out["coverage_of_reachable_pct"] = round(100.0 * confirmed / reach, 1) if reach else None
     out["unnamed_split_note"] = ("metres hanging off pipe the reading named are coverage it did not reach; "
                                  "metres in components where nothing is named are geometry no label ever "
                                  "touched, which on a sheet without layer names is often not pipe at all")
