@@ -392,7 +392,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     pipe_labels = {d.did for d in designations if legend.names_a_pipe(d) and (d.text or "").upper() not in legend.components()}
     spelled_out = layer_system_tokens(page)      # the system names the file writes on layers of its own
 
-    def run_pass(ann_layers: dict[str, int] | None):
+    def run_pass(ann_layers: dict[str, int] | None, admit_leader_pens: bool = False):
         ann_marks = [m for m in vtext.marks if f"{m.layer}|{m.style}" in ann_layers] if ann_layers else vtext.marks
         leaderless: dict[str, list[str]] = {}
         leaders = discover_leaders(page, blocks, free, ann_marks, ann_layers, report=leaderless)
@@ -468,7 +468,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 fam_ink[fk] += sgm.length
         leader_fams = {f for f, c in lead_count.items()
                        if f.split("|s|")[0]
-                       or (c >= LEADER_MIN_SHARE * top and lead_ink[f] >= LEADER_INK_SHARE * fam_ink.get(f, 0.0))} \
+                       or c >= LEADER_MIN_SHARE * top
+                       and not (admit_leader_pens and lead_ink[f] < LEADER_INK_SHARE * fam_ink.get(f, 0.0))} \
             | (set(ann_layers) if ann_layers else set())
         if os.environ.get("VVS_DEBUG_INK"):
             for f, c in lead_count.most_common():
@@ -592,7 +593,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         anchors.sort(key=lambda a: a.anchor_id)
         stats = {"votes": dict(votes.most_common()), "token_votes": dict(token_votes.most_common()), "candidate_families": sorted(pipe_families), "tick_votes": dict(tick_votes.most_common()),
                  "leader_votes": dict(leader_votes.most_common()), "declined_families": declined,
-                 "labels_without_a_leader": {b: sorted(set(v)) for b, v in leaderless.items()}}
+                 "labels_without_a_leader": {b: sorted(set(v)) for b, v in leaderless.items()},
+                 "leader_pens_admitted": admit_leader_pens}
         if os.environ.get("VVS_DEBUG_PASS"):
             print(f"[pass ann_layers={sorted(ann_layers) if ann_layers else None}] leaders={len(leaders)} des_leaders={len(des_leaders)} votes={dict(votes)} ticks={dict(tick_votes)} "
                   f"voted={voted} chain_like={[f for f in voted if chain_like(f)]} accepted={sorted(pipe_families)} anchors={Counter(a.state for a in anchors)}", file=sys.stderr)
@@ -626,6 +628,20 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     def _label_reach_fails(fams, anchors) -> bool:
         return label_reach_fails(fams, anchors, pipe_labels)
 
+    # A pen that carries the sheet's leaders is normally not one that draws its pipes, and where a layer name
+    # vouches for the geometry that always holds. Without layer names it is the only rule there is, and on a sheet
+    # whose export collapsed leaders and pipes onto one pen it refuses the pipes as well: the page then measures
+    # nothing at all. So the refusal stands unless it leaves the sheet unread, and only then are the pens whose
+    # leaders are a small part of what they draw let back in - a rescue, not a default, because admitting them
+    # everywhere also admits the pen a sheet hatches its building with, and the drawing fills with pipe that no
+    # label owns.
+    if not pipe_families or _label_reach_fails(pipe_families, anchors):
+        rescue = run_pass(None, admit_leader_pens=True)
+        if rescue[1] and not _label_reach_fails(rescue[1], rescue[3]) and len(_reached(rescue[3])) > len(_reached(anchors)):
+            if os.environ.get("VVS_DEBUG_PASS"):
+                print(f"[rescue] leader pens admitted: {len(_reached(anchors))} -> {len(_reached(rescue[3]))} "
+                      f"of {len(pipe_labels)} labels placed", file=sys.stderr)
+            leaders, pipe_families, graphs, anchors, contact_stats = rescue
     pass1 = (leaders, pipe_families, graphs, anchors, contact_stats)
     if os.environ.get("VVS_DEBUG_PASS"):
         print(f"[reach] pass1 placed {len(_reached(anchors))}/{len(pipe_labels)} pipe labels, fams={sorted(pipe_families)}", file=sys.stderr)
