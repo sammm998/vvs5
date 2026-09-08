@@ -94,6 +94,18 @@ def main(pdf: str) -> int:
         check("läsningens egen granskning finns med", bool(rv), f"täckning {rv.get('coverage_pct')}%")
         check("beteckningslistan är analyserad", bool((rv.get('legend') or {}).get('found') is not None),
               str((rv.get("legend") or {}).get("reason")))
+        # what the reading looked at and did not take has to reach the reader, or declined ink and missed pipe
+        # look the same on the sheet
+        dg = r.get("declined_geometry") or {}
+        t = dg.get("totals") or {}
+        check("bortvald geometri redovisas", isinstance(dg.get("families"), list) and isinstance(dg.get("unconsidered"), list),
+              f"{t.get('families')} avvisade familjer, {t.get('unconsidered_families')} ovägda, "
+              f"{t.get('length_m')} m + {t.get('unconsidered_length_m')} m")
+        check("varje bortvald familj har ett skäl på svenska",
+              all(f.get("why_sv") and f["why_sv"] != f.get("why") for f in (dg.get("families") or []) + (dg.get("unconsidered") or [])),
+              "alla")
+        check("etiketter utan ledare namnges", rv.get("n_pipe_labels_with_no_leader") is not None,
+              f"{rv.get('n_pipe_labels_with_no_leader')} beteckningar utan ledare")
         cov = r.get("coverage") or {}
         check("avstämningen går ihop", cov.get("reconciliation") == "VALID", str(cov.get("reconciliation")))
         check("kontaminationsbrandväggen håller", cov.get("contamination") == "PASS", str(cov.get("contamination")))

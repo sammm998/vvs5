@@ -250,7 +250,7 @@ export default function AnalysisPage() {
           const advisory = result.issues.filter((i: any) => i.severity !== "blocking");
           const row = (it: any, i: number) => (
             <div key={i} className="issue" onClick={() => it.bbox && viewer.current?.zoomTo(it.bbox)}>
-              <b>{ISSUE_LABELS[it.kind] || it.kind}</b> {it.text ? `· ${it.text}` : ""} {it.reason ? <span className="muted">({it.reason})</span> : ""}
+              <b>{ISSUE_LABELS[it.kind] || it.kind}</b> {it.text ? `· ${it.text}` : ""} {it.reason ? <span className="muted">({String(it.reason).split(", ").map((r: string) => NO_LEADER_SV[r] || r).join("; ")})</span> : ""}
               {it.count ? <span className="muted"> · {it.count} st</span> : ""} {it.length_pt ? <span className="muted"> · {it.length_pt} pt</span> : ""}
             </div>
           );
