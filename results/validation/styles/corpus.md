@@ -128,3 +128,23 @@ to be named. That is the cost of the gate, paid on a 10 m sheet to stop a 664 m 
   knowledge about Swedish, not about the drawing. Recorded rather than shipped: a confidently wrong character
   splits an identity in two, which is worse than an unnamed one.
 - **Four pages exceed a 300 second budget** and are recorded as timeouts.
+
+## The label-to-pipe pass, measured
+
+Counted per label rather than per metre, the question is: does a pipe designation on the sheet reach a pipe?
+Sixty pages of the four unseen styles, one dense page per drawing, before and after the three fixes to how a
+drawn line is given to a label (a family taken on how many labels point at it; nearness deciding between two
+derived text boxes; a block carrying a designation outranking one that carries none):
+
+| | before | after |
+|---|---|---|
+| pipe labels | 2 519 | 2 519 |
+| labels that reached a pipe | 1 061 (42.1 %) | 1 082 (43.0 %) |
+| confirmed metres | 1 901.7 | 1 929.2 |
+| pipe families accepted | 83 | 85 |
+| pages better / worse | | 4 / 0 |
+
+One page went from reading nothing to reading six labels. No page read fewer. On the drawings kept beside the
+reference set the same change is larger: `S2_plan09_del42` 45 % -> 68 %, `S3_25` 42 % -> 53 %. The four
+reference takeoffs are unchanged at 15.46 m total absolute error, which is the point: none of this moved a
+measured metre on a drawing that already read well.
