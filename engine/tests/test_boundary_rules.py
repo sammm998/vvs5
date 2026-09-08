@@ -540,3 +540,76 @@ def test_parallel_pipes_a_readable_gap_apart_are_still_two_pipes(tmp_path):
     assert "KV1-X31-16" in q and "VV1-X31-16" in q
     for name in ("KV1-X31-16", "VV1-X31-16"):
         assert abs(q[name]["confirmed_horizontal_m"] - 400 / 56.69) < 0.5, (name, q[name])
+
+
+def test_a_legend_section_settles_a_code_this_page_did_not_use():
+    """The same project must not read differently from one sheet to the next.
+
+    A code's role comes from how the drawing uses it, and a sheet only shows what a sheet shows: a page with no
+    dimensioned VV label loses VV as a system, and then every VV label on it is refused as not naming a pipe at
+    all. Silent, and invisible in the counts, because a refused label never becomes a pipe label to be missing.
+
+    The legend's own grouping settles it: a heading is the sheet saying "these belong together".
+    """
+    from vvs_engine.semantics.legend import DrawingLegend, LegendEntry, assign_roles
+
+    def entry(code, heading):
+        return LegendEntry(code=code, description="d", heading=heading, bbox=(500.0, 10.0, 560.0, 18.0))
+
+    class D:
+        def __init__(self, text, head, dn):
+            self.text, self.system_token, self.dn = text, head, dn
+            self.bbox = (50.0, 400.0, 90.0, 408.0)
+
+    lg = DrawingLegend(entries=[entry("KV1", "SYSTEM TAPPVATTEN"), entry("VV1", "SYSTEM TAPPVATTEN"),
+                                entry("VVC1", "SYSTEM TAPPVATTEN"), entry("KB1", "SYSTEM TAPPVATTEN"),
+                                entry("S1", "SYSTEM SPILLVATTEN"), entry("S3", "SYSTEM SPILLVATTEN"),
+                                entry("X31", "MATERIAL ROR"), entry("P2", "MATERIAL ROR")])
+    # the page happens to carry dimensioned labels for two of the tappvatten codes and one spillvatten code
+    assign_roles(lg, [D("KV1-X31-16", "KV1", 16), D("VV1-X31-16", "VV1", 16), D("S3-P2-110", "S3", 110)])
+    assert lg.systems() >= {"KV1", "VV1", "S3"}, "vad sidan själv visar står kvar"
+    assert {"VVC1", "KB1"} <= lg.systems(), "två använda system i sektionen talar för resten av den"
+    assert "S1" in lg.systems(), "en sektion om två koder där den ena används är sektionen som talar"
+    assert "X31" not in lg.systems() and "P2" not in lg.systems(), "materialrubriken har inga belägg alls"
+    assert {e.role_from for e in lg.entries if e.code == "VVC1"} == {"heading"}
+    assert {e.role_from for e in lg.entries if e.code == "KV1"} == {"usage"}
+
+
+def test_one_used_code_in_a_long_section_does_not_speak_for_it():
+    """Half of a section of two is evidence. One of ten is a coincidence, and promoting the other nine on it
+    would hand the drawing nine systems it never showed."""
+    from vvs_engine.semantics.legend import DrawingLegend, LegendEntry, assign_roles
+
+    def entry(code, heading):
+        return LegendEntry(code=code, description="d", heading=heading, bbox=(500.0, 10.0, 560.0, 18.0))
+
+    class D:
+        def __init__(self, text, head, dn):
+            self.text, self.system_token, self.dn = text, head, dn
+            self.bbox = (50.0, 400.0, 90.0, 408.0)
+
+    lg = DrawingLegend(entries=[entry(f"K{i}", "LANG SEKTION") for i in range(1, 11)]
+                       + [entry("Z9", "ANNAN SEKTION")])
+    assign_roles(lg, [D("K1-X31-16", "K1", 16)])
+    assert lg.systems() == {"K1"}
+
+
+def test_a_section_that_holds_both_kinds_settles_nothing():
+    """A heading only speaks where it speaks with one voice; a mixed section is not the drawing grouping."""
+    from vvs_engine.semantics.legend import DrawingLegend, LegendEntry, assign_roles
+
+    def entry(code, heading):
+        return LegendEntry(code=code, description="d", heading=heading, bbox=(500.0, 10.0, 560.0, 18.0))
+
+    class D:
+        def __init__(self, text, head, dn):
+            self.text, self.system_token, self.dn = text, head, dn
+            self.bbox = (50.0, 400.0, 90.0, 408.0)
+
+    lg = DrawingLegend(entries=[entry("KV1", "ALLT"), entry("S1", "ALLT"), entry("BLXXX", "ALLT"),
+                                entry("TS1", "ALLT"), entry("X31", "ALLT"), entry("Q9", "ANNAT")])
+    assign_roles(lg, [D("KV1-X31-16", "KV1", 16), D("S1-X31-110", "S1", 110),
+                      D("BL3", "BL3", None), D("TS1", "TS1", None)])
+    assert lg.systems() == {"KV1", "S1"}
+    assert lg.components() == {"BLXXX", "TS1"}
+    assert "X31" not in lg.systems() and "X31" not in lg.components()

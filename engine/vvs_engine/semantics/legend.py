@@ -12,7 +12,7 @@ opens a dimensioned designation is a system, a code that stands alone as a whole
 from __future__ import annotations
 
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -69,10 +69,11 @@ class LegendEntry:
     heading: str
     bbox: tuple[float, float, float, float]
     role: str = "unused"        # system | component | material | unused
+    role_from: str = "usage"    # usage | heading - whether the page itself showed this code being used
 
     def as_dict(self) -> dict[str, Any]:
         return {"code": self.code, "description": self.description, "heading": self.heading,
-                "role": self.role, "bbox": [round(v, 1) for v in self.bbox]}
+                "role": self.role, "role_from": self.role_from, "bbox": [round(v, 1) for v in self.bbox]}
 
 
 @dataclass
@@ -236,3 +237,32 @@ def assign_roles(legend: DrawingLegend, designations) -> None:
             e.role = "component"
         else:
             e.role = "material"
+
+    # A sheet only shows what a sheet shows. A code the legend lists under "SYSTEM SPILLVATTEN" is a system code
+    # whether or not this particular page happens to carry a dimensioned label for it - and where it does not,
+    # every label of that system was being refused as not naming a pipe at all. That is the same project reading
+    # differently from one sheet to the next, which is the worst kind of wrong: silent, and invisible in the
+    # counts, because a refused label never becomes a pipe label to be missing.
+    #
+    # The drawing's own grouping settles it. A heading is the sheet saying "these belong together", so a code with
+    # no usage of its own takes the role its heading-mates were given by usage - and only when the heading has
+    # such evidence, and only in one direction: it may promote a code the page did not use, never demote or
+    # reclassify one the page did.
+    by_heading: dict[str, list[LegendEntry]] = defaultdict(list)
+    for e in legend.entries:
+        by_heading[(e.heading or "").strip().upper()].append(e)
+    if len(by_heading) < 2:
+        return              # one heading over everything groups nothing, and cannot speak for anything
+    for head, group in by_heading.items():
+        if not head:
+            continue
+        evidenced = Counter(e.role for e in group if e.role in ("system", "component"))
+        if len(evidenced) != 1:
+            continue        # a section holding both kinds is not a section that says which one a code is
+        role, n = evidenced.most_common(1)[0]
+        if n < 2 and len(group) > 3:
+            continue        # one code in a long section is not the section speaking
+        for e in group:
+            if e.role == "material":
+                e.role = role
+                e.role_from = "heading"
