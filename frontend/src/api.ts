@@ -60,6 +60,8 @@ export const api = {
   exportUrl: (jobId: string, fmt: string) => `/api/jobs/${jobId}/export/${fmt}`,
   artifactUrl: (jobId: string, name: string) => `/api/jobs/${jobId}/artifacts/${name}`,
   film: (jobId: string) => req(`/api/jobs/${jobId}/film`),
+  agent: (jobId: string, body: any) => req(`/api/jobs/${jobId}/agent`, { method: "POST", body: JSON.stringify(body) }),
+  agentTools: () => req(`/api/agent/tools`),
   corrections: (drawingId: string) => req(`/api/drawings/${drawingId}/corrections`),
   addCorrection: (drawingId: string, body: any) =>
     req(`/api/drawings/${drawingId}/corrections`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),

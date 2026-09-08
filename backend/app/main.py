@@ -576,6 +576,53 @@ def get_artifact(job_id: str, name: str, user: User = Depends(current_user), db:
     return FileResponse(p, media_type=media, filename=name)
 
 
+class AgentAsk(BaseModel):
+    question: str
+    page: int | None = None
+    pipe_ids: list[str] | None = None
+    bbox: list[float] | None = None
+    history: list[dict] | None = None
+
+
+@app.get("/api/agent/tools")
+def agent_tools(user: User = Depends(current_user)):
+    """The contract, so the interface can show what the agent is actually able to do."""
+    from vvs_engine.agent import tools as T
+    return {"tools": [{"name": t["name"], "description": t["description"],
+                       "parameters": sorted(t["parameters"]["properties"])} for t in T.TOOLS.values()]}
+
+
+@app.post("/api/jobs/{job_id}/agent")
+def agent_ask(job_id: str, body: AgentAsk, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Ask the agent about this reading.
+
+    The model chooses which questions to put to the drawing; the engine answers them. Every number in the reply
+    came out of a tool call over the artifacts the measurement wrote, so the chat and the takeoff table cannot
+    disagree, and the reply carries the ids it rests on so the claim can be pointed at on the sheet.
+    """
+    from app.agent import run_turn
+    from app.jobs import second_reader_state
+    from vvs_engine.agent.model import DrawingModel
+
+    j = _job(db, user, job_id)
+    if j.status != "COMPLETED":
+        raise HTTPException(409, "analysen är inte klar")
+    on, why = second_reader_state()
+    if not on:
+        raise HTTPException(503, f"ingen modell är konfigurerad för agenten: {why}")
+    try:
+        from tools.astra_transport import agent_transport
+    except Exception as e:                                      # noqa: BLE001
+        raise HTTPException(503, f"agenttransporten kunde inte laddas: {type(e).__name__}")
+    model = DrawingModel(_result_dir(j))
+    sel = {"pipe_ids": body.pipe_ids or [], "bbox": body.bbox, "page": body.page}
+    try:
+        out = run_turn(model, agent_transport(), body.question, selection=sel, history=body.history or [])
+    except Exception as e:                                      # noqa: BLE001
+        raise HTTPException(502, f"agenten kunde inte nå modellen: {type(e).__name__}: {str(e)[:160]}")
+    return out
+
+
 @app.post("/api/jobs/{job_id}/vision")
 def vision_check(job_id: str, page: int = 0, user: User = Depends(current_user), db: Session = Depends(get_db)):
     """A second opinion by eye on a reading that is already finished.

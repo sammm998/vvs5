@@ -7,6 +7,7 @@ import AnalysisFilm from "../components/AnalysisFilm";
 import Corrections, { Draft } from "../components/Corrections";
 import LegendView from "../components/LegendView";
 import Reasoning from "../components/Reasoning";
+import AgentChat from "../components/AgentChat";
 import { StatusBadge, STAGE_LABELS } from "../components/Status";
 
 const VISION_LABELS: Record<string, string> = {
@@ -54,7 +55,9 @@ export default function AnalysisPage() {
   const [result, setResult] = useState<any>(null);
   const [pdf, setPdf] = useState<ArrayBuffer | null>(null);
   const [err, setErr] = useState("");
-  const [tab, setTab] = useState<"mangder" | "ejlosta" | "granskning" | "oversikt" | "artefakter" | "rattelser">("mangder");
+  const [tab, setTab] = useState<"mangder" | "agent" | "ejlosta" | "granskning" | "oversikt" | "artefakter" | "rattelser">("mangder");
+  // what the agent means by "this": the runs the reader has clicked, and the box they dragged
+  const [agentIds, setAgentIds] = useState<string[]>([]);
   // The three things a reader comes here for, and they are not the same thing: what the drawing says its codes
   // mean, the sheet with the reading drawn on it, and how the reading got there. Each had to be dug out of the
   // side panel before; each is a view of its own now.
@@ -268,6 +271,7 @@ export default function AnalysisPage() {
         </div>
         <div className="tabs">
           <button className={tab === "mangder" ? "active" : ""} onClick={() => setTab("mangder")}>Mängder</button>
+          <button className={tab === "agent" ? "active" : ""} onClick={() => setTab("agent")}>Agent</button>
           <button className={tab === "ejlosta" ? "active" : ""} onClick={() => setTab("ejlosta")}>Ej lösta ({result.issues.filter((i: any) => i.severity === "blocking").length})</button>
           <button className={tab === "granskning" ? "active" : ""} onClick={() => setTab("granskning")}>
             Granskning{result.review ? ` (${result.review.findings.filter((f: any) => f.severity !== "INFO").length})` : ""}
@@ -322,6 +326,16 @@ export default function AnalysisPage() {
               </div>
             )}
           </div>
+        )}
+        {tab === "agent" && (
+          <AgentChat jobId={id!} page={page}
+            selection={{ pipeIds: selPipe ? [selPipe.physical_pipe_id] : agentIds, bbox: null }}
+            onHighlight={(ids) => {
+              setAgentIds(ids);
+              const first = result.pipes.find((p: any) => p.physical_pipe_id === ids[0]);
+              if (first) { setSelIdent(first.identity); viewer.current?.zoomTo(first.bbox ?? null); }
+            }}
+            onZoom={(b) => viewer.current?.zoomTo(b)} />
         )}
         {tab === "ejlosta" && (() => {
           const blocking = result.issues.filter((i: any) => i.severity === "blocking");

@@ -786,3 +786,53 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
 /* the fold-away control sits in the sidebar's top right; the wordmark stops short of it */
 .side .brand { padding-right: 30px; }
 .app.railed .side .brand { padding-right: 0; }
+
+
+/* ---------- the agent ---------- */
+.agentchat { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.agentctx {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+.agentctx .sel { color: var(--ink); }
+.agentlog { display: flex; flex-direction: column; gap: 10px; overflow: auto; padding: 2px; }
+.abub { border: 1px solid var(--line); border-radius: 12px; padding: 10px 13px; }
+.abub.user { background: var(--bg-2); border-left: 2px solid var(--line-2); }
+.abub.agent { border-left: 2px solid var(--ink); }
+.abub .who {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+.abub p { margin: 0 0 6px; font-size: 13.5px; white-space: pre-wrap; }
+.abub .dots { display: flex; gap: 4px; padding: 3px 0; }
+.abub .dots i { width: 5px; height: 5px; border-radius: 999px; background: var(--muted); animation: dot 1.1s infinite; }
+.abub .dots i:nth-child(2) { animation-delay: 0.15s; }
+.abub .dots i:nth-child(3) { animation-delay: 0.3s; }
+.atools { margin: 4px 0 8px; }
+.atools summary { font-size: 11.5px; color: var(--muted); cursor: pointer; }
+.atool code { font-family: var(--mono); font-size: 11px; color: var(--muted); word-break: break-all; }
+.agentquick { display: flex; flex-wrap: wrap; gap: 6px; }
+.chipbtn {
+  font-size: 11.5px;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  color: var(--ink);
+}
+.chipbtn:hover { border-color: var(--ink); }
+.chipbtn:disabled { opacity: 0.5; cursor: default; }
+.agentbar { display: flex; gap: 6px; align-items: flex-end; }
+.agentbar textarea { flex: 1; resize: vertical; font: inherit; font-size: 13px; padding: 8px 10px; }
+.agentbar .on { border-color: var(--ink); background: var(--bg-2); }

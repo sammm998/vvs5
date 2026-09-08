@@ -117,3 +117,51 @@ def vision_transport(effort: str = "low") -> Callable:
         finally:
             os.unlink(path)
     return ask
+
+
+AGENT_SYSTEM = (
+    "Du är VVS5:s agent. Du arbetar mot en ritning som redan är läst och mätt, och du svarar på svenska.\n"
+    "\n"
+    "Du räknar aldrig själv. Varje siffra du säger ska komma ur ett verktygsanrop, och du hittar aldrig på "
+    "rör-id, koordinater, dimensioner eller beteckningar. Vet du inte, säg att du inte vet och säg vad som "
+    "skulle avgöra det.\n"
+    "\n"
+    "Har användaren markerat något i ritningen står det i frågan. 'Det här' betyder då det markerade.\n"
+    "\n"
+    "Svara kort. När svaret rör geometri: säg siffran, säg var den kommer ifrån, och lista rör-id:n så att "
+    "läsaren kan trycka på dem och se dem på ritningen."
+)
+
+
+def agent_transport(effort: str = "low") -> Callable:
+    """One turn of a tool-calling conversation. The caller runs the loop and owns every tool.
+
+    Given the messages so far and the tool contract, this returns either the calls the model wants made or the
+    words it wants to say. Nothing here can reach the drawing: the tools are the caller's, so a number can only
+    come from the reading that produced it.
+    """
+    def ask(messages: list[dict], tools: list[dict]) -> dict:
+        body = {"model": MODEL, "instructions": AGENT_SYSTEM, "input": messages, "tools": tools,
+                "max_output_tokens": 6000, "reasoning": {"effort": effort}, "background": True}
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
+            json.dump(body, fh)
+            path = fh.name
+        try:
+            d = _curl([API, "-H", "Content-Type: application/json", "-d", f"@{path}"], timeout=120)
+            if d.get("error"):
+                raise RuntimeError(str(d["error"])[:200])
+            rid = d["id"]
+            for _ in range(POLL_ROUNDS):
+                if d.get("status") in ("completed", "failed", "incomplete"):
+                    break
+                time.sleep(POLL_SECONDS)
+                d = _curl([f"{API}/{rid}"], timeout=60)
+            calls = [{"call_id": o.get("call_id"), "name": o.get("name"), "arguments": o.get("arguments") or "{}"}
+                     for o in d.get("output", []) if o.get("type") == "function_call"]
+            text = "".join(c.get("text", "")
+                           for o in d.get("output", []) for c in (o.get("content") or [])
+                           if c.get("type") == "output_text")
+            return {"calls": calls, "text": text, "status": d.get("status")}
+        finally:
+            os.unlink(path)
+    return ask
