@@ -836,3 +836,12 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
 .agentbar { display: flex; gap: 6px; align-items: flex-end; }
 .agentbar textarea { flex: 1; resize: vertical; font: inherit; font-size: 13px; padding: 8px 10px; }
 .agentbar .on { border-color: var(--ink); background: var(--bg-2); }
+
+.verdicts { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 26px; }
+.verdict { border: 1px solid var(--line); border-left: 2px solid var(--line-2); border-radius: 10px; padding: 10px 13px; }
+.verdict.GENOMFOR { border-left-color: #8a5a12; }
+.verdict.FRAGA_EN_MANNISKA { border-left-color: #8a5a12; }
+.verdict.LAMNA { border-left-color: var(--line-2); }
+.verdict p { margin: 0 0 3px; font-size: 13.5px; }
+.vhead { display: flex; align-items: center; gap: 9px; margin-bottom: 5px; flex-wrap: wrap; }
+.vtyp { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }

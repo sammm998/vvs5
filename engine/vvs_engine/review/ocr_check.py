@@ -19,9 +19,20 @@ _ENGINE = None
 
 
 def _engine():
+    """The recogniser, loaded on first use.
+
+    It is imported here rather than at module level so a machine without it can still read a drawing. The cost is
+    that a missing system library - onnxruntime links against libgomp - shows up as a failed run rather than a
+    missing dependency, so the error is named for what it is instead of being passed on as-is.
+    """
     global _ENGINE
     if _ENGINE is None:
-        from rapidocr_onnxruntime import RapidOCR
+        try:
+            from rapidocr_onnxruntime import RapidOCR
+        except ImportError as e:                              # pragma: no cover - depends on the installation
+            raise RuntimeError(f"OCR-motorn kunde inte laddas: {e}") from e
+        except OSError as e:                                  # pragma: no cover - a missing shared library
+            raise RuntimeError(f"OCR-motorn saknar ett systembibliotek: {e}") from e
         _ENGINE = RapidOCR()
     return _ENGINE
 

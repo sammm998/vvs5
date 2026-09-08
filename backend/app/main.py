@@ -576,6 +576,28 @@ def get_artifact(job_id: str, name: str, user: User = Depends(current_user), db:
     return FileResponse(p, media_type=media, filename=name)
 
 
+@app.get("/api/jobs/{job_id}/judge")
+def job_judge(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """What, out of everything the reading and its reviewers found, should actually change.
+
+    The reviewers state disagreements and stop; the judge decides. It implements only answers the drawing itself
+    puts forward, never touches a measurement the reading confirmed, writes anything it does implement as a
+    correction that can be undone, and says plainly where the evidence does not settle a case. It calls no model:
+    the same reading judged twice gives the same verdicts.
+    """
+    from vvs_engine.agent.model import DrawingModel
+    from vvs_engine.review.judge import judge as run_judge
+
+    j = _job(db, user, job_id)
+    if j.status != "COMPLETED":
+        raise HTTPException(409, "analysen är inte klar")
+    rd = _result_dir(j)
+    anchors = _load(rd, "pipe-code-anchors.json")["anchors"]
+    pipes = _load(rd, "physical-pipes.json")["physical_pipes"]
+    geom = _load(rd, "pipe-geometry-inventory.json")["primitives"]
+    return run_judge(DrawingModel(rd), proposals=_proposals(db, user, anchors, pipes, geom))
+
+
 class AgentAsk(BaseModel):
     question: str
     page: int | None = None

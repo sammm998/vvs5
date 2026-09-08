@@ -200,7 +200,7 @@ export default function AnalysisPage() {
     return (
       <div className="workspace">
         {viewtabs}
-        <Reasoning jobId={id!} result={result} />
+        <Reasoning jobId={id!} result={result} onZoom={(b) => { setView("analys"); setTimeout(() => viewer.current?.zoomTo(b), 60); }} />
       </div>
     );
   }

@@ -62,6 +62,7 @@ export const api = {
   film: (jobId: string) => req(`/api/jobs/${jobId}/film`),
   agent: (jobId: string, body: any) => req(`/api/jobs/${jobId}/agent`, { method: "POST", body: JSON.stringify(body) }),
   agentTools: () => req(`/api/agent/tools`),
+  judge: (jobId: string) => req(`/api/jobs/${jobId}/judge`),
   corrections: (drawingId: string) => req(`/api/drawings/${drawingId}/corrections`),
   addCorrection: (drawingId: string, body: any) =>
     req(`/api/drawings/${drawingId}/corrections`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),

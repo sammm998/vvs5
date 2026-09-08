@@ -13,8 +13,20 @@ type Frame = { stage: string; at: number; [k: string]: any };
 
 const SEV: Record<string, string> = { ERROR: "bad", WARN: "warn", INFO: "ok" };
 
-export default function Reasoning({ jobId, result }: { jobId: string; result: any }) {
+const BESLUT: Record<string, { text: string; cls: string }> = {
+  GENOMFOR: { text: "genomförs", cls: "warn" },
+  LAMNA: { text: "lämnas", cls: "ok" },
+  FRAGA_EN_MANNISKA: { text: "en människa avgör", cls: "warn" },
+};
+
+export default function Reasoning({ jobId, result, onZoom }: { jobId: string; result: any; onZoom?: (b: number[]) => void }) {
   const [frames, setFrames] = useState<Frame[]>([]);
+  const [dom, setDom] = useState<any>(null);
+  useEffect(() => {
+    let live = true;
+    api.judge(jobId).then((d: any) => { if (live) setDom(d); }).catch(() => { /* the verdict is a view */ });
+    return () => { live = false; };
+  }, [jobId]);
   useEffect(() => {
     let live = true;
     api.film(jobId).then((f: any) => { if (live && Array.isArray(f.frames)) setFrames(f.frames); }).catch(() => { /* the account is a view */ });
@@ -55,9 +67,11 @@ export default function Reasoning({ jobId, result }: { jobId: string; result: an
               <div key={name} className="rosteritem on">
                 <span className="rname">{AGENT_SV[key] ?? key}</span>
                 <span className="rwhat">
-                  granskare, ändrar aldrig mätningen{state ? ` · ${state === "unavailable" ? "kunde inte laddas" : state === "failed" ? "kunde inte köras" : state}` : ""}
+                  granskare, ändrar aldrig mätningen{state && state !== "ok" ? ` · ${state === "unavailable" ? "kunde inte laddas i den här installationen" : state === "failed" ? "försökte men kom inte igenom" : state}` : ""}
                 </span>
-                <span className={`badge ${state && state !== "ok" ? "warn" : "ok"}`}>kördes</span>
+                <span className={`badge ${state && state !== "ok" ? "warn" : "ok"}`}>
+                  {state && state !== "ok" ? "kördes inte" : "kördes"}
+                </span>
               </div>
             );
           })}
@@ -83,6 +97,29 @@ export default function Reasoning({ jobId, result }: { jobId: string; result: an
             <span className="badge ok">på begäran</span>
           </div>
         </div>
+
+        {dom && (
+          <>
+            <h3>Domarens utslag</h3>
+            <p className="muted">{dom.regel}</p>
+            <div className="verdicts">
+              {(dom.utslag ?? []).length === 0 && <p className="muted">Ingenting återstod att avgöra på det här bladet.</p>}
+              {(dom.utslag ?? []).map((v: any, i: number) => (
+                <div key={i} className={`verdict ${v.beslut}`} onClick={() => v.bbox && onZoom?.(v.bbox)}>
+                  <div className="vhead">
+                    <span className={`badge ${BESLUT[v.beslut]?.cls ?? "ok"}`}>{BESLUT[v.beslut]?.text ?? v.beslut}</span>
+                    <b>{v.gäller}</b>
+                    <span className="muted vtyp">{v.typ.replace(/_/g, " ")}</span>
+                  </div>
+                  <p>{v.skäl}</p>
+                  {v.kandidater && v.kandidater.length > 0 && (
+                    <p className="muted">Ritningens egna kandidater: {v.kandidater.join(", ")}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
         <h3>Så kom läsningen fram till svaret</h3>
         <p className="muted">

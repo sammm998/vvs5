@@ -9,6 +9,12 @@ RUN npm run build
 FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 WORKDIR /app
+# onnxruntime, which the OCR cross-check runs on, links against libgomp. The slim image does not carry it, and
+# because the recogniser is imported lazily the miss surfaced as "the check could not be run" on every sheet
+# rather than as a missing dependency at build time.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends libgomp1 \
+ && rm -rf /var/lib/apt/lists/*
 COPY backend/requirements.txt /app/backend/requirements.txt
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt
 COPY engine /app/engine
