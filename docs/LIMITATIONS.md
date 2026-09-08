@@ -80,6 +80,31 @@
 * **Very large pages can exceed the analysis timeout.** Five of 212 pages in the style corpus did not finish inside
   240 s. A page that times out is reported as TIMEOUT; it never produces a partial quantity.
 
+## Labels that never reach their pipe
+
+Counted per label rather than per metre, this is the largest remaining gap. A pipe designation reaches its pipe
+on 91 % of the reference drawing, 84 % of drawing D, and between 53 % and 92 % of the unseen styles. What is left
+falls into two kinds, and the reading now says which of them each label is:
+
+* **No line starts at the label at all.** Some are legend rows, which have no leader by design. The rest are
+  labels the draughtsman placed directly beside the pipe. The engine will not read those: identity comes from a
+  designation and its real leader, and "the nearest run" is the rule this whole system exists to avoid. They are
+  reported as `missing_leader`, with the reason.
+* **A line starts, and its end reaches nothing the reading accepted as pipe.** Where the end lands on a family
+  that was declined or never weighed, the declined-geometry layer shows which.
+
+### A rule that was measured and rejected
+
+A leader's arrowhead is drawn up to the **edge** of a pipe, but contact is measured to its centreline, so on a
+run drawn with a two-point pen the leader lands about one point away from what the reading indexes. The contact
+tolerance caps the pen allowance at half a point, which refuses those. Counting half of each pen instead - which
+is what the ink actually does - won attachments on two unseen styles (S1 77 % -> 92 %, S2 68 % -> 71 %) and cost
+the reference set 0.40 m: on drawing E it moved 0.34 m across a size boundary from `S1-P2-160` to `S1-P2-75`, and
+turned two cases the reading had correctly left unresolved into confident wrong ones. Restricting the widening to
+leaders that touch nothing at all did not separate the two: the same leader on drawing E is one of them. Total
+absolute error went 15.46 m -> 15.86 m, so the rule was reverted. It is written down here because the geometry
+behind it is right and the obstacle is the size-boundary walk, not the tolerance.
+
 ## Ink that never becomes pipe
 
 Most of the ink on a plan sheet is not pipe, and the reading has four different relationships to a drawn family:

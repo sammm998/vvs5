@@ -23,6 +23,17 @@ const ISSUE_LABELS: Record<string, string> = {
   unowned_geometry: "Oidentifierad geometri", unsupported_structural_family: "Strukturfamilj stöds ej",
   drawn_outline: "Ritat föremål, inte rör", flow_beyond_labels: "Identitet nådde längre än beteckningarna",
 };
+// why a label never got a line to follow, said the way a person reads a drawing
+const NO_LEADER_SV: Record<string, string> = {
+  no_line_starts_at_this_label_at_all: "ingen linje utgår från etiketten",
+  start_claimed_by_several_labels_at_once: "flera etiketter gör anspråk på samma linje",
+  start_already_used_by_another_label_leader: "linjen används redan av en annan etikett",
+  start_taken_by_a_label_with_a_better_claim: "en annan etikett hade starkare anspråk på linjen",
+  start_grew_into_nothing: "linjen ledde ingenstans",
+  line_from_the_label_is_shorter_than_the_label: "linjen är kortare än etiketten själv",
+  the_row_rule_never_leaves_the_label: "radens linjal lämnar aldrig etiketten",
+};
+
 const LAYER_LABELS: Record<Layer, string> = { pipes: "PhysicalPipes", ambiguous: "Tvetydigt", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar" };
 
 export default function AnalysisPage() {
@@ -266,6 +277,7 @@ export default function AnalysisPage() {
                   ["Samma ritade linje i mer än en rörfamilj", "possible_double_counted_geometry", rv.possible_double_counted_geometry || []],
                   ["Ritningsstilar som ingen etikett nådde", "unsupported_style_candidates", rv.unsupported_style_candidates || []],
                 ];
+                const lost = rv.pipe_labels_with_no_leader || [];
                 const n = groups.reduce((t, g) => t + g[2].length, 0);
                 return (
                   <div className="card">
@@ -291,7 +303,20 @@ export default function AnalysisPage() {
                         </div>
                       </div>
                     ))}
-                    {n === 0 && <p className="muted">Inget av de här fallen finns på den här sidan.</p>}
+                    {lost.length > 0 && (
+                      <div className="issue">
+                        <b>Rörbeteckningar utan ledare</b>{" "}
+                        <span className="muted">· {rv.n_pipe_labels_with_no_leader} st · en beteckning utan linje att följa
+                          får ingen identitet, och röret den pekar på blir omätt</span>
+                        <div className="muted" style={{ fontSize: 12 }}>
+                          {lost.slice(0, 6).map((x: any, i: number) => (
+                            <div key={i}>{x.text} — {(x.reasons || []).map((r: string) => NO_LEADER_SV[r] || r).join("; ")}</div>
+                          ))}
+                          {lost.length > 6 && <div>… och {rv.n_pipe_labels_with_no_leader - 6} till</div>}
+                        </div>
+                      </div>
+                    )}
+                    {n === 0 && lost.length === 0 && <p className="muted">Inget av de här fallen finns på den här sidan.</p>}
                   </div>
                 );
               })()}

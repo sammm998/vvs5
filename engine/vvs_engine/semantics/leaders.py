@@ -208,6 +208,10 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
                         report.setdefault(t[4], []).append("start_claimed_by_several_labels_at_once")
                 continue    # still ambiguous: no leader from this segment
             top = out
+        if report is not None:
+            for t in lst:
+                if t[4] != top[0][4]:
+                    report.setdefault(t[4], []).append("start_taken_by_a_label_with_a_better_claim")
         chosen.append(top[0])
     # 2. grow chains, strongest starts first
     for _derived, _says, _d, prio, bid, b, f, ep, ptype, srow in sorted(chosen, key=lambda t: (t[0], t[1], t[2], t[3], t[4], t[6].pid, t[6].seg_index)):

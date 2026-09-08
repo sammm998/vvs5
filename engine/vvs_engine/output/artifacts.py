@@ -256,9 +256,13 @@ def unresolved_issues(pa) -> list[dict]:
         elif d.dn is None and _could_be_a_pipe_label(d):
             issues.append({"kind": "missing_dn", "text": d.text, "bbox": list(d.bbox), "id": d.did})
     with_leader = {a.designation_id for a in pa.anchors}
+    # why a label has no leader is the difference between "the draughtsman drew none" and "the reading lost it",
+    # and only one of those is the reading's to fix. It is the commonest way a pipe the sheet names goes unmarked.
+    no_leader = (pa.contact_stats or {}).get("labels_without_a_leader") or {}
     for d in pa.designations:
         if d.did not in with_leader and _could_be_a_pipe_label(d):
-            issues.append({"kind": "missing_leader", "text": d.text, "bbox": list(d.bbox), "id": d.did})
+            issues.append({"kind": "missing_leader", "text": d.text, "bbox": list(d.bbox), "id": d.did,
+                           "reason": ", ".join(no_leader.get(d.block_id) or []) or None})
     by_did = {d.did: d for d in pa.designations}
     for a in pa.anchors:
         d = by_did.get(a.designation_id)

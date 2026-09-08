@@ -425,6 +425,20 @@ def _further_questions(pa, confirmed: float = 0.0, ambiguous: float = 0.0) -> di
         {"family": f, "reason": "chain_like_geometry_no_label_ever_reached"}
         for f in sorted(set(votes) - accepted) if votes.get(f, 0) < 5 and ticks.get(f, 0) == 0][:20]
 
+    # 12b. the labels the sheet writes that never got a line to follow. A pipe designation with no leader is the
+    # commonest way a named pipe goes unmarked, and the reason separates what the reading can fix from what the
+    # drawing simply does not contain.
+    no_leader = (pa.contact_stats or {}).get("labels_without_a_leader") or {}
+    with_leader = {a.designation_id for a in pa.anchors}
+    lost = []
+    for d in pa.designations:
+        if d.did in with_leader or not lg.names_a_pipe(d) or (d.text or "").upper() in lg.components():
+            continue
+        lost.append({"text": (d.text or "")[:40], "at": [round(d.bbox[0], 1), round(d.bbox[1], 1)],
+                     "reasons": no_leader.get(d.block_id) or ["no_line_starts_at_this_label_at_all"]})
+    out["pipe_labels_with_no_leader"] = lost[:40]
+    out["n_pipe_labels_with_no_leader"] = len(lost)
+
     # 13. what the reading looked at and did not take. Drawn ink that never becomes pipe leaves the reading
     # silently, and a reader looking at un-measured lines cannot tell a declined wall from a missed run. The
     # families a leader end actually touched are the ones worth a second look, so they are named first.
