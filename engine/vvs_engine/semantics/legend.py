@@ -44,15 +44,21 @@ def is_code_token(tok: str) -> bool:
 def code_matches(label: str, code: str) -> bool:
     """Whether a drawn label is this legend code.
 
-    A legend writes the varying part of a component tag as a run of placeholder letters ("ALxxx"), so those
-    positions match any digit; everything else must agree."""
+    A legend writes the varying part of a component tag as a run of placeholder letters ("ALxxx", "Bxxx"), so
+    those positions stand for the number the drawing actually writes - and, on a real sheet, for the letters an
+    office hangs off it. `Bxxx GOLVBRUNN` is written B1 and B10, but also B12ML, B12KL and B21M, and reading the
+    placeholder as digits alone left every one of those unrecognised: the drawing named a floor drain and the
+    reading had it down as something that might be a pipe.
+
+    The letters are a suffix, never a prefix and never the whole varying part: everything outside the placeholder
+    run must still agree character for character, so this widens what a tag matches without letting it reach a
+    designation. `S3-R8-110` cannot match `Bxxx` however the placeholder is read."""
     L, C = label.upper(), code.upper()
     if L == C:
         return True
     if "X" not in C[1:] or len(L) < 2:
         return False
-    # a run of placeholders stands for the number, however many digits the drawing actually writes
-    pat = re.sub(r"(?<!\\)X{2,}", r"\\d+", re.escape(C))
+    pat = re.sub(r"(?<!\\)X{2,}", r"\\d+[A-ZÅÄÖ]{0,3}", re.escape(C))
     return re.fullmatch(pat, L) is not None
 
 

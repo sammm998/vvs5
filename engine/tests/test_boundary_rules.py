@@ -368,6 +368,28 @@ def test_legend_is_read_from_its_shape_and_roles_from_how_the_drawing_uses_it():
     assert is_code_token("KV01") and not is_code_token("TAPPVATTENSYSTEM")
 
 
+def test_a_legend_placeholder_covers_the_suffix_an_office_writes():
+    """`Bxxx GOLVBRUNN` is written B1 and B10 - and B12ML, B12KL, B221BL, because offices hang letters off the
+    number. Reading the placeholder as digits alone left the drawing naming a floor drain and the reading having
+    it down as something that might be a pipe."""
+    from vvs_engine.semantics.legend import code_matches
+
+    for tag in ("B1", "B10", "B12ML", "B12KL", "B21M", "B221BL", "B241BL"):
+        assert code_matches(tag, "BXXX"), tag
+
+
+def test_a_placeholder_still_cannot_reach_a_designation():
+    """The widening is a suffix on the varying part, not a licence: everything outside the placeholder run must
+    still agree character for character, or a floor drain's code starts swallowing pipes."""
+    from vvs_engine.semantics.legend import code_matches
+
+    for not_a_tag in ("S3-R8-110", "KV1-X31-16", "AB12", "B", "BX12", "B12MLXX", "12B"):
+        assert not code_matches(not_a_tag, "BXXX"), not_a_tag
+    # and a placeholder is not a wildcard over the letters that identify the family
+    assert not code_matches("TS1", "BXXX")
+    assert code_matches("TS12A", "TSXXX") and not code_matches("TS12A", "BLXXX")
+
+
 def test_a_label_written_on_a_line_that_runs_to_the_pipe_speaks_for_its_own_row(tmp_path):
     """Two labels stacked close enough to read as one block, each written on a line that carries on to its own
     pipe. The line names the row it runs from, so each pipe gets the label written above it, not both."""
