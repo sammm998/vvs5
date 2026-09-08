@@ -34,7 +34,16 @@ const NO_LEADER_SV: Record<string, string> = {
   the_row_rule_never_leaves_the_label: "radens linjal lämnar aldrig etiketten",
 };
 
-const LAYER_LABELS: Record<Layer, string> = { pipes: "PhysicalPipes", ambiguous: "Tvetydigt", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar" };
+const LAYER_LABELS: Record<Layer, string> = { pipes: "Mätta rör", ambiguous: "Tvetydigt", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar" };
+const LAYER_HINTS: Record<Layer, string> = {
+  pipes: "Sträckor som fått en identitet och en längd, en färg per beteckning",
+  ambiguous: "Ritad linje som kunde tillhöra mer än en beteckning — mäts inte",
+  unowned: "Ritad linje i en accepterad rörfamilj som ingen beteckning nådde",
+  declined: "Ritad linje läsningen tittade på och inte tog som rör, med skälet",
+  designations: "Alla lästa beteckningar på bladet",
+  leaders: "Hänvisningslinjerna som ritningen drar från etikett till rör",
+  anchors: "Där en beteckning faktiskt möter sitt rör",
+};
 
 export default function AnalysisPage() {
   const { id } = useParams();
@@ -78,7 +87,10 @@ export default function AnalysisPage() {
   ].filter(Boolean).join("&");
   const fh = floorHeight.trim() ? Number(floorHeight.replace(",", ".")) : NaN;
   const floorH = Number.isFinite(fh) && fh > 0 ? fh : null;
-  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, declined: false, designations: true, leaders: true, anchors: true });
+  // The question a reader opens this page with is "did it get the pipes?", and that is a question about the
+  // drawing with the reading on top of it - not about leaders, label boxes and attachment marks, which cover the
+  // sheet so thickly that the runs underneath cannot be seen at all. They are diagnostics, and they start off.
+  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, declined: false, designations: false, leaders: false, anchors: false });
   // which bortvald family the reader is pointing at, so the sheet can show that ink and not all of it at once
   const [selDeclined, setSelDeclined] = useState<string | null>(null);
   const [artifacts, setArtifacts] = useState<any[]>([]);
@@ -173,7 +185,9 @@ export default function AnalysisPage() {
             setPage(Number(e.target.value)); setSelPipe(null); setWhy(null);
           }}>{Array.from({ length: nPages }, (_, i) => <option key={i} value={i}>Sida {i + 1}</option>)}</select>}
           {(Object.keys(LAYER_LABELS) as Layer[]).map((l) => (
-            <label key={l} style={{ fontSize: 12 }}><input type="checkbox" checked={layers[l]} onChange={(e) => setLayers({ ...layers, [l]: e.target.checked })} /> {LAYER_LABELS[l]}</label>
+            <label key={l} style={{ fontSize: 12 }} title={LAYER_HINTS[l]}>
+              <input type="checkbox" checked={layers[l]} onChange={(e) => setLayers({ ...layers, [l]: e.target.checked })} /> {LAYER_LABELS[l]}
+            </label>
           ))}
         </div>
         <PdfViewer ref={viewer} data={pdf} page={page} pipes={pipesOnPage} ambiguous={result.ambiguous_geometry} unowned={result.unowned_geometry}
