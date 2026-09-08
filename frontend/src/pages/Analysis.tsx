@@ -380,8 +380,11 @@ export default function AnalysisPage() {
                 <h3>Andra åsikt: titta på ritningen</h3>
                 <p className="muted" style={{ marginTop: 0 }}>
                   Läsningen är gjord ur vektorn. Det den inte kan göra är att märka att en hel rörfamilj aldrig
-                  togs med, eller att överlägget följer en vägg. Det ser man genom att titta. Iakttagelserna här
-                  är sådant att gå och kontrollera i vektordatan — de blir aldrig meter.
+                  togs med, eller att överlägget följer en vägg. Det ser man genom att titta. Blicken får peka ut
+                  <b> en ruta</b> ur ett rutnät som läsningen ritat — aldrig en koordinat den hittar på — och sedan
+                  läses den rutan ur vektorerna: vilken familj bläcket ligger i, vad läsningen gjorde med det, och
+                  varför det inte finns meter där. Blicken säger var. Vektorerna säger varför. Bara det andra är
+                  ett svar, och ingetdera blir någonsin en meter.
                 </p>
                 <button className="secondary" disabled={visionBusy} onClick={async () => {
                   setVisionBusy(true);
@@ -393,12 +396,32 @@ export default function AnalysisPage() {
                 {vision && !vision.error && (
                   <>
                     <p className="muted">{vision.asked ? `${vision.n_findings} iakttagelser` : vision.note}</p>
-                    {(vision.findings || []).map((f: any, i: number) => (
-                      <div key={i} className="issue">
-                        <b>{VISION_LABELS[f.kind] || f.kind}</b>
-                        <div className="muted">{f.detail}{f.where ? ` — ${f.where}` : ""}</div>
-                      </div>
-                    ))}
+                    {(vision.findings || []).map((f: any, i: number) => {
+                      const a = f.vector_account;
+                      return (
+                        <div key={i} className="issue" style={{ cursor: f.bbox ? "pointer" : undefined }}
+                          onClick={() => f.bbox && viewer.current?.zoomTo(f.bbox)}>
+                          <b>{VISION_LABELS[f.kind] || f.kind}</b>
+                          {f.tile && <span className="muted"> · ruta {f.tile}</span>}
+                          <div className="muted">{f.detail}{f.where && !f.tile ? ` — ${f.where}` : ""}</div>
+                          {a && !a.error && (
+                            <div style={{ marginTop: 6, fontSize: 12 }}>
+                              <div><b>Vad vektorerna säger:</b> {a.verdict}</div>
+                              <div className="muted" style={{ marginTop: 2 }}>
+                                {a.measured_runs_drawn_m > 0 ? `${a.measured_runs_drawn_m} m mätt rör i rutan · ` : ""}
+                                {a.n_designations} beteckningar · {a.n_leaders_ending_here} ledare slutar där
+                                {a.inside_a_wall ? " · rutan ligger i en vägg" : ""}
+                              </div>
+                              {(a.families || []).slice(0, 3).map((fam: any, k: number) => (
+                                <div key={k} className="muted">{fam.length_m} m — {fam.role}
+                                  {fam.why ? ` (${fam.why})` : ""} · {String(fam.family).slice(-30)}</div>
+                              ))}
+                            </div>
+                          )}
+                          {a?.error && <div className="muted" style={{ fontSize: 12 }}>{a.error}</div>}
+                        </div>
+                      );
+                    })}
                   </>
                 )}
               </div>

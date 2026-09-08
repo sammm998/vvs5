@@ -153,6 +153,14 @@ discriminator that was not there.
 rather than automatic, which reports what the vector reading seems to have missed. It cannot write: there is no
 `apply()`, a finding carries no number, and no finding connects to a quantity.
 
+It does not stop at the observation. Both pictures carry a named grid, and a finding must name one of those tiles;
+a name that is not on the list is dropped. Every named tile is then read out of the vectors - which stroke family
+the ink belongs to, what the reading made of it, which labels sit there and whether their leaders reached anything
+- and the finding carries that account and a sentence naming the reason there are no metres there. The eye says
+where to look; the vectors say why. On the reference drawing that turns "the pipes in the section detail have no
+overlay" into "197 m on layer `K-------EDN`, and no designation on the sheet points at it", and it catches the
+eye's own false alarms: one finding landed on a tile holding 45 m of measured pipe.
+
 ### Resolving what the vector reader could not name
 
 Where a glyph's shape matches no reference letter the row keeps a '?', and everything built on it - the

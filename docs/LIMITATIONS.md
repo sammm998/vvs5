@@ -141,7 +141,19 @@ The measurement path is vector geometry and nothing else. Two model-assisted pas
   geometry that leader actually touched. Without a transport nothing is asked, which is the default: the engine is
   deterministic and needs no network.
 * **A look at the rendered page** (`vvs_engine/review/vision.py`) may report what the vector reading seems to have
-  missed. It cannot do anything else: there is no `apply()`, a finding carries no number, and nothing connects a
-  finding to a quantity. On its first run against the reference drawing it correctly spotted unread component tags
-  and also reported two systems as being in the designation list that are not in it. A model that can see is still
-  a model that can be wrong, which is why it cannot cost a metre.
+  missed, and say **where** by naming one of the tiles drawn on the picture it was shown - a rectangle the caller
+  drew, never a coordinate the model produced, which is the same fence the second reader works behind. A tile name
+  that is not on the list is dropped rather than interpreted.
+
+  What the tile actually contains is then read out of the vectors alone (`vvs_engine/review/region.py`): which
+  stroke family the ink belongs to, what the reading made of it (measured, ambiguous, unowned, declined, never
+  weighed, annotation, fill), which labels sit there and whether their leaders reached anything, and one sentence
+  naming the reason there are no metres. **The eye says where. The vectors say why.** Only the second of those is
+  ever an answer, and neither can move a metre: there is no `apply()`, and the account is computed from the
+  reading it is explaining.
+
+  Measured on the reference drawing, five findings: one located to a tile that holds 45 m of measured pipe, where
+  the vectors contradict the eye outright; two to tiles whose ink is all `NO_LEADER_EVER_CAME_NEAR_IT` - the model
+  saw building outline and un-overlaid section detail and was right about both, for the reason the vectors give;
+  one to the legend, where every stroke is annotation. A model that can see is still a model that can be wrong,
+  which is why the sentence beside its finding is never its own.
