@@ -31,16 +31,27 @@ class Finding:
                 "detail": self.detail, "bbox": self.bbox}
 
 
-def run_review(pa, ocr: bool = True) -> dict[str, Any]:
+OCR_REVIEW_BUDGET_S = 30.0   # a sanity check may not cost more than the reading it is checking
+# The cross-check asks whether OCR sees a designation-shaped word where the vector reader has nothing. That is a
+# question about presence, not about shape, and half the resolution answers it: measured on the reference sheet,
+# 150 dpi reads 685 words to 300 dpi's 863 at the same confidence, in 12 s instead of 32.
+OCR_REVIEW_DPI = (150, 100)
+
+
+def run_review(pa, ocr: bool = True, progress=None) -> dict[str, Any]:
     """Run every agent over a finished PageAnalysis. `ocr` enables the optional cross-check agent."""
     findings: list[Finding] = []
     agents = [_scale_agent, _coverage_agent, _plausibility_agent, _topology_agent, _designation_agent]
     ran = []
     for fn in agents:
+        if progress:
+            progress(fn.__name__.strip("_"))
         findings.extend(fn(pa))
         ran.append(fn.__name__.strip("_"))
     if ocr:
-        f, state = _ocr_crosscheck_agent(pa)
+        if progress:
+            progress("ocr")
+        f, state = _ocr_crosscheck_agent(pa, progress=progress)
         findings.extend(f)
         ran.append(f"ocr_crosscheck({state})")
     order = {"ERROR": 0, "WARN": 1, "INFO": 2}
@@ -167,7 +178,7 @@ def _designation_agent(pa) -> list[Finding]:
     return out
 
 
-def _ocr_crosscheck_agent(pa) -> tuple[list[Finding], str]:
+def _ocr_crosscheck_agent(pa, progress=None) -> tuple[list[Finding], str]:
     """Read the rendered page with OCR and compare its designation-like words with the vector reading.
 
     The vector reading is authoritative - it reads the drawing's own geometry. OCR is a second pair of eyes over
@@ -183,12 +194,16 @@ def _ocr_crosscheck_agent(pa) -> tuple[list[Finding], str]:
     # small container it is what runs out of memory first. Rather than reporting a blank failure, drop the
     # resolution and read the page again: a coarser second pair of eyes still catches a label sitting where the
     # vector reading has nothing, and the finding says which resolution it managed.
+    # This is a second pair of eyes over a reading that is already finished, so it is bounded: it may not cost
+    # more than the reading it checks. Rendering a whole A1 at 300 dpi and recognising every tile took minutes on
+    # a small machine, and a check nobody can wait for is a check nobody runs.
     words = None
     dpi_used = 0
     first: Exception | None = None
-    for dpi in (300, 150):
+    for dpi in OCR_REVIEW_DPI:
         try:
-            words = ocr_words(pa.page, dpi=dpi)
+            words = ocr_words(pa.page, dpi=dpi, budget_s=OCR_REVIEW_BUDGET_S,
+                              progress=(lambda t: progress(f"ocr {t}")) if progress else None)
             dpi_used = dpi
             break
         except Exception as e:                                # pragma: no cover - runtime failure
@@ -221,7 +236,7 @@ def _ocr_crosscheck_agent(pa) -> tuple[list[Finding], str]:
         if any(_overlaps(box, b) for b in read_boxes):
             continue          # the vector reader has text here: a reading difference, not a missed label
         missed.append((t, box, conf))
-    coarse = " vid nedsatt upplösning, sedan full upplösning inte gick att köra" if dpi_used < 300 else ""
+    coarse = " vid nedsatt upplösning, sedan den vanliga inte gick att köra" if dpi_used < OCR_REVIEW_DPI[0] else ""
     out = [Finding("ocr_crosscheck", "INFO", "ocr_ran",
                    f"OCR läste {len(words)} ord över samma sida som oberoende jämförelse{coarse}; "
                    f"{len(pa.designations)} beteckningar lästes ur vektorkoden.",

@@ -62,7 +62,8 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
             progress("REVIEWING")
         t0 = time.perf_counter()
         from .review import run_review
-        rev = run_review(analyses[0], ocr=review_ocr)
+        rev = run_review(analyses[0], ocr=review_ocr,
+                         progress=(lambda t: progress(f"REVIEWING {t}")) if progress else None)
         timings["review_ms"] = (time.perf_counter() - t0) * 1000
     # A second reader is asked only about cases the geometry already declared open, and only among candidates the
     # drawing itself offers - but it is still a machine outside this one, so a reading that consulted it is not
