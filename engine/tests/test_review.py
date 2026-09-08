@@ -121,3 +121,35 @@ def test_a_label_whose_metres_are_on_another_row_says_so(synthetic_pdf):
                 "uncertain_designation"):
             assert it["severity"] == "advisory"
             assert "upprepar" in (it.get("note") or "")
+
+
+def test_the_ocr_assist_reads_only_where_a_character_is_unreadable(synthetic_pdf):
+    """A pass that exists to name a handful of glyphs may not render a whole A1 to do it.
+
+    On the reference sheet seventeen rows carry an unreadable character, and reading only the parts of the page
+    that hold them repairs the same characters in a third of the time. In a small container the difference is
+    between a reading that finishes and one that looks hung.
+    """
+    from vvs_engine.pdf.extract import extract_document
+    from vvs_engine.review import ocr_check
+    from vvs_engine.text.ocr_assist import resolve_unknown_glyphs
+    from vvs_engine.text.vector_text import vector_text_rows
+
+    pg = extract_document(synthetic_pdf).pages[0]
+    rows = vector_text_rows(pg, {}).rows
+    seen: dict = {}
+
+    def spy(page, dpi=300, progress=None, regions=None, budget_s=None):
+        seen["regions"], seen["budget"] = regions, budget_s
+        return []
+
+    real, ocr_check.ocr_words = ocr_check.ocr_words, spy
+    try:
+        rep = resolve_unknown_glyphs(pg, rows, budget_s=12.0)
+    finally:
+        ocr_check.ocr_words = real
+    if rep["state"] == "nothing_to_resolve":
+        return          # this sheet has no unreadable character, which is its own kind of pass
+    assert seen["budget"] == 12.0, "assistenten måste ha en tidsbudget"
+    assert seen["regions"], "assistenten läste hela bladet i stället för de rader som behövde det"
+    assert len(seen["regions"]) == rep["rows_with_unknown"]

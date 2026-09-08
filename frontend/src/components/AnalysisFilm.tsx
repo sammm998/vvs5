@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "../api";
-import { STAGE_LABELS } from "./Status";
+import { STAGE_LABELS, stageText } from "./Status";
 import { AGENTS, frameSays } from "../agents";
 
 type Frame = { stage: string; at: number; [k: string]: any };
@@ -15,7 +15,9 @@ function hue(key: string) {
   return h;
 }
 
-export default function AnalysisFilm({ jobId, stage, progress }: { jobId: string; stage: string; progress: number }) {
+export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { jobId: string; stage: string; progress: number }) {
+  // a stage may carry a detail after its name; the film compares against the name
+  const stage = (rawStage || "").split(" ")[0];
   const [frames, setFrames] = useState<Frame[]>([]);
   const [tick, setTick] = useState(0);
   // when this view first saw each stage - a frame that was already there when the page opened is not animated in
@@ -91,7 +93,7 @@ export default function AnalysisFilm({ jobId, stage, progress }: { jobId: string
   const nextUp = AGENTS.find((a) => !spoken.has(a.stage));
   // what the reading is doing right now, said in the words of whoever is doing it
   const nowWho = AGENTS.find((a) => a.stage === stage)?.who ?? nextUp?.who ?? null;
-  const nowAsks = AGENTS.find((a) => a.stage === stage)?.asks ?? nextUp?.asks ?? STAGE_LABELS[stage] ?? null;
+  const nowAsks = AGENTS.find((a) => a.stage === stage)?.asks ?? nextUp?.asks ?? stageText(rawStage) ?? null;
 
   return (
     <div className="film">

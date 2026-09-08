@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api, fileSize } from "../api";
-import { StatusBadge, STAGE_LABELS } from "../components/Status";
+import { StatusBadge, stageText } from "../components/Status";
 
 export default function DrawingPage() {
   const { id } = useParams();
@@ -35,7 +35,7 @@ export default function DrawingPage() {
               <Link className="ttl" to={`/jobs/${j.id}`} style={{ fontSize: 19 }}>
                 {new Date(j.created_at).toLocaleString("sv-SE")}
               </Link>
-              <div className="sub">{STAGE_LABELS[j.stage] || j.stage}</div>
+              <div className="sub">{stageText(j.stage) || j.stage}</div>
               {j.status !== "COMPLETED" && j.status !== "FAILED" && (
                 <div className="progress" style={{ maxWidth: 280, marginTop: 10 }}>
                   <div style={{ width: `${Math.round(j.progress * 100)}%` }} />

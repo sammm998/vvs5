@@ -10,6 +10,7 @@ to one image leaves 6 pt CAD text too small for any recogniser. Lines found twic
 from __future__ import annotations
 
 import math
+import time
 
 import numpy as np
 
@@ -37,8 +38,15 @@ def _engine():
     return _ENGINE
 
 
-def ocr_words(page, dpi: int = 300, progress=None) -> list[tuple[str, list[float], float]]:
-    """Read the page with OCR. Returns (word, bbox in page points, confidence) in the page's display space."""
+def ocr_words(page, dpi: int = 300, progress=None, regions=None,
+              budget_s: float | None = None) -> list[tuple[str, list[float], float]]:
+    """Read the page with OCR. Returns (word, bbox in page points, confidence) in the page's display space.
+
+    `regions` limits the work to the parts of the sheet that are worth reading - a pass that exists to name three
+    unreadable characters has no business rendering a whole A1 at 300 dpi. `budget_s` bounds it in time: this is
+    an assist, never the measurement, so when the budget runs out it stops and says how far it got rather than
+    holding a reading that is otherwise finished.
+    """
     import pymupdf
     src = getattr(page, "source_path", None)
     if not src:
@@ -54,28 +62,36 @@ def ocr_words(page, dpi: int = 300, progress=None) -> list[tuple[str, list[float
         engine = _engine()
         inv = ~p.rotation_matrix
         out: list[tuple[str, list[float], float]] = []
+        started = time.monotonic()
+        # the tiles worth reading: the whole sheet, or only the ones a region touches
+        tiles: list[tuple[float, float]] = []
         y = 0.0
         while y < disp_h:
             x = 0.0
             while x < disp_w:
-                clip_disp = pymupdf.Rect(x, y, min(x + tile_pt, disp_w), min(y + tile_pt, disp_h))
-                clip = pymupdf.Rect(clip_disp) * inv
-                clip.normalize()
-                pix = p.get_pixmap(matrix=pymupdf.Matrix(s, s).prerotate(rot), clip=clip, colorspace=pymupdf.csRGB)
-                if pix.width < 8 or pix.height < 8:
-                    x += tile_pt - ov_pt
-                    continue
-                img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, 3)
-                res, _ = engine(img)
-                for box, text, conf in (res or []):
-                    xs = [clip_disp.x0 + float(q[0]) / s for q in box]
-                    ys = [clip_disp.y0 + float(q[1]) / s for q in box]
-                    for w in str(text).split():
-                        out.append((w, [min(xs), min(ys), max(xs), max(ys)], float(conf)))
+                if regions is None or any(not (x + tile_pt < r[0] or x > r[2] or y + tile_pt < r[1] or y > r[3])
+                                          for r in regions):
+                    tiles.append((x, y))
                 x += tile_pt - ov_pt
             y += tile_pt - ov_pt
+        for i, (x, y) in enumerate(tiles):
+            if budget_s is not None and time.monotonic() - started > budget_s:
+                break
+            clip_disp = pymupdf.Rect(x, y, min(x + tile_pt, disp_w), min(y + tile_pt, disp_h))
+            clip = pymupdf.Rect(clip_disp) * inv
+            clip.normalize()
+            pix = p.get_pixmap(matrix=pymupdf.Matrix(s, s).prerotate(rot), clip=clip, colorspace=pymupdf.csRGB)
+            if pix.width < 8 or pix.height < 8:
+                continue
+            img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, 3)
+            res, _ = engine(img)
+            for box, text, conf in (res or []):
+                xs = [clip_disp.x0 + float(q[0]) / s for q in box]
+                ys = [clip_disp.y0 + float(q[1]) / s for q in box]
+                for w in str(text).split():
+                    out.append((w, [min(xs), min(ys), max(xs), max(ys)], float(conf)))
             if progress:
-                progress(f"OCR {min(100, int(100 * y / max(disp_h, 1)))}%")
+                progress(f"OCR {i + 1}/{len(tiles)}")
         return _dedupe(out)
     finally:
         doc.close()

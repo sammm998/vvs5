@@ -43,12 +43,17 @@ def _words_of(row):
                  max(g.bbox[2] for g in w), max(g.bbox[3] for g in w))) for w in out]
 
 
-def resolve_unknown_glyphs(page, rows, min_conf: float = 0.55) -> dict[str, Any]:
+def resolve_unknown_glyphs(page, rows, min_conf: float = 0.55, budget_s: float = 90.0,
+                           progress=None) -> dict[str, Any]:
     """Fill '?' glyphs from an OCR pass over the same page. Returns a report; rows are edited in place.
 
     Matching is per word, not per row: OCR splits a line into words of its own, so only a word that lines up
     character for character with a vector-read word - agreeing everywhere both readings are sure - may fill in
     the unknown positions of that word.
+
+    The pass reads only the parts of the sheet that carry an unreadable character, and stops when its budget runs
+    out. It exists to name a handful of glyphs; rendering a whole A1 at 300 dpi for that made a finished reading
+    look like a hung one, which is a poor trade for a question mark.
     """
     targets = [r for r in rows if any(g.char == "?" for g in r.glyphs)]
     report: dict[str, Any] = {"rows_with_unknown": len(targets),
@@ -57,14 +62,20 @@ def resolve_unknown_glyphs(page, rows, min_conf: float = 0.55) -> dict[str, Any]
     if not targets:
         report["state"] = "nothing_to_resolve"
         return report
+    # only where a question mark actually is, with room around it for the word it belongs to
+    pad = 24.0
+    regions = [(min(g.bbox[0] for g in r.glyphs) - pad, min(g.bbox[1] for g in r.glyphs) - pad,
+                max(g.bbox[2] for g in r.glyphs) + pad, max(g.bbox[3] for g in r.glyphs) + pad)
+               for r in targets if r.glyphs]
     try:
         from ..review.ocr_check import ocr_words
-        words = ocr_words(page)
+        words = ocr_words(page, regions=regions, budget_s=budget_s, progress=progress)
     except Exception as e:                                   # pragma: no cover - optional dependency / runtime
         report["state"] = "unavailable"
         report["error"] = str(e)[:160]
         return report
     report["state"] = "ran"
+    report["regions_read"] = len(regions)
     report["ocr_words"] = len(words)
     good = [(w, b, c) for (w, b, c) in words if c >= min_conf]
     for row in targets:

@@ -8,7 +8,7 @@ import Corrections, { Draft } from "../components/Corrections";
 import LegendView from "../components/LegendView";
 import Reasoning from "../components/Reasoning";
 import AgentChat from "../components/AgentChat";
-import { StatusBadge, STAGE_LABELS } from "../components/Status";
+import { StatusBadge, stageText } from "../components/Status";
 
 const VISION_LABELS: Record<string, string> = {
   missed_labels: "Beteckning som syns men inte lästes",
@@ -161,7 +161,7 @@ export default function AnalysisPage() {
         <div className="head">
           <div>
             <h1>Läser ritningen</h1>
-            <p className="lead">{STAGE_LABELS[job.stage] || job.stage}</p>
+            <p className="lead">{stageText(job.stage) || job.stage}</p>
           </div>
           <StatusBadge job={job} />
         </div>

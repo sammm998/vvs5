@@ -40,6 +40,7 @@ PEER_SHARE = 0.15          # a drawn family carrying this much of the best famil
 PEER_LABELS_MIN = 2        # and two of the sheet's own labels pointing at it is the least that can say so
 # and with no layer name to vouch for it, this share of the sheet's own pipe labels must have reached it
 LABELS_MUST_REACH = 0.15
+OCR_ASSIST_BUDGET_S = 90.0  # naming a handful of glyphs may not hold a reading that is otherwise finished
 LABELS_MIN = 20
 DECLINED_SEGMENT_BUDGET = 8000        # strokes of declined families a reading carries, so they can be looked at
 DECLINED_SEGMENTS_PER_FAMILY = 3000   # and no single family may spend the whole budget
@@ -365,7 +366,10 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         if progress:
             progress("RESOLVING_UNREADABLE_TEXT")
         from .text.ocr_assist import resolve_unknown_glyphs
-        ocr_report = resolve_unknown_glyphs(page, vtext.rows)
+        # bounded, and it says where it is: an assist that holds a finished reading is worse than no assist
+        ocr_report = resolve_unknown_glyphs(page, vtext.rows, budget_s=OCR_ASSIST_BUDGET_S,
+                                            progress=(lambda t: progress(f"RESOLVING_UNREADABLE_TEXT {t}"))
+                                            if progress else None)
         t0 = _t(timings, "ocr_assist_ms", t0)
     if progress:
         progress("READING_DESIGNATIONS")

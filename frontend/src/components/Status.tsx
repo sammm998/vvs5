@@ -7,11 +7,21 @@ export const STAGE_LABELS: Record<string, string> = {
 
 const STATUS_LABELS: Record<string, string> = { COMPLETED: "Klar", FAILED: "Misslyckades", RUNNING: "Kör", QUEUED: "Köad" };
 
+/* A stage may carry a detail after its name - "RESOLVING_UNREADABLE_TEXT OCR 3/7" - so a slow step can say where
+   it is instead of looking stuck. The name is the first word; the rest is shown as it comes. */
+export function stageText(stage: string): string | null {
+  if (!stage) return null;
+  const [name, ...rest] = stage.split(" ");
+  const label = STAGE_LABELS[name];
+  if (!label) return null;
+  return rest.length ? `${label} · ${rest.join(" ")}` : label;
+}
+
 export function StatusBadge({ job }: { job: any }) {
   const cls = job.status === "COMPLETED" ? "ok" : job.status === "FAILED" ? "bad" : "warn";
   // a finished job is described by its outcome, not by the stage it happened to stop on; and a stage we have
   // no word for still has a status we do
   const done = job.status === "COMPLETED" || job.status === "FAILED";
-  const text = (done ? STATUS_LABELS[job.status] : STAGE_LABELS[job.stage]) || STATUS_LABELS[job.status] || "Okänt läge";
+  const text = (done ? STATUS_LABELS[job.status] : stageText(job.stage)) || STATUS_LABELS[job.status] || "Okänt läge";
   return <span className={`badge ${cls}`}>{text}</span>;
 }
