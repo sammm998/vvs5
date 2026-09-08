@@ -131,6 +131,34 @@ Two limits are worth stating plainly:
   is not one however much of the sheet it covers. Their number and length are reported (2 199.75 m on the
   reference drawing) so the sheet adds up, and they are never offered as pipe candidates.
 
+## Where an identity comes from
+
+Three sources, and only three - what an identity *is*, and where it is allowed to go:
+
+1. **the designation the sheet writes** - system, material, dimension, read from the drawing's own glyphs;
+2. **the real leader** from that designation to a piece of drawn geometry;
+3. **the graph** that geometry forms - chains, junctions, collinear arms.
+
+Neither model-assisted pass is a fourth source, and the difference is worth stating precisely because the whole
+takeoff rests on it.
+
+The **second reader** is a tie-breaker between the three, never a source. It is asked only about an anchor the
+geometry itself already declared AMBIGUOUS, and the only admissible answers are the families that leader's own
+end actually landed on. `verify()` refuses anything else character for character; an answer naming two candidates
+stays ambiguous; and `apply_answers` checks again at the point of use that the chosen family is one the anchor
+really touched, refusing it at the door otherwise. All it can do is narrow an existing contact set from several
+to one. It cannot introduce a designation, a DN, a coordinate, a leader or a metre - there is no code path from
+it to any of those. It does not answer "what is this pipe"; the label already said that. It answers "which of the
+drawn families did this label's leader mean", among candidates the three sources produced.
+
+The **look at the page** cannot do even that: no `apply()`, no number in a finding, and the only thing it may
+produce is the name of a tile from a list the reading drew.
+
+Measured rather than asserted: on the reference drawing the second reader is asked nothing at all, because every
+ambiguous anchor there touches exactly one family and there is nothing to choose between. On `S3_25`, the sheet in
+the corpus with real multi-family ambiguity, it is asked twice, answers OKLART twice, and settles nothing:
+42.399 m with it on and 42.399 m with it off. To date it has moved zero metres on every drawing measured.
+
 ## What a language model is and is not allowed to do here
 
 The measurement path is vector geometry and nothing else. Two model-assisted passes exist, both fenced in code:
