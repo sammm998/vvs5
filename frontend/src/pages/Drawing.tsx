@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api, fileSize } from "../api";
 import { StatusBadge, stageText } from "../components/Status";
+import Tilted from "../components/Tilted";
 
 export default function DrawingPage() {
   const { id } = useParams();
@@ -29,7 +30,7 @@ export default function DrawingPage() {
       <div className="rule" />
       <div className="list">
         {d.jobs.map((j: any, i: number) => (
-          <article className="item" key={j.id}>
+          <Tilted as="article" deg={2.4} lift={6} className="item" key={j.id}>
             <div className="no">{String(i + 1).padStart(2, "0")}</div>
             <div>
               <Link className="ttl" to={`/jobs/${j.id}`} style={{ fontSize: 19 }}>
@@ -47,7 +48,7 @@ export default function DrawingPage() {
               <StatusBadge job={j} />
               <Link className="when" to={`/jobs/${j.id}`}>{j.status === "COMPLETED" ? "Visa resultat →" : "Följ →"}</Link>
             </div>
-          </article>
+          </Tilted>
         ))}
         {d.jobs.length === 0 && <div className="empty">Ingen analys körd ännu.</div>}
       </div>

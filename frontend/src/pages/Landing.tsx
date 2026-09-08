@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../landing.css";
 import LandingScene from "../components/LandingScene";
+import LayerStack from "../components/LayerStack";
 import { useCountUp, useInView, useScrollProgress } from "../components/lp-motion";
+import { tiltStyle, usePointerParallax, useTilt } from "../components/tilt";
 
 /* The drawing in the hero is the product's own subject: a dash-dot waste run with a branch, two labels on
    leaders, and the marks the engine puts back on the paper. It draws itself in once, then the labels land. */
@@ -111,12 +113,62 @@ function Figures() {
   return (
     <section className="lp-wrap">
       <div className="lp-figures">
-        <Figure to={15.63} decimals={2} suffix=" m" label="samlad avvikelse mot facit över fyra referensritningar" />
+        <Figure to={15.46} decimals={2} suffix=" m" label="samlad avvikelse mot facit över fyra referensritningar" />
         <Figure to={377} label="sidor i stilbiblioteket, körda sida för sida vid varje ändring" />
-        <Figure to={69} label="tester som måste hålla innan en siffra får ändras" />
+        <Figure to={180} label="tester som måste hålla innan en siffra får ändras" />
         <Figure to={0} label="gissningar — identitet endast via riktiga ledarlinjer, aldrig närmaste rör" />
       </div>
     </section>
+  );
+}
+
+/* The hero, as depth rather than as a stack of images.
+ *
+ * Three planes at three distances: the film furthest back, the drawing on the paper, and the identities the
+ * reading lifts off it nearest the reader. They part as the pointer moves and settle as the page is scrolled
+ * away, which is the same motion the product makes - the pipes come off the sheet.
+ */
+function Stage() {
+  const pp = usePointerParallax();
+  const s = useScrollProgress();
+  const near = Math.max(0, 1 - s * 5.5);                     // the deck flattens as the hero leaves
+  const d = (z: number) => ({
+    transform: `translate3d(${pp.x * z * near}px, ${pp.y * z * 0.55 * near}px, 0) `
+      + `rotateY(${pp.x * -2.4 * near}deg) rotateX(${pp.y * 1.8 * near}deg)`,
+  });
+  return (
+    <div className="lp-stage-art lp-deck" aria-hidden="true">
+      <div className="lp-plane far" style={d(9)}>
+        <video className="lp-video" src="/hero.mp4" autoPlay muted loop playsInline preload="auto" />
+      </div>
+      <div className="lp-plane mid" style={d(20)}>
+        <div className="lp-stage-draw"><Drawing /></div>
+      </div>
+      {/* what the reading takes off the paper, floating in front of it */}
+      <div className="lp-plane near" style={d(38)}>
+        {[["KV1-X31-16", "17,10 m", 12, 21], ["S3-R8-110", "58,40 m", 57, 11],
+          ["VV1-X31-16", "33,92 m", 76, 38], ["S1-P2-75", "4,73 m", 63, 58]].map(([t, m, x, y], i) => (
+          <span key={t as string} className="lp-chip" style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${1.1 + i * 0.22}s` }}>
+            <i style={{ background: ["#6ee7a5", "#f0abfc", "#60a5fa", "#fbbf24"][i] }} />
+            {t}<b>{m}</b>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* One of the three screens on the bench, leaning in space until the reader looks straight at it. */
+function Screen({ turn, children, caption }: { turn: number; children: React.ReactNode; caption: React.ReactNode }) {
+  const { tilt, handlers } = useTilt(7);
+  const flat = tilt.over;
+  return (
+    <figure className="lp-bench-fig" {...handlers}
+      style={{ transform: `rotateY(${flat ? tilt.ry : turn}deg) rotateX(${flat ? tilt.rx : 0}deg) `
+        + `translateZ(${flat ? 34 : 0}px)`, ...tiltStyle(tilt, 0) }}>
+      {children}
+      <figcaption>{caption}</figcaption>
+    </figure>
   );
 }
 
@@ -158,6 +210,7 @@ export default function Landing() {
       {menu && (
         <div className="lp-menu">
           <a href="#hur" onClick={() => setMenu(false)}>Så fungerar det</a>
+          <a href="#lager" onClick={() => setMenu(false)}>Tre lager</a>
           <a href="#ror" onClick={() => setMenu(false)}>Rörtyper</a>
           <a href="#belagg" onClick={() => setMenu(false)}>Beläggen</a>
           <Link to="/dokumentation" onClick={() => setMenu(false)}>Dokumentation</Link>
@@ -166,10 +219,7 @@ export default function Landing() {
       )}
 
       <header className="lp-stage">
-        <div className="lp-stage-art" aria-hidden="true">
-          <video className="lp-video" src="/hero.mp4" autoPlay muted loop playsInline preload="auto" />
-          <div className="lp-stage-draw"><Drawing /></div>
-        </div>
+        <Stage />
         <h1 className="lp-huge">
           Mängden som<br />ritningen<br />redan säger
         </h1>
@@ -187,12 +237,11 @@ export default function Landing() {
           Ladda upp en VVS-ritning. Systemet läser sidans egen beteckningslista, följer varje ledarlinje till det
           rör den pekar på, och mäter i ritningens egen skala.
         </p>
-        <div className="lp-screens">
-          <figure>
+        <div className="lp-screens lp-bench">
+          <Screen turn={9} caption={<><b>Mängdning</b> beteckningsdriven tolkning direkt på ritningen</>}>
             <div className="lp-screen"><Drawing /></div>
-            <figcaption><b>Mängdning</b> beteckningsdriven tolkning direkt på ritningen</figcaption>
-          </figure>
-          <figure>
+          </Screen>
+          <Screen turn={0} caption={<><b>Mängder</b> varje meter med sitt belägg kvar</>}>
             <div className="lp-screen lp-screen-table">
               <div className="lp-row head"><span>Beteckning</span><span>Sträckor</span><span>Totalt</span></div>
               {[["S3-R8-110", "5", "46,39"], ["KV1-X31-16", "3", "17,11"], ["VV1-X31-16", "5", "33,92"],
@@ -201,9 +250,8 @@ export default function Landing() {
               ))}
               <div className="lp-row sum"><span>Summa</span><span>34</span><span>212,57</span></div>
             </div>
-            <figcaption><b>Mängder</b> varje meter med sitt belägg kvar</figcaption>
-          </figure>
-          <figure>
+          </Screen>
+          <Screen turn={-9} caption={<><b>Facitkontroll</b> varje körning mäts mot handmängdad ritning</>}>
             <div className="lp-screen lp-screen-check">
               <div className="lp-row head"><span>Beteckning</span><span>Facit</span><span>Vårt</span><span>Avvikelse</span></div>
               {[["KV1-X31-16", "17,40", "17,10", "−0,30"], ["S3-R8-160", "16,30", "16,43", "+0,13"],
@@ -212,14 +260,15 @@ export default function Landing() {
               ))}
               <div className="lp-ok">3,69 m samlad avvikelse på 213,70 m</div>
             </div>
-            <figcaption><b>Facitkontroll</b> varje körning mäts mot handmängdad ritning</figcaption>
-          </figure>
+          </Screen>
         </div>
       </section>
 
       <Figures />
 
       <LandingScene />
+
+      <LayerStack />
 
       <section className="lp-sec lp-wrap lp-light" id="ror">
         <div className="lp-sec-head">

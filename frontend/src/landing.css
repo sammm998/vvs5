@@ -385,6 +385,8 @@ body.lp-dark { background: #07080a; }
 
 .lp-stage {
   position: relative;
+  perspective: 1300px;
+  perspective-origin: 50% 42%;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -403,6 +405,41 @@ body.lp-dark { background: #07080a; }
   display: flex; align-items: center; justify-content: center;
 }
 .lp-stage-art svg { width: 118%; height: auto; }
+
+/* The hero is a deck, not a stack of pictures: three planes at three distances that part as the pointer moves.
+   The film is furthest back, the drawing lies on the paper, and what the reading lifts off it floats in front. */
+.lp-deck { transform-style: preserve-3d; }
+.lp-plane {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.lp-plane.far { transform: translateZ(-90px); }
+.lp-plane.mid { transform: translateZ(-20px); }
+.lp-plane.near { transform: translateZ(60px); }
+
+/* an identity the reading has taken off the sheet, hanging in front of it */
+.lp-chip {
+  position: absolute;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 12px 7px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(12, 14, 18, 0.72);
+  backdrop-filter: blur(7px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  font-family: var(--lp-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #d5dae2;
+  white-space: nowrap;
+  opacity: 0;
+  animation: lp-chip-in 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards, lp-chip-float 7s ease-in-out infinite 1.9s;
+}
+.lp-chip i { width: 7px; height: 7px; border-radius: 999px; flex: none; }
+.lp-chip b { color: #fff; font-weight: 500; letter-spacing: 0.04em; }
+@keyframes lp-chip-in { from { opacity: 0; transform: translateY(14px) scale(0.94); } to { opacity: 1; transform: none; } }
+@keyframes lp-chip-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+@media (max-width: 860px) { .lp-chip { display: none; } }
 .lp-stage::after {
   content: "";
   position: absolute; inset: 0; z-index: -1;
@@ -455,6 +492,38 @@ body.lp-dark { background: #07080a; }
 }
 .lp-screens { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 26px); }
 .lp-screens figure { margin: 0; }
+
+/* The three screens stand on a bench rather than lying in a row: the outer two are turned away, and the one the
+   reader points at turns to face them. Depth here is a way of saying which one is being looked at. */
+.lp-bench { perspective: 1500px; perspective-origin: 50% 45%; }
+.lp-bench-fig {
+  margin: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.2, 0.9, 0.3, 1), filter 0.4s ease;
+  will-change: transform;
+  filter: brightness(0.88);
+  position: relative;
+}
+.lp-bench-fig:hover { filter: brightness(1.06); z-index: 2; }
+.lp-bench-fig .lp-screen {
+  transition: box-shadow 0.5s ease, border-color 0.4s ease;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.42);
+}
+.lp-bench-fig:hover .lp-screen {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 44px 90px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+/* the light that falls on a plane leaning towards you, from where the pointer is on it */
+.lp-bench-fig .lp-screen::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  background: radial-gradient(38% 46% at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.09), transparent 70%);
+  opacity: var(--glare, 0);
+  transition: opacity 0.35s ease;
+}
+.lp-bench-fig .lp-screen { position: relative; }
 .lp-screen {
   aspect-ratio: 4 / 3.4;
   border: 1px solid rgba(255, 255, 255, 0.11);
@@ -727,3 +796,73 @@ body.lp-dark { background: #07080a; }
 .docs-metrics td:first-child { color: #e8ecf1; font-weight: 500; }
 .docs-metrics th { color: var(--lp-faint); font-weight: 500; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; }
 .docs-metrics tr.sum td { border-bottom: 0; font-weight: 600; color: #fff; }
+
+
+/* ---------- the three layers, as three plates ---------- */
+
+.lp-layers { position: relative; height: 320vh; }
+.lp-layers-pin {
+  position: sticky; top: 0;
+  min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: clamp(30px, 5vh, 64px);
+  padding: 90px clamp(20px, 4vw, 56px) 70px;
+  max-width: 1240px; margin: 0 auto;
+  perspective: 1600px;
+  perspective-origin: 46% 40%;
+}
+.lp-layers-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+}
+.lp-stack {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+  will-change: transform;
+  aspect-ratio: 8 / 5;
+  /* the plates lift out of their own box, so the box keeps room for them rather than letting them
+     climb over the heading above or off the left edge of the page */
+  max-width: 520px;
+  margin: 40px auto 56px;
+  width: 88%;
+}
+.lp-plate {
+  position: absolute; inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: linear-gradient(160deg, rgba(20, 23, 28, 0.96), rgba(11, 13, 16, 0.96));
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+  transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+  will-change: transform;
+  overflow: hidden;
+}
+.lp-plate.on { border-color: rgba(110, 231, 165, 0.4); box-shadow: 0 34px 80px rgba(0, 0, 0, 0.62); }
+.lp-plate svg { width: 100%; height: 100%; display: block; }
+.lp-plate-tag {
+  position: absolute; left: 12px; bottom: 10px;
+  font-family: var(--lp-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #5b616c;
+}
+.lp-plate.on .lp-plate-tag { color: #6ee7a5; }
+.lp-layers-list { margin: 0; }
+
+@media (max-width: 900px) {
+  .lp-layers { height: auto; }
+  .lp-layers-pin { position: static; min-height: 0; padding-top: 60px; }
+  .lp-layers-grid { grid-template-columns: 1fr; }
+  .lp-stack { transform: none !important; margin-bottom: 28px; }
+  .lp-plate { position: relative; inset: auto; transform: none !important; margin-bottom: 12px; }
+  .lp-stack { aspect-ratio: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-plane, .lp-stack, .lp-plate, .lp-bench-fig { transition: none; transform: none !important; }
+  .lp-chip { animation: none; opacity: 1; }
+  .lp-layers { height: auto; }
+  .lp-layers-pin { position: static; }
+  .lp-stack { position: static; aspect-ratio: auto; }
+  .lp-plate { position: relative; inset: auto; margin-bottom: 12px; }
+}

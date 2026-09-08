@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api, fileSize } from "../api";
 import { StatusBadge } from "../components/Status";
+import Tilted from "../components/Tilted";
 
 const DATE = new Intl.DateTimeFormat("sv-SE", { day: "2-digit", month: "short", year: "numeric" });
 
@@ -40,7 +41,7 @@ export default function ProjectPage() {
       <div className="rule" />
       <div className="list">
         {project.drawings.map((d: any, i: number) => (
-          <article className="item" key={d.id}>
+          <Tilted as="article" deg={2.4} lift={6} className="item" key={d.id}>
             <div className="no">{String(i + 1).padStart(2, "0")}</div>
             <div>
               <Link className="ttl" to={`/drawings/${d.id}`}>{d.filename.replace(/\.pdf$/i, "")}</Link>
@@ -53,7 +54,7 @@ export default function ProjectPage() {
               {d.latest_job ? <StatusBadge job={d.latest_job} /> : <span className="badge">Ej analyserad</span>}
               <button className="secondary small" onClick={async () => { const j = await api.analyze(d.id); window.location.href = `/jobs/${j.id}`; }}>Analysera</button>
             </div>
-          </article>
+          </Tilted>
         ))}
         {project.drawings.length === 0 && <div className="empty">Inga ritningar ännu — ladda upp den första.</div>}
       </div>

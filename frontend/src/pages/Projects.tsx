@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
+import Tilted from "../components/Tilted";
 
 const DATE = new Intl.DateTimeFormat("sv-SE", { day: "2-digit", month: "short", year: "numeric" });
 
@@ -67,7 +68,7 @@ export default function Projects() {
 
       <div className="list">
         {shown.map((p, i) => (
-          <article className="item" key={p.id}>
+          <Tilted as="article" deg={2.4} lift={6} className="item" key={p.id}>
             <div className="no">{String(i + 1).padStart(2, "0")}</div>
             <div>
               <Link className="ttl" to={`/projects/${p.id}`}>{p.name}</Link>
@@ -80,7 +81,7 @@ export default function Projects() {
               <span className="badge">{p.n_drawings} {p.n_drawings === 1 ? "ritning" : "ritningar"}</span>
               <span className="when">{DATE.format(new Date(p.created_at))}</span>
             </div>
-          </article>
+          </Tilted>
         ))}
         {shown.length === 0 && (
           <div className="empty">{projects.length ? "Inget projekt matchar sökningen." : "Inga projekt ännu — skapa det första."}</div>

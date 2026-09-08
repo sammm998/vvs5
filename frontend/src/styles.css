@@ -167,9 +167,14 @@ select { padding-right: 34px; }
   grid-template-columns: 52px minmax(0, 1fr) auto;
   gap: 22px;
   align-items: start;
-  padding: 28px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 26px 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.035);
 }
+.list { display: flex; flex-direction: column; gap: 10px; }
+.list .tiltwrap { perspective: 2400px; }
 .item .no { font-family: var(--mono); font-size: var(--label); letter-spacing: 0.1em; color: var(--faint); padding-top: 7px; }
 .item .ttl { font-size: 25px; font-weight: 400; letter-spacing: -0.02em; text-transform: uppercase; line-height: 1.12; }
 .item a.ttl:hover { text-decoration: underline; text-underline-offset: 4px; }
@@ -250,6 +255,21 @@ tr.selected td { color: var(--ink); }
   background: var(--chip);
   color: var(--muted);
   white-space: nowrap;
+}
+/* A badge is a chip, and a chip never wraps - which is right for "KLAR" and wrong for a sentence. Where one
+   carries a whole line of prose it has to behave like prose: the coverage note ran to 1357 px in a 478 px panel
+   and the reader saw it end mid-word, with no way to scroll to the rest. */
+p.badge {
+  display: block;
+  white-space: normal;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.55;
+  border-radius: 10px;
+  padding: 10px 13px;
+  margin: 0 0 14px;
 }
 .badge.ok { background: var(--ok-bg); color: var(--ok); }
 .badge.warn { background: var(--warn-bg); color: var(--warn); }
@@ -564,8 +584,18 @@ pre { white-space: pre-wrap; word-break: break-word; background: var(--bg-2); bo
   overflow: hidden;
   display: flex;
   justify-content: center;
+  perspective: 1500px;
+  perspective-origin: 50% 42%;
 }
-.film-stage svg { max-width: 100%; height: auto; }
+/* the sheet lies back while it is being read and comes upright as the reading finishes */
+.film-sheet {
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.7s ease;
+  will-change: transform;
+  border-radius: 4px;
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.18), 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+.film-stage svg { max-width: 100%; height: auto; display: block; }
 
 .film-total .v { font-size: 34px; font-weight: 500; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
 .film-total .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
@@ -988,11 +1018,72 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
 @keyframes tick { 0% { transform: translateY(-2px); opacity: 0.5; } 100% { transform: none; opacity: 1; } }
 .film-total .v { animation: tick 0.4s ease both; }
 
+/* ---------- depth in the application ----------
+ *
+ * The signed-in side is a working tool and most of it must stay flat: a list you read down, a table you compare
+ * across, and above all a drawing someone is tracing a run on. So depth is spent only where it says something -
+ * a list assembling itself as it arrives, a panel that is nearer than the page behind it, a card that leans the
+ * way you are looking. The sheet in the viewer never moves. The sheet in the film does, because nobody is
+ * measuring against that one.
+ */
+@keyframes deal { from { opacity: 0; transform: perspective(900px) rotateX(-7deg) translate3d(0, 14px, -40px); }
+                  to   { opacity: 1; transform: perspective(900px) rotateX(0) translate3d(0, 0, 0); } }
+@keyframes flipup { from { opacity: 0; transform: perspective(700px) rotateX(-22deg) translateY(9px); }
+                    to   { opacity: 1; transform: perspective(700px) rotateX(0) translateY(0); } }
+
+/* a list of projects or drawings deals itself out rather than being there already */
+.list > .tiltwrap { animation: deal 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+.list > .tiltwrap:nth-child(1) { animation-delay: 0.02s; }
+.list > .tiltwrap:nth-child(2) { animation-delay: 0.07s; }
+.list > .tiltwrap:nth-child(3) { animation-delay: 0.12s; }
+.list > .tiltwrap:nth-child(4) { animation-delay: 0.17s; }
+.list > .tiltwrap:nth-child(n+5) { animation-delay: 0.21s; }
+.item.tilt:hover { border-color: var(--line-2); box-shadow: 0 20px 44px rgba(0, 0, 0, 0.1), 0 3px 8px rgba(0, 0, 0, 0.05); }
+.item .no { transition: color 0.2s ease; }
+.item:hover .no { color: var(--muted); }
+
+.kpi { perspective: 900px; }
+.kpi .card { animation: flipup 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) both; transform-origin: 50% 100%; }
+.kpi .card:nth-child(2) { animation-delay: 0.07s; }
+.kpi .card:nth-child(3) { animation-delay: 0.13s; }
+
+/* a card that can be leaned: the transform comes from the pointer, the light with it */
+.tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, border-color 0.25s ease;
+  will-change: transform;
+  position: relative;
+}
+.tilt::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(40% 50% at var(--gx, 50%) var(--gy, 50%), rgba(13, 13, 13, 0.055), transparent 72%);
+  opacity: var(--glare, 0);
+  transition: opacity 0.3s ease;
+}
+.tiltwrap { perspective: 1000px; }
+
+/* the three depths of the panel beside the sign-in form */
+.auth-plane {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+  will-change: transform;
+}
+
+/* the panel beside the sheet is nearer to the reader than the page it sits on */
+.analysis .right { transition: box-shadow 0.4s ease; }
+
 @media (prefers-reduced-motion: reduce) {
   .sheetview > .card,
   .workspace .analysis,
   .analysis .right tbody tr,
+  .item, .kpi .card,
   .film-total .v { animation: none; }
-  .viewer .page, .verdict, .agentcard, .card, .rosteritem { transition: none; }
-  .verdict:hover, .agentcard:hover { transform: none; }
+  .viewer .page, .verdict, .agentcard, .card, .rosteritem, .item, .tilt, .film-sheet { transition: none; }
+  .verdict:hover, .agentcard:hover, .item:hover { transform: none; }
+  .item:hover .no { transform: none; }
+  .film-sheet { transform: none !important; }
+  .tilt { transform: none !important; }
 }

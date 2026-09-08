@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
+import { tiltStyle, useTilt } from "./tilt";
 import { AGENTS, AGENT_SV, frameSays } from "../agents";
 
 /* How the reading got to its answer, from the first pass over the PDF to the last verdict.
@@ -18,6 +19,17 @@ const BESLUT: Record<string, { text: string; cls: string }> = {
   LAMNA: { text: "lämnas", cls: "ok" },
   RITNINGEN_SAGER_INTE: { text: "ritningen säger det inte", cls: "ok" },
 };
+
+/* A reviewer's card, leaning the way the reader is looking. The lean is the only thing that moves: what the
+   card says is a finding, and a finding that slides about is harder to read, not easier. */
+function AgentCard({ children }: { children: React.ReactNode }) {
+  const { tilt, handlers } = useTilt(3.5);
+  return (
+    <div className="tiltwrap">
+      <div className="agentcard tilt" {...handlers} style={tiltStyle(tilt, 6)}>{children}</div>
+    </div>
+  );
+}
 
 export default function Reasoning({ jobId, result, onZoom }: { jobId: string; result: any; onZoom?: (b: number[]) => void }) {
   const [frames, setFrames] = useState<Frame[]>([]);
@@ -156,7 +168,7 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
         <h3>Granskarna</h3>
         {byAgent.size === 0 && <p className="muted">Ingen granskning finns sparad för det här jobbet.</p>}
         {[...byAgent.entries()].map(([agent, fs]) => (
-          <div key={agent} className="agentcard">
+          <AgentCard key={agent}>
             <div className="agenthead">
               <b>{AGENT_SV[agent] ?? agent}</b>
               <span className={`badge ${SEV[fs[0].severity] ?? "ok"}`}>
@@ -166,10 +178,10 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
             {fs.map((f: any, i: number) => (
               <p key={i} className="says">{f.message}</p>
             ))}
-          </div>
+          </AgentCard>
         ))}
 
-        <div className="agentcard">
+        <AgentCard>
           <div className="agenthead">
             <b>Andraläsaren</b>
             <span className={`badge ${sr?.consulted ? "warn" : "ok"}`}>{sr?.consulted ? "tillfrågad" : "ej tillfrågad"}</span>
@@ -179,7 +191,7 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
               ? `Tillfrågad i ${sr.calls ?? "?"} fall som läsningen själv inte kunde avgöra. Varje svar prövades mot ritningens egna kandidater innan det fick flytta en meter.`
               : "Läsningen behövde ingen andra mening på det här bladet: varje identitet vilar på en beteckning, en ritad hänvisningslinje och den graf geometrin bildar."}
           </p>
-        </div>
+        </AgentCard>
       </div>
     </div>
   );

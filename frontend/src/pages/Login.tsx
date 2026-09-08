@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
+import { usePointerParallax } from "../components/tilt";
 
 /* The same run as on the front page, drawn small: a labelled pipe and one the drawing does not name. */
 function Motif() {
@@ -30,6 +31,9 @@ function Motif() {
 }
 
 export default function Login() {
+  // the panel beside the form is a scene, not a picture: the motif, the principle and the figures sit at three
+  // depths and shift with the pointer, so the page has somewhere to be looked into
+  const pp = usePointerParallax();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"login" | "register">("login");
@@ -101,15 +105,19 @@ export default function Login() {
         </form>
       </div>
 
-      <aside className="aside">
-        <Motif />
-        <blockquote>
-          Tvetydigt är ett giltigt svar. Fel säkerhet är det inte.
-        </blockquote>
-        <div className="who">Principen hela motorn är byggd kring</div>
+      <aside className="aside" style={{ perspective: "1200px" }}>
+        <div className="auth-plane" style={{ transform: `translate3d(${pp.x * 16}px, ${pp.y * 9}px, 40px) rotateY(${pp.x * -3}deg) rotateX(${pp.y * 2.2}deg)` }}>
+          <Motif />
+        </div>
+        <div className="auth-plane" style={{ transform: `translate3d(${pp.x * 7}px, ${pp.y * 4}px, 0)` }}>
+          <blockquote>
+            Tvetydigt är ett giltigt svar. Fel säkerhet är det inte.
+          </blockquote>
+          <div className="who">Principen hela motorn är byggd kring</div>
+        </div>
         <div className="facts">
           <div>
-            <b>15,6 m</b>
+            <b>15,46 m</b>
             samlad avvikelse mot facit,
             <br />
             fyra referensritningar

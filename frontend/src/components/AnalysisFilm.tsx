@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "../api";
 import { STAGE_LABELS, stageText } from "./Status";
+import { usePointerParallax } from "./tilt";
 import { AGENTS, frameSays } from "../agents";
 
 type Frame = { stage: string; at: number; [k: string]: any };
@@ -55,6 +56,8 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
     if (el) el.scrollTop = el.scrollHeight;
   }, [frames, stage]);
 
+  const pp = usePointerParallax();
+
   useEffect(() => {
     const on = () => setW(box.current?.clientWidth ?? 760);
     on();
@@ -107,7 +110,15 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
 
   return (
     <div className="film">
+      {/* The sheet is being read, not measured against - so this is the one place in the application where the
+          drawing itself may sit in space. It lies back while the reading runs and comes upright as it finishes,
+          and it leans a little towards wherever the reader is looking. A sheet someone is tracing a run on
+          never does any of this: the working surface stays flat. */}
       <div className="film-stage" ref={box}>
+        <div className="film-sheet" style={{
+          transform: `rotateX(${(1 - progress) * 9 + pp.y * -2.2}deg) rotateY(${pp.x * 3.4}deg) `
+            + `translateZ(${progress * 14}px)`,
+        }}>
         <svg width={page.w * scale} height={H} viewBox={`0 0 ${page.w} ${page.h}`} role="img"
           aria-label="Ritningen fylls i medan den läses">
           <rect x="0" y="0" width={page.w} height={page.h} fill="#fff" stroke="#e6e6e6" />
@@ -163,6 +174,7 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
             </>
           )}
         </svg>
+        </div>
       </div>
 
       <div className="film-side">
