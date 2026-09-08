@@ -212,6 +212,33 @@ def assign_roles(legend: DrawingLegend, designations) -> None:
     opens: set[str] = set()
     standalone: set[str] = set()
     codes = sorted({e.code.upper() for e in legend.entries}, key=len, reverse=True)
+
+    def owner(head: str) -> str | None:
+        for c in codes:
+            if head == c or (head.startswith(c) and len(head) > len(c)):
+                return c
+        return None
+
+    def outside(d) -> bool:
+        b = getattr(d, "bbox", None)
+        return not (box is not None and b is not None and box[0] - 4.0 <= b[0] and b[2] <= box[2] + 4.0
+                    and box[1] - 4.0 <= b[1] and b[3] <= box[3] + 4.0)
+
+    # Which shapes this sheet writes its pipe designations in. A code carrying a size is not yet a system: a
+    # valve tag carries one too - `AV201-22` is a shut-off valve of 22 mm, not twenty-two metres of AV pipe -
+    # and reading it as a system handed the drawing a pipe it does not draw. What separates them is the shape
+    # the sheet writes: a pipe designation puts a material token after the system code and a fitting tag does
+    # not. A shape only one code ever writes is that code's own tag; a shape several codes share is the sheet's
+    # designation grammar, and that is what says a code opens one.
+    by_pattern: dict[str, set[str]] = defaultdict(set)
+    for d in designations:
+        if getattr(d, "dn", None) is None or not outside(d):
+            continue
+        c = owner((getattr(d, "system_token", "") or "").upper())
+        if c:
+            by_pattern[getattr(d, "pattern", "") or ""].add(c)
+    shared = {pat for pat, cs in by_pattern.items() if len(cs) >= 2}
+
     for d in designations:
         b = getattr(d, "bbox", None)
         if box is not None and b is not None and box[0] - 4.0 <= b[0] and b[2] <= box[2] + 4.0 \
@@ -220,10 +247,12 @@ def assign_roles(legend: DrawingLegend, designations) -> None:
         text = (d.text or "").upper()
         head = (d.system_token or "").upper()
         if d.dn is not None:
-            for c in codes:
-                if head == c or (head.startswith(c) and len(head) > len(c)):
+            # where the sheet writes no shape more than one code shares, there is no grammar to appeal to and
+            # a size on the label is all the evidence there is
+            if not shared or (getattr(d, "pattern", "") or "") in shared:
+                c = owner(head)
+                if c:
                     opens.add(c)
-                    break
         else:
             for c in codes:
                 if code_matches(text, c):

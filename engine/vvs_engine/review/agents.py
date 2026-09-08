@@ -179,11 +179,26 @@ def _ocr_crosscheck_agent(pa) -> tuple[list[Finding], str]:
         return [Finding("ocr_crosscheck", "INFO", "ocr_unavailable",
                         "OCR-kontrollen kördes inte (rapidocr-onnxruntime saknas i installationen).",
                         {"error": str(e)[:120]})], "unavailable"
-    try:
-        words = ocr_words(pa.page)
-    except Exception as e:                                    # pragma: no cover - runtime failure
-        return [Finding("ocr_crosscheck", "INFO", "ocr_failed", "OCR-kontrollen kunde inte genomföras.",
-                        {"error": str(e)[:120]})], "failed"
+    # A whole A1 sheet rendered at 300 dpi and read in tiles is the heaviest thing this review does, and in a
+    # small container it is what runs out of memory first. Rather than reporting a blank failure, drop the
+    # resolution and read the page again: a coarser second pair of eyes still catches a label sitting where the
+    # vector reading has nothing, and the finding says which resolution it managed.
+    words = None
+    dpi_used = 0
+    first: Exception | None = None
+    for dpi in (300, 150):
+        try:
+            words = ocr_words(pa.page, dpi=dpi)
+            dpi_used = dpi
+            break
+        except Exception as e:                                # pragma: no cover - runtime failure
+            if first is None:
+                first = e
+    if words is None:
+        why = str(first)[:160] or first.__class__.__name__
+        return [Finding("ocr_crosscheck", "INFO", "ocr_failed",
+                        f"OCR-kontrollen kunde inte genomföras: {why}",
+                        {"error": str(first)[:200], "type": type(first).__name__})], "failed"
     from ..semantics.grammar import compress_pattern
     ours = {d.text.upper() for d in pa.designations}
     ours_norm = {_norm(t) for t in ours}
@@ -206,10 +221,11 @@ def _ocr_crosscheck_agent(pa) -> tuple[list[Finding], str]:
         if any(_overlaps(box, b) for b in read_boxes):
             continue          # the vector reader has text here: a reading difference, not a missed label
         missed.append((t, box, conf))
+    coarse = " vid nedsatt upplösning, sedan full upplösning inte gick att köra" if dpi_used < 300 else ""
     out = [Finding("ocr_crosscheck", "INFO", "ocr_ran",
-                   f"OCR läste {len(words)} ord över samma sida som oberoende jämförelse; "
+                   f"OCR läste {len(words)} ord över samma sida som oberoende jämförelse{coarse}; "
                    f"{len(pa.designations)} beteckningar lästes ur vektorkoden.",
-                   {"ocr_words": len(words), "vector_designations": len(pa.designations)})]
+                   {"ocr_words": len(words), "vector_designations": len(pa.designations), "dpi": dpi_used})]
     if missed:
         out.append(Finding("ocr_crosscheck", "WARN", "ocr_sees_extra_codes",
                            f"OCR ser {len(missed)} beteckningar på platser där vektorläsningen inte har någon text alls.",
