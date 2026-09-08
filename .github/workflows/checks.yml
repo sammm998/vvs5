@@ -35,6 +35,8 @@ jobs:
           python-version: "3.11"
       - run: pip install -r backend/requirements.txt
       - run: pip install -e engine
+      # the suite runs under pytest, which is not a dependency of the service and so is not in its requirements
+      - run: pip install pytest
       - run: python -m pytest -q engine/tests
       - name: the reading may not carry anything from a drawing it was tuned on
         run: |
