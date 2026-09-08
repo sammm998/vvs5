@@ -614,6 +614,35 @@ def agent_tools(user: User = Depends(current_user)):
                        "parameters": sorted(t["parameters"]["properties"])} for t in T.TOOLS.values()]}
 
 
+class ToolAsk(BaseModel):
+    name: str
+    arguments: dict | None = None
+
+
+@app.post("/api/jobs/{job_id}/agent/tool")
+def agent_tool(job_id: str, body: ToolAsk, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Run one tool against this reading and say what it found, with no model in the way.
+
+    Every question the interface offers as a button is a single call into the reading, and the answer is already
+    a number - so composing the sentence is arithmetic, not judgement. It costs nothing, it cannot hallucinate,
+    and it works on an installation that has no model configured at all.
+    """
+    from vvs_engine.agent import tools as T
+    from vvs_engine.agent.answers import say
+    from vvs_engine.agent.model import DrawingModel
+
+    j = _job(db, user, job_id)
+    if j.status != "COMPLETED":
+        raise HTTPException(409, "analysen är inte klar")
+    if body.name not in T.TOOLS:
+        raise HTTPException(404, f"okänt verktyg {body.name}")
+    m = DrawingModel(_result_dir(j))
+    result = T.run(body.name, m, body.arguments or {})
+    from app.agent import _highlights
+    return {"svar": say(body.name, result), "verktyg": [{"namn": body.name, "argument": body.arguments or {}, "resultat": result}],
+            "markera": _highlights([{"resultat": result}])}
+
+
 @app.post("/api/jobs/{job_id}/agent")
 def agent_ask(job_id: str, body: AgentAsk, user: User = Depends(current_user), db: Session = Depends(get_db)):
     """Ask the agent about this reading.
@@ -631,7 +660,9 @@ def agent_ask(job_id: str, body: AgentAsk, user: User = Depends(current_user), d
         raise HTTPException(409, "analysen är inte klar")
     on, why = second_reader_state()
     if not on:
-        raise HTTPException(503, f"ingen modell är konfigurerad för agenten: {why}")
+        raise HTTPException(503, f"Fri text behöver en modell, och ingen är konfigurerad: {why}. "
+                                    f"Knapparna ovanför svarar ändå — de går rakt in i läsningen. "
+                                    f"Sätt OPENAI_API_KEY och VVS_SECOND_READER=true för att fråga fritt.")
     try:
         from tools.astra_transport import agent_transport
     except Exception as e:                                      # noqa: BLE001

@@ -72,6 +72,9 @@ export const api = {
     req(`/api/jobs/${jobId}/agent`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   agentTools: () => req(`/api/agent/tools`),
   judge: (jobId: string) => req(`/api/jobs/${jobId}/judge`),
+  agentTool: (jobId: string, name: string, args: any = {}) =>
+    req(`/api/jobs/${jobId}/agent/tool`, { method: "POST", headers: { "Content-Type": "application/json" },
+                                           body: JSON.stringify({ name, arguments: args }) }),
   corrections: (drawingId: string) => req(`/api/drawings/${drawingId}/corrections`),
   addCorrection: (drawingId: string, body: any) =>
     req(`/api/drawings/${drawingId}/corrections`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),

@@ -12,11 +12,28 @@ type Msg = { role: "user" | "agent"; text: string; tools?: any[]; ids?: string[]
 
 /* A first question is the hardest one to write, so the ones worth asking are on the surface - grouped the way a
    reader thinks: what does it measure, what should I check, what does this drawing say. */
-const QUICK: { grupp: string; fragor: string[] }[] = [
-  { grupp: "Mängd", fragor: ["Mängda per system", "Mängda per dimension", "Visa hur mängden räknades"] },
-  { grupp: "Kontroll", fragor: ["Hitta fel i läsningen", "Var byter rören dimension?", "Vilka rörändar är fria?",
-                                "Var är samma linje ritad två gånger?"] },
-  { grupp: "Ritningen", fragor: ["Förklara beteckningarna", "Hur lästes skalan?"] },
+/* Each button is one call into the reading, so it needs no model and cannot invent a number. Free text needs a
+   model to choose the tool - that is the only difference between the two. */
+type Quick = { text: string; tool: string; args?: any };
+const QUICK: { grupp: string; fragor: Quick[] }[] = [
+  { grupp: "Mängd", fragor: [
+    { text: "Mängda per system", tool: "mangda", args: { gruppera_pa: "system" } },
+    { text: "Mängda per dimension", tool: "mangda", args: { gruppera_pa: "dimension" } },
+    { text: "Mängda per beteckning", tool: "mangda", args: { gruppera_pa: "beteckning" } },
+  ] },
+  { grupp: "Kontroll", fragor: [
+    { text: "Hitta olösta", tool: "hitta_olosta" },
+    { text: "Var byter rören dimension?", tool: "hitta_dimensionsbyten" },
+    { text: "Vilka rörändar är fria?", tool: "hitta_fria_rorandar" },
+    { text: "Samma linje ritad två gånger?", tool: "hitta_dubbelritad_geometri" },
+    { text: "Vad togs inte som rör?", tool: "hitta_omatt_geometri" },
+    { text: "Granskarnas utlåtande", tool: "kontrollera_lasningen" },
+  ] },
+  { grupp: "Ritningen", fragor: [
+    { text: "Vad är det här för blad?", tool: "hamta_ritning" },
+    { text: "Förklara beteckningarna", tool: "hamta_forklaringslista" },
+    { text: "Hur lästes skalan?", tool: "kontrollera_skala" },
+  ] },
 ];
 
 export default function AgentChat({ jobId, page, selection, onHighlight }: {
@@ -36,18 +53,20 @@ export default function AgentChat({ jobId, page, selection, onHighlight }: {
 
   useEffect(() => { end.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs, busy]);
 
-  const send = async (q: string) => {
+  const send = async (q: string, quick?: Quick) => {
     const question = q.trim();
     if (!question || busy) return;
     setText(""); setErr("");
     setMsgs((m) => [...m, { role: "user", text: question }]);
     setBusy(true);
     try {
-      const r = await api.agent(jobId, {
-        question, page,
-        pipe_ids: selection.pipeIds.length ? selection.pipeIds : undefined,
-        bbox: selection.bbox ?? undefined,
-      });
+      const r = quick
+        ? await api.agentTool(jobId, quick.tool, quick.args ?? {})
+        : await api.agent(jobId, {
+          question, page,
+          pipe_ids: selection.pipeIds.length ? selection.pipeIds : undefined,
+          bbox: selection.bbox ?? undefined,
+        });
       const ids: string[] = r.markera?.ror_id ?? [];
       setMsgs((m) => [...m, { role: "agent", text: r.svar || "(inget svar)", tools: r.verktyg ?? [], ids }]);
       if (ids.length) onHighlight(ids);
@@ -102,8 +121,9 @@ export default function AgentChat({ jobId, page, selection, onHighlight }: {
           <div className="agentintro">
             <h4>Fråga ritningen</h4>
             <p>
-              Varje siffra agenten säger kommer ur ett verktygsanrop mot läsningen — den räknar aldrig själv,
-              och den hittar inte på ett rör-id. Markera något i ritningen först, så vet den vad ”det här” är.
+              Knapparna nedan går rakt in i läsningen och svarar utan modell — de kan inte hitta på ett tal.
+              Fri text behöver en modell som väljer verktyg åt dig. Markera något i ritningen först, så vet
+              agenten vad ”det här” är.
             </p>
           </div>
         )}
@@ -138,7 +158,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight }: {
           <div key={g.grupp} className="qgroup">
             <span className="qlabel">{g.grupp}</span>
             {g.fragor.map((q) => (
-              <button key={q} className="chipbtn" onClick={() => send(q)} disabled={busy}>{q}</button>
+              <button key={q.text} className="chipbtn" onClick={() => send(q.text, q)} disabled={busy}>{q.text}</button>
             ))}
           </div>
         ))}

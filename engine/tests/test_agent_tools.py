@@ -83,3 +83,31 @@ def test_the_graph_answers_what_connects_to_what(tmp_path, synthetic_pdf):
     assert any(r["pipe_id"] == pid for r in net["ror"]), "ett rör hänger alltid ihop med sig självt"
     for nb in T.run("grannar", m, {"ror_id": pid})["ror"]:
         assert nb["pipe_id"] in {r["pipe_id"] for r in net["ror"]}, "en granne ligger i samma nät"
+
+
+def test_a_question_on_a_button_is_answered_without_a_model(tmp_path, synthetic_pdf):
+    """Every question the interface offers is one call into the reading, said in Swedish by arithmetic.
+
+    An installation with no model configured must still be able to ask a drawing what it measures. If these
+    needed a model to compose a sentence, the drawing would stop being readable the moment nobody paid for a
+    second opinion.
+    """
+    from vvs_engine.agent.answers import say
+    m = _read(tmp_path, synthetic_pdf)
+    for name in ("mangda", "hamta_ritning", "kontrollera_skala", "hitta_dimensionsbyten",
+                 "hitta_fria_rorandar", "hitta_dubbelritad_geometri", "hitta_olosta",
+                 "hitta_omatt_geometri", "hamta_forklaringslista", "kontrollera_lasningen"):
+        text = say(name, T.run(name, m, {}))
+        assert isinstance(text, str) and text.strip(), f"{name} svarade med ingenting"
+        assert "None" not in text and "{" not in text, f"{name} läckte rådata: {text[:80]}"
+
+
+def test_the_spoken_total_is_the_measured_total(tmp_path, synthetic_pdf):
+    """The sentence and the table are the same number, written two ways."""
+    from vvs_engine.agent.answers import say
+    m = _read(tmp_path, synthetic_pdf)
+    out = T.run("mangda", m, {"gruppera_pa": "system"})
+    if not out["rader"]:
+        return
+    said = say("mangda", out)
+    assert f"{out['summa_m']:.2f}".replace(".", ",") in said
