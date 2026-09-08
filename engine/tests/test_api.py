@@ -186,3 +186,55 @@ def test_an_export_carries_the_corrected_reading_and_the_riser_source_on_screen(
             assert f"{n} stigare" in got["Vertikalt ursprung"], (src, n, got["Vertikalt ursprung"])
         else:
             assert "ANTAGET" not in got["Vertikalt ursprung"]
+
+
+def test_an_agent_proposal_is_only_written_when_a_person_accepts_it(client, synthetic_pdf):
+    """The agent proposes; accepting writes. And what is written is what the server recomputes, not what it is sent."""
+    r = client.post("/api/auth/register", json={"email": "forslag@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Förslag", "description": ""}, headers=H).json()
+    with open(synthetic_pdf, "rb") as fh:
+        d = client.post(f"/api/projects/{p['id']}/drawings",
+                        files={"file": ("f.pdf", fh, "application/pdf")}, headers=H).json()
+    j = client.post(f"/api/drawings/{d['id']}/analyze", headers=H).json()
+    for _ in range(120):
+        j = client.get(f"/api/jobs/{j['id']}", headers=H).json()
+        if j["status"] in ("COMPLETED", "FAILED"):
+            break
+        time.sleep(0.5)
+    assert j["status"] == "COMPLETED", j
+
+    before = client.get(f"/api/jobs/{j['id']}/result", headers=H).json()
+    pipe = next(x for x in before["pipes"] if x.get("designation") and (x.get("horizontal_m") or 0) > 0)
+    name, metres = pipe["designation"], pipe["horizontal_m"]
+    row_before = next(q for q in before["quantities"] if q["designation"] == name)["confirmed_total_m"]
+
+    # asking is not changing: running the tool leaves the reading exactly as it was
+    args = {"ror_id": [pipe["physical_pipe_id"]], "skal": "ligger i vägg"}
+    proposal = client.post(f"/api/jobs/{j['id']}/agent/tool", headers=H,
+                           json={"name": "foresla_radera_ror", "arguments": args}).json()
+    assert proposal["verktyg"][0]["resultat"]["tillstand"] == "FORESLAGEN"
+    assert client.get(f"/api/jobs/{j['id']}/result", headers=H).json()["corrections"] == []
+
+    # accepting writes it, and the metres are the reading's own
+    out = client.post(f"/api/jobs/{j['id']}/agent/edit", headers=H,
+                      json={"name": "foresla_radera_ror", "arguments": args, "note": "godkänt"}).json()
+    assert len(out["skrivna"]) == 1 and abs(out["berord_meter"] - metres) < 0.01
+    after = client.get(f"/api/jobs/{j['id']}/result", headers=H).json()
+    row_after = next(q for q in after["quantities"] if q["designation"] == name)
+    assert abs(row_after["confirmed_total_m"] - (row_before - metres)) < 0.01
+    assert row_after["engine_total_m"] == row_before, "the engine's own figure has to survive the correction"
+
+    # and it can be undone like any other correction
+    client.delete(f"/api/drawings/{d['id']}/corrections/{out['skrivna'][0]['id']}", headers=H)
+    undone = client.get(f"/api/jobs/{j['id']}/result", headers=H).json()
+    assert next(q for q in undone["quantities"] if q["designation"] == name)["confirmed_total_m"] == row_before
+
+    # a reading tool cannot be pushed through the change path, and a refused proposal writes nothing
+    assert client.post(f"/api/jobs/{j['id']}/agent/edit", headers=H,
+                       json={"name": "mangda", "arguments": {}}).status_code == 400
+    assert client.post(f"/api/jobs/{j['id']}/agent/edit", headers=H,
+                       json={"name": "foresla_byt_beteckning",
+                             "arguments": {"ror_id": [pipe["physical_pipe_id"]],
+                                           "till_beteckning": "PÅHITT-1-999"}}).status_code == 409
+    assert client.get(f"/api/drawings/{d['id']}/corrections", headers=H).json()[0]["undone"] is True

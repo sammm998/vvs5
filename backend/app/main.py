@@ -610,7 +610,7 @@ class AgentAsk(BaseModel):
 def agent_tools(user: User = Depends(current_user)):
     """The contract, so the interface can show what the agent is actually able to do."""
     from vvs_engine.agent import tools as T
-    return {"tools": [{"name": t["name"], "description": t["description"],
+    return {"tools": [{"name": t["name"], "description": t["description"], "andrar": bool(t.get("writes")),
                        "parameters": sorted(t["parameters"]["properties"])} for t in T.TOOLS.values()]}
 
 
@@ -641,6 +641,59 @@ def agent_tool(job_id: str, body: ToolAsk, user: User = Depends(current_user), d
     from app.agent import _highlights
     return {"svar": say(body.name, result), "verktyg": [{"namn": body.name, "argument": body.arguments or {}, "resultat": result}],
             "markera": _highlights([{"resultat": result}])}
+
+
+class EditAsk(BaseModel):
+    name: str
+    arguments: dict | None = None
+    note: str | None = None
+
+
+@app.post("/api/jobs/{job_id}/agent/edit")
+def agent_edit(job_id: str, body: EditAsk, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Accept a change the agent proposed, and write it to the correction log.
+
+    The proposal itself never crosses the wire back. What arrives is the call that produced it - the tool and its
+    arguments - and the server runs that call again against this reading and records what comes out. So a caller
+    cannot hand back a proposal with the metres edited, or one made against another drawing: the numbers written
+    are the ones this reading produces right now, or nothing is written at all.
+
+    What lands is ordinary corrections. They layer over the reading the same way a person's own do, they sit
+    beside the engine's untouched figures, and each one can be undone.
+    """
+    from vvs_engine.agent import tools as T
+    from vvs_engine.agent.model import DrawingModel
+
+    j = _job(db, user, job_id)
+    if j.status != "COMPLETED":
+        raise HTTPException(409, "analysen är inte klar")
+    if not T.writes(body.name):
+        raise HTTPException(400, f"{body.name} ändrar ingenting; den svarar på en fråga")
+    result = T.run(body.name, DrawingModel(_result_dir(j)), body.arguments or {})
+    if result.get("fel"):
+        raise HTTPException(400, str(result["fel"]))
+    if result.get("tillstand") != "FORESLAGEN" or not result.get("forslag"):
+        raise HTTPException(409, str(result.get("skal") or "ritningen stöder inte den ändringen"))
+
+    written = []
+    for f in result["forslag"]:
+        if f["kind"] not in CORRECTION_KINDS:
+            continue
+        # The situation is read off the reading here exactly as it is for a correction a person makes by hand:
+        # what a correction may teach a later drawing is a fact about this one, never something a caller sends.
+        sit = _situation_of(db, user, job_id, f.get("designation"))
+        note = " · ".join(x for x in (body.note, f.get("text"),
+                                      (f.get("payload") or {}).get("reason")) if x)
+        c = Correction(drawing_id=j.drawing_id, job_id=job_id, user_id=user.id, page=0, kind=f["kind"],
+                       designation=f.get("designation"), payload=f.get("payload") or {}, situation=sit,
+                       note=note[:1000] or None)
+        db.add(c)
+        written.append(c)
+    if not written:
+        raise HTTPException(409, "förslaget innehöll ingen rättelse som kunde skrivas")
+    db.commit()
+    return {"skrivna": [_correction_out(c) for c in written],
+            "sammanfattning": result.get("sammanfattning"), "berord_meter": result.get("berord_meter")}
 
 
 @app.post("/api/jobs/{job_id}/agent")

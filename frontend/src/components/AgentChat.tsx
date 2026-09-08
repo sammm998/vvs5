@@ -8,7 +8,16 @@ import { api } from "../api";
  * runs it rests on can be lit up on the sheet - a claim you cannot point at is not an answer.
  */
 
-type Msg = { role: "user" | "agent"; text: string; tools?: any[]; ids?: string[] };
+type Msg = { role: "user" | "agent"; text: string; tools?: any[]; ids?: string[]; done?: string };
+
+/* A change the agent proposed but has not made. It carries the call that produced it rather than its own
+   numbers: accepting sends the call back, the server runs it again over this reading, and what it computes is
+   what lands in the correction log. So there is no wire the metres could be edited on. */
+type Proposal = { namn: string; argument: any; resultat: any };
+
+function proposalsIn(tools: any[]): Proposal[] {
+  return (tools || []).filter((t) => t?.resultat?.tillstand === "FORESLAGEN" && (t.resultat.forslag || []).length);
+}
 
 /* A first question is the hardest one to write, so the ones worth asking are on the surface - grouped the way a
    reader thinks: what does it measure, what should I check, what does this drawing say. */
@@ -29,6 +38,9 @@ const QUICK: { grupp: string; fragor: Quick[] }[] = [
     { text: "Vad togs inte som rör?", tool: "hitta_omatt_geometri" },
     { text: "Granskarnas utlåtande", tool: "kontrollera_lasningen" },
   ] },
+  { grupp: "Rätta", fragor: [
+    { text: "Vad kan ritas in?", tool: "hitta_omatt_geometri_att_rita" },
+  ] },
   { grupp: "Ritningen", fragor: [
     { text: "Vad är det här för blad?", tool: "hamta_ritning" },
     { text: "Förklara beteckningarna", tool: "hamta_forklaringslista" },
@@ -36,11 +48,12 @@ const QUICK: { grupp: string; fragor: Quick[] }[] = [
   ] },
 ];
 
-export default function AgentChat({ jobId, page, selection, onHighlight }: {
+export default function AgentChat({ jobId, page, selection, onHighlight, onChanged }: {
   jobId: string;
   page: number;
   selection: { pipeIds: string[]; bbox: number[] | null };
   onHighlight: (ids: string[]) => void;
+  onChanged?: () => void;
 }) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [text, setText] = useState("");
@@ -48,6 +61,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight }: {
   const [err, setErr] = useState("");
   const [listening, setListening] = useState(false);
   const [speak, setSpeak] = useState(false);
+  const [writing, setWriting] = useState("");
   const rec = useRef<any>(null);
   const end = useRef<HTMLDivElement>(null);
 
@@ -81,6 +95,22 @@ export default function AgentChat({ jobId, page, selection, onHighlight }: {
       setErr(e?.message || "agenten kunde inte svara");
     } finally {
       setBusy(false);
+    }
+  };
+
+  /* Accepting a proposal. The card shows what would change; this is where it actually does. The reading keeps
+     its own figures beside the corrected ones, and the correction can be undone under Rättelser. */
+  const accept = async (i: number, p: Proposal) => {
+    if (writing) return;
+    setWriting(`${i}:${p.namn}`); setErr("");
+    try {
+      const r = await api.agentEdit(jobId, p.namn, p.argument, "godkänt i chatten");
+      setMsgs((m) => m.map((x, j) => (j === i ? { ...x, done: r.sammanfattning || "Rättelsen är skriven." } : x)));
+      onChanged?.();
+    } catch (e: any) {
+      setErr(e?.message || "rättelsen kunde inte skrivas");
+    } finally {
+      setWriting("");
     }
   };
 
@@ -141,6 +171,30 @@ export default function AgentChat({ jobId, page, selection, onHighlight }: {
                 ))}
               </details>
             )}
+            {m.role === "agent" && proposalsIn(m.tools || []).map((p, k) => (
+              <div key={`p${k}`} className={`proposal${m.done ? " done" : ""}`}>
+                <div className="phead">
+                  <span className="ptag">Förslag</span>
+                  <span>{p.resultat.sammanfattning}</span>
+                </div>
+                <ul>
+                  {(p.resultat.forslag || []).map((f: any, q: number) => <li key={q}>{f.text}</li>)}
+                </ul>
+                {p.resultat.stor_andring && (
+                  <p className="pwarn">Ändringen rör mer än 50 m. Kontrollera att den är menad så.</p>
+                )}
+                {m.done ? (
+                  <p className="pdone">{m.done} Rättelsen kan ångras under Rättelser.</p>
+                ) : (
+                  <div className="pbtns">
+                    <button className="ask" disabled={!!writing} onClick={() => accept(i, p)}>
+                      {writing === `${i}:${p.namn}` ? "Skriver…" : "Genomför"}
+                    </button>
+                    <span className="muted">Inget är ändrat än.</span>
+                  </div>
+                )}
+              </div>
+            ))}
             {m.ids && m.ids.length > 0 && (
               <button className="showbtn" onClick={() => onHighlight(m.ids!)}>
                 Visa {m.ids.length} {m.ids.length === 1 ? "sträcka" : "sträckor"} på ritningen

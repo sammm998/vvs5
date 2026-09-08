@@ -26,6 +26,28 @@ def say(name: str, result: dict[str, Any]) -> str:
     if result.get("fel"):
         return str(result["fel"])
 
+    # A proposed change says the same thing whichever tool made it: what it would do, to how much, and - when
+    # the drawing does not support it - why nothing is offered instead.
+    if result.get("tillstand") == "AVBOJD":
+        return "Ingen ändring föreslås: " + str(result.get("skal") or "ritningen stöder den inte") + "."
+    if result.get("tillstand") == "FORESLAGEN":
+        rows = "\n".join("  " + str(f.get("text")) for f in (result.get("forslag") or [])[:20])
+        head = str(result.get("sammanfattning") or "")
+        warn = ("\n  Obs: ändringen rör mer än 50 m. Kontrollera att den är menad så."
+                if result.get("stor_andring") else "")
+        return (f"{head}\n{rows}{warn}\n"
+                f"Ingenting är ändrat än - rättelsen skrivs när du godkänner den, och kan ångras.")
+
+    if name == "hitta_omatt_geometri_att_rita":
+        k = result.get("kandidater") or []
+        if not k:
+            return ("Ingen bortvald geometri har en hänvisningslinje på sig, så det finns inget att rita in "
+                    "som ritningen faktiskt pekar ut.")
+        rows = "\n".join(f"  {c['meter']:.2f} m på {c['lager']}: {c['skal']} "
+                          f"({c['hanvisningar_som_ror_den']} hänvisning(ar) rör den)" for c in k[:12])
+        n = int(result.get("antal") or 0)
+        return f"{n} ställe{'n' if n != 1 else ''} läsningen valde bort men något pekar på.\n{rows}"
+
     if name == "mangda":
         rows = result.get("rader") or []
         if not rows:

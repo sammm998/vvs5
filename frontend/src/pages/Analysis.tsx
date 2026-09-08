@@ -339,6 +339,10 @@ export default function AnalysisPage() {
               setAgentIds(ids);
               const first = result.pipes.find((p: any) => p.physical_pipe_id === ids[0]);
               if (first) { setSelIdent(first.identity); viewer.current?.zoomTo(first.bbox ?? null); }
+            }}
+            onChanged={async () => {
+              setCorrections(await api.corrections(job.drawing_id));
+              setResult(await api.result(id!));
             }} />
         )}
         {tab === "ejlosta" && (() => {

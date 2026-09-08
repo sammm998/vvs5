@@ -75,6 +75,11 @@ export const api = {
   agentTool: (jobId: string, name: string, args: any = {}) =>
     req(`/api/jobs/${jobId}/agent/tool`, { method: "POST", headers: { "Content-Type": "application/json" },
                                            body: JSON.stringify({ name, arguments: args }) }),
+  // Accepting a change the agent proposed. The proposal itself never travels back: the call that produced it
+  // does, and the server runs it again and writes what comes out - so the metres recorded are the reading's.
+  agentEdit: (jobId: string, name: string, args: any = {}, note?: string) =>
+    req(`/api/jobs/${jobId}/agent/edit`, { method: "POST", headers: { "Content-Type": "application/json" },
+                                           body: JSON.stringify({ name, arguments: args, note }) }),
   corrections: (drawingId: string) => req(`/api/drawings/${drawingId}/corrections`),
   addCorrection: (drawingId: string, body: any) =>
     req(`/api/drawings/${drawingId}/corrections`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),

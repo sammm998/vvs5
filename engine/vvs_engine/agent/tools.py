@@ -18,9 +18,15 @@ from .model import DrawingModel
 TOOLS: dict[str, dict[str, Any]] = {}
 
 
-def tool(name: str, description: str, params: dict[str, Any]) -> Callable:
+def tool(name: str, description: str, params: dict[str, Any], writes: bool = False) -> Callable:
+    """Register one tool. `writes` marks the ones that propose a change rather than report a fact.
+
+    A writing tool still only proposes: it returns the correction it would record, with every metre taken from
+    the reading, and nothing happens until a person accepts it. The flag exists so the two can never be confused
+    - the question path runs read tools and the change path runs writing ones, and neither can reach the other.
+    """
     def wrap(fn: Callable) -> Callable:
-        TOOLS[name] = {"name": name, "description": description,
+        TOOLS[name] = {"name": name, "description": description, "writes": writes,
                        "parameters": {"type": "object", "properties": params,
                                       "required": [k for k, v in params.items() if v.get("required")],
                                       "additionalProperties": False},
@@ -322,3 +328,14 @@ def schemas() -> list[dict[str, Any]]:
     """The contract, in the shape a tool-calling model expects."""
     return [{"type": "function", "name": t["name"], "description": t["description"],
              "parameters": t["parameters"]} for t in TOOLS.values()]
+
+
+def writes(name: str) -> bool:
+    """Whether this tool proposes a change. It still only proposes; nothing in the agent writes."""
+    return bool((TOOLS.get(name) or {}).get("writes"))
+
+
+# The tools that propose a change register themselves the same way the reading tools do, and are imported here
+# so one import of this module is the whole contract. It sits at the bottom because `edits` builds on `tool`,
+# `_num` and `_set` above it - by this line they exist, so the loop closes.
+from . import edits as _edits  # noqa: E402,F401  (registers the writing tools)

@@ -5,8 +5,10 @@ Every number the agent says comes out of a tool call into the measuring pipeline
 the chat and an answer in the takeoff table cannot disagree. The model never sees geometry it could invent from -
 it sees the names of tools and the results they return.
 
-A turn is bounded: at most a handful of tool rounds, and the tools are read-only. Changing the drawing goes
-through the correction log, which is versioned and can be undone; nothing here writes.
+A turn is bounded: at most a handful of tool rounds. Some tools propose a change rather than report a fact,
+and a proposal is still only words: it says which correction it would write and what the reading says that would
+cost, and nothing is recorded until a person accepts it. Accepting runs the same call again on the server and
+writes what comes out, so the metres in the log are the reading's, never the model's.
 """
 from __future__ import annotations
 
@@ -21,7 +23,7 @@ MAX_RESULT_CHARS = 6000
 # geometry. Sending them to the model buries the numbers it was asked for - a takeoff of six systems came back
 # with two hundred pipe ids around it, and the model called the same tool nine times without ever answering.
 FOR_THE_SCREEN = ("ror_id", "pipe_ids", "kallobjekt", "source_path_ids", "segments", "geometry",
-                  "graph_nodes", "stodjande_ankare", "bevis", "ställen")
+                  "graph_nodes", "stodjande_ankare", "bevis", "ställen", "points")
 LIST_CAP = 40
 
 
