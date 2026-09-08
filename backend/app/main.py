@@ -651,28 +651,31 @@ def agent_ask(job_id: str, body: AgentAsk, user: User = Depends(current_user), d
     came out of a tool call over the artifacts the measurement wrote, so the chat and the takeoff table cannot
     disagree, and the reply carries the ids it rests on so the claim can be pointed at on the sheet.
     """
-    from app.agent import run_turn
-    from app.jobs import second_reader_state
     from vvs_engine.agent.model import DrawingModel
+
+    from app.agent import run_turn
 
     j = _job(db, user, job_id)
     if j.status != "COMPLETED":
         raise HTTPException(409, "analysen är inte klar")
-    on, why = second_reader_state()
-    if not on:
-        raise HTTPException(503, f"Fri text behöver en modell, och ingen är konfigurerad: {why}. "
-                                    f"Knapparna ovanför svarar ändå — de går rakt in i läsningen. "
-                                    f"Sätt OPENAI_API_KEY och VVS_SECOND_READER=true för att fråga fritt.")
+    # The agent reads; it cannot move a metre. VVS_SECOND_READER is about whether a model may settle a case
+    # during the measurement, which is a stronger promise than "no model may answer a question about a finished
+    # reading" - and switching the first off used to silence the second, which is not what anyone asked for.
     try:
         from tools.astra_transport import agent_transport
     except Exception as e:                                      # noqa: BLE001
         raise HTTPException(503, f"agenttransporten kunde inte laddas: {type(e).__name__}")
+    # No pre-flight guess about whether a model can be reached. Every guess so far has been wrong in a different
+    # way - a flag that meant something else, a proxy that attaches the credential without setting HTTPS_PROXY -
+    # and a wrong "cannot" is worse than a slow "could not": it is a refusal on a false premise. So the call is
+    # made, and what comes back is what the reader is told.
     model = DrawingModel(_result_dir(j))
     sel = {"pipe_ids": body.pipe_ids or [], "bbox": body.bbox, "page": body.page}
     try:
         out = run_turn(model, agent_transport(), body.question, selection=sel, history=body.history or [])
     except Exception as e:                                      # noqa: BLE001
-        raise HTTPException(502, f"agenten kunde inte nå modellen: {type(e).__name__}: {str(e)[:160]}")
+        raise HTTPException(502, f"Agenten nådde inte modellen: {type(e).__name__}: {str(e)[:200]}. "
+                                 f"Knapparna svarar ändå — de går rakt in i läsningen och behöver ingen modell.")
     return out
 
 

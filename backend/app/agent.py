@@ -17,8 +17,27 @@ MAX_ROUNDS = 6
 MAX_RESULT_CHARS = 6000
 
 
+# What a result carries for the interface but not for the answer: identifiers to light up, source objects,
+# geometry. Sending them to the model buries the numbers it was asked for - a takeoff of six systems came back
+# with two hundred pipe ids around it, and the model called the same tool nine times without ever answering.
+FOR_THE_SCREEN = ("ror_id", "pipe_ids", "kallobjekt", "source_path_ids", "segments", "geometry",
+                  "graph_nodes", "stodjande_ankare", "bevis", "ställen")
+LIST_CAP = 40
+
+
+def _trim(obj: Any) -> Any:
+    """The same result with what only the screen needs taken out, so the answer is what the model sees."""
+    if isinstance(obj, dict):
+        out = {k: _trim(v) for k, v in obj.items() if k not in FOR_THE_SCREEN}
+        return out
+    if isinstance(obj, list):
+        head = [_trim(v) for v in obj[:LIST_CAP]]
+        return head + [f"…({len(obj) - LIST_CAP} till)"] if len(obj) > LIST_CAP else head
+    return obj
+
+
 def _clip(obj: Any) -> str:
-    s = json.dumps(obj, ensure_ascii=False)
+    s = json.dumps(_trim(obj), ensure_ascii=False)
     return s if len(s) <= MAX_RESULT_CHARS else s[:MAX_RESULT_CHARS] + " …(avkortat)"
 
 
@@ -42,15 +61,19 @@ def run_turn(model, ask, question: str, selection: dict | None = None,
         if bits:
             lines.append("\n[Användarens markering] " + "; ".join(bits))
 
-    messages: list[dict] = list(history or [])
-    messages.append({"role": "user", "content": "\n".join(lines)})
+    items: list[dict] = list(history or [])
+    items.append({"role": "user", "content": "\n".join(lines)})
 
     used: list[dict] = []
+    prev: str | None = None
     for _ in range(MAX_ROUNDS):
-        out = ask(messages, T.schemas())
+        out = ask(items, T.schemas(), prev)
+        prev = out.get("id")
         calls = out.get("calls") or []
         if not calls:
             return {"svar": out.get("text") or "", "verktyg": used, "markera": _highlights(used)}
+        # only what is new goes back: the model keeps its own place in the conversation through the chain
+        items = []
         for c in calls:
             try:
                 args = json.loads(c.get("arguments") or "{}")
@@ -58,12 +81,11 @@ def run_turn(model, ask, question: str, selection: dict | None = None,
                 args = {}
             result = T.run(c.get("name") or "", model, args)
             used.append({"namn": c.get("name"), "argument": args, "resultat": result})
-            messages.append({"type": "function_call", "call_id": c.get("call_id"),
-                             "name": c.get("name"), "arguments": c.get("arguments") or "{}"})
-            messages.append({"type": "function_call_output", "call_id": c.get("call_id"),
-                             "output": _clip(result)})
-    return {"svar": "Jag kom inte fram till ett svar inom det antal steg en fråga får ta. "
-                    "Smalna av frågan, eller markera det du menar i ritningen.",
+            items.append({"type": "function_call_output", "call_id": c.get("call_id"),
+                          "output": _clip(result)})
+    called = ", ".join(dict.fromkeys(u["namn"] for u in used))
+    return {"svar": f"Jag hämtade svaret ({called}) men kom inte fram till en formulering inom "
+                    f"{MAX_ROUNDS} steg. Siffrorna finns under verktygsanropen nedan.",
             "verktyg": used, "markera": _highlights(used)}
 
 
@@ -71,22 +93,23 @@ def _highlights(used: list[dict]) -> dict:
     """Everything the answer rests on, so a claim on screen can be pointed at on the sheet."""
     pipe_ids: list[str] = []
     boxes: list[list[float]] = []
+    # Every list a tool can return that names a run or a place on the sheet. A tool that finds twenty-eight size
+    # frontiers and lights up nothing is an answer you cannot point at, which is the one thing this must not be.
+    LISTS = ("ror", "stracker", "vag", "granser", "andar", "stallen", "beteckningar", "fall")
     for u in used:
         r = u.get("resultat") or {}
-        for key in ("ror", "stracker", "vag"):
+        for key in LISTS:
             for row in (r.get(key) or []):
-                if isinstance(row, dict) and row.get("pipe_id"):
+                if not isinstance(row, dict):
+                    continue
+                if row.get("pipe_id"):
                     pipe_ids.append(row["pipe_id"])
-                    if row.get("bbox"):
-                        boxes.append(row["bbox"])
-        for row in (r.get("beteckningar") or []):
-            if isinstance(row, dict) and row.get("bbox"):
-                boxes.append(row["bbox"])
+                pipe_ids.extend(i for i in (row.get("pipe_ids") or []) if isinstance(i, str))
+                if row.get("bbox"):
+                    boxes.append(row["bbox"])
         if r.get("pipe_id"):
             pipe_ids.append(r["pipe_id"])
-        for row in (r.get("granser") or []) + (r.get("andar") or []) + (r.get("stallen") or []):
-            if isinstance(row, dict) and row.get("bbox"):
-                boxes.append(row["bbox"])
+        pipe_ids.extend(i for i in (r.get("pipe_ids") or []) if isinstance(i, str))
     seen: set[str] = set()
     ids = [i for i in pipe_ids if not (i in seen or seen.add(i))]
     return {"ror_id": ids[:400], "rutor": boxes[:400]}

@@ -31,6 +31,16 @@ def tool(name: str, description: str, params: dict[str, Any]) -> Callable:
     return wrap
 
 
+def _set(v) -> bool:
+    """Whether an optional filter was actually given.
+
+    A model filling a schema tends to write the empty value rather than leave a field out - system "", dimension
+    0 - and reading a zero as "size zero" filtered every row away and answered an honest question with nothing.
+    No pipe is DN 0 and no system is named "", so a blank is an absent filter.
+    """
+    return v is not None and v != "" and v != 0
+
+
 def _num(v) -> float:
     try:
         return float(v)
@@ -77,11 +87,11 @@ def hitta_ror(m: DrawingModel, system: str | None = None, dimension: int | None 
               beteckning: str | None = None, sida: int | None = None, omrade: list | None = None) -> dict:
     out = []
     for p in m.pipes:
-        if system and (p.get("system") or "").upper() != system.upper():
+        if _set(system) and (p.get("system") or "").upper() != system.upper():
             continue
-        if dimension is not None and p.get("dn") != dimension:
+        if _set(dimension) and p.get("dn") != dimension:
             continue
-        if beteckning and (p.get("designation") or "").upper() != beteckning.upper():
+        if _set(beteckning) and (p.get("designation") or "").upper() != beteckning.upper():
             continue
         if sida is not None and p.get("page") != sida:
             continue
@@ -102,7 +112,7 @@ def hitta_beteckningar(m: DrawingModel, text: str | None = None, sida: int | Non
     out = []
     for d in m.designations:
         t = (d.get("text") or "")
-        if text and text.upper() not in t.upper():
+        if _set(text) and text.upper() not in t.upper():
             continue
         if sida is not None and d.get("page") != sida:
             continue
@@ -159,8 +169,8 @@ def mat_ror(m: DrawingModel, ror_id: list[str]) -> dict:
 def mangda(m: DrawingModel, gruppera_pa: str = "beteckning", system: str | None = None,
            dimension: int | None = None) -> dict:
     rows = [r for r in m.quantities.get("rows", [])
-            if (not system or (r.get("system") or "").upper() == system.upper())
-            and (dimension is None or r.get("dn") == dimension)]
+            if (not _set(system) or (r.get("system") or "").upper() == system.upper())
+            and (not _set(dimension) or r.get("dn") == dimension)]
     if gruppera_pa == "beteckning":
         out = [{"nyckel": r["designation"], "meter": round(_num(r.get("confirmed_total_m")), 3),
                 "antal_stracker": r.get("physical_pipe_count"), "ror_id": r.get("pipe_ids") or []} for r in rows]

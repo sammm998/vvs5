@@ -82,7 +82,10 @@ def _second_reader():
 
 
 def second_reader_state() -> tuple[bool, str]:
-    """Whether this installation will consult a second reader, and the reason - the same answer everywhere.
+    """Whether a model may settle a case *during the measurement*, and the reason.
+
+    This is not the same question as whether the agent may answer a question about a finished reading. The agent
+    only reads, and turning this off is a promise about the takeoff, not a gag order.
 
     Unset means yes where a key is present. Explicitly on means yes wherever the transport can reach the model at
     all, which includes a machine behind a proxy that attaches the credential and holds no key itself.

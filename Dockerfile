@@ -9,11 +9,13 @@ RUN npm run build
 FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 WORKDIR /app
-# onnxruntime, which the OCR cross-check runs on, links against libgomp. The slim image does not carry it, and
-# because the recogniser is imported lazily the miss surfaced as "the check could not be run" on every sheet
-# rather than as a missing dependency at build time.
+# What the OCR cross-check needs from the system, checked rather than guessed: the recogniser imports OpenCV,
+# whose extension links against libGL and glib, and the slim image carries neither. Because the recogniser is
+# imported on first use, the miss surfaced as "the check could not be run" on every sheet instead of as a
+# missing dependency at build time. tests/test_image_dependencies.py reads this line against what the installed
+# packages actually ask the loader for, so the two cannot drift apart.
 RUN apt-get update \
- && apt-get install -y --no-install-recommends libgomp1 \
+ && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 \
  && rm -rf /var/lib/apt/lists/*
 COPY backend/requirements.txt /app/backend/requirements.txt
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt

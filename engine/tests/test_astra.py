@@ -239,10 +239,24 @@ def test_the_transport_sends_a_key_only_when_this_machine_holds_one(monkeypatch)
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("HTTPS_PROXY", raising=False)
     monkeypatch.delenv("https_proxy", raising=False)
-    assert _auth() == []
+    assert _auth() == {}
     assert available()[0] is False
 
     monkeypatch.setenv("OPENAI_API_KEY", "sk-inte-en-riktig-nyckel")
-    args = _auth()
-    assert args[0] == "-H" and args[1].startswith("Authorization: Bearer ")
+    h = _auth()
+    assert h["Authorization"].startswith("Bearer ")
     assert available()[0] is True
+
+
+def test_the_transport_needs_no_program_that_may_not_be_installed(monkeypatch):
+    """It used to shell out to curl, which a slim image does not carry.
+
+    Every question to the second reader then died with "No such file or directory: 'curl'" - a strange way for a
+    drawing to fail, and one no test could have caught because the tests run where curl exists. httpx is a
+    dependency of the service, and a dependency cannot go missing.
+    """
+    import tools.astra_transport as t
+    src = open(t.__file__, encoding="utf-8").read()
+    body = "\n".join(l for l in src.splitlines() if not l.strip().startswith("#"))
+    assert "subprocess" not in body, "transporten startar ett program som kanske inte finns"
+    assert "httpx" in body

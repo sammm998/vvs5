@@ -111,3 +111,18 @@ def test_the_spoken_total_is_the_measured_total(tmp_path, synthetic_pdf):
         return
     said = say("mangda", out)
     assert f"{out['summa_m']:.2f}".replace(".", ",") in said
+
+
+def test_a_blank_filter_is_no_filter(tmp_path, synthetic_pdf):
+    """A model filling a schema writes the empty value rather than leaving a field out.
+
+    Reading `dimension: 0` as "size zero" filtered every row away, so the takeoff came back empty, so the model
+    asked again - nine times over, and never got as far as saying a number. No pipe is DN 0 and no system is
+    named "", so a blank is an absent filter.
+    """
+    m = _read(tmp_path, synthetic_pdf)
+    full = T.run("mangda", m, {"gruppera_pa": "system"})
+    blank = T.run("mangda", m, {"system": "", "dimension": 0, "gruppera_pa": "system"})
+    assert blank["summa_m"] == full["summa_m"], "tomma fält får inte tolkas som ett filter"
+    ror = T.run("hitta_ror", m, {"system": "", "dimension": 0, "beteckning": ""})
+    assert ror["antal"] == T.run("hitta_ror", m, {})["antal"]

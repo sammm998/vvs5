@@ -7,13 +7,15 @@ and runs with no network unless a caller hands `analyze_page` a transport built 
 No key appears in this file. Where the request leaves through an agent proxy that attaches the credential,
 nothing is sent from here at all; where it does not - a container running the service - the key is read from
 OPENAI_API_KEY in the environment at call time and put on the wire, and never written down, logged or returned.
+
+The request goes out over httpx, which the service already depends on. It used to shell out to curl, and the
+slim image has no curl: every question to the second reader died with "No such file or directory: 'curl'", which
+is a strange way for a drawing to fail. A library that is installed cannot go missing.
 """
 from __future__ import annotations
 
 import json
 import os
-import subprocess
-import tempfile
 import time
 from typing import Callable
 
@@ -28,15 +30,15 @@ SYSTEM = ("Du läser VVS-ritningar. Du får ett fall som den geometriska läsnin
           "geometri, koordinater, dimensioner eller beteckningar som inte står i frågan.")
 
 
-def _auth() -> list[str]:
+def _auth() -> dict[str, str]:
     """The credential, if this machine is the one that has to supply it.
 
     Behind an agent proxy the request is authenticated after it leaves and no header belongs here. In a container
-    there is no such proxy, so the key is read from the environment at the moment of the call. It is returned to
-    the caller of curl and to nowhere else: never stored, never echoed into an error, never part of a result.
+    there is no such proxy, so the key is read from the environment at the moment of the call. It goes on the
+    wire and nowhere else: never stored, never echoed into an error, never part of a result.
     """
     key = os.environ.get("OPENAI_API_KEY", "").strip()
-    return ["-H", f"Authorization: Bearer {key}"] if key else []
+    return {"Authorization": f"Bearer {key}"} if key else {}
 
 
 def available() -> tuple[bool, str]:
@@ -48,13 +50,45 @@ def available() -> tuple[bool, str]:
     return False, "ingen OPENAI_API_KEY och ingen proxy: läsningen står på sin egen geometri"
 
 
-def _curl(args: list[str], timeout: int = 90) -> dict:
-    r = subprocess.run(["curl", "-sS", "--max-time", str(timeout), *_auth(), *args], capture_output=True, text=True)
+def _post(body: dict, timeout: int = 120) -> dict:
+    import httpx
+    with httpx.Client(timeout=timeout) as c:
+        r = c.post(API, json=body, headers={"Content-Type": "application/json", **_auth()})
+    return _json(r)
+
+
+def _get(url: str, timeout: int = 60) -> dict:
+    import httpx
+    with httpx.Client(timeout=timeout) as c:
+        r = c.get(url, headers=_auth())
+    return _json(r)
+
+
+def _await(d: dict) -> str:
+    """Put a background response to bed and hand back the words it produced."""
+    if d.get("error"):
+        raise RuntimeError(str(d["error"])[:200])
+    rid = d["id"]
+    for _ in range(POLL_ROUNDS):
+        if d.get("status") in ("completed", "failed", "incomplete"):
+            break
+        time.sleep(POLL_SECONDS)
+        d = _get(f"{API}/{rid}")
+    return d
+
+
+def _text_of(d: dict) -> str:
+    return "".join(c.get("text", "")
+                   for o in d.get("output", []) for c in (o.get("content") or [])
+                   if c.get("type") == "output_text")
+
+
+def _json(r) -> dict:
     try:
-        return json.loads(r.stdout)
+        return r.json()
     except Exception:
-        # the key can appear in curl's own diagnostics, so only the first line of stdout is ever quoted back
-        raise RuntimeError(f"icke-JSON från {API}: {(r.stdout or '')[:200] or 'inget svar'}")
+        # a credential can appear in a proxy's own diagnostics, so only the opening of the body is quoted back
+        raise RuntimeError(f"icke-JSON från {API} ({r.status_code}): {(r.text or '')[:200] or 'inget svar'}")
 
 
 def transport(effort: str = "low") -> Callable:
@@ -62,24 +96,7 @@ def transport(effort: str = "low") -> Callable:
     def ask(q) -> str:
         body = {"model": MODEL, "instructions": SYSTEM, "input": q.as_prompt(),
                 "max_output_tokens": MAX_OUTPUT_TOKENS, "reasoning": {"effort": effort}, "background": True}
-        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
-            json.dump(body, fh)
-            path = fh.name
-        try:
-            d = _curl([API, "-H", "Content-Type: application/json", "-d", f"@{path}"])
-            if d.get("error"):
-                raise RuntimeError(str(d["error"])[:200])
-            rid = d["id"]
-            for _ in range(POLL_ROUNDS):
-                if d.get("status") in ("completed", "failed", "incomplete"):
-                    break
-                time.sleep(POLL_SECONDS)
-                d = _curl([f"{API}/{rid}"], timeout=60)
-            return "".join(c.get("text", "")
-                           for o in d.get("output", []) for c in (o.get("content") or [])
-                           if c.get("type") == "output_text")
-        finally:
-            os.unlink(path)
+        return _text_of(_await(_post(body)))
     return ask
 
 
@@ -98,24 +115,7 @@ def vision_transport(effort: str = "low") -> Callable:
                             "image_url": "data:image/png;base64," + base64.b64encode(png).decode()})
         body = {"model": MODEL, "input": [{"role": "user", "content": content}],
                 "max_output_tokens": 8000, "reasoning": {"effort": effort}, "background": True}
-        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
-            json.dump(body, fh)
-            path = fh.name
-        try:
-            d = _curl([API, "-H", "Content-Type: application/json", "-d", f"@{path}"], timeout=180)
-            if d.get("error"):
-                raise RuntimeError(str(d["error"])[:200])
-            rid = d["id"]
-            for _ in range(POLL_ROUNDS):
-                if d.get("status") in ("completed", "failed", "incomplete"):
-                    break
-                time.sleep(POLL_SECONDS)
-                d = _curl([f"{API}/{rid}"], timeout=60)
-            return "".join(c.get("text", "")
-                           for o in d.get("output", []) for c in (o.get("content") or [])
-                           if c.get("type") == "output_text")
-        finally:
-            os.unlink(path)
+        return _text_of(_await(_post(body)))
     return ask
 
 
@@ -128,8 +128,10 @@ AGENT_SYSTEM = (
     "\n"
     "Har användaren markerat något i ritningen står det i frågan. 'Det här' betyder då det markerade.\n"
     "\n"
-    "Svara kort. När svaret rör geometri: säg siffran, säg var den kommer ifrån, och lista rör-id:n så att "
-    "läsaren kan trycka på dem och se dem på ritningen."
+    "Svara kort och i ren text. Panelen visar text som den är, så använd inga markdown-tabeller, ingen fetstil "
+    "och inga rubriker - en rad per sak, indragen med två mellanslag när du räknar upp. När svaret rör geometri: "
+    "säg siffran, säg var den kommer ifrån, och lista rör-id:n så att läsaren kan trycka på dem och se dem på "
+    "ritningen."
 )
 
 
@@ -140,28 +142,19 @@ def agent_transport(effort: str = "low") -> Callable:
     words it wants to say. Nothing here can reach the drawing: the tools are the caller's, so a number can only
     come from the reading that produced it.
     """
-    def ask(messages: list[dict], tools: list[dict]) -> dict:
-        body = {"model": MODEL, "instructions": AGENT_SYSTEM, "input": messages, "tools": tools,
+    def ask(items: list[dict], tools: list[dict], previous_response_id: str | None = None) -> dict:
+        """One turn. `previous_response_id` chains onto the last answer instead of resending the conversation.
+
+        A reasoning model keeps its own chain of thought server-side, and resending the transcript without it
+        left the model where it started: it called the same tool for a takeoff nine times over and never got as
+        far as saying the number. Chaining hands it back its own place in the conversation.
+        """
+        body = {"model": MODEL, "instructions": AGENT_SYSTEM, "input": items, "tools": tools,
                 "max_output_tokens": 6000, "reasoning": {"effort": effort}, "background": True}
-        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
-            json.dump(body, fh)
-            path = fh.name
-        try:
-            d = _curl([API, "-H", "Content-Type: application/json", "-d", f"@{path}"], timeout=120)
-            if d.get("error"):
-                raise RuntimeError(str(d["error"])[:200])
-            rid = d["id"]
-            for _ in range(POLL_ROUNDS):
-                if d.get("status") in ("completed", "failed", "incomplete"):
-                    break
-                time.sleep(POLL_SECONDS)
-                d = _curl([f"{API}/{rid}"], timeout=60)
-            calls = [{"call_id": o.get("call_id"), "name": o.get("name"), "arguments": o.get("arguments") or "{}"}
-                     for o in d.get("output", []) if o.get("type") == "function_call"]
-            text = "".join(c.get("text", "")
-                           for o in d.get("output", []) for c in (o.get("content") or [])
-                           if c.get("type") == "output_text")
-            return {"calls": calls, "text": text, "status": d.get("status")}
-        finally:
-            os.unlink(path)
+        if previous_response_id:
+            body["previous_response_id"] = previous_response_id
+        d = _await(_post(body))
+        calls = [{"call_id": o.get("call_id"), "name": o.get("name"), "arguments": o.get("arguments") or "{}"}
+                 for o in d.get("output", []) if o.get("type") == "function_call"]
+        return {"calls": calls, "text": _text_of(d), "status": d.get("status"), "id": d.get("id")}
     return ask
