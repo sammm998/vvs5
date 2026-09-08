@@ -34,6 +34,7 @@ from .routes import apply_routes, cross_check, review, run_routes
 
 # a drawing draws its leaders alike: a family carrying this share of the leaders is where it draws them
 LEADER_MIN_SHARE = 0.25
+LEADER_INK_SHARE = 0.5     # a nameless pen is the leader pen when its leaders are most of what it draws
 PEER_SHARE = 0.15          # a drawn family carrying this much of the best family's label ends is a peer of it
 PEER_LABELS_MIN = 2        # and two of the sheet's own labels pointing at it is the least that can say so
 # and with no layer name to vouch for it, this share of the sheet's own pipe labels must have reached it
@@ -81,6 +82,23 @@ class PageAnalysis:
     legend: DrawingLegend = field(default_factory=DrawingLegend)    # the sheet's own designation list
     second_reader: dict | None = None       # bounded cases put to a second reader, and what it did with them
     vision: dict | None = None              # what a look at the rendered page said the reading may have missed
+
+
+def reached_labels(anchors, pipe_labels: set[str]) -> set[str]:
+    """The sheet's own pipe labels that ended up verified on a pipe."""
+    return {a.designation_id for a in anchors if a.state == "VERIFIED_PIPE_ATTACHMENT"} & pipe_labels
+
+
+def label_reach_fails(families, anchors, pipe_labels: set[str]) -> bool:
+    """A sheet labels the pipes it draws, so its own labels say whether the right geometry was taken.
+
+    The test only applies where no layer name vouches for the families taken, and only on a sheet carrying enough
+    labels to say anything. Measured over the style library, a sheet reading its own pipes places a sixth of its
+    pipe labels or better; the one reading its building outline placed 6 %.
+    """
+    if not families or any(f.split("|s|")[0] for f in families) or len(pipe_labels) < LABELS_MIN:
+        return False
+    return len(reached_labels(anchors, pipe_labels)) < LABELS_MUST_REACH * len(pipe_labels)
 
 
 def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_layers: dict, glyph_pids: set,
@@ -430,9 +448,33 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             lead_count[stroke_family(ld.layer, ld.width, ld.color)] += 1
         top = max(lead_count.values(), default=0)
         # a layer name is the drawing's own statement about what that geometry is for, so a named family carrying
-        # leaders is a leader family however few it carries; a pen width says nothing, and there the count decides
-        leader_fams = {f for f, c in lead_count.items() if f.split("|s|")[0] or c >= LEADER_MIN_SHARE * top} \
+        # leaders is a leader family however few it carries. A pen width says nothing, and counting leaders is not
+        # enough there either: a sheet exported without layer names draws its leaders with the same pens as its
+        # pipes, and refusing every pen that carries a quarter of the leaders left such a sheet with no pipes at
+        # all. What separates them is how much of the pen's own ink the leaders are. Where a pen draws leaders and
+        # little else, it is the leader pen; where the leaders are a fraction of what it draws, the rest of that
+        # ink is the drawing, and the pen stays a candidate.
+        lead_ink: Counter = Counter()
+        for ld in des_leaders:
+            fk = stroke_family(ld.layer, ld.width, ld.color)
+            for sgm in ld.segs:
+                lead_ink[fk] += sgm.seg.length
+        fam_ink: Counter = Counter()
+        for pth in page.paths:
+            if pth.pid in annotation_pids:
+                continue
+            fk = stroke_family(pth.layer, pth.width, pth.color)
+            for sgm in pth.segs:
+                fam_ink[fk] += sgm.length
+        leader_fams = {f for f, c in lead_count.items()
+                       if f.split("|s|")[0]
+                       or (c >= LEADER_MIN_SHARE * top and lead_ink[f] >= LEADER_INK_SHARE * fam_ink.get(f, 0.0))} \
             | (set(ann_layers) if ann_layers else set())
+        if os.environ.get("VVS_DEBUG_INK"):
+            for f, c in lead_count.most_common():
+                fi = fam_ink.get(f, 0.0) or 1.0
+                print(f"[ink] n={c:4d} andel={lead_ink[f]/fi:7.3f} röster={votes.get(f,0):7.1f} ticks={tick_votes.get(f,0):4d} "
+                      f"ledarfamilj={f in leader_fams}  {f}", file=sys.stderr)
         # evaluate the vector structure of every voted family first (kind: fragmented-dashed / continuous / sparse)
         voted = sorted(f for f in votes if f not in leader_fams)
         prims_all = collect_prims(page, set(voted), exclude_pids=annotation_pids)
@@ -574,24 +616,54 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 ann_layers[f"{r.line.layer}|{r.line.font[len('vector:'):]}"] += 1
         for sgm in b.box_segs:
             ann_layers[stroke_family(sgm.layer, sgm.width, sgm.color)] += 1
-    if ann_layers:
-        # a vector family accepted as pipe geometry in pass 1 is never an annotation family (an underline bar that
-        # happens to share the pipes' stroke class must not remove the pipes)
-        keep = {k: v for k, v in ann_layers.items() if (v >= 2 or v >= 0.05 * max(ann_layers.values())) and k not in pipe_families}
-        leaders, pipe_families, graphs, anchors, contact_stats = run_pass(keep)
-        ann_layers = keep
-    else:
-        ann_layers = {}
     # A sheet labels the pipes it draws. Where the families accepted carry no layer name to vouch for them, and
     # the sheet's own pipe labels overwhelmingly failed to reach them, the wrong geometry was accepted: had it
     # been the pipes, the labels would have found it. Measured over the style library, a sheet reading its own
     # pipes places a quarter of its pipe labels or better; the one reading its building outline placed 6 %.
-    if pipe_families and not any(f.split("|s|")[0] for f in pipe_families) and len(pipe_labels) >= LABELS_MIN:
-        placed = {a.designation_id for a in anchors if a.state == "VERIFIED_PIPE_ATTACHMENT"} & pipe_labels
-        if len(placed) < LABELS_MUST_REACH * len(pipe_labels):
+    def _reached(anchors) -> set[str]:
+        return reached_labels(anchors, pipe_labels)
+
+    def _label_reach_fails(fams, anchors) -> bool:
+        return label_reach_fails(fams, anchors, pipe_labels)
+
+    pass1 = (leaders, pipe_families, graphs, anchors, contact_stats)
+    if os.environ.get("VVS_DEBUG_PASS"):
+        print(f"[reach] pass1 placed {len(_reached(anchors))}/{len(pipe_labels)} pipe labels, fams={sorted(pipe_families)}", file=sys.stderr)
+    if ann_layers:
+        # a vector family accepted as pipe geometry in pass 1 is never an annotation family (an underline bar that
+        # happens to share the pipes' stroke class must not remove the pipes)
+        keep = {k: v for k, v in ann_layers.items() if (v >= 2 or v >= 0.05 * max(ann_layers.values())) and k not in pipe_families}
+        pass2 = run_pass(keep)
+        # The restriction is a hypothesis about which of the sheet's pens write rather than draw, learned from
+        # the attachments the first reading verified. It is the sheet's own labels that test it: a sheet labels
+        # the pipes it draws, so the reading that puts more of its labels on pipes is the one that read it. Where
+        # the restriction withdraws the very pens the leaders were drawn with, it places fewer of them - or none
+        # at all - and then the unrestricted reading stands. Without this a sheet the first pass read well ended
+        # with a worse answer, and on some sheets with no answer at all.
+        # Where a layer name vouches for the geometry, the restriction is checked only against collapse: the name
+        # is the drawing's own statement and outweighs a count. Where nothing vouches for anything, the count is
+        # all there is, and a restriction that costs the sheet more than half its placed labels has withdrawn the
+        # pens the drawing was read with rather than the pens it was written with.
+        nameless = not any(f.split("|s|")[0] for f in (pass2[1] or pass1[1] or {"x|s|"}))
+        collapsed = not pass2[1] or _label_reach_fails(pass2[1], pass2[3])
+        halved = nameless and 2 * len(_reached(pass2[3])) < len(_reached(pass1[3]))
+        take1 = (collapsed or halved) and pass1[1] and not _label_reach_fails(pass1[1], pass1[3])
+        if take1:
             if os.environ.get("VVS_DEBUG_PASS"):
-                print(f"[drop] only {len(placed)}/{len(pipe_labels)} pipe labels reached {sorted(pipe_families)}", file=sys.stderr)
-            pipe_families, graphs, anchors, contact_stats = {}, {}, [], dict(contact_stats, dropped_by_label_reach=True)
+                print(f"[withdraw] restricted pass left {len(_reached(pass2[3]))}/{len(pipe_labels)} labels placed, "
+                      f"unrestricted placed {len(_reached(pass1[3]))}; keeping the unrestricted reading", file=sys.stderr)
+            leaders, pipe_families, graphs, anchors, contact_stats = pass1
+            contact_stats = dict(contact_stats, annotation_restriction_withdrawn=True)
+            ann_layers = {}
+        else:
+            leaders, pipe_families, graphs, anchors, contact_stats = pass2
+            ann_layers = keep
+    else:
+        ann_layers = {}
+    if _label_reach_fails(pipe_families, anchors):
+        if os.environ.get("VVS_DEBUG_PASS"):
+            print(f"[drop] only {len(_reached(anchors))}/{len(pipe_labels)} pipe labels reached {sorted(pipe_families)}", file=sys.stderr)
+        pipe_families, graphs, anchors, contact_stats = {}, {}, [], dict(contact_stats, dropped_by_label_reach=True)
     film.leaders(leaders)
     film.families(pipe_families, graphs)
     timings["leader_ms"] = 0.0

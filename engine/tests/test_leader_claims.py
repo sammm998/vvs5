@@ -150,3 +150,58 @@ def test_a_line_drawn_from_an_underline_beats_any_derived_box():
     drawn = _Block((100.0, 100.0, 140.0, 120.0), ["designation"])
     guessed = _Block((150.0, 150.0, 190.0, 170.0), ["designation"])
     assert claim_rank(drawn, (150.0, 150.0), "underline_end") < claim_rank(guessed, (150.0, 150.0), "bbox_corner")
+
+
+def _chain_and_baseline_sheet(path: str) -> str:
+    """Two ways a draughtsman draws a leader that the reading refused to follow.
+
+    Left: the label is written on a line - the line runs under the text and carries on into the pipe. One stroke
+    doing two jobs, which a reading calls the row's underline and then drops as frame.
+    Right: a short stub off the label, a bend, and then the run to the pipe. Judged on its first segment the
+    leader never leaves the label, so it was refused before the chain could be grown.
+    """
+    doc = pymupdf.open()
+    page = doc.new_page(width=842, height=595)
+    make = __import__("conftest", fromlist=["make_dashed_line"]).make_dashed_line
+    shape = page.new_shape()
+    make(shape, (60, 300), (760, 300))
+    make(shape, (400, 300), (400, 520))
+    make(shape, (120, 195), (120, 300))
+    shape.commit()
+    page.insert_text((150, 215), "S12", fontsize=10, fontname="helv")
+    page.insert_text((150, 227), "110", fontsize=10, fontname="helv")
+    page.insert_text((520, 215), "S12", fontsize=10, fontname="helv")
+    page.insert_text((520, 227), "110", fontsize=10, fontname="helv")
+    shape = page.new_shape()
+    shape.draw_line((169, 229.5), (120, 229.5)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    shape.draw_line((517.5, 210.0), (530, 220.0)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    shape.draw_line((530, 220.0), (600, 300)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    page.insert_text((100, 560), "SKALA 1:50", fontsize=10, fontname="helv")
+    for i in range(6):
+        page.insert_text((300 + i * 56.69, 560), str(i), fontsize=8, fontname="helv")
+    shape.draw_line((302, 566), (302 + 5 * 56.69, 566)); shape.finish(width=1.0, color=(0, 0, 0), closePath=False)
+    shape.commit()
+    doc.save(path)
+    doc.close()
+    return path
+
+
+def test_a_leader_drawn_as_a_stub_and_a_bend_is_followed(tmp_path):
+    """Whether the line leaves its label is a question about the chain, not about its first segment."""
+    pa = analyze_page(extract_document(_chain_and_baseline_sheet(os.path.join(tmp_path, "chain.pdf"))).pages[0])
+    chained = [ld for ld in pa.leaders if len(ld.segs) > 1 and ld.start[0] > 500]
+    assert chained, f"the stub-and-bend leader was not followed; leaders: {[(l.start_type, len(l.segs)) for l in pa.leaders]}"
+
+
+def test_the_line_a_label_is_written_on_may_be_its_leader(tmp_path):
+    """A stroke under the text that carries on to the pipe is the label's line, not only its frame."""
+    pa = analyze_page(extract_document(_chain_and_baseline_sheet(os.path.join(tmp_path, "chain.pdf"))).pages[0])
+    assert any(ld.start_type == "row_underline" for ld in pa.leaders), \
+        f"the underline that runs to the pipe stayed frame; leaders: {[l.start_type for l in pa.leaders]}"
+
+
+def test_both_labels_on_that_sheet_reach_their_pipe(tmp_path):
+    """The point of both rules: the sheet writes two labels and both end up on the pipes they point at."""
+    pa = analyze_page(extract_document(_chain_and_baseline_sheet(os.path.join(tmp_path, "chain.pdf"))).pages[0])
+    reached = [a for a in pa.anchors if a.state == "VERIFIED_PIPE_ATTACHMENT"]
+    assert len(reached) == 2, f"anchors: {[(a.designation, a.state) for a in pa.anchors]}"
