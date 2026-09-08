@@ -10,14 +10,13 @@ import { api } from "../api";
 
 type Msg = { role: "user" | "agent"; text: string; tools?: any[]; ids?: string[] };
 
-const QUICK = [
-  "Mängda ritningen per system",
-  "Visa hur mängden räknades",
-  "Hitta fel i läsningen",
-  "Var byter rören dimension?",
-  "Vilka rörändar är fria?",
-  "Var är samma linje ritad två gånger?",
-  "Förklara ritningens beteckningar",
+/* A first question is the hardest one to write, so the ones worth asking are on the surface - grouped the way a
+   reader thinks: what does it measure, what should I check, what does this drawing say. */
+const QUICK: { grupp: string; fragor: string[] }[] = [
+  { grupp: "Mängd", fragor: ["Mängda per system", "Mängda per dimension", "Visa hur mängden räknades"] },
+  { grupp: "Kontroll", fragor: ["Hitta fel i läsningen", "Var byter rören dimension?", "Vilka rörändar är fria?",
+                                "Var är samma linje ritad två gånger?"] },
+  { grupp: "Ritningen", fragor: ["Förklara beteckningarna", "Hur lästes skalan?"] },
 ];
 
 export default function AgentChat({ jobId, page, selection, onHighlight }: {
@@ -89,17 +88,24 @@ export default function AgentChat({ jobId, page, selection, onHighlight }: {
   return (
     <div className="agentchat">
       <div className="agentctx">
-        <b>Agenten tittar på</b> sida {page + 1}
-        {nSel > 0 && <> · <span className="sel">{nSel} markerade rör</span></>}
-        {selection.bbox && !nSel && <> · <span className="sel">markerat område</span></>}
+        <span className="dotlive" />
+        <span>Sida {page + 1}</span>
+        {nSel > 0 && <span className="sel">{nSel} markerade rör</span>}
+        {selection.bbox && !nSel && <span className="sel">markerat område</span>}
+        {msgs.length > 0 && (
+          <button className="ghost small clear" onClick={() => { setMsgs([]); setErr(""); }}>Rensa</button>
+        )}
       </div>
 
       <div className="agentlog">
         {msgs.length === 0 && (
-          <p className="muted">
-            Fråga om ritningen, mängderna eller felen. Markera något i ritningen först så vet agenten vad
-            ”det här” betyder. Varje siffra kommer ur ett verktygsanrop mot läsningen — agenten räknar inte själv.
-          </p>
+          <div className="agentintro">
+            <h4>Fråga ritningen</h4>
+            <p>
+              Varje siffra agenten säger kommer ur ett verktygsanrop mot läsningen — den räknar aldrig själv,
+              och den hittar inte på ett rör-id. Markera något i ritningen först, så vet den vad ”det här” är.
+            </p>
+          </div>
         )}
         {msgs.map((m, i) => (
           <div key={i} className={`abub ${m.role}`}>
@@ -116,8 +122,8 @@ export default function AgentChat({ jobId, page, selection, onHighlight }: {
               </details>
             )}
             {m.ids && m.ids.length > 0 && (
-              <button className="ghost small" onClick={() => onHighlight(m.ids!)}>
-                Visa {m.ids.length} sträckor på ritningen
+              <button className="showbtn" onClick={() => onHighlight(m.ids!)}>
+                Visa {m.ids.length} {m.ids.length === 1 ? "sträcka" : "sträckor"} på ritningen
               </button>
             )}
           </div>
@@ -128,18 +134,30 @@ export default function AgentChat({ jobId, page, selection, onHighlight }: {
       </div>
 
       <div className="agentquick">
-        {QUICK.map((q) => <button key={q} className="chipbtn" onClick={() => send(q)} disabled={busy}>{q}</button>)}
+        {QUICK.map((g) => (
+          <div key={g.grupp} className="qgroup">
+            <span className="qlabel">{g.grupp}</span>
+            {g.fragor.map((q) => (
+              <button key={q} className="chipbtn" onClick={() => send(q)} disabled={busy}>{q}</button>
+            ))}
+          </div>
+        ))}
       </div>
 
       <div className="agentbar">
-        <textarea rows={2} value={text} placeholder="Skriv en fråga, eller tryck på mikrofonen…"
+        <textarea rows={2} value={text} placeholder="Skriv en fråga, eller tryck på Tala…"
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(text); } }} />
-        <button className={`secondary small${listening ? " on" : ""}`} onClick={toggleMic}
-          title="Tala i stället för att skriva">{listening ? "Lyssnar…" : "🎙"}</button>
-        <button className={`secondary small${speak ? " on" : ""}`} onClick={() => setSpeak(!speak)}
-          title="Läs upp svaren">{speak ? "Röst på" : "Röst av"}</button>
-        <button onClick={() => send(text)} disabled={busy || !text.trim()}>Fråga</button>
+        <div className="agentbtns">
+          {/* words rather than glyphs: an emoji that a machine has no font for is a blank button */}
+          <button className={`pillbtn${listening ? " on" : ""}`} onClick={toggleMic}
+            title={listening ? "Lyssnar — tryck för att sluta" : "Tala i stället för att skriva"}>
+            {listening ? "Lyssnar" : "Tala"}
+          </button>
+          <button className={`pillbtn${speak ? " on" : ""}`} onClick={() => setSpeak(!speak)}
+            title={speak ? "Svaren läses upp" : "Läs upp svaren"}>Röst</button>
+          <button className="ask" onClick={() => send(text)} disabled={busy || !text.trim()}>Fråga</button>
+        </div>
       </div>
     </div>
   );

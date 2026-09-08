@@ -23,7 +23,15 @@ async function req(path: string, init: RequestInit = {}): Promise<any> {
   if (res.status === 401) { setToken(null); window.location.href = "/login"; throw new Error("Ej inloggad"); }
   if (!res.ok) {
     let msg = res.statusText;
-    try { const j = await res.json(); msg = j.detail || msg; } catch { /* ignore */ }
+    try {
+      const j = await res.json();
+      const d = j.detail;
+      // FastAPI answers a rejected body with a list of problems rather than a sentence, and rendering that
+      // straight gave the reader "[object Object]" - which says less than the status line it replaced
+      msg = typeof d === "string" ? d
+        : Array.isArray(d) ? d.map((x: any) => x?.msg ? `${x.msg}${x.loc ? ` (${x.loc.slice(-1)})` : ""}` : JSON.stringify(x)).join("; ")
+        : d ? JSON.stringify(d) : msg;
+    } catch { /* a body that is not JSON leaves the status line, which is still a sentence */ }
     throw new Error(msg);
   }
   const ct = res.headers.get("content-type") || "";
@@ -60,7 +68,8 @@ export const api = {
   exportUrl: (jobId: string, fmt: string) => `/api/jobs/${jobId}/export/${fmt}`,
   artifactUrl: (jobId: string, name: string) => `/api/jobs/${jobId}/artifacts/${name}`,
   film: (jobId: string) => req(`/api/jobs/${jobId}/film`),
-  agent: (jobId: string, body: any) => req(`/api/jobs/${jobId}/agent`, { method: "POST", body: JSON.stringify(body) }),
+  agent: (jobId: string, body: any) =>
+    req(`/api/jobs/${jobId}/agent`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   agentTools: () => req(`/api/agent/tools`),
   judge: (jobId: string) => req(`/api/jobs/${jobId}/judge`),
   corrections: (drawingId: string) => req(`/api/drawings/${drawingId}/corrections`),

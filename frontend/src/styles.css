@@ -421,6 +421,8 @@ tr.selected td { color: var(--ink); }
 body.resizing { cursor: col-resize; user-select: none; }
 body.resizing .splitter { background: var(--ink); }
 .analysis .right { overflow: auto; padding-right: 2px; }
+.analysis .right.agentmode { display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+.analysis .right.agentmode .tabs { flex: none; }
 .analysis .right::-webkit-scrollbar { width: 10px; }
 .analysis .right::-webkit-scrollbar-thumb { background: #d8d8d8; border-radius: 999px; border: 3px solid #fff; }
 
@@ -789,42 +791,74 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
 
 
 /* ---------- the agent ---------- */
-.agentchat { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.agentchat { display: flex; flex-direction: column; gap: 10px; min-height: 0; height: 100%; }
 .agentctx {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 6px 12px;
+  padding: 2px 0 8px;
+  border-bottom: 1px solid var(--line);
 }
-.agentctx .sel { color: var(--ink); }
-.agentlog { display: flex; flex-direction: column; gap: 10px; overflow: auto; padding: 2px; }
-.abub { border: 1px solid var(--line); border-radius: 12px; padding: 10px 13px; }
-.abub.user { background: var(--bg-2); border-left: 2px solid var(--line-2); }
-.abub.agent { border-left: 2px solid var(--ink); }
+.agentctx .dotlive { width: 6px; height: 6px; border-radius: 999px; background: #1f6f4a; flex: none; }
+.agentctx .sel { color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; }
+.agentctx .clear { margin-left: auto; }
+
+.agentintro { padding: 6px 2px 2px; }
+.agentintro h4 { margin: 0 0 6px; font-size: 15px; }
+.agentintro p { margin: 0; color: var(--muted); font-size: 13px; }
+
+.agentlog { display: flex; flex-direction: column; gap: 12px; overflow: auto; flex: 1; min-height: 0; padding: 2px; }
+.abub { border-radius: 12px; padding: 10px 13px; }
+.abub.user { background: var(--bg-2); border: 1px solid var(--line); margin-left: 26px; }
+.abub.agent { border: 1px solid var(--line); border-left: 2px solid var(--ink); margin-right: 8px; }
 .abub .who {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 9.5px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
-.abub p { margin: 0 0 6px; font-size: 13.5px; white-space: pre-wrap; }
+.abub p { margin: 0 0 6px; font-size: 13.5px; line-height: 1.5; white-space: pre-wrap; }
+.abub p:last-child { margin-bottom: 0; }
 .abub .dots { display: flex; gap: 4px; padding: 3px 0; }
 .abub .dots i { width: 5px; height: 5px; border-radius: 999px; background: var(--muted); animation: dot 1.1s infinite; }
 .abub .dots i:nth-child(2) { animation-delay: 0.15s; }
 .abub .dots i:nth-child(3) { animation-delay: 0.3s; }
-.atools { margin: 4px 0 8px; }
+.showbtn {
+  font-size: 12px;
+  padding: 5px 11px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+}
+.showbtn:hover { border-color: var(--ink); }
+.atools { margin: 2px 0 8px; }
 .atools summary { font-size: 11.5px; color: var(--muted); cursor: pointer; }
-.atool code { font-family: var(--mono); font-size: 11px; color: var(--muted); word-break: break-all; }
-.agentquick { display: flex; flex-wrap: wrap; gap: 6px; }
+.atool { padding: 3px 0 0; }
+.atool code { font-family: var(--mono); font-size: 10.5px; color: var(--muted); word-break: break-all; }
+
+.agentquick { display: flex; flex-direction: column; gap: 6px; }
+.qgroup { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+.qlabel {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  width: 62px;
+  flex: none;
+}
 .chipbtn {
   font-size: 11.5px;
-  padding: 5px 10px;
+  padding: 4px 10px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: #fff;
@@ -832,16 +866,39 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
   color: var(--ink);
 }
 .chipbtn:hover { border-color: var(--ink); }
-.chipbtn:disabled { opacity: 0.5; cursor: default; }
-.agentbar { display: flex; gap: 6px; align-items: flex-end; }
-.agentbar textarea { flex: 1; resize: vertical; font: inherit; font-size: 13px; padding: 8px 10px; }
-.agentbar .on { border-color: var(--ink); background: var(--bg-2); }
+.chipbtn:disabled { opacity: 0.45; cursor: default; }
 
-.verdicts { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 26px; }
-.verdict { border: 1px solid var(--line); border-left: 2px solid var(--line-2); border-radius: 10px; padding: 10px 13px; }
-.verdict.GENOMFOR { border-left-color: #8a5a12; }
-.verdict.FRAGA_EN_MANNISKA { border-left-color: #8a5a12; }
-.verdict.LAMNA { border-left-color: var(--line-2); }
-.verdict p { margin: 0 0 3px; font-size: 13.5px; }
-.vhead { display: flex; align-items: center; gap: 9px; margin-bottom: 5px; flex-wrap: wrap; }
-.vtyp { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+.agentbar {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px;
+}
+.agentbar:focus-within { border-color: var(--ink); }
+.agentbar textarea {
+  flex: 1;
+  resize: none;
+  border: 0;
+  outline: none;
+  font: inherit;
+  font-size: 13.5px;
+  padding: 2px 4px;
+  background: transparent;
+}
+.agentbtns { display: flex; align-items: center; gap: 6px; }
+.pillbtn {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11.5px;
+  color: var(--muted);
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+.pillbtn:hover { border-color: var(--ink); color: var(--ink); }
+.pillbtn.on { border-color: var(--ink); background: var(--bg-2); color: var(--ink); }
+.agentbar .ask { padding: 7px 16px; border-radius: 999px; }

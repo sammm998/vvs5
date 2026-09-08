@@ -259,7 +259,9 @@ export default function AnalysisPage() {
       <div className="splitter" role="separator" aria-orientation="vertical" aria-label="Dra för att ändra bredd"
         onMouseDown={() => { dragging.current = true; document.body.classList.add("resizing"); }}
         onDoubleClick={() => setPanel(380)} />
-      <div className="right">
+      {/* the chat is a conversation, so it fills its column and scrolls inside itself; every other tab is a
+          document and scrolls the column */}
+      <div className={`right${tab === "agent" ? " agentmode" : ""}`}>
         <div className="panelbar">
           <button className="ghost small" onClick={() => setPanel(Math.max(300, panel - 120))}
             title="Smalare">−</button>

@@ -10,7 +10,7 @@ import os
 
 from vvs_engine.agent.model import DrawingModel
 from vvs_engine.cli import analyze_pdf
-from vvs_engine.review.judge import ASK, IMPLEMENT, LEAVE, judge
+from vvs_engine.review.judge import IMPLEMENT, LEAVE, SILENT, judge
 
 _CACHE: dict[str, DrawingModel] = {}
 
@@ -27,7 +27,7 @@ def _read(tmp_path, synthetic_pdf) -> DrawingModel:
 def test_every_verdict_says_what_and_why(tmp_path, synthetic_pdf):
     d = judge(_read(tmp_path, synthetic_pdf))
     for v in d["utslag"]:
-        assert v["beslut"] in (IMPLEMENT, LEAVE, ASK)
+        assert v["beslut"] in (IMPLEMENT, LEAVE, SILENT)
         assert v["skäl"].strip(), f"{v['typ']} avgjordes utan skäl"
         assert v["typ"].strip()
     assert sum(d["sammanfattning"].values()) == d["antal"]
@@ -66,3 +66,36 @@ def test_judging_twice_gives_the_same_verdicts(tmp_path, synthetic_pdf):
     m = _read(tmp_path, synthetic_pdf)
     a, b = judge(m), judge(m)
     assert a == b
+
+
+def test_no_verdict_asks_a_person_to_decide(tmp_path, synthetic_pdf):
+    """The point of the system is that a person does not have to settle the drawing for it.
+
+    Where the drawing says nothing, that is the answer - the stretch is not counted and the verdict says why.
+    Handing the case to a reader instead is not caution, it is the work left undone.
+    """
+    d = judge(_read(tmp_path, synthetic_pdf))
+    for v in d["utslag"]:
+        assert "människa" not in v["skäl"].lower(), f"{v['typ']} lämnade fallet till en läsare"
+        assert v["beslut"] != "FRAGA_EN_MANNISKA"
+
+
+def test_a_fitting_on_the_run_it_connects_to_is_one_verdict_not_many(tmp_path, synthetic_pdf):
+    """Nine floor-drain tags ending on the run they connect to is one thing, said once."""
+    d = judge(_read(tmp_path, synthetic_pdf))
+    fittings = [v for v in d["utslag"] if v["typ"] == "komponenttagg_på_sitt_rör"]
+    assert len(fittings) <= 1
+    for v in fittings:
+        assert v["beslut"] == LEAVE and v.get("kostar_m") == 0.0
+
+
+def test_an_open_case_says_which_kind_it_is(tmp_path, synthetic_pdf):
+    """A verdict that describes the wrong situation is worse than none: it is a claim about the drawing."""
+    from vvs_engine.review.judge import WHY_OPEN
+    m = _read(tmp_path, synthetic_pdf)
+    reasons = {(a.get("reason") or "").split(":")[0] for a in m.anchors
+               if a.get("state") == "AMBIGUOUS_PIPE_ATTACHMENT"}
+    for v in judge(m)["utslag"]:
+        if v["beslut"] != SILENT or v["typ"] not in reasons:
+            continue
+        assert v["skäl"] == WHY_OPEN.get(v["typ"], v["skäl"]), "utslaget beskriver ett annat fall än det som står i läsningen"

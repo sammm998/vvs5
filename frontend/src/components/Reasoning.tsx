@@ -16,7 +16,7 @@ const SEV: Record<string, string> = { ERROR: "bad", WARN: "warn", INFO: "ok" };
 const BESLUT: Record<string, { text: string; cls: string }> = {
   GENOMFOR: { text: "genomförs", cls: "warn" },
   LAMNA: { text: "lämnas", cls: "ok" },
-  FRAGA_EN_MANNISKA: { text: "en människa avgör", cls: "warn" },
+  RITNINGEN_SAGER_INTE: { text: "ritningen säger det inte", cls: "ok" },
 };
 
 export default function Reasoning({ jobId, result, onZoom }: { jobId: string; result: any; onZoom?: (b: number[]) => void }) {
@@ -115,6 +115,10 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
                   {v.kandidater && v.kandidater.length > 0 && (
                     <p className="muted">Ritningens egna kandidater: {v.kandidater.join(", ")}</p>
                   )}
+                  {v.delar_linje_med && v.delar_linje_med.length > 0 && (
+                    <p className="muted">Delar den ritade linjen med: {v.delar_linje_med.join(", ")}</p>
+                  )}
+                  {v.kostar_m === 0 && <p className="muted">Kostar mängden 0 m — kontakten är noterad, linjen är ägd.</p>}
                 </div>
               ))}
             </div>

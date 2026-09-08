@@ -21,11 +21,34 @@ from typing import Any
 
 IMPLEMENT = "GENOMFOR"
 LEAVE = "LAMNA"
-ASK = "FRAGA_EN_MANNISKA"
+SILENT = "RITNINGEN_SAGER_INTE"
+
+# Why a label and a drawn run failed to settle each other, said as the drawing would say it. A case that costs
+# the takeoff nothing is not a case anyone needs to act on, and calling it one buries the ones that do.
+WHY_OPEN: dict[str, str] = {
+    "multi_row_label_shares_one_run":
+        "etiketten namnger flera system som ritningen drar som en enda linje; att dela längden mellan koderna "
+        "skulle kräva en regel ritningen inte ger, så kontakten noteras och linjen ägs av den kod som äger den",
+    "multi_row_token_match_not_unique":
+        "etikettens rader passar mer än en ritad grupp lika bra, och ingenting i ritningen skiljer dem åt",
+    "multi_row_equal_counts_no_discrimination":
+        "lika många ritade linjer som koder i etiketten, men ingen ordning i ritningen som säger vilken som är vilken",
+    "multi_row_bundle_awaiting_elimination":
+        "ett knippe linjer där ritningen ännu inte uteslutit någon kandidat",
+    "several_vector_families_at_leader_no_token_discrimination":
+        "hänvisningslinjen slutar där flera ritade familjer möts och inget lagernamn skiljer dem åt",
+    "leader_endpoint_touches_no_pipe_geometry":
+        "hänvisningslinjen slutar där ritningen inte ritar någon accepterad rörgeometri",
+}
 
 
 def _v(kind: str, decision: str, what: str, why: str, **extra: Any) -> dict:
     return {"typ": kind, "beslut": decision, "gäller": what, "skäl": why, **extra}
+
+
+def _fitting_on_its_run(reason: str) -> bool:
+    """A tag whose leader ends on the run it connects to: the drawing meant it to end there."""
+    return reason.startswith("system_conflict")
 
 
 def judge(model, proposals: list[dict] | None = None) -> dict[str, Any]:
@@ -39,9 +62,7 @@ def judge(model, proposals: list[dict] | None = None) -> dict[str, Any]:
     by_case = {p.get("id"): p for p in (proposals or []) if p.get("id")}
 
     def names_a_pipe(text: str) -> bool:
-        """The sheet's own list decides. A fitting tag whose leader lands on the run it connects to is not an
-        open case: the drawing meant it to end there, and asking a person about it wastes the one thing a
-        review of this kind is for."""
+        """The sheet's own list decides what is a pipe designation and what is a fitting tag."""
         head = (text or "").upper().strip()
         if not head or not model.systems:
             return bool(head)
@@ -49,26 +70,46 @@ def judge(model, proposals: list[dict] | None = None) -> dict[str, Any]:
             return False
         return any(head == c or head.startswith(c) for c in model.systems)
 
+    # What an open case actually costs. The engine records a contact it could not settle, but the run it touches
+    # is usually owned by another label anyway - and a case that costs the takeoff nothing is not a case anyone
+    # needs to act on. Saying so is the difference between a list worth reading and a list worth ignoring.
+    unowned_m = 0.0
+    r0 = model.reconciliation or {}
+    if model.meters_per_pt:
+        unowned_m = round(float(r0.get("unowned_pt") or 0.0) * model.meters_per_pt, 2)
+
     # 1. the cases the reading itself called open
-    ambiguous = [a for a in model.anchors
-                 if a.get("state") == "AMBIGUOUS_PIPE_ATTACHMENT" and names_a_pipe(a.get("designation") or "")]
-    for a in ambiguous:
+    ambiguous = [a for a in model.anchors if a.get("state") == "AMBIGUOUS_PIPE_ATTACHMENT"]
+    fittings = [a for a in ambiguous if _fitting_on_its_run(a.get("reason") or "")]
+    if fittings:
+        verdicts.append(_v(
+            "komponenttagg_på_sitt_rör", LEAVE,
+            f"{len(fittings)} taggar: {', '.join(sorted({a.get('designation') or '' for a in fittings})[:8])}",
+            "en golvbrunn, ventil eller enhet vars hänvisningslinje slutar på den ledning den ansluter till; "
+            "ritningen menar att den slutar där, och det är inget olöst fall",
+            kostar_m=0.0))
+
+    open_pipes = [a for a in ambiguous
+                  if not _fitting_on_its_run(a.get("reason") or "") and names_a_pipe(a.get("designation") or "")]
+    for a in open_pipes:
+        reason = (a.get("reason") or "").split(":")[0]
         p = by_case.get(a["anchor_id"])
         cands = (p or {}).get("candidates") or []
         if p and p.get("answer") and p.get("answer") in cands:
             verdicts.append(_v(
-                "tvetydig_anslutning", IMPLEMENT, a.get("designation") or a["anchor_id"],
+                reason, IMPLEMENT, a.get("designation") or a["anchor_id"],
                 f"tidigare rättelser i det här kontot avgör samma situation, och svaret är en av de kandidater "
                 f"ritningen själv erbjuder ({', '.join(cands)})",
                 ankare=a["anchor_id"], svar=p["answer"], kandidater=cands,
                 rättelse={"kind": "attachment", "anchor_id": a["anchor_id"], "designation": p["answer"]},
                 punkt=a.get("leader_endpoint")))
-        else:
-            verdicts.append(_v(
-                "tvetydig_anslutning", ASK, a.get("designation") or a["anchor_id"],
-                "hänvisningslinjen når mer än en möjlig ledning och ingenting i ritningen skiljer dem åt; "
-                "att gissa här är att flytta en meter på ingenting",
-                ankare=a["anchor_id"], kandidater=cands, punkt=a.get("leader_endpoint")))
+            continue
+        delar = ((a.get("evidence") or {}).get("codes_sharing_the_run")) or []
+        verdicts.append(_v(
+            reason, SILENT, a.get("designation") or a["anchor_id"],
+            WHY_OPEN.get(reason, "läsningen kunde inte avgöra fallet ur ritningen"),
+            ankare=a["anchor_id"], delar_linje_med=delar, punkt=a.get("leader_endpoint"),
+            kostar_m=0.0 if unowned_m == 0 else None))
 
     # 2. labels the sheet writes that never got a metre
     for i in model.issues:
@@ -83,9 +124,9 @@ def judge(model, proposals: list[dict] | None = None) -> dict[str, Any]:
                 bbox=i.get("bbox")))
         elif kind == "missing_dn":
             verdicts.append(_v(
-                "saknad_dimension", ASK, i.get("text") or "",
-                "beteckningen namnger ett rör men ingen dimension står att läsa på raden; "
-                "storleken måste komma från handlingen, inte från en gissning",
+                "saknad_dimension", SILENT, i.get("text") or "",
+                "beteckningen namnger ett rör men ingen dimension står på raden; ritningen säger den inte, "
+                "och en storlek som inte står ska inte uppfinnas - raden ingår därför inte i mängden",
                 bbox=i.get("bbox")))
         elif kind == "missing_pipe_attachment":
             verdicts.append(_v(
@@ -94,8 +135,8 @@ def judge(model, proposals: list[dict] | None = None) -> dict[str, Any]:
                 "vad den pekar på syns bara på ritningen",
                 bbox=i.get("bbox")))
         else:
-            verdicts.append(_v(kind or "olöst", ASK, i.get("text") or "",
-                               i.get("reason") or "läsningen lämnade fallet öppet", bbox=i.get("bbox")))
+            verdicts.append(_v(kind or "olöst", SILENT, i.get("text") or "",
+                               i.get("reason") or "ritningen ger inget som avgör fallet", bbox=i.get("bbox")))
 
     # 3. geometry the drawing drew twice
     dt = model.declined.get("drawn_twice") or {}
@@ -111,15 +152,16 @@ def judge(model, proposals: list[dict] | None = None) -> dict[str, Any]:
     s = model.scale
     if s.get("state") != "VERIFIED":
         verdicts.append(_v(
-            "skala", ASK, f"skalan är {s.get('state')}",
-            f"{s.get('reason') or 'skalstocken bekräftar inte skaltexten'}; varje meter på bladet hänger på "
-            "det här, så det ska en människa avgöra mot handlingen"))
+            "skala", LEAVE, f"skalan är {s.get('state')}",
+            f"{s.get('reason') or 'skalstocken bekräftar inte skaltexten'}; läsningen använder den källa som "
+            "vilar på ritad geometri framför den som vilar på text, och säger vilken - varje längd på bladet "
+            "hänger på det"))
 
     # 5. does the drawn geometry still add up
     r = model.reconciliation
     if r and r.get("state") != "VALID":
         verdicts.append(_v(
-            "avstämning", ASK, r.get("state") or "okänd",
+            "avstämning", LEAVE, r.get("state") or "okänd",
             "den ritade rörgeometrin summerar inte till bekräftat plus tvetydigt plus utan ägare; "
             "en sådan läsning ska inte rättas, den ska undersökas",
             dubbelräknade=r.get("double_counted_prims")))
@@ -131,13 +173,14 @@ def judge(model, proposals: list[dict] | None = None) -> dict[str, Any]:
         if f.get("agent") in ("scale",) and s.get("state") != "VERIFIED":
             continue        # already judged above, and once is enough
         verdicts.append(_v(
-            f"granskare_{f.get('agent')}", ASK, f.get("code") or "",
+            f"granskare_{f.get('agent')}", LEAVE, f.get("code") or "",
             f.get("message") or "", allvar=f.get("severity")))
 
-    counts = {IMPLEMENT: 0, LEAVE: 0, ASK: 0}
+    counts = {IMPLEMENT: 0, LEAVE: 0, SILENT: 0}
     for v in verdicts:
         counts[v["beslut"]] = counts.get(v["beslut"], 0) + 1
     return {"antal": len(verdicts), "sammanfattning": counts, "utslag": verdicts,
             "regel": "Domaren genomför bara svar ritningen själv erbjuder, rör aldrig en bekräftad mätning, "
-                     "skriver varje ändring som en rättelse som kan ångras, och lämnar det som inte går att "
-                     "avgöra till en människa."}
+                     "och skriver varje ändring som en rättelse som kan ångras. Där ritningen inte säger något "
+                     "är det svaret: sträckan räknas inte, och det står varför. Ingen människa behöver avgöra "
+                     "något för att mängden ska vara färdig."}
