@@ -82,31 +82,46 @@ class PageAnalysis:
     vision: dict | None = None              # what a look at the rendered page said the reading may have missed
 
 
-def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_layers: dict, glyph_pids: set) -> dict:
-    """Drawn stroke families no label's leader ever came near, so the reading never weighed them at all.
+def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_layers: dict, glyph_pids: set,
+                  leaders: list) -> dict:
+    """Every drawn stroke the reading did not weigh as a candidate for pipe, and which of two things it was.
 
-    These can never become pipe: identity comes from a leader, and nothing pointed here. But they are most of
-    the ink a reader sees on a sheet, and a line that is simply absent from the reading looks the same whether it
-    was judged and set aside or never looked at. Saying which of the two it was is the whole point. No graph is
-    built for them - that is what the reading does for a family a label reached, and doing it for the title
-    block would cost the reading its time for nothing.
+    Ink lands here for one of two reasons. Either no label's leader ever came near it, or it sits on a layer this
+    drawing uses for its labels and frames - and on a sheet whose text is drawn as strokes that second group is
+    large. Neither can become pipe: identity comes from a designation and its real leader, and there is none
+    here. But together they are most of what a reader sees, and a line that is simply absent from the reading
+    looks the same whether it was judged and set aside or never looked at. Saying which is the whole point. No
+    graph is built for any of it - that is what the reading does for a family a label reached, and doing it for
+    the title block would cost the reading its time for nothing.
     """
-    known = set(pipe_families) | set(contact_stats.get("declined_families") or {}) | set(contact_stats.get("votes") or {}) | set(ann_layers or {})
+    seen_fams = set(pipe_families) | set(contact_stats.get("declined_families") or {})
+    ann = set(ann_layers or {}) | (set(contact_stats.get("votes") or {}) - seen_fams)
+    lead_pids = {pid for ld in leaders for pid in ld.path_ids}
     fams: dict[str, dict] = {}
     for pth in page.paths:
-        if pth.kind != "s" or pth.pid in glyph_pids:
+        if pth.kind != "s" or pth.pid in glyph_pids or pth.pid in lead_pids:
             continue
         fk = stroke_family(pth.layer, pth.width, pth.color)
-        if fk in known:
+        if fk in seen_fams:
             continue
-        r = fams.setdefault(fk, {"family": fk, "why": "NO_LEADER_EVER_CAME_NEAR_IT", "width": round(pth.width, 2),
+        why = "ON_A_LAYER_THE_READING_TREATS_AS_ANNOTATION" if fk in ann else "NO_LEADER_EVER_CAME_NEAR_IT"
+        r = fams.setdefault(fk, {"family": fk, "why": why, "width": round(pth.width, 2),
                                  "total_length_pt": 0.0, "n_segments": 0, "paths": []})
         r["total_length_pt"] += pth.length
         r["n_segments"] += len(pth.segs)
         if len(r["paths"]) < UNCONSIDERED_PATHS_PER_FAMILY:
             r["paths"].append(pth)
+    # A family drawn on a layer named the way this drawing names its pipe layers is the one worth a second look:
+    # it is where the sheet puts pipes, and nothing pointed at it. It still cannot be measured - a run with no
+    # label has no identity - but "this looks like a pipe layer and no leader reached it" is a different sentence
+    # from "this is the title block", and a reader deserves to be told which one it is. So it is also the ink the
+    # stroke budget is spent on first; a vector logo must not crowd it out by being long.
+    for fk, r in fams.items():
+        lay = fk.partition("|s|")[0]
+        r["on_a_pipe_like_layer"] = bool(lay) and any(_layer_template_similar(lay, pf.partition("|s|")[0])
+                                                      for pf in pipe_families if pf.partition("|s|")[0])
     budget = UNCONSIDERED_SEGMENT_BUDGET
-    for fk in sorted(fams, key=lambda k: -fams[k]["total_length_pt"]):
+    for fk in sorted(fams, key=lambda k: (not fams[k]["on_a_pipe_like_layer"], -fams[k]["total_length_pt"])):
         r = fams[fk]
         segs = []
         for pth in r["paths"]:
@@ -117,13 +132,6 @@ def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_l
         r["segments"] = segs
         r["segments_truncated"] = len(segs) < r["n_segments"]
         r["total_length_pt"] = round(r["total_length_pt"], 1)
-        # A family drawn on a layer named the way this drawing names its pipe layers is the one worth a second
-        # look: it is where the sheet puts pipes, and nothing pointed at it. It still cannot be measured - a run
-        # with no label has no identity - but "this looks like a pipe layer and no leader reached it" is a
-        # different sentence from "this is the title block", and a reader deserves to be told which one it is.
-        lay = fk.partition("|s|")[0]
-        r["on_a_pipe_like_layer"] = bool(lay) and any(_layer_template_similar(lay, pf.partition("|s|")[0])
-                                                      for pf in pipe_families if pf.partition("|s|")[0])
         del r["paths"]
         budget -= len(segs)
     return fams
@@ -576,7 +584,11 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # a family taken after the passes ran is not a declined one, whatever the pass that looked at it decided
     if contact_stats.get("declined_families"):
         contact_stats["declined_families"] = {k: v for k, v in contact_stats["declined_families"].items() if k not in pipe_families}
-    contact_stats["unconsidered_families"] = _unconsidered(page, pipe_families, contact_stats, ann_layers, glyph_pids)
+    contact_stats["unconsidered_families"] = _unconsidered(page, pipe_families, contact_stats, ann_layers, glyph_pids, leaders)
+    # filled shapes are counted but never drawn as candidates: a pipe is a stroked line, and a filled outline of
+    # a room or a piece of furniture is not one however much of the sheet it covers
+    contact_stats["filled_shapes"] = {"paths": sum(1 for p in page.paths if p.kind != "s"),
+                                      "length_pt": round(sum(p.length for p in page.paths if p.kind != "s"), 1)}
     t0 = _t(timings, "topology_ms", t0)
     if progress:
         progress("BUILDING_PHYSICAL_PIPES")

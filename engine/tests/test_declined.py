@@ -75,3 +75,37 @@ def test_saying_what_was_left_out_changes_no_number(synthetic_pdf, tmp_path):
     assert a == b
     art = declined_geometry(walled)
     assert art["totals"]["unconsidered_length_m"] is None or art["totals"]["unconsidered_length_m"] > 0
+
+
+def test_every_stroke_on_the_sheet_lands_somewhere(synthetic_pdf, tmp_path):
+    """The point of the account is that it is complete: no stroke may fall out of it without a word.
+
+    A stroke is either pipe the reading measured, a family it weighed and set aside, a family no leader pointed
+    at, ink on a layer this drawing uses for its labels, a leader line, or a letter. Anything else is ink the
+    reading cannot explain, which is exactly what a reader calls a missed pipe.
+    """
+    from vvs_engine.pipes.representation import stroke_family
+
+    path = _with_a_wall(synthetic_pdf, os.path.join(tmp_path, "with-wall.pdf"))
+    pa = analyze_page(extract_document(path).pages[0])
+    accepted = set(pa.pipe_families)
+    declined = set(pa.contact_stats.get("declined_families") or {})
+    unconsidered = set(pa.contact_stats.get("unconsidered_families") or {})
+    glyphs = {pid for r in pa.vtext.rows for pid in r.provenance}
+    leader_paths = {pid for ld in pa.leaders for pid in ld.path_ids}
+
+    homeless = [p for p in pa.page.paths
+                if p.kind == "s" and p.pid not in glyphs and p.pid not in leader_paths
+                and stroke_family(p.layer, p.width, p.color) not in accepted | declined | unconsidered]
+    assert not homeless, f"{len(homeless)} strokes are in no bucket at all"
+
+
+def test_filled_shapes_are_counted_and_never_offered_as_pipe(synthetic_pdf, tmp_path):
+    """A pipe is a stroked line. A filled room outline is counted so the sheet adds up, and shown to nobody."""
+    path = _with_a_wall(synthetic_pdf, os.path.join(tmp_path, "with-wall.pdf"))
+    pa = analyze_page(extract_document(path).pages[0])
+    fills = pa.contact_stats["filled_shapes"]
+    assert fills["paths"] == sum(1 for p in pa.page.paths if p.kind != "s")
+    art = declined_geometry(pa)
+    assert art["totals"]["filled_shapes"] == fills
+    assert not any(f["n_segments"] and f["kind"] == "filled" for f in art["families"] + art["unconsidered"])

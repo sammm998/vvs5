@@ -299,7 +299,11 @@ export default function AnalysisPage() {
                 const dg = result.declined_geometry;
                 if (!dg || (!dg.families?.length && !dg.unconsidered?.length)) return null;
                 const t = dg.totals || {};
-                const unc = (dg.unconsidered ?? []).filter((f: any) => f.on_a_pipe_like_layer);
+                // the ink worth a second look first: a pipe-named layer nothing pointed at, before one the
+                // reading already knows carries this drawing's own labels and frames
+                const unc = (dg.unconsidered ?? []).filter((f: any) => f.on_a_pipe_like_layer)
+                  .sort((a: any, b: any) => Number(a.why !== "NO_LEADER_EVER_CAME_NEAR_IT") - Number(b.why !== "NO_LEADER_EVER_CAME_NEAR_IT")
+                    || (b.length_m ?? 0) - (a.length_m ?? 0));
                 return (
                   <div className="card">
                     <h3>Bortvald geometri <span className="badge">{dg.families.length}</span></h3>
@@ -326,6 +330,7 @@ export default function AnalysisPage() {
                           ? `Av den ligger ${t.unconsidered_length_m_on_a_pipe_like_layer} m på lager namngivna som rörens; de står i listan ovan.`
                           : "Inget av den ligger på ett lager namngivet som rörens."}
                         {" "}Utan en beteckning som pekar dit har en sträcka ingen identitet och kan inte mätas.
+                        {t.filled_shapes_length_m ? ` Ritningen har dessutom ${t.filled_shapes_length_m} m fylld yta — rum, möbler, raster — som aldrig är rör.` : ""}
                       </p>
                     )}
                   </div>

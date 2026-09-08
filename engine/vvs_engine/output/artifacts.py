@@ -312,6 +312,7 @@ DECLINED_WHY = {
     "FAINTEST_PEN_ON_THE_SHEET": "ritningens tunnaste penna utan lagernamn - bakgrund",
     "NO_LABEL_REACHED_IT": "ingen rörbeteckning når fram till den",
     "NO_LEADER_EVER_CAME_NEAR_IT": "ingen ledare kom i närheten - läsningen vägde den aldrig",
+    "ON_A_LAYER_THE_READING_TREATS_AS_ANNOTATION": "på ett lager läsningen behandlar som text och ramar",
 }
 
 
@@ -356,7 +357,9 @@ def declined_geometry(pa) -> dict[str, Any]:
                        "unconsidered_families": len(never), "unconsidered_segments": sum(f["n_segments"] for f in never),
                        "unconsidered_segments_carried": sum(len(f["segments"]) for f in never),
                        "unconsidered_length_m": round(sum(f["length_pt"] for f in never) * mpp, 2) if mpp else None,
-                       "unconsidered_length_m_on_a_pipe_like_layer": round(sum(f["length_pt"] for f in never if f["on_a_pipe_like_layer"]) * mpp, 2) if mpp else None}}
+                       "unconsidered_length_m_on_a_pipe_like_layer": round(sum(f["length_pt"] for f in never if f["on_a_pipe_like_layer"]) * mpp, 2) if mpp else None,
+                       "filled_shapes": (pa.contact_stats or {}).get("filled_shapes"),
+                       "filled_shapes_length_m": (round(((pa.contact_stats or {}).get("filled_shapes") or {}).get("length_pt", 0.0) * mpp, 2) if mpp else None)}}
 
 
 def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timings: dict, determinism: dict | None,
