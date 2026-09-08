@@ -25,7 +25,7 @@ class AnalysisTookTooLong(Exception):
 def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinism: bool = True, contamination: bool = True,
                 progress=None, pages: list[int] | None = None, review: bool = True, review_ocr: bool = True,
                 film_sink=None,
-                ocr_assist: bool = False, deadline_s: float | None = None) -> dict:
+                ocr_assist: bool = False, deadline_s: float | None = None, second_reader=None) -> dict:
     """deadline_s: a wall-clock budget for the whole document, checked between pages.
 
     A drawing set can carry a page dense enough that reading it takes longer than anyone will wait, and without a
@@ -49,7 +49,8 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
                 f"läsningen hann {len(analyses)} av {len(doc.pages)} sidor inom {deadline_s:.0f} s och avbröts; "
                 f"en halv mängd är sämre än ingen, så inget delresultat sparas")
         analyses.append(analyze_page(pg, progress, ocr_assist=ocr_assist,
-                                     film_sink=film_sink if pg.info.index == 0 else None))
+                                     film_sink=film_sink if pg.info.index == 0 else None,
+                                     second_reader=second_reader))
     if progress:
         progress("GENERATING_OVERLAYS")
     t0 = time.perf_counter()
@@ -63,13 +64,22 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
         from .review import run_review
         rev = run_review(analyses[0], ocr=review_ocr)
         timings["review_ms"] = (time.perf_counter() - t0) * 1000
-    det = run_determinism(doc, 0, analyses[0]) if determinism else None
+    # A second reader is asked only about cases the geometry already declared open, and only among candidates the
+    # drawing itself offers - but it is still a machine outside this one, so a reading that consulted it is not
+    # the same kind of answer as one that did not, and the determinism check is meaningless over it.
+    consulted = any(a.second_reader and a.second_reader.get("asked") for a in analyses)
+    det = run_determinism(doc, 0, analyses[0]) if determinism and not consulted else None
     cont = scan_source(os.path.dirname(os.path.abspath(__file__))) if contamination else None
     t0 = time.perf_counter()
     timings["total_s"] = time.perf_counter() - t_all
     files = write_all(pdf_path, doc, analyses, out_dir, name, timings, det, cont, overlays, CONFIG, rev)
     timings["artifacts_ms"] = (time.perf_counter() - t0) * 1000
-    summary = {"name": name, "pages": len(doc.pages), "summary": summarize(analyses[0]), "determinism": det["state"] if det else None,
+    summary = {"name": name, "pages": len(doc.pages), "summary": summarize(analyses[0]),
+               "determinism": det["state"] if det else ("NOT_APPLICABLE_A_SECOND_READER_WAS_CONSULTED" if consulted else None),
+               "second_reader": {"consulted": consulted,
+                                 "asked": sum((a.second_reader or {}).get("asked", 0) for a in analyses),
+                                 "settled": sum((a.second_reader or {}).get("settled", 0) for a in analyses),
+                                 "refused": sum((a.second_reader or {}).get("refused", 0) for a in analyses)},
                "contamination": cont["state"] if cont else None, "files": files, "total_seconds": round(timings["total_s"], 2),
                "input": getattr(doc.pages[0], "input_class", None), "skipped_pages": doc.skipped_pages,
                "review": {"state": rev["state"], "n_findings": rev["n_findings"], "agents": rev["agents"]} if rev else None,

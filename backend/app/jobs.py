@@ -64,6 +64,26 @@ def _film_sink(out_dir: str):
     return sink
 
 
+def _second_reader():
+    """The second reader, if this installation is configured for one and can actually reach it.
+
+    Returns None otherwise, which is what the engine expects: without a transport nothing is asked, the reading
+    is deterministic and runs with no network at all. A configuration that asks for a second reader and cannot
+    reach one says so in the log rather than failing an analysis over it - the takeoff does not depend on it.
+    """
+    if not settings.second_reader:
+        return None
+    try:
+        from tools.astra_transport import available, transport
+    except Exception:
+        return None
+    ok, why = available()
+    if not ok:
+        print(f"[andraläsare] påslagen men inte nåbar: {why}", file=sys.stderr)
+        return None
+    return transport()
+
+
 def run_job(job_id: str) -> None:
     from vvs_engine.cli import analyze_pdf
     from vvs_engine.pdf.extract import UnsupportedInputError
@@ -82,7 +102,8 @@ def run_job(job_id: str) -> None:
                               deadline_s=settings.analysis_deadline_s, determinism=settings.run_determinism,
                               contamination=True, progress=_progress_cb(job_id),
                               review=settings.run_review, review_ocr=settings.review_ocr,
-                              ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir))
+                              ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir),
+                              second_reader=_second_reader())
         _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
              summary={"total_seconds": summary["total_seconds"], **summary["summary"]})
     except UnsupportedInputError as e:

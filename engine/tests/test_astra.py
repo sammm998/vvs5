@@ -162,3 +162,44 @@ def test_the_pipeline_runs_the_second_reader_only_when_it_is_given_one(synthetic
     a = {q["designation"]: q["confirmed_total_m"] for q in plain.quantities}
     b = {q["designation"]: q["confirmed_total_m"] for q in with_reader.quantities}
     assert a == b, "ett OKLART-svar får inte flytta en enda meter"
+
+
+def test_a_reading_is_offline_unless_this_installation_asks_for_a_second_reader(monkeypatch):
+    """The default has to be no network. A takeoff that quietly calls out is not one anybody can check."""
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "backend"))
+    from app import jobs
+    from app.config import settings
+
+    monkeypatch.setattr(settings, "second_reader", False, raising=False)
+    assert jobs._second_reader() is None
+
+
+def test_a_second_reader_that_cannot_be_reached_never_fails_the_analysis(monkeypatch):
+    """Turned on and unreachable is a configuration problem, not a reason to lose a drawing's metres."""
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "backend"))
+    from app import jobs
+    from app.config import settings
+
+    monkeypatch.setattr(settings, "second_reader", True, raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("HTTPS_PROXY", raising=False)
+    monkeypatch.delenv("https_proxy", raising=False)
+    assert jobs._second_reader() is None
+
+
+def test_the_transport_sends_a_key_only_when_this_machine_holds_one(monkeypatch):
+    """Behind a proxy the credential is attached after the request leaves; in a container it must be sent."""
+    from tools.astra_transport import _auth, available
+
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("HTTPS_PROXY", raising=False)
+    monkeypatch.delenv("https_proxy", raising=False)
+    assert _auth() == []
+    assert available()[0] is False
+
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-inte-en-riktig-nyckel")
+    args = _auth()
+    assert args[0] == "-H" and args[1].startswith("Authorization: Bearer ")
+    assert available()[0] is True

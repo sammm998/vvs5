@@ -503,6 +503,9 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
             # failed check.
             "determinism": summary.get("determinism") or "NOT_RUN_FOR_THIS_JOB",
             "contamination": summary.get("contamination"),
+            # whether another machine was consulted about this reading, and what it did - a number on screen is
+            # only checkable if you can tell what made it
+            "second_reader": summary.get("second_reader") or {"consulted": False},
         },
         "performance": perf,
         "review": _load_optional(rd, "review-findings.json"),

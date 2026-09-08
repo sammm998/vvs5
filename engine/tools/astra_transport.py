@@ -4,7 +4,9 @@ vvs_engine/semantics/astra.py holds the rules - what may be asked, what may be a
 checked. This holds only the wire: how to reach the model and how to wait for it. The engine imports none of it
 and runs with no network unless a caller hands `analyze_page` a transport built here.
 
-No key appears here. The agent proxy attaches the credential after the request leaves the machine.
+No key appears in this file. Where the request leaves through an agent proxy that attaches the credential,
+nothing is sent from here at all; where it does not - a container running the service - the key is read from
+OPENAI_API_KEY in the environment at call time and put on the wire, and never written down, logged or returned.
 """
 from __future__ import annotations
 
@@ -26,12 +28,33 @@ SYSTEM = ("Du läser VVS-ritningar. Du får ett fall som den geometriska läsnin
           "geometri, koordinater, dimensioner eller beteckningar som inte står i frågan.")
 
 
+def _auth() -> list[str]:
+    """The credential, if this machine is the one that has to supply it.
+
+    Behind an agent proxy the request is authenticated after it leaves and no header belongs here. In a container
+    there is no such proxy, so the key is read from the environment at the moment of the call. It is returned to
+    the caller of curl and to nowhere else: never stored, never echoed into an error, never part of a result.
+    """
+    key = os.environ.get("OPENAI_API_KEY", "").strip()
+    return ["-H", f"Authorization: Bearer {key}"] if key else []
+
+
+def available() -> tuple[bool, str]:
+    """Whether a second reader can be reached from here, said plainly rather than found out by failing."""
+    if os.environ.get("OPENAI_API_KEY", "").strip():
+        return True, "nyckel i miljön"
+    if os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy"):
+        return True, "proxy som fäster referensen"
+    return False, "ingen OPENAI_API_KEY och ingen proxy: läsningen står på sin egen geometri"
+
+
 def _curl(args: list[str], timeout: int = 90) -> dict:
-    r = subprocess.run(["curl", "-sS", "--max-time", str(timeout), *args], capture_output=True, text=True)
+    r = subprocess.run(["curl", "-sS", "--max-time", str(timeout), *_auth(), *args], capture_output=True, text=True)
     try:
         return json.loads(r.stdout)
     except Exception:
-        raise RuntimeError(f"icke-JSON från {API}: {(r.stdout or r.stderr)[:200]}")
+        # the key can appear in curl's own diagnostics, so only the first line of stdout is ever quoted back
+        raise RuntimeError(f"icke-JSON från {API}: {(r.stdout or '')[:200] or 'inget svar'}")
 
 
 def transport(effort: str = "low") -> Callable:

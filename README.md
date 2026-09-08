@@ -127,6 +127,29 @@ a review that could edit the result would hide the disagreement it exists to sur
 
 The findings are written to `review-findings.json` and shown in the application's "Granskning" tab.
 
+### A second reader, where the drawing itself leaves a choice
+
+`VVS_SECOND_READER=true` lets a language model (`VVS_SECOND_READER_MODEL`, default `gpt-6-astra`) answer the cases
+the geometry has already declared AMBIGUOUS - and only those. What it may answer is bounded by the drawing: a
+question carries the families this leader's own end landed on, and `verify()` refuses, character for character,
+anything that is not one of them, so it cannot name a pipe, a leader, a DN, a coordinate or a metre the reading
+did not already put forward. An answer naming two candidates stays ambiguous. Every settled case records that a
+model chose it and from which candidates.
+
+It is off by default and the takeoff does not depend on it: with no transport nothing is asked, the engine runs
+with no network, and the result is the same. A job that did consult it says so - the result carries
+`second_reader: {consulted, asked, settled, refused}` and reports determinism as
+`NOT_APPLICABLE_A_SECOND_READER_WAS_CONSULTED`, because a reading that asked another machine is not the same kind
+of answer as one that did not.
+
+Measured on `S3_25.pdf`, the sheet in the corpus with real multi-family ambiguity: 2 cases asked, 2 answered
+"OKLART", 0 settled, 42.399 m either way. That is the useful shape of the thing - it declined to invent a
+discriminator that was not there.
+
+`POST /api/jobs/{id}/vision` is the other model path: a look at the rendered page and at the overlay, asked for
+rather than automatic, which reports what the vector reading seems to have missed. It cannot write: there is no
+`apply()`, a finding carries no number, and no finding connects to a quantity.
+
 ### Resolving what the vector reader could not name
 
 Where a glyph's shape matches no reference letter the row keeps a '?', and everything built on it - the

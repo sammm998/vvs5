@@ -17,6 +17,11 @@ class Settings(BaseSettings):
     run_review: bool = True       # review agents check the finished result
     review_ocr: bool = True       # let the review read the page with OCR as an independent second opinion
     ocr_assist: bool = True       # let OCR name the characters the stroke recogniser could not
+    # Ask a second reader about cases the geometry itself declared open, among the candidates the drawing offers.
+    # Off by default: it costs a call and a wait per open case, and the reading is complete without it. Turning it
+    # on also turns the determinism check off, because a reading that consulted another machine is not the same
+    # kind of answer as one that did not - which the result then says outright.
+    second_reader: bool = False
     cors_origins: str = "http://localhost:5173,http://localhost:8080"
     allow_registration: bool = True
     static_dir: str = ""          # built frontend (frontend/dist); served by the API when present
