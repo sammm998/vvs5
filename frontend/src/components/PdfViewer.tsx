@@ -113,13 +113,34 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     setScale(mode === "width" ? cw / vp.w : Math.min(cw / vp.w, ch / vp.h));
   }, [vp]);
 
+  // A drawing opens showing the whole drawing. Landing at an arbitrary zoom means the first thing a reader does
+  // is hunt for the sheet, and the question they came to answer - did it get the pipes? - is about all of it.
+  //
+  // It keeps fitting while the frame is still settling: the panel beside it is draggable, the window resizes, and
+  // a fit computed against a container that had not reached its height yet leaves the sheet floating in an empty
+  // box. The moment the reader zooms or drags themselves, the zoom is theirs and this stops.
+  const auto = useRef(true);
+  useEffect(() => { auto.current = true; }, [props.page, doc]);
+  useEffect(() => {
+    if (!vp || !doc || !auto.current) return;
+    fit("page");
+  }, [vp, doc, props.page, fit]);
+  useEffect(() => {
+    const el = container.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => { if (auto.current) fit("page"); });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [fit]);
+
   useImperativeHandle(ref, () => ({
-    zoomIn: () => setScale((s) => Math.min(s * 1.25, 12)),
-    zoomOut: () => setScale((s) => Math.max(s / 1.25, 0.1)),
-    fitPage: () => fit("page"),
-    fitWidth: () => fit("width"),
+    zoomIn: () => { auto.current = false; setScale((s) => Math.min(s * 1.25, 12)); },
+    zoomOut: () => { auto.current = false; setScale((s) => Math.max(s / 1.25, 0.1)); },
+    fitPage: () => { auto.current = true; fit("page"); },
+    fitWidth: () => { auto.current = false; fit("width"); },
     fullscreen: () => container.current?.requestFullscreen?.(),
     zoomTo: (bbox: number[]) => {
+      auto.current = false;
       if (!container.current || !vp) return;
       const cw = container.current.clientWidth, ch = container.current.clientHeight;
       const bw = Math.max(bbox[2] - bbox[0], 20), bh = Math.max(bbox[3] - bbox[1], 20);

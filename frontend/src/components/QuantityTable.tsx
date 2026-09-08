@@ -54,6 +54,9 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
           </label>
         )}
       </div>
+      {/* the takeoff has eleven columns and the panel beside a drawing is narrow: the table scrolls in its own
+          frame, with the designation pinned, rather than pushing the panel sideways under the reader */}
+      <div className="tablewrap">
       <table>
         <thead><tr>{th("designation", "Beteckning")}{th("dn", "DN")}{th("label_count", "Etiketter")}{th("physical_pipe_count", "Sträckor")}{th("confirmed_horizontal_m", "Horisontellt", "m")}{th("vertical_calc", "Vertikalt", "m")}{th("total_calc", "Totalt", "m")}{th("ambiguous_m", "Tvetydigt", "m")}{th("in_hatched_area_m", "Skrafferat", "m")}{th("risers_calc", "Stigare")}{th("state", "Status")}</tr></thead>
         <tbody>
@@ -116,6 +119,7 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
         </tbody>
         <tfoot><tr><th>Summa</th><th></th><th className="num">{tot("label_count")}</th><th className="num">{tot("physical_pipe_count")}</th><th className="num">{tot("horizontal_calc").toFixed(2)}</th><th className="num">{tot("vertical_calc").toFixed(2)}</th><th className="num strong">{tot("total_calc").toFixed(2)}</th><th className="num">{tot("ambiguous_m").toFixed(2)}</th><th className="num">{tot("in_hatched_area_m").toFixed(2)}</th><th className="num">{tot("risers_calc")}</th><th></th></tr></tfoot>
       </table>
+      </div>
     </div>
   );
 }

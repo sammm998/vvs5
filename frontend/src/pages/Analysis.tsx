@@ -94,6 +94,7 @@ export default function AnalysisPage() {
   const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: true, declined: false, designations: false, leaders: false, anchors: false, inWall: false });
   // which bortvald family the reader is pointing at, so the sheet can show that ink and not all of it at once
   const [selDeclined, setSelDeclined] = useState<string | null>(null);
+  const [layersOpen, setLayersOpen] = useState(false);
   const [artifacts, setArtifacts] = useState<any[]>([]);
   const viewer = useRef<ViewerHandle>(null);
 
@@ -127,7 +128,7 @@ export default function AnalysisPage() {
     const move = (e: MouseEvent) => {
       if (!dragging.current) return;
       e.preventDefault();
-      setPanel(Math.min(Math.max(window.innerWidth - e.clientX, 360), Math.max(window.innerWidth - 380, 360)));
+      setPanel(Math.min(Math.max(window.innerWidth - e.clientX, 300), Math.max(window.innerWidth - 420, 300)));
     };
     const up = () => {
       if (!dragging.current) return;
@@ -173,23 +174,39 @@ export default function AnalysisPage() {
         {!panelOpen && (
           <button className="secondary small reopen" onClick={() => setOpen(true)}>Visa mängder</button>
         )}
+        {/* One line of controls, because every line here is a line the drawing does not get. The eight layer
+            switches used to wrap onto a second row and push the sheet down the page; they live behind one
+            control now, which says how many are on. */}
         <div className="toolbar">
-          <Link to={`/drawings/${job.drawing_id}`}>← Ritning</Link>
-          <button className="secondary small" onClick={() => viewer.current?.zoomIn()}>Zooma in</button>
-          <button className="secondary small" onClick={() => viewer.current?.zoomOut()}>Zooma ut</button>
-          <button className="secondary small" onClick={() => viewer.current?.fitPage()}>Anpassa sida</button>
-          <button className="secondary small" onClick={() => viewer.current?.fitWidth()}>Anpassa bredd</button>
+          <Link to={`/drawings/${job.drawing_id}`} className="back">← Ritning</Link>
+          <span className="seg zoomseg">
+            <button onClick={() => viewer.current?.zoomOut()} title="Zooma ut">−</button>
+            <button onClick={() => viewer.current?.zoomIn()} title="Zooma in">+</button>
+            <button onClick={() => viewer.current?.fitPage()} title="Hela sidan">Sida</button>
+            <button onClick={() => viewer.current?.fitWidth()} title="Full bredd">Bredd</button>
+          </span>
           <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>Helskärm</button>
           {nPages > 1 && <select value={page} onChange={(e) => {
             // the selected run belongs to the page it was found on; carrying it across would put its ends,
             // and any correction dragged from them, on geometry that is not it
             setPage(Number(e.target.value)); setSelPipe(null); setWhy(null);
           }}>{Array.from({ length: nPages }, (_, i) => <option key={i} value={i}>Sida {i + 1}</option>)}</select>}
-          {(Object.keys(LAYER_LABELS) as Layer[]).map((l) => (
-            <label key={l} style={{ fontSize: 12 }} title={LAYER_HINTS[l]}>
-              <input type="checkbox" checked={layers[l]} onChange={(e) => setLayers({ ...layers, [l]: e.target.checked })} /> {LAYER_LABELS[l]}
-            </label>
-          ))}
+          <span className="spacer" />
+          <div className="layerpop">
+            <button className={`secondary small${layersOpen ? " on" : ""}`} onClick={() => setLayersOpen(!layersOpen)}>
+              Lager · {(Object.keys(LAYER_LABELS) as Layer[]).filter((l) => layers[l]).length}
+            </button>
+            {layersOpen && (
+              <div className="pop" onMouseLeave={() => setLayersOpen(false)}>
+                {(Object.keys(LAYER_LABELS) as Layer[]).map((l) => (
+                  <label key={l} title={LAYER_HINTS[l]}>
+                    <input type="checkbox" checked={layers[l]} onChange={(e) => setLayers({ ...layers, [l]: e.target.checked })} />
+                    <span>{LAYER_LABELS[l]}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
         <PdfViewer ref={viewer} data={pdf} page={page} pipes={pipesOnPage} ambiguous={result.ambiguous_geometry} unowned={result.unowned_geometry}
           designations={result.designations} leaders={result.leaders} anchors={result.anchors} hatched={result.hatched_geometry ?? []} selectedIdentity={selIdent}
@@ -202,14 +219,14 @@ export default function AnalysisPage() {
       </div>
       <div className="splitter" role="separator" aria-orientation="vertical" aria-label="Dra för att ändra bredd"
         onMouseDown={() => { dragging.current = true; document.body.classList.add("resizing"); }}
-        onDoubleClick={() => setPanel(480)} />
+        onDoubleClick={() => setPanel(380)} />
       <div className="right">
         <div className="panelbar">
-          <button className="ghost small" onClick={() => setPanel(Math.max(360, panel - 140))}
+          <button className="ghost small" onClick={() => setPanel(Math.max(300, panel - 120))}
             title="Smalare">−</button>
-          <button className="ghost small" onClick={() => setPanel(Math.min(Math.max(window.innerWidth - 380, 360), panel + 140))}
+          <button className="ghost small" onClick={() => setPanel(Math.min(Math.max(window.innerWidth - 420, 300), panel + 120))}
             title="Bredare">+</button>
-          <button className="ghost small" onClick={() => setPanel(480)} title="Återställ bredden">Återställ</button>
+          <button className="ghost small" onClick={() => setPanel(380)} title="Återställ bredden">Återställ</button>
           <span className="spacer" />
           <button className="ghost small" onClick={() => setOpen(false)} title="Stäng fältet">Stäng ✕</button>
         </div>
@@ -232,16 +249,26 @@ export default function AnalysisPage() {
                 {`${c.verified_attachments} av ${c.designations} beteckningar nådde ett rör. Resten är legendtext, komponenttaggar eller etiketter vars hänvisningslinje inte når fram – se Granskning.`}
               </p>
             )}
-            <div className="row" style={{ marginBottom: 8, alignItems: "center", gap: 8 }}>
-              <label style={{ fontSize: 12 }}>Våningshöjd för stigare (m): <input style={{ width: 70 }} value={floorHeight} placeholder="t.ex. 2,8"
-                onChange={(e) => { setFloorHeight(e.target.value); try { localStorage.setItem("vvs.floorHeight", e.target.value); } catch { /* private window: the setting just does not persist */ } }} /></label>
-              <label style={{ fontSize: 12 }}>Stigare räknas från:{" "}
-                <select value={riserSource} onChange={(e) => { setRiserSource(e.target.value); try { localStorage.setItem("vvs.riserSource", e.target.value); } catch { /* private window: the setting just does not persist */ } }}>
-                  <option value="labels">etiketter med dimension på raden under</option>
-                  <option value="symbols">ritade stigarsymboler</option>
-                </select></label>
-              <span className="muted" style={{ fontSize: 12 }}>Vertikalt = antal stigare × våningshöjd (ritningen anger ingen höjd). Rör i skrafferade ytor mäts alltid men räknas in bara om du kryssar i rutan.</span>
-            </div>
+            {/* Two settings and a paragraph explaining them used to stand between the reader and the numbers they
+                came for. They are still one click away, and the summary line says what they are set to. */}
+            <details className="settings">
+              <summary>
+                Antaganden <span className="muted">· våningshöjd {floorHeight ? `${floorHeight} m` : "ej satt"} · stigare ur
+                  {riserSource === "labels" ? " etiketter" : " ritade symboler"}</span>
+              </summary>
+              <div className="body">
+                <label>Våningshöjd för stigare (m)
+                  <input style={{ width: 84 }} value={floorHeight} placeholder="t.ex. 2,8"
+                    onChange={(e) => { setFloorHeight(e.target.value); try { localStorage.setItem("vvs.floorHeight", e.target.value); } catch { /* private window: the setting just does not persist */ } }} /></label>
+                <label>Stigare räknas från
+                  <select value={riserSource} onChange={(e) => { setRiserSource(e.target.value); try { localStorage.setItem("vvs.riserSource", e.target.value); } catch { /* private window: the setting just does not persist */ } }}>
+                    <option value="labels">etiketter med dimension på raden under</option>
+                    <option value="symbols">ritade stigarsymboler</option>
+                  </select></label>
+                <p className="muted">Vertikalt = antal stigare × våningshöjd; ritningen anger ingen höjd. Rör i
+                  skrafferade ytor mäts alltid men räknas in bara om du kryssar i rutan nedan.</p>
+              </div>
+            </details>
             <QuantityTable rows={result.quantities} selected={selIdent} onSelect={(k) => { setSelIdent(k); setSelPipe(null); setWhy(null); }} floorHeight={floorH}
               pipes={result.pipes} meterPerPt={result.scale?.meters_per_pdf_point ?? null} onPipeClick={onPipeClick}
               includeHatched={includeHatched} onIncludeHatched={(v) => { setIncludeHatched(v); try { localStorage.setItem("vvs.includeHatched", v ? "1" : "0"); } catch { /* private window: the setting just does not persist */ } }}

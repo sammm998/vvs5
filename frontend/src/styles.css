@@ -441,3 +441,151 @@ button.drill:hover { background: var(--chip); opacity: 1; }
 
 /* a vertical metre that came from a typed floor height, not from the drawing */
 .assumed { color: var(--warn, #b45309); font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; }
+
+/* ---------- signing in: the form on paper, the principle on ink ---------- */
+
+.auth {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  min-height: 100vh;
+}
+.auth-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+}
+.auth-form form { width: 100%; max-width: 372px; }
+.auth-form h1 { font-size: clamp(34px, 4.4vw, 52px); margin-bottom: 14px; }
+.auth-form .sub { color: var(--muted); margin: 0 0 30px; max-width: 34ch; }
+.auth-form .field { margin-bottom: 18px; }
+.auth-form input { width: 100%; }
+.auth-form > form > button[type="submit"] { width: 100%; margin-top: 6px; padding: 15px 24px; }
+.auth-form .error { margin: 0 0 14px; font-size: 13px; }
+.auth-form .swap { margin: 22px 0 0; color: var(--muted); font-size: 13px; }
+.auth-form .swap button {
+  background: transparent; border: 0; padding: 0; color: var(--ink);
+  font-family: var(--sans); font-size: 13px; letter-spacing: 0; text-transform: none;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.auth-form .swap button:hover { opacity: 0.6; }
+
+.auth .aside {
+  background: #0b0d10;
+  color: #e9ecf1;
+  padding: 56px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+.auth .aside svg { width: 100%; max-width: 430px; height: auto; }
+.auth .aside blockquote {
+  margin: 0;
+  font-size: clamp(20px, 2.3vw, 27px);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  max-width: 20ch;
+}
+.auth .aside .who {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #6b7280; margin-top: -18px;
+}
+.auth .aside .facts {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;
+  border-top: 1px solid #1e232b; padding-top: 26px;
+}
+.auth .aside .facts > div { font-size: 12px; line-height: 1.45; color: #8b929e; }
+.auth .aside .facts b {
+  display: block; font-size: 26px; font-weight: 500; letter-spacing: -0.03em; color: #f0f2f5;
+  margin-bottom: 7px; font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .auth { grid-template-columns: 1fr; }
+  .auth .aside { padding: 40px 26px; order: 2; }
+  .auth-form { padding: 44px 26px 20px; }
+}
+
+/* ---------- the analysis toolbar: one line, so the sheet gets the page ---------- */
+
+.toolbar .back { font-family: var(--mono); font-size: 10px; letter-spacing: 0.11em; text-transform: uppercase; color: var(--muted); }
+.toolbar .back:hover { color: var(--ink); text-decoration: none; }
+.toolbar .seg.zoomseg { padding: 3px; }
+.toolbar .seg.zoomseg button { padding: 5px 11px; font-size: 10px; min-width: 30px; }
+.toolbar .seg.zoomseg button:hover { background: var(--chip); color: var(--ink); opacity: 1; }
+.toolbar .spacer { flex: 1; min-width: 0; }
+
+.layerpop { position: relative; }
+.layerpop > button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.layerpop .pop {
+  position: absolute; right: 0; top: calc(100% + 7px); z-index: 20;
+  background: #fff; border: 1px solid var(--line-2); border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.11);
+  padding: 8px; min-width: 216px;
+}
+.layerpop .pop label {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 9px; border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--ink);
+}
+.layerpop .pop label:hover { background: var(--bg-2); }
+.layerpop .pop input { margin: 0; }
+
+/* ---------- the takeoff panel, at a width that leaves the drawing room ---------- */
+
+.analysis .right .card { padding: 15px 16px; margin-bottom: 12px; border-radius: 12px; }
+.analysis .right .kpi { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+.analysis .right .kpi .card { padding: 12px 13px; }
+.analysis .right .kpi .v { font-size: 19px; }
+.analysis .right .kpi .l { font-size: 9px; letter-spacing: 0.09em; }
+.analysis .right h3 { font-size: 13.5px; }
+.analysis .right .issue { padding: 9px 3px; font-size: 13px; }
+.analysis .right .field { margin-bottom: 11px; }
+.analysis .right input, .analysis .right select { padding: 9px 14px; font-size: 13px; }
+.analysis .right p { font-size: 13px; }
+
+/* the tabs are five and the panel is narrow: they scroll rather than wrap or clip */
+.analysis .tabs { overflow-x: auto; scrollbar-width: none; margin-bottom: 12px; }
+.analysis .tabs::-webkit-scrollbar { display: none; }
+.analysis .tabs button { padding: 9px 9px; font-size: 9.5px; letter-spacing: 0.09em; }
+
+/* ---------- assumptions, folded away until they are asked for ---------- */
+
+details.settings { border: 1px solid var(--line); border-radius: 10px; margin-bottom: 12px; }
+details.settings > summary {
+  cursor: pointer; list-style: none; padding: 9px 12px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink);
+}
+details.settings > summary::-webkit-details-marker { display: none; }
+details.settings > summary::before { content: "▸ "; color: var(--faint); }
+details.settings[open] > summary::before { content: "▾ "; }
+details.settings > summary .muted { text-transform: none; letter-spacing: 0; font-size: 11.5px; }
+details.settings .body { padding: 4px 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+details.settings .body label {
+  display: flex; align-items: center; gap: 9px; justify-content: space-between; font-size: 12.5px;
+}
+details.settings .body select { max-width: 60%; }
+details.settings .body p { margin: 2px 0 0; font-size: 12px; }
+
+/* a table wider than the panel scrolls inside its card and never past it */
+.analysis .right .card { max-width: 100%; }
+.analysis .right .card > div { max-width: 100%; }
+
+/* the sidebar carries one link; it does not need a fifth of the window */
+.app { grid-template-columns: 244px minmax(0, 1fr); }
+
+/* A sheet is wider than it is tall and the frame beside it is not; the page therefore sits in the middle of what
+   it is given rather than pinned to the top with the difference left as a hole under it. */
+.viewer { display: flex; }
+.viewer .page { margin: auto; }
+
+/* the takeoff table scrolls in its own frame; the panel around it never moves sideways */
+.tablewrap { overflow-x: auto; }
+.tablewrap::-webkit-scrollbar { height: 8px; }
+.tablewrap::-webkit-scrollbar-thumb { background: #d8d8d8; border-radius: 999px; }
+.analysis .right { overflow-x: hidden; }
+.analysis .right .card { overflow-x: visible; }
+
+/* the fold-away control sits in the sidebar's top right; the wordmark stops short of it */
+.side .brand { padding-right: 30px; }
+.app.railed .side .brand { padding-right: 0; }

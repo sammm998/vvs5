@@ -74,8 +74,13 @@ export default function App() {
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
   if (path === "" || path === "/" || path === "/login" || path === "/dokumentation") return ROUTES;
   const email = currentEmail();
+  // On a reading, the drawing is the page. The sidebar carries one link and a sign-out; on a wide sheet those
+  // 244 px are the difference between seeing the whole drawing and hunting across it, so this route opens with
+  // the sidebar folded to its rail. It is still one click away, and a reader who unfolds it keeps it unfolded.
+  const chosen = (() => { try { return localStorage.getItem("vvs.rail") !== null; } catch { return false; } })();
+  const railed = rail || (!chosen && path.startsWith("/jobs/"));
   return (
-    <div className={`app${rail ? " railed" : ""}`}>
+    <div className={`app${railed ? " railed" : ""}`}>
       <aside className="side">
         <button className="ghost small railbtn" onClick={toggleRail}
           title={rail ? "Visa sidopanelen" : "Fäll ihop sidopanelen"}
