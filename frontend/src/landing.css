@@ -546,6 +546,17 @@ body.lp-dark { background: #07080a; }
   box-shadow: 0 40px 120px -60px rgba(110, 231, 165, 0.35);
 }
 .lp-scene-art svg { width: 100%; height: auto; display: block; }
+/* the sheet is a thing on a table, not a picture on a page: it has a plane, and the reading lifts it off it */
+.lp-scene-grid { perspective: 2000px; perspective-origin: 50% 55%; }
+.lp-scene-art {
+  transform-origin: 50% 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.18s linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-scene-art { transform: none !important; transition: none; }
+}
 
 .lp-beats { list-style: none; margin: 0 0 34px; padding: 0; }
 .lp-beats li {

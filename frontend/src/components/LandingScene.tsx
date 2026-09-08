@@ -47,7 +47,12 @@ export default function LandingScene() {
     <section className="lp-scene" ref={ref} id="hur">
       <div className="lp-scene-pin">
         <div className="lp-scene-grid">
-          <div className="lp-scene-art">
+          {/* The sheet lies on a table and rises to face the reader as the reading proceeds - the same motion
+              the reading itself makes, taking the pipes off the paper. The tilt is driven by the scroll, so it
+              is the reader's own hand that lifts it. */}
+          <div className="lp-scene-art" style={{
+            transform: `rotateX(${(1 - p) * 13}deg) translateZ(${p * 18}px) scale(${0.97 + 0.03 * p})`,
+          }}>
             <svg viewBox="0 0 940 520" role="img" aria-label="Ritningen läses steg för steg medan sidan skrollas">
               {/* the sheet */}
               <g stroke="#232830" strokeWidth="1.6" fill="none" opacity={0.75 + 0.25 * text}>
@@ -77,13 +82,20 @@ export default function LandingScene() {
                   return <path key={i} d={d[0]} pathLength={1} strokeDasharray="1" strokeDashoffset={1 - k} />;
                 })}
               </g>
-              {/* the runs, drawing themselves */}
-              <g fill="none" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round">
+              {/* the runs, drawing themselves - and lifting off the sheet as they are owned */}
+              <g fill="none" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"
+                 style={{ transform: `translate(${-4 * pipes}px, ${-7 * pipes}px)`, transition: "transform 0.2s linear" }}>
                 {RUNS.map((r, i) => {
                   const k = win(pipes, i * 0.1, i * 0.1 + 0.62);
                   return (
-                    <path key={i} d={r.d} stroke={r.c} pathLength={1} strokeDasharray="1"
-                      strokeDashoffset={1 - k} opacity={0.5 + 0.5 * k} />
+                    <g key={i}>
+                      {/* what a lifted line casts on the paper below it */}
+                      <path d={r.d} stroke="#05070a" strokeOpacity={0.34 * k} strokeWidth="5"
+                        pathLength={1} strokeDasharray="1" strokeDashoffset={1 - k}
+                        transform={`translate(${5 * pipes} ${8 * pipes})`} />
+                      <path d={r.d} stroke={r.c} pathLength={1} strokeDasharray="1"
+                        strokeDashoffset={1 - k} opacity={0.5 + 0.5 * k} />
+                    </g>
                   );
                 })}
               </g>

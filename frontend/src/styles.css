@@ -490,18 +490,34 @@ pre { white-space: pre-wrap; word-break: break-word; background: var(--bg-2); bo
 
 /* ---------- the film: the reading, while it is still happening ---------- */
 
+/* The sheet fills its own column and the readers talk beside it. Putting the conversation under the drawing
+   meant it was below the fold on every screen: a live account nobody scrolls to is not a live account. */
 .film {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  grid-template-areas: "stage side" "talk side";
+  grid-template-columns: minmax(0, 1fr) 360px;
   gap: 24px;
   align-items: start;
+  height: calc(100vh - 210px);
+  min-height: 460px;
 }
-.film-stage { grid-area: stage; }
-.film-side { grid-area: side; }
+.film-stage { min-width: 0; overflow: hidden; display: grid; place-items: center; }
+.film-side { display: flex; flex-direction: column; min-height: 0; height: 100%; }
 
 /* the readers talking to each other while the sheet is read: one bubble per stage, newest drawn in */
-.film-talk { grid-area: talk; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.film-talk {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0 12px;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+  scroll-behavior: smooth;
+}
+@media (max-width: 1080px) {
+  .film { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .film-talk { max-height: 320px; }
+}
 .film-talk .bubble {
   border: 1px solid var(--line);
   border-left: 2px solid var(--ink);
@@ -554,7 +570,7 @@ pre { white-space: pre-wrap; word-break: break-word; background: var(--bg-2); bo
 .film-total .v { font-size: 34px; font-weight: 500; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
 .film-total .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
 
-.film-stages { list-style: none; margin: 22px 0; padding: 0; }
+.film-stages { list-style: none; margin: 0 0 10px; padding: 0; flex: none; }
 .film-stages li {
   display: flex; align-items: center; gap: 10px;
   padding: 7px 0; color: var(--faint);
@@ -902,3 +918,54 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
 .pillbtn:hover { border-color: var(--ink); color: var(--ink); }
 .pillbtn.on { border-color: var(--ink); background: var(--bg-2); color: var(--ink); }
 .agentbar .ask { padding: 7px 16px; border-radius: 999px; }
+
+/* ---------- motion ----------
+ *
+ * A reading takes time, and an interface that only ever cuts between states makes the wait feel like a stall.
+ * These are small: a view arrives rather than appears, a card lifts when the sheet under it can be touched, the
+ * tab you are on is underlined by something that travelled there. Nothing moves that a reader has to wait for,
+ * and everything here stops on the system setting for reduced motion.
+ */
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sweepin { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+
+.sheetview > .card { animation: rise 0.42s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+.viewtabs button { transition: color 0.16s ease, border-color 0.22s ease; }
+.workspace .analysis { animation: fade 0.3s ease both; }
+
+/* the takeoff rows arrive in order, so the eye follows the list being filled rather than finding it done */
+.analysis .right tbody tr { animation: sweepin 0.34s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+.analysis .right tbody tr:nth-child(1) { animation-delay: 0.02s; }
+.analysis .right tbody tr:nth-child(2) { animation-delay: 0.05s; }
+.analysis .right tbody tr:nth-child(3) { animation-delay: 0.08s; }
+.analysis .right tbody tr:nth-child(4) { animation-delay: 0.11s; }
+.analysis .right tbody tr:nth-child(5) { animation-delay: 0.14s; }
+.analysis .right tbody tr:nth-child(n+6) { animation-delay: 0.17s; }
+
+/* the sheet sits on the page rather than in it: it lifts a little when it can be worked on */
+.viewer {
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+  perspective: 1400px;
+}
+.viewer .page {
+  transition: box-shadow 0.35s ease, transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
+  transform-style: preserve-3d;
+}
+.viewer:hover .page { box-shadow: 0 18px 44px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.08); }
+
+.card, .agentcard, .verdict, .rosteritem { transition: border-color 0.18s ease, transform 0.18s ease; }
+.verdict:hover, .agentcard:hover { transform: translateX(2px); }
+
+/* a number that changed is worth a beat of attention */
+@keyframes tick { 0% { transform: translateY(-2px); opacity: 0.5; } 100% { transform: none; opacity: 1; } }
+.film-total .v { animation: tick 0.4s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sheetview > .card,
+  .workspace .analysis,
+  .analysis .right tbody tr,
+  .film-total .v { animation: none; }
+  .viewer .page, .verdict, .agentcard, .card, .rosteritem { transition: none; }
+  .verdict:hover, .agentcard:hover { transform: none; }
+}

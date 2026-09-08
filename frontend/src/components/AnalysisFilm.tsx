@@ -24,6 +24,7 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
   const seen = useRef<Record<string, number>>({});
   const mounted = useRef(0);
   const box = useRef<HTMLDivElement>(null);
+  const talkBox = useRef<HTMLDivElement>(null);
   const [w, setW] = useState(760);
 
   // A frame only lands when a stage finishes, so the film is fetched when the stage moves rather than on a
@@ -47,6 +48,12 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
     const t = setInterval(() => setTick((n) => n + 1), 90);
     return () => clearInterval(t);
   }, []);
+
+  // the newest line stays in view without the reader chasing it
+  useEffect(() => {
+    const el = talkBox.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [frames, stage]);
 
   useEffect(() => {
     const on = () => setW(box.current?.clientWidth ?? 760);
@@ -138,10 +145,16 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
         </svg>
       </div>
 
-      {/* what the readers are saying to each other while it runs: each stage reports what it found from its own
-          frame, then hands the sheet to the next. Nothing here is written for the screen - the numbers are the
-          ones the reading is working from. */}
-      <div className="film-talk">
+      <div className="film-side">
+        <div className="film-total">
+          <div className="v">{total ? `${total.toFixed(1).replace(".", ",")} m` : "—"}</div>
+          <div className="l">mätt hittills</div>
+        </div>
+
+        {/* what the readers are saying to each other while it runs: each stage reports what it found from its own
+            frame, then hands the sheet to the next. Nothing here is written for the screen - the numbers are the
+            ones the reading is working from. */}
+        <div className="film-talk" ref={talkBox}>
         {talk.length === 0 && <p className="muted">Läser in bladet…</p>}
         {talk.map((t, i) => (
           <div key={`${t.stage}-${i}`} className={`bubble${i === talk.length - 1 ? " fresh" : ""}`}>
@@ -157,13 +170,8 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
             <p className="dots"><i /><i /><i /></p>
           </div>
         )}
-      </div>
-
-      <div className="film-side">
-        <div className="film-total">
-          <div className="v">{total ? `${total.toFixed(1).replace(".", ",")} m` : "—"}</div>
-          <div className="l">mätt hittills</div>
         </div>
+
         <ol className="film-stages">
           {ORDER.map((st) => {
             const done = !!by[st];
