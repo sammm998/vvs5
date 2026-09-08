@@ -139,3 +139,47 @@ def test_a_mark_inside_a_wall_and_a_component_tag_are_both_labelled_as_such(synt
     for a in anc:
         if a["designation_id"] in by_did:
             assert a["names_a_pipe"] == by_did[a["designation_id"]]
+
+
+def test_a_line_the_drawing_drew_twice_is_reported(tmp_path):
+    """A run drawn once whole and once in pieces is one pipe, and the reading says where that happened.
+
+    It is said rather than subtracted, and that is measured rather than shrugged at: the doubled stubs sit at
+    joins, dropping them moves a graph node, and on the reference sheet a size frontier then landed where the
+    drawing makes no join - six metres changed size to save eight tenths of a metre of double count.
+    """
+    from vvs_engine.pdf.extract import extract_document
+    from vvs_engine.pipeline import analyze_page
+
+    doc = pymupdf.open()
+    page = doc.new_page(width=842, height=595)
+    shape = page.new_shape()
+    for y in (240, 300, 360, 420):
+        shape.draw_line((80, y), (700, y)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    shape.draw_line((300, 240), (300, 420)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    shape.draw_line((520, 240), (520, 420)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    # the same stretch of the y=300 run, drawn a second time
+    shape.draw_line((330, 300), (500, 300)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    shape.commit()
+    shape = page.new_shape()
+    for i, (y, tx) in enumerate(((240, "S12"), (300, "S13"), (360, "S14"), (420, "S15"))):
+        x = 140 + i * 120
+        page.insert_text((x, y - 40), tx, fontsize=10, fontname="helv")
+        page.insert_text((x, y - 28), "110", fontsize=10, fontname="helv")
+        shape.draw_line((x - 2, y - 26), (x - 40, y)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+        shape.draw_line((x - 41, y - 1), (x - 39, y + 1)); shape.finish(width=0.72, color=(0, 0, 0), closePath=False)
+    page.insert_text((100, 560), "SKALA 1:50", fontsize=10, fontname="helv")
+    for i in range(6):
+        page.insert_text((300 + i * 56.69, 560), str(i), fontsize=8, fontname="helv")
+    shape.draw_line((302, 566), (302 + 5 * 56.69, 566)); shape.finish(width=1.0, color=(0, 0, 0), closePath=False)
+    shape.commit()
+    path = os.path.join(tmp_path, "twice.pdf")
+    doc.save(path)
+    doc.close()
+
+    pa = analyze_page(extract_document(path).pages[0])
+    dt = (pa.contact_stats or {}).get("drawn_twice") or {}
+    assert dt.get("n_places", 0) >= 1, "the stretch drawn a second time on top of the run was not noticed"
+    assert dt["total_pt"] >= 150, f"only {dt.get('total_pt')} pt of doubled line found"
+    art = declined_geometry(pa)
+    assert art["drawn_twice"]["n_places"] == dt["n_places"], "the artifact must carry what the reading found"

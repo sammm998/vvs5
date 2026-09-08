@@ -14,7 +14,8 @@ from typing import Any, Callable
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
 from .geometry.core import GridIndex, dist, point_seg_distance
-from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family, family_key,
+from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family,
+                                   duplicate_overlaps, family_key,
                                    stroke_family,
                                    graph_tolerances, split_prims_at_points)
 from .profile.layers import compute_layer_stats
@@ -692,6 +693,16 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     if contact_stats.get("declined_families"):
         contact_stats["declined_families"] = {k: v for k, v in contact_stats["declined_families"].items() if k not in pipe_families}
     contact_stats["unconsidered_families"] = _unconsidered(page, pipe_families, contact_stats, ann_layers, glyph_pids, leaders)
+    # where the drawing drew the same line twice. Said, not subtracted: see duplicate_overlaps for the measurement
+    # that settles which of the two is the smaller error.
+    dup_pt, dup_places = 0.0, []
+    for fk, g in graphs.items():
+        t, places = duplicate_overlaps(list(g.prims.values()))
+        dup_pt += t
+        dup_places.extend(places)
+    dup_places.sort(key=lambda d: (-d["pt"], d["source_path"]))
+    contact_stats["drawn_twice"] = {"total_pt": round(dup_pt, 2), "places": dup_places[:200],
+                                    "n_places": len(dup_places)}
     # filled shapes are counted but never drawn as candidates: a pipe is a stroked line, and a filled outline of
     # a room or a piece of furniture is not one however much of the sheet it covers
     contact_stats["filled_shapes"] = {"paths": sum(1 for p in page.paths if p.kind != "s"),

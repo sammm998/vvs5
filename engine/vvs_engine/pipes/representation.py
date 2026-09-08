@@ -147,6 +147,62 @@ def _stamp(s: Seg) -> tuple:
     return (a, b) if a <= b else (b, a)
 
 
+OVERLAP_ANG = 0.6       # degrees: the same drawn line, redrawn
+OVERLAP_OFF = 0.30      # pt across the line: nearer than this and it is the same line, not a second pipe
+OVERLAP_MIN = 0.15      # pt: a remainder shorter than this is the rounding of an export, not drawn line
+
+
+def duplicate_overlaps(prims: list[Prim]) -> tuple[float, list[dict]]:
+    """Where the drawing drew the same line twice, and how much length that is.
+
+    The exact-duplicate test in collect_prims catches a segment redrawn end for end. It does not catch the
+    commoner case: a run drawn once whole and once in pieces, or two collinear segments sharing part of their
+    length. Both are one pipe. Measured over the style library it is a fifth of the drawn length on the sheets
+    that do it and a few tenths of a percent on the ones that do not.
+
+    It is reported and not subtracted, and that is a measured decision rather than a shrug. Removing the shared
+    length costs more than it saves: the duplicated stubs sit at joins, dropping them moves a graph node, and on
+    the reference sheet a size frontier then landed where the drawing makes no join at all - six metres changed
+    size to save eight tenths of a metre of double count. So the reading says where the doubled line is and
+    leaves the measurement alone until the frontier no longer depends on it.
+    """
+    kept: list[Prim] = []
+    idx = GridIndex(cell=12.0)
+    total = 0.0
+    places: list[dict] = []
+    for q in sorted(prims, key=lambda q: (-q.seg.length, q.pid, q.seg_index)):
+        s = q.seg
+        L = s.length
+        if L <= OVERLAP_MIN:
+            continue
+        dx, dy = (s.x1 - s.x0) / L, (s.y1 - s.y0) / L
+        nx, ny = -dy, dx
+        b = s.bbox()
+        shared = 0.0
+        for k in idx.query((b[0] - OVERLAP_OFF, b[1] - OVERLAP_OFF, b[2] + OVERLAP_OFF, b[3] + OVERLAP_OFF)):
+            r = kept[k].seg
+            if angle_diff(s.angle, r.angle) > OVERLAP_ANG:
+                continue
+            o0 = (r.x0 - s.x0) * nx + (r.y0 - s.y0) * ny
+            o1 = (r.x1 - s.x0) * nx + (r.y1 - s.y0) * ny
+            if abs(o0) > OVERLAP_OFF or abs(o1) > OVERLAP_OFF:
+                continue            # beside this line, not on it
+            t0 = (r.x0 - s.x0) * dx + (r.y0 - s.y0) * dy
+            t1 = (r.x1 - s.x0) * dx + (r.y1 - s.y0) * dy
+            lo, hi = (min(t0, t1), max(t0, t1))
+            ov = min(hi, L) - max(lo, 0.0)
+            if ov > OVERLAP_MIN:
+                shared = max(shared, ov)
+        if shared > OVERLAP_MIN:
+            total += shared
+            places.append({"pt": round(shared, 2), "bbox": [round(v, 1) for v in b],
+                           "source_path": q.pid, "family": q.family})
+        idx.insert(len(kept), s.bbox())
+        kept.append(q)
+    places.sort(key=lambda d: (-d["pt"], d["source_path"]))
+    return total, places
+
+
 def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | None = None) -> dict[str, list[Prim]]:
     """Primitives of the given families. exclude_pids drops individual paths - the leader lines of the drawing,
     which on a sheet without layers are drawn with the same pen as the pipes and would otherwise be measured."""

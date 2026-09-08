@@ -185,3 +185,20 @@ The measurement path is vector geometry and nothing else. Two model-assisted pas
   saw building outline and un-overlaid section detail and was right about both, for the reason the vectors give;
   one to the legend, where every stroke is annotation. A model that can see is still a model that can be wrong,
   which is why the sentence beside its finding is never its own.
+
+## Geometry the drawing drew twice is reported, not subtracted
+
+A run drawn once whole and once in pieces, or two collinear segments sharing part of their length, is one pipe.
+The exact-duplicate test at collection catches a segment redrawn end for end; it does not catch these. Measured
+over the style library it is a fifth of the drawn length on the sheets that do it and a few tenths of a percent
+on the ones that do not, so it is real.
+
+It is nevertheless reported rather than removed, and that is a measured decision. The doubled stubs sit at joins.
+Dropping them moves a graph node, and on the reference sheet a size frontier then landed where the drawing makes
+no join at all: six metres changed size to save eight tenths of a metre of double count, and the total absolute
+error went from 15.46 m to 21.21 m. Clipping the shared length instead of dropping the segment was worse again,
+27.35 m, because the cut itself became a node.
+
+So the reading says where the doubled line is - `drawn_twice` in `declined-geometry.json`, with a place and a
+length for each - and leaves the measurement alone. Removing it is worth doing only once a size frontier no
+longer depends on which stub happens to be present.

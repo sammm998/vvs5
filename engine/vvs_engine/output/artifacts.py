@@ -367,7 +367,12 @@ def declined_geometry(pa) -> dict[str, Any]:
                       "n_segments": v["n_segments"], "leader_ends_touching": 0, "label_votes": 0.0,
                       "on_a_pipe_like_layer": bool(v.get("on_a_pipe_like_layer")),
                       "segments": v.get("segments") or [], "segments_truncated": bool(v.get("segments_truncated"))})
-    return {"families": fams, "unconsidered": never,
+    # where the drawing drew the same line twice. It is reported rather than subtracted, and the reason is
+    # measured: see duplicate_overlaps.
+    dt = (pa.contact_stats or {}).get("drawn_twice") or {}
+    drawn_twice = {"n_places": dt.get("n_places", 0), "length_m": round(dt.get("total_pt", 0.0) * mpp, 2) if mpp else None,
+                   "places": [{**d, "m": round(d["pt"] * mpp, 3) if mpp else None} for d in (dt.get("places") or [])]}
+    return {"families": fams, "unconsidered": never, "drawn_twice": drawn_twice,
             "totals": {"families": len(fams), "segments": sum(f["n_segments"] for f in fams),
                        "segments_carried": sum(len(f["segments"]) for f in fams),
                        "length_m": round(sum(f["length_pt"] for f in fams) * mpp, 2) if mpp else None,

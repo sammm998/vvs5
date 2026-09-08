@@ -484,7 +484,7 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
     des = _load(rd, "vector-designations.json")["designations"]
     leaders = _load(rd, "leader-forensics.json")["leaders"]
     geom = _load(rd, "pipe-geometry-inventory.json")["primitives"]
-    declined = _load_optional(rd, "declined-geometry.json") or {"families": [], "totals": {}}
+    declined = _load_optional(rd, "declined-geometry.json") or {"families": [], "totals": {}, "drawn_twice": {}}
     unowned = [g for g in geom if g["state"] == "UNOWNED"]
     ambiguous = [g for g in geom if g["state"] == "AMBIGUOUS"]
     hatched = [g for g in geom if g["state"] == "CONFIRMED" and g.get("in_hatch")]
