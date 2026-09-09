@@ -200,25 +200,42 @@ function Riser() {
 
 /* ---------- 09 lagren separerar ---------- */
 function Layers() {
+  // The plates step down and to the right; every caption sits in its own row in a column of its own, joined to
+  // its plate by a short rule. An earlier version put all four captions at the same x inside each plate's own
+  // frame, so they landed on top of each other and the last one ran off the paper.
   const L = [
-    { t: "BYGGNAD", d: "M0 0 H240 V150 H0 Z M120 0 V150 M0 80 H120", c: "b" },
-    { t: "SPILLVATTEN", d: "M20 120 H140 V40 H220", c: "s" },
-    { t: "TAPPVATTEN", d: "M20 60 H100 V130 H220", c: "kv" },
-    { t: "TEXT OCH LEDARLINJER", d: "M40 24 H130 M130 30 L100 60", c: "t" },
+    { t: "BYGGNAD", d: "M0 0 H196 V112 H0 Z M98 0 V112 M0 60 H98", c: "b" },
+    { t: "SPILLVATTEN", d: "M18 90 H112 V30 H180", c: "s" },
+    { t: "TAPPVATTEN", d: "M18 46 H82 V96 H180", c: "kv" },
+    { t: "TEXT OCH LEDARLINJER", d: "M32 20 H106 M106 24 L82 48", c: "t" },
   ];
   return (
     <svg viewBox="0 0 640 300" role="img" aria-label="Varje sorts geometri på sitt eget lager">
       <rect className="lfa-paper" x="6" y="6" width="628" height="288" rx="10" />
       <g className="lfa-deck">
         {L.map((l, i) => (
-          <g key={l.t} className={`lfa-layer ${l.c}`} style={{ animationDelay: `${i * 0.25}s` }}
-            transform={`translate(${170 + i * 34} ${34 + i * 56})`}>
-            <path className="plate" d="M0 0 H240 V150 H0 Z" />
-            <path className="art" d={l.d} />
-            <text x="252" y="86" className="lfa-cap">{l.t}</text>
+          // the position is on the outer group and the animation on the inner one: a CSS transform replaces an
+          // SVG transform attribute outright, so animating the same element flattened all four plates onto each
+          // other for most of the cycle - which is exactly what it looked like
+          <g key={l.t} transform={`translate(${44 + i * 26} ${26 + i * 44})`}>
+            <g className={`lfa-layer ${l.c}`} style={{ animationDelay: `${i * 0.25}s` }}>
+              <path className="plate" d="M0 0 H196 V112 H0 Z" />
+              <path className="art" d={l.d} />
+            </g>
           </g>
         ))}
       </g>
+      <g className="lfa-deck-key">
+        {L.map((l, i) => (
+          <g key={l.t} className={`k ${l.c}`} style={{ animationDelay: `${0.3 + i * 0.14}s` }}
+            transform={`translate(404 ${68 + i * 46})`}>
+            <path d="M-42 -4 H-10" />
+            <rect x="-6" y="-13" width="12" height="12" rx="2" />
+            <text x="16" y="-3" className="lfa-cap">{l.t}</text>
+          </g>
+        ))}
+      </g>
+      <text x="44" y="276" className="lfa-cap">ett lager per system — och byggnaden för sig</text>
     </svg>
   );
 }
@@ -228,32 +245,30 @@ function Leader() {
   return (
     <svg viewBox="0 0 640 300" role="img" aria-label="En hänvisningslinje som träffar röret, och en som inte gör det">
       <rect className="lfa-paper" x="6" y="6" width="628" height="288" rx="10" />
-      <g>
-        <path className="lfa-pipe kv" d="M60 120 H300" />
-        <rect className="lfa-tag" x="60" y="52" width="132" height="26" rx="4" />
-        <text x="70" y="70" className="lfa-mono sm">KV1-X31-16</text>
-        <path className="lfa-lead draw" d="M192 66 L214 120" />
-        <circle className="lfa-hit" cx="214" cy="120" r="5" />
-        <text x="60" y="160" className="lfa-cap ok">slutar PÅ röret — sträckan får sitt namn</text>
+      <g transform="translate(0 -6)">
+        <path className="lfa-pipe kv" d="M44 116 H280" />
+        <rect className="lfa-tag" x="44" y="50" width="128" height="26" rx="4" />
+        <text x="54" y="68" className="lfa-mono sm">KV1-X31-16</text>
+        <path className="lfa-lead draw" d="M172 64 L196 116" />
+        <circle className="lfa-hit" cx="196" cy="116" r="5" />
+        <text x="44" y="150" className="lfa-cap ok">slutar PÅ röret — sträckan får sitt namn</text>
       </g>
       <g transform="translate(0 118)">
-        <path className="lfa-pipe kv" d="M60 120 H300" />
-        <rect className="lfa-tag" x="60" y="52" width="132" height="26" rx="4" />
-        <text x="70" y="70" className="lfa-mono sm">KV1-X31-16</text>
-        <path className="lfa-lead draw miss" d="M192 66 L212 102" />
-        <circle className="lfa-miss" cx="212" cy="102" r="5" />
-        <text x="60" y="160" className="lfa-cap warn">slutar i luften — sträckan blir onämnd</text>
+        <path className="lfa-pipe kv" d="M44 116 H280" />
+        <rect className="lfa-tag" x="44" y="50" width="128" height="26" rx="4" />
+        <text x="54" y="68" className="lfa-mono sm">KV1-X31-16</text>
+        <path className="lfa-lead draw miss" d="M172 64 L194 100" />
+        <circle className="lfa-miss" cx="194" cy="100" r="5" />
+        <text x="44" y="150" className="lfa-cap warn">slutar i luften — sträckan blir onämnd</text>
       </g>
-      <g className="lfa-split-rule"><path d="M330 40 V270" /></g>
-      <text x="352" y="150" className="lfa-cap">
-        För ögat är skillnaden några millimeter.
-      </text>
-      <text x="352" y="176" className="lfa-cap">
-        För varje mängdning är den skillnaden mellan
-      </text>
-      <text x="352" y="202" className="lfa-cap">
-        en sträcka som räknas och en som inte gör det.
-      </text>
+      <g className="lfa-split-rule"><path d="M312 36 V266" /></g>
+      <g className="lfa-note-col">
+        <text x="336" y="118" className="lfa-cap">För ögat är skillnaden</text>
+        <text x="336" y="142" className="lfa-cap">några millimeter.</text>
+        <text x="336" y="180" className="lfa-cap">För en mängdning är den</text>
+        <text x="336" y="204" className="lfa-cap">skillnaden mellan en sträcka</text>
+        <text x="336" y="228" className="lfa-cap">som räknas och en som inte gör det.</text>
+      </g>
     </svg>
   );
 }
@@ -304,9 +319,182 @@ function Checks() {
   );
 }
 
+/* ---------- 13 komponenten är inte ett rör ---------- */
+function Parts() {
+  // Two bands, one above the other. Side by side the two headings ran into each other and the right-hand
+  // captions fell off the paper: a caption in a 640-wide frame has to have the width to itself.
+  const sys = ["KV1-X31-16", "VV1-X31-16", "S3-R8-110"];
+  const tag = ["BL113", "B241", "AV21-20"];
+  return (
+    <svg viewBox="0 0 640 348" role="img" aria-label="Systemkoder öppnar dimensionerade beteckningar, komponentkoder står ensamma">
+      <rect className="lfa-paper" x="6" y="6" width="628" height="336" rx="10" />
+      <text x="36" y="36" className="lfa-cap ok">MED DIMENSION, OCH EN LINJE TILL ETT RÖR → RÖRSYSTEM</text>
+      {sys.map((t, i) => (
+        <g key={t} className="lfa-row" style={{ animationDelay: `${i * 0.16}s` }} transform={`translate(36 ${50 + i * 34})`}>
+          <rect className="lfa-tag" x="0" y="0" width="150" height="26" rx="4" />
+          <text x="10" y="18" className="lfa-mono sm">{t}</text>
+          <path className="lfa-pipe kv" d="M162 13 H400" />
+          <text x="416" y="18" className="lfa-cap">mäts i meter</text>
+        </g>
+      ))}
+      <g className="lfa-split-rule"><path d="M36 170 H604" /></g>
+      <text x="36" y="200" className="lfa-cap warn">STÅR ENSAM UTE PÅ BLADET → KOMPONENT</text>
+      {tag.map((t, i) => (
+        <g key={t} className="lfa-row" style={{ animationDelay: `${0.25 + i * 0.16}s` }} transform={`translate(36 ${214 + i * 34})`}>
+          <rect className="lfa-tag" x="0" y="0" width="150" height="26" rx="4" />
+          <text x="10" y="18" className="lfa-mono sm">{t}</text>
+          <g className="lfa-fitting" transform="translate(186 13)">
+            <circle r="11" />
+            <path d="M-6 0 H6 M0 -6 V6" />
+          </g>
+          <text x="416" y="18" className="lfa-cap">räknas som antal</text>
+        </g>
+      ))}
+      <text x="36" y="332" className="lfa-cap">bladets förklaringslista säger vilket varje kod är</text>
+    </svg>
+  );
+}
+
+/* ---------- 14 isoleringen ligger utanpå ---------- */
+function Insul() {
+  return (
+    <svg viewBox="0 0 640 300" role="img" aria-label="Isoleringen ligger utanpå röret och ändrar inte dimensionen">
+      <rect className="lfa-paper" x="6" y="6" width="628" height="288" rx="10" />
+      <g transform="translate(120 128)">
+        <circle className="lfa-shell" r="60" />
+        <circle className="lfa-shell two" r="44" />
+        <circle className="lfa-bore" r="26" />
+        <circle className="lfa-bore inner" r="20" />
+      </g>
+      <g className="lfa-meas dy">
+        <path d="M120 40 V62 M96 51 H144 M96 45 V57 M144 45 V57" />
+        <text x="150" y="55" className="lfa-cap">dy — utsida</text>
+      </g>
+      <g className="lfa-meas dn">
+        <path d="M120 216 V238 M100 227 H140 M100 221 V233 M140 221 V233" />
+        <text x="150" y="231" className="lfa-cap">DN — insida</text>
+      </g>
+      <g className="lfa-split-rule"><path d="M272 40 V266" /></g>
+      <g className="lfa-note-col">
+        <text x="296" y="86" className="lfa-cap">Isolerklassen står i beteckningen,</text>
+        <text x="296" y="110" className="lfa-cap">oftast sist: <tspan className="lfa-mono sm">VS21-S13-15-F50</tspan></text>
+        <text x="296" y="150" className="lfa-cap">Den säger hur tjockt skalet är.</text>
+        <text x="296" y="174" className="lfa-cap">Den ändrar inte dimensionen,</text>
+        <text x="296" y="198" className="lfa-cap">och den ändrar inte metrarna.</text>
+        <text x="296" y="238" className="lfa-cap warn">Ett rör med två isolerklasser är</text>
+        <text x="296" y="262" className="lfa-cap warn">två rader i mängden, inte en.</text>
+      </g>
+    </svg>
+  );
+}
+
+/* ---------- 15 stigaren: en punkt i planen, en höjd i huset ---------- */
+function Riser2() {
+  return (
+    <svg viewBox="0 0 640 300" role="img" aria-label="En stigare är en punkt i planen och en höjd i sektionen">
+      <rect className="lfa-paper" x="6" y="6" width="628" height="288" rx="10" />
+      <text x="40" y="40" className="lfa-cap">I PLANEN — EN PUNKT</text>
+      <g className="lfa-house"><path d="M40 56 H270 V250 H40 Z" /></g>
+      <path className="lfa-pipe s" d="M60 200 H176" />
+      <g className="lfa-ring"><circle cx="176" cy="200" r="8" /></g>
+      <g transform="translate(112 88)">
+        <rect className="lfa-tag" x="0" y="0" width="104" height="44" rx="4" />
+        <text x="10" y="19" className="lfa-mono sm">S2-P5</text>
+        <text x="10" y="37" className="lfa-mono sm">110</text>
+        <path className="lfa-underline" d="M10 24 H58" />
+      </g>
+      <path className="lfa-lead draw" d="M164 132 L176 194" />
+      <text x="40" y="274" className="lfa-cap">dimensionen på raden under → stigare</text>
+
+      <g className="lfa-split-rule"><path d="M300 30 V270" /></g>
+      <text x="330" y="40" className="lfa-cap">I HUSET — EN HÖJD</text>
+      <g className="lfa-floor2"><path d="M330 76 H600 M330 138 H600 M330 200 H600 M330 250 H600" /></g>
+      <path className="lfa-pipe s riser" d="M470 250 V76" />
+      <g className="lfa-tally">
+        <rect x="500" y="96" width="112" height="58" rx="8" />
+        <text x="514" y="124" className="lfa-num">3 st</text>
+        <text x="514" y="144" className="lfa-cap">× våningshöjd</text>
+      </g>
+      <text x="330" y="274" className="lfa-cap warn">ritningen anger nästan aldrig höjden — antalet räknas, höjden matas in</text>
+    </svg>
+  );
+}
+
+/* ---------- 16 samma beteckning, två skrivsätt ---------- */
+function Rows() {
+  return (
+    <svg viewBox="0 0 640 300" role="img" aria-label="En rad betyder sträcka, två rader betyder stigare">
+      <rect className="lfa-paper" x="6" y="6" width="628" height="288" rx="10" />
+      <g transform="translate(46 56)">
+        <rect className="lfa-tag" x="0" y="0" width="168" height="30" rx="4" />
+        <text x="12" y="20" className="lfa-mono sm">S2-P5-110</text>
+        <text x="0" y="56" className="lfa-cap ok">ALLT PÅ EN RAD</text>
+        <text x="0" y="80" className="lfa-cap">en sträcka i planet</text>
+        <text x="0" y="104" className="lfa-cap">mäts i meter</text>
+        <path className="lfa-pipe s" d="M0 138 H236" />
+        <g className="lfa-tally"><rect x="0" y="160" width="130" height="46" rx="8" />
+          <text x="14" y="190" className="lfa-num">12,4 m</text></g>
+      </g>
+      <g className="lfa-split-rule"><path d="M330 36 V266" /></g>
+      <g transform="translate(360 56)">
+        <rect className="lfa-tag" x="0" y="0" width="112" height="48" rx="4" />
+        <text x="12" y="20" className="lfa-mono sm">S2-P5</text>
+        <text x="12" y="40" className="lfa-mono sm">110</text>
+        <path className="lfa-underline" d="M12 26 H62" />
+        <text x="0" y="74" className="lfa-cap warn">DIMENSIONEN PÅ RADEN UNDER</text>
+        <text x="0" y="98" className="lfa-cap">en stigare i den punkten</text>
+        <text x="0" y="122" className="lfa-cap">räknas som antal</text>
+        <g className="lfa-ring"><circle cx="60" cy="164" r="8" /></g>
+        <g className="lfa-tally two"><rect x="0" y="188" width="130" height="46" rx="8" />
+          <text x="14" y="218" className="lfa-num">1 st</text></g>
+      </g>
+    </svg>
+  );
+}
+
+/* ---------- 17 vad som händer när en kod saknas i listan ---------- */
+function Vocab() {
+  const rows: [string, string, string][] = [
+    ["KV01", "TAPPKALLVATTEN", "system"],
+    ["VS21", "VÄRME FRAM", "system"],
+    ["BLXXX", "BLANDARE", "component"],
+    ["BXXX", "GOLVBRUNN", "component"],
+    ["S13", "STÅLRÖR", "material"],
+    ["F50", "ISOLERKLASS 50", "material"],
+  ];
+  return (
+    <svg viewBox="0 0 640 300" role="img" aria-label="Förklaringslistan säger vad varje kod är">
+      <rect className="lfa-paper" x="6" y="6" width="628" height="288" rx="10" />
+      <text x="36" y="42" className="lfa-cap">BLADETS EGEN FÖRKLARINGSLISTA</text>
+      {rows.map(([c, d, role], i) => (
+        <g key={c} className="lfa-row" style={{ animationDelay: `${i * 0.13}s` }} transform={`translate(36 ${58 + i * 36})`}>
+          <text x="0" y="18" className="lfa-mono sm">{c}</text>
+          <text x="74" y="18" className="lfa-cap">{d}</text>
+          <g className={`lfa-role ${role}`} transform="translate(232 4)">
+            <rect x="0" y="0" width="104" height="20" rx="10" />
+            <text x="11" y="14" className="lfa-cap">
+              {role === "system" ? "rörsystem" : role === "component" ? "komponent" : "material"}
+            </text>
+          </g>
+        </g>
+      ))}
+      <g className="lfa-split-rule"><path d="M400 40 V266" /></g>
+      <g className="lfa-note-col">
+        <text x="424" y="92" className="lfa-cap">Listan är bladets</text>
+        <text x="424" y="116" className="lfa-cap">eget ordförråd.</text>
+        <text x="424" y="158" className="lfa-cap">En omgång skriver</text>
+        <text x="424" y="182" className="lfa-cap">den en gång, på ett</text>
+        <text x="424" y="206" className="lfa-cap">blad, och låter</text>
+        <text x="424" y="230" className="lfa-cap">resten stå på den.</text>
+      </g>
+    </svg>
+  );
+}
+
 const FIGS: Record<string, () => JSX.Element> = {
   flow: Flow, bundle: Bundle, stack: Stack, code: Code, dndy: DnDy, sheet: Sheet,
   scale: Scale, riser: Riser, layers: Layers, leader: Leader, takeoff: Takeoff, checks: Checks,
+  parts: Parts, insul: Insul, riser2: Riser2, rows: Rows, vocab: Vocab,
 };
 
 export default function LearnFigure({ id }: { id: string }) {

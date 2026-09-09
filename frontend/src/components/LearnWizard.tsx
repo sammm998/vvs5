@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MODULES, markDone, readProgress, type Block, type Lesson, type Quiz } from "../learn";
 import LearnFigure from "./LearnFigures";
+import LearnExercise from "./LearnExercises";
 import { Exercise } from "./Learn";
 
 /* Akademin som en guide ovanpå det man höll på med.
@@ -10,7 +11,7 @@ import { Exercise } from "./Learn";
  * kontrollfråga innan man går vidare. Läsningen fortsätter bakom, och att stänga kostar ingenting.
  */
 
-type Step = { lesson: Lesson; module: string; i: number; n: number };
+type Step = { lesson: Lesson; module: string; moduleId: string; i: number; n: number };
 
 /** The lesson in full, for the reader who wants the whole thing rather than the two lines of the step. */
 function More({ body }: { body: Block[] }) {
@@ -69,7 +70,7 @@ export default function LearnWizard({ open, onClose, start }: {
 }) {
   const steps: Step[] = useMemo(() => {
     const out: Step[] = [];
-    for (const m of MODULES) for (const l of m.lessons) out.push({ lesson: l, module: m.title, i: 0, n: 0 });
+    for (const m of MODULES) for (const l of m.lessons) out.push({ lesson: l, module: m.title, moduleId: m.id, i: 0, n: 0 });
     return out.map((s, i) => ({ ...s, i, n: out.length }));
   }, []);
   const [at, setAt] = useState(0);
@@ -109,6 +110,14 @@ export default function LearnWizard({ open, onClose, start }: {
   const l = s.lesson;
   const done = steps.filter((x) => prog[x.lesson.id]).length;
   const finish = () => setProg(markDone(l.id));
+  const chapters = MODULES.map((m) => {
+    const own = steps.filter((x) => x.moduleId === m.id);
+    return {
+      id: m.id, title: m.title, steps: own,
+      done: own.filter((x) => prog[x.lesson.id]).length,
+      has: (i: number) => own.some((x) => x.i === i),
+    };
+  });
 
   return (
     <div className="wz" role="dialog" aria-modal="true" aria-label="VVS-akademin">
@@ -125,17 +134,32 @@ export default function LearnWizard({ open, onClose, start }: {
           </div>
         </header>
 
-        <div className="wz-rail" aria-hidden="true">
-          {steps.map((x, i) => (
-            <button key={x.lesson.id} type="button"
-              className={`wz-dot${i === at ? " on" : ""}${prog[x.lesson.id] ? " done" : ""}`}
-              title={x.lesson.title} onClick={() => setAt(i)} />
+        {/* The rail used to be one dot per step: fourteen identical squares said nothing about where in the
+            course you were. It is now the chapters, each showing its own steps, so a reader can see what is left
+            of the chapter they are in and jump straight into another one. */}
+        <nav className="wz-rail" aria-label="Kapitel">
+          {chapters.map((c) => (
+            <div key={c.id} className={`wz-ch${c.has(at) ? " on" : ""}${c.done === c.steps.length ? " full" : ""}`}>
+              <button type="button" className="wz-ch-t" onClick={() => setAt(c.steps[0].i)}>
+                <span className="nm">{c.title}</span>
+                <span className="ct">{c.done}/{c.steps.length}</span>
+              </button>
+              <div className="wz-ch-dots">
+                {c.steps.map((x) => (
+                  <button key={x.lesson.id} type="button"
+                    className={`wz-dot${x.i === at ? " on" : ""}${prog[x.lesson.id] ? " done" : ""}`}
+                    title={x.lesson.title} aria-label={x.lesson.title} onClick={() => setAt(x.i)} />
+                ))}
+              </div>
+            </div>
           ))}
-        </div>
+        </nav>
 
         <div className="wz-body">
-          <div className="wz-fig">
-            {l.fig === "exercise" ? <Exercise /> : <LearnFigure id={l.fig || ""} />}
+          <div className={`wz-fig${(l.fig || "").startsWith("ex:") || l.fig === "exercise" ? " wide" : ""}`}>
+            {l.fig === "exercise" ? <Exercise />
+              : (l.fig || "").startsWith("ex:") ? <LearnExercise id={(l.fig || "").slice(3)} />
+                : <LearnFigure id={l.fig || ""} />}
           </div>
           <div className="wz-say">
             {(l.short ?? []).map((t, i) => <p key={i}>{t}</p>)}

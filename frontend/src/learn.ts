@@ -376,6 +376,182 @@ export const MODULES: Module[] = [
     ],
   },
   {
+    id: "komponenter",
+    title: "Komponenter och armatur",
+    blurb: "Koder som aldrig blir meter: golvbrunnar, blandare, ventiler — och hur bladet säger vilket som är vad.",
+    lessons: [
+      {
+        id: "komp-vad",
+        fig: "parts",
+        short: ["En kod som öppnar en beteckning med dimension namnger ett rör. En kod som står ensam ute på bladet namnger ett föremål.", "Skillnaden avgör om koden ska få meter eller ett antal — och den syns i hur bladet skriver den, inte i vad koden heter."],
+        title: "Rör eller föremål",
+        minutes: 4,
+        body: [
+          { k: "p", t: "Ett blad är fullt av koder, och långt ifrån alla är rör. Golvbrunnar, blandare, avstängningsventiler, vattenmätare, tvättställ och pumpar har sina egna beteckningar, och de mängdas som antal — aldrig som meter." },
+          { k: "terms", t: [
+            ["BLxxx", "Blandare. Ett föremål vid ett tappställe."],
+            ["Bxxx", "Golvbrunn. Punkten där spillvattnet börjar."],
+            ["AVxx-nn", "Avstängningsventil, med sin storlek efter strecket. Storleken gör den inte till ett rör."],
+            ["ILxxx", "Inspektionslucka. Ingen ledning alls."],
+            ["VMxx", "Vattenmätare."],
+          ] },
+          { k: "note", t: "Det farligaste misstaget här är en ventiltagg med en storlek i: AV21-20 är en avstängningsventil på 20 mm, inte tjugo meter AV-rör. Det som skiljer är formen bladet skriver: en rörbeteckning har ett materialled mellan systemet och dimensionen, en armaturtagg har det inte." },
+        ],
+        quiz: {
+          q: "På bladet står BL113 ensamt vid ett tvättställ, utan hänvisningslinje. Vad ska det bli i mängden?",
+          options: ["Meter tappvatten", "Ett antal — en blandare", "Ingenting alls", "Meter, om dimensionen går att gissa"],
+          answer: 1,
+          why: "BL är blandare enligt bladets förklaringslista. Den räknas som antal. En kod utan hänvisningslinje pekar inte heller ut någon sträcka att mäta.",
+        },
+      },
+      {
+        id: "komp-lista",
+        fig: "vocab",
+        short: ["Förklaringslistan är bladets eget ordförråd: den säger vilken kod som är system, vilken som är komponent och vilken som är material.", "En omgång skriver listan en gång, på ett blad, och låter resten stå på den."],
+        title: "Förklaringslistan avgör",
+        minutes: 4,
+        body: [
+          { k: "p", t: "Inget kontor använder exakt samma koder som ett annat. Därför skriver varje handling ut sitt eget ordförråd — förklaringslistan, ofta i en spalt längs kanten eller på ett eget blad — och det är den som säger vad koderna betyder." },
+          { k: "ul", t: [
+            "Rubrikerna i listan grupperar koderna: SYSTEM SPILLVATTEN, KOMPONENTER, MATERIAL.",
+            "En kod under en systemrubrik namnger rör, även på ett blad som inte råkar rita just det systemet.",
+            "En kod under KOMPONENTER blir aldrig meter, hur mycket den än liknar en systemkod.",
+            "Materialkoderna står mitt i beteckningen och säger vad röret är gjort av.",
+          ] },
+          { k: "note", t: "En stor handling skriver listan på ett blad och låter de andra stå på den. Läser du ett planblad utan lista: leta rätt på bladet som bär den innan du mängdar, annars gissar du på vad koderna betyder." },
+        ],
+        quiz: {
+          q: "Bladet du mängdar har ingen förklaringslista. Vad är rätt att göra?",
+          options: [
+            "Anta att koderna betyder samma som på förra projektet",
+            "Leta rätt på bladet i handlingen som bär listan",
+            "Hoppa över alla koder du inte känner igen",
+            "Mängda allt som rör, för säkerhets skull",
+          ],
+          answer: 1,
+          why: "Koderna är handlingens egna. Listan finns någonstans i omgången, och tills du har läst den vet du inte vilken kod som är ett rör.",
+        },
+      },
+      {
+        id: "komp-ovning",
+        fig: "ex:ledare",
+        short: ["Tre rör i bunt, en etikett. Klicka på det rör hänvisningslinjen faktiskt slutar på.", "Det närmaste röret är inte samma sak som det utpekade — i en bunt hör grannen till ett annat system."],
+        title: "Övning: följ linjen, inte närheten",
+        minutes: 5,
+        body: [
+          { k: "p", t: "Den vanligaste felkällan i en snabb mängdning är att låta närheten avgöra. I en bunt ligger nästa rör en hårsmån bort och tillhör ett helt annat system." },
+          { k: "note", t: "Hänvisningslinjen är beviset. Slutar den inte på något rör alls är rätt svar att sträckan är onämnd — inte att välja det som ligger närmast." },
+        ],
+      },
+    ],
+  },
+  {
+    id: "material",
+    title: "Material och isolering",
+    blurb: "Vad ledet mitt i beteckningen säger, och varför isolerklassen delar en mängd i två rader.",
+    lessons: [
+      {
+        id: "mat-led",
+        fig: "insul",
+        short: ["Mitt i beteckningen står materialet, och sist står ofta isolerklassen.", "Isoleringen ligger utanpå röret: den ändrar varken dimensionen eller metrarna, men den ändrar priset."],
+        title: "Materialled och isolerklass",
+        minutes: 4,
+        body: [
+          { k: "p", t: "En beteckning är en formel: system, material, dimension — och på isolerade ledningar ett led till för isolerklassen. VS21-S13-15-F50 är värme fram, stålrör, DN15, isolerklass F50." },
+          { k: "terms", t: [
+            ["Materialledet", "Vad röret är gjort av: stål, koppar, plast, rostfritt. Koden står i bladets lista och är inte standard mellan kontor."],
+            ["Isolerklass", "Hur tjockt skalet utanpå är, och vad det är till för: värmehållning, kondens eller brand."],
+            ["/W", "Skrivs på vissa handlingar för isolering med ytterhölje, ofta plåt. Också ett eget led."],
+          ] },
+          { k: "note", t: "Isoleringen ligger utanpå röret. Den ändrar inte dimensionen och inte längden — men den är en egen post i mängden, och två sträckor av samma rör med olika isolerklass är två rader, inte en." },
+        ],
+        quiz: {
+          q: "VS21-S13-15-F50 och VS21-S13-15 går båda genom samma rum. Hur många rader blir det i mängden?",
+          options: ["En — det är samma rör", "Två — isolerklassen skiljer dem åt", "Två, men bara om längderna skiljer sig", "Beror på vem som mängdar"],
+          answer: 1,
+          why: "Isolerklassen är en del av beteckningen och en egen post att prissätta. Samma rör med och utan isolering är två rader.",
+        },
+      },
+      {
+        id: "mat-skala",
+        fig: "ex:skala",
+        short: ["Skalstocken krymper med pappret. Den utskrivna skalan i stämpeln gör det inte.", "Läs av tre sträckor mot skalstocken och se hur långt de blir i verkligheten."],
+        title: "Övning: läs av skalan",
+        minutes: 5,
+        body: [
+          { k: "p", t: "Varje meter i en mängd kommer ur skalan. Ett blad som skrivits ut i A3 från A1 säger fortfarande 1:50 i stämpeln, men är hälften så stort — och då är siffran i stämpeln fel medan skalstocken fortfarande stämmer." },
+          { k: "note", t: "Säger stämpel och skalstock olika saker: tro på skalstocken, och skriv ned att de sa emot varandra." },
+        ],
+      },
+    ],
+  },
+  {
+    id: "stigare",
+    title: "Stigare och våningar",
+    blurb: "Det som går upp och ned syns inte i planen. Så här säger ritningen det ändå.",
+    lessons: [
+      {
+        id: "stig-skrivsatt",
+        fig: "rows",
+        short: ["Står allt på en rad är det en sträcka i planet, och den mäts i meter.", "Står dimensionen på raden under beteckningen är det en stigare i den punkten, och den räknas som antal."],
+        title: "En rad eller två",
+        minutes: 4,
+        body: [
+          { k: "p", t: "En plan visar två dimensioner. Det som går upp och ned genom bjälklaget syns bara som en punkt — och ritningen säger det genom hur etiketten är skriven." },
+          { k: "ul", t: [
+            "Allt på en rad: en sträcka i planet. Mäts i meter.",
+            "Dimensionen på raden under beteckningen: en stigare i den punkten. Räknas som antal.",
+            "Ett antalsprefix (2xKV1-X31 med 16 under) är undantaget: det är två rör som går tillsammans i planet, inte en stam.",
+          ] },
+          { k: "note", t: "Samma skrivsätt gäller hela vägen: en beteckning som står i två rader någon annanstans på bladet är också en stigare där." },
+        ],
+        quiz: {
+          q: "En etikett står som S2-P5 med 110 på raden under, och pekar på en punkt där ett rör slutar. Vad är det?",
+          options: ["En sträcka på 110 meter", "En stigare — dimensionen står på raden under", "En felskrivning", "En komponenttagg"],
+          answer: 1,
+          why: "Dimensionen på raden under säger att röret går upp eller ned i den punkten. Den räknas som ett antal, inte som meter.",
+        },
+      },
+      {
+        id: "stig-hojd",
+        fig: "riser2",
+        short: ["Antalet stigare går att räkna ur bladet. Höjden gör det inte — den står nästan aldrig utskriven.", "Därför räknas stigare som antal tills någon anger våningshöjden, och först då blir de meter."],
+        title: "Från antal till meter",
+        minutes: 4,
+        body: [
+          { k: "p", t: "En stigare har en längd, men planen säger inte vilken. Höjden kommer ur våningshöjden, och den står i sektionen eller i en beskrivning — sällan på planbladet." },
+          { k: "ul", t: [
+            "Räkna antalet stigare per beteckning. Det går att göra ur bladet.",
+            "Ta våningshöjden från sektion eller beskrivning.",
+            "Antal gånger höjd är den vertikala mängden, och den redovisas för sig.",
+          ] },
+          { k: "note", t: "En mängd som tyst antagit en våningshöjd ser färdig ut och är omöjlig att kontrollera. Skriv ut vilken höjd som använts, så att den som läser kan byta den." },
+        ],
+        quiz: {
+          q: "Bladet visar sex stigare för S1-P2-110 och säger ingenting om våningshöjd. Vad redovisas?",
+          options: [
+            "0 meter vertikalt",
+            "Sex stigare som antal, tills någon anger höjden",
+            "Sex gånger 3 meter, som är normalt",
+            "Ingenting — stigare mängdas inte",
+          ],
+          answer: 1,
+          why: "Antalet är läst ur bladet och kan försvaras. Höjden är det inte, och en antagen höjd som inte skrivs ut går inte att kontrollera.",
+        },
+      },
+      {
+        id: "stig-ovning",
+        fig: "ex:rader",
+        short: ["Sex etiketter, skrivna som de står på riktiga blad.", "Avgör för var och en om det är en sträcka i planet eller en stigare."],
+        title: "Övning: sträcka eller stigare",
+        minutes: 5,
+        body: [
+          { k: "p", t: "Sex etiketter, skrivna som de står på riktiga blad. Avgör för var och en om den namnger en sträcka i planet eller en stigare — och kom ihåg undantaget för antalsprefix." },
+        ],
+      },
+    ],
+  },
+  {
     id: "ovning",
     title: "Övning: mängda ett blad",
     blurb: "Ett litet blad att mängda själv, med rättning direkt.",

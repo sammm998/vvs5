@@ -58,8 +58,14 @@ async def main():
         print("== akademin: alla steg ==")
         await pg.goto(f"{BASE}/lar", wait_until="networkidle"); await pg.wait_for_timeout(700)
         await pg.get_by_role("button", name="Starta guiden").click(); await pg.wait_for_timeout(700)
-        for i in range(13):
-            await pg.locator(".wz-more > button").click(); await pg.wait_for_timeout(150)
+        # every step of the course, however many the course has grown to - a fixed count silently stops testing
+        # the steps added after it was written
+        head = await pg.locator(".wz-kicker").inner_text()
+        n = int(head.upper().rsplit(" AV ", 1)[-1])   # css uppercases the kicker, the DOM text does not
+        print(f"   {n} steg")
+        for i in range(n - 1):
+            more = pg.locator(".wz-more > button")
+            if await more.count(): await more.click(); await pg.wait_for_timeout(150)
             opt = pg.locator(".wz-quiz-opts button").first
             if await opt.count(): await opt.click(); await pg.wait_for_timeout(120)
             await pg.locator(".wz-foot button", has_text="Nästa").click(); await pg.wait_for_timeout(260)

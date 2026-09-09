@@ -140,8 +140,9 @@ export default function Learn({ compact }: { compact?: boolean }) {
           <div className="lf-kicker">VVS-akademin</div>
           <h2>Lär dig läsa och mängda en rörritning</h2>
           <p className="muted">
-            Fjorton steg, ett i taget, vart och ett med en levande figur som visar vad det handlar om. De sparas
-            i den här webbläsaren, så du kan fortsätta där du slutade nästa gång en ritning läses.
+            {flat.length} steg i {MODULES.length} kapitel, ett i taget, vart och ett med en levande figur som
+            visar vad det handlar om — och övningar där du får svara själv och se facit. Stegen sparas i den här
+            webbläsaren, så du kan fortsätta där du slutade nästa gång en ritning läses.
           </p>
           <div className="row" style={{ marginTop: 16 }}>
             <button onClick={() => setOpen(next.l.id)}>
