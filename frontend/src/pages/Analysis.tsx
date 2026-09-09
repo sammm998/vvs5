@@ -131,11 +131,52 @@ export default function AnalysisPage() {
     return () => clearTimeout(t);
   }, [id]);
 
+  /** A run's extent on the sheet, from the geometry it carries. The pipe record has never had a box of its
+      own, so every "go to this run" in the application was quietly doing nothing at all. */
+  const boxOf = (p: any): number[] | null => {
+    const xs: number[] = [], ys: number[] = [];
+    for (const line of (p?.geometry ?? [])) for (const [x, y] of line) { xs.push(x); ys.push(y); }
+    return xs.length ? [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)] : null;
+  };
+
+  /** The whole of one identity on one page, so picking a row shows the run rather than a corner of it. */
+  const spanOf = (rows: any[]): number[] | null => {
+    const bs = rows.map(boxOf).filter(Boolean) as number[][];
+    if (!bs.length) return null;
+    return [Math.min(...bs.map((b: number[]) => b[0])), Math.min(...bs.map((b: number[]) => b[1])),
+            Math.max(...bs.map((b: number[]) => b[2])), Math.max(...bs.map((b: number[]) => b[3]))];
+  };
+
+  /** Go to a run the reader picked: onto its page if it is on another one, then to the run itself. */
+  const goTo = (bbox: number[] | null, onPage: number) => {
+    if (!bbox) return;
+    if (onPage !== page) {
+      setPage(onPage);
+      // the sheet has to be laid out at the new page before it can be aimed at
+      setTimeout(() => viewer.current?.zoomTo(bbox), 260);
+    } else {
+      viewer.current?.zoomTo(bbox);
+    }
+  };
+
   const onPipeClick = async (p: any) => {
     setSelPipe(p); setSelIdent(p.identity);
     // while correcting, the click picks the run to correct: staying on the takeoff tab would hide the tools
     if (tab !== "rattelser") setTab("mangder");
+    goTo(boxOf(p), p.page ?? 0);
     try { setWhy(await api.why(id!, p.physical_pipe_id)); } catch { setWhy(null); }
+  };
+
+  /** Picking a designation goes to everything it owns, on the page that holds most of it. */
+  const onIdentityPick = (key: string | null) => {
+    setSelIdent(key); setSelPipe(null); setWhy(null);
+    if (!key || !result) return;
+    const mine = result.pipes.filter((p: any) => p.identity === key);
+    if (!mine.length) return;
+    const counts = new Map<number, number>();
+    for (const p of mine) counts.set(p.page ?? 0, (counts.get(p.page ?? 0) ?? 0) + 1);
+    const best = [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+    goTo(spanOf(mine.filter((p: any) => (p.page ?? 0) === best)), best);
   };
   useEffect(() => {
     const move = (e: MouseEvent) => {
@@ -315,7 +356,7 @@ export default function AnalysisPage() {
                   skrafferade ytor mäts alltid men räknas in bara om du kryssar i rutan nedan.</p>
               </div>
             </details>
-            <QuantityTable rows={result.quantities} selected={selIdent} onSelect={(k) => { setSelIdent(k); setSelPipe(null); setWhy(null); }} floorHeight={floorH}
+            <QuantityTable rows={result.quantities} selected={selIdent} onSelect={onIdentityPick} floorHeight={floorH}
               pipes={result.pipes} meterPerPt={result.scale?.meters_per_pdf_point ?? null} onPipeClick={onPipeClick}
               includeHatched={includeHatched} onIncludeHatched={(v) => { setIncludeHatched(v); try { localStorage.setItem("vvs.includeHatched", v ? "1" : "0"); } catch { /* private window: the setting just does not persist */ } }}
               riserSource={riserSource} />
@@ -339,7 +380,7 @@ export default function AnalysisPage() {
             onHighlight={(ids) => {
               setAgentIds(ids);
               const first = result.pipes.find((p: any) => p.physical_pipe_id === ids[0]);
-              if (first) { setSelIdent(first.identity); viewer.current?.zoomTo(first.bbox ?? null); }
+              if (first) { setSelIdent(first.identity); goTo(boxOf(first), first.page ?? 0); }
             }}
             onChanged={async () => {
               setCorrections(await api.corrections(job.drawing_id));

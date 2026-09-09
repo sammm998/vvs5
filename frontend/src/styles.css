@@ -435,7 +435,7 @@ p.badge {
   min-height: 0;
   padding: 16px;
 }
-.analysis .left { display: flex; flex-direction: column; min-width: 0; }
+.analysis .left { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
 .splitter { cursor: col-resize; border-radius: 999px; background: var(--line-2); transition: background 0.12s; }
 .splitter:hover { background: var(--ink); }
 body.resizing { cursor: col-resize; user-select: none; }
@@ -449,6 +449,9 @@ body.resizing .splitter { background: var(--ink); }
 .viewer {
   position: relative;
   flex: 1;
+  /* without this the frame grows with the sheet instead of scrolling it, and a zoomed drawing has no top:
+     the scroll cannot go negative, so everything above where the reader zoomed becomes unreachable */
+  min-height: 0;
   overflow: auto;
   background: var(--bg-2);
   border: 1px solid var(--line);
@@ -458,6 +461,10 @@ body.resizing .splitter { background: var(--ink); }
 .viewer::-webkit-scrollbar { width: 10px; height: 10px; }
 .viewer::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 999px; border: 3px solid var(--bg-2); }
 .viewer .page { position: relative; margin: 0 auto; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+/* the sheet is dragged, so it must not be selected or flung by the browser's own gestures */
+.viewer { overscroll-behavior: contain; touch-action: none; }
+.viewer .page:not(.editing) { cursor: grab; }
+.viewer .page.panning, .viewer .page.panning * { cursor: grabbing !important; user-select: none; }
 .viewer canvas { display: block; }
 .viewer svg { position: absolute; left: 0; top: 0; }
 
@@ -821,8 +828,11 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
 
 /* A sheet is wider than it is tall and the frame beside it is not; the page therefore sits in the middle of what
    it is given rather than pinned to the top with the difference left as a hole under it. */
-.viewer { display: flex; }
-.viewer .page { margin: auto; }
+/* Centred while the sheet is smaller than its frame, and anchored at the top left once it is bigger.
+   Plain `margin: auto` centring makes the overflow above and to the left of a zoomed sheet unreachable - the
+   scroll cannot go negative - so zooming towards the top of a drawing slid it out from under the pointer. */
+.viewer { display: flex; align-items: safe center; justify-content: safe center; }
+.viewer .page { margin: 0; flex: none; }
 
 /* the takeoff table scrolls in its own frame; the panel around it never moves sideways */
 .tablewrap { overflow-x: auto; }
@@ -1087,3 +1097,9 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
   .film-sheet { transform: none !important; }
   .tilt { transform: none !important; }
 }
+
+
+/* where the reader was just sent: a ring that arrives with the run and fades, so the eye lands on it */
+@keyframes focus-ring { 0% { opacity: 0; transform: scale(2.6); } 22% { opacity: 1; } 100% { opacity: 0; transform: scale(1); } }
+.focusring { transform-box: fill-box; transform-origin: center; animation: focus-ring 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+@media (prefers-reduced-motion: reduce) { .focusring { animation: none; opacity: 0; } }

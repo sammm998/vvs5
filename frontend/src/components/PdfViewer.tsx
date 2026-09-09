@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState, forwardRef } from "react";
+import { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState, forwardRef } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
@@ -140,19 +140,117 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     fitPage: () => { auto.current = true; fit("page"); },
     fitWidth: () => { auto.current = false; fit("width"); },
     fullscreen: () => container.current?.requestFullscreen?.(),
+    /* Go to a run: near enough to work on, and without losing where it is.
+     *
+     * A run already on screen is only scrolled to - re-scaling the sheet under a reader who can already see the
+     * thing they asked for is disorienting, and it costs a full re-render of the page. One that is off screen,
+     * or too small to work on, is scaled to fill about a third of the frame and then centred. Either way the
+     * sheet moves smoothly and a ring lands on the run, so the eye follows rather than searches.
+     */
     zoomTo: (bbox: number[]) => {
+      const el = container.current;
+      if (!el || !vp || !bbox) return;
       auto.current = false;
-      if (!container.current || !vp) return;
-      const cw = container.current.clientWidth, ch = container.current.clientHeight;
-      const bw = Math.max(bbox[2] - bbox[0], 20), bh = Math.max(bbox[3] - bbox[1], 20);
-      const s = Math.min(cw / (bw * 4), ch / (bh * 4), 8);
+      const cw = el.clientWidth, ch = el.clientHeight;
+      const bw = Math.max(bbox[2] - bbox[0], 8), bh = Math.max(bbox[3] - bbox[1], 8);
+      // the size a run wants to be worked on at: filling about half the frame, with room around it
+      const want = Math.max(0.05, Math.min(cw / (bw * 2.2), ch / (bh * 2.2), 8));
+      const fits = bw * scale <= cw * 0.9 && bh * scale <= ch * 0.9;
+      // Closer than the run needs is the reader's own choice and is left alone; further away is not, because
+      // then the thing they asked to see is a few pixels of a whole sheet. A run too big for the frame is
+      // pulled back until it fits, however close the reader was.
+      const s = !fits ? want : (want > scale ? want : scale);
+      const centre = () => {
+        const pe = pageEl.current;
+        if (!pe) return;
+        const r = pe.getBoundingClientRect();
+        const vr = el.getBoundingClientRect();
+        // the run's middle, in the frame's own coordinates, brought to the middle of the frame
+        el.scrollTo({ left: el.scrollLeft + (r.left + (bbox[0] + bbox[2]) / 2 * s) - (vr.left + cw / 2),
+                      top: el.scrollTop + (r.top + (bbox[1] + bbox[3]) / 2 * s) - (vr.top + ch / 2),
+                      behavior: "smooth" });
+      };
+      setFlash({ x: (bbox[0] + bbox[2]) / 2, y: (bbox[1] + bbox[3]) / 2, r: Math.max(bw, bh) / 2 + 6, at: Date.now() });
+      if (s === scale) { centre(); return; }
       setScale(s);
-      setTimeout(() => {
-        const cx = (bbox[0] + bbox[2]) / 2 * s, cy = (bbox[1] + bbox[3]) / 2 * s;
-        container.current!.scrollTo({ left: cx - cw / 2 + 12, top: cy - ch / 2 + 12 });
-      }, 80);
+      requestAnimationFrame(() => requestAnimationFrame(centre));
     },
-  }), [vp, fit]);
+  }), [vp, fit, scale]);
+
+  /* Zoom and pan, the way a drawing is read.
+   *
+   * A takeoff is done at 400 % on one corner and then at 30 % to see where that corner was, and doing that with
+   * the browser's own zoom scales the whole application - the panel, the table, the toolbar - so the reader
+   * loses the numbers they are checking the drawing against. So the sheet zooms on its own: the wheel scales it
+   * about the point under the pointer, and dragging moves it. Nothing else on the page moves.
+   */
+  const pageEl = useRef<HTMLDivElement | null>(null);
+  const [panning, setPanning] = useState(false);
+  const [flash, setFlash] = useState<{ x: number; y: number; r: number; at: number } | null>(null);
+  const pan = useRef<{ x: number; y: number; l: number; t: number } | null>(null);
+  // where the pointer was over the sheet when a zoom began, kept until the new size has been laid out
+  const hold = useRef<{ px: number; py: number; cx: number; cy: number } | null>(null);
+
+  const zoomAt = useCallback((factor: number, cx: number, cy: number) => {
+    const el = container.current, pe = pageEl.current;
+    if (!el || !pe) return;
+    auto.current = false;
+    const r = pe.getBoundingClientRect();
+    setScale((s) => {
+      const next = Math.min(12, Math.max(0.05, s * factor));
+      hold.current = { px: (cx - r.left) / s, py: (cy - r.top) / s, cx, cy };
+      return next;
+    });
+  }, []);
+
+  // after the sheet has been laid out at its new size, put the held point back under the pointer
+  useLayoutEffect(() => {
+    const el = container.current, pe = pageEl.current, hcur = hold.current;
+    if (!el || !pe || !hcur) return;
+    hold.current = null;
+    const r = pe.getBoundingClientRect();
+    el.scrollLeft += (r.left + hcur.px * scale) - hcur.cx;
+    el.scrollTop += (r.top + hcur.py * scale) - hcur.cy;
+  }, [scale]);
+
+  const onWheel = useCallback((e: React.WheelEvent) => {
+    if (e.shiftKey) return;                       // shift-wheel keeps the browser's own sideways scroll
+    e.preventDefault();
+    zoomAt(Math.exp(-e.deltaY * 0.0016), e.clientX, e.clientY);
+  }, [zoomAt]);
+
+  // Dragging pans, except while a correction is being drawn - then the drag is the drawing. The middle button
+  // always pans, so a reader in the middle of an edit can still move the sheet.
+  const panDown = (e: React.PointerEvent) => {
+    if (e.button !== 1 && (e.button !== 0 || kind)) return;
+    const el = container.current;
+    if (!el) return;
+    auto.current = false;
+    pan.current = { x: e.clientX, y: e.clientY, l: el.scrollLeft, t: el.scrollTop };
+    setPanning(true);
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+  };
+  const panMove = (e: React.PointerEvent) => {
+    const el = container.current, p = pan.current;
+    if (!el || !p) return;
+    el.scrollLeft = p.l - (e.clientX - p.x);
+    el.scrollTop = p.t - (e.clientY - p.y);
+  };
+  const panUp = (e: React.PointerEvent) => {
+    if (!pan.current) return;
+    pan.current = null;
+    setPanning(false);
+    (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+  };
+
+  // the wheel listener has to be non-passive to be allowed to hold the page still while the sheet zooms
+  useEffect(() => {
+    const el = container.current;
+    if (!el) return;
+    const stop = (ev: WheelEvent) => { if (!ev.shiftKey) ev.preventDefault(); };
+    el.addEventListener("wheel", stop, { passive: false });
+    return () => el.removeEventListener("wheel", stop);
+  }, []);
 
   const w = vp ? vp.w * scale : 0, h = vp ? vp.h * scale : 0;
   const sw = (pt: number) => pt / scale;                     // a screen-constant width in page units
@@ -284,8 +382,10 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
   const cur = kind === "extend" ? (pending.length ? "crosshair" : "default") : kind ? "crosshair" : undefined;
 
   return (
-    <div className="viewer" ref={container}>
-      <div className={`page${kind ? " editing" : ""}`} style={{ width: w, height: h, cursor: cur }}
+    <div className="viewer" ref={container} onWheel={onWheel}
+      onPointerDown={panDown} onPointerMove={panMove} onPointerUp={panUp} onPointerCancel={panUp}>
+      <div ref={pageEl} className={`page${kind ? " editing" : ""}${panning ? " panning" : ""}`}
+        style={{ width: w, height: h, cursor: panning ? "grabbing" : cur }}
         onClick={click} onDoubleClick={finish} onMouseDown={down} onMouseMove={move} onMouseUp={up}
         onMouseLeave={() => { setCursor(null); if (stroke) up(); }}>
         <canvas ref={canvasRef} />
@@ -317,6 +417,10 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
             {props.layers.ambiguous && props.ambiguous.map((g, i) => (
               <line key={`a${i}`} x1={g.x0} y1={g.y0} x2={g.x1} y2={g.y1} stroke="#ff9500" strokeWidth={sw(3)} strokeOpacity={0.9} />
             ))}
+            {flash && (
+              <circle key={flash.at} className="focusring" cx={flash.x} cy={flash.y} r={flash.r}
+                fill="none" stroke="#ff5a3d" strokeWidth={sw(2.5)} />
+            )}
             {props.layers.pipes && props.pipes.map((p) => {
               const sel = props.selectedPipe === p.physical_pipe_id || (props.selectedIdentity !== null && props.selectedIdentity === p.identity);
               const dim = props.selectedIdentity !== null && !sel;
