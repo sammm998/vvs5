@@ -41,14 +41,18 @@ def _reordered(doc: RawDocument, mode: str, seed: int = 0) -> RawDocument:
     return d2
 
 
-def run_determinism(doc: RawDocument, page_index: int = 0, base_pa=None) -> dict[str, Any]:
+def run_determinism(doc: RawDocument, page_index: int = 0, base_pa=None, **context) -> dict[str, Any]:
+    """context: whatever the reading was given besides the page itself - the set's designation list, the pens the
+    project has seen named. The check is that enumeration order does not change the answer, so the re-readings
+    have to be given exactly what the first one was given; withholding it would report a difference the drawing
+    never had."""
     results = {}
-    base = base_pa if base_pa is not None else analyze_page(doc.pages[page_index])
+    base = base_pa if base_pa is not None else analyze_page(doc.pages[page_index], **context)
     base_sig = semantic_signature(base)
     results["original"] = signature_hash(base_sig)
     for mode, seed in (("reversed", 0), ("shuffled", 11), ("shuffled", 23)):
         d2 = _reordered(doc, mode, seed)
-        pa = analyze_page(d2.pages[page_index])
+        pa = analyze_page(d2.pages[page_index], **context)
         sig = semantic_signature(pa)
         key = f"{mode}_seed{seed}" if mode == "shuffled" else mode
         results[key] = signature_hash(sig)

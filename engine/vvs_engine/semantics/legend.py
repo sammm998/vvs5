@@ -1,9 +1,16 @@
 """The drawing's own designation list.
 
-Every one of these sheets carries a legend - a column of short codes, each with the words that say what it is,
-under headings that group them. It is the drawing telling us its own vocabulary: which codes are systems, which
-are pipe materials, which are components that will never be a pipe. Read from the page like everything else, per
-job, and never carried between drawings.
+Every one of these drawings carries a legend - a column of short codes, each with the words that say what it
+is, under headings that group them. It is the drawing telling us its own vocabulary: which codes are systems,
+which are pipe materials, which are components that will never be a pipe. Read from the page like everything
+else, per job, and never carried between drawings.
+
+Per job, not per sheet. A set writes its designation list once, on the sheet that has room for it, and the plan
+sheets are governed by it without repeating it. A reading that looks for the list on each sheet alone finds it
+on one of them and, on all the others, concludes the drawing has no vocabulary at all - so every label passes as
+possibly a pipe, the review list fills with door marks and room numbers, and the same project is read one way on
+one sheet and another way on the next. A sheet that carries no list of its own is handed the set's, marked as
+having come from elsewhere; what it may never do is silently borrow the other sheet's geometry with it.
 
 Nothing here knows any Swedish. A legend is found by its shape - a stack of rows sharing a left edge, each a
 short code beside a description - and a code's role is settled by how the drawing itself uses it: a code that
@@ -21,6 +28,7 @@ from ..text.model import TextRow
 MIN_ENTRIES = 6                 # a shorter stack is a table cell or a note, not a designation list
 MAX_CODE_LEN = 10
 DESC_GAP_ROWS = 12.0            # how far right of the code its description may start, in row heights
+COL_TOL = 3.0                   # how far two rows' left edges may differ and still be one column
 
 _INLINE = re.compile(r"^([^\s]{1,%d})\s+(\S.{2,})$" % MAX_CODE_LEN)
 
@@ -69,17 +77,20 @@ class LegendEntry:
     heading: str
     bbox: tuple[float, float, float, float]
     role: str = "unused"        # system | component | material | unused
-    role_from: str = "usage"    # usage | heading - whether the page itself showed this code being used
+    role_from: str = "usage"    # usage | heading | other_sheet - what settled the role
+    page: int | None = None     # the sheet of the set that wrote this line
 
     def as_dict(self) -> dict[str, Any]:
         return {"code": self.code, "description": self.description, "heading": self.heading,
-                "role": self.role, "role_from": self.role_from, "bbox": [round(v, 1) for v in self.bbox]}
+                "role": self.role, "role_from": self.role_from, "page": self.page,
+                "bbox": [round(v, 1) for v in self.bbox]}
 
 
 @dataclass
 class DrawingLegend:
     entries: list[LegendEntry] = field(default_factory=list)
     column_x: float | None = None
+    own: bool = True            # False when the list was written on another sheet of the same set
 
     @property
     def by_code(self) -> dict[str, LegendEntry]:
@@ -92,14 +103,23 @@ class DrawingLegend:
         """Whether the sheet's own designation list says this label names a pipe.
 
         True when the label opens with a code the legend lists as a system. When the legend named no systems at
-        all - it was not found, or the sheet does not carry one - nothing is claimed and every label passes."""
+        all - it was not found, or the sheet does not carry one - nothing is claimed and every label passes.
+
+        A list read off another sheet of the set carries less authority than the sheet's own, and it is worth
+        being exact about how much less. It is a vocabulary, not a census: it says what the codes in it are, and
+        the sheet that wrote it may simply never have covered what this sheet draws. So a borrowed list may
+        refuse a code it lists as something other than a run, and may not refuse a code it has never heard of -
+        which is what it would be doing if silence counted as a verdict. That keeps the borrowing one-directional:
+        it can take away a label the set itself calls a floor drain, and it can never take away a pipe."""
         systems = self.systems()
         if not systems:
             return True
         head = (getattr(designation, "system_token", "") or "").upper()
         if self.names_a_component(getattr(designation, "text", "") or head):
             return False
-        return any(head == c or head.startswith(c) for c in systems)
+        if any(head == c or head.startswith(c) for c in systems):
+            return True
+        return not self.own and not any(head == c or head.startswith(c) for c in self.by_code)
 
     def components(self) -> set[str]:
         return {e.code.upper() for e in self.entries if e.role == "component"}
@@ -129,8 +149,12 @@ class DrawingLegend:
         return False
 
     def bbox(self) -> tuple[float, float, float, float] | None:
-        """The block the legend occupies, so its own rows can be told from labels out on the drawing."""
-        if not self.entries:
+        """The block the legend occupies, so its own rows can be told from labels out on the drawing.
+
+        A list read from another sheet occupies nothing here. Its coordinates describe a block on that sheet, and
+        on this one they are a rectangle in an arbitrary place - one that would quietly disqualify whatever real
+        labels happen to fall inside it. A borrowed vocabulary brings no geometry with it."""
+        if not self.entries or not self.own:
             return None
         xs = [v for e in self.entries for v in (e.bbox[0], e.bbox[2])]
         ys = [v for e in self.entries for v in (e.bbox[1], e.bbox[3])]
@@ -138,7 +162,29 @@ class DrawingLegend:
 
     def as_dict(self) -> dict[str, Any]:
         return {"column_x": round(self.column_x, 1) if self.column_x is not None else None,
-                "n_entries": len(self.entries), "entries": [e.as_dict() for e in self.entries]}
+                "own": self.own, "n_entries": len(self.entries),
+                "entries": [e.as_dict() for e in self.entries]}
+
+
+def densest_edge(xs: list[float], tol: float = COL_TOL) -> float | None:
+    """The left edge that carries the most rows: the start of the narrow window holding the most of them.
+
+    A designation list is found by the edge its codes share, and rows on a real sheet do not share one exactly -
+    a column can jitter a point either way. Rounding each left edge onto a fixed grid decides that by where the
+    boundaries happen to fall: two rows of one column at x=100.4 and x=101.6 land in different cells, and a list
+    of eight entries becomes two of four, each too short to be a list at all. Nothing about the drawing changed;
+    only where the grid was drawn. Grouping by the distance between edges instead has no boundaries to fall on.
+
+    Ties go to the leftmost edge, as the widest thing a column can be is what stands furthest left.
+    """
+    xs = sorted(xs)
+    best_n, best_x, j = 0, None, 0
+    for i, x in enumerate(xs):
+        while j < len(xs) and xs[j] <= x + tol:
+            j += 1
+        if j - i > best_n:
+            best_n, best_x = j - i, x
+    return best_x
 
 
 def read_legend(lines: list[TextRow]) -> DrawingLegend:
@@ -174,17 +220,14 @@ def read_legend(lines: list[TextRow]) -> DrawingLegend:
                     best = (gap, o)
         if best is not None and any(c.isalpha() for c in best[1].text):
             found.append((l, t, best[1].text.strip()))
-    cols: dict[int, list[tuple[TextRow, str, str]]] = defaultdict(list)
-    for f in found:
-        cols[round(f[0].bbox[0] / 3.0)].append(f)
-    best_col = max(cols.items(), key=lambda kv: (len(kv[1]), -kv[0]), default=None)
-    if best_col is None:
+    edge = densest_edge([f[0].bbox[0] for f in found])
+    if edge is None:
         return DrawingLegend()
-    key = best_col[0]
     split = {f[0].rid: f for f in found}
     # walk every row on the legend's own left edge, top to bottom: the ones that read as a code with a
     # description are its entries, and the rest are the section headings standing above them
-    column = sorted((l for l in rows if round(l.bbox[0] / 3.0) == key), key=lambda l: (l.bbox[1], l.bbox[0]))
+    column = sorted((l for l in rows if edge - 0.1 <= l.bbox[0] <= edge + COL_TOL),
+                    key=lambda l: (l.bbox[1], l.bbox[0]))
     entries: list[LegendEntry] = []
     heading = ""
     for line in column:
@@ -193,13 +236,46 @@ def read_legend(lines: list[TextRow]) -> DrawingLegend:
             heading = line.text.strip()
             continue
         entries.append(LegendEntry(code=f[1].strip().rstrip(".:,;"), description=f[2].strip(), heading=heading,
-                                   bbox=tuple(line.bbox)))
+                                   bbox=tuple(line.bbox), page=getattr(line, "page", None)))
     if len(entries) < MIN_ENTRIES:
         return DrawingLegend()
-    return DrawingLegend(entries=entries, column_x=key * 3.0)
+    return DrawingLegend(entries=entries, column_x=edge)
 
 
-def assign_roles(legend: DrawingLegend, designations) -> None:
+def adopt(legend: DrawingLegend) -> DrawingLegend:
+    """The same designation list, as it stands for a sheet that does not carry it.
+
+    What travels between the sheets of one set is the vocabulary and nothing else: the codes, the words beside
+    them, the headings that group them, and the roles the sheet that carried the list settled from its own use.
+    What does not travel is where any of it sat on paper. Roles arrive as a starting point, not a verdict - this
+    sheet's own use of a code still outranks what another sheet made of it."""
+    return DrawingLegend(own=False, column_x=None,
+                         entries=[LegendEntry(code=e.code, description=e.description, heading=e.heading,
+                                              bbox=(0.0, 0.0, 0.0, 0.0), role=e.role, role_from=e.role_from,
+                                              page=e.page)
+                                  for e in legend.entries])
+
+
+def merged(a: DrawingLegend | None, b: DrawingLegend) -> DrawingLegend:
+    """The set's vocabulary after reading one more of its sheets.
+
+    Sets do not always write the whole list in one place: a big project puts the water systems on one sheet and
+    the heating systems on another, and either sheet alone is a partial vocabulary. Codes accumulate, and the
+    first sheet to write a code keeps it - a later sheet repeating the same list says nothing new, and a later
+    sheet that disagrees about a code is not evidence enough to overwrite the sheet that introduced it. The
+    result is nobody's own list, so it never lends its geometry to anything."""
+    if a is None or not a.entries:
+        return DrawingLegend(own=False, entries=list(b.entries))
+    have = {e.code.upper() for e in a.entries}
+    return DrawingLegend(own=False, entries=list(a.entries) + [e for e in b.entries if e.code.upper() not in have])
+
+
+def roles_of(legend: DrawingLegend) -> dict[str, str]:
+    """What each code was settled as, in the form another sheet of the set can be given it."""
+    return {e.code.upper(): e.role for e in legend.entries if e.role in ("system", "component")}
+
+
+def assign_roles(legend: DrawingLegend, designations, prior: dict[str, str] | None = None) -> None:
     """Settle what each legend code is, from how the drawing uses it.
 
     A code that opens a designation carrying a dimension is a system code. A code that appears as a whole label
@@ -267,6 +343,19 @@ def assign_roles(legend: DrawingLegend, designations) -> None:
         else:
             e.role = "material"
 
+    # What another sheet of the same set already worked out about a code this sheet never uses. A plan sheet
+    # draws a floor of a building, not the whole vocabulary: a set's cold water code appears on every sheet, its
+    # sprinkler code on three of them. Deciding from this sheet alone that the sprinkler code is a material - it
+    # opened nothing here - reads the same project differently from one sheet to the next, which is the worst
+    # kind of wrong, because a refused label never becomes a pipe label that is missing.
+    #
+    # It only fills silence. A code this sheet did use is settled by that use, whatever another sheet made of it.
+    if prior:
+        for e in legend.entries:
+            was = prior.get(e.code.upper())
+            if e.role == "material" and was in ("system", "component"):
+                e.role, e.role_from = was, "other_sheet"
+
     # A sheet only shows what a sheet shows. A code the legend lists under "SYSTEM SPILLVATTEN" is a system code
     # whether or not this particular page happens to carry a dimensioned label for it - and where it does not,
     # every label of that system was being refused as not naming a pipe at all. That is the same project reading
@@ -285,7 +374,8 @@ def assign_roles(legend: DrawingLegend, designations) -> None:
     for head, group in by_heading.items():
         if not head:
             continue
-        evidenced = Counter(e.role for e in group if e.role in ("system", "component"))
+        evidenced = Counter(e.role for e in group if e.role in ("system", "component")
+                            and e.role_from == "usage")
         if len(evidenced) != 1:
             continue        # a section holding both kinds is not a section that says which one a code is
         role, n = evidenced.most_common(1)[0]

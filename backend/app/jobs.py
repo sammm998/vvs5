@@ -151,6 +151,48 @@ def project_system_families(db, drawing) -> dict[str, str]:
     return out
 
 
+def project_legend(db, drawing):
+    """The designation list the rest of this project already read, for a drawing that carries none.
+
+    A project is one office's set for one building, and it writes its vocabulary once. Uploading the plan sheets
+    without the sheet that carries the list left every one of them with no vocabulary at all - so every label
+    passed as possibly a pipe, and the review list filled with door marks. The list is a fact read off the other
+    drawings' own artifacts, never something a person was asked for.
+
+    Only a list a drawing carried itself counts, so a borrowed list is never re-lent; and where two drawings
+    disagree about what a code is, the code is dropped rather than settled by whichever was read first.
+    """
+    from collections import defaultdict
+
+    from vvs_engine.semantics.legend import DrawingLegend, LegendEntry
+    rows = (db.query(AnalysisJob, Drawing)
+            .join(Drawing, AnalysisJob.drawing_id == Drawing.id)
+            .filter(Drawing.project_id == drawing.project_id, AnalysisJob.status == "COMPLETED",
+                    AnalysisJob.drawing_id != drawing.id, AnalysisJob.result_key.isnot(None))
+            .all())
+    seen: dict[str, dict] = {}
+    roles: dict[str, set] = defaultdict(set)
+    for job, _ in rows:
+        path = os.path.join(storage.path(job.result_key), "drawing-legend.json")
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except Exception:                                       # noqa: BLE001
+            continue
+        for e in doc.get("entries") or []:
+            code = str(e.get("code") or "").strip()
+            if not code or e.get("role_from") == "other_sheet":
+                continue
+            roles[code.upper()].add(e.get("role"))
+            seen.setdefault(code.upper(), e)
+    entries = [LegendEntry(code=e["code"], description=e.get("description") or "", heading=e.get("heading") or "",
+                           bbox=(0.0, 0.0, 0.0, 0.0), role=e.get("role") or "material", role_from="other_sheet")
+               for c, e in sorted(seen.items()) if len(roles[c]) == 1]
+    return DrawingLegend(own=False, entries=entries) if entries else None
+
+
 def run_job(job_id: str) -> None:
     from vvs_engine.cli import analyze_pdf
     from vvs_engine.pdf.extract import UnsupportedInputError
@@ -162,6 +204,7 @@ def run_job(job_id: str) -> None:
         pdf_path = storage.path(drawing.storage_key)
         result_key = f"results/{drawing.id}/{job.id}"
         known = project_system_families(db, drawing)
+        vocab = project_legend(db, drawing)
         job.status = "RUNNING"; job.started_at = dt.datetime.now(dt.timezone.utc); job.result_key = result_key
         db.commit()
     out_dir = storage.path(result_key)
@@ -171,7 +214,7 @@ def run_job(job_id: str) -> None:
                               contamination=True, progress=_progress_cb(job_id),
                               review=settings.run_review, review_ocr=settings.review_ocr,
                               ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir),
-                              second_reader=_second_reader(), known_families=known)
+                              second_reader=_second_reader(), known_families=known, known_legend=vocab)
         # which readers this installation actually had available, and by what name - a reading that quietly used a
         # model, or quietly did without one, is not a reading anyone can check
         on, why = second_reader_state()

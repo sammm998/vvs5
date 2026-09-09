@@ -14,6 +14,7 @@ from .output.artifacts import why as why_fn, write_all
 from .output.overlays import write_overlays
 from .pdf.extract import extract_document
 from .pipeline import PageAnalysis, analyze_page, summarize
+from .semantics.legend import DrawingLegend, merged
 
 CONFIG = {"contact_tolerance_pt": 0.6, "touch_tolerance_pt": 0.15, "unknown_glyph_threshold": 0.14, "grid": 32}
 
@@ -25,13 +26,18 @@ class AnalysisTookTooLong(Exception):
 def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinism: bool = True, contamination: bool = True,
                 progress=None, pages: list[int] | None = None, review: bool = True, review_ocr: bool = True,
                 film_sink=None,
-                ocr_assist: bool = False, deadline_s: float | None = None, second_reader=None, known_families: dict | None = None) -> dict:
+                ocr_assist: bool = False, deadline_s: float | None = None, second_reader=None, known_families: dict | None = None,
+                known_legend: DrawingLegend | None = None) -> dict:
     """deadline_s: a wall-clock budget for the whole document, checked between pages.
 
     A drawing set can carry a page dense enough that reading it takes longer than anyone will wait, and without a
     budget that page does not just delay itself - it holds the worker thread and everything queued behind it. The
     budget is checked between pages rather than inside one, so a single page that runs long still finishes; what
     it bounds is a document that would never end.
+
+    known_legend: a designation list the rest of the project already wrote, for sheets that carry none of their
+    own. The document's own sheets are the first source of it - see below - and this is what a project that spans
+    several files can pass in besides.
     """
     t_all = time.perf_counter()
     name = name or os.path.splitext(os.path.basename(pdf_path))[0]
@@ -43,14 +49,42 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     doc = extract_document(pdf_path, pages, progress=progress)
     timings["extract_ms"] = (time.perf_counter() - t0) * 1000
     analyses: list[PageAnalysis] = []
-    for pg in doc.pages:
+    # A set writes its designation list once and lets the rest of its sheets stand on it. So the list is read
+    # from whatever sheet carries it and held for the whole document, and the sheets read before it turned up
+    # are read again against it. Without that second look the same set is read one way at the front and another
+    # way at the back, which is a difference nothing in the drawing asked for.
+    vocab = known_legend
+    saw: list[DrawingLegend | None] = []        # what each sheet was actually given, so a re-reading can match it
+
+    def check_budget():
         if deadline_s is not None and time.perf_counter() - t_all > deadline_s and analyses:
             raise AnalysisTookTooLong(
                 f"läsningen hann {len(analyses)} av {len(doc.pages)} sidor inom {deadline_s:.0f} s och avbröts; "
                 f"en halv mängd är sämre än ingen, så inget delresultat sparas")
-        analyses.append(analyze_page(pg, progress, ocr_assist=ocr_assist,
-                                     film_sink=film_sink if pg.info.index == 0 else None,
-                                     second_reader=second_reader, known_families=known_families))
+
+    def read(pg, vocab):
+        return analyze_page(pg, progress, ocr_assist=ocr_assist,
+                            film_sink=film_sink if pg.info.index == 0 else None,
+                            second_reader=second_reader, known_families=known_families, known_legend=vocab)
+
+    for pg in doc.pages:
+        check_budget()
+        saw.append(vocab)
+        pa = read(pg, vocab)
+        analyses.append(pa)
+        if pa.legend.own and pa.legend.entries:
+            vocab = merged(vocab, pa.legend)
+    reread = 0
+    n_final = len(vocab.entries) if vocab is not None else 0
+    for i, pa in enumerate(analyses):
+        if pa.legend.own and pa.legend.entries:
+            continue                    # this sheet carries its own list and is not waiting on anybody else's
+        if (len(saw[i].entries) if saw[i] is not None else 0) >= n_final:
+            continue                    # it already saw everything the set turned out to have
+        check_budget()
+        saw[i] = vocab
+        analyses[i] = read(doc.pages[i], vocab)
+        reread += 1
     if progress:
         progress("GENERATING_OVERLAYS")
     t0 = time.perf_counter()
@@ -69,7 +103,8 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     # drawing itself offers - but it is still a machine outside this one, so a reading that consulted it is not
     # the same kind of answer as one that did not, and the determinism check is meaningless over it.
     consulted = any(a.second_reader and a.second_reader.get("asked") for a in analyses)
-    det = run_determinism(doc, 0, analyses[0]) if determinism and not consulted else None
+    det = run_determinism(doc, 0, analyses[0], known_families=known_families, known_legend=saw[0]) \
+        if determinism and not consulted else None
     cont = scan_source(os.path.dirname(os.path.abspath(__file__))) if contamination else None
     t0 = time.perf_counter()
     timings["total_s"] = time.perf_counter() - t_all
@@ -81,6 +116,9 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
                                  "asked": sum((a.second_reader or {}).get("asked", 0) for a in analyses),
                                  "settled": sum((a.second_reader or {}).get("settled", 0) for a in analyses),
                                  "refused": sum((a.second_reader or {}).get("refused", 0) for a in analyses)},
+               "legend": {"codes": len(vocab.entries) if vocab else 0,
+                          "own_sheet": bool(analyses[0].legend.own and analyses[0].legend.entries),
+                          "sheets_reread": reread},
                "contamination": cont["state"] if cont else None, "files": files, "total_seconds": round(timings["total_s"], 2),
                "input": getattr(doc.pages[0], "input_class", None), "skipped_pages": doc.skipped_pages,
                "review": {"state": rev["state"], "n_findings": rev["n_findings"], "agents": rev["agents"]} if rev else None,

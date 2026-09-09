@@ -398,6 +398,7 @@ def declined_geometry(pa) -> dict[str, Any]:
 def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timings: dict, determinism: dict | None,
               contamination: dict | None, overlays: dict, config: dict, review: dict | None = None) -> dict[str, str]:
     from ..profile.hatch import inside_hatch
+    from ..semantics.legend import merged as merge_legends
     os.makedirs(out_dir, exist_ok=True)
     pa = analyses[0]
     files: dict[str, str] = {}
@@ -425,7 +426,14 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
         dd["names_a_pipe"] = bool(pa.legend.names_a_pipe(d)) and (d.text or "").upper() not in pa.legend.components()
         des_out.append(dd)
     W("vector-designations.json", {"designations": des_out, "text_rows": [r.as_dict() for r in pa.lines]})
-    W("drawing-legend.json", pa.legend.as_dict())
+    # The set's designation list, not the first sheet's. A drawing set writes the list on whichever sheet has
+    # room for it, so reporting page one's copy reports a borrowed list on any set that puts it further back -
+    # and the project has nothing to hand its next drawing.
+    doc_legend = None
+    for a in analyses:
+        if a.legend.own and a.legend.entries:
+            doc_legend = merge_legends(doc_legend, a.legend)
+    W("drawing-legend.json", (doc_legend or pa.legend).as_dict())
     lead_out = []
     for l in pa.leaders:
         ld = l.as_dict()

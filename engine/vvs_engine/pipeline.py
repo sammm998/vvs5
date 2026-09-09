@@ -23,7 +23,7 @@ from .profile.hatch import HatchFamily, discover_hatch, inside_hatch
 from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, extract_designations, free_segments, merge_lines)
 from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, layer_system_tokens, leader_contacts,
                                    resolve_block, system_layer_match)
-from .semantics.legend import DrawingLegend, assign_roles, read_legend
+from .semantics.legend import DrawingLegend, adopt, assign_roles, read_legend, roles_of
 from .semantics.leaders import Leader, annotation_layers, discover_leaders, leader_family_report
 from .text.searchable import searchable_rows
 from .text.vector_text import VectorTextResult, vector_text_rows
@@ -623,7 +623,8 @@ def _settle_by_system_usage(anchors) -> int:
 def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
                  film_sink: Callable[[str, dict], None] | None = None,
                  second_reader: Callable[[Any], str] | None = None,
-                 known_families: dict[str, str] | None = None) -> PageAnalysis:
+                 known_families: dict[str, str] | None = None,
+                 known_legend: DrawingLegend | None = None) -> PageAnalysis:
     """second_reader: an optional transport for putting the reading's own open cases to a language model.
 
     Without it - the default, and what every test and every reference run uses - nothing is asked, the analysis
@@ -667,7 +668,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     blocks = build_blocks(page, lines, free)
     designations, grammar, _ = extract_designations(page, blocks)
     legend = read_legend(lines)                  # the sheet's own designation list
-    assign_roles(legend, designations)
+    if not legend.entries and known_legend is not None and known_legend.entries:
+        legend = adopt(known_legend)             # ...or the one the rest of the set carries for it
+    assign_roles(legend, designations, prior=roles_of(known_legend) if known_legend is not None else None)
     film.designations(designations)
     t0 = _t(timings, "designation_ms", t0)
     if progress:
