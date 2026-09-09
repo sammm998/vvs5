@@ -1103,3 +1103,56 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
 @keyframes focus-ring { 0% { opacity: 0; transform: scale(2.6); } 22% { opacity: 1; } 100% { opacity: 0; transform: scale(1); } }
 .focusring { transform-box: fill-box; transform-origin: center; animation: focus-ring 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
 @media (prefers-reduced-motion: reduce) { .focusring { animation: none; opacity: 0; } }
+
+
+/* ---------- depth in the signed-in application, part two ----------
+ *
+ * The working surfaces stay flat - the sheet above all - so this is spent on the furniture around them: the
+ * panel the reader works in, the conversation beside the drawing, the tabs that move between them.
+ */
+
+/* the panel beside the sheet sits above the page rather than in it */
+.analysis .right {
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 14px 34px rgba(0, 0, 0, 0.05);
+  padding: 2px 12px 12px;
+}
+.analysis .right > .tabs { position: sticky; top: 0; z-index: 3; background: #fff; padding-top: 10px; }
+
+/* the tab you moved to is underlined by something that travelled there */
+.tabs button { position: relative; border-bottom-color: transparent !important; }
+.tabs button::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: 50% 50%;
+  transition: transform 0.32s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.tabs button.active::after { transform: scaleX(1); }
+
+/* the agent's conversation: each turn arrives with a little depth, and the panel is a surface of its own */
+.agentchat { perspective: 1200px; }
+.agentlog { perspective: 1000px; }
+.abub {
+  transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.3s ease, border-color 0.2s ease;
+}
+.abub.agent { background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04); }
+.abub.agent:hover { transform: translateZ(6px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.09); }
+@keyframes bubble-3d { from { opacity: 0; transform: perspective(800px) rotateX(-9deg) translate3d(0, 10px, -30px); }
+                       to   { opacity: 1; transform: perspective(800px) rotateX(0) translate3d(0, 0, 0); } }
+.abub { animation: bubble-3d 0.45s cubic-bezier(0.2, 0.9, 0.3, 1) both; transform-origin: 50% 100%; }
+.proposal { transform-style: preserve-3d; }
+.proposal:not(.done) { box-shadow: 0 10px 26px rgba(180, 83, 9, 0.12); }
+
+/* the quick questions lift as a group when the pointer is among them */
+.agentquick .chipbtn { transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.18s, background 0.18s; }
+.agentquick .chipbtn:hover { transform: translateY(-2px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .abub { animation: none; transition: none; transform: none !important; }
+  .tabs button::after { transition: none; }
+  .agentquick .chipbtn { transition: none; transform: none; }
+}

@@ -4,6 +4,8 @@ import "../landing.css";
 import LandingScene from "../components/LandingScene";
 import LayerStack from "../components/LayerStack";
 import EvidenceSection from "../components/EvidenceSection";
+import StyleFan from "../components/StyleFan";
+import AgentShowcase from "../components/AgentShowcase";
 import { useCountUp, useInView, useScrollProgress } from "../components/lp-motion";
 import { tiltStyle, usePointerParallax, useTilt } from "../components/tilt";
 
@@ -212,6 +214,8 @@ export default function Landing() {
         <div className="lp-menu">
           <a href="#hur" onClick={() => setMenu(false)}>Så fungerar det</a>
           <a href="#lager" onClick={() => setMenu(false)}>Tre lager</a>
+          <a href="#stilar" onClick={() => setMenu(false)}>Stilar</a>
+          <a href="#agent" onClick={() => setMenu(false)}>Agenten</a>
           <a href="#ror" onClick={() => setMenu(false)}>Rörtyper</a>
           <a href="#belagg" onClick={() => setMenu(false)}>Beläggen</a>
           <Link to="/dokumentation" onClick={() => setMenu(false)}>Dokumentation</Link>
@@ -271,6 +275,8 @@ export default function Landing() {
 
       <LayerStack />
 
+      <StyleFan />
+
       <section className="lp-sec lp-wrap lp-light" id="ror">
         <div className="lp-sec-head">
           <div className="lp-kicker">Rörtyper</div>
@@ -310,6 +316,8 @@ export default function Landing() {
           kontors stilar också går att läsa.
         </p>
       </section>
+
+      <AgentShowcase />
 
       <EvidenceSection />
 
