@@ -245,9 +245,19 @@ def unresolved_issues(pa) -> list[dict]:
         cx, cy = (d.bbox[0] + d.bbox[2]) / 2, (d.bbox[1] + d.bbox[3]) / 2
         return lbox[0] - 2 <= cx <= lbox[2] + 2 and lbox[1] - 2 <= cy <= lbox[3] + 2
 
+    # A pipe identity is made of two things the drawing has to supply: the size the sheet writes, and a real line
+    # from the label to the geometry. A candidate with neither has supplied nothing at all - it is a drawing
+    # number in the title block, a door mark, a template placeholder - and reporting it as a pipe that failed
+    # fills the list a reader works through with text that was never a pipe. Seven such texts on one A1 sheet
+    # produced fourteen blocking rows, which is the whole list.
+    blocks_with_a_leader = {ld.block_id for ld in pa.leaders}
+
+    def _has_any_evidence(d) -> bool:
+        return d.dn is not None or d.block_id in blocks_with_a_leader
+
     def _could_be_a_pipe_label(d) -> bool:
         text = (d.text or "").upper()
-        return (lg.names_a_pipe(d) and text not in components
+        return (lg.names_a_pipe(d) and text not in components and _has_any_evidence(d)
                 and not lg.names_a_component(text) and not _in_legend(d))
 
     for d in pa.designations:
