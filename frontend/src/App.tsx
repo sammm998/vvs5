@@ -8,6 +8,7 @@ import Projects from "./pages/Projects";
 import ProjectPage from "./pages/Project";
 import DrawingPage from "./pages/Drawing";
 import AnalysisPage from "./pages/Analysis";
+import LearnPage from "./pages/LearnPage";
 
 function Guard({ children }: { children: JSX.Element }) {
   return getToken() ? children : <Navigate to="/login" replace />;
@@ -39,6 +40,16 @@ function IconRail() {
   );
 }
 
+function IconLearn() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M2.5 5.2 9 2.5l6.5 2.7L9 8 2.5 5.2Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M5 6.7v4.1c0 1.2 1.8 2.2 4 2.2s4-1 4-2.2V6.7" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M15.5 5.4v4.2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function IconOut() {
   return (
     <svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -56,6 +67,7 @@ const ROUTES = (
     <Route path="/projects/:id" element={<Guard><ProjectPage /></Guard>} />
     <Route path="/drawings/:id" element={<Guard><DrawingPage /></Guard>} />
     <Route path="/jobs/:id" element={<Guard><AnalysisPage /></Guard>} />
+    <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
   </Routes>
 );
 
@@ -92,6 +104,9 @@ export default function App() {
         <nav>
           <Link to="/projekt" className={path.startsWith("/projekt") || path.startsWith("/projects") ? "on" : ""}>
             <IconProjects /> <span className="wide">Projekt</span>
+          </Link>
+          <Link to="/lar" className={path.startsWith("/lar") ? "on" : ""}>
+            <IconLearn /> <span className="wide">Lär dig VVS</span>
           </Link>
         </nav>
         <div className="foot">

@@ -4,38 +4,15 @@ import { api } from "../api";
 import PdfViewer, { Drawn, EditKind, Layer, ViewerHandle } from "../components/PdfViewer";
 import QuantityTable from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
+import Learn from "../components/Learn";
 import Corrections, { Draft } from "../components/Corrections";
 import LegendView from "../components/LegendView";
 import Reasoning from "../components/Reasoning";
 import AgentChat from "../components/AgentChat";
 import { StatusBadge, stageText } from "../components/Status";
 
-const VISION_LABELS: Record<string, string> = {
-  missed_labels: "Beteckning som syns men inte lästes",
-  missed_pipes: "Ritat rör som inget överlägg följer",
-  overlay_wrong: "Överlägg som följer något annat än ett rör",
-  paired_wall: "Två parallella linjer som är ett ritat föremål",
-};
 
-const ISSUE_LABELS: Record<string, string> = {
-  unknown_glyph: "Okänt tecken", unknown_glyph_in_designation: "Olästa tecken i beteckningar",
-  unknown_glyph_elsewhere: "Olästa tecken utanför beteckningarna", uncertain_designation: "Osäker beteckning",
-  missing_dn: "Saknad DN", ambiguous_leader: "Tvetydig hänvisning",
-  missing_leader: "Saknad hänvisningslinje", ambiguous_pipe_attachment: "Tvetydig röranslutning", missing_pipe_attachment: "Saknad röranslutning",
-  unsupported_pipe_representation: "Rörrepresentation stöds ej", topology_conflict: "Topologikonflikt", branch_conflict: "Grenkonflikt", dn_conflict: "DN-konflikt",
-  unowned_geometry: "Oidentifierad geometri", unsupported_structural_family: "Strukturfamilj stöds ej",
-  drawn_outline: "Ritat föremål, inte rör", flow_beyond_labels: "Identitet nådde längre än beteckningarna",
-};
 // why a label never got a line to follow, said the way a person reads a drawing
-const NO_LEADER_SV: Record<string, string> = {
-  no_line_starts_at_this_label_at_all: "ingen linje utgår från etiketten",
-  start_claimed_by_several_labels_at_once: "flera etiketter gör anspråk på samma linje",
-  start_already_used_by_another_label_leader: "linjen används redan av en annan etikett",
-  start_taken_by_a_label_with_a_better_claim: "en annan etikett hade starkare anspråk på linjen",
-  start_grew_into_nothing: "linjen ledde ingenstans",
-  line_from_the_label_is_shorter_than_the_label: "linjen är kortare än etiketten själv",
-  the_row_rule_never_leaves_the_label: "radens linjal lämnar aldrig etiketten",
-};
 
 const LAYER_LABELS: Record<Layer, string> = { pipes: "Mätta rör", ambiguous: "Tvetydigt", claimed: "Påpekad men onämnd", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar", inWall: "I vägg (räknas ej)" };
 const LAYER_HINTS: Record<Layer, string> = {
@@ -56,7 +33,8 @@ export default function AnalysisPage() {
   const [result, setResult] = useState<any>(null);
   const [pdf, setPdf] = useState<ArrayBuffer | null>(null);
   const [err, setErr] = useState("");
-  const [tab, setTab] = useState<"mangder" | "agent" | "ejlosta" | "granskning" | "oversikt" | "artefakter" | "rattelser">("mangder");
+  const [learn, setLearn] = useState(false);
+  const [tab, setTab] = useState<"mangder" | "agent" | "oversikt" | "artefakter" | "rattelser">("mangder");
   // what the agent means by "this": the runs the reader has clicked, and the box they dragged
   const [agentIds, setAgentIds] = useState<string[]>([]);
   // The three things a reader comes here for, and they are not the same thing: what the drawing says its codes
@@ -70,8 +48,6 @@ export default function AnalysisPage() {
   // The quantity table has more columns than any fixed panel width fits, so the split is the reader's to set:
   // wide drawing while tracing a run, wide table while reading the takeoff. The choice is remembered.
   const [corrections, setCorrections] = useState<any[]>([]);
-  const [vision, setVision] = useState<any>(null);
-  const [visionBusy, setVisionBusy] = useState(false);
   const [drawKind, setDrawKind] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState<boolean>(() => {
     try { return localStorage.getItem("vvs.panelOpen") !== "0"; } catch { return true; }
@@ -106,7 +82,7 @@ export default function AnalysisPage() {
   // the fastest way to make a correct answer look wrong.
   const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, claimed: true, unowned: false, declined: false, designations: false, leaders: false, anchors: false, inWall: false });
   // which bortvald family the reader is pointing at, so the sheet can show that ink and not all of it at once
-  const [selDeclined, setSelDeclined] = useState<string | null>(null);
+  const selDeclined: string | null = null;
   const [layersOpen, setLayersOpen] = useState(false);
   const [artifacts, setArtifacts] = useState<any[]>([]);
   const viewer = useRef<ViewerHandle>(null);
@@ -200,20 +176,34 @@ export default function AnalysisPage() {
   if (err) return <main><p className="error">{err}</p></main>;
   if (!job) return <main>Laddar…</main>;
   if (job.status !== "COMPLETED") {
+    /* The reading takes a minute or two, and it is one of the few times somebody sits still in front of the
+       tool. So the wait is offered as something else: the academy, in the same place, with the reading still
+       running behind it. Coming back to the film costs one click and loses nothing. */
     return (
       <main>
         <p className="crumb"><Link to={`/drawings/${job.drawing_id}`}>Ritning</Link> / Analys</p>
         <div className="head">
           <div>
-            <h1>Läser ritningen</h1>
-            <p className="lead">{stageText(job.stage) || job.stage}</p>
+            <h1>{learn ? "Lär dig VVS" : "Läser ritningen"}</h1>
+            <p className="lead">
+              {learn
+                ? `Läsningen fortsätter under tiden — ${stageText(job.stage) || job.stage.toLowerCase()}.`
+                : stageText(job.stage) || job.stage}
+            </p>
           </div>
-          <StatusBadge job={job} />
+          <div className="row">
+            <button className={learn ? "secondary" : ""} onClick={() => setLearn(!learn)}>
+              {learn ? "Tillbaka till läsningen" : "Lär mig om VVS"}
+            </button>
+            <StatusBadge job={job} />
+          </div>
         </div>
         <div className="rule" style={{ marginBottom: 26 }} />
         {job.status === "FAILED"
           ? <pre className="error">{job.error}</pre>
-          : <AnalysisFilm jobId={id!} stage={job.stage} progress={job.progress} />}
+          : learn
+            ? <Learn compact />
+            : <AnalysisFilm jobId={id!} stage={job.stage} progress={job.progress} />}
       </main>
     );
   }
@@ -329,10 +319,6 @@ export default function AnalysisPage() {
         <div className="tabs">
           <button className={tab === "mangder" ? "active" : ""} onClick={() => setTab("mangder")}>Mängder</button>
           <button className={tab === "agent" ? "active" : ""} onClick={() => setTab("agent")}>Agent</button>
-          <button className={tab === "ejlosta" ? "active" : ""} onClick={() => setTab("ejlosta")}>Ej lösta ({result.issues.filter((i: any) => i.severity === "blocking").length})</button>
-          <button className={tab === "granskning" ? "active" : ""} onClick={() => setTab("granskning")}>
-            Granskning{result.review ? ` (${result.review.findings.filter((f: any) => f.severity !== "INFO").length})` : ""}
-          </button>
           <button className={tab === "rattelser" ? "active" : ""} onClick={() => setTab("rattelser")}>
             Rätta{corrections.filter((c: any) => !c.undone).length ? ` (${corrections.filter((c: any) => !c.undone).length})` : ""}
           </button>
@@ -345,7 +331,8 @@ export default function AnalysisPage() {
               <p className="badge warn">
                 {`${nm.pipe_names_with_metres} av ${nm.pipe_names} rörbeteckningar som ritningen skriver ut fick meter `
                   + `(${Math.round((namedShare ?? 0) * 100)} %). Av ${nm.drawn_m} m ritat rör bar `
-                  + `${nm.confirmed_m} m en identitet och ${nm.unowned_m} m ingen alls – se Granskning för varje fall.`}
+                  + `${nm.confirmed_m} m en identitet och ${nm.unowned_m} m ingen alls. Det som ingen `
+                  + "beteckning namngav ligger grått på ritningen."}
               </p>
             )}
             {nSheets > 1 && (
@@ -440,174 +427,6 @@ export default function AnalysisPage() {
               setResult(await api.result(id!));
             }} />
         )}
-        {tab === "ejlosta" && (() => {
-          const blocking = result.issues.filter((i: any) => i.severity === "blocking");
-          const advisory = result.issues.filter((i: any) => i.severity !== "blocking");
-          const row = (it: any, i: number) => (
-            <div key={i} className="issue" onClick={() => it.bbox && viewer.current?.zoomTo(it.bbox)}>
-              <b>{ISSUE_LABELS[it.kind] || it.kind}</b> {it.text ? `· ${it.text}` : ""} {it.reason ? <span className="muted">({String(it.reason).split(", ").map((r: string) => NO_LEADER_SV[r] || r).join("; ")})</span> : ""}
-              {it.count ? <span className="muted"> · {it.count} st</span> : ""} {it.length_pt ? <span className="muted"> · {it.length_pt} pt</span> : ""}
-            </div>
-          );
-          return (
-            <>
-              <div className="card">
-                <h3>Att åtgärda <span className="badge warn">{blocking.length}</span></h3>
-                <p className="muted" style={{ marginTop: 0 }}>Rör som ritningen namnger men som inte fått en meter.</p>
-                {blocking.map(row)}
-                {blocking.length === 0 && <p className="muted">Inget. Varje rör ritningen namnger har fått sin längd.</p>}
-              </div>
-              <div className="card">
-                <h3>Noterat <span className="badge">{advisory.length}</span></h3>
-                <p className="muted" style={{ marginTop: 0 }}>Sådant mängden överlever: en etikett till för en sträcka som redan är mätt, tecken utanför beteckningarna.</p>
-                {advisory.map(row)}
-                {advisory.length === 0 && <p className="muted">Inget noterat.</p>}
-              </div>
-              {result.reading_review && (() => {
-                const rv = result.reading_review;
-                const lg = rv.legend || {};
-                const groups: [string, string, any[]][] = [
-                  ["Geometri som etiketterna pekar på men som inte togs som rör", "rejected_families_labels_point_at", rv.rejected_families_labels_point_at || []],
-                  ["Sträckor som slutar mot varandra över ett glapp som inte överbryggades", "possible_lost_continuity", rv.possible_lost_continuity || []],
-                  ["Samma ritade linje i mer än en rörfamilj", "possible_double_counted_geometry", rv.possible_double_counted_geometry || []],
-                  ["Ritningsstilar som ingen etikett nådde", "unsupported_style_candidates", rv.unsupported_style_candidates || []],
-                ];
-                const lost = rv.pipe_labels_with_no_leader || [];
-                const n = groups.reduce((t, g) => t + g[2].length, 0);
-                return (
-                  <div className="card">
-                    <h3>Vad läsningen själv frågar sig <span className="badge">{n}</span></h3>
-                    <p className="muted" style={{ marginTop: 0 }}>
-                      Sätt att en mängd kan bli tyst för kort utan att något ser fel ut. Inget av det är något motorn
-                      kan avgöra själv — det står här för att det ska synas i stället för att saknas.
-                    </p>
-                    <div className="issue">
-                      <b>Ritningens egen beteckningslista</b>{" "}
-                      {lg.found
-                        ? <span className="muted">{lg.entries} poster · system {(lg.systems || []).join(", ") || "inga"} · komponenter {(lg.components || []).join(", ") || "inga"}</span>
-                        : <span className="muted">hittades inte på den här sidan — läsningen gick på mönsterstatistik i stället</span>}
-                    </div>
-                    {groups.map(([title, key, list]) => list.length > 0 && (
-                      <div key={key} className="issue">
-                        <b>{title}</b> <span className="muted">· {list.length} st</span>
-                        <div className="muted" style={{ fontSize: 12 }}>
-                          {list.slice(0, 3).map((x: any, i: number) => (
-                            <div key={i}>{x.family ? x.family.slice(-34) : ""} {x.gap_pt ? `· glapp ${x.gap_pt} pt` : ""} {x.leader_ends ? `· ${x.leader_ends} ledaravslut` : ""}</div>
-                          ))}
-                          {list.length > 3 && <div>… och {list.length - 3} till</div>}
-                        </div>
-                      </div>
-                    ))}
-                    {lost.length > 0 && (
-                      <div className="issue">
-                        <b>Rörbeteckningar utan ledare</b>{" "}
-                        <span className="muted">· {rv.n_pipe_labels_with_no_leader} st · en beteckning utan linje att följa
-                          får ingen identitet, och röret den pekar på blir omätt</span>
-                        <div className="muted" style={{ fontSize: 12 }}>
-                          {lost.slice(0, 6).map((x: any, i: number) => (
-                            <div key={i}>{x.text} — {(x.reasons || []).map((r: string) => NO_LEADER_SV[r] || r).join("; ")}</div>
-                          ))}
-                          {lost.length > 6 && <div>… och {rv.n_pipe_labels_with_no_leader - 6} till</div>}
-                        </div>
-                      </div>
-                    )}
-                    {n === 0 && lost.length === 0 && <p className="muted">Inget av de här fallen finns på den här sidan.</p>}
-                  </div>
-                );
-              })()}
-              {(() => {
-                const dg = result.declined_geometry;
-                if (!dg || (!dg.families?.length && !dg.unconsidered?.length)) return null;
-                const t = dg.totals || {};
-                // the ink worth a second look first: a pipe-named layer nothing pointed at, before one the
-                // reading already knows carries this drawing's own labels and frames
-                const unc = (dg.unconsidered ?? []).filter((f: any) => f.on_a_pipe_like_layer)
-                  .sort((a: any, b: any) => Number(a.why !== "NO_LEADER_EVER_CAME_NEAR_IT") - Number(b.why !== "NO_LEADER_EVER_CAME_NEAR_IT")
-                    || (b.length_m ?? 0) - (a.length_m ?? 0));
-                return (
-                  <div className="card">
-                    <h3>Bortvald geometri <span className="badge">{dg.families.length}</span></h3>
-                    <p className="muted" style={{ marginTop: 0 }}>
-                      Ritad linje som läsningen tittade på och inte tog som rör. Oftast rätt — väggar, stomme och
-                      raster ritas med samma penna som rören — men den försvinner tyst, och då ser en bortvald vägg
-                      likadan ut som ett missat rör. Klicka på en rad för att se just den linjen på ritningen.
-                      {t.length_m != null && <> Totalt {t.length_m} m{t.length_m_with_a_leader_end ? `, varav ${t.length_m_with_a_leader_end} m i familjer som en ledare faktiskt tog i` : ""}.</>}
-                    </p>
-                    {[...dg.families, ...unc].map((f: any) => (
-                      <div key={f.family} className="issue" style={{ cursor: "pointer", background: selDeclined === f.family ? "#ecfeff" : undefined }}
-                        onClick={() => { setSelDeclined(selDeclined === f.family ? null : f.family); setLayers({ ...layers, declined: true }); }}>
-                        <b>{f.layer || `penna ${f.width}`}</b>{" "}
-                        <span className="muted">{f.length_m != null ? `${f.length_m} m` : `${f.length_pt} pt`} · {f.n_segments} streck
-                          {f.leader_ends_touching ? ` · ${f.leader_ends_touching} ledaravslut tar i den` : ""}
-                          {f.on_a_pipe_like_layer ? " · lagernamn av samma sort som rörens" : ""}</span>
-                        <div className="muted" style={{ fontSize: 12 }}>{f.why_sv}{f.segments_truncated ? " · visar en del av strecken" : ""}</div>
-                      </div>
-                    ))}
-                    {t.unconsidered_length_m != null && (
-                      <p className="muted" style={{ fontSize: 12, marginBottom: 0 }}>
-                        Därutöver {t.unconsidered_length_m} m ritad linje som ingen ledare kom i närheten av —
-                        stomme, raster, ramar och text. {t.unconsidered_length_m_on_a_pipe_like_layer
-                          ? `Av den ligger ${t.unconsidered_length_m_on_a_pipe_like_layer} m på lager namngivna som rörens; de står i listan ovan.`
-                          : "Inget av den ligger på ett lager namngivet som rörens."}
-                        {" "}Utan en beteckning som pekar dit har en sträcka ingen identitet och kan inte mätas.
-                        {t.filled_shapes_length_m ? ` Ritningen har dessutom ${t.filled_shapes_length_m} m fylld yta — rum, möbler, raster — som aldrig är rör.` : ""}
-                      </p>
-                    )}
-                  </div>
-                );
-              })()}
-              <div className="card">
-                <h3>Andra åsikt: titta på ritningen</h3>
-                <p className="muted" style={{ marginTop: 0 }}>
-                  Läsningen är gjord ur vektorn. Det den inte kan göra är att märka att en hel rörfamilj aldrig
-                  togs med, eller att överlägget följer en vägg. Det ser man genom att titta. Blicken får peka ut
-                  <b> en ruta</b> ur ett rutnät som läsningen ritat — aldrig en koordinat den hittar på — och sedan
-                  läses den rutan ur vektorerna: vilken familj bläcket ligger i, vad läsningen gjorde med det, och
-                  varför det inte finns meter där. Blicken säger var. Vektorerna säger varför. Bara det andra är
-                  ett svar, och ingetdera blir någonsin en meter.
-                </p>
-                <button className="secondary" disabled={visionBusy} onClick={async () => {
-                  setVisionBusy(true);
-                  try { setVision(await api.vision(id!, page)); }
-                  catch (e: any) { setVision({ error: e.message }); }
-                  finally { setVisionBusy(false); }
-                }}>{visionBusy ? "Tittar…" : `Titta på sida ${page + 1}`}</button>
-                {vision?.error && <p className="error">{vision.error}</p>}
-                {vision && !vision.error && (
-                  <>
-                    <p className="muted">{vision.asked ? `${vision.n_findings} iakttagelser` : vision.note}</p>
-                    {(vision.findings || []).map((f: any, i: number) => {
-                      const a = f.vector_account;
-                      return (
-                        <div key={i} className="issue" style={{ cursor: f.bbox ? "pointer" : undefined }}
-                          onClick={() => f.bbox && viewer.current?.zoomTo(f.bbox)}>
-                          <b>{VISION_LABELS[f.kind] || f.kind}</b>
-                          {f.tile && <span className="muted"> · ruta {f.tile}</span>}
-                          <div className="muted">{f.detail}{f.where && !f.tile ? ` — ${f.where}` : ""}</div>
-                          {a && !a.error && (
-                            <div style={{ marginTop: 6, fontSize: 12 }}>
-                              <div><b>Vad vektorerna säger:</b> {a.verdict}</div>
-                              <div className="muted" style={{ marginTop: 2 }}>
-                                {a.measured_runs_drawn_m > 0 ? `${a.measured_runs_drawn_m} m mätt rör i rutan · ` : ""}
-                                {a.n_designations} beteckningar · {a.n_leaders_ending_here} ledare slutar där
-                                {a.inside_a_wall ? " · rutan ligger i en vägg" : ""}
-                              </div>
-                              {(a.families || []).slice(0, 3).map((fam: any, k: number) => (
-                                <div key={k} className="muted">{fam.length_m} m — {fam.role}
-                                  {fam.why ? ` (${fam.why})` : ""} · {String(fam.family).slice(-30)}</div>
-                              ))}
-                            </div>
-                          )}
-                          {a?.error && <div className="muted" style={{ fontSize: 12 }}>{a.error}</div>}
-                        </div>
-                      );
-                    })}
-                  </>
-                )}
-              </div>
-            </>
-          );
-        })()}
         {tab === "rattelser" && (
           <Corrections drawingId={job.drawing_id} jobId={id!} page={page} quantities={result.quantities}
             corrections={corrections} draft={draft} kind={drawKind} pipe={selPipe} proposals={result.proposals ?? []}
@@ -616,30 +435,6 @@ export default function AnalysisPage() {
               setCorrections(await api.corrections(job.drawing_id));
               setResult(await api.result(id!));
             }} />
-        )}
-        {tab === "granskning" && (
-          <div className="card">
-            {!result.review && <p className="muted">Granskningen kördes inte för det här jobbet.</p>}
-            {result.review && (
-              <>
-                <p style={{ marginTop: 0 }}>
-                  Oberoende granskning av resultatet: <b>{result.review.state === "OK" ? "inga anmärkningar" : result.review.state}</b>
-                  {` · ${result.review.n_findings} fynd · agenter: ${result.review.agents.join(", ")}`}
-                </p>
-                {result.review.findings.map((f: any, i: number) => (
-                  <div key={i} className="issue" style={{ cursor: f.bbox ? "pointer" : "default" }}
-                    onClick={() => f.bbox && viewer.current?.zoomTo(f.bbox)}>
-                    <span className={`badge ${f.severity === "ERROR" ? "bad" : f.severity === "WARN" ? "warn" : "ok"}`}>{f.severity}</span>
-                    {` ${f.message}`}
-                    <div className="muted" style={{ fontSize: 11, marginTop: 2 }}>
-                      {f.agent} · {f.code}
-                      {f.detail?.examples ? ` · ${f.detail.examples.join(", ")}` : ""}
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-          </div>
         )}
         {tab === "oversikt" && (
           <div className="card">

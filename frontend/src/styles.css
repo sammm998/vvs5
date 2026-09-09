@@ -18,6 +18,18 @@
   --bad: #a32020;
   --bad-bg: #fbeced;
   --accent: #0d0d0d;
+  /* Depth, as one idea applied everywhere: light from above, surfaces that lift.
+     Three elevations, each a close contact shadow plus a wide ambient one - a single blur reads as a sticker,
+     two read as an object above a surface. The hairline on top is the light catching the near edge. */
+  --e1: 0 1px 1px rgba(16, 18, 22, 0.04), 0 2px 6px -1px rgba(16, 18, 22, 0.05);
+  --e2: 0 1px 2px rgba(16, 18, 22, 0.05), 0 8px 20px -6px rgba(16, 18, 22, 0.10);
+  --e3: 0 2px 4px rgba(16, 18, 22, 0.06), 0 22px 44px -14px rgba(16, 18, 22, 0.18);
+  --lift: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --glass: rgba(255, 255, 255, 0.72);
+  --r-s: 10px;
+  --r-m: 14px;
+  --r-l: 20px;
+  --ease: cubic-bezier(0.22, 0.9, 0.28, 1);
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
   --label: 11px;
@@ -28,7 +40,13 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  /* The paper the panels lie on. Pure white gives them nothing to lift off; this is barely a tint, plus one
+     soft light from the top left, so a shadow has something to fall on. */
+  background:
+    radial-gradient(80% 52% at 12% -6%, rgba(13, 13, 13, 0.045) 0%, rgba(13, 13, 13, 0) 60%),
+    radial-gradient(46% 34% at 92% 4%, rgba(13, 13, 13, 0.028) 0%, rgba(13, 13, 13, 0) 64%),
+    var(--bg-2);
+  background-attachment: fixed;
   color: var(--text);
   font-family: var(--sans);
   font-size: 14px;
@@ -44,6 +62,8 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .app { display: grid; grid-template-columns: 296px minmax(0, 1fr); min-height: 100vh; }
 
 .side {
+  /* A rail, not a column of the page: it sits slightly above the paper, catches the light on its inner edge and
+     lets the page slide underneath. */
   border-right: 1px solid var(--line);
   padding: 30px 26px 24px;
   display: flex;
@@ -53,24 +73,52 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   top: 0;
   height: 100vh;
   overflow: auto;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.8));
+  backdrop-filter: blur(14px) saturate(1.3);
+  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.9) inset, 14px 0 40px -28px rgba(16, 18, 22, 0.35);
+  z-index: 3;
 }
+.side::-webkit-scrollbar { width: 0; }
 .side .brand { display: flex; align-items: center; gap: 11px; font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
 .side .brand:hover { text-decoration: none; }
 .side .brand svg { flex: none; }
 .side .org { font-family: var(--mono); font-size: var(--label); letter-spacing: var(--track); text-transform: uppercase; color: var(--muted); }
 .side nav { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.side nav { border-top: 0; gap: 2px; }
 .side nav a {
   display: flex;
   align-items: center;
   gap: 13px;
-  padding: 15px 4px;
-  border-bottom: 1px solid var(--line);
+  padding: 13px 14px;
+  border-bottom: 0;
+  border-radius: var(--r-s);
   color: var(--muted);
-  transition: color 0.12s;
+  position: relative;
+  transition: color 0.18s var(--ease), background 0.18s var(--ease), transform 0.18s var(--ease),
+              box-shadow 0.18s var(--ease);
 }
-.side nav a:hover { color: var(--ink); text-decoration: none; }
-.side nav a.on { color: var(--ink); font-weight: 500; }
-.side nav a svg { flex: none; opacity: 0.75; }
+.side nav a:hover { color: var(--ink); text-decoration: none; background: rgba(13, 13, 13, 0.035); }
+.side nav a.on {
+  color: var(--ink);
+  font-weight: 500;
+  background: #fff;
+  box-shadow: var(--e1), var(--lift);
+  transform: translateX(2px);
+}
+/* the mark that says which page you are on, drawn on the rail itself */
+.side nav a.on::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  width: 3px;
+  height: 16px;
+  margin-top: -8px;
+  border-radius: 999px;
+  background: var(--ink);
+}
+.side nav a svg { flex: none; opacity: 0.75; transition: opacity 0.18s, transform 0.18s var(--ease); }
+.side nav a.on svg, .side nav a:hover svg { opacity: 1; transform: translateZ(0) scale(1.06); }
 .side .foot { margin-top: auto; display: flex; flex-direction: column; gap: 16px; padding-top: 22px; border-top: 1px solid var(--line); }
 .side .who {
   font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;
@@ -78,7 +126,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 
 .main { min-width: 0; }
-.main > main { padding: 40px 48px 72px; max-width: 1320px; }
+.main > main { padding: 40px 48px 72px; max-width: 1320px; perspective: 1600px; perspective-origin: 50% 0%; }
 
 /* ---------- page furniture ---------- */
 
@@ -111,33 +159,48 @@ button {
   font-size: var(--label);
   letter-spacing: var(--track);
   text-transform: uppercase;
-  background: var(--ink);
+  /* A solid pill reads as a shape on the page; a pill lit from above reads as something to press. The gradient
+     is the light, the inner hairline is its near edge, and the shadow is what it stands on. */
+  background: linear-gradient(180deg, #2a2a2a, var(--ink));
   color: #fff;
   border: 1px solid var(--ink);
   border-radius: 999px;
   padding: 13px 24px;
   cursor: pointer;
-  transition: opacity 0.12s, background 0.12s, border-color 0.12s;
+  transition: transform 0.16s var(--ease), box-shadow 0.16s var(--ease), opacity 0.12s, background 0.12s,
+              border-color 0.12s;
   white-space: nowrap;
+  box-shadow: var(--e1), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
-button:hover { opacity: 0.82; }
-button:disabled { opacity: 0.4; cursor: default; }
-button.secondary { background: #fff; color: var(--ink); border-color: var(--line-2); }
+button:hover { opacity: 0.94; transform: translateY(-1px); box-shadow: var(--e2), inset 0 1px 0 rgba(255, 255, 255, 0.18); }
+button:active { transform: translateY(1px) scale(0.995); box-shadow: 0 1px 1px rgba(16, 18, 22, 0.12) inset; }
+button:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+button.secondary {
+  background: linear-gradient(180deg, #fff, #f8f8f8);
+  color: var(--ink);
+  border-color: var(--line-2);
+  box-shadow: var(--e1), var(--lift);
+}
 button.secondary:hover { opacity: 1; border-color: var(--ink); }
-button.ghost { background: transparent; color: var(--muted); border-color: transparent; padding: 8px 10px; }
-button.ghost:hover { color: var(--ink); opacity: 1; }
+button.ghost { background: transparent; color: var(--muted); border-color: transparent; padding: 8px 10px; box-shadow: none; }
+button.ghost:hover { color: var(--ink); opacity: 1; background: rgba(13, 13, 13, 0.045); box-shadow: none; transform: none; }
 button.small { padding: 8px 15px; font-size: 10px; }
 
 input, select, textarea {
   font-family: var(--sans);
   font-size: 14px;
   color: var(--ink);
+  /* sunk into the surface rather than sitting on it: the opposite of a button, and readable as such */
   background: #fff;
   border: 1px solid var(--line-2);
   border-radius: 999px;
   padding: 12px 18px;
   outline: none;
-  transition: border-color 0.12s;
+  box-shadow: inset 0 1px 2px rgba(16, 18, 22, 0.05);
+  transition: border-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
+}
+input:focus, select:focus, textarea:focus {
+  box-shadow: inset 0 1px 2px rgba(16, 18, 22, 0.05), 0 0 0 3px rgba(13, 13, 13, 0.07);
 }
 input::placeholder { color: var(--faint); }
 input:focus, select:focus, textarea:focus { border-color: var(--ink); }
@@ -153,11 +216,18 @@ select { padding-right: 34px; }
 }
 .pick:hover { border-color: var(--ink); color: var(--ink); }
 
-.seg { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line-2); border-radius: 999px; padding: 5px; }
+.seg {
+  display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: 999px;
+  padding: 5px; background: rgba(13, 13, 13, 0.04); box-shadow: inset 0 1px 2px rgba(16, 18, 22, 0.05);
+}
 .seg button {
   background: transparent; color: var(--muted); border: 0; border-radius: 999px; padding: 6px 13px; font-size: 10px;
+  box-shadow: none;
 }
-.seg button.on { background: var(--ink); color: #fff; }
+.seg button:hover { transform: none; box-shadow: none; color: var(--ink); }
+.seg button.on {
+  background: #fff; color: var(--ink); box-shadow: var(--e1), var(--lift);
+}
 
 /* ---------- the record list ---------- */
 
@@ -169,10 +239,12 @@ select { padding-right: 34px; }
   align-items: start;
   padding: 26px 24px;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.035);
+  border-radius: var(--r-m);
+  background: linear-gradient(180deg, #fff, #fcfcfc);
+  box-shadow: var(--e1), var(--lift);
+  transition: box-shadow 0.28s var(--ease), border-color 0.28s var(--ease), transform 0.28s var(--ease);
 }
+.list .tiltwrap:hover .item { box-shadow: var(--e3), var(--lift); border-color: var(--line-2); }
 .list { display: flex; flex-direction: column; gap: 10px; }
 .list .tiltwrap { perspective: 2400px; }
 .item .no { font-family: var(--mono); font-size: var(--label); letter-spacing: 0.1em; color: var(--faint); padding-top: 7px; }
@@ -188,12 +260,13 @@ select { padding-right: 34px; }
 /* ---------- panels ---------- */
 
 .card {
-  background: #fff;
+  background: linear-gradient(180deg, #fff, #fdfdfd);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--r-m);
   padding: 20px;
   margin-bottom: 16px;
   overflow-x: auto;          /* a wide quantity table scrolls inside its card, never past it */
+  box-shadow: var(--e1), var(--lift);
 }
 .card::-webkit-scrollbar { height: 8px; }
 .card::-webkit-scrollbar-thumb { background: #d8d8d8; border-radius: 999px; }
@@ -215,14 +288,22 @@ th {
   text-transform: uppercase;
   border-bottom-color: var(--line-2);
   vertical-align: bottom;
+  /* the head stays while the rows go past it, on frosted glass so what slides under is still felt */
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--glass);
+  backdrop-filter: blur(10px) saturate(1.4);
+  transition: color 0.14s;
 }
+th:hover { color: var(--ink); }
 th .unit { display: block; font-size: 9.5px; letter-spacing: 0.06em; opacity: 0.7; }
 td { color: var(--muted); }
 td:first-child { color: var(--ink); }
 tbody tr:last-child td { border-bottom: 0; }
-tr.selectable { cursor: pointer; transition: background 0.12s; }
-tr.selectable:hover { background: #fafafa; }
-tr.selected { background: #f4f4f4; }
+tr.selectable { cursor: pointer; transition: background 0.16s var(--ease), box-shadow 0.16s var(--ease); }
+tr.selectable:hover { background: #fbfbfb; box-shadow: inset 3px 0 0 var(--line-2); }
+tr.selected { background: #f5f5f5; box-shadow: inset 3px 0 0 var(--ink); }
 tr.selected td { color: var(--ink); }
 .num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 12.5px; }
 .num.strong { color: var(--ink); }
@@ -238,8 +319,10 @@ tr.selected td { color: var(--ink); }
   left: 0;
   z-index: 1;
   background: #fff;
-  box-shadow: 1px 0 0 var(--line);
+  /* the pinned column casts a small shadow over what scrolls under it, so it reads as being in front */
+  box-shadow: 8px 0 12px -10px rgba(16, 18, 22, 0.45), 1px 0 0 var(--line);
 }
+.analysis .right th:first-child { z-index: 3; background: var(--glass); }
 .analysis .right tr.selected td:first-child { background: #f4f4f4; }
 
 /* ---------- badges, progress ---------- */
@@ -255,6 +338,7 @@ tr.selected td { color: var(--ink); }
   background: var(--chip);
   color: var(--muted);
   white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 1px rgba(16, 18, 22, 0.04);
 }
 /* A badge is a chip, and a chip never wraps - which is right for "KLAR" and wrong for a sentence. Where one
    carries a whole line of prose it has to behave like prose: the coverage note ran to 1357 px in a 478 px panel
@@ -287,23 +371,36 @@ p.badge {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 12px 18px 0;
+  padding: 12px 18px 12px;
   border-bottom: 1px solid var(--line);
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 10px 24px -22px rgba(16, 18, 22, 0.7);
+  position: relative;
+  z-index: 4;
 }
 .viewtabs .spacer { flex: 1; }
 .viewtabs button {
   background: none;
   border: 0;
-  border-bottom: 2px solid transparent;
-  padding: 9px 14px 11px;
+  padding: 8px 15px;
   font: inherit;
   font-size: 13.5px;
   color: var(--muted);
   cursor: pointer;
-  border-radius: 0;
+  border-radius: 999px;
+  box-shadow: none;
+  transition: color 0.18s var(--ease), background 0.18s var(--ease), box-shadow 0.18s var(--ease),
+              transform 0.18s var(--ease);
 }
-.viewtabs button:hover { color: var(--ink); }
-.viewtabs button.active { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
+.viewtabs button:hover { color: var(--ink); background: rgba(13, 13, 13, 0.05); transform: none; box-shadow: none; }
+.viewtabs button.active {
+  color: var(--ink);
+  font-weight: 500;
+  background: #fff;
+  box-shadow: var(--e2), var(--lift);
+  transform: translateY(-1px);
+}
 
 .sheetview { flex: 1; min-height: 0; overflow: auto; padding: 18px; }
 .sheetview > .card { max-width: 1180px; margin: 0 auto; }
@@ -449,6 +546,7 @@ body.resizing .splitter { background: var(--ink); }
 .viewer {
   position: relative;
   flex: 1;
+  box-shadow: inset 0 1px 3px rgba(16, 18, 22, 0.06);
   /* without this the frame grows with the sheet instead of scrolling it, and a zoomed drawing has no top:
      the scroll cannot go negative, so everything above where the reader zoomed becomes unreachable */
   min-height: 0;
@@ -460,7 +558,12 @@ body.resizing .splitter { background: var(--ink); }
 }
 .viewer::-webkit-scrollbar { width: 10px; height: 10px; }
 .viewer::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 999px; border: 3px solid var(--bg-2); }
-.viewer .page { position: relative; margin: 0 auto; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+/* the drawing itself, lying on the working surface */
+.viewer .page {
+  position: relative; margin: 0 auto; background: #fff;
+  box-shadow: 0 18px 36px -20px rgba(16, 18, 22, 0.42), 0 2px 6px -2px rgba(16, 18, 22, 0.18),
+              0 0 0 1px rgba(16, 18, 22, 0.07);
+}
 /* the sheet is dragged, so it must not be selected or flung by the browser's own gestures */
 .viewer { overscroll-behavior: contain; touch-action: none; }
 .viewer .page:not(.editing) { cursor: grab; }
@@ -482,26 +585,48 @@ body.resizing .splitter { background: var(--ink); }
 .toolbar button.small { padding: 6px 12px; font-size: 9.5px; letter-spacing: 0.09em; }
 .toolbar select { padding: 7px 30px 7px 14px; font-size: 12.5px; }
 
-.tabs { display: flex; gap: 4px; margin-bottom: 14px; border-bottom: 1px solid var(--line); }
+.tabs {
+  display: flex; gap: 3px; margin-bottom: 14px; padding: 4px;
+  border-radius: 999px; background: rgba(13, 13, 13, 0.04);
+  box-shadow: inset 0 1px 2px rgba(16, 18, 22, 0.05);
+  overflow-x: auto;
+}
+.tabs::-webkit-scrollbar { height: 0; }
 .tabs button {
   background: transparent;
   color: var(--faint);
   border: 0;
-  border-bottom: 2px solid transparent;
-  border-radius: 0;
-  padding: 10px 12px;
+  border-radius: 999px;
+  padding: 8px 13px;
   white-space: nowrap;
+  box-shadow: none;
+  transition: color 0.18s var(--ease), background 0.18s var(--ease), box-shadow 0.18s var(--ease);
 }
-.tabs button:hover:not(.active) { color: var(--ink); opacity: 1; }
-.tabs button.active { color: var(--ink); border-bottom-color: var(--ink); }
+.tabs button:hover:not(.active) { color: var(--ink); opacity: 1; transform: none; box-shadow: none; background: rgba(13, 13, 13, 0.04); }
+.tabs button.active { color: var(--ink); background: #fff; box-shadow: var(--e1), var(--lift); }
 
-.kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-.kpi .card { margin: 0; padding: 15px 16px; display: flex; flex-direction: column; gap: 3px; }
-.kpi .v { font-size: 22px; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; }
-.kpi .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.11em; text-transform: uppercase; color: var(--faint); }
+.kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; perspective: 1200px; }
+.kpi .card {
+  margin: 0; padding: 16px 17px; display: flex; flex-direction: column; gap: 3px; position: relative;
+  overflow: hidden;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+/* the light that falls across the top of a figure tile, so the number sits on something */
+.kpi .card::after {
+  content: "";
+  position: absolute; inset: 0 0 auto 0; height: 56%;
+  background: linear-gradient(180deg, rgba(13, 13, 13, 0.035), rgba(13, 13, 13, 0));
+  pointer-events: none;
+}
+.kpi .card:hover { transform: translateY(-2px) rotateX(2deg); box-shadow: var(--e2), var(--lift); }
+.kpi .v { font-size: 24px; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; position: relative; }
+.kpi .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.11em; text-transform: uppercase; color: var(--faint); position: relative; }
 
-.issue { padding: 11px 4px; border-bottom: 1px solid var(--line); cursor: pointer; transition: background 0.12s; }
-.issue:hover { background: #fafafa; }
+.issue {
+  padding: 11px 12px; border-bottom: 1px solid var(--line); cursor: pointer; border-radius: var(--r-s);
+  transition: background 0.16s var(--ease), box-shadow 0.16s var(--ease), transform 0.16s var(--ease);
+}
+.issue:hover { background: #fff; box-shadow: var(--e1), var(--lift); transform: translateX(2px); border-bottom-color: transparent; }
 .pipe-hl { stroke: #ff5a3d !important; stroke-width: 4 !important; }
 
 code, pre { font-family: var(--mono); font-size: 12.5px; }
@@ -611,26 +736,50 @@ pre { white-space: pre-wrap; word-break: break-word; background: var(--bg-2); bo
   .film-talk .dots i { animation: none; opacity: 0.5; }
 }
 .film-stage {
+  /* a lit room with a floor, not a box: the sheet has to have somewhere to cast onto */
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px;
-  background: var(--bg-2);
+  border-radius: var(--r-l);
+  padding: 22px;
+  background:
+    radial-gradient(120% 76% at 50% -14%, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0) 58%),
+    linear-gradient(180deg, #f4f5f6 0%, #eceef0 62%, #e6e8ea 100%);
   overflow: hidden;
   display: flex;
   justify-content: center;
+  align-items: center;
   perspective: 1500px;
   perspective-origin: 50% 42%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -30px 60px -50px rgba(16, 18, 22, 0.7);
+  position: relative;
+}
+/* the pool of shadow the sheet stands in */
+.film-stage::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: 6%;
+  width: 62%; height: 34px;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(16, 18, 22, 0.24) 0%, rgba(16, 18, 22, 0) 72%);
+  filter: blur(3px);
+  pointer-events: none;
 }
 /* the sheet lies back while it is being read and comes upright as the reading finishes */
 .film-sheet {
   transform-style: preserve-3d;
-  transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.7s ease;
+  transition: transform 0.7s var(--ease), box-shadow 0.7s ease;
   will-change: transform;
   border-radius: 4px;
-  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.18), 0 3px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 34px 64px -18px rgba(16, 18, 22, 0.36), 0 6px 14px -6px rgba(16, 18, 22, 0.18),
+              0 0 0 1px rgba(16, 18, 22, 0.06);
 }
 .film-stage svg { max-width: 100%; height: auto; display: block; }
 
+.film-total {
+  border: 1px solid var(--line); border-radius: var(--r-m); padding: 14px 16px;
+  background: linear-gradient(180deg, #fff, #fbfbfb); box-shadow: var(--e1), var(--lift);
+}
 .film-total .v { font-size: 34px; font-weight: 500; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
 .film-total .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
 
@@ -1183,3 +1332,171 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
   .tabs button::after { transition: none; }
   .agentquick .chipbtn { transition: none; transform: none; }
 }
+
+/* ---------- VVS-akademin ---------- */
+/* Delmoment som plattor med djup: en läsning tar en stund, och det som görs under tiden ska kännas som en
+   plats i produkten och inte som en väntsida. */
+
+.learn { padding-bottom: 40px; }
+.learn.compact { max-width: 1080px; }
+.lf-mono { font-family: var(--mono); }
+
+.lf-hero {
+  display: flex; align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap;
+  padding: 26px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  background:
+    radial-gradient(90% 130% at 6% -20%, rgba(13, 13, 13, 0.05), rgba(13, 13, 13, 0) 62%),
+    linear-gradient(180deg, #fff, #fbfbfb);
+  box-shadow: var(--e2), var(--lift);
+  margin-bottom: 22px;
+}
+.lf-hero h2 { margin: 6px 0 8px; font-size: 28px; letter-spacing: -0.025em; }
+.lf-hero p { margin: 0; max-width: 56ch; }
+.lf-kicker {
+  font-family: var(--mono); font-size: var(--label); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--faint);
+}
+/* how far through you are, as a ring rather than a number in a corner */
+.lf-ring {
+  flex: none; width: 92px; height: 92px; border-radius: 999px;
+  display: grid; place-items: center;
+  background: conic-gradient(var(--ink) var(--p, 0%), rgba(13, 13, 13, 0.08) 0);
+  box-shadow: var(--e2), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  position: relative;
+}
+.lf-ring::after {
+  content: ""; position: absolute; inset: 9px; border-radius: 999px; background: #fff;
+  box-shadow: inset 0 1px 2px rgba(16, 18, 22, 0.08);
+}
+.lf-ring span {
+  position: relative; z-index: 1; font-family: var(--mono); font-size: 19px; font-variant-numeric: tabular-nums;
+}
+.lf-ring i { font-style: normal; color: var(--faint); font-size: 12px; }
+
+.lf-mods { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; perspective: 1500px; }
+.lf-mod {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--r-m);
+  padding: 22px 20px 14px;
+  background: linear-gradient(180deg, #fff, #fcfcfc);
+  box-shadow: var(--e1), var(--lift);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s var(--ease);
+}
+.lf-mod:hover { transform: translateY(-3px) rotateX(1.6deg); box-shadow: var(--e3), var(--lift); border-color: var(--line-2); }
+.lf-mod.full { border-color: var(--ok); }
+.lf-mod.full::after {
+  content: "KLART";
+  position: absolute; top: 16px; right: 18px;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em;
+  color: var(--ok); background: var(--ok-bg); padding: 4px 9px; border-radius: 999px;
+}
+.lf-mod-no { font-family: var(--mono); font-size: var(--label); letter-spacing: 0.1em; color: var(--faint); }
+.lf-mod h3 { margin: 8px 0 6px; font-size: 19px; font-weight: 500; letter-spacing: -0.02em; }
+.lf-mod > p { margin: 0 0 12px; font-size: 13.5px; }
+.lf-less { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.lf-less li { border-bottom: 1px solid var(--line); }
+.lf-less li:last-child { border-bottom: 0; }
+.lf-less button {
+  display: flex; align-items: center; gap: 11px; width: 100%; text-align: left;
+  padding: 11px 2px; font: inherit; font-size: 13.5px; text-transform: none; letter-spacing: 0;
+  color: var(--muted); border-radius: var(--r-s);
+}
+.lf-less button:hover { background: rgba(13, 13, 13, 0.035); color: var(--ink); transform: none; box-shadow: none; }
+.lf-less .tick {
+  flex: none; width: 16px; height: 16px; border-radius: 999px; border: 1px solid var(--line-2);
+  box-shadow: inset 0 1px 2px rgba(16, 18, 22, 0.06);
+}
+.lf-less li.done .tick {
+  background: var(--ok); border-color: var(--ok);
+  box-shadow: 0 0 0 3px var(--ok-bg);
+}
+.lf-less li.done .nm { color: var(--ink); }
+.lf-less .nm { flex: 1; }
+.lf-less .mi { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--faint); }
+
+/* ---------- the lesson itself ---------- */
+
+.lf-bar { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.lf-crumb { font-family: var(--mono); font-size: var(--label); letter-spacing: var(--track); text-transform: uppercase; color: var(--faint); }
+.lf-read {
+  max-width: 780px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  background: linear-gradient(180deg, #fff, #fcfcfc);
+  box-shadow: var(--e2), var(--lift);
+  padding: 34px 38px 30px;
+}
+.lf-read h2 { font-size: 30px; letter-spacing: -0.028em; margin: 0 0 18px; }
+.lf-read p { font-size: 15.5px; line-height: 1.68; margin: 0 0 16px; }
+.lf-note {
+  border-left: 2px solid var(--ink);
+  background: linear-gradient(90deg, rgba(13, 13, 13, 0.035), rgba(13, 13, 13, 0));
+  padding: 13px 16px; border-radius: 0 var(--r-s) var(--r-s) 0;
+  font-size: 14.5px !important;
+}
+.lf-ul { margin: 0 0 18px; padding-left: 20px; }
+.lf-ul li { margin-bottom: 8px; font-size: 15px; line-height: 1.62; }
+.lf-terms { margin: 0 0 20px; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-m); overflow: hidden; }
+.lf-terms > div { background: #fff; padding: 13px 16px; }
+.lf-terms dt { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+.lf-terms dd { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.58; }
+
+.lf-fig { margin: 4px 0 22px; }
+/* the exercise is the page, not an illustration in it: it breaks out of the reading column */
+.lf-fig.wide { margin-left: -26px; margin-right: -26px; }
+.lf-fig.wide .lf-fig-in { padding: 20px; border-radius: var(--r-l); }
+.lf-fig-in {
+  border: 1px solid var(--line); border-radius: var(--r-m); padding: 16px;
+  background: linear-gradient(180deg, #fafafa, #f3f4f5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -24px 40px -40px rgba(16, 18, 22, 0.6);
+}
+.lf-fig svg { display: block; width: 100%; height: auto; }
+.lf-fig figcaption { margin-top: 9px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+
+.lf-quiz {
+  margin-top: 26px; padding: 20px 22px; border-radius: var(--r-m);
+  border: 1px solid var(--line-2);
+  background: linear-gradient(180deg, #fff, #f9f9f9);
+  box-shadow: var(--e1), var(--lift);
+}
+.lf-quiz-q { font-size: 15.5px; font-weight: 500; margin-bottom: 14px; }
+.lf-quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.lf-quiz-opts button {
+  text-align: left; text-transform: none; letter-spacing: 0; font-family: var(--sans); font-size: 14px;
+  border-radius: var(--r-s); padding: 11px 14px; white-space: normal;
+}
+.lf-quiz-opts button.right { border-color: var(--ok); background: var(--ok-bg); color: var(--ok); }
+.lf-quiz-opts button.wrong { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+.lf-quiz-why { margin: 14px 0 0 !important; font-size: 14px !important; color: var(--bad); }
+.lf-quiz-why.ok { color: var(--ok); }
+.lf-foot { display: flex; align-items: center; gap: 16px; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+
+/* ---------- the exercise ---------- */
+
+/* The sheet is the thing being read, so it gets the whole width and the controls sit under it - a drawing
+   squeezed into two thirds of a column is a drawing nobody can follow a run across. */
+.lf-ex { display: flex; flex-direction: column; gap: 16px; }
+.lf-ex-side { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 20px; }
+.lf-ex-side > h4 { width: 100%; margin: 0; }
+.lf-ex-side > p { width: 100%; }
+.lf-ex-sheet {
+  border-radius: var(--r-m); overflow: hidden;
+  box-shadow: 0 24px 44px -26px rgba(16, 18, 22, 0.5), 0 0 0 1px rgba(16, 18, 22, 0.07);
+}
+.lf-ex-sheet svg { display: block; width: 100%; height: auto; }
+.lf-ex-side h4 { margin: 0 0 4px; font-size: 15px; }
+.lf-ex-side p { font-size: 13.5px !important; margin-bottom: 0 !important; }
+.lf-ex-side .row { margin-top: 0 !important; }
+.lf-ex-codes { display: flex; flex-wrap: wrap; gap: 6px; }
+.lf-ex-codes button {
+  display: flex; align-items: center; gap: 9px; text-align: left; text-transform: none; letter-spacing: 0;
+  font-family: var(--mono); font-size: 11.5px; border-radius: var(--r-s); padding: 9px 12px;
+}
+.lf-ex-codes button.on { border-color: var(--ink); box-shadow: var(--e2), var(--lift); }
+.lf-ex-codes button i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.lf-ex-facit { list-style: none; margin: 4px 0 0; padding: 0; font-size: 13px; width: 100%;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0 16px; }
+.lf-ex-facit li { padding: 5px 0; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 11.5px; }

@@ -6,6 +6,7 @@ import LayerStack from "../components/LayerStack";
 import EvidenceSection from "../components/EvidenceSection";
 import StyleFan from "../components/StyleFan";
 import AgentShowcase from "../components/AgentShowcase";
+import AcademySection from "../components/AcademySection";
 import { useCountUp, useInView, useScrollProgress } from "../components/lp-motion";
 import { tiltStyle, usePointerParallax, useTilt } from "../components/tilt";
 
@@ -320,6 +321,8 @@ export default function Landing() {
       <AgentShowcase />
 
       <EvidenceSection />
+
+      <AcademySection />
 
       <section className="lp-sec lp-wrap lp-light">
         <div className="lp-quote">

@@ -205,39 +205,88 @@ body.lp-dark { background: #07080a; }
 }
 .lp-sec-head p { color: var(--lp-dim); margin: 0; font-size: 16.5px; }
 
-.lp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.lp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; perspective: 1400px; }
 .lp-card {
   border: 1px solid var(--lp-line);
-  border-radius: 14px;
-  background: var(--lp-card);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
   padding: 26px 24px 28px;
-  transition: border-color 0.18s, background 0.18s;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.3s, background 0.3s,
+              box-shadow 0.4s ease;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 18px 40px -30px rgba(0, 0, 0, 0.9);
 }
-.lp-card:hover { border-color: var(--lp-line-2); background: rgba(255, 255, 255, 0.04); }
+.lp-card:hover {
+  border-color: var(--lp-line-2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02));
+  transform: translateY(-5px) rotateX(3.2deg);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.09) inset, 0 40px 70px -34px rgba(0, 0, 0, 1);
+}
 .lp-card h3 { margin: 0 0 9px; font-size: 17px; font-weight: 600; letter-spacing: -0.012em; }
 .lp-card p { margin: 0; color: var(--lp-dim); font-size: 15px; line-height: 1.6; }
 .lp-card .ic {
-  width: 34px; height: 34px; border-radius: 9px;
+  width: 38px; height: 38px; border-radius: 11px;
   border: 1px solid var(--lp-line-2);
   display: grid; place-items: center;
   margin-bottom: 18px;
   color: var(--lp-accent);
-  background: rgba(110, 231, 165, 0.055);
+  background: linear-gradient(180deg, rgba(110, 231, 165, 0.12), rgba(110, 231, 165, 0.03));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset, 0 8px 18px -12px rgba(110, 231, 165, 0.55);
+  transform: translateZ(26px);
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease;
 }
+.lp-card:hover .ic {
+  transform: translateZ(46px) translateY(-2px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.14) inset, 0 16px 30px -14px rgba(110, 231, 165, 0.7);
+}
+.lp-card h3, .lp-card p { transform: translateZ(14px); }
 
 /* ---------- how it works ---------- */
-.lp-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-.lp-step { border-top: 1px solid var(--lp-line-2); padding-top: 20px; }
-.lp-step .no { color: var(--lp-accent); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; }
+.lp-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; position: relative; }
+/* the thread the four steps hang on: one process, not four cards */
+.lp-steps::before {
+  content: "";
+  position: absolute; left: 6%; right: 6%; top: 19px; height: 1px;
+  background: linear-gradient(90deg, rgba(110, 231, 165, 0), rgba(110, 231, 165, 0.4), rgba(110, 231, 165, 0));
+}
+.lp-step {
+  border: 1px solid var(--lp-line);
+  border-radius: 14px;
+  padding: 30px 20px 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012));
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, border-color 0.3s;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+.lp-step:hover {
+  transform: translateY(-4px);
+  border-color: var(--lp-line-2);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 34px 60px -34px rgba(0, 0, 0, 1);
+}
+.lp-step .no {
+  position: absolute; top: -11px; left: 20px;
+  display: grid; place-items: center;
+  min-width: 26px; height: 22px; padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 165, 0.35);
+  background: #0b0d10;
+  color: var(--lp-accent); font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em;
+  box-shadow: 0 8px 18px -10px rgba(110, 231, 165, 0.6);
+}
 .lp-step h3 { margin: 10px 0 8px; font-size: 16px; font-weight: 600; }
 .lp-step p { margin: 0; color: var(--lp-dim); font-size: 14.5px; line-height: 1.58; }
 
 /* ---------- pipe legend strip ---------- */
 .lp-legend {
   border: 1px solid var(--lp-line);
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.008));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 40px 80px -50px rgba(0, 0, 0, 1);
 }
+.lp-legend tbody tr { transition: background 0.2s; }
+.lp-legend tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
 .lp-legend table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
 .lp-legend th {
   text-align: left; padding: 13px 20px;
@@ -255,9 +304,13 @@ body.lp-dark { background: #07080a; }
 /* ---------- honesty block ---------- */
 .lp-quote {
   border: 1px solid var(--lp-line);
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
-  padding: 44px 44px 40px;
+  border-radius: 20px;
+  background:
+    radial-gradient(90% 120% at 8% -10%, rgba(110, 231, 165, 0.10), rgba(110, 231, 165, 0) 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012));
+  padding: 46px 46px 42px;
+  position: relative;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07) inset, 0 50px 90px -56px rgba(0, 0, 0, 1);
 }
 .lp-quote p {
   margin: 0 0 18px;
@@ -1065,3 +1118,49 @@ body.lp-dark { background: #07080a; }
   .lp-fan-card { position: relative; inset: auto; margin-bottom: 12px; filter: none; }
   .lp-agent.in .lp-agent-msg, .lp-agent.in .lp-agent-calls code { animation: none; opacity: 1; }
 }
+
+/* ---------- VVS-akademin på framsidan ---------- */
+/* Sex moduler som en kortlek sedd på snedden: den man börjar med närmast, resten stegar bakåt. */
+
+.lp-acad { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr); gap: clamp(24px, 5vw, 70px); align-items: center; }
+@media (max-width: 900px) { .lp-acad { grid-template-columns: 1fr; } }
+.lp-acad-deck {
+  position: relative;
+  min-height: 430px;
+  transform-style: preserve-3d;
+  perspective: 1300px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.lp-acad-card {
+  position: absolute;
+  left: 0; right: 8%;
+  top: 0;
+  border: 1px solid var(--lp-line);
+  border-radius: 16px;
+  padding: 20px 22px 18px;
+  background: linear-gradient(180deg, rgba(19, 22, 26, 0.96), rgba(11, 13, 16, 0.96));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 34px 60px -34px rgba(0, 0, 0, 1);
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.3s, box-shadow 0.4s;
+  color: var(--lp-accent);
+  opacity: 0;
+}
+.lp-acad.in .lp-acad-card { animation: lp-acad-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.lp-acad-card:hover { border-color: rgba(110, 231, 165, 0.35); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 44px 80px -34px rgba(0, 0, 0, 1); }
+.lp-acad-card .no {
+  position: absolute; top: 20px; right: 22px;
+  font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11px; letter-spacing: 0.12em;
+  color: var(--lp-faint);
+}
+.lp-acad-card h3 { margin: 12px 0 6px; font-size: 18px; font-weight: 600; letter-spacing: -0.015em; color: var(--lp-ink); }
+.lp-acad-card p { margin: 0 0 12px; color: var(--lp-dim); font-size: 14.5px; line-height: 1.55; }
+.lp-acad-card .n {
+  font-family: ui-monospace, SFMono-Regular, monospace; font-size: 10.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--lp-faint);
+}
+.lp-acad-say .lp-btn { margin-top: 4px; }
+@keyframes lp-acad-in { from { opacity: 0; transform: translateY(30px) translateZ(-140px); } }
+@media (prefers-reduced-motion: reduce) {
+  .lp-acad.in .lp-acad-card { animation: none; opacity: 1; }
+}
+.lp-acad-card { opacity: 1; }
