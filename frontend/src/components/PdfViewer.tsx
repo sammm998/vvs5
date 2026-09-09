@@ -467,12 +467,19 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                 stroke={props.layers.inWall ? "#6b7280" : "#c4c8cf"} strokeWidth={sw(props.layers.inWall ? 3.6 : 3.4)}
                 strokeDasharray={`${sw(4)} ${sw(3)}`} strokeOpacity={props.layers.inWall ? 0.95 : 0.85} />
             ))}
-            {props.layers.leaders && props.leaders.filter((l) => props.layers.inWall || !l.in_wall).map((l) => (
-              <polyline key={l.id} points={l.points.map((q: number[]) => q.join(",")).join(" ")} fill="none" stroke="#b000b0" strokeWidth={sw(1.2)} />
+            {/* Nothing the reading found is hidden. What sits over a hatched wall used to disappear unless the
+                "i vägg" layer was on, and a label the reading did read then looked exactly like one it had
+                missed. The wall still matters - the length there is outside the quantity - so it is said by
+                drawing it faintly, the same way the pipe itself is. */}
+            {props.layers.leaders && props.leaders.map((l) => (
+              <polyline key={l.id} points={l.points.map((q: number[]) => q.join(",")).join(" ")} fill="none"
+                stroke="#b000b0" strokeWidth={sw(1.2)}
+                strokeOpacity={l.in_wall && !props.layers.inWall ? 0.3 : 1} />
             ))}
-            {props.layers.designations && props.designations.filter((d) => props.layers.inWall || !d.in_wall).map((d) => (
+            {props.layers.designations && props.designations.map((d) => (
               <rect key={d.id} x={d.bbox[0] - 1} y={d.bbox[1] - 1} width={d.bbox[2] - d.bbox[0] + 2} height={d.bbox[3] - d.bbox[1] + 2}
                 fill="none" stroke={!d.names_a_pipe ? "#9aa3af" : d.dn != null ? "#0b5cad" : "#c77800"}
+                strokeOpacity={d.in_wall && !props.layers.inWall ? 0.35 : 1}
                 strokeWidth={sw(1)} strokeDasharray={d.names_a_pipe ? undefined : `${sw(3)} ${sw(2)}`} />
             ))}
             {/* Every label on the sheet coloured by what the drawing's own designation list says its code is: a
@@ -487,7 +494,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                     <rect key={`lgb${i}`} x={b[0] - 1.5} y={b[1] - 1.5} width={b[2] - b[0] + 3} height={b[3] - b[1] + 3}
                       fill="#0d0d0d" fillOpacity={0.05} stroke="#0d0d0d" strokeOpacity={0.3} strokeWidth={sw(0.8)} />
                   ))}
-                  {props.designations.filter((d) => props.layers.inWall || !d.in_wall).map((d) => {
+                  {props.designations.map((d) => {
                     const e = legendOwner(entries, d.text || "");
                     const c = e ? (ROLE_COLOR[e.role] ?? ROLE_COLOR.unused) : "#c026d3";
                     return (
@@ -555,10 +562,11 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
             {/* A ring says a label's leader ended here. It is not a claim that a pipe was measured: a component
                 tag reaches a floor drain or a mixer, and a leader ending inside a wall reaches length the
                 quantity already excludes. Both used to be drawn exactly like an attachment to a measured run. */}
-            {props.layers.anchors && props.anchors.filter((a) => props.layers.inWall || !a.in_wall).map((a) => (
+            {props.layers.anchors && props.anchors.map((a) => (
               <circle key={a.id} cx={a.endpoint[0]} cy={a.endpoint[1]} r={sw(a.names_a_pipe === false ? 2.5 : 4)} fill="none"
                 stroke={a.names_a_pipe === false ? "#9aa3af"
                   : a.state === "VERIFIED_PIPE_ATTACHMENT" ? "#12a24b" : a.state === "AMBIGUOUS_PIPE_ATTACHMENT" ? "#ff9500" : "#b42318"}
+                strokeOpacity={a.in_wall && !props.layers.inWall ? 0.35 : 1}
                 strokeWidth={sw(a.names_a_pipe === false ? 1 : 1.5)}
                 strokeDasharray={a.names_a_pipe === false ? `${sw(2)} ${sw(2)}` : undefined} />
             ))}
