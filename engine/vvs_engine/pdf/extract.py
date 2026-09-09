@@ -7,6 +7,7 @@ it never participates in any semantic decision.
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -98,6 +99,38 @@ class RawPage:
     input_class: dict | None = None            # how the page was classified before it was accepted
     source_path: str | None = None             # the PDF this page came from (the review layer re-renders it)
     embedded_fonts: tuple = ()                 # (name, buffer) of the typefaces the page embeds
+
+
+class LazyPages(Sequence):
+    """The document's readable pages, each built the first time it is asked for.
+
+    It is a list to everything that uses it - length, indexing, iteration - and the one thing it adds is
+    `release`, which hands a page back once the reading is finished with it. A reading that walks a set from
+    front to back then holds one page at a time instead of all of them.
+    """
+
+    def __init__(self, doc, indexes: list[int], pdf_path: str):
+        self._doc, self._idx, self._path = doc, list(indexes), pdf_path
+        self._held: dict[int, RawPage] = {}
+
+    def __len__(self) -> int:
+        return len(self._idx)
+
+    def __getitem__(self, i):
+        if isinstance(i, slice):
+            return [self[k] for k in range(*i.indices(len(self)))]
+        if i < 0:
+            i += len(self._idx)
+        if i not in self._held:
+            got = _read_page(self._doc, self._idx[i], self._path)
+            if isinstance(got, dict):                       # classified readable, and then was not: not ours to hide
+                raise UnsupportedInputError(f"page {self._idx[i] + 1} carries no vector drawing", [got])
+            self._held[i] = got
+        return self._held[i]
+
+    def release(self, i: int) -> None:
+        """Done with this page. The next ask reads it again."""
+        self._held.pop(i, None)
 
 
 class UnsupportedInputError(Exception):
@@ -233,88 +266,114 @@ def _color(c) -> tuple | None:
     return tuple(round(float(v), 4) for v in c)
 
 
-def extract_document(pdf_path: str, pages: list[int] | None = None, progress=None) -> RawDocument:
+def _read_page(doc, pno: int, pdf_path: str) -> RawPage | dict:
+    """One page's vector content, or the reason it was not read.
+
+    Layer ids are numbered within the page, from its own layer names sorted. They used to be handed out in the
+    order the document happened to introduce them, which made a page's own artifact depend on which pages had
+    been read before it - and once pages are read on demand, that is not even a fixed order.
+    """
+    page = doc[pno]
+    from .classify import classify_page
+    klass = classify_page(page)
+    if klass.mode in ("raster", "empty"):
+        return {"page": pno, **klass.as_dict()}
+    rot = page.rotation
+    # Work in the displayed (rotated) page space: PyMuPDF get_drawings/get_text return unrotated
+    # coordinates; map them with rotation_matrix so all downstream geometry matches the rendered page.
+    M = page.rotation_matrix if rot else None
+    rect = page.rect
+    drawings = page.get_drawings()
+    layer_ids = {name: i for i, name in enumerate(sorted({d.get("layer") or "" for d in drawings}))}
+    paths: list[RawPath] = []
+    for seq, d in enumerate(drawings):
+        items = d.get("items") or []
+        if M is not None:
+            items = _transform_items(items, M)
+        closed = bool(d.get("closePath"))
+        segs, n_curves, n_sub = _items_to_segs(items, closed)
+        if not segs:
+            continue
+        layer = d.get("layer") or ""
+        kind = d.get("type") or "s"
+        width = float(d.get("width") or 0.0)
+        bbox = bbox_union([s.bbox() for s in segs])
+        key = (layer, kind, f"{width:.3f}", ",".join(f"{s.x0:.2f},{s.y0:.2f},{s.x1:.2f},{s.y1:.2f}" for s in segs[:64]), len(segs))
+        pid = stable_id("path", pno, *key)
+        paths.append(RawPath(pid=pid, seqno=seq, page=pno, layer=layer, layer_id=layer_ids[layer], kind=kind,
+                             width=width, color=_color(d.get("color")), fill=_color(d.get("fill")), closed=closed,
+                             segs=segs, bbox=bbox, n_items=len(items), n_curves=n_curves, n_subpaths=n_sub))
+    # duplicate pid disambiguation (identical geometry drawn twice): keep both, suffix by occurrence rank in
+    # a content-sorted order so that the result does not depend on enumeration order.
+    _dedupe_ids(paths)
+    spans = _extract_text(page, pno, M)
+    xobjs = []
+    try:
+        for xo in page.get_xobjects():
+            xobjs.append({"xref": xo[0], "name": xo[1], "invoker": xo[2], "bbox": [round(v, 2) for v in xo[3]]})
+    except Exception:
+        pass
+    fonts = []
+    try:
+        for f in page.get_fonts():
+            fonts.append({"xref": f[0], "ext": f[1], "type": f[2], "basefont": f[3], "name": f[4], "encoding": f[5]})
+    except Exception:
+        pass
+    annots = []
+    try:
+        for a in page.annots():
+            annots.append({"type": a.type[1], "rect": [round(v, 2) for v in a.rect], "content": (a.info.get("content") or "")[:80]})
+    except Exception:
+        pass
+    info = PageInfo(index=pno, width=float(rect.width), height=float(rect.height), rotation=rot,
+                    mediabox=[round(v, 2) for v in page.mediabox], cropbox=[round(v, 2) for v in page.cropbox],
+                    n_images=len(page.get_images()), n_annots=len(annots), n_xobjects=len(xobjs), xobjects=xobjs,
+                    fonts=fonts, annots=annots)
+    rp = RawPage(info=info, paths=paths, spans=spans)
+    rp.input_class = klass.as_dict()
+    rp.source_path = pdf_path
+    rp.embedded_fonts = _embedded_fonts(doc, page)
+    return rp
+
+
+def extract_document(pdf_path: str, pages: list[int] | None = None, progress=None, eager: bool = True) -> RawDocument:
     """Read the vector content of every page: paths with their segments, layers, stroke widths and text spans.
 
     Only vector pages are analysed. A page whose content is a scan or an image is classified as such and skipped,
     because reading it would mean guessing at pixels instead of the drawing's own geometry; a PDF with no vector
-    page at all raises UnsupportedInputError."""
+    page at all raises UnsupportedInputError.
+
+    eager=False reads a page's geometry the first time somebody asks for it, and lets the reading hand it back
+    when it is done with the page. It matters at the size real sets arrive in: a fifty-sheet set holds 1.1
+    million paths, and building all of them before reading any of them took two gigabytes of memory before the
+    first metre was measured. That is not a page being expensive; it is forty-nine pages being kept for later.
+    The classification pass still visits every page up front, because which pages there are to read is part of
+    what the document is.
+    """
     doc = pymupdf.open(pdf_path)
     try:
         ocgs_raw = doc.get_ocgs() or {}
     except Exception:
         ocgs_raw = {}
     ocgs = {int(k): {"name": v.get("name", ""), "on": bool(v.get("on", True))} for k, v in ocgs_raw.items()}
-    layer_ids: dict[str, int] = {}
     rd = RawDocument(path=pdf_path, n_pages=len(doc), metadata={k: v for k, v in (doc.metadata or {}).items() if v}, ocgs=ocgs)
-    for pno in range(len(doc)):
-        if pages is not None and pno not in pages:
-            continue
-        page = doc[pno]
+    wanted = [pno for pno in range(len(doc)) if pages is None or pno in pages]
+    if eager:
+        for pno in wanted:
+            got = _read_page(doc, pno, pdf_path)
+            (rd.skipped_pages if isinstance(got, dict) else rd.pages).append(got)
+        doc.close()
+    else:
         from .classify import classify_page
-        klass = classify_page(page)
-        if klass.mode in ("raster", "empty"):
-            rd.skipped_pages.append({"page": pno, **klass.as_dict()})
-            continue
-        rot = page.rotation
-        # Work in the displayed (rotated) page space: PyMuPDF get_drawings/get_text return unrotated
-        # coordinates; map them with rotation_matrix so all downstream geometry matches the rendered page.
-        M = page.rotation_matrix if rot else None
-        rect = page.rect
-        drawings = page.get_drawings()
-        paths: list[RawPath] = []
-        for seq, d in enumerate(drawings):
-            items = d.get("items") or []
-            if M is not None:
-                items = _transform_items(items, M)
-            closed = bool(d.get("closePath"))
-            segs, n_curves, n_sub = _items_to_segs(items, closed)
-            if not segs:
-                continue
-            layer = d.get("layer") or ""
-            if layer not in layer_ids:
-                layer_ids[layer] = len(layer_ids)
-            kind = d.get("type") or "s"
-            width = float(d.get("width") or 0.0)
-            bbox = bbox_union([s.bbox() for s in segs])
-            key = (layer, kind, f"{width:.3f}", ",".join(f"{s.x0:.2f},{s.y0:.2f},{s.x1:.2f},{s.y1:.2f}" for s in segs[:64]), len(segs))
-            pid = stable_id("path", pno, *key)
-            paths.append(RawPath(pid=pid, seqno=seq, page=pno, layer=layer, layer_id=layer_ids[layer], kind=kind,
-                                 width=width, color=_color(d.get("color")), fill=_color(d.get("fill")), closed=closed,
-                                 segs=segs, bbox=bbox, n_items=len(items), n_curves=n_curves, n_subpaths=n_sub))
-        # duplicate pid disambiguation (identical geometry drawn twice): keep both, suffix by occurrence rank in
-        # a content-sorted order so that the result does not depend on enumeration order.
-        _dedupe_ids(paths)
-        spans = _extract_text(page, pno, M)
-        xobjs = []
-        try:
-            for xo in page.get_xobjects():
-                xobjs.append({"xref": xo[0], "name": xo[1], "invoker": xo[2], "bbox": [round(v, 2) for v in xo[3]]})
-        except Exception:
-            pass
-        fonts = []
-        try:
-            for f in page.get_fonts():
-                fonts.append({"xref": f[0], "ext": f[1], "type": f[2], "basefont": f[3], "name": f[4], "encoding": f[5]})
-        except Exception:
-            pass
-        annots = []
-        try:
-            for a in page.annots():
-                annots.append({"type": a.type[1], "rect": [round(v, 2) for v in a.rect], "content": (a.info.get("content") or "")[:80]})
-        except Exception:
-            pass
-        info = PageInfo(index=pno, width=float(rect.width), height=float(rect.height), rotation=rot,
-                        mediabox=[round(v, 2) for v in page.mediabox], cropbox=[round(v, 2) for v in page.cropbox],
-                        n_images=len(page.get_images()), n_annots=len(annots), n_xobjects=len(xobjs), xobjects=xobjs,
-                        fonts=fonts, annots=annots)
-        rp = RawPage(info=info, paths=paths, spans=spans)
-        rp.input_class = klass.as_dict()
-        rp.source_path = pdf_path
-        rp.embedded_fonts = _embedded_fonts(doc, page)
-        rd.pages.append(rp)
-    doc.close()
-    if not rd.pages:
+        keep = []
+        for pno in wanted:
+            klass = classify_page(doc[pno])
+            if klass.mode in ("raster", "empty"):
+                rd.skipped_pages.append({"page": pno, **klass.as_dict()})
+            else:
+                keep.append(pno)
+        rd.pages = LazyPages(doc, keep, pdf_path)
+    if not len(rd.pages):
         which = ", ".join(f"page {c['page'] + 1}: {'; '.join(c['reasons'])}" for c in rd.skipped_pages) or "no pages"
         raise UnsupportedInputError(
             "The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never "

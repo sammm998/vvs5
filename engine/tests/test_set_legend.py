@@ -158,12 +158,27 @@ def set_with_the_list_at_the_back(tmp_path):
     return path
 
 
-def test_the_sheet_read_before_the_list_turned_up_is_read_again_against_it(set_with_the_list_at_the_back, tmp_path):
+def test_the_list_is_found_before_the_sheets_are_read_against_it(set_with_the_list_at_the_back, tmp_path):
+    """The plan comes first in the file and the list after it, so a reading that took the sheets as they came
+    would have read the plan with no vocabulary at all."""
     out = os.path.join(tmp_path, "out")
     s = analyze_pdf(set_with_the_list_at_the_back, out, name="set", review=False)
     assert s["legend"]["codes"] >= len(LIST) - 1, "listbladet lästes inte som en beteckningslista"
-    assert s["legend"]["sheets_reread"] == 1, "planbladet lästes aldrig om mot listan som stod på nästa blad"
+    assert s["legend"]["own_sheet"] is False, "planbladet bär ingen egen lista"
     assert s["determinism"] == "PASS"
+    plan = s["sheets"][0]
+    assert plan["legend"]["codes"] >= len(LIST) - 1 and plan["legend"]["own"] is False, \
+        "planbladet lästes utan handlingens lista"
+    assert len(s["sheets"]) == 2 and s["pages"] == 2
+
+
+def test_every_sheet_of_a_set_is_measured_not_only_the_first(set_with_the_list_at_the_back, tmp_path):
+    out = os.path.join(tmp_path, "out")
+    s = analyze_pdf(set_with_the_list_at_the_back, out, name="set", review=False)
+    import json
+    dq = json.load(open(os.path.join(out, "document-quantities.json"), encoding="utf-8"))
+    assert dq["sheets"] and len(dq["sheets"]) == 2
+    assert dq["totals"]["confirmed_horizontal_m"] >= 0.0
 
 
 def test_a_borrowed_list_never_refuses_a_code_it_has_never_heard_of():

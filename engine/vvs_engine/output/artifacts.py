@@ -410,10 +410,55 @@ def declined_geometry(pa) -> dict[str, Any]:
                        "filled_shapes_length_m": (round(((pa.contact_stats or {}).get("filled_shapes") or {}).get("length_pt", 0.0) * mpp, 2) if mpp else None)}}
 
 
+def document_quantities(sheets: list[dict]) -> dict[str, Any]:
+    """The takeoff for the whole set, sheet by sheet and added up.
+
+    A set of drawings is one building, and an estimator prices the building. Reading every sheet and then
+    reporting the first one measures the ground floor of a block of flats and calls it the block: the other
+    sheets were read, drawn onto the overlays, and then dropped on the floor. Here every sheet keeps its own
+    rows, so a designation can be followed from sheet to sheet, and the same rows are added up per designation
+    so there is a figure for the building.
+
+    Sheets are added up only where each says what its own scale is. A sheet whose scale the reading could not
+    settle carries no metres to add, and is listed as such rather than counted as nothing.
+    """
+    rows: dict[tuple, dict] = {}
+    unscaled = []
+    for sh in sheets:
+        if (sh.get("scale") or {}).get("state") not in ("VERIFIED", "STATED"):
+            unscaled.append({"page": sh.get("page"), "state": (sh.get("scale") or {}).get("state"),
+                             "reason": (sh.get("scale") or {}).get("reason")})
+        for q in sh.get("quantities") or []:
+            key = (q.get("designation"), q.get("dn"))
+            r = rows.setdefault(key, {"designation": q.get("designation"), "base": q.get("base"), "dn": q.get("dn"),
+                                      "sheets": [], "label_count": 0, "physical_pipe_count": 0,
+                                      "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0,
+                                      "confirmed_total_m": 0.0, "ambiguous_m": 0.0, "in_hatched_area_m": 0.0,
+                                      "riser_count": 0})
+            r["sheets"].append(sh.get("page"))
+            for k in ("label_count", "physical_pipe_count", "riser_count"):
+                r[k] += int(q.get(k) or 0)
+            for k in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
+                      "in_hatched_area_m"):
+                r[k] += float(q.get(k) or 0.0)
+    out_rows = []
+    for r in sorted(rows.values(), key=lambda r: (r["designation"] or "", r["dn"] if r["dn"] is not None else -1)):
+        out_rows.append({**r, "sheets": sorted(set(r["sheets"])),
+                         **{k: round(r[k], 2) for k in ("confirmed_horizontal_m", "confirmed_vertical_m",
+                                                        "confirmed_total_m", "ambiguous_m", "in_hatched_area_m")}})
+    totals = {k: round(sum(r[k] for r in out_rows), 2)
+              for k in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
+                        "in_hatched_area_m")}
+    totals.update({"designations": len(out_rows), "sheets": len(sheets),
+                   "physical_pipes": sum(r["physical_pipe_count"] for r in out_rows),
+                   "riser_count": sum(r["riser_count"] for r in out_rows)})
+    return {"totals": totals, "rows": out_rows, "sheets": sheets, "sheets_without_a_settled_scale": unscaled}
+
+
 def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timings: dict, determinism: dict | None,
-              contamination: dict | None, overlays: dict, config: dict, review: dict | None = None) -> dict[str, str]:
+              contamination: dict | None, overlays: dict, config: dict, review: dict | None = None,
+              sheets: list[dict] | None = None, doc_legend=None) -> dict[str, str]:
     from ..profile.hatch import inside_hatch
-    from ..semantics.legend import merged as merge_legends
     os.makedirs(out_dir, exist_ok=True)
     pa = analyses[0]
     files: dict[str, str] = {}
@@ -444,11 +489,8 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     # The set's designation list, not the first sheet's. A drawing set writes the list on whichever sheet has
     # room for it, so reporting page one's copy reports a borrowed list on any set that puts it further back -
     # and the project has nothing to hand its next drawing.
-    doc_legend = None
-    for a in analyses:
-        if a.legend.own and a.legend.entries:
-            doc_legend = merge_legends(doc_legend, a.legend)
-    W("drawing-legend.json", (doc_legend or pa.legend).as_dict())
+    W("drawing-legend.json", (doc_legend if doc_legend is not None and doc_legend.entries else pa.legend).as_dict())
+    W("document-quantities.json", document_quantities(sheets or []))
     lead_out = []
     for l in pa.leaders:
         ld = l.as_dict()

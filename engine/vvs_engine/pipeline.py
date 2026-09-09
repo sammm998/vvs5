@@ -7,7 +7,7 @@ import os
 import sys
 import time
 from collections import Counter, defaultdict
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from types import SimpleNamespace
 from typing import Any, Callable
 
@@ -620,20 +620,35 @@ def _settle_by_system_usage(anchors) -> int:
     return settled
 
 
-def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
-                 film_sink: Callable[[str, dict], None] | None = None,
-                 second_reader: Callable[[Any], str] | None = None,
-                 known_families: dict[str, str] | None = None,
-                 known_legend: DrawingLegend | None = None) -> PageAnalysis:
-    """second_reader: an optional transport for putting the reading's own open cases to a language model.
+@dataclass
+class PreparedPage:
+    """Everything about a sheet that can be worked out before anything is claimed about its pipes.
 
-    Without it - the default, and what every test and every reference run uses - nothing is asked, the analysis
-    is deterministic and needs no network, and every ambiguous case stays ambiguous. With it, only cases the
-    engine itself gave up on are asked, only among candidates the drawing offers, and every answer is verified
-    against those candidates twice before it can move a metre.
+    The front half of a reading - the text rebuilt from strokes, the lines, the annotation blocks, the
+    designations and the sheet's own list - costs about two thirds of the time a sheet takes, and it does not
+    depend on any of the choices the second half makes. Made a value, it can be worked out once and read twice:
+    the set's designation list has to be found before the sheets are read against it, and finding it used to
+    mean reading those sheets twice over.
     """
-    film = Film(film_sink)
-    film.page(page)
+    page: RawPage
+    layer_stats: Any
+    vtext: Any
+    srows: list
+    lines: list
+    blocks: list
+    free: Any
+    consumed: set
+    designations: list
+    grammar: Any
+    legend: DrawingLegend
+    ocr_report: Any
+    timings: dict
+    vt_timing: dict
+
+
+def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
+                 film: "Film | None" = None) -> PreparedPage:
+    """Read the sheet as far as its own words go, and no further."""
     timings: dict[str, float] = {}
     t0 = time.perf_counter()
     if progress:
@@ -645,7 +660,6 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     vt_timing: dict = {}
     vtext = vector_text_rows(page, vt_timing)
     srows = searchable_rows(page)
-    film.text(vtext.rows)
     t0 = _t(timings, "text_ms", t0)
     ocr_report = None
     if ocr_assist:
@@ -667,12 +681,42 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     free = free_segments(page, consumed)
     blocks = build_blocks(page, lines, free)
     designations, grammar, _ = extract_designations(page, blocks)
-    legend = read_legend(lines, designations)    # the sheet's own designation list, read against what it draws
+    legend = read_legend(lines, designations)
+    _t(timings, "designation_ms", t0)
+    return PreparedPage(page=page, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
+                        free=free, consumed=consumed, designations=designations, grammar=grammar, legend=legend,
+                        ocr_report=ocr_report, timings=timings, vt_timing=vt_timing)
+
+
+def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
+                 film_sink: Callable[[str, dict], None] | None = None,
+                 second_reader: Callable[[Any], str] | None = None,
+                 known_families: dict[str, str] | None = None,
+                 known_legend: DrawingLegend | None = None,
+                 prepared: "PreparedPage | None" = None) -> PageAnalysis:
+    """second_reader: an optional transport for putting the reading's own open cases to a language model.
+
+    Without it - the default, and what every test and every reference run uses - nothing is asked, the analysis
+    is deterministic and needs no network, and every ambiguous case stays ambiguous. With it, only cases the
+    engine itself gave up on are asked, only among candidates the drawing offers, and every answer is verified
+    against those candidates twice before it can move a metre.
+    """
+    film = Film(film_sink)
+    film.page(page)
+    prep = prepared if prepared is not None else prepare_page(page, progress, ocr_assist, film)
+    timings = dict(prep.timings)
+    layer_stats, vtext, srows = prep.layer_stats, prep.vtext, prep.srows
+    lines, blocks, free, designations, grammar = prep.lines, prep.blocks, prep.free, prep.designations, prep.grammar
+    ocr_report, vt_timing = prep.ocr_report, prep.vt_timing
+    film.text(vtext.rows)
+    legend = prep.legend                         # the sheet's own designation list, read against what it draws
     if not legend.entries and known_legend is not None and known_legend.entries:
         legend = adopt(known_legend)             # ...or the one the rest of the set carries for it
+    else:
+        legend = replace(legend, entries=[replace(e) for e in legend.entries])
     assign_roles(legend, designations, prior=roles_of(known_legend) if known_legend is not None else None)
     film.designations(designations)
-    t0 = _t(timings, "designation_ms", t0)
+    t0 = time.perf_counter()
     if progress:
         progress("FINDING_LEADERS")
     des_by_block: dict[str, list[Designation]] = defaultdict(list)

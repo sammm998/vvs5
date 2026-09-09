@@ -29,30 +29,52 @@ def _rect(page, b):
     return pymupdf.Rect(min(p0.x, p1.x), min(p0.y, p1.y), max(p0.x, p1.x), max(p0.y, p1.y))
 
 
+SPECS = {
+    "production-overlay.pdf": lambda: _draw_production,
+    "designation-overlay.pdf": lambda: _draw_designations,
+    "leader-overlay.pdf": lambda: _draw_leaders,
+    "endpoint-pipe-attachment-overlay.pdf": lambda: _draw_attachments,
+    "topology-overlay.pdf": lambda: _draw_topology,
+    "ambiguous-overlay.pdf": lambda: _draw_ambiguous,
+    "unsupported-style-overlay.pdf": lambda: _draw_unsupported,
+}
+
+
+class OverlayWriter:
+    """The marked-up copies of the drawing, drawn a sheet at a time.
+
+    They used to be drawn a copy at a time: open the whole PDF, walk every page's reading, save, and again for
+    the next of the seven. That needs every sheet's reading to still be in hand at the end, which is what makes a
+    fifty-sheet set hold fifty readings' worth of geometry - and it opens the file seven times over. Drawn this
+    way each sheet's reading is used the moment it exists and can be let go of straight after."""
+
+    def __init__(self, pdf_path: str, out_dir: str):
+        self.out_dir = out_dir
+        self.docs = {name: pymupdf.open(pdf_path) for name in SPECS}
+
+    def add(self, pa) -> None:
+        for name, fn in SPECS.items():
+            page = self.docs[name][pa.page.info.index]
+            shape = page.new_shape()
+            fn()(page, shape, pa)
+            shape.commit()
+
+    def close(self) -> dict[str, str]:
+        out: dict[str, str] = {}
+        for name, doc in self.docs.items():
+            path = os.path.join(self.out_dir, name)
+            doc.save(path, garbage=3, deflate=True)
+            doc.close()
+            out[name] = path
+        return out
+
+
 def write_overlays(pdf_path: str, analyses: list, out_dir: str) -> dict[str, str]:
     """analyses: list of PageAnalysis (one per analyzed page). Returns {name: path}."""
-    out: dict[str, str] = {}
-    specs = {
-        "production-overlay.pdf": _draw_production,
-        "designation-overlay.pdf": _draw_designations,
-        "leader-overlay.pdf": _draw_leaders,
-        "endpoint-pipe-attachment-overlay.pdf": _draw_attachments,
-        "topology-overlay.pdf": _draw_topology,
-        "ambiguous-overlay.pdf": _draw_ambiguous,
-        "unsupported-style-overlay.pdf": _draw_unsupported,
-    }
-    for name, fn in specs.items():
-        doc = pymupdf.open(pdf_path)
-        for pa in analyses:
-            page = doc[pa.page.info.index]
-            shape = page.new_shape()
-            fn(page, shape, pa)
-            shape.commit()
-        path = os.path.join(out_dir, name)
-        doc.save(path, garbage=3, deflate=True)
-        doc.close()
-        out[name] = path
-    return out
+    w = OverlayWriter(pdf_path, out_dir)
+    for pa in analyses:
+        w.add(pa)
+    return w.close()
 
 
 def _draw_polylines(page, shape, polylines, color, width):

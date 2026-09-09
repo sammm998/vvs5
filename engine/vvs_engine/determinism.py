@@ -30,15 +30,19 @@ def signature_hash(sig: dict[str, Any]) -> str:
     return hashlib.sha256(json.dumps(sig, sort_keys=True, default=str).encode()).hexdigest()
 
 
-def _reordered(doc: RawDocument, mode: str, seed: int = 0) -> RawDocument:
-    d2 = copy.deepcopy(doc)
-    for pg in d2.pages:
-        if mode == "reversed":
-            pg.paths.reverse(); pg.spans.reverse()
-        elif mode == "shuffled":
-            rng = random.Random(seed)
-            rng.shuffle(pg.paths); rng.shuffle(pg.spans)
-    return d2
+def _reordered(page, mode: str, seed: int = 0):
+    """The same sheet with its objects enumerated in another order.
+
+    Only the sheet under test is copied. Copying the whole document to shuffle one page of it meant a fifty-sheet
+    set was duplicated in memory three times over to check one page - and once pages are read on demand, there is
+    no whole document sitting there to copy."""
+    pg = copy.deepcopy(page)
+    if mode == "reversed":
+        pg.paths.reverse(); pg.spans.reverse()
+    elif mode == "shuffled":
+        rng = random.Random(seed)
+        rng.shuffle(pg.paths); rng.shuffle(pg.spans)
+    return pg
 
 
 def run_determinism(doc: RawDocument, page_index: int = 0, base_pa=None, **context) -> dict[str, Any]:
@@ -51,8 +55,7 @@ def run_determinism(doc: RawDocument, page_index: int = 0, base_pa=None, **conte
     base_sig = semantic_signature(base)
     results["original"] = signature_hash(base_sig)
     for mode, seed in (("reversed", 0), ("shuffled", 11), ("shuffled", 23)):
-        d2 = _reordered(doc, mode, seed)
-        pa = analyze_page(d2.pages[page_index], **context)
+        pa = analyze_page(_reordered(doc.pages[page_index], mode, seed), **context)
         sig = semantic_signature(pa)
         key = f"{mode}_seed{seed}" if mode == "shuffled" else mode
         results[key] = signature_hash(sig)

@@ -6,14 +6,15 @@ import json
 import os
 import sys
 import time
+from typing import Any
 
 from . import __version__
 from .contamination import scan_source
 from .determinism import run_determinism
 from .output.artifacts import why as why_fn, write_all
-from .output.overlays import write_overlays
+from .output.overlays import OverlayWriter
 from .pdf.extract import extract_document
-from .pipeline import PageAnalysis, analyze_page, summarize
+from .pipeline import PageAnalysis, analyze_page, prepare_page, summarize
 from .semantics.legend import DrawingLegend, merged
 
 CONFIG = {"contact_tolerance_pt": 0.6, "touch_tolerance_pt": 0.15, "unknown_glyph_threshold": 0.14, "grid": 32}
@@ -21,6 +22,56 @@ CONFIG = {"contact_tolerance_pt": 0.6, "touch_tolerance_pt": 0.15, "unknown_glyp
 
 class AnalysisTookTooLong(Exception):
     """A reading that ran past its budget. Raised between pages, so what is reported is a refusal, not a guess."""
+
+
+VOCAB_HOLD = 2          # readings kept from the search for the list; past that, looking again is cheaper than keeping
+
+
+def _vocabulary(doc, known_legend: DrawingLegend | None, progress, ocr_assist: bool):
+    """The set's designation list, and the sheet readings the search for it already paid for.
+
+    Sheets are looked at in order and the search stops at the first that carries a list, which on almost every
+    set is the front sheet. What it looked at is handed back so the reading proper does not do that work twice -
+    but only the first couple of them, because holding a sheet's reading costs more than reading it again.
+    """
+    vocab = known_legend
+    held: dict[int, Any] = {}
+    for i in range(len(doc.pages)):
+        prep = prepare_page(doc.pages[i], progress if i == 0 else None, ocr_assist)
+        if len(held) < VOCAB_HOLD:
+            held[i] = prep
+        elif i > 0:
+            doc.pages.release(i)
+        if prep.legend.own and prep.legend.entries:
+            vocab = merged(vocab, prep.legend)
+            break
+    return vocab, held
+
+
+def sheet_record(pa) -> dict:
+    """One sheet of the set, as the takeoff for the whole set needs it.
+
+    A reading is a large object and a set has many sheets. What a set-wide takeoff wants from each is small: what
+    was measured, how far the reading got, and under what scale - so that is what is kept, and the reading itself
+    is let go of.
+    """
+    anchors = pa.anchors
+    return {
+        "page": pa.page.info.index,
+        "scale": {"state": pa.scale.state, "meters_per_pt": pa.scale.meters_per_pt, "reason": pa.scale.reason},
+        "designations": len(pa.designations),
+        "leaders": len(pa.leaders),
+        "verified_attachments": sum(1 for a in anchors if a.state == "VERIFIED_PIPE_ATTACHMENT"),
+        "ambiguous_attachments": sum(1 for a in anchors if a.state == "AMBIGUOUS_PIPE_ATTACHMENT"),
+        "no_attachments": sum(1 for a in anchors if a.state == "NO_PIPE_ATTACHMENT"),
+        "legend": {"codes": len(pa.legend.entries), "own": pa.legend.own},
+        "quantities": [{k: q.get(k) for k in ("designation", "base", "dn", "state", "label_count",
+                                              "physical_pipe_count", "confirmed_horizontal_m",
+                                              "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
+                                              "in_hatched_area_m", "riser_count")}
+                       for q in pa.quantities],
+        "second_reader": pa.second_reader,
+    }
 
 
 def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinism: bool = True, contamination: bool = True,
@@ -46,49 +97,48 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     if progress:
         progress("READING_PDF")
     t0 = time.perf_counter()
-    doc = extract_document(pdf_path, pages, progress=progress)
+    doc = extract_document(pdf_path, pages, progress=progress, eager=False)
     timings["extract_ms"] = (time.perf_counter() - t0) * 1000
-    analyses: list[PageAnalysis] = []
-    # A set writes its designation list once and lets the rest of its sheets stand on it. So the list is read
-    # from whatever sheet carries it and held for the whole document, and the sheets read before it turned up
-    # are read again against it. Without that second look the same set is read one way at the front and another
-    # way at the back, which is a difference nothing in the drawing asked for.
-    vocab = known_legend
-    saw: list[DrawingLegend | None] = []        # what each sheet was actually given, so a re-reading can match it
+    n_pages = len(doc.pages)
+    done = 0
 
     def check_budget():
-        if deadline_s is not None and time.perf_counter() - t_all > deadline_s and analyses:
+        if deadline_s is not None and time.perf_counter() - t_all > deadline_s and done:
             raise AnalysisTookTooLong(
-                f"läsningen hann {len(analyses)} av {len(doc.pages)} sidor inom {deadline_s:.0f} s och avbröts; "
+                f"läsningen hann {done} av {n_pages} sidor inom {deadline_s:.0f} s och avbröts; "
                 f"en halv mängd är sämre än ingen, så inget delresultat sparas")
 
-    def read(pg, vocab):
-        return analyze_page(pg, progress, ocr_assist=ocr_assist,
-                            film_sink=film_sink if pg.info.index == 0 else None,
-                            second_reader=second_reader, known_families=known_families, known_legend=vocab)
-
-    for pg in doc.pages:
+    # First the set's own vocabulary, then the sheets read against it. A set writes its designation list once, on
+    # the sheet that has room for it, and lets the rest stand on that; a reading that takes each sheet as it comes
+    # would have to go back and read the early ones again once the list turned up. Looking for the list first
+    # costs nothing where it is on the front sheet, because that sheet's reading is kept and used.
+    vocab, held = _vocabulary(doc, known_legend, progress, ocr_assist)
+    if progress:
+        progress("READING_PDF")
+    overlay = OverlayWriter(pdf_path, out_dir)
+    first: PageAnalysis | None = None
+    sheets: list[dict] = []
+    for i in range(n_pages):
         check_budget()
-        saw.append(vocab)
-        pa = read(pg, vocab)
-        analyses.append(pa)
-        if pa.legend.own and pa.legend.entries:
-            vocab = merged(vocab, pa.legend)
-    reread = 0
-    n_final = len(vocab.entries) if vocab is not None else 0
-    for i, pa in enumerate(analyses):
-        if pa.legend.own and pa.legend.entries:
-            continue                    # this sheet carries its own list and is not waiting on anybody else's
-        if (len(saw[i].entries) if saw[i] is not None else 0) >= n_final:
-            continue                    # it already saw everything the set turned out to have
-        check_budget()
-        saw[i] = vocab
-        analyses[i] = read(doc.pages[i], vocab)
-        reread += 1
+        pg = doc.pages[i]
+        pa = analyze_page(pg, progress, ocr_assist=ocr_assist,
+                          film_sink=film_sink if pg.info.index == 0 else None,
+                          second_reader=second_reader, known_families=known_families, known_legend=vocab,
+                          prepared=held.pop(i, None))
+        overlay.add(pa)
+        sheets.append(sheet_record(pa))
+        done += 1
+        # A sheet's reading is used the moment it exists - drawn onto the overlays, written down as a row - and
+        # then let go of. Keeping all of them is what makes a fifty-sheet set need a reading's worth of geometry
+        # per sheet all at once; the first sheet is kept because the artifacts and the checks are about it.
+        if i == 0:
+            first = pa
+        else:
+            doc.pages.release(i)
     if progress:
         progress("GENERATING_OVERLAYS")
     t0 = time.perf_counter()
-    overlays = write_overlays(pdf_path, analyses, out_dir)
+    overlays = overlay.close()
     timings["overlays_ms"] = (time.perf_counter() - t0) * 1000
     rev = None
     if review:
@@ -96,33 +146,35 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
             progress("REVIEWING")
         t0 = time.perf_counter()
         from .review import run_review
-        rev = run_review(analyses[0], ocr=review_ocr,
+        rev = run_review(first, ocr=review_ocr,
                          progress=(lambda t: progress(f"REVIEWING {t}")) if progress else None)
         timings["review_ms"] = (time.perf_counter() - t0) * 1000
     # A second reader is asked only about cases the geometry already declared open, and only among candidates the
     # drawing itself offers - but it is still a machine outside this one, so a reading that consulted it is not
     # the same kind of answer as one that did not, and the determinism check is meaningless over it.
-    consulted = any(a.second_reader and a.second_reader.get("asked") for a in analyses)
-    det = run_determinism(doc, 0, analyses[0], known_families=known_families, known_legend=saw[0]) \
+    consulted = any((sh.get("second_reader") or {}).get("asked") for sh in sheets)
+    det = run_determinism(doc, 0, first, known_families=known_families, known_legend=vocab) \
         if determinism and not consulted else None
     cont = scan_source(os.path.dirname(os.path.abspath(__file__))) if contamination else None
     t0 = time.perf_counter()
     timings["total_s"] = time.perf_counter() - t_all
-    files = write_all(pdf_path, doc, analyses, out_dir, name, timings, det, cont, overlays, CONFIG, rev)
+    files = write_all(pdf_path, doc, [first], out_dir, name, timings, det, cont, overlays, CONFIG, rev,
+                      sheets=sheets, doc_legend=vocab)
     timings["artifacts_ms"] = (time.perf_counter() - t0) * 1000
-    summary = {"name": name, "pages": len(doc.pages), "summary": summarize(analyses[0]),
+    summary = {"name": name, "pages": n_pages, "summary": summarize(first),
                "determinism": det["state"] if det else ("NOT_APPLICABLE_A_SECOND_READER_WAS_CONSULTED" if consulted else None),
                "second_reader": {"consulted": consulted,
-                                 "asked": sum((a.second_reader or {}).get("asked", 0) for a in analyses),
-                                 "settled": sum((a.second_reader or {}).get("settled", 0) for a in analyses),
-                                 "refused": sum((a.second_reader or {}).get("refused", 0) for a in analyses)},
+                                 "asked": sum((sh.get("second_reader") or {}).get("asked", 0) for sh in sheets),
+                                 "settled": sum((sh.get("second_reader") or {}).get("settled", 0) for sh in sheets),
+                                 "refused": sum((sh.get("second_reader") or {}).get("refused", 0) for sh in sheets)},
                "legend": {"codes": len(vocab.entries) if vocab else 0,
-                          "own_sheet": bool(analyses[0].legend.own and analyses[0].legend.entries),
-                          "sheets_reread": reread},
+                          "own_sheet": bool(first.legend.own and first.legend.entries),
+                          "from_sheet": next((e.page for e in (vocab.entries if vocab else []) if e.page is not None), None)},
+               "sheets": sheets,
                "contamination": cont["state"] if cont else None, "files": files, "total_seconds": round(timings["total_s"], 2),
                "input": getattr(doc.pages[0], "input_class", None), "skipped_pages": doc.skipped_pages,
                "review": {"state": rev["state"], "n_findings": rev["n_findings"], "agents": rev["agents"]} if rev else None,
-               "ocr_assist": analyses[0].ocr_assist}
+               "ocr_assist": first.ocr_assist}
     with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=1, default=str)
     if progress:
