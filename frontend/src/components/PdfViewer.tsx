@@ -37,6 +37,15 @@ function segDist(p: number[], a: number[], b: number[]): number {
   return Math.hypot(p[0] - (a[0] + t * vx), p[1] - (a[1] + t * vy));
 }
 
+/** What the reading made of one piece of drawn ink, in the words a reader asks the question in. */
+export type InkVerdict = {
+  at: number[];
+  kind: "matt" | "i-vagg" | "tvetydig" | "papekad" | "oidentifierad" | "bortvald" | "inget";
+  title: string;
+  detail: string;
+  pipe?: any;
+};
+
 export interface ViewerProps {
   data: ArrayBuffer | null;
   page: number;
@@ -50,13 +59,17 @@ export interface ViewerProps {
   anchors: any[];
   hatched?: any[];
   /** Ink that never became pipe: families weighed and set aside, and families no leader ever pointed at. */
-  declined?: { family: string; kind: string; segments: number[][] }[];
+  declined?: { family: string; kind: string; why_sv?: string; why?: string; layer?: string; style?: string; length_m?: number | null; segments: number[][] }[];
   /** One declined family picked out of the rest, so a reader can see which ink a row is talking about. */
   selectedDeclined?: string | null;
   selectedIdentity: string | null;
   selectedPipe: string | null;
   layers: Record<Layer, boolean>;
   onPipeClick: (pipe: any) => void;
+  /** A click on ink with no edit mode active: what the reading made of it. */
+  onInkClick?: (v: InkVerdict | null) => void;
+  /** The standing answer, drawn on the sheet where it was asked. */
+  ink?: InkVerdict | null;
   onPageCount: (n: number) => void;
   /** Which edit gesture is armed. Selecting runs still works; the gesture takes over the empty sheet. */
   editKind?: EditKind;
@@ -365,9 +378,92 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     }
   };
 
+  /* What the reading made of the ink under the cursor.
+   *
+   * "Varför är det röret inte markerat?" is the question a reader asks of a drawing, and until now the answer
+   * lived in five separate layers they had to know to switch on and then hunt through. Every one of those layers
+   * is already in the result, so the question can simply be asked of the sheet: click the line, and the reading
+   * says which of its answers this ink got - measured, in a wall, ambiguous, pointed at but unnamed, drawn pipe
+   * no label reached, ink weighed and set aside as not pipe, or nothing kept here at all.
+   */
+  const askInk = (pt: number[]): InkVerdict => {
+    const tol = sw(7);
+    let bestD = Infinity;
+    let best: InkVerdict | null = null;
+    const take = (d: number, v: InkVerdict) => { if (d <= tol && d < bestD) { bestD = d; best = v; } };
+    const m = (x: number) => `${x.toFixed(2).replace(".", ",")} m`;
+
+    for (const p of props.pipes) {
+      for (const pl of p.geometry as number[][][]) {
+        for (let i = 1; i < pl.length; i++) {
+          take(segDist(pt, pl[i - 1], pl[i]), {
+            at: pt, kind: "matt", pipe: p,
+            title: `Mätt: ${p.identity ?? "rör"}`,
+            detail: `${typeof p.horizontal_m === "number" ? m(p.horizontal_m) : "ingen skala"} · sträcka ${p.physical_pipe_id?.slice(-8) ?? ""}`,
+          });
+        }
+      }
+    }
+    for (const g of props.hatched ?? []) {
+      take(segDist(pt, [g.x0, g.y0], [g.x1, g.y1]), {
+        at: pt, kind: "i-vagg",
+        title: `I vägg: ${g.identity ?? "rör"}`,
+        detail: "Mätt, men längden i en skrafferad yta ligger utanför den horisontella mängden. Kryssa i \u201erräkna med skrafferade ytor\u201d för att ta med den.",
+      });
+    }
+    for (const g of props.ambiguous) {
+      take(segDist(pt, [g.x0, g.y0], [g.x1, g.y1]), {
+        at: pt, kind: "tvetydig",
+        title: "Tvetydig",
+        detail: `Kunde tillhöra ${(g.candidates || []).join(" eller ") || "mer än en beteckning"}. Ritningen avgör det inte, så sträckan mäts inte. Skäl: ${g.reason || "okänt"}.`,
+      });
+    }
+    for (const g of props.claimed ?? []) {
+      take(segDist(pt, [g.x0, g.y0], [g.x1, g.y1]), {
+        at: pt, kind: "papekad",
+        title: "Påpekad men onämnd",
+        detail: `${(g.claimed_by || []).join(", ") || "En beteckning"} pekar hit, men läsningen kunde inte ge sträckan till en enda identitet. Den finns på ritningen och mäts inte.`,
+      });
+    }
+    for (const g of props.unowned) {
+      take(segDist(pt, [g.x0, g.y0], [g.x1, g.y1]), {
+        at: pt, kind: "oidentifierad",
+        title: "Ritad som rör, men ingen beteckning nådde hit",
+        detail: "Läsningen tog den här pennan som rörgeometri, men ingen hänvisningslinje slutar på den här sträckan. Utan en etikett som pekar på den har den inget namn — och utan namn ingen mängd.",
+      });
+    }
+    for (const f of props.declined ?? []) {
+      for (const g of f.segments) {
+        take(segDist(pt, [g[0], g[1]], [g[2], g[3]]), {
+          at: pt, kind: "bortvald",
+          title: f.kind === "not_examined" ? "Aldrig vägd som rör" : "Bortvald: inte rör",
+          // the layer name is what a draughtsman recognises; the stroke style is an internal key and only noise here
+          detail: `${f.why_sv || f.why || "inget skäl noterat"}${f.layer ? ` · lager ${f.layer}` : ""}`,
+        });
+      }
+    }
+    // a measured run already answers when it is clicked - it selects itself and opens "Varför?" - so the card
+    // stays out of the way there and speaks for everything else
+    const v = best as InkVerdict | null;
+    if (v && v.kind === "matt" && props.layers.pipes) return v;
+    return v ?? {
+      at: pt, kind: "inget", title: "Ingen sparad geometri här",
+      detail: "Läsningen har inget kvar på den här punkten. Zooma in och klicka närmare linjen, eller slå på fler lager för att se vad som finns.",
+    };
+  };
+
   // draw is click-to-place: a run the engine never saw has no end to grab
   const click = (e: React.MouseEvent) => {
-    if (kind !== "draw" || !vp) return;
+    if (!vp) return;
+    if (!kind) {
+      // reading the point while it is still an event, as everywhere else here
+      const pt = at(e);
+      const v = askInk(pt);
+      // the pipe's own click has already selected it and opened the evidence panel; no card on top of that
+      props.onInkClick?.(v.kind === "matt" && props.layers.pipes ? null : v);
+      return;
+    }
+    if (kind !== "draw") return;
     // The point is read here and not inside the update. A functional update is called by React when it gets
     // round to it, which is after the event has been handed back - and then currentTarget is null and reading
     // the sheet's rectangle off it throws, taking the whole page with it. An event is only an event during its
@@ -562,6 +658,30 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
             {/* A ring says a label's leader ended here. It is not a claim that a pipe was measured: a component
                 tag reaches a floor drain or a mixer, and a leader ending inside a wall reaches length the
                 quantity already excludes. Both used to be drawn exactly like an attachment to a measured run. */}
+            {/* The answer, where the question was asked. It sits on the sheet because that is where the reader is
+                looking, and it takes pointer events so the close button can be pressed. */}
+            {props.ink && (() => {
+              // the box has to be told its height, so it is worked out from the text rather than guessed at:
+              // a card that is too short spills its words onto the drawing underneath
+              const W = sw(300);
+              const H = sw(46 + Math.ceil(props.ink.detail.length / 44) * 17 + Math.ceil(props.ink.title.length / 34) * 6);
+              const x = Math.max(sw(6), Math.min(props.ink.at[0] + sw(14), (vp?.w ?? 0) - W - sw(6)));
+              const y = Math.max(sw(6), Math.min(props.ink.at[1] - sw(10), (vp?.h ?? 0) - H - sw(6)));
+              const hue = { matt: "#12a24b", "i-vagg": "#6b7280", tvetydig: "#ff9500", papekad: "#a855f7",
+                oidentifierad: "#8a8f99", bortvald: "#0891b2", inget: "#9aa3af" }[props.ink.kind];
+              return (
+                <g style={{ pointerEvents: "auto" }}>
+                  <circle cx={props.ink.at[0]} cy={props.ink.at[1]} r={sw(6)} fill="none" stroke={hue} strokeWidth={sw(2)} />
+                  <foreignObject x={x} y={y} width={W} height={H}>
+                    <div className="inkcard" style={{ borderLeftColor: hue, fontSize: sw(12.5) }}>
+                      <button type="button" className="x" onClick={() => props.onInkClick?.(null)} aria-label="Stäng">✕</button>
+                      <b style={{ color: hue }}>{props.ink.title}</b>
+                      <p>{props.ink.detail}</p>
+                    </div>
+                  </foreignObject>
+                </g>
+              );
+            })()}
             {props.layers.anchors && props.anchors.map((a) => (
               <circle key={a.id} cx={a.endpoint[0]} cy={a.endpoint[1]} r={sw(a.names_a_pipe === false ? 2.5 : 4)} fill="none"
                 stroke={a.names_a_pipe === false ? "#9aa3af"

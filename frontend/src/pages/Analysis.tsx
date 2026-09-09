@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
-import PdfViewer, { Drawn, EditKind, Layer, ViewerHandle } from "../components/PdfViewer";
+import PdfViewer, { Drawn, EditKind, InkVerdict, Layer, ViewerHandle } from "../components/PdfViewer";
 import QuantityTable, { withFloorHeight } from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
 import LearnWizard from "../components/LearnWizard";
@@ -88,6 +88,8 @@ export default function AnalysisPage() {
   // which bortvald family the reader is pointing at, so the sheet can show that ink and not all of it at once
   const selDeclined: string | null = null;
   const [layersOpen, setLayersOpen] = useState(false);
+  // what the reading made of the ink the reader last pointed at - "varför är det röret inte markerat?"
+  const [ink, setInk] = useState<InkVerdict | null>(null);
   const [artifacts, setArtifacts] = useState<any[]>([]);
   const viewer = useRef<ViewerHandle>(null);
 
@@ -293,6 +295,7 @@ export default function AnalysisPage() {
           designations={result.designations} legend={result.legend ?? null} leaders={result.leaders} anchors={result.anchors} hatched={result.hatched_geometry ?? []} selectedIdentity={selIdent}
           declined={[...(result.declined_geometry?.families ?? []), ...(result.declined_geometry?.unconsidered ?? [])]} selectedDeclined={selDeclined}
           selectedPipe={selPipe?.physical_pipe_id ?? null} layers={layers} onPipeClick={onPipeClick} onPageCount={setNPages}
+          ink={ink} onInkClick={setInk}
           editKind={(drawKind === "extend" || drawKind === "draw" || drawKind === "erase" ? drawKind : null) as EditKind}
           editPipe={selPipe} meterPerPt={result.scale?.meters_per_pdf_point ?? null}
           onDrawn={(d: Drawn) => setDraft({ points: d.points, meters: d.meters, hits: d.hits })}

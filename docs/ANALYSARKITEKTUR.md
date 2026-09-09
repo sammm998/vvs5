@@ -176,3 +176,32 @@ blocket är den koden den som går där, och de andra raderna säger något anna
 
 Kvar står alltså: geometrin under ett sådant block är riktigt utpekad, och att avstå från att namnge den är
 riktigt. Ett nytt försök måste börja i vad *facit* gör med ett flerradigt block, inte i vad konventionen säger.
+
+## Vad korpuset täcker
+
+Stilbiblioteket är inte en samling ritningar utan en samling **verktygskedjor**: vad som skiljer ett blad från
+ett annat är inte byggnaden, det är vilket program som ritade det och vilken skrivare som gjorde PDF:en. Två
+kontor som båda använder AutoCAD ger nästan samma fil; samma kontor som byter från pdfplot till Bluebeam ger
+en fil läsningen knappt känner igen.
+
+| # | kontor | kedja |
+|---|---|---|
+| 01 | — | AutoCAD · pdfplot 14–16 · Ghostscript 9.21 |
+| 02 | Sweco | AutoCAD MEP 2020 · pdfplot 15 |
+| 03 | Sweco | AutoCAD 2023 · pdfplot 16 · hårfina streck |
+| 04 | VVS Konsulterna | Revit · Bluebeam Brewery 5.0 |
+| 05 | Bengt Dahlgren | Ghostscript 9.21 |
+| 06 | PO Andersson | Ghostscript 9.21 |
+| 07 | Arildssons Rör | Ghostscript 9.21 |
+| 08 | PQR Malmö | Bluebeam Revu · Ghostscript 9.21 |
+| 09 | Rejlers | Bluebeam Revu · Ghostscript 9.21 |
+| 10 | Kjell Petersson | Bluebeam Revu · Ghostscript 9.21 |
+| 11 | Sweco | Bluebeam Brewery 5.0 · uniform streckbredd |
+
+Det som betyder mest för läsningen är två saker som syns direkt i tabellen. **Lagernamn** överlever ur AutoCAD
+via pdfplot och försvinner genom Ghostscript och Bluebeam — och ett blad utan lagernamn är det svåra fallet,
+eftersom rör och byggnad då ritas med samma penna. **Uniform streckbredd** (11) tar bort det sista som skiljer
+en rörlinje från en väggkontur.
+
+Mätningarna ska därför alltid redovisas per kedja och inte som ett medelvärde över korpuset: ett medelvärde
+döljer att de lagerbärande bladen läses nästan helt och de lagerlösa knappt alls.
