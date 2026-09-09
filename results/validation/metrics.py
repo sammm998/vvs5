@@ -32,6 +32,28 @@ def fl(v):
 ROOT = os.environ.get("VVS_ROOT", os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
+def facit_path(tag):
+    """Where a reference drawing's hand takeoff lives.
+
+    The set grew: four drawings written one per directory, and then a whole Bluebeam set of twenty-nine, each in
+    a directory of its own under validation_set3. A tag is looked up in both, so the scorer takes the whole set
+    without the caller having to know which half a drawing came from.
+    """
+    a = os.path.join(ROOT, "data", f"validation_{tag}", "facit.xlsx")
+    if os.path.exists(a):
+        return a
+    return os.path.join(ROOT, "data", "validation_set3", tag, "facit.xlsx")
+
+
+def all_tags():
+    """Every reference drawing there is, in a stable order."""
+    out = [t for t in ("A", "C", "D", "E") if os.path.exists(facit_path(t))]
+    d = os.path.join(ROOT, "data", "validation_set3")
+    if os.path.isdir(d):
+        out += sorted(n for n in os.listdir(d) if os.path.exists(facit_path(n)))
+    return out
+
+
 def facit(tag):
     """The hand takeoff, split the way the workbook splits it.
 
@@ -41,8 +63,7 @@ def facit(tag):
     without being given one. Both are returned so the report can say which of the two it is scoring against
     instead of quietly presenting one as the whole facit.
     """
-    path = os.path.join(ROOT, "data", f"validation_{tag}", "facit.xlsx")
-    ws = openpyxl.load_workbook(path, data_only=True).worksheets[0]
+    ws = openpyxl.load_workbook(facit_path(tag), data_only=True).worksheets[0]
     hdr = [str(v or "").strip() for v in next(ws.iter_rows(min_row=1, max_row=1, values_only=True))]
     col = {h: i for i, h in enumerate(hdr)}
     # the subject column is headed "Ämne" on some sheets and "Subject" on others; a missing one is an error,
@@ -113,11 +134,12 @@ def main(blind_path, tags):
             continue
         rows.append(score_one(tag, r))
 
-    print(f"{'':4s} {'skala':10s} {'bet. P':>7s} {'bet. R':>7s} "
+    W = max([4] + [len(r["tag"]) for r in rows])
+    print(f"{'':{W}s} {'skala':10s} {'bet. P':>7s} {'bet. R':>7s} "
           f"{'facit m':>9s} {'ägda m':>9s} {'falska m':>9s} {'missade m':>10s} {'täckning':>9s} {'falskt':>8s}")
     for r in rows:
         d, m = r["designations"], r["metres"]
-        print(f"{r['tag']:4s} {str(r['scale']):10s} {d['precision']:7.1%} {d['recall']:7.1%} "
+        print(f"{r['tag']:{W}s} {str(r['scale']):10s} {d['precision']:7.1%} {d['recall']:7.1%} "
               f"{m['facit']:9.2f} {m['owned']:9.2f} {m['false_owned']:9.2f} {m['missed']:10.2f} "
               f"{m['coverage']:9.1%} {m['false_rate']:8.1%}")
 
@@ -128,7 +150,7 @@ def main(blind_path, tags):
     n_hit = sum(r["designations"]["correct"] for r in rows)
     n_found = sum(r["designations"]["found"] for r in rows)
     n_facit = sum(r["designations"]["facit"] for r in rows)
-    print(f"{'ALLA':4s} {'':10s} {n_hit / n_found if n_found else 0:7.1%} {n_hit / n_facit if n_facit else 0:7.1%} "
+    print(f"{'ALLA':{W}s} {'':10s} {n_hit / n_found if n_found else 0:7.1%} {n_hit / n_facit if n_facit else 0:7.1%} "
           f"{tot_f:9.2f} {tot_o:9.2f} {tot_x:9.2f} {tot_m:10.2f} "
           f"{tot_o / tot_f if tot_f else 0:9.1%} {tot_x / tot_f if tot_f else 0:8.1%}")
     tot_v = sum(r["metres"]["facit_vertical_not_claimed"] for r in rows)
@@ -144,7 +166,7 @@ def main(blind_path, tags):
             print(f"  {r['tag']}: hittade-på {d['invented'] or '-'}   saknade {d['missed'] or '-'}")
 
     print("\nhur långt läsningen kom - och vad den lät bli att gissa:")
-    print(f"{'':4s} {'bet.':>6s} {'m. DN':>7s} {'ledare':>7s} {'fästa':>7s} {'tvetydiga':>10s} {'utan':>6s} "
+    print(f"{'':{W}s} {'bet.':>6s} {'m. DN':>7s} {'ledare':>7s} {'fästa':>7s} {'tvetydiga':>10s} {'utan':>6s} "
           f"{'fästgrad':>9s} {'olösta':>7s} {'åtgärda':>8s} {'noterat':>8s}")
     agg = {k: 0 for k in ("labels", "with_dn", "leaders", "verified", "ambiguous", "none")}
     for r in rows:
@@ -153,11 +175,11 @@ def main(blind_path, tags):
         for n in agg:
             agg[n] += v[n]
         att = v["verified"] + v["ambiguous"] + v["none"]
-        print(f"{r['tag']:4s} {v['labels']:6d} {v['with_dn']:7d} {v['leaders']:7d} {v['verified']:7d} "
+        print(f"{r['tag']:{W}s} {v['labels']:6d} {v['with_dn']:7d} {v['leaders']:7d} {v['verified']:7d} "
               f"{v['ambiguous']:10d} {v['none']:6d} {v['verified'] / att if att else 0:9.1%} "
               f"{k['unresolved'] or 0:7d} {k['blocking'] or 0:8d} {k['advisory'] or 0:8d}")
     att = agg["verified"] + agg["ambiguous"] + agg["none"]
-    print(f"{'ALLA':4s} {agg['labels']:6d} {agg['with_dn']:7d} {agg['leaders']:7d} {agg['verified']:7d} "
+    print(f"{'ALLA':{W}s} {agg['labels']:6d} {agg['with_dn']:7d} {agg['leaders']:7d} {agg['verified']:7d} "
           f"{agg['ambiguous']:10d} {agg['none']:6d} {agg['verified'] / att if att else 0:9.1%}")
     print("\nDe två talen som betyder något står längst till höger i första tabellen: täckningen ska stiga, "
           "falskt ägda meter ska ligga vid noll. Ett fall som inte gick att avgöra ska hamna bland de tvetydiga "
@@ -167,4 +189,4 @@ def main(blind_path, tags):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2:] or ["A", "C", "D", "E"])
+    main(sys.argv[1], sys.argv[2:] or all_tags())
