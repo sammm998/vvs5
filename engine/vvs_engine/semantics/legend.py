@@ -26,6 +26,9 @@ from typing import Any
 from ..text.model import TextRow
 
 MIN_ENTRIES = 6                 # a shorter stack is a table cell or a note, not a designation list
+MIN_CODES = 6                   # ...and it must say six different things, or it is one table column repeated
+USED_MIN = 2                    # codes the drawing writes out itself, for the list to be its own vocabulary
+ALIGNED_SHARE = 0.6             # ...or the share of descriptions that share a left edge, which a note's do not
 MAX_CODE_LEN = 10
 DESC_GAP_ROWS = 12.0            # how far right of the code its description may start, in row heights
 COL_TOL = 3.0                   # how far two rows' left edges may differ and still be one column
@@ -187,25 +190,73 @@ def densest_edge(xs: list[float], tol: float = COL_TOL) -> float | None:
     return best_x
 
 
-def read_legend(lines: list[TextRow]) -> DrawingLegend:
+def _description_x(line: TextRow, at: int) -> float:
+    """Where the words beside the code start, in page coordinates.
+
+    For a row written as one piece of text the description begins at a character index, and the glyph boxes say
+    where that character sits. It matters because whether the descriptions line up is one of the two things that
+    tell a designation list from a note."""
+    lead = len(line.text) - len(line.text.lstrip())
+    i = lead + at
+    if 0 <= i < len(line.glyphs):
+        return line.glyphs[i].bbox[0]
+    return line.bbox[2]
+
+
+def _candidate(rows: list[TextRow], found: dict, edge: float) -> list[LegendEntry]:
+    """The list that would be read off one left edge: its entries, under the headings standing above them."""
+    column = sorted((l for l in rows if edge - 0.1 <= l.bbox[0] <= edge + COL_TOL),
+                    key=lambda l: (l.bbox[1], l.bbox[0]))
+    entries: list[LegendEntry] = []
+    heading = ""
+    for line in column:
+        f = found.get(line.rid)
+        if f is None or not is_code_token(f[0]):
+            heading = line.text.strip()
+            continue
+        entries.append(LegendEntry(code=f[0].strip().rstrip(".:,;"), description=f[1].strip(), heading=heading,
+                                   bbox=tuple(line.bbox), page=getattr(line, "page", None)))
+    return entries
+
+
+def read_legend(lines: list[TextRow], designations=()) -> DrawingLegend:
     """Find the sheet's designation list and read it.
 
     A legend row is a short code with a description: either both in one text row, or the code in one row and the
-    description in another on the same baseline a little to the right. The legend is the left edge that carries
-    the most such rows; rows on that edge whose leading word is not a code are the headings above them."""
+    description in another on the same baseline a little to the right. Rows on one left edge that read that way
+    are a candidate list, and rows on that edge whose leading word is not a code are the headings above them.
+
+    Being a stack of short words with sentences beside them is not enough to be a designation list, and taking it
+    to be enough is how a note block becomes the drawing's vocabulary. `FALL 1:100 MOT GOLVBRUNN`, `MED
+    ISOLERING`, `OBS! SAMORDNAS MED EL` is six rows on one edge, each a short leading token with words after it,
+    and the reading filed it as the sheet saying what its codes mean. A parts table repeating the word POS sixty
+    times is the same mistake with a straighter face.
+
+    Two things separate the real list from those, and either will do:
+
+      * the drawing uses the codes. A designation list is a vocabulary for what is drawn on the paper, so its
+        codes turn up out on the drawing at the head of the labels. A note's leading words turn up nowhere else.
+      * the descriptions line up. A list is set as a table - the codes in one column, the words in another - so
+        the descriptions share a left edge of their own. A note's words start wherever its leading word ended.
+
+    The first is the stronger evidence and decides between candidates; the second is what lets an index sheet,
+    which carries the list for a set without drawing any of it, still be read. A stack that shows neither is a
+    stack of text, and the sheet is left with no list rather than a made-up one - which costs nothing, because
+    a legend that was never found claims nothing.
+    """
     rows = [l for l in lines if abs(l.angle) <= 5.0 and l.text.strip()]
     if not rows:
         return DrawingLegend()
     by_band: dict[int, list[TextRow]] = defaultdict(list)
     for l in rows:
         by_band[round(l.bbox[1] / 2.0)].append(l)
-    found: list[tuple[TextRow, str, str]] = []
+    found: dict[str, tuple[str, str, float]] = {}
     for l in rows:
         t = l.text.strip()
         h = max(l.bbox[3] - l.bbox[1], 1.0)
         m = _INLINE.match(t)
         if m and any(c.isalpha() for c in m.group(2)):
-            found.append((l, m.group(1), m.group(2)))
+            found[l.rid] = (m.group(1), m.group(2), _description_x(l, m.start(2)))
             continue
         if len(t) > MAX_CODE_LEN or " " in t:
             continue
@@ -219,27 +270,34 @@ def read_legend(lines: list[TextRow]) -> DrawingLegend:
                 if 0.0 <= gap <= DESC_GAP_ROWS * h and (best is None or gap < best[0]):
                     best = (gap, o)
         if best is not None and any(c.isalpha() for c in best[1].text):
-            found.append((l, t, best[1].text.strip()))
-    edge = densest_edge([f[0].bbox[0] for f in found])
-    if edge is None:
+            found[l.rid] = (t, best[1].text.strip(), best[1].bbox[0])
+    if not found:
         return DrawingLegend()
-    split = {f[0].rid: f for f in found}
-    # walk every row on the legend's own left edge, top to bottom: the ones that read as a code with a
-    # description are its entries, and the rest are the section headings standing above them
-    column = sorted((l for l in rows if edge - 0.1 <= l.bbox[0] <= edge + COL_TOL),
-                    key=lambda l: (l.bbox[1], l.bbox[0]))
-    entries: list[LegendEntry] = []
-    heading = ""
-    for line in column:
-        f = split.get(line.rid)
-        if f is None or not is_code_token(f[1]):
-            heading = line.text.strip()
+    heads = {(getattr(d, "system_token", "") or "").upper() for d in designations}
+    heads |= {(getattr(d, "text", "") or "").upper().strip() for d in designations}
+    heads.discard("")
+    by_rid = {l.rid: l for l in rows}
+    best_list: tuple[tuple, list[LegendEntry], float] | None = None
+    for edge in sorted({by_rid[rid].bbox[0] for rid in found}):
+        entries = _candidate(rows, found, edge)
+        if len(entries) < MIN_ENTRIES:
             continue
-        entries.append(LegendEntry(code=f[1].strip().rstrip(".:,;"), description=f[2].strip(), heading=heading,
-                                   bbox=tuple(line.bbox), page=getattr(line, "page", None)))
-    if len(entries) < MIN_ENTRIES:
+        codes = {e.code.upper() for e in entries}
+        if len(codes) < MIN_CODES:
+            continue                    # a column that repeats one word is a table, not a vocabulary
+        used = sum(1 for c in codes if any(h == c or h.startswith(c) for h in heads))
+        dxs = [found[rid][2] for rid in (l.rid for l in rows)
+               if rid in found and edge - 0.1 <= by_rid[rid].bbox[0] <= edge + COL_TOL]
+        dedge = densest_edge(dxs)
+        lined = sum(1 for x in dxs if dedge is not None and dedge - 0.1 <= x <= dedge + COL_TOL)
+        if used < USED_MIN and lined < ALIGNED_SHARE * len(dxs):
+            continue
+        score = (used, lined, len(entries))
+        if best_list is None or score > best_list[0]:
+            best_list = (score, entries, edge)
+    if best_list is None:
         return DrawingLegend()
-    return DrawingLegend(entries=entries, column_x=edge)
+    return DrawingLegend(entries=best_list[1], column_x=best_list[2])
 
 
 def adopt(legend: DrawingLegend) -> DrawingLegend:

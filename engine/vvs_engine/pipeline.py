@@ -667,7 +667,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     free = free_segments(page, consumed)
     blocks = build_blocks(page, lines, free)
     designations, grammar, _ = extract_designations(page, blocks)
-    legend = read_legend(lines)                  # the sheet's own designation list
+    legend = read_legend(lines, designations)    # the sheet's own designation list, read against what it draws
     if not legend.entries and known_legend is not None and known_legend.entries:
         legend = adopt(known_legend)             # ...or the one the rest of the set carries for it
     assign_roles(legend, designations, prior=roles_of(known_legend) if known_legend is not None else None)

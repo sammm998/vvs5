@@ -39,6 +39,9 @@ class D:
         self.pattern = ""
 
 
+DRAWN = [D("KV01-X7-16", "KV01", 16), D("S01-S13-110", "S01", 110), D("TS1", "TS1", None), D("BL2", "BL2", None)]
+
+
 # ------------------------------------------------------------------------------------------------------------
 # finding the list at all
 # ------------------------------------------------------------------------------------------------------------
@@ -50,7 +53,7 @@ def test_a_column_that_jitters_across_a_grid_line_is_still_one_list():
     for i, (code, desc) in enumerate(LIST):
         x = 100.4 if i % 2 else 101.6            # either side of any boundary drawn between them
         lines.append(_row(f"{code} {desc}", x, 30 + 12 * i))
-    lg = read_legend(lines)
+    lg = read_legend(lines, DRAWN)
     assert {e.code for e in lg.entries} == {c for c, _ in LIST}
     assert lg.own
 
@@ -66,9 +69,8 @@ def test_the_densest_edge_is_the_one_the_most_rows_share():
 
 def _settled() -> DrawingLegend:
     lg = read_legend([_row("BETECKNINGAR", 100, 10)]
-                     + [_row(f"{c} {d}", 100, 30 + 12 * i) for i, (c, d) in enumerate(LIST)])
-    assign_roles(lg, [D("KV01-X7-16", "KV01", 16), D("S01-S13-110", "S01", 110),
-                      D("TS1", "TS1", None), D("BL2", "BL2", None)])
+                     + [_row(f"{c} {d}", 100, 30 + 12 * i) for i, (c, d) in enumerate(LIST)], DRAWN)
+    assign_roles(lg, DRAWN)
     assert lg.systems() == {"KV01", "S01"} and lg.components() == {"TS1", "BL2"}
     return lg
 

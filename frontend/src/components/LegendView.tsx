@@ -19,13 +19,16 @@ const ROLE_HINT: Record<string, string> = {
   unused: "Listad, men bladet visar aldrig koden i bruk",
 };
 const FROM_SV: Record<string, string> = {
-  usage: "sidan visade det", heading: "rubriken talade för koden",
+  usage: "sidan visade det", heading: "rubriken talade för koden", other_sheet: "ett annat blad i omgången",
 };
 
-type Entry = { code: string; description: string; heading: string; role: string; role_from: string; bbox: number[] };
+type Entry = {
+  code: string; description: string; heading: string; role: string; role_from: string; bbox: number[];
+  page?: number | null;
+};
 
 export default function LegendView({ legend, designations, quantities, onZoom }: {
-  legend: { entries: Entry[]; n_entries?: number };
+  legend: { entries: Entry[]; n_entries?: number; own?: boolean };
   designations: any[];
   quantities: any[];
   onZoom?: (bbox: number[]) => void;
@@ -70,6 +73,11 @@ export default function LegendView({ legend, designations, quantities, onZoom }:
     if (!bySection.has(k)) bySection.set(k, []);
     bySection.get(k)!.push(e);
   }
+  const pages = [...new Set(entries.map((e) => e.page).filter((p): p is number => typeof p === "number"))]
+    .sort((a, b) => a - b);
+  const borrowedFrom = pages.length === 1 ? `på blad ${pages[0] + 1}`
+    : pages.length > 1 ? `på blad ${pages.map((p) => p + 1).join(", ")}`
+      : "på ett annat blad i handlingen";
   const counts = entries.reduce((a: Record<string, number>, e) => ({ ...a, [e.role]: (a[e.role] ?? 0) + 1 }), {});
   const uncovered = Object.entries(stats.uncovered).sort((a, b) => b[1] - a[1]);
 
@@ -79,9 +87,10 @@ export default function LegendView({ legend, designations, quantities, onZoom }:
         <div className="card">
           <h3>Ingen förklaringslista hittades</h3>
           <p className="muted">
-            Bladet bär ingen kolumn av koder med förklaringar som läsningen kunde hitta, eller så ligger den på
-            ett annat blad i handlingen. Utan listan gör läsningen inga anspråk på vad koderna betyder: varje
-            beteckning får då tala för sig själv, och ingen kod avfärdas som komponent.
+            Varken det här bladet eller något annat blad i handlingen bär en kolumn av koder med förklaringar
+            som läsningen kunde hitta. Utan listan gör läsningen inga anspråk på vad koderna betyder: varje
+            beteckning får då tala för sig själv, och ingen kod avfärdas som komponent. Ladda upp bladet som
+            bär listan i samma projekt, så läses den och gäller för alla ritningarna.
           </p>
         </div>
       </div>
@@ -93,11 +102,18 @@ export default function LegendView({ legend, designations, quantities, onZoom }:
       <div className="card">
         <div className="legendhead">
           <div>
-            <h3>Ritningens egen förklaringslista</h3>
+            <h3>{legend?.own === false ? "Handlingens förklaringslista" : "Ritningens egen förklaringslista"}</h3>
             <p className="muted">
               {entries.length} rader. Läsningen tog {counts.system ?? 0} som rörsystem, {counts.component ?? 0} som
               komponenter, {counts.material ?? 0} som material och {counts.unused ?? 0} står oanvända på bladet.
             </p>
+            {legend?.own === false && (
+              <p className="muted">
+                Listan står inte på det här bladet utan {borrowedFrom}. En omgång skriver sin lista en gång och
+                låter planbladen stå på den, så den gäller här — men den får bara neka en kod den själv listar.
+                En kod den aldrig nämner får tala för sig själv.
+              </p>
+            )}
           </div>
           <div className="legendfilters">
             <input placeholder="Sök kod eller ord…" value={q} onChange={(e) => setQ(e.target.value)} />

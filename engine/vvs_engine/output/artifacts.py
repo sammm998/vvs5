@@ -311,6 +311,21 @@ def unresolved_issues(pa) -> list[dict]:
             issues.append({"kind": "unowned_geometry", "family": fk, "count": len(un), "length_pt": round(L, 1), "bbox": [s.x0 - 5, s.y0 - 5, s.x1 + 5, s.y1 + 5], "id": f"unowned:{fk}"})
     if pa.scale.state in ("NONE", "CONFLICT"):
         issues.append({"kind": "unsupported_structural_family", "text": f"scale: {pa.scale.reason}", "id": "scale"})
+    # What the reading did about the sheet's vocabulary, said out loud. Without a designation list nothing is
+    # claimed about what any code means - every label speaks for itself and no code is set aside as a fitting -
+    # and that is a different reading from one governed by a list, so it should not have to be inferred from a
+    # count. Where the list came off another sheet of the set, that is worth saying for the same reason.
+    if not lg.entries:
+        issues.append({"kind": "no_designation_list", "id": "legend",
+                       "reason": "ingen beteckningslista hittades, varken på bladet eller på något annat blad i "
+                                 "handlingen; läsningen gör därför inga anspråk på vad koderna betyder och sätter "
+                                 "ingen kod åt sidan som komponent"})
+    elif not lg.own:
+        pages = sorted({e.page for e in lg.entries if e.page is not None})
+        issues.append({"kind": "designation_list_from_another_sheet", "id": "legend",
+                       "reason": "bladet bär ingen egen beteckningslista; handlingens lista "
+                                 + (f"på blad {', '.join(str(p + 1) for p in pages)} " if pages else "")
+                                 + "gäller här, och får bara neka en kod den själv listar"})
     # Blocking means one thing: a pipe the sheet names, for which the takeoff has no length. Everything else is a
     # note the takeoff survives, and the two must not be counted together - a list of things to fix that is mostly
     # things that need no fixing is a list nobody works through.

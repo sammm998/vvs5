@@ -347,18 +347,21 @@ def test_legend_is_read_from_its_shape_and_roles_from_how_the_drawing_uses_it():
                                       ("S01", "Spillvatten"), ("X31", "PEX-ror"), ("G3", "MA-ror"),
                                       ("BLxxx", "Blandare"), ("TS1", "Tvattstall")]):
         lines.append(row(f"{code} {desc}", 500, 30 + 12 * i))
-    lg = read_legend(lines)
-    assert {e.code for e in lg.entries} == {"KV01", "VV01", "S01", "X31", "G3", "BLxxx", "TS1"}
-    assert all(e.heading == "TAPPVATTENSYSTEM" for e in lg.entries)
-
     class D:
         def __init__(self, text, head, dn, bbox):
             self.text, self.system_token, self.dn, self.bbox = text, head, dn, bbox
     out_on_the_drawing = (50.0, 400.0, 90.0, 408.0)
-    assign_roles(lg, [D("KV01-X31-16", "KV01", 16, out_on_the_drawing),
-                      D("S01-G3-110", "S01", 110, out_on_the_drawing),
-                      D("BL3", "BL3", None, out_on_the_drawing),
-                      D("TS1", "TS1", None, out_on_the_drawing)])
+    drawn = [D("KV01-X31-16", "KV01", 16, out_on_the_drawing),
+             D("S01-G3-110", "S01", 110, out_on_the_drawing),
+             D("BL3", "BL3", None, out_on_the_drawing),
+             D("TS1", "TS1", None, out_on_the_drawing)]
+    # the list is read against what the drawing writes: a stack of short words with sentences beside them is a
+    # note until its codes turn up out on the paper
+    lg = read_legend(lines, drawn)
+    assert {e.code for e in lg.entries} == {"KV01", "VV01", "S01", "X31", "G3", "BLxxx", "TS1"}
+    assert all(e.heading == "TAPPVATTENSYSTEM" for e in lg.entries)
+
+    assign_roles(lg, drawn)
     assert lg.systems() == {"KV01", "S01"}
     assert lg.components() == {"BLXXX", "TS1"}          # BL3 matches the placeholder code BLxxx
     assert {e.code for e in lg.entries if e.role == "material"} == {"VV01", "X31", "G3"}
