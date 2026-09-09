@@ -866,3 +866,104 @@ body.lp-dark { background: #07080a; }
   .lp-stack { position: static; aspect-ratio: auto; }
   .lp-plate { position: relative; inset: auto; margin-bottom: 12px; }
 }
+
+
+/* ---------- the evidence section, as a bento of drawn claims ----------
+ *
+ * Six cards each carrying the same tick told a reader nothing about any of the six. Every card here draws what
+ * it is claiming instead - the chain from a label to a metre, the printed scale checked against the bar on the
+ * paper, the sheet coming back coloured, two readings meeting at the same run. A section about being able to
+ * look at the evidence has to be worth looking at.
+ */
+.lp-bento {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  perspective: 1600px;
+}
+.lp-ev {
+  grid-column: span 2;
+  margin: 0;
+  border: 1px solid var(--lp-line);
+  border-radius: 16px;
+  background: linear-gradient(168deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.014));
+  padding: 22px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.3s, box-shadow 0.45s;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+.lp-ev::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: radial-gradient(42% 46% at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.075), transparent 72%);
+  opacity: var(--glare, 0);
+  transition: opacity 0.35s ease;
+}
+.lp-ev:hover { border-color: var(--lp-line-2); box-shadow: 0 34px 70px rgba(0, 0, 0, 0.5); }
+.lp-ev h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.012em; color: #f2f4f7; }
+.lp-ev p { margin: 0; color: var(--lp-dim); font-size: 14.5px; line-height: 1.6; }
+.lp-ev.tall h3 { font-size: 19px; }
+.lp-ev-fig {
+  border: 1px solid var(--lp-line);
+  border-radius: 11px;
+  background: rgba(0, 0, 0, 0.28);
+  padding: 12px;
+  margin-bottom: 2px;
+}
+.lp-ev.tall .lp-ev-fig { flex: 1; display: grid; place-items: center; }
+.lp-ev-say { display: flex; flex-direction: column; gap: 9px; }
+/* the closing card reads across: the takeoff on one side, what it leaves the system as on the other */
+.lp-ev.wide { flex-direction: row-reverse; align-items: center; gap: 30px; padding: 26px 28px; }
+.lp-ev.wide .lp-ev-fig { flex: 1 1 460px; min-width: 0; margin: 0; }
+.lp-ev.wide .lp-ev-say { flex: 1 1 340px; }
+@media (max-width: 760px) { .lp-ev.wide { flex-direction: column; gap: 16px; } }
+.lp-ev-fig svg { width: 100%; height: auto; display: block; }
+
+/* the marks the figures are drawn with, in the sheet's own language */
+.lp-ev-box { fill: rgba(255, 255, 255, 0.05); stroke: rgba(255, 255, 255, 0.22); }
+.lp-ev-rule { stroke: rgba(255, 255, 255, 0.2); stroke-width: 1; }
+.lp-ev-mono { font-family: var(--lp-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 12px; fill: #e8ecf1; }
+.lp-ev-mono.sm { font-size: 10px; }
+.lp-ev-mono.head { fill: #6b7280; letter-spacing: 0.1em; }
+.lp-ev-cap { font-family: var(--lp-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 8.5px; letter-spacing: 0.12em; text-transform: uppercase; fill: #5b616c; }
+.lp-ev-cap.chip { fill: #9aa3b2; letter-spacing: 0.08em; }
+.lp-ev-chip { fill: rgba(255, 255, 255, 0.06); stroke: rgba(255, 255, 255, 0.1); }
+.lp-ev-leader { stroke: #c026d3; stroke-width: 1.4; fill: none; }
+.lp-ev-leader.alt { stroke: #60a5fa; stroke-dasharray: 3 3; }
+.lp-ev-hit { fill: #0b0d10; stroke: #c026d3; stroke-width: 2; }
+.lp-ev-run { stroke: #3a4048; stroke-width: 3; fill: none; stroke-linecap: round; }
+.lp-ev-run.on { stroke: #6ee7a5; }
+.lp-ev-sum { fill: rgba(110, 231, 165, 0.1); stroke: rgba(110, 231, 165, 0.34); }
+.lp-ev-num { font-family: var(--lp-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 14px; fill: #6ee7a5; }
+.lp-ev-bar path { stroke: #8b93a1; stroke-width: 1.2; fill: none; }
+.lp-ev-barfill { fill: rgba(110, 231, 165, 0.5); }
+.lp-ev-ok circle { fill: rgba(110, 231, 165, 0.11); stroke: rgba(110, 231, 165, 0.4); }
+.lp-ev-ok path { stroke: #6ee7a5; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.lp-ev-sheet { fill: rgba(255, 255, 255, 0.02); stroke: rgba(255, 255, 255, 0.1); }
+.lp-ev-mrun { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.lp-ev-mrun.a { stroke: #6ee7a5; }
+.lp-ev-mrun.b { stroke: #60a5fa; }
+.lp-ev-mrun.c { stroke: #f0abfc; }
+.lp-ev-mrun.grey { stroke: #4b5160; stroke-dasharray: 7 5; }
+
+/* the chain draws itself once, the first time it is looked at */
+.lp-chain .lp-cd { stroke-dasharray: 1; stroke-dashoffset: 1; animation: lp-ev-draw 0.75s cubic-bezier(0.3, 0.8, 0.4, 1) forwards; }
+.lp-chain .lp-ci { opacity: 0; animation: lp-ev-in 0.5s ease forwards; }
+@keyframes lp-ev-draw { to { stroke-dashoffset: 0; } }
+@keyframes lp-ev-in { to { opacity: 1; } }
+
+@media (max-width: 980px) {
+  .lp-bento { grid-template-columns: repeat(2, 1fr); }
+  .lp-ev { grid-column: span 2 !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-ev { transition: none; transform: none !important; }
+  .lp-chain .lp-cd { animation: none; stroke-dashoffset: 0; }
+  .lp-chain .lp-ci { animation: none; opacity: 1; }
+}

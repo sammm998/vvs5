@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../landing.css";
 import LandingScene from "../components/LandingScene";
 import LayerStack from "../components/LayerStack";
+import EvidenceSection from "../components/EvidenceSection";
 import { useCountUp, useInView, useScrollProgress } from "../components/lp-motion";
 import { tiltStyle, usePointerParallax, useTilt } from "../components/tilt";
 
@@ -310,33 +311,7 @@ export default function Landing() {
         </p>
       </section>
 
-      <section className="lp-sec lp-wrap" id="belagg">
-        <div className="lp-sec-head">
-          <div className="lp-kicker">Beläggen</div>
-          <h2>Varje meter går att spåra tillbaka</h2>
-          <p>Klicka på en rad i mängden och se exakt vilken etikett, vilken ledarlinje och vilka streck som gav den.</p>
-        </div>
-        <div className="lp-grid">
-          {[
-            ["Bevis per rad", "Etikett, ledarlinje, kontaktpunkt och varje streck som räknades — med sidkoordinater."],
-            ["Flera läsningar", "Sidan läses om längs vägar med andra bevis. Där de säger emot varandra lämnar röret mängden."],
-            ["Granskningslista", "Rör ingen väg namngav och etiketter ingen väg placerade, var och en med sitt skäl."],
-            ["Skalan verifierad", "Utskriven skala kontrolleras mot skalstocken på pappret innan en enda meter räknas."],
-            ["Markerad PDF", "Samma ritning tillbaka med varje rör färgat efter identitet och det onämnda i grått."],
-            ["Excel och CSV", "Mängden ut i det format kalkylen redan använder, med beläggen kvar i filen."],
-          ].map(([h, p]) => (
-            <div className="lp-card" key={h}>
-              <div className="ic">
-                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-                  <path d="M2 11 L6 4 L10 9 L14 3" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <h3>{h}</h3>
-              <p>{p}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <EvidenceSection />
 
       <section className="lp-sec lp-wrap lp-light">
         <div className="lp-quote">
