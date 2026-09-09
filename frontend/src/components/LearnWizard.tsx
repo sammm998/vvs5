@@ -80,8 +80,13 @@ export default function LearnWizard({ open, onClose, start }: {
     if (!open) return;
     const p = readProgress();
     setProg(p);
-    const want = start ? steps.findIndex((s) => s.lesson.id === start) : -1;
-    setAt(want >= 0 ? want : Math.min(steps.findIndex((s) => !p[s.lesson.id]) + 0 || 0, steps.length - 1));
+    // where to open: the step asked for, else the first one not yet done, else the first - and never an index
+    // that is not a step. findIndex returns -1 when every step is done, and a wizard opened on step minus one
+    // has nothing to render at all.
+    const named = start ? steps.findIndex((s) => s.lesson.id === start) : -1;
+    const undone = steps.findIndex((s) => !p[s.lesson.id]);
+    const want = named >= 0 ? named : undone >= 0 ? undone : 0;
+    setAt(Math.max(0, Math.min(want, steps.length - 1)));
   }, [open, start, steps]);
 
   const go = useCallback((d: number) => setAt((v) => Math.max(0, Math.min(steps.length - 1, v + d))), [steps.length]);
@@ -99,7 +104,8 @@ export default function LearnWizard({ open, onClose, start }: {
   }, [open, onClose, go]);
 
   if (!open) return null;
-  const s = steps[at];
+  const s = steps[Math.max(0, Math.min(at, steps.length - 1))];
+  if (!s) return null;
   const l = s.lesson;
   const done = steps.filter((x) => prog[x.lesson.id]).length;
   const finish = () => setProg(markDone(l.id));

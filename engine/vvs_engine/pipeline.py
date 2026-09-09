@@ -1131,7 +1131,10 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         record("annotation_pens_withheld",
                "bladets skrivpennor, som den första läsningens hänvisningslinjer pekade ut, hålls utanför",
                pass2[1], pass2[3], kept=not take1)
-        passes[0]["kept"] = bool(take1)
+        # pass1 is whichever reading came out of the step above - the unrestricted one, or the rescue that
+        # replaced it - so the verdict is written on the record that describes it, not always on the first
+        kept_first = next((q for q in reversed(passes[:-1]) if q.get("kept") is not False), passes[0])
+        kept_first["kept"] = bool(take1)
         if take1:
             if os.environ.get("VVS_DEBUG_PASS"):
                 print(f"[withdraw] restricted pass left {len(_reached(pass2[3]))}/{len(pipe_labels)} labels placed, "
