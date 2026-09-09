@@ -435,9 +435,11 @@ def document_quantities(sheets: list[dict]) -> dict[str, Any]:
                                       "sheets": [], "label_count": 0, "physical_pipe_count": 0,
                                       "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0,
                                       "confirmed_total_m": 0.0, "ambiguous_m": 0.0, "in_hatched_area_m": 0.0,
-                                      "riser_count": 0})
+                                      "riser_count": 0, "riser_count_from_labels": 0})
             r["sheets"].append(sh.get("page"))
-            for k in ("label_count", "physical_pipe_count", "riser_count"):
+            # both riser readings travel with the row: the takeoff chooses between them, and a rollup that
+            # carried only one of them would answer a question the reader did not ask
+            for k in ("label_count", "physical_pipe_count", "riser_count", "riser_count_from_labels"):
                 r[k] += int(q.get(k) or 0)
             for k in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
                       "in_hatched_area_m"):
@@ -452,7 +454,8 @@ def document_quantities(sheets: list[dict]) -> dict[str, Any]:
                         "in_hatched_area_m")}
     totals.update({"designations": len(out_rows), "sheets": len(sheets),
                    "physical_pipes": sum(r["physical_pipe_count"] for r in out_rows),
-                   "riser_count": sum(r["riser_count"] for r in out_rows)})
+                   "riser_count": sum(r["riser_count"] for r in out_rows),
+                   "riser_count_from_labels": sum(r["riser_count_from_labels"] for r in out_rows)})
     return {"totals": totals, "rows": out_rows, "sheets": sheets, "sheets_without_a_settled_scale": unscaled}
 
 
@@ -490,7 +493,10 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     # The set's designation list, not the first sheet's. A drawing set writes the list on whichever sheet has
     # room for it, so reporting page one's copy reports a borrowed list on any set that puts it further back -
     # and the project has nothing to hand its next drawing.
-    W("drawing-legend.json", (doc_legend if doc_legend is not None and doc_legend.entries else pa.legend).as_dict())
+    # The set's list, but told from this sheet: whether the sheet in front of the reader is the one that wrote
+    # the list is a fact about this sheet, and the set-wide copy is marked borrowed for everybody by construction.
+    _lg = doc_legend if doc_legend is not None and doc_legend.entries else pa.legend
+    W("drawing-legend.json", {**_lg.as_dict(), "own": pa.legend.own and bool(pa.legend.entries)})
     W("document-quantities.json", document_quantities(sheets or []))
     # How much of what the drawing names the reading carried through to a metre. It is the only figure that
     # tells a sheet the reading got through from a sheet it barely opened, so it is written down as its own

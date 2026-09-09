@@ -158,3 +158,21 @@ Slutsatsen är inte att bokstäver är rör. Den är att ägandet och storleksgr
 på sätt som ett trubbigt borttagande river: bokstavsstrecken fungerar som gränser och som bryggor över luckor.
 Ett riktigt försök måste därför skilja rör från byggnad *innan* familjerna bedöms — och visa att gränserna
 håller utan dem — inte plocka bort strecken ur en färdig graf.
+
+**Ett etikettblock med flera koder tar hela sträckan var.** Det överlägset vanligaste skälet till att en
+beteckning står kvar som *påpekad men onämnd* är `multi_row_label_shares_one_run`: ett block med flera koder som
+når en enda ritad linje. Över korpusen är det 1 178 av knappt 1 340 sådana fall, och de bär 665 m mot 4 407 m
+bekräftade — ungefär 13 % mer rör som bladen skriver ut och läsningen avstår från.
+
+Resonemanget för att ta dem ser starkt ut: rör som delar stråk ritas som en linje, för i planskala skulle de
+ligga ovanpå varandra, och mängden är då *en längd per kod* — inte en längd delad mellan dem. Att dela var
+aldrig alternativet; att avstå var det.
+
+Mätt föll det. Regeln lades in i två former. Den strikta — bara där lagren inte namnger någon av koderna —
+utlöses inte alls på A, C, D eller E, så referensgrindet säger ingenting om den. Den lösare — där lagren inte
+avgör *någon* rad, vilket är fallet på blad A — gav **17,46 falska meter på blad A och noll ägda meter tillbaka**
+(hela setet: falska 2,53 → 19,94). Facit har alltså inte de metrarna: där lagret redan namnger en av koderna i
+blocket är den koden den som går där, och de andra raderna säger något annat.
+
+Kvar står alltså: geometrin under ett sådant block är riktigt utpekad, och att avstå från att namnge den är
+riktigt. Ett nytt försök måste börja i vad *facit* gör med ett flerradigt block, inte i vad konventionen säger.

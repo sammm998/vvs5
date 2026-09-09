@@ -15,7 +15,7 @@ from .output.artifacts import why as why_fn, write_all
 from .output.overlays import OverlayWriter
 from .pdf.extract import extract_document
 from .pipeline import PageAnalysis, analyze_page, prepare_page, reading_coverage, summarize
-from .semantics.legend import DrawingLegend, merged
+from .semantics.legend import DrawingLegend, learn_roles, merged
 
 CONFIG = {"contact_tolerance_pt": 0.6, "touch_tolerance_pt": 0.15, "unknown_glyph_threshold": 0.14, "grid": 32}
 
@@ -153,6 +153,9 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
                           film_sink=film_sink if pg.info.index == 0 else None,
                           second_reader=second_reader, known_families=known_families, known_legend=vocab,
                           prepared=held.pop(i, None))
+        # what this sheet showed about its codes goes back into the set's list, so the sheets after it start
+        # from what has been read rather than from a column of words with no verdict on any row
+        learn_roles(vocab, pa.legend)
         overlay.add(pa)
         sheets.append(sheet_record(pa))
         done += 1
@@ -176,6 +179,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
             pa = analyze_page(doc.pages[i], progress, ocr_assist=ocr_assist,
                               film_sink=film_sink if i == 0 else None, second_reader=second_reader,
                               known_families=known_families, known_legend=vocab, known_scale=set_scale)
+            learn_roles(vocab, pa.legend)
             overlay.replace(pa)
             sheets[i] = sheet_record(pa)
             rescaled += 1

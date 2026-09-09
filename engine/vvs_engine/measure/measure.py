@@ -126,13 +126,14 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
     for k, n in (label_counts or {}).items():
         if k in rows:
             rows[k]["label_count"] = n
+    # Both riser readings make a row of their own. A designation the sheet writes only over a riser - a stack
+    # that drops away out of the plan, drawn as a point and named with its dimension on the row below - has no
+    # horizontal run to be aggregated from, and left to the measured rows alone it would not be reported at all.
     for k, lst in (label_risers or {}).items():
-        if k in rows:
-            rows[k]["riser_count_from_labels"] = len(lst)
+        r = rows.setdefault(k, _empty_row(k))
+        r["riser_count_from_labels"] = len(lst)
     for k, lst in (risers or {}).items():
-        r = rows.setdefault(k, {"designation": k.split("|DN")[0], "base": k.split("|DN")[0], "dn": _dn_from_key(k), "system": "", "physical_pipe_count": 0,
-                                "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0, "confirmed_total_m": 0.0,
-                                "horizontal_pdf_units": 0.0, "ambiguous_m": 0.0, "vertical_known": False, "state": "CONFIRMED", "pipe_ids": []})
+        r = rows.setdefault(k, _empty_row(k))
         r["riser_count"] = len(lst)
     out = []
     for k in sorted(rows):
@@ -142,7 +143,8 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         r.setdefault("label_count", (label_counts or {}).get(k, 0))
         r.setdefault("in_hatched_area_m", 0.0)
         r.setdefault("ambiguous_pdf_units", 0.0)
-        if r["physical_pipe_count"] == 0 and r["ambiguous_pdf_units"] == 0 and r["riser_count"] > 0:
+        if r["physical_pipe_count"] == 0 and r["ambiguous_pdf_units"] == 0 \
+                and max(r["riser_count"], r["riser_count_from_labels"]) > 0:
             r["state"] = "RISER_LABELS_ONLY"
         for f in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
                   "horizontal_pdf_units", "in_hatched_area_m", "ambiguous_pdf_units"):
@@ -150,6 +152,14 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         r["vertical_m"] = r["confirmed_vertical_m"] if r["vertical_known"] else "UNKNOWN"
         out.append(r)
     return out
+
+
+def _empty_row(k: str) -> dict[str, Any]:
+    """A quantity row for a designation with nothing measured under it yet."""
+    return {"designation": k.split("|DN")[0], "base": k.split("|DN")[0], "dn": _dn_from_key(k), "system": "",
+            "physical_pipe_count": 0, "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0,
+            "confirmed_total_m": 0.0, "horizontal_pdf_units": 0.0, "ambiguous_m": 0.0, "vertical_known": False,
+            "in_hatched_area_m": 0.0, "state": "CONFIRMED", "pipe_ids": []}
 
 
 def _dn_from_key(k: str):

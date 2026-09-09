@@ -333,6 +333,35 @@ def roles_of(legend: DrawingLegend) -> dict[str, str]:
     return {e.code.upper(): e.role for e in legend.entries if e.role in ("system", "component")}
 
 
+# what a role is worth against another claim on the same code: a sheet that showed a code opening a dimensioned
+# label has said more than a sheet on which the code never appeared
+_ROLE_RANK = {"unused": 0, "material": 1, "component": 2, "system": 2}
+
+
+def learn_roles(vocab: DrawingLegend | None, sheet: DrawingLegend) -> None:
+    """Carry back into the set's vocabulary what a sheet settled about its codes by using them.
+
+    The vocabulary is read before any sheet is, so its rows start out saying only that the codes exist - a list
+    of words with no verdict on any of them. What a code IS - a pipe system, a fitting, a material - is something
+    a sheet shows by using it, and a set is read one sheet at a time. Without this the list travels between the
+    sheets as bare words: every row stays 'unused', the next sheet is handed nothing to stand on, and the list
+    that is written down at the end says the reading made nothing of any of its sixty-four rows.
+
+    Only what a sheet showed travels. A role a sheet was handed by the vocabulary is not evidence, and letting it
+    back in would harden the first guess into a fact that every later sheet then agrees with.
+    """
+    if vocab is None or not vocab.entries:
+        return
+    by_code = vocab.by_code
+    for e in sheet.entries:
+        if e.role_from != "usage":
+            continue
+        v = by_code.get(e.code.upper())
+        if v is None or _ROLE_RANK[e.role] <= _ROLE_RANK.get(v.role, 0):
+            continue
+        v.role, v.role_from = e.role, "usage"
+
+
 def assign_roles(legend: DrawingLegend, designations, prior: dict[str, str] | None = None) -> None:
     """Settle what each legend code is, from how the drawing uses it.
 

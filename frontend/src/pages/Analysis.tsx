@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import PdfViewer, { Drawn, EditKind, Layer, ViewerHandle } from "../components/PdfViewer";
-import QuantityTable from "../components/QuantityTable";
+import QuantityTable, { withFloorHeight } from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
 import LearnWizard from "../components/LearnWizard";
 import Boundary from "../components/Boundary";
@@ -75,6 +75,8 @@ export default function AnalysisPage() {
   ].filter(Boolean).join("&");
   const fh = floorHeight.trim() ? Number(floorHeight.replace(",", ".")) : NaN;
   const floorH = Number.isFinite(fh) && fh > 0 ? fh : null;
+  // a row of the whole-document rollup counts its stacks from the same source the table and the export use
+  const docRisers = (r: any) => Number((riserSource === "labels" ? r.riser_count_from_labels : r.riser_count) ?? 0);
   // The question a reader opens this page with is "did it get the pipes?", and that is a question about the
   // drawing with the reading on top of it - not about leaders, label boxes and attachment marks, which cover the
   // sheet so thickly that the runs underneath cannot be seen at all. They are diagnostics, and they start off.
@@ -333,7 +335,8 @@ export default function AnalysisPage() {
               <details className="settings" open>
                 <summary>
                   Hela handlingen <span className="muted">· {nSheets} blad · {setDoc.totals.confirmed_horizontal_m} m
-                    horisontellt · {setDoc.totals.designations} beteckningar</span>
+                    horisontellt · {setDoc.rows.reduce((t: number, r: any) => t + docRisers(r), 0)} stigare
+                    · {setDoc.totals.designations} beteckningar</span>
                 </summary>
                 <div className="body">
                   <p className="muted">
@@ -344,7 +347,8 @@ export default function AnalysisPage() {
                     <table className="legendtable">
                       <thead>
                         <tr><th>Beteckning</th><th>DN</th><th className="num">Horisontellt</th>
-                          <th className="num">Vertikalt</th><th className="num">Rör</th><th>Blad</th></tr>
+                          <th className="num">Stigare</th><th className="num">Vertikalt</th>
+                          <th className="num">Rör</th><th>Blad</th></tr>
                       </thead>
                       <tbody>
                         {setDoc.rows.map((r: any) => (
@@ -352,7 +356,12 @@ export default function AnalysisPage() {
                             <td><b>{r.designation}</b></td>
                             <td>{r.dn ?? <span className="muted">–</span>}</td>
                             <td className="num">{r.confirmed_horizontal_m.toFixed(2)}</td>
-                            <td className="num">{r.confirmed_vertical_m ? r.confirmed_vertical_m.toFixed(2) : <span className="muted">–</span>}</td>
+                            {/* the stacks the sheets state, and the metres they become once a floor height is given */}
+                            <td className="num">{docRisers(r) || <span className="muted">–</span>}</td>
+                            <td className="num">{(() => {
+                              const v = r.confirmed_vertical_m + (floorH ? docRisers(r) * floorH : 0);
+                              return v ? v.toFixed(2) : <span className="muted">–</span>;
+                            })()}</td>
                             <td className="num">{r.physical_pipe_count}</td>
                             <td className="muted">{r.sheets.map((n: number) => n + 1).join(", ")}</td>
                           </tr>
@@ -430,7 +439,14 @@ export default function AnalysisPage() {
               setResult(await api.result(id!));
             }} />
         )}
-        {tab === "oversikt" && (
+        {tab === "oversikt" && (() => {
+          // The overview used to read the engine's raw totals while the table beside it read the same numbers
+          // under the takeoff's own assumptions. A sheet full of stacks then said "0,0 m vertikalt" on one tab
+          // and counted its risers on the next. One reading, one set of assumptions, both tabs.
+          const calc = withFloorHeight(result.quantities || [], floorH, includeHatched, riserSource);
+          const sum = (k: string) => calc.reduce((t: number, r: any) => t + (Number(r[k]) || 0), 0);
+          const risers = calc.reduce((t: number, r: any) => t + (r.risers_calc || 0), 0);
+          return (
           <div className="card">
             <div className="kpi">
               <div className="card"><div className="v">{c.designations}</div><div className="l">Vektorbeteckningar</div></div>
@@ -438,9 +454,13 @@ export default function AnalysisPage() {
               <div className="card"><div className="v">{c.leaders}</div><div className="l">CAD-leaders</div></div>
               <div className="card"><div className="v">{c.verified_attachments}</div><div className="l">Verifierade röranslutningar</div></div>
               <div className="card"><div className="v">{c.physical_pipes}</div><div className="l">PhysicalPipes</div></div>
-              <div className="card"><div className="v">{result.totals.confirmed_horizontal_m.toFixed(1)} m</div><div className="l">Horisontellt</div></div>
-              <div className="card"><div className="v">{result.totals.confirmed_vertical_m.toFixed(1)} m</div><div className="l">Vertikalt</div></div>
-              <div className="card"><div className="v">{result.totals.confirmed_total_m.toFixed(1)} m</div><div className="l">Totalt</div></div>
+              <div className="card"><div className="v">{sum("horizontal_calc").toFixed(1)} m</div><div className="l">Horisontellt</div></div>
+              {/* Vertical metres are risers times a floor height nobody has stated yet. Until someone does, the
+                  honest figure is the count - "0,0 m" reads as "the drawing has no stacks", which is a lie. */}
+              {floorH
+                ? <div className="card"><div className="v">{sum("vertical_calc").toFixed(1)} m</div><div className="l">Vertikalt · {risers} st × {String(floorH).replace(".", ",")} m</div></div>
+                : <div className="card"><div className="v">{risers} st</div><div className="l">Stigare · ange våningshöjd för meter</div></div>}
+              <div className="card"><div className="v">{sum("total_calc").toFixed(1)} m</div><div className="l">Totalt</div></div>
               <div className="card"><div className="v">{result.totals.ambiguous_m.toFixed(1)} m</div><div className="l">Tvetydigt</div></div>
               <div className="card"><div className="v">{c.claimed_m ?? "?"} m</div><div className="l">Påpekad men onämnd</div></div>
               <div className="card"><div className="v">{c.unowned_m ?? "?"} m</div><div className="l">Oidentifierad geometri</div></div>
@@ -463,9 +483,15 @@ export default function AnalysisPage() {
               })()}
             </div>
             <p style={{ marginTop: 12 }}>Indata: <b>ren vektor</b> ({result.input?.classification?.n_paths ?? "?"} vektorobjekt, {result.input?.classification?.n_chars ?? 0} söktecken) · Skala: <b>{result.scale.state}</b> ({result.scale.reason}) · Reconciliation: <b>{c.reconciliation}</b> · Determinism: <b>{c.determinism ?? "ej körd"}</b> · Contamination: <b>{c.contamination}</b> · Andraläsare: <b>{c.second_reader?.consulted ? `tillfrågad (${c.second_reader.asked} fall, ${c.second_reader.settled} avgjorda)` : "ej tillfrågad"}</b> · Motor: <b>{result.build?.engine ?? "?"}</b> (bygge <code>{result.build?.build ?? "okänt"}</code>)</p>
+            <p className="muted">Vågrätt och lodrätt läses ur hur beteckningen är skriven: står dimensionen på
+              raden under beteckningen är det en stigare, och den räknas som antal; står allt på en rad är det en
+              sträcka i planet, och den mäts i meter. Etiketterna med dimension på raden under ger {calc.reduce((t: number, r: any) => t + (r.riser_count_from_labels ?? 0), 0)} stigare,
+              de ritade stigarsymbolerna {calc.reduce((t: number, r: any) => t + (r.riser_count ?? 0), 0)}. Här räknas
+              de ur <b>{riserSource === "labels" ? "etiketterna" : "symbolerna"}</b>; källan byts under Antaganden.</p>
             <p className="muted">Sida {result.page.width_pt}×{result.page.height_pt} pt ({result.page.format}) · analys {result.performance.total_seconds} s · {result.performance.counts.raw_vector_objects} vektorobjekt · {result.performance.counts.glyphs} glyfer i {result.performance.counts.glyph_families} familjer</p>
           </div>
-        )}
+          );
+        })()}
         {tab === "artefakter" && (
           <div className="card">
             <h4>Export</h4>
