@@ -126,7 +126,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 
 .main { min-width: 0; }
-.main > main { padding: 40px 48px 72px; max-width: 1320px; perspective: 1600px; perspective-origin: 50% 0%; }
+/* No perspective here. A perspective makes the element a containing block for everything fixed inside it, so
+   the guide - which is fixed to the viewport - was fixed to this column instead and sat beside the sidebar
+   rather than over it. The parts that lean set their own perspective where they lean. */
+.main > main { padding: 40px 48px 72px; max-width: 1320px; }
 
 /* ---------- page furniture ---------- */
 
@@ -1746,4 +1749,62 @@ body.wz-open { overflow: hidden; }
   margin: 14px 0 16px; font-size: 11.5px; color: var(--muted);
   background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-s); padding: 10px 12px;
   max-height: 130px; overflow: auto;
+}
+
+/* ---------- på en liten skärm ---------- */
+/* Skalet är byggt för ett skrivbord: en 296 px list plus sidan bredvid. På en telefon sköt det ut hela
+   innehållet ur rutan. Under 900 px viks listan ihop till sin ikonrad, och allt som stod i två spalter står
+   i en. Ritningen är fortfarande en ritning och vill ha bredd - men den ska gå att nå. */
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 58px minmax(0, 1fr); }
+  .side { padding: 22px 8px 18px; align-items: center; gap: 16px; }
+  .side .wide, .side .org, .side .who { display: none; }
+  .side .brand { justify-content: center; }
+  .side nav a { justify-content: center; padding: 13px 0; }
+  .side nav a.on::before { display: none; }
+  .side .railbtn { display: none; }
+  .side .foot button { padding: 8px 10px; }
+  .main > main { padding: 24px 16px 56px; }
+  h1 { font-size: clamp(30px, 9vw, 44px); }
+  .head { align-items: flex-start; }
+
+  /* the reading: the sheet above, the takeoff under it, each able to scroll on its own */
+  .workspace { height: auto; min-height: 100vh; }
+  .viewtabs { padding: 10px 12px; overflow-x: auto; }
+  .viewtabs::-webkit-scrollbar { height: 0; }
+  /* the resizable split is an inline style; on a phone there is nothing to split, so it is overridden outright */
+  .analysis { display: flex !important; flex-direction: column; height: auto; gap: 0; }
+  .analysis .left { height: 60vh; min-width: 0; }
+  /* the takeoff has more columns than a phone is wide; it scrolls inside its own panel, never past the page */
+  .analysis .right { max-height: none; overflow-x: auto; overflow-y: visible; min-width: 0; }
+  .splitter { display: none; }
+  .viewer { min-width: 0; }
+
+  .learn, .learn > *, .lf-hero > div, .lf-mod { min-width: 0; }
+  .lf-mods { grid-template-columns: minmax(0, 1fr); }
+  .lf-hero p { max-width: none; }
+  .lf-less .nm { overflow: hidden; text-overflow: ellipsis; }
+  .toolbar { overflow-x: auto; flex-wrap: nowrap; }
+  .toolbar::-webkit-scrollbar { height: 0; }
+
+  .kpi { grid-template-columns: 1fr 1fr; }
+  .item { grid-template-columns: 1fr; gap: 10px; padding: 20px 18px; }
+  .item .no { padding-top: 0; }
+  .item .act { opacity: 1; }
+
+  .lf-hero { padding: 20px; }
+  .lf-ring { width: 72px; height: 72px; }
+
+  /* the guide takes the whole screen: on a phone there is nothing behind it worth showing anyway */
+  .wz { padding: 0; }
+  .wz-panel { width: 100%; max-height: 100%; height: 100%; border-radius: 0; border: 0; }
+  .wz-head { padding: 16px 16px 10px; }
+  .wz-head h2 { font-size: 21px; }
+  .wz-rail { padding: 0 16px 12px; gap: 4px; }
+  .wz-dot { width: 16px; }
+  .wz-dot.on { width: 26px; }
+  .wz-body { padding: 0 16px 16px; gap: 16px; }
+  .wz-foot { padding: 12px 16px 16px; gap: 10px; }
+  .wz-foot button { padding: 11px 16px; }
 }
