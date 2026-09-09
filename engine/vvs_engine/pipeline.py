@@ -227,9 +227,14 @@ def _settle_bundles_by_elimination(anchors, ownership, graphs) -> int:
     for fk, g in graphs.items():
         for pid, prim in g.prims.items():
             prim_of[(fk, prim.pid, prim.seg_index)] = pid
+    # What a run is already called has to be spelled the way the label spells it. The identity's key is a
+    # normalised form - it drops the suffix the sheet writes, so `KV1-X7-16/W` becomes `KV1-X7-16` - and it was
+    # being compared against the label's own text. The two alphabets never met, so every run the sheet had
+    # already named looked unnamed and no bundle was ever settled. The display form is the label's own.
     for p in ownership.pipes:
+        name = (p.identity.display or p.identity.key.replace("|DN", "-")).upper()
         for i in p.prim_ids:
-            owner[(p.family, i)] = p.identity.key.replace("|DN", "-").upper()
+            owner[(p.family, i)] = name
 
     by_block: dict[str, list] = defaultdict(list)
     for a in anchors:
@@ -258,9 +263,10 @@ def _settle_bundles_by_elimination(anchors, ownership, graphs) -> int:
         fixed = {n for n in named if n is not None}
         free_codes = [c for c in codes if c not in fixed]
         free_slots = [i for i, n in enumerate(named) if n is None]
-        if len(free_codes) != len(free_slots) or len(free_slots) != 1:
-            continue                      # not down to one: the sheet has not said enough
-        named[free_slots[0]] = free_codes[0]
+        if len(free_codes) != len(free_slots) or len(free_slots) > 1:
+            continue                      # more than one left over: the sheet has not said enough
+        if free_slots:
+            named[free_slots[0]] = free_codes[0]
         if sorted(x for x in named if x) != sorted(codes):
             continue
         # Elimination says which code is left over; it must not be what makes the identity. Each label of the

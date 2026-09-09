@@ -540,7 +540,15 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
     # Nothing in the layer names tells the rows apart, but the drawing may still: the runs of a bundle are
     # separate lines, and one of them is often named on its own somewhere else on the sheet. Hand the ordered
     # runs on and let the sheet settle it once ownership is known.
-    if paths is not None and not any(match[d.did] for d in rows):
+    #
+    # The test is whether the layer names settle any row at all, not whether they say anything at all. It used
+    # to be the second, and a single row whose system merely appeared in the shared layer's name was enough to
+    # close this door on the whole block - so a stacked label over a bundle of drawn lines fell straight through
+    # to "several codes on one run" and lost its metres with the lines sitting right there. It is not the first
+    # either: a block where the layers do settle some rows keeps them, because a row the drawing has already
+    # named is worth more than a place in an ordering.
+    settles_nothing = not any(len(match[d.did]) == 1 and len(owner[match[d.did][0]]) == 1 for d in rows)
+    if paths is not None and settles_nothing:
         runs = parallel_runs([c for g in gkeys for c in groups[g]], paths)
         if runs is not None and len(runs) == len(rows):
             order = sorted(rows, key=lambda d: d.row_index)
