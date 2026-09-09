@@ -8,6 +8,7 @@ import Projects from "./pages/Projects";
 import ProjectPage from "./pages/Project";
 import DrawingPage from "./pages/Drawing";
 import AnalysisPage from "./pages/Analysis";
+import Boundary from "./components/Boundary";
 import LearnPage from "./pages/LearnPage";
 
 function Guard({ children }: { children: JSX.Element }) {
@@ -59,6 +60,7 @@ function IconOut() {
 }
 
 const ROUTES = (
+  <Boundary what="sidan">
   <Routes>
     <Route path="/" element={<Landing />} />
     <Route path="/login" element={<Login />} />
@@ -69,6 +71,7 @@ const ROUTES = (
     <Route path="/jobs/:id" element={<Guard><AnalysisPage /></Guard>} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
   </Routes>
+  </Boundary>
 );
 
 export default function App() {

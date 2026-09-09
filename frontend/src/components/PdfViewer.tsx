@@ -356,7 +356,12 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
   // draw is click-to-place: a run the engine never saw has no end to grab
   const click = (e: React.MouseEvent) => {
     if (kind !== "draw" || !vp) return;
-    setPending((q) => [...q, at(e)]);
+    // The point is read here and not inside the update. A functional update is called by React when it gets
+    // round to it, which is after the event has been handed back - and then currentTarget is null and reading
+    // the sheet's rectangle off it throws, taking the whole page with it. An event is only an event during its
+    // own handler.
+    const pt = at(e);
+    setPending((q) => [...q, pt]);
   };
   const finish = () => {
     if (kind !== "draw" || pending.length < 2) return;

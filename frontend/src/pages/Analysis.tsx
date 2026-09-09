@@ -5,6 +5,7 @@ import PdfViewer, { Drawn, EditKind, Layer, ViewerHandle } from "../components/P
 import QuantityTable from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
 import LearnWizard from "../components/LearnWizard";
+import Boundary from "../components/Boundary";
 import Corrections, { Draft } from "../components/Corrections";
 import LegendView from "../components/LegendView";
 import Reasoning from "../components/Reasoning";
@@ -285,14 +286,14 @@ export default function AnalysisPage() {
             )}
           </div>
         </div>
-        <PdfViewer ref={viewer} data={pdf} page={page} pipes={pipesOnPage} ambiguous={result.ambiguous_geometry} unowned={result.unowned_geometry} claimed={result.claimed_geometry ?? []}
+        <Boundary what="ritningsvyn"><PdfViewer ref={viewer} data={pdf} page={page} pipes={pipesOnPage} ambiguous={result.ambiguous_geometry} unowned={result.unowned_geometry} claimed={result.claimed_geometry ?? []}
           designations={result.designations} leaders={result.leaders} anchors={result.anchors} hatched={result.hatched_geometry ?? []} selectedIdentity={selIdent}
           declined={[...(result.declined_geometry?.families ?? []), ...(result.declined_geometry?.unconsidered ?? [])]} selectedDeclined={selDeclined}
           selectedPipe={selPipe?.physical_pipe_id ?? null} layers={layers} onPipeClick={onPipeClick} onPageCount={setNPages}
           editKind={(drawKind === "extend" || drawKind === "draw" || drawKind === "erase" ? drawKind : null) as EditKind}
           editPipe={selPipe} meterPerPt={result.scale?.meters_per_pdf_point ?? null}
           onDrawn={(d: Drawn) => setDraft({ points: d.points, meters: d.meters, hits: d.hits })}
-          corrections={corrections.filter((c: any) => !c.undone && c.page === page)} />
+          corrections={corrections.filter((c: any) => !c.undone && c.page === page)} /></Boundary>
       </div>
       <div className="splitter" role="separator" aria-orientation="vertical" aria-label="Dra för att ändra bredd"
         onMouseDown={() => { dragging.current = true; document.body.classList.add("resizing"); }}

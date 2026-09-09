@@ -1737,3 +1737,13 @@ body.wz-open { overflow: hidden; }
 .wz-more-body .lf-terms dt { font-size: 13px; }
 .wz-more-body .lf-terms dd { font-size: 13px; }
 .wz-more-body .lf-ul li { font-size: 13.5px; }
+
+/* ---------- när något går sönder ---------- */
+.boom { display: grid; place-items: center; padding: 40px 20px; min-height: 260px; }
+.boom .card { max-width: 560px; margin: 0; }
+.boom h3 { margin-bottom: 8px; }
+.boom-why {
+  margin: 14px 0 16px; font-size: 11.5px; color: var(--muted);
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-s); padding: 10px 12px;
+  max-height: 130px; overflow: auto;
+}
