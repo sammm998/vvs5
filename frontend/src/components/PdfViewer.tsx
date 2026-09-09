@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState, forwardRef } from "react";
 import * as pdfjsLib from "pdfjs-dist";
+import { ROLE_COLOR, ROLE_LABEL, legendOwner } from "../legend";
 import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 (pdfjsLib as any).GlobalWorkerOptions.workerSrc = workerUrl;
 
-export type Layer = "pipes" | "ambiguous" | "claimed" | "unowned" | "declined" | "designations" | "leaders" | "anchors" | "inWall";
+export type Layer = "pipes" | "ambiguous" | "claimed" | "unowned" | "declined" | "designations" | "legend" | "leaders" | "anchors" | "inWall";
 export type EditKind = "extend" | "draw" | "erase" | null;
 
 /** What a finished edit gesture produced: the line drawn, and what it does to the measurement. */
@@ -44,6 +45,7 @@ export interface ViewerProps {
   unowned: any[];
   claimed: any[];
   designations: any[];
+  legend?: { entries: any[] } | null;
   leaders: any[];
   anchors: any[];
   hatched?: any[];
@@ -473,6 +475,33 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                 fill="none" stroke={!d.names_a_pipe ? "#9aa3af" : d.dn != null ? "#0b5cad" : "#c77800"}
                 strokeWidth={sw(1)} strokeDasharray={d.names_a_pipe ? undefined : `${sw(3)} ${sw(2)}`} />
             ))}
+            {/* Every label on the sheet coloured by what the drawing's own designation list says its code is: a
+                pipe system, a fitting, a material - or nothing, when the list does not carry the code at all.
+                It is the fastest way to see whether the list was read the way the sheet meant it. */}
+            {props.layers.legend && (() => {
+              const entries = props.legend?.entries ?? [];
+              const box = entries.map((e: any) => e.bbox).filter((b: number[]) => b && (b[2] - b[0]) > 0);
+              return (
+                <g>
+                  {box.map((b: number[], i: number) => (
+                    <rect key={`lgb${i}`} x={b[0] - 1.5} y={b[1] - 1.5} width={b[2] - b[0] + 3} height={b[3] - b[1] + 3}
+                      fill="#0d0d0d" fillOpacity={0.05} stroke="#0d0d0d" strokeOpacity={0.3} strokeWidth={sw(0.8)} />
+                  ))}
+                  {props.designations.filter((d) => props.layers.inWall || !d.in_wall).map((d) => {
+                    const e = legendOwner(entries, d.text || "");
+                    const c = e ? (ROLE_COLOR[e.role] ?? ROLE_COLOR.unused) : "#c026d3";
+                    return (
+                      <g key={`lg${d.id}`}>
+                        <title>{e ? `${e.code} — ${e.description || "ingen förklaring"} · ${ROLE_LABEL[e.role] ?? e.role}` : `${d.text} står inte i förklaringslistan`}</title>
+                        <rect x={d.bbox[0] - 1.5} y={d.bbox[1] - 1.5} width={d.bbox[2] - d.bbox[0] + 3} height={d.bbox[3] - d.bbox[1] + 3}
+                          fill={c} fillOpacity={0.13} stroke={c} strokeWidth={sw(1.2)}
+                          strokeDasharray={e ? undefined : `${sw(3)} ${sw(2)}`} />
+                      </g>
+                    );
+                  })}
+                </g>
+              );
+            })()}
             {(props.corrections ?? []).map((c) => (
               (c.payload?.points?.length ?? 0) >= 2 && (
                 <polyline key={c.id} points={c.payload.points.map((q: number[]) => q.join(",")).join(" ")} fill="none"
