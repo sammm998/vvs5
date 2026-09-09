@@ -91,16 +91,31 @@ def reached_labels(anchors, pipe_labels: set[str]) -> set[str]:
     return {a.designation_id for a in anchors if a.state == "VERIFIED_PIPE_ATTACHMENT"} & pipe_labels
 
 
-def label_reach_fails(families, anchors, pipe_labels: set[str]) -> bool:
-    """A sheet labels the pipes it draws, so its own labels say whether the right geometry was taken.
+def reach_is_poor(families, anchors, pipe_labels: set[str]) -> bool:
+    """Whether the sheet's own labels found the geometry that was taken, whatever its layers are called.
 
-    The test only applies where no layer name vouches for the families taken, and only on a sheet carrying enough
-    labels to say anything. Measured over the style library, a sheet reading its own pipes places a sixth of its
-    pipe labels or better; the one reading its building outline placed 6 %.
+    A sheet labels the pipes it draws, so the share of its pipe labels that ended up on a pipe is the sheet's own
+    verdict on the reading. This asks that question of any sheet with enough labels to answer it - a named layer
+    included, because a name vouches for what the geometry IS, never for its being what the labels are asking
+    about. A sheet naming a hundred water and waste runs, whose reading accepts three hundred points of ink on a
+    layer called VS1 and places four labels, has been read wrong; the name on that layer is true and beside the
+    point.
     """
-    if not families or any(f.split("|s|")[0] for f in families) or len(pipe_labels) < LABELS_MIN:
+    if not families or len(pipe_labels) < LABELS_MIN:
         return False
     return len(reached_labels(anchors, pipe_labels)) < LABELS_MUST_REACH * len(pipe_labels)
+
+
+def label_reach_fails(families, anchors, pipe_labels: set[str]) -> bool:
+    """Whether a reading is poor enough to be thrown away entirely.
+
+    The same measure as `reach_is_poor`, but this one discards the reading, so it keeps the exemption the harder
+    judgement needs: where a layer name vouches for the geometry taken, a thin result is reported rather than
+    deleted. Reaching for more is a different decision from destroying what there is.
+    """
+    if any(f.split("|s|")[0] for f in families or ()):
+        return False
+    return reach_is_poor(families, anchors, pipe_labels)
 
 
 def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_layers: dict, glyph_pids: set,
@@ -696,6 +711,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     def _label_reach_fails(fams, anchors) -> bool:
         return label_reach_fails(fams, anchors, pipe_labels)
 
+    def _reach_is_poor(fams, anchors) -> bool:
+        return reach_is_poor(fams, anchors, pipe_labels)
+
     # A pen that carries the sheet's leaders is normally not one that draws its pipes, and where a layer name
     # vouches for the geometry that always holds. Without layer names it is the only rule there is, and on a sheet
     # whose export collapsed leaders and pipes onto one pen it refuses the pipes as well: the page then measures
@@ -703,7 +721,11 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # leaders are a small part of what they draw let back in - a rescue, not a default, because admitting them
     # everywhere also admits the pen a sheet hatches its building with, and the drawing fills with pipe that no
     # label owns.
-    if not pipe_families or _label_reach_fails(pipe_families, anchors):
+    # Asked of every sheet, named layers included: admitting a pen can only ever add a reading, and it is taken
+    # only when the sheet's own labels place better for it. A sheet whose export put the pipes on the same pen as
+    # the leaders reads as nothing at all otherwise - and where the layers carry names, the old test never even
+    # asked, so the rescue never ran and a hundred labels went unplaced beside their own geometry.
+    if not pipe_families or _reach_is_poor(pipe_families, anchors):
         rescue = run_pass(None, admit_leader_pens=True)
         if rescue[1] and not _label_reach_fails(rescue[1], rescue[3]) and len(_reached(rescue[3])) > len(_reached(anchors)):
             if os.environ.get("VVS_DEBUG_PASS"):
@@ -728,9 +750,12 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         # is the drawing's own statement and outweighs a count. Where nothing vouches for anything, the count is
         # all there is, and a restriction that costs the sheet more than half its placed labels has withdrawn the
         # pens the drawing was read with rather than the pens it was written with.
-        nameless = not any(f.split("|s|")[0] for f in (pass2[1] or pass1[1] or {"x|s|"}))
+        # A layer name says what the geometry IS. It does not say that the restricted reading found more of what
+        # the sheet's labels are asking about, and that is the only thing this choice turns on. The exemption
+        # used to sit here too, so on a sheet whose water and waste runs the restriction hid, the reading that
+        # placed a hundred labels lost to the one that placed four - because the four sat on a named layer.
         collapsed = not pass2[1] or _label_reach_fails(pass2[1], pass2[3])
-        halved = nameless and 2 * len(_reached(pass2[3])) < len(_reached(pass1[3]))
+        halved = 2 * len(_reached(pass2[3])) < len(_reached(pass1[3]))
         take1 = (collapsed or halved) and pass1[1] and not _label_reach_fails(pass1[1], pass1[3])
         if take1:
             if os.environ.get("VVS_DEBUG_PASS"):
