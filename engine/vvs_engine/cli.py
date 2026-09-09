@@ -52,6 +52,29 @@ def _vocabulary(doc, known_legend: DrawingLegend | None, progress, ocr_assist: b
     return vocab, held
 
 
+SET_SCALE_MIN = 2           # sheets that must agree before the set is taken to have one scale
+SET_SCALE_TOL = 0.02        # ...and how far apart two of them may be and still be the same scale
+
+
+def scale_of_the_set(sheets: list[dict]) -> float | None:
+    """The scale the set is drawn in, where its sheets agree about it.
+
+    A set of plan sheets is drawn in one scale and every stamp says so. Two sheets that settled the same figure
+    are that statement; one sheet is a sheet, and a set whose sheets disagree has details among its plans and is
+    not saying anything about the sheet that failed. Where nothing is agreed, nothing is lent.
+    """
+    settled = [(sh.get("scale") or {}).get("meters_per_pt") for sh in sheets
+               if (sh.get("scale") or {}).get("state") in ("VERIFIED", "TEXT_ONLY", "BAR_ONLY")]
+    got = [v for v in settled if v]
+    if len(got) < SET_SCALE_MIN:
+        return None
+    got.sort()
+    mid = got[len(got) // 2]
+    if any(abs(v - mid) > SET_SCALE_TOL * mid for v in got):
+        return None                 # plans and details in one file: the set has no single scale to lend
+    return mid
+
+
 def sheet_record(pa) -> dict:
     """One sheet of the set, as the takeoff for the whole set needs it.
 
@@ -140,6 +163,26 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
             first = pa
         else:
             doc.pages.release(i)
+    # A sheet whose own stamp settled nothing is not unmeasurable when its siblings all say the same thing about
+    # how big the drawing is. Those sheets - and only those - are read again with the set's scale, which is a
+    # bounded amount of work: on a set where one stamp is unclear, it is one sheet.
+    set_scale = scale_of_the_set(sheets)
+    rescaled = 0
+    if set_scale is not None:
+        for i, sh in enumerate(sheets):
+            if (sh.get("scale") or {}).get("state") not in ("NONE", "CONFLICT"):
+                continue
+            check_budget()
+            pa = analyze_page(doc.pages[i], progress, ocr_assist=ocr_assist,
+                              film_sink=film_sink if i == 0 else None, second_reader=second_reader,
+                              known_families=known_families, known_legend=vocab, known_scale=set_scale)
+            overlay.replace(pa)
+            sheets[i] = sheet_record(pa)
+            rescaled += 1
+            if i == 0:
+                first = pa
+            else:
+                doc.pages.release(i)
     if progress:
         progress("GENERATING_OVERLAYS")
     t0 = time.perf_counter()
@@ -176,6 +219,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
                           "own_sheet": bool(first.legend.own and first.legend.entries),
                           "from_sheet": next((e.page for e in (vocab.entries if vocab else []) if e.page is not None), None)},
                "sheets": sheets,
+               "scale": {"of_the_set": set_scale, "sheets_reread_with_it": rescaled},
                "contamination": cont["state"] if cont else None, "files": files, "total_seconds": round(timings["total_s"], 2),
                "input": getattr(doc.pages[0], "input_class", None), "skipped_pages": doc.skipped_pages,
                "review": {"state": rev["state"], "n_findings": rev["n_findings"], "agents": rev["agents"]} if rev else None,

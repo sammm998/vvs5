@@ -28,7 +28,8 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
     """elevations: anchor_id -> list of {tag, value} elevation annotations attached to the anchor's label unit.
     hatched_pt: physical_pipe_id -> length (pdf units) of the pipe inside hatched areas."""
     out: list[PipeMeasure] = []
-    mpp = scale.meters_per_pt if scale.state in ("VERIFIED", "TEXT_ONLY", "BAR_ONLY", "CONFLICT") and scale.meters_per_pt else None
+    mpp = scale.meters_per_pt if scale.state in ("VERIFIED", "TEXT_ONLY", "BAR_ONLY", "CONFLICT", "FROM_THE_SET") \
+        and scale.meters_per_pt else None
     # A sheet whose scale evidence disagrees still gets measured - the geometric bar is the better witness and
     # the reason for choosing it is recorded - but every metre that comes out of it carries the conflict, so no
     # single run can be read as confidently measured when the sheet's own scale is unsettled.

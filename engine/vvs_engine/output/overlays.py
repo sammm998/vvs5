@@ -50,6 +50,7 @@ class OverlayWriter:
 
     def __init__(self, pdf_path: str, out_dir: str):
         self.out_dir = out_dir
+        self.pdf_path = pdf_path
         self.docs = {name: pymupdf.open(pdf_path) for name in SPECS}
 
     def add(self, pa) -> None:
@@ -58,6 +59,19 @@ class OverlayWriter:
             shape = page.new_shape()
             fn()(page, shape, pa)
             shape.commit()
+
+    def replace(self, pa) -> None:
+        """Draw this sheet again from scratch: a page read a second time must not carry the first reading's ink.
+
+        The overlays are the source PDF with marks drawn on top, so the page is reloaded from the file - which is
+        the only way to take marks off it - and the new reading drawn onto that."""
+        idx = pa.page.info.index
+        for name, doc in self.docs.items():
+            fresh = pymupdf.open(self.pdf_path)
+            doc.delete_page(idx)
+            doc.insert_pdf(fresh, from_page=idx, to_page=idx, start_at=idx)
+            fresh.close()
+        self.add(pa)
 
     def close(self) -> dict[str, str]:
         out: dict[str, str] = {}

@@ -41,6 +41,17 @@ class ScaleResult:
                 "evidence": [{"kind": e.kind, "text": e.text, "bbox": e.bbox, "meters_per_pt": e.value, "detail": e.detail} for e in self.evidence]}
 
 
+def scale_from_the_set(known: float, why: str) -> ScaleResult:
+    """The scale the rest of the drawing set settled, for a sheet that could not settle its own.
+
+    A set is drawn in one scale and its sheets say so in the same stamp. Where one sheet's stamp is unclear -
+    the printed ratio missing, or it and the scale bar disagreeing - the sheet is not unmeasurable; it is a
+    sheet whose siblings all say the same thing about how big it is. That is evidence about this sheet, and
+    it is written down as such: the state says the scale came from the set, not from this page.
+    """
+    return ScaleResult(meters_per_pt=known, scope="document", state="FROM_THE_SET", evidence=[], reason=why)
+
+
 def discover_scale(page: RawPage, lines: list[TextRow]) -> ScaleResult:
     ev: list[ScaleEvidence] = []
     # 1. scale text

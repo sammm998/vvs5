@@ -90,8 +90,12 @@ Enda riktiga svaret är projektets egen penna→system-vana, vilken finns (kräv
 delar som var och en behöver sin egen etikett. På glest etiketterade blad tappas meter som en människa
 självklart hade fört vidare.
 
-**T4. Skalan är per blad och kan hamna i CONFLICT** (referensblad D gör det) utan att omgivande blad hjälper
-till. En handling ritas i samma skala; ett blad vars stämpel är otydlig borde få luta sig mot syskonbladen.
+**T4. Skalan är per blad och kunde hamna i CONFLICT** *(åtgärdat)* utan att omgivande blad hjälpte till. Nu:
+där två eller fler blad i handlingen fastställt samma skala är det handlingens skala, och ett blad vars egen
+stämpel avgjorde ingenting läses om med den — märkt `FROM_THE_SET`, aldrig som om bladet självt sagt det. Blad
+med olika skala i samma fil (planer och detaljer) lånar ingenting ut: då finns ingen enig omgång att luta sig
+mot. Prov: referensblad D, vars stämpel står i CONFLICT, i en handling med två eniga blad tar handlingens skala
+och ett blad läses om.
 
 **T5. Ingen sida-till-sida-fortsättning.** Rör som fortsätter på nästa blad räknas dubbelt eller inte alls.
 
@@ -107,7 +111,9 @@ som ett blad som ritar 4 m.
 **K1. `pipeline.py` är 1500 rader** och blandar orkestrering med algoritmer (buntlösning, stigardetektering,
 identitetsbyggnad). `prepare_page` är ett första snitt; resten står kvar.
 
-**K2. Varför ett pass vann skrivs inte ned.** Beslutet finns bara i loggen bakom en miljövariabel.
+**K2. Varför ett pass vann skrevs inte ned.** *(åtgärdat)* Läsningen skriver nu vilka läsningar av bladet den
+prövade — obegränsad, med ledarpennorna insläppta, med skrivpennorna undantagna — hur många av bladets egna
+rörnamn var och en placerade, och vilken som behölls.
 
 ## Listan, rangordnad
 
@@ -120,10 +126,10 @@ identitetsbyggnad). `prepare_page` är ett första snitt; resten står kvar.
 | 5 | Determinismkontrollen kopierar bara bladet den provar | skala (kopierade hela handlingen tre gånger) | **klart** |
 | 6 | Täckningskontroll: uppmätta meter mot ritat rörbläck, per blad | ärlighet: ett oläst blad säger det själv | pågår |
 | 7 | Visa omgången i appen: bladväljare, rader per blad, summa | träffsäkerhet blir synlig | pågår |
-| 8 | Skalan får luta sig mot syskonbladen i samma handling | räddar blad med otydlig stämpel | nästa |
+| 8 | Skalan får luta sig mot syskonbladen i samma handling | räddar blad med otydlig stämpel | **klart** |
 | 9 | Skilj rörgeometri från byggnadsgeometri innan grafen byggs, på blad utan lager | den största kvarvarande felklassen | nästa (ett försök mätt och förkastat, se nedan) |
 | 10 | Parallell sidläsning, begränsad av kärnor och minne | skala: ~4× på en omgång | nästa |
-| 11 | Skriv ned varför ett pass vann, som artefakt | inspekterbarhet | nästa |
+| 11 | Skriv ned varför ett pass vann, som artefakt | inspekterbarhet | **klart** |
 | 12 | Sida-till-sida-fortsättningar | dubbelräkning och tappade sträckor | senare |
 
 

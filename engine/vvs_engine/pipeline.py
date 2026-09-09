@@ -27,7 +27,7 @@ from .semantics.legend import DrawingLegend, adopt, assign_roles, read_legend, r
 from .semantics.leaders import Leader, annotation_layers, discover_leaders, leader_family_report
 from .text.searchable import searchable_rows
 from .text.vector_text import VectorTextResult, vector_text_rows
-from .measure.scale import ScaleResult, discover_scale
+from .measure.scale import ScaleResult, discover_scale, scale_from_the_set
 from .measure.measure import PipeMeasure, aggregate, measure_pipes
 from .pipes.ownership import Identity, OwnershipResult, identity_of, propagate
 from .film import Film
@@ -735,6 +735,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                  second_reader: Callable[[Any], str] | None = None,
                  known_families: dict[str, str] | None = None,
                  known_legend: DrawingLegend | None = None,
+                 known_scale: float | None = None,
                  prepared: "PreparedPage | None" = None) -> PageAnalysis:
     """second_reader: an optional transport for putting the reading's own open cases to a language model.
 
@@ -1225,14 +1226,19 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                   f"{st.get('AMBIGUOUS_PIPE_ATTACHMENT', 0)} är tvetydiga och "
                   f"{st.get('NO_PIPE_ATTACHMENT', 0)} når ingen rörgeometri alls.")
     scale = discover_scale(page, lines)
+    if known_scale is not None and scale.state in ("NONE", "CONFLICT"):
+        # the rest of the set agreed about how big it is, and this sheet's own stamp did not settle it
+        scale = scale_from_the_set(known_scale, f"ritningsomgången är enig; bladets eget besked: {scale.reason}")
     if film:
-        sv = {"VERIFIED": "verifierad - utskriven skala och skalstock säger samma sak",
+        sv = {"FROM_THE_SET": "hämtad från handlingen - bladets egen stämpel avgjorde inget",
+              "VERIFIED": "verifierad - utskriven skala och skalstock säger samma sak",
               "STATED": "tagen ur den utskrivna skalan", "BAR_ONLY": "tagen ur skalstocken; ingen utskriven skala",
               "CONFLICT": "utskriven skala och skalstock säger emot varandra", "NONE": "gick inte att fastställa"}
         film.note("MEASURING",
                   f"Skalan: {sv.get(scale.state, scale.state.lower())}"
                   + (f", {scale.meters_per_pt:.6f} m per punkt." if scale.meters_per_pt else ".")
-                  + ("" if scale.state in ("VERIFIED", "STATED", "BAR_ONLY") else " Utan säker skala mäts ingenting."))
+                  + ("" if scale.state in ("VERIFIED", "STATED", "BAR_ONLY", "FROM_THE_SET")
+                     else " Utan säker skala mäts ingenting."))
     elevations = _elevations(blocks, anchors)
     # read the sheet again by the other routes, put the answers side by side, and let a second route add what the
     # first missed or take out what it contradicts
