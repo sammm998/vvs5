@@ -22,6 +22,8 @@ from .leaders import Leader
 CONTACT_TOL = 0.6
 MARKER_MAX = 3.0          # pt: closed end markers (dots, small circles) of pipes
 DASH_GAP_MAX = 8.0        # pt: the widest drawn gap in a dashed run a leader end may land in
+NEAR_MISS = 6.0           # pt: how far short of its pipe a leader may stop and still be pointing at it
+NEAR_ONE = 2.5            # pt: ...and how close the candidates must lie to each other to be one place
 
 
 @dataclass
@@ -280,6 +282,40 @@ def _angle_to(sg: Seg, ux: float, uy: float) -> float:
     return min(a, 180.0 - a)
 
 
+def _near_miss_hits(pt: tuple[float, float], gidx: "GeometryIndex", pipe_families: set[str] | None,
+                    skip: set[str]) -> list[tuple[RawPath, int, float]]:
+    """The run a leader stopped a hair short of - but only where there is no doubt which run that is.
+
+    Hand-drawn and hand-edited sheets carry leaders that end a fraction of a millimetre off the line they point
+    at. For the eye it is the same thing; for a reading that requires contact it is a label that reaches
+    nothing, and the run it names goes unmeasured. So the reach is widened - and the widening is where every
+    takeoff that guesses goes wrong, because in a bundle the second-nearest pipe is a hair further away than the
+    nearest and belongs to another system entirely.
+
+    What separates the two cases is not distance, it is doubt. Everything within the wider reach is gathered and
+    the closest point on each is worked out; if those points sit on top of each other, there is one thing there
+    and the leader can only have meant it. If they are apart, there are two things there and the drawing has not
+    said which - and no amount of arithmetic on the difference in distance turns that into an answer.
+    """
+    near: list[tuple[RawPath, int, float, tuple[float, float]]] = []
+    for i in gidx.idx.query_point(pt[0], pt[1], NEAR_MISS + 1.0):
+        p, k, sg = gidx.items[i]
+        if p.pid in skip:
+            continue
+        if pipe_families is not None and family_of(p) not in pipe_families:
+            continue
+        d, t = point_seg_distance(pt[0], pt[1], sg)
+        if d <= NEAR_MISS:
+            near.append((p, k, d, (sg.x0 + t * (sg.x1 - sg.x0), sg.y0 + t * (sg.y1 - sg.y0))))
+    if not near:
+        return []
+    for a in near:
+        for b in near:
+            if math.hypot(a[3][0] - b[3][0], a[3][1] - b[3][1]) > NEAR_ONE:
+                return []                   # more than one drawn thing within reach: the sheet has not said which
+    return sorted(((p, k, d) for p, k, d, _ in near), key=lambda t: (t[0].pid, t[1]))
+
+
 def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | None, all_paths: dict[str, RawPath]) -> list[Contact]:
     """Contacts at each attachment point.
 
@@ -357,6 +393,15 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
                     continue
                 seen.add((q.pid, kk))
                 out.append(Contact(point=pt, kind=kind, family=family_of(q), pid=q.pid, seg_index=kk, distance=dd, mark_id=mid))
+    if not out and pipe_families:
+        # and last of all: the leader stopped just short of the line it points at, with nothing else in reach
+        for (pt, kind, mid) in contact_points(ld):
+            for q, kk, dd in _near_miss_hits(pt, gidx, pipe_families, skip):
+                if (q.pid, kk) in seen:
+                    continue
+                seen.add((q.pid, kk))
+                out.append(Contact(point=pt, kind="near_miss", family=family_of(q), pid=q.pid, seg_index=kk,
+                                   distance=dd, mark_id=mid))
     out.sort(key=lambda c: (c.pid, c.seg_index))
     return out
 
