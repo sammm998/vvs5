@@ -121,8 +121,28 @@ identitetsbyggnad). `prepare_page` är ett första snitt; resten står kvar.
 | 6 | Täckningskontroll: uppmätta meter mot ritat rörbläck, per blad | ärlighet: ett oläst blad säger det själv | pågår |
 | 7 | Visa omgången i appen: bladväljare, rader per blad, summa | träffsäkerhet blir synlig | pågår |
 | 8 | Skalan får luta sig mot syskonbladen i samma handling | räddar blad med otydlig stämpel | nästa |
-| 9 | Skilj rörgeometri från byggnadsgeometri innan grafen byggs, på blad utan lager | den största kvarvarande felklassen | nästa |
+| 9 | Skilj rörgeometri från byggnadsgeometri innan grafen byggs, på blad utan lager | den största kvarvarande felklassen | nästa (ett försök mätt och förkastat, se nedan) |
 | 10 | Parallell sidläsning, begränsad av kärnor och minne | skala: ~4× på en omgång | nästa |
 | 11 | Skriv ned varför ett pass vann, som artefakt | inspekterbarhet | nästa |
 | 12 | Sida-till-sida-fortsättningar | dubbelräkning och tappade sträckor | senare |
 
+
+## Mätt och förkastat
+
+Det som mäts sämre åker ut, hur rimligt det än låter. Det står här för att nästa försök ska börja i
+mätningen och inte i resonemanget igen.
+
+**Bokstavsstreck ur rörgrafen.** På ett blad utan lager, med en enda penna, ligger strecken som läsningen redan
+läst som text kvar i rörfamiljen och i grafen byggd av den: på ett sådant blad 10 252 av 47 065 primitiver, en
+femtedel, där varje bokstav är en knut av tiondelspunktssegment som möts i noder med hög grad — precis där
+etiketterna sitter, alltså på sträckorna. Att ta bort dem ser självklart rätt ut, och läsningen vet redan exakt
+vilka sökvägar det är: den håller dem redan borta från vad en hänvisningslinje får landa på.
+
+Mätt föll referensgrindet: ägda meter 386,05 → 377,31, **falska meter 2,53 → 7,05**, missade 9,06 → 17,79.
+Blad A ensamt gick från 0,05 till 4,69 falska meter. Och på de fem enpennebladen sjönk de uppmätta metrarna
+från 5,33 till 1,42, alltså sämre också där.
+
+Slutsatsen är inte att bokstäver är rör. Den är att ägandet och storleksgränserna i dag vilar på den geometrin
+på sätt som ett trubbigt borttagande river: bokstavsstrecken fungerar som gränser och som bryggor över luckor.
+Ett riktigt försök måste därför skilja rör från byggnad *innan* familjerna bedöms — och visa att gränserna
+håller utan dem — inte plocka bort strecken ur en färdig graf.
