@@ -27,17 +27,21 @@ class AnalysisTookTooLong(Exception):
 VOCAB_HOLD = 2          # readings kept from the search for the list; past that, looking again is cheaper than keeping
 
 
-def _vocabulary(doc, known_legend: DrawingLegend | None, progress, ocr_assist: bool):
+def _vocabulary(doc, known_legend: DrawingLegend | None, progress, ocr_assist: bool, film_sink=None):
     """The set's designation list, and the sheet readings the search for it already paid for.
 
     Sheets are looked at in order and the search stops at the first that carries a list, which on almost every
     set is the front sheet. What it looked at is handed back so the reading proper does not do that work twice -
     but only the first couple of them, because holding a sheet's reading costs more than reading it again.
     """
+    from .film import Film
     vocab = known_legend
     held: dict[int, Any] = {}
     for i in range(len(doc.pages)):
-        prep = prepare_page(doc.pages[i], progress if i == 0 else None, ocr_assist)
+        # The search for the list reads the front half of a sheet, and that is the half that takes the longest
+        # with nothing to show. So it narrates while it goes, on the sheet the film is about.
+        prep = prepare_page(doc.pages[i], progress if i == 0 else None, ocr_assist,
+                            Film(film_sink) if i == 0 else None)
         if len(held) < VOCAB_HOLD:
             held[i] = prep
         elif i > 0:
@@ -113,7 +117,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     # the sheet that has room for it, and lets the rest stand on that; a reading that takes each sheet as it comes
     # would have to go back and read the early ones again once the list turned up. Looking for the list first
     # costs nothing where it is on the front sheet, because that sheet's reading is kept and used.
-    vocab, held = _vocabulary(doc, known_legend, progress, ocr_assist)
+    vocab, held = _vocabulary(doc, known_legend, progress, ocr_assist, film_sink)
     if progress:
         progress("READING_PDF")
     overlay = OverlayWriter(pdf_path, out_dir)

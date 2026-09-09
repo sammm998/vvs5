@@ -11,6 +11,7 @@ from typing import Any, Callable
 
 # a frame is drawn on a screen, not measured: a few hundred shapes is already more than the eye follows
 CAP = 900
+NOTES_CAP = 240         # a running account, not a log: past this the reader has stopped reading anyway
 
 
 def _thin(items: list, cap: int = CAP) -> list:
@@ -30,9 +31,24 @@ class Film:
 
     def __init__(self, sink: Callable[[str, dict], None] | None):
         self._sink = sink
+        self._notes = 0
 
     def __bool__(self) -> bool:
         return self._sink is not None
+
+    def note(self, stage: str, text: str) -> None:
+        """One line of what the reading is working out, while it is still working it out.
+
+        A frame lands when a stage finishes, and the stages that take the longest are the ones with nothing to
+        show until they do: a minute of blank paper, then everything at once. These are the sentences in between
+        - what the sheet turned out to carry, which pen was taken for pipe and why, which reading of the sheet
+        won. Every one of them is a fact the reading already has at that moment and is about to act on; none of
+        them is written for the screen, and none is read back.
+        """
+        self._notes += 1
+        if self._notes > NOTES_CAP:
+            return
+        self.frame("NOTE", {"on": stage, "t": text[:220]})
 
     def frame(self, stage: str, payload: dict[str, Any]) -> None:
         if self._sink is None:
@@ -46,9 +62,21 @@ class Film:
     # --- the frames themselves -------------------------------------------------
 
     def page(self, page) -> None:
+        """The sheet as it stands before anything has been decided about it.
+
+        With only a page size to go on the film showed a white rectangle for as long as the text took to rebuild
+        - a minute on a dense sheet, with a sweep line crossing empty paper. The drawing is already read at this
+        point, so a thinned sample of its own strokes goes with it: the reader sees the sheet arrive, and then
+        watches the reading fill it in. It is a sample for drawing on a screen, never a measurement.
+        """
+        every = _thin(page.paths)
+        strokes = []
+        for pth in every:
+            for sg in pth.segs[:2]:
+                strokes.append([round(sg.x0, 1), round(sg.y0, 1), round(sg.x1, 1), round(sg.y1, 1)])
         self.frame("READING_PDF", {"page": {"w": round(float(page.info.width), 1),
                                             "h": round(float(page.info.height), 1)},
-                                   "n_paths": len(page.paths)})
+                                   "n_paths": len(page.paths), "strokes": strokes[:CAP]})
 
     def seeing(self, region, words, i: int, n: int) -> None:
         """Where the vision agent is looking right now, and what it read there.

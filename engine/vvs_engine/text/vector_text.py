@@ -231,12 +231,20 @@ def _size_class(g: GlyphCandidate, rc: RowCluster) -> str:
     return "cap"
 
 
-def vector_text_rows(page: RawPage, timing: dict | None = None) -> VectorTextResult:
+def vector_text_rows(page: RawPage, timing: dict | None = None, say=None) -> VectorTextResult:
+    """say: an optional line-by-line account of the rebuilding, for a reader watching it happen.
+
+    This is the longest stretch of a reading with nothing to show - half a minute on a dense sheet, in which the
+    only thing that had changed on screen was a sweep line. It is called with what has been worked out so far,
+    never asked for anything, and nothing it is told comes back."""
     import time
+    say = say or (lambda _t: None)
     t0 = time.perf_counter()
     comps = build_components(page)
     t1 = time.perf_counter()
     sizes = size_families(comps)
+    say(f"{len(comps)} sammanhängande streckklumpar, i {len(sizes)} storleksfamiljer "
+        + ", ".join(f"{h:.1f} pt" for h in sizes[:5]) + ". En bokstav ritas som flera streck, så de sätts ihop först.")
     clusters: list[RowCluster] = []
     marks: list[Mark] = []
     used_comp: set[str] = set()
@@ -266,6 +274,8 @@ def vector_text_rows(page: RawPage, timing: dict | None = None) -> VectorTextRes
             used_comp.add(c.cid)
     marks.sort(key=lambda m: m.mid)
     t2 = time.perf_counter()
+    say(f"{len(clusters)} rader klumpar sig på en baslinje, {len(marks)} klumpar är för små för att vara tecken "
+        f"och läggs undan som märken.")
     # glyph families
     fam_members: dict[str, list[tuple[GlyphCandidate, RowCluster, np.ndarray, float, np.ndarray]]] = defaultdict(list)
     glyph_family: dict[str, str] = {}
@@ -276,6 +286,8 @@ def vector_text_rows(page: RawPage, timing: dict | None = None) -> VectorTextRes
             fam_members[fid].append((g, rc, img, ar, omap))
             glyph_family[g.gid] = fid
     t3 = time.perf_counter()
+    say(f"{sum(len(m) for m in fam_members.values())} tecken faller i {len(fam_members)} formfamiljer. "
+        f"Samma form är samma bokstav överallt på bladet, så var och en behöver namnges en gång.")
     n_relaxed = 0
     families: dict[str, FamilyResult] = {}
     for fid in sorted(fam_members):
@@ -301,6 +313,10 @@ def vector_text_rows(page: RawPage, timing: dict | None = None) -> VectorTextRes
             n_relaxed += 1
         families[fid] = FamilyResult(family_id=fid, char=ch, score=score, alternatives=alts, holes=holes, aspect=ar, n_members=len(members))
     t4 = time.perf_counter()
+    unread = sum(1 for f in families.values() if f.char == "?")
+    say(f"{len(families) - unread} av {len(families)} formfamiljer gick att namnge"
+        + (f", {n_relaxed} av dem med lägre krav" if n_relaxed else "")
+        + (f". {unread} står som olästa tecken - de mäts inte och gissas inte." if unread else "."))
     rows: list[TextRow] = []
     rejected: list[TextRow] = []
     for rc in clusters:

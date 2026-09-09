@@ -573,6 +573,33 @@ pre { white-space: pre-wrap; word-break: break-word; background: var(--bg-2); bo
   color: var(--muted);
 }
 .film-talk .handoff::before { content: "↳ "; }
+/* What the reading worked out on its way to the line above: the pens on the sheet, the list it found, which pen
+   it took for pipe and why. Set apart from the sentence it led to - quieter, monospaced, each line a step -
+   because it is the working and not the answer. */
+.film-talk .think {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  border-top: 1px dashed var(--line);
+}
+.film-talk .think li {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  padding: 4px 0 4px 13px;
+  position: relative;
+  animation: think-in 0.4s ease both;
+}
+.film-talk .think li::before {
+  content: "·";
+  position: absolute;
+  left: 2px;
+  color: var(--line-2);
+}
+.film-talk .bubble.waiting .think { border-top-color: var(--line-2); }
+@keyframes think-in { from { opacity: 0; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .film-talk .think li { animation: none; } }
 .film-talk .dots { display: flex; gap: 4px; padding: 4px 0 2px; }
 .film-talk .dots i { width: 5px; height: 5px; border-radius: 999px; background: var(--muted); animation: dot 1.1s infinite; }
 .film-talk .dots i:nth-child(2) { animation-delay: 0.15s; }

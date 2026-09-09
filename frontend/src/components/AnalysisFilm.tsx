@@ -74,6 +74,20 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
   }, [frames]);
 
   const by = useMemo(() => Object.fromEntries(frames.map((f) => [f.stage, f])), [frames]);
+  /* What the reading worked out while it was working it out, in the order it said it.
+   *
+   * A stage's frame lands when the stage finishes, and the stages that take longest are the ones with nothing
+   * to show until they do. These are the sentences in between - the pens on the sheet, the list it found, which
+   * pen it took for pipe and why, which of two readings of the sheet won - each one a fact the reading already
+   * had and was about to act on. */
+  const notesFor = useMemo(() => {
+    const m: Record<string, string[]> = {};
+    for (const f of frames) {
+      if (f.stage !== "NOTE" || !f.on || !f.t) continue;
+      (m[f.on] ??= []).push(f.t);
+    }
+    return m;
+  }, [frames]);
   // where the vision agent has looked, and what it read there: one frame per tile, newest last
   const seeing = useMemo(() => frames.filter((f) => f.stage === "SEEING"), [frames]);
   const lastSeen = seeing.length ? seeing[seeing.length - 1] : null;
@@ -99,8 +113,9 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
   // the sweep is the reading's own pace made visible: it crosses the sheet while a stage works, and stops when
   // there is nothing left to read
   const sweepY = running ? ((performance.now() / 2600) % 1) * page.h : 0;
-  const talk = AGENTS.map((a) => ({ stage: a.stage, who: a.who, lines: frameSays(a.stage, by[a.stage]) }))
-    .filter((t) => t.lines.length > 0)
+  const talk = AGENTS.map((a) => ({ stage: a.stage, who: a.who,
+                                   lines: frameSays(a.stage, by[a.stage]), notes: notesFor[a.stage] ?? [] }))
+    .filter((t) => t.lines.length > 0 || t.notes.length > 0)
     .map((t, i, all) => ({ ...t, next: i < all.length - 1 ? all[i + 1].who : null }));
   const spoken = new Set(talk.map((t) => t.stage));
   const nextUp = AGENTS.find((a) => !spoken.has(a.stage));
@@ -122,6 +137,12 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
         <svg width={page.w * scale} height={H} viewBox={`0 0 ${page.w} ${page.h}`} role="img"
           aria-label="Ritningen fylls i medan den läses">
           <rect x="0" y="0" width={page.w} height={page.h} fill="#fff" stroke="#e6e6e6" />
+          {/* the sheet itself, thinned: it arrives as soon as the PDF is read, so the reading is watched
+              filling in a drawing rather than an empty rectangle */}
+          {cut(by.READING_PDF?.strokes, "READING_PDF").map((s: number[], i: number) => (
+            <line key={`s${i}`} x1={s[0]} y1={s[1]} x2={s[2]} y2={s[3]} stroke="#111" strokeOpacity="0.13"
+              strokeWidth={0.5 / scale} />
+          ))}
           {cut(by.RESOLVING_PIPE_REPRESENTATION?.families, "RESOLVING_PIPE_REPRESENTATION").flatMap((f: any, fi: number) =>
             (f.segs ?? []).map((s: number[], i: number) => (
               <line key={`g${fi}-${i}`} x1={s[0]} y1={s[1]} x2={s[2]} y2={s[3]} stroke="#d7d7d7" strokeWidth={0.7 / scale} />
@@ -192,6 +213,9 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
           <div key={`${t.stage}-${i}`} className={`bubble${i === talk.length - 1 ? " fresh" : ""}`}>
             <div className="who">{t.who}</div>
             {t.lines.map((l, j) => <p key={j}>{l}</p>)}
+            {t.notes.length > 0 && (
+              <ul className="think">{t.notes.map((n, j) => <li key={j}>{n}</li>)}</ul>
+            )}
             {t.next && <div className="handoff">lämnar vidare till {t.next}</div>}
           </div>
         ))}
@@ -199,6 +223,10 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
           <div className="bubble waiting">
             <div className="who">{nowWho}</div>
             {nowAsks && <p className="asking">”{nowAsks}”</p>}
+            {/* the stage that is running has not landed its frame yet, so its own lines are all there is to show */}
+            {!spoken.has(stage) && (notesFor[stage]?.length ?? 0) > 0 && (
+              <ul className="think">{notesFor[stage].map((n, j) => <li key={j}>{n}</li>)}</ul>
+            )}
             <p className="dots"><i /><i /><i /></p>
           </div>
         )}

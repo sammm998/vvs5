@@ -650,17 +650,42 @@ def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                  film: "Film | None" = None) -> PreparedPage:
     """Read the sheet as far as its own words go, and no further."""
     timings: dict[str, float] = {}
+    film = film or Film(None)
     t0 = time.perf_counter()
     if progress:
         progress("DISCOVERING_DRAWING_GRAMMAR")
+    film.note("READING_PDF", f"Öppnar blad {page.info.index + 1}, {int(page.info.width)} × {int(page.info.height)} "
+                             f"punkter. Ser efter vad filen säger om sig själv innan något mäts.")
+    film.page(page)
     layer_stats = compute_layer_stats(page)
     t0 = _t(timings, "profile_ms", t0)
+    if film:
+        named = [n for n in layer_stats if n]
+        pens = Counter()
+        for st in layer_stats.values():
+            for w, n in st.widths.items():
+                pens[w] += n
+        film.note("READING_PDF", f"{len(page.paths)} ritade objekt, {len(page.spans)} textobjekt.")
+        film.note("READING_PDF",
+                  f"{len(named)} namngivna lager bär geometri." if named
+                  else "Exporten bär inga lagernamn - ingenting utom pennorna säger vad geometrin är.")
+        film.note("READING_PDF",
+                  "Pennor: " + ", ".join(f"{float(w):.2f} pt ({n} objekt)" for w, n in pens.most_common(5)) + ".")
     if progress:
         progress("RECONSTRUCTING_TEXT")
     vt_timing: dict = {}
-    vtext = vector_text_rows(page, vt_timing)
+    vtext = vector_text_rows(page, vt_timing, say=(lambda t: film.note("RECONSTRUCTING_TEXT", t)) if film else None)
     srows = searchable_rows(page)
     t0 = _t(timings, "text_ms", t0)
+    if film:
+        unknown = vtext.stats.get("unknown_families")
+        film.note("RECONSTRUCTING_TEXT",
+                  f"{vtext.n_glyphs} tecken byggda ur {vtext.n_components} streckklumpar, "
+                  f"{len(vtext.families)} formfamiljer."
+                  + (f" {unknown} familjer gick inte att namnge." if unknown else ""))
+        if srows:
+            film.note("RECONSTRUCTING_TEXT", f"{len(srows)} rader låg redan som riktig text i filen.")
+        film.text(vtext.rows)
     ocr_report = None
     if ocr_assist:
         # characters the stroke recogniser could not name are filled from an OCR pass over the same page, and
@@ -682,6 +707,23 @@ def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     blocks = build_blocks(page, lines, free)
     designations, grammar, _ = extract_designations(page, blocks)
     legend = read_legend(lines, designations)
+    if film:
+        with_dn = sum(1 for d in designations if d.dn is not None)
+        film.note("READING_DESIGNATIONS",
+                  f"{len(lines)} textrader blev {len(blocks)} etikettblock och {len(designations)} beteckningar, "
+                  f"{with_dn} med en dimension.")
+        shapes = grammar.pattern_weight.most_common(3) if hasattr(grammar, "pattern_weight") else []
+        if shapes:
+            film.note("READING_DESIGNATIONS",
+                      "Formen bladet skriver dem i: " + ", ".join(f"{pat} ({int(w)}x)" for pat, w in shapes) + ".")
+        if legend.entries:
+            film.note("READING_DESIGNATIONS",
+                      f"Beteckningslistan hittad: {len(legend.entries)} rader på bladets egen kant.")
+        else:
+            film.note("READING_DESIGNATIONS",
+                      "Bladet bär ingen beteckningslista jag kan hitta - då gäller handlingens, om något annat "
+                      "blad skriver den.")
+        film.designations(designations)
     _t(timings, "designation_ms", t0)
     return PreparedPage(page=page, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
                         free=free, consumed=consumed, designations=designations, grammar=grammar, legend=legend,
@@ -702,20 +744,28 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     against those candidates twice before it can move a metre.
     """
     film = Film(film_sink)
-    film.page(page)
+    # The front half of the reading says what it is finding as it finds it, so a prepared sheet must not say it
+    # all a second time: it was said when it was worked out.
     prep = prepared if prepared is not None else prepare_page(page, progress, ocr_assist, film)
     timings = dict(prep.timings)
     layer_stats, vtext, srows = prep.layer_stats, prep.vtext, prep.srows
     lines, blocks, free, designations, grammar = prep.lines, prep.blocks, prep.free, prep.designations, prep.grammar
     ocr_report, vt_timing = prep.ocr_report, prep.vt_timing
-    film.text(vtext.rows)
+    if prepared is not None and film:
+        film.page(page)
+        film.text(vtext.rows)
+        film.designations(designations)
     legend = prep.legend                         # the sheet's own designation list, read against what it draws
     if not legend.entries and known_legend is not None and known_legend.entries:
         legend = adopt(known_legend)             # ...or the one the rest of the set carries for it
     else:
         legend = replace(legend, entries=[replace(e) for e in legend.entries])
     assign_roles(legend, designations, prior=roles_of(known_legend) if known_legend is not None else None)
-    film.designations(designations)
+    if film and legend.entries:
+        film.note("READING_DESIGNATIONS",
+                  ("Handlingens lista" if not legend.own else "Bladets lista")
+                  + f" ger {len(legend.systems())} rörsystem ({', '.join(sorted(legend.systems())[:8]) or 'inga'}) "
+                  + f"och {len(legend.components())} komponentkoder som aldrig blir rör.")
     t0 = time.perf_counter()
     if progress:
         progress("FINDING_LEADERS")
@@ -736,6 +786,11 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         ann_marks = [m for m in vtext.marks if f"{m.layer}|{m.style}" in ann_layers] if ann_layers else vtext.marks
         leaderless: dict[str, list[str]] = {}
         leaders = discover_leaders(page, blocks, free, ann_marks, ann_layers, report=leaderless)
+        if film:
+            reached = len({ld.block_id for ld in leaders} & set(des_by_block))
+            film.note("FINDING_LEADERS",
+                      f"{len(leaders)} ritade hänvisningslinjer följda; {reached} av {len(des_by_block)} "
+                      f"etikettblock drar en. En etikett utan linje pekar inte på något - den gissas inte fram.")
         exclude = set(ann_layers) if ann_layers else set()
         gidx = GeometryIndex(page, exclude, glyph_pids)
         des_leaders = [ld for ld in leaders if ld.block_id in des_by_block]
@@ -894,6 +949,16 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             if accept:
                 pipe_families[f] = desc[f][0]
                 graphs[f] = desc[f][1]
+            if film:
+                # The one decision on the sheet that a reader would most want to see made: which pens draw pipe.
+                # It is said in the terms it was decided in - how many of the sheet's own labels end here, how
+                # many left a tick, and whether a layer name vouched for any of it.
+                film.note("RESOLVING_PIPE_REPRESENTATION",
+                          f"Penna {desc[f][0].width:.2f} pt"
+                          + (f" på {layer.rsplit('|', 1)[-1]}" if layer else " utan lagernamn") + ": "
+                          f"{leader_votes[f]} etiketter pekar hit, {tick_votes[f]} lämnar ett märke, "
+                          f"längsta sträcka {int(desc[f][0].longest_chain)} pt "
+                          + ("-> tas som rör." if accept else "-> tas inte."))
         pipe_families, graphs = _generalize_families(page, pipe_families, graphs)
         # Every drawn family the reading looked at and did not take, with the reason it did not. A family that is
         # declined is drawn on the sheet and simply absent from the reading afterwards, and geometry that is
@@ -994,7 +1059,15 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # only when the sheet's own labels place better for it. A sheet whose export put the pipes on the same pen as
     # the leaders reads as nothing at all otherwise - and where the layers carry names, the old test never even
     # asked, so the rescue never ran and a hundred labels went unplaced beside their own geometry.
+    if film:
+        film.note("RESOLVING_PIPE_REPRESENTATION",
+                  f"Första läsningen: {len(pipe_families)} familjer tagna som rör, "
+                  f"{len(_reached(anchors))} av {len(pipe_labels)} rörnamn placerade.")
     if not pipe_families or _reach_is_poor(pipe_families, anchors):
+        if film:
+            film.note("RESOLVING_PIPE_REPRESENTATION",
+                      "För få etiketter nådde fram. Provar om med pennorna som också drar hänvisningslinjer - "
+                      "en export utan lager kan ha ritat rör och linjer med samma penna.")
         rescue = run_pass(None, admit_leader_pens=True)
         if rescue[1] and not _label_reach_fails(rescue[1], rescue[3]) and len(_reached(rescue[3])) > len(_reached(anchors)):
             if os.environ.get("VVS_DEBUG_PASS"):
@@ -1008,6 +1081,11 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         # a vector family accepted as pipe geometry in pass 1 is never an annotation family (an underline bar that
         # happens to share the pipes' stroke class must not remove the pipes)
         keep = {k: v for k, v in ann_layers.items() if (v >= 2 or v >= 0.05 * max(ann_layers.values())) and k not in pipe_families}
+        if film:
+            film.note("RESOLVING_PIPE_REPRESENTATION",
+                      f"Läser om bladet med {len(keep)} pennor undantagna - de som den första läsningens "
+                      f"hänvisningslinjer visade sig vara ritade med. Bladets egna etiketter får avgöra vilken "
+                      f"av de två läsningarna som är rätt.")
         pass2 = run_pass(keep)
         # The restriction is a hypothesis about which of the sheet's pens write rather than draw, learned from
         # the attachments the first reading verified. It is the sheet's own labels that test it: a sheet labels
@@ -1026,6 +1104,13 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         collapsed = not pass2[1] or _label_reach_fails(pass2[1], pass2[3])
         halved = 2 * len(_reached(pass2[3])) < len(_reached(pass1[3]))
         take1 = (collapsed or halved) and pass1[1] and not _label_reach_fails(pass1[1], pass1[3])
+        if film:
+            film.note("RESOLVING_PIPE_REPRESENTATION",
+                      f"Med bladets skrivpennor undantagna placeras {len(_reached(pass2[3]))} rörnamn, utan "
+                      f"undantag {len(_reached(pass1[3]))}. "
+                      + ("Den obegränsade läsningen står." if (not pass2[1] or _label_reach_fails(pass2[1], pass2[3]))
+                         or 2 * len(_reached(pass2[3])) < len(_reached(pass1[3]))
+                         else "Den begränsade läsningen står."))
         if take1:
             if os.environ.get("VVS_DEBUG_PASS"):
                 print(f"[withdraw] restricted pass left {len(_reached(pass2[3]))}/{len(pipe_labels)} labels placed, "
@@ -1069,6 +1154,14 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     contact_stats["filled_shapes"] = {"paths": sum(1 for p in page.paths if p.kind != "s"),
                                       "length_pt": round(sum(p.length for p in page.paths if p.kind != "s"), 1)}
     t0 = _t(timings, "topology_ms", t0)
+    if film:
+        n_j = sum(len(g.junctions) for g in graphs.values())
+        n_n = sum(len(g.nodes) for g in graphs.values())
+        film.note("BUILDING_PHYSICAL_PIPES",
+                  f"{sum(len(g.prims) for g in graphs.values())} ritade sträckor blir {n_n} noder och "
+                  f"{n_j} förgreningar."
+                  + (" Så tät förgrening betyder att rör, väggar och symboler ligger i samma graf: en identitet "
+                     "kommer inte långt innan den möter en korsning." if n_n and n_j > 0.5 * n_n else ""))
     if progress:
         progress("BUILDING_PHYSICAL_PIPES")
     # what the rest of the sheet already says about where this system is drawn, before anyone is asked anything
@@ -1098,7 +1191,21 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     t0 = _t(timings, "physical_pipes_ms", t0)
     if progress:
         progress("MEASURING")
+    if film:
+        st = Counter(a.state for a in anchors)
+        film.note("BUILDING_PHYSICAL_PIPES",
+                  f"{st.get('VERIFIED_PIPE_ATTACHMENT', 0)} beteckningar möter sitt rör, "
+                  f"{st.get('AMBIGUOUS_PIPE_ATTACHMENT', 0)} är tvetydiga och "
+                  f"{st.get('NO_PIPE_ATTACHMENT', 0)} når ingen rörgeometri alls.")
     scale = discover_scale(page, lines)
+    if film:
+        sv = {"VERIFIED": "verifierad - utskriven skala och skalstock säger samma sak",
+              "STATED": "tagen ur den utskrivna skalan", "BAR_ONLY": "tagen ur skalstocken; ingen utskriven skala",
+              "CONFLICT": "utskriven skala och skalstock säger emot varandra", "NONE": "gick inte att fastställa"}
+        film.note("MEASURING",
+                  f"Skalan: {sv.get(scale.state, scale.state.lower())}"
+                  + (f", {scale.meters_per_pt:.6f} m per punkt." if scale.meters_per_pt else ".")
+                  + ("" if scale.state in ("VERIFIED", "STATED", "BAR_ONLY") else " Utan säker skala mäts ingenting."))
     elevations = _elevations(blocks, anchors)
     # read the sheet again by the other routes, put the answers side by side, and let a second route add what the
     # first missed or take out what it contradicts
