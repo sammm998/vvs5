@@ -325,7 +325,18 @@ def _components(graph) -> dict[int, int]:
     return comp
 
 
-def settle_bundles_by_sheet_consistency(anchors, graphs) -> int:
+def pen_key(family: str) -> str:
+    """A pen as an office draws it, with the sheet it happened to be drawn on taken off.
+
+    A CAD layer path carries the drawing's own number in front of the layer code - `268140-W-50-P-A-03|V-52BB-…`
+    on one sheet and `…-A-00|V-52BB-…` on the next. The office's habit lives in the code and the ink, never in
+    the sheet number, so anything carried from one drawing to another has to be keyed on what they share.
+    """
+    layer, _, style = family.partition("|s|")
+    return f"{layer.rsplit('|', 1)[-1]}|s|{style}"
+
+
+def settle_bundles_by_sheet_consistency(anchors, graphs, known: dict[str, str] | None = None) -> int:
     """The bundles a sheet cannot settle one at a time, settled by taking the sheet as a whole.
 
     A stacked label over a bundle says which codes are there and not which line is which. On a sheet that names
@@ -340,7 +351,17 @@ def settle_bundles_by_sheet_consistency(anchors, graphs) -> int:
     those three things leave a piece with one possible system, the sheet has said which it is - not a convention,
     not an order, but the only reading its own labels are all consistent with.
 
-    Where they leave a choice, nothing is assigned. That is the ordinary outcome and it is the honest one.
+    On some sheets that is still not enough, and the reason is worth stating: where every block names the same
+    systems over the same two pens, swapping two of those systems everywhere satisfies every constraint just as
+    well. The sheet is then symmetric and nothing in its geometry says which of two parallel lines is the cold
+    one. A person knows by convention, and convention is the guess this refuses.
+
+    `known` is how that is broken without asking anyone: what the rest of the project has already stated, as
+    drawn family -> system. A set of drawings is one office drawing one building, and the sheet that labels a
+    run on its own says which pen that office uses for that system. Carried across, it is a fixpoint on the sheet
+    that does not - and it is a fact taken from a drawing, not from a reader.
+
+    Where all of it still leaves a choice, nothing is assigned. That is the ordinary outcome and it is honest.
     """
     from collections import defaultdict
 
@@ -375,7 +396,18 @@ def settle_bundles_by_sheet_consistency(anchors, graphs) -> int:
         for c in a.contacts:
             pc = piece_of(c.pid, c.seg_index)
             if pc:
-                pinned[pc].add(a.system_token)
+                pinned[pc].add(a.system_token.upper())
+    # and what the rest of the project has stated about the pens this sheet draws with
+    if known:
+        by_family: dict[str, str] = {pen_key(k): v.upper() for k, v in known.items()}
+        for fk in graphs:
+            sysname = by_family.get(pen_key(fk))
+            if not sysname:
+                continue
+            for pid in graphs[fk].prims:
+                pc = (fk, comps[fk].get(pid))
+                if pc[1] is not None and pc not in pinned:
+                    pinned[pc].add(sysname)
 
     # every block, as the pieces its runs lie on and the systems its rows name
     cases: list[tuple[tuple, list, list[tuple[str, int] | None], list[str]]] = []
@@ -590,7 +622,8 @@ def _settle_by_system_usage(anchors) -> int:
 
 def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
                  film_sink: Callable[[str, dict], None] | None = None,
-                 second_reader: Callable[[Any], str] | None = None) -> PageAnalysis:
+                 second_reader: Callable[[Any], str] | None = None,
+                 known_families: dict[str, str] | None = None) -> PageAnalysis:
     """second_reader: an optional transport for putting the reading's own open cases to a language model.
 
     Without it - the default, and what every test and every reference run uses - nothing is asked, the analysis
@@ -998,7 +1031,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         identities = _pipe_identities(designations, anchors, grammar, legend=legend)
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     # and what one bundle at a time cannot settle, the sheet taken as a whole sometimes can
-    if settle_bundles_by_sheet_consistency(anchors, graphs):
+    if settle_bundles_by_sheet_consistency(anchors, graphs, known_families):
         identities = _pipe_identities(designations, anchors, grammar, legend=legend)
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     _close_labels_on_owned_runs(anchors, ownership, graphs)

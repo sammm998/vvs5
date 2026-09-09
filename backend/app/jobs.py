@@ -107,6 +107,50 @@ def second_reader_state() -> tuple[bool, str]:
     return (ok, why) if ok else (False, f"påslagen men inte nåbar: {why}")
 
 
+# A pen has to be stated this often, and this consistently, before another sheet may lean on it. One stray
+# label on one drawing is not an office's habit; two hundred agreeing ones are.
+PROJECT_MIN_TIMES = 3
+PROJECT_MIN_SHARE = 0.8
+
+
+def project_system_families(db, drawing) -> dict[str, str]:
+    """What the rest of this project's drawings have already stated: drawn family -> system.
+
+    A set of drawings is one office drawing one building. Where a sheet labels a run on its own, it says which
+    pen that office uses for that system - and on a sheet whose bundles are symmetric, that is the fixpoint that
+    settles them. It is a fact read off other drawings, never something a person was asked for.
+    """
+    from collections import defaultdict
+
+    from vvs_engine.pipeline import pen_key
+    rows = (db.query(AnalysisJob, Drawing)
+            .join(Drawing, AnalysisJob.drawing_id == Drawing.id)
+            .filter(Drawing.project_id == drawing.project_id, AnalysisJob.status == "COMPLETED",
+                    AnalysisJob.drawing_id != drawing.id, AnalysisJob.result_key.isnot(None))
+            .all())
+    tally: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+    for job, _ in rows:
+        path = os.path.join(storage.path(job.result_key), "drawn-system-families.json")
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                stated = json.load(fh).get("stated") or []
+        except Exception:                                       # noqa: BLE001
+            continue
+        for st in stated:
+            fam, sysname, n = st.get("family"), st.get("system"), int(st.get("times") or 0)
+            if fam and sysname and n > 0:
+                tally[pen_key(fam)][sysname] += n
+    out: dict[str, str] = {}
+    for fam, systems in tally.items():
+        total = sum(systems.values())
+        best, n = max(systems.items(), key=lambda kv: kv[1])
+        if n >= PROJECT_MIN_TIMES and n >= PROJECT_MIN_SHARE * total:
+            out[fam] = best
+    return out
+
+
 def run_job(job_id: str) -> None:
     from vvs_engine.cli import analyze_pdf
     from vvs_engine.pdf.extract import UnsupportedInputError
@@ -117,6 +161,7 @@ def run_job(job_id: str) -> None:
         drawing = db.get(Drawing, job.drawing_id)
         pdf_path = storage.path(drawing.storage_key)
         result_key = f"results/{drawing.id}/{job.id}"
+        known = project_system_families(db, drawing)
         job.status = "RUNNING"; job.started_at = dt.datetime.now(dt.timezone.utc); job.result_key = result_key
         db.commit()
     out_dir = storage.path(result_key)
@@ -126,7 +171,7 @@ def run_job(job_id: str) -> None:
                               contamination=True, progress=_progress_cb(job_id),
                               review=settings.run_review, review_ocr=settings.review_ocr,
                               ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir),
-                              second_reader=_second_reader())
+                              second_reader=_second_reader(), known_families=known)
         # which readers this installation actually had available, and by what name - a reading that quietly used a
         # model, or quietly did without one, is not a reading anyone can check
         on, why = second_reader_state()

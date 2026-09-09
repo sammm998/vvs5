@@ -25,7 +25,7 @@ class AnalysisTookTooLong(Exception):
 def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinism: bool = True, contamination: bool = True,
                 progress=None, pages: list[int] | None = None, review: bool = True, review_ocr: bool = True,
                 film_sink=None,
-                ocr_assist: bool = False, deadline_s: float | None = None, second_reader=None) -> dict:
+                ocr_assist: bool = False, deadline_s: float | None = None, second_reader=None, known_families: dict | None = None) -> dict:
     """deadline_s: a wall-clock budget for the whole document, checked between pages.
 
     A drawing set can carry a page dense enough that reading it takes longer than anyone will wait, and without a
@@ -50,7 +50,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
                 f"en halv mängd är sämre än ingen, så inget delresultat sparas")
         analyses.append(analyze_page(pg, progress, ocr_assist=ocr_assist,
                                      film_sink=film_sink if pg.info.index == 0 else None,
-                                     second_reader=second_reader))
+                                     second_reader=second_reader, known_families=known_families))
     if progress:
         progress("GENERATING_OVERLAYS")
     t0 = time.perf_counter()
@@ -109,7 +109,7 @@ def main(argv=None):
         print(json.dumps(s["summary"], indent=1, default=str)); return 0
     if args.cmd == "why":
         doc = extract_document(args.pdf)
-        pa = analyze_page(doc.pages[0])
+        pa = analyze_page(doc.pages[0], known_families=known_families)
         print(json.dumps(why_fn(pa, args.pipe_id), indent=1, default=str)); return 0
     return 1
 

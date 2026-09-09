@@ -457,6 +457,18 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
                         "claimed_by": sorted(by),
                         "in_hatch": bool(pa.hatch_families) and inside_hatch(pa.hatch_families, *q.seg.mid) is not None})
     W("pipe-geometry-inventory.json", {"primitives": inv})
+    # What this sheet states about which pen its office draws which system with. A label verified on a run says
+    # it outright; nothing here is inferred. It is written down so the next sheet of the same project can use it
+    # where its own bundles are symmetric - one drawing telling another, with no reader in between.
+    states: Counter = Counter()
+    for a in pa.anchors:
+        if a.state != "VERIFIED_PIPE_ATTACHMENT" or not a.system_token:
+            continue
+        for c in a.contacts:
+            if c.family.split("|s|")[0]:
+                states[(c.family, a.system_token.upper())] += 1
+    W("drawn-system-families.json",
+      {"stated": [{"family": f, "system": sy, "times": n} for (f, sy), n in states.most_common()]})
     W("declined-geometry.json", declined_geometry(pa))
     W("pipe-topology.json", {"families": [{"family": fk, "nodes": [{"id": n.nid, "x": round(n.x, 2), "y": round(n.y, 2), "degree": n.degree, "prims": n.prims} for n in g.nodes.values()],
                                             "edges": [{"prim": pid, "a": ab[0], "b": ab[1]} for pid, ab in g.prim_nodes.items()], "bridges": g.bridges, "junctions": g.junctions, "gap_mode": g.gap_mode}
