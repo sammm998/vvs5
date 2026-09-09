@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { MODULES, readProgress, markDone, type Block, type Lesson, type Module } from "../learn";
+import { MODULES, readProgress, type Module } from "../learn";
+import LearnWizard from "./LearnWizard";
 
 /* VVS-akademin.
  *
@@ -10,49 +11,6 @@ import { MODULES, readProgress, markDone, type Block, type Lesson, type Module }
  */
 
 /* ---------- the figures the lessons point at ---------- */
-
-function FigDesignation() {
-  return (
-    <svg viewBox="0 0 600 170" role="img" aria-label="Beteckningen KV1-X31-16 uppdelad i sina tre delar">
-      <g className="lf-mono">
-        <text x="60" y="66" fontSize="34" fill="var(--ink)">KV1</text>
-        <text x="146" y="66" fontSize="34" fill="var(--faint)">-</text>
-        <text x="168" y="66" fontSize="34" fill="var(--ink)">X31</text>
-        <text x="252" y="66" fontSize="34" fill="var(--faint)">-</text>
-        <text x="274" y="66" fontSize="34" fill="var(--ink)">16</text>
-      </g>
-      {/* the three drops get shorter to the right, and each caption runs right from where its own drop lands,
-          so no line ever crosses a line of text */}
-      <g stroke="var(--line-2)" strokeWidth="1" fill="none">
-        <path d="M92 84 V142" /><path d="M204 84 V112" /><path d="M298 84 V90" />
-      </g>
-      <g className="lf-mono" fontSize="12.5" fill="var(--muted)">
-        <text x="102" y="146">system · tappkallvatten 1</text>
-        <text x="214" y="116">material · ur bladets lista</text>
-        <text x="308" y="94">dimension · ytterdiameter 16 mm</text>
-      </g>
-    </svg>
-  );
-}
-
-function FigLeader() {
-  return (
-    <svg viewBox="0 0 520 190" role="img" aria-label="Etikett, hänvisningslinje och punkten där den landar">
-      <rect x="10" y="12" width="500" height="166" rx="8" fill="#fbfbfb" stroke="var(--line)" />
-      <path d="M60 132 H250 V86 H430" fill="none" stroke="#1f7a52" strokeWidth="3.4" strokeLinecap="round"
-        strokeDasharray="16 6" />
-      <g>
-        <rect x="60" y="34" width="132" height="24" rx="4" fill="#fff" stroke="var(--line-2)" />
-        <text x="70" y="51" className="lf-mono" fontSize="12.5" fill="var(--ink)">KV1-X31-16</text>
-        <path d="M192 46 L250 86" stroke="#c026d3" strokeWidth="1.5" fill="none" />
-        <circle cx="250" cy="86" r="4.6" fill="#fff" stroke="#c026d3" strokeWidth="2" />
-      </g>
-      <text x="264" y="76" className="lf-mono" fontSize="11" fill="var(--muted)">linjen slutar PÅ röret</text>
-      <path d="M300 148 H430" fill="none" stroke="#c9c9c9" strokeWidth="3.4" strokeDasharray="16 6" />
-      <text x="300" y="170" className="lf-mono" fontSize="11" fill="var(--faint)">ingen etikett · mängdas inte</text>
-    </svg>
-  );
-}
 
 /* ---------- the exercise: a small sheet to take off ---------- */
 
@@ -81,7 +39,7 @@ function Label({ x, y, t, to }: { x: number; y: number; t: string; to: [number, 
   );
 }
 
-function Exercise() {
+export function Exercise() {
   const [picked, setPicked] = useState<string | null>(null);
   const [given, setGiven] = useState<Record<string, string>>({});
   const [checked, setChecked] = useState(false);
@@ -168,93 +126,12 @@ function Exercise() {
   );
 }
 
-const FIGS: Record<string, () => JSX.Element> = {
-  designation: FigDesignation, leader: FigLeader, exercise: Exercise,
-};
-
-/* ---------- the reader ---------- */
-
-function Body({ b }: { b: Block }) {
-  if (b.k === "p") return <p>{b.t}</p>;
-  if (b.k === "note") return <p className="lf-note">{b.t}</p>;
-  if (b.k === "ul") return <ul className="lf-ul">{b.t.map((x, i) => <li key={i}>{x}</li>)}</ul>;
-  if (b.k === "terms") {
-    return (
-      <dl className="lf-terms">
-        {b.t.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
-      </dl>
-    );
-  }
-  const F = FIGS[b.id];
-  return (
-    <figure className={`lf-fig${b.id === "exercise" ? " wide" : ""}`}>
-      <div className="lf-fig-in">{F ? <F /> : null}</div>
-      <figcaption>{b.caption}</figcaption>
-    </figure>
-  );
-}
-
-function QuizBox({ l, onPass }: { l: Lesson; onPass: () => void }) {
-  const [pick, setPick] = useState<number | null>(null);
-  if (!l.quiz) return null;
-  const q = l.quiz;
-  return (
-    <div className="lf-quiz">
-      <div className="lf-quiz-q">{q.q}</div>
-      <div className="lf-quiz-opts">
-        {q.options.map((o, i) => (
-          <button key={i} type="button"
-            className={`secondary${pick === null ? "" : i === q.answer ? " right" : pick === i ? " wrong" : ""}`}
-            onClick={() => { setPick(i); if (i === q.answer) onPass(); }}>
-            {o}
-          </button>
-        ))}
-      </div>
-      {pick !== null && (
-        <p className={`lf-quiz-why${pick === q.answer ? " ok" : ""}`}>
-          {pick === q.answer ? "Rätt. " : "Inte riktigt. "}{q.why}
-        </p>
-      )}
-    </div>
-  );
-}
-
 export default function Learn({ compact }: { compact?: boolean }) {
   const [prog, setProg] = useState<Record<string, boolean>>(() => readProgress());
   const [open, setOpen] = useState<string | null>(null);
   const flat = useMemo(() => MODULES.flatMap((m) => m.lessons.map((l) => ({ m, l }))), []);
   const done = flat.filter(({ l }) => prog[l.id]).length;
-  const cur = open ? flat.find(({ l }) => l.id === open) : null;
-
-  const finish = (id: string) => setProg(markDone(id));
-  const nextOf = (id: string) => {
-    const i = flat.findIndex(({ l }) => l.id === id);
-    return i >= 0 && i + 1 < flat.length ? flat[i + 1] : null;
-  };
-
-  if (cur) {
-    const nx = nextOf(cur.l.id);
-    return (
-      <div className={`learn${compact ? " compact" : ""}`}>
-        <div className="lf-bar">
-          <button className="ghost small" onClick={() => setOpen(null)}>← Alla delmoment</button>
-          <span className="lf-crumb">{cur.m.title} · {cur.l.minutes} min</span>
-        </div>
-        <article className="lf-read">
-          <h2>{cur.l.title}</h2>
-          {cur.l.body.map((b, i) => <Body key={i} b={b} />)}
-          <QuizBox l={cur.l} onPass={() => finish(cur.l.id)} />
-          <div className="lf-foot">
-            <button className={prog[cur.l.id] ? "secondary" : ""}
-              onClick={() => { finish(cur.l.id); if (nx) setOpen(nx.l.id); else setOpen(null); }}>
-              {prog[cur.l.id] ? (nx ? "Nästa delmoment" : "Klart") : "Markera som klar"}
-            </button>
-            {nx && <span className="muted">Härnäst: {nx.l.title}</span>}
-          </div>
-        </article>
-      </div>
-    );
-  }
+  const next = flat.find(({ l }) => !prog[l.id]) ?? flat[0];
 
   return (
     <div className={`learn${compact ? " compact" : ""}`}>
@@ -263,9 +140,15 @@ export default function Learn({ compact }: { compact?: boolean }) {
           <div className="lf-kicker">VVS-akademin</div>
           <h2>Lär dig läsa och mängda en rörritning</h2>
           <p className="muted">
-            Sex delmoment, ett i taget. De sparas i den här webbläsaren, så du kan fortsätta där du slutade nästa
-            gång en ritning läses.
+            Fjorton steg, ett i taget, vart och ett med en levande figur som visar vad det handlar om. De sparas
+            i den här webbläsaren, så du kan fortsätta där du slutade nästa gång en ritning läses.
           </p>
+          <div className="row" style={{ marginTop: 16 }}>
+            <button onClick={() => setOpen(next.l.id)}>
+              {done === 0 ? "Starta guiden" : done === flat.length ? "Gå igenom igen" : "Fortsätt guiden"}
+            </button>
+            {done > 0 && done < flat.length && <span className="muted">Härnäst: {next.l.title}</span>}
+          </div>
         </div>
         <div className="lf-ring" style={{ ["--p" as any]: `${Math.round((done / flat.length) * 100)}%` }}>
           <span>{done}<i>/{flat.length}</i></span>
@@ -294,6 +177,8 @@ export default function Learn({ compact }: { compact?: boolean }) {
           );
         })}
       </div>
+      <LearnWizard open={open !== null} start={open ?? undefined}
+        onClose={() => { setOpen(null); setProg(readProgress()); }} />
     </div>
   );
 }

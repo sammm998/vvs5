@@ -1059,6 +1059,17 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # only when the sheet's own labels place better for it. A sheet whose export put the pipes on the same pen as
     # the leaders reads as nothing at all otherwise - and where the layers carry names, the old test never even
     # asked, so the rescue never ran and a hundred labels went unplaced beside their own geometry.
+    # Which readings of the sheet were tried, what each of them managed, and which one was kept. The choice is
+    # made by weighing the sheet's own labels against each other, and until now it was made silently: a reader
+    # could see the answer but not that there had been a second candidate, nor why it lost. A decision nobody
+    # can inspect is a decision nobody can argue with.
+    passes: list[dict] = []
+
+    def record(name: str, why: str, fams, anch, kept: bool | None = None) -> None:
+        passes.append({"pass": name, "why": why, "families": sorted(fams),
+                       "labels_placed": len(_reached(anch)), "labels": len(pipe_labels), "kept": kept})
+
+    record("unrestricted", "varje penna bladet ritar med prövas mot bladets egna etiketter", pipe_families, anchors)
     if film:
         film.note("RESOLVING_PIPE_REPRESENTATION",
                   f"Första läsningen: {len(pipe_families)} familjer tagna som rör, "
@@ -1074,6 +1085,11 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 print(f"[rescue] leader pens admitted: {len(_reached(anchors))} -> {len(_reached(rescue[3]))} "
                       f"of {len(pipe_labels)} labels placed", file=sys.stderr)
             leaders, pipe_families, graphs, anchors, contact_stats = rescue
+            record("leader_pens_admitted", "för få etiketter nådde fram; pennorna som också drar "
+                   "hänvisningslinjer släpptes in", rescue[1], rescue[3])
+        else:
+            record("leader_pens_admitted", "prövad och förkastad: den placerade inte fler av bladets etiketter",
+                   rescue[1], rescue[3], kept=False)
     pass1 = (leaders, pipe_families, graphs, anchors, contact_stats)
     if os.environ.get("VVS_DEBUG_PASS"):
         print(f"[reach] pass1 placed {len(_reached(anchors))}/{len(pipe_labels)} pipe labels, fams={sorted(pipe_families)}", file=sys.stderr)
@@ -1111,6 +1127,10 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                       + ("Den obegränsade läsningen står." if (not pass2[1] or _label_reach_fails(pass2[1], pass2[3]))
                          or 2 * len(_reached(pass2[3])) < len(_reached(pass1[3]))
                          else "Den begränsade läsningen står."))
+        record("annotation_pens_withheld",
+               "bladets skrivpennor, som den första läsningens hänvisningslinjer pekade ut, hålls utanför",
+               pass2[1], pass2[3], kept=not take1)
+        passes[0]["kept"] = bool(take1)
         if take1:
             if os.environ.get("VVS_DEBUG_PASS"):
                 print(f"[withdraw] restricted pass left {len(_reached(pass2[3]))}/{len(pipe_labels)} labels placed, "
@@ -1123,10 +1143,17 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             ann_layers = keep
     else:
         ann_layers = {}
+        passes[-1]["kept"] = True
     if _label_reach_fails(pipe_families, anchors):
         if os.environ.get("VVS_DEBUG_PASS"):
             print(f"[drop] only {len(_reached(anchors))}/{len(pipe_labels)} pipe labels reached {sorted(pipe_families)}", file=sys.stderr)
+        passes.append({"pass": "none", "why": "för få av bladets egna rörnamn nådde någon av de tagna familjerna; "
+                                              "en läsning som inte når fram är sämre än ingen",
+                       "families": [], "labels_placed": 0, "labels": len(pipe_labels), "kept": True})
+        for q in passes[:-1]:
+            q["kept"] = False
         pipe_families, graphs, anchors, contact_stats = {}, {}, [], dict(contact_stats, dropped_by_label_reach=True)
+    contact_stats = dict(contact_stats, reading_passes=passes)
     film.leaders(leaders)
     film.families(pipe_families, graphs)
     timings["leader_ms"] = 0.0

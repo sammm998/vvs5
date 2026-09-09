@@ -17,7 +17,11 @@ export type Block =
 
 export type Quiz = { q: string; options: string[]; answer: number; why: string };
 
-export type Lesson = { id: string; title: string; minutes: number; body: Block[]; quiz?: Quiz };
+export type Lesson = {
+  id: string; title: string; minutes: number; body: Block[]; quiz?: Quiz;
+  /** the live figure this step shows, and the two or three lines it is said in when shown as a wizard step */
+  fig?: string; short?: string[];
+};
 
 export type Module = { id: string; title: string; blurb: string; lessons: Lesson[] };
 
@@ -29,6 +33,8 @@ export const MODULES: Module[] = [
     lessons: [
       {
         id: "system-vad",
+        fig: "flow",
+        short: ["Tryckledningar — tappvatten, värme, kyla — går åt vilket håll som helst.", "Självfallsledningar — spill och dagvatten — måste luta hela vägen, och bestämmer därför var allt annat får plats."],
         title: "Vad VVS omfattar",
         minutes: 4,
         body: [
@@ -52,6 +58,8 @@ export const MODULES: Module[] = [
       },
       {
         id: "system-kv-vv",
+        fig: "bundle",
+        short: ["KV och VV dras i bunt fram till tappstället. VVC går tillbaka så varmvattnet inte hinner kallna.", "I schaktet ligger de några centimeter isär. Geometrin kan inte säga vilken som är vilken — bara etiketten kan."],
         title: "KV, VV och VVC",
         minutes: 4,
         body: [
@@ -73,6 +81,8 @@ export const MODULES: Module[] = [
       },
       {
         id: "system-avlopp",
+        fig: "stack",
+        short: ["En spillvattenledning för bort vatten och släpper in luft samtidigt.", "Utan luft suger vattenpelaren tomt vattenlåsen. Därför fortsätter stammen upp över tak."],
         title: "Spillvatten och luftning",
         minutes: 4,
         body: [
@@ -95,6 +105,8 @@ export const MODULES: Module[] = [
     lessons: [
       {
         id: "bet-delar",
+        fig: "code",
+        short: ["En beteckning är inte ett namn utan en formel: system, material, dimension.", "Materialkoderna är inte standard mellan kontor — de står i bladets egen förklaringslista."],
         title: "Beteckningens delar",
         minutes: 5,
         body: [
@@ -117,6 +129,8 @@ export const MODULES: Module[] = [
       },
       {
         id: "bet-dim",
+        fig: "dndy",
+        short: ["dy är ytterdiametern: plast och koppar anges så. DN är ungefär insidan: stål och gjutjärn.", "Samma tal, två olika mått. Att blanda ihop dem ger fel material i kalkylen, inte fel längd."],
         title: "DN, dy och vad talet betyder",
         minutes: 5,
         body: [
@@ -144,6 +158,8 @@ export const MODULES: Module[] = [
     lessons: [
       {
         id: "blad-delar",
+        fig: "sheet",
+        short: ["Ett blad består alltid av samma delar: planen, stämpeln, förklaringslistan, skalstocken.", "Saknas listan på bladet du håller i — leta i handlingen. Den skrivs en gång och gäller för alla blad."],
         title: "Ritningens delar",
         minutes: 5,
         body: [
@@ -172,6 +188,8 @@ export const MODULES: Module[] = [
       },
       {
         id: "blad-skala",
+        fig: "scale",
+        short: ["Allt du mäter går genom skalan, så den kontrolleras först.", "Ett A1-blad utskrivet på A3 gör den utskrivna skalan fel. Skalstocken krymper med och är den som gäller."],
         title: "Skalan och skalstocken",
         minutes: 4,
         body: [
@@ -193,6 +211,8 @@ export const MODULES: Module[] = [
       },
       {
         id: "blad-hojder",
+        fig: "riser",
+        short: ["En plan visar två dimensioner. Det som går upp och ned sägs med en ring och en text.", "Ritningen anger nästan aldrig våningshöjden. Antalet stigare räknas, höjden matas in."],
         title: "Höjder, stigare och sektioner",
         minutes: 5,
         body: [
@@ -215,6 +235,8 @@ export const MODULES: Module[] = [
     lessons: [
       {
         id: "rita-lager",
+        fig: "layers",
+        short: ["Lagret är ritarens sätt att säga vad geometrin är: ett per system, byggnaden för sig.", "En export som lägger allt på ett lager med en penna har kastat bort den uppgiften."],
         title: "Lager, pennor och linjetyper",
         minutes: 5,
         body: [
@@ -241,6 +263,8 @@ export const MODULES: Module[] = [
       },
       {
         id: "rita-etikett",
+        fig: "leader",
+        short: ["Hänvisningslinjen ska sluta PÅ röret, inte bredvid det.", "En linje som slutar i luften ser rätt ut för ögat. För varje mängdning betyder den att sträckan blir onämnd."],
         title: "Etiketten och hänvisningslinjen",
         minutes: 5,
         body: [
@@ -276,6 +300,8 @@ export const MODULES: Module[] = [
     lessons: [
       {
         id: "mangd-ordning",
+        fig: "takeoff",
+        short: ["Skala, lista, etiketter, sträckor, stigare, summa — i den ordningen, för varje steg vilar på det förra.", "Och sist: skriv ned vad som inte gick att avgöra. En osäker rad ska stå som osäker."],
         title: "Arbetsordningen",
         minutes: 6,
         body: [
@@ -293,6 +319,8 @@ export const MODULES: Module[] = [
       },
       {
         id: "mangd-vad",
+        fig: "takeoff",
+        short: ["Horisontell längd räknas per beteckning. Stigare räknas som antal.", "Rör i vägg mäts men redovisas för sig. Hänvisningslinjer och byggnadens linjer räknas aldrig."],
         title: "Vad som räknas och vad som inte gör det",
         minutes: 5,
         body: [
@@ -319,6 +347,8 @@ export const MODULES: Module[] = [
       },
       {
         id: "mangd-kontroll",
+        fig: "checks",
+        short: ["Fyra kontroller fångar nästan alla fel: täckning, rimlighet, systembalans, fria ändar.", "Halkar KV mot VV är det nästan alltid sträckor som inte kopplats till sin beteckning."],
         title: "Att kontrollera sin egen mängd",
         minutes: 5,
         body: [
@@ -352,6 +382,8 @@ export const MODULES: Module[] = [
     lessons: [
       {
         id: "ovning-1",
+        fig: "exercise",
+        short: ["Ett litet blad i skala 1:50 med tre beteckningar — och en sträcka som ingen etikett namnger.", "Följ hänvisningslinjen, inte närheten. Att lämna den onämnda omärkt är rätt svar."],
         title: "Läs bladet och mät",
         minutes: 10,
         body: [

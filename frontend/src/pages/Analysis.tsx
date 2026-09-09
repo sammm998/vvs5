@@ -4,7 +4,7 @@ import { api } from "../api";
 import PdfViewer, { Drawn, EditKind, Layer, ViewerHandle } from "../components/PdfViewer";
 import QuantityTable from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
-import Learn from "../components/Learn";
+import LearnWizard from "../components/LearnWizard";
 import Corrections, { Draft } from "../components/Corrections";
 import LegendView from "../components/LegendView";
 import Reasoning from "../components/Reasoning";
@@ -177,33 +177,26 @@ export default function AnalysisPage() {
   if (!job) return <main>Laddar…</main>;
   if (job.status !== "COMPLETED") {
     /* The reading takes a minute or two, and it is one of the few times somebody sits still in front of the
-       tool. So the wait is offered as something else: the academy, in the same place, with the reading still
-       running behind it. Coming back to the film costs one click and loses nothing. */
+       tool. So the wait is offered as something else - but as a guide laid over the reading, not instead of it:
+       the film keeps running behind the panel, and closing it costs nothing. */
     return (
       <main>
         <p className="crumb"><Link to={`/drawings/${job.drawing_id}`}>Ritning</Link> / Analys</p>
         <div className="head">
           <div>
-            <h1>{learn ? "Lär dig VVS" : "Läser ritningen"}</h1>
-            <p className="lead">
-              {learn
-                ? `Läsningen fortsätter under tiden — ${stageText(job.stage) || job.stage.toLowerCase()}.`
-                : stageText(job.stage) || job.stage}
-            </p>
+            <h1>Läser ritningen</h1>
+            <p className="lead">{stageText(job.stage) || job.stage}</p>
           </div>
           <div className="row">
-            <button className={learn ? "secondary" : ""} onClick={() => setLearn(!learn)}>
-              {learn ? "Tillbaka till läsningen" : "Lär mig om VVS"}
-            </button>
+            <button onClick={() => setLearn(true)}>Lär mig om VVS</button>
             <StatusBadge job={job} />
           </div>
         </div>
         <div className="rule" style={{ marginBottom: 26 }} />
         {job.status === "FAILED"
           ? <pre className="error">{job.error}</pre>
-          : learn
-            ? <Learn compact />
-            : <AnalysisFilm jobId={id!} stage={job.stage} progress={job.progress} />}
+          : <AnalysisFilm jobId={id!} stage={job.stage} progress={job.progress} />}
+        <LearnWizard open={learn} onClose={() => setLearn(false)} />
       </main>
     );
   }
