@@ -220,7 +220,17 @@ export default function AnalysisPage() {
   if (!result) return <main>Laddar resultat…</main>;
   const c = result.coverage;
   const pipesOnPage = result.pipes.filter((p: any) => p.page === page);
-  const covWarn = c.designations > 0 && c.verified_attachments / Math.max(c.designations, 1) < 0.5;
+  /* How much of what the drawing names ended up with a metre.
+   *
+   * The warning used to divide verified attachments by every designation on the sheet, and most of those are
+   * not runs at all - legend rows, component tags, drawing numbers in the title block. A sheet the reading got
+   * all the way through could still show "133 of 190" and read as half-failed. This counts only the names the
+   * sheet's own list says are pipes, against the ones the takeoff carries metres for. */
+  const nm = c.named_vs_measured ?? {};
+  const namedShare: number | null = typeof nm.share === "number" ? nm.share : null;
+  const covWarn = namedShare !== null && namedShare < 0.6;
+  const setDoc = result.document ?? null;
+  const nSheets = setDoc?.totals?.sheets ?? 1;
   const viewtabs = (
     <div className="viewtabs">
       <button className={view === "forklaring" ? "active" : ""} onClick={() => setView("forklaring")}>
@@ -333,8 +343,51 @@ export default function AnalysisPage() {
           <div className="card">
             {covWarn && (
               <p className="badge warn">
-                {`${c.verified_attachments} av ${c.designations} beteckningar nådde ett rör. Resten är legendtext, komponenttaggar eller etiketter vars hänvisningslinje inte når fram – se Granskning.`}
+                {`${nm.pipe_names_with_metres} av ${nm.pipe_names} rörbeteckningar som ritningen skriver ut fick meter `
+                  + `(${Math.round((namedShare ?? 0) * 100)} %). Av ${nm.drawn_m} m ritat rör bar `
+                  + `${nm.confirmed_m} m en identitet och ${nm.unowned_m} m ingen alls – se Granskning för varje fall.`}
               </p>
+            )}
+            {nSheets > 1 && (
+              <details className="settings" open>
+                <summary>
+                  Hela handlingen <span className="muted">· {nSheets} blad · {setDoc.totals.confirmed_horizontal_m} m
+                    horisontellt · {setDoc.totals.designations} beteckningar</span>
+                </summary>
+                <div className="body">
+                  <p className="muted">
+                    Tabellen nedan är det här bladet. Handlingen som helhet står här: samma beteckning summerad
+                    över de blad den står på.
+                  </p>
+                  <div className="tablewrap">
+                    <table className="legendtable">
+                      <thead>
+                        <tr><th>Beteckning</th><th>DN</th><th className="num">Horisontellt</th>
+                          <th className="num">Vertikalt</th><th className="num">Rör</th><th>Blad</th></tr>
+                      </thead>
+                      <tbody>
+                        {setDoc.rows.map((r: any) => (
+                          <tr key={`${r.designation}/${r.dn}`}>
+                            <td><b>{r.designation}</b></td>
+                            <td>{r.dn ?? <span className="muted">–</span>}</td>
+                            <td className="num">{r.confirmed_horizontal_m.toFixed(2)}</td>
+                            <td className="num">{r.confirmed_vertical_m ? r.confirmed_vertical_m.toFixed(2) : <span className="muted">–</span>}</td>
+                            <td className="num">{r.physical_pipe_count}</td>
+                            <td className="muted">{r.sheets.map((n: number) => n + 1).join(", ")}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  {setDoc.sheets_without_a_settled_scale?.length > 0 && (
+                    <p className="badge warn">
+                      {`${setDoc.sheets_without_a_settled_scale.length} blad har ingen fastställd skala och bär `
+                        + "därför inga meter i summan: blad "
+                        + setDoc.sheets_without_a_settled_scale.map((x: any) => x.page + 1).join(", ")}
+                    </p>
+                  )}
+                </div>
+              </details>
             )}
             {/* Two settings and a paragraph explaining them used to stand between the reader and the numbers they
                 came for. They are still one click away, and the summary line says what they are set to. */}

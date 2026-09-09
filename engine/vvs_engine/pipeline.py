@@ -1493,6 +1493,46 @@ def _generalize_families(page: RawPage, pipe_families: dict, graphs: dict):
     return pipe_families, graphs
 
 
+def reading_coverage(pa: PageAnalysis) -> dict[str, Any]:
+    """How much of what the sheet names the reading actually carried through to a metre.
+
+    Every other number in a takeoff is about what was found. This one is about what was not, and it is the only
+    figure that tells a sheet the reading got through from a sheet it barely opened: the drawing writes so many
+    pipe designations, and the takeoff has metres for so many of them. A sheet that names ninety runs and
+    measures four says so in one line instead of in ninety review rows.
+
+    The share is deliberately taken over the names the sheet writes, not over the geometry the reading accepted.
+    A reading that accepted no pipe geometry at all has nothing left unowned, and every ratio built on its own
+    families is then vacuously perfect - which is exactly the case that needs to be visible.
+    """
+    named = {(d.text or "").strip().upper() for d in pa.designations
+             if pa.legend.names_a_pipe(d) and (d.text or "").upper() not in pa.legend.components()}
+    named.discard("")
+    measured = {q["designation"].upper() for q in pa.quantities if (q.get("confirmed_total_m") or 0) > 0}
+
+    def carried(name: str) -> bool:
+        return name in measured or any(m.startswith(name + "-") or name.startswith(m + "-") for m in measured)
+
+    got = {n for n in named if carried(n)}
+    ink = {"drawn_pt": 0.0, "confirmed_pt": 0.0, "ambiguous_pt": 0.0, "unowned_pt": 0.0}
+    for fk, g in (pa.graphs or {}).items():
+        states = (pa.ownership.prim_states if pa.ownership else {}).get(fk, {})
+        for pid, prim in g.prims.items():
+            L = prim.seg.length
+            ink["drawn_pt"] += L
+            st = states.get(pid)
+            key = {"CONFIRMED": "confirmed_pt", "AMBIGUOUS": "ambiguous_pt"}.get(getattr(st, "state", ""), "unowned_pt")
+            ink[key] += L
+    mpp = (pa.scale.meters_per_pt if pa.scale else None) or 0.0
+    return {
+        "pipe_names": len(named), "pipe_names_with_metres": len(got),
+        "share": round(len(got) / len(named), 3) if named else None,
+        "without_metres": sorted(named - got)[:40],
+        "drawn_m": round(ink["drawn_pt"] * mpp, 2), "confirmed_m": round(ink["confirmed_pt"] * mpp, 2),
+        "ambiguous_m": round(ink["ambiguous_pt"] * mpp, 2), "unowned_m": round(ink["unowned_pt"] * mpp, 2),
+    }
+
+
 def summarize(pa: PageAnalysis) -> dict[str, Any]:
     st = Counter(a.state for a in pa.anchors)
     return {
@@ -1503,5 +1543,6 @@ def summarize(pa: PageAnalysis) -> dict[str, Any]:
         "scale": pa.scale.state if pa.scale else None,
         "confirmed_horizontal_m": round(sum(q["confirmed_horizontal_m"] for q in pa.quantities), 2),
         "ambiguous_m": round(sum(q["ambiguous_m"] for q in pa.quantities), 2),
+        "coverage": reading_coverage(pa),
         "timings_ms": {k: round(v) for k, v in pa.timings.items()},
     }

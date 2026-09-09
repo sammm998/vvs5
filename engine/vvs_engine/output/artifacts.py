@@ -12,6 +12,7 @@ from typing import Any
 
 from .. import __version__
 from ..profile.layers import layer_tokens
+from ..pipeline import reading_coverage
 from ..semantics.leaders import leader_family_report
 
 
@@ -491,6 +492,12 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     # and the project has nothing to hand its next drawing.
     W("drawing-legend.json", (doc_legend if doc_legend is not None and doc_legend.entries else pa.legend).as_dict())
     W("document-quantities.json", document_quantities(sheets or []))
+    # How much of what the drawing names the reading carried through to a metre. It is the only figure that
+    # tells a sheet the reading got through from a sheet it barely opened, so it is written down as its own
+    # artifact rather than left to be worked out from a count of review rows.
+    W("reading-coverage.json", {"sheets": [{"page": sh.get("page"), **(sh.get("coverage") or {})}
+                                           for sh in (sheets or [])]} if sheets
+      else {"sheets": [{"page": pa.page.info.index, **reading_coverage(pa)}]})
     lead_out = []
     for l in pa.leaders:
         ld = l.as_dict()

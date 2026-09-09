@@ -544,7 +544,14 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
             # whether another machine was consulted about this reading, and what it did - a number on screen is
             # only checkable if you can tell what made it
             "second_reader": summary.get("second_reader") or {"consulted": False},
+            # How much of what the drawing names ended up with a metre. Every other number here is about what was
+            # found; this one is about what was not, and it is what separates a sheet the reading got through
+            # from one it barely opened.
+            "named_vs_measured": ((_load_optional(rd, "reading-coverage.json") or {}).get("sheets") or [{}])[0],
         },
+        # The whole set, not only its first sheet: a row per designation summed over the sheets it stands on,
+        # and what each sheet on its own contributed.
+        "document": _load_optional(rd, "document-quantities.json"),
         "performance": perf,
         "review": _load_optional(rd, "review-findings.json"),
         "crosscheck": _load_optional(rd, "route-crosscheck.json"),

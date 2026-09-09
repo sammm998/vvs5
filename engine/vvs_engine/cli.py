@@ -14,7 +14,7 @@ from .determinism import run_determinism
 from .output.artifacts import why as why_fn, write_all
 from .output.overlays import OverlayWriter
 from .pdf.extract import extract_document
-from .pipeline import PageAnalysis, analyze_page, prepare_page, summarize
+from .pipeline import PageAnalysis, analyze_page, prepare_page, reading_coverage, summarize
 from .semantics.legend import DrawingLegend, merged
 
 CONFIG = {"contact_tolerance_pt": 0.6, "touch_tolerance_pt": 0.15, "unknown_glyph_threshold": 0.14, "grid": 32}
@@ -65,6 +65,7 @@ def sheet_record(pa) -> dict:
         "ambiguous_attachments": sum(1 for a in anchors if a.state == "AMBIGUOUS_PIPE_ATTACHMENT"),
         "no_attachments": sum(1 for a in anchors if a.state == "NO_PIPE_ATTACHMENT"),
         "legend": {"codes": len(pa.legend.entries), "own": pa.legend.own},
+        "coverage": reading_coverage(pa),
         "quantities": [{k: q.get(k) for k in ("designation", "base", "dn", "state", "label_count",
                                               "physical_pipe_count", "confirmed_horizontal_m",
                                               "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
