@@ -797,6 +797,12 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             if run >= half:
                 median_width = w
                 break
+        # the weight this sheet annotates with: the pen most of its leaders are drawn with. Where it draws no
+        # leaders at all there is nothing to compare against, and the rule stands down rather than guessing.
+        lead_widths: Counter = Counter()
+        for ld in leaders:
+            lead_widths[round(ld.width, 2)] += 1
+        annotation_width = lead_widths.most_common(1)[0][0] if lead_widths else 0.0
         pipe_families: dict[str, RepresentationFamily] = {}
         graphs: dict[str, Any] = {}
         # the strongest evidence any single drawn family carries, which is what the others are compared with
@@ -808,10 +814,16 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             if not chain_like(f):
                 continue
             layer, style = f.split("|s|")
-            if not layer and desc[f][0].width < median_width:
-                # and with no layer name, a pen thinner than half the ink on the sheet draws its background -
-                # construction lines, hatching, grids. The pipes are what the sheet is for; they are not its
-                # faintest pen.
+            # With no layer name to vouch for anything, the pens have to be told apart by how they are drawn. A
+            # draughtsman does not draw a pipe fainter than the line that points at it: the leaders are the
+            # sheet's own annotation weight, and ink below it is construction lines, hatching and grids.
+            #
+            # This used to compare against the median width instead, which cannot say what it meant to say. A
+            # background that is most of the ink IS the median, so the rule never caught it except by a rounding
+            # accident - and on a sheet drawn with a single pen the same accident threw the pipes away, because
+            # the histogram rounds to two places while the family carries the raw float: 0.35999998 < 0.36. Five
+            # drawings of one office, ninety labels each, measured nothing at all.
+            if not layer and desc[f][0].width < annotation_width - 1e-6:
                 continue
             similar = any(_layer_template_similar(layer, tl) for tl in token_layers)
             accept = (token_votes[f] >= 1) or (tick_votes[f] >= 2 and similar) \
@@ -848,7 +860,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             layer, style = f.split("|s|")
             if not chain_like(f):
                 why = "NO_CONTINUOUS_RUN"
-            elif not layer and rf.width < median_width:
+            elif not layer and rf.width < annotation_width - 1e-6:
                 why = "FAINTEST_PEN_ON_THE_SHEET"
             else:
                 why = "NO_LABEL_REACHED_IT"
