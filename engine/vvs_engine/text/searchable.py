@@ -67,9 +67,29 @@ def searchable_rows(page: RawPage) -> list[TextRow]:
     return rows
 
 
+SPACE_FLOOR = 0.12        # of the type size: below this a gap is how the row sets its own letters
+SPACE_TIMES = 2.0         # ...and a space is a gap this many times the row's own letter spacing
+
+
 def _normalize_glyph_sequence(glyphs: list[Glyph], d, size: float) -> list[Glyph]:
-    """Sort along reading axis, collapse duplicate spaces, and inject a space when the gap is > 0.5*size."""
+    """Sort along the reading axis, collapse duplicate spaces, and put a space where the row stops being one word.
+
+    Half the type size cannot say where a word ends. An office that sets its labels tight leaves three points
+    between two whole designations and none at all between the letters of either, and against a threshold of six
+    points the two labels become one word: `KV01-X31S01-P5VV01-X31`. That name is not on the drawing, it is
+    measured as though it were, and the two names that ARE on the drawing are missing from the takeoff. One
+    reading error, three wrong answers.
+
+    The row says it itself. Take the spacing it sets its own letters with - for text with advance widths that is
+    zero - and a space is a gap clearly wider than that. The old threshold stays as an upper bound: a gap that
+    wide was always a space.
+    """
     glyphs = sorted(glyphs, key=lambda g: project((g.bbox[0], g.bbox[1]), d))
+    spans = [(project((g.bbox[0], g.bbox[1]), d), project((g.bbox[2], g.bbox[3]), d)) for g in glyphs]
+    inner = sorted(max(0.0, spans[i][0] - spans[i - 1][1])
+                   for i in range(1, len(spans)) if not glyphs[i].char.isspace() and not glyphs[i - 1].char.isspace())
+    typical = inner[len(inner) // 2] if inner else 0.0
+    cut = min(0.5 * size, max(SPACE_FLOOR * size, SPACE_TIMES * typical))
     out: list[Glyph] = []
     prev_end = None
     for g in glyphs:
@@ -80,7 +100,7 @@ def _normalize_glyph_sequence(glyphs: list[Glyph], d, size: float) -> list[Glyph
                 out.append(Glyph(gid=g.gid, char=" ", bbox=g.bbox, source="text", span_id=g.span_id))
             prev_end = end
             continue
-        if prev_end is not None and out and out[-1].char != " " and start - prev_end > 0.5 * size:
+        if prev_end is not None and out and out[-1].char != " " and start - prev_end > cut:
             out.append(Glyph(gid=g.gid + "_sp", char=" ", bbox=(g.bbox[0], g.bbox[1], g.bbox[0], g.bbox[3]), source="text", span_id=g.span_id))
         out.append(g)
         prev_end = end

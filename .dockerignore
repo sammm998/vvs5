@@ -3,7 +3,9 @@ node_modules
 frontend/node_modules
 frontend/dist
 results
-data
+# ritningarna och facit, aldrig i bilden. Monstret ar rotat: `data` utan snedstreck matchar varje
+# katalog som heter data, aven backend/app/data - dar materialboken bor och maste folja med.
+/data
 scratch
 **/__pycache__
 **/*.pyc

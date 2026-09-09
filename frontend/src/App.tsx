@@ -11,6 +11,7 @@ import AnalysisPage from "./pages/Analysis";
 import Boundary from "./components/Boundary";
 import LearnPage from "./pages/LearnPage";
 import SettingsPage from "./pages/Settings";
+import MaterialPage from "./pages/Material";
 
 function Guard({ children }: { children: JSX.Element }) {
   return getToken() ? children : <Navigate to="/login" replace />;
@@ -38,6 +39,15 @@ function IconRail() {
     <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <rect x="2.5" y="3.5" width="13" height="11" stroke="currentColor" strokeWidth="1.3" />
       <path d="M7 3.5v11" stroke="currentColor" strokeWidth="1.3" />
+    </svg>
+  );
+}
+
+function IconMaterial() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M2.4 5.6 9 2.4l6.6 3.2v6.8L9 15.6 2.4 12.4V5.6Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M2.4 5.6 9 8.9l6.6-3.3M9 8.9v6.7" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -81,6 +91,7 @@ const ROUTES = (
     <Route path="/drawings/:id" element={<Guard><DrawingPage /></Guard>} />
     <Route path="/jobs/:id" element={<Guard><AnalysisPage /></Guard>} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
+    <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
     <Route path="/installningar" element={<Guard><SettingsPage /></Guard>} />
   </Routes>
   </Boundary>
@@ -122,6 +133,9 @@ export default function App() {
           </Link>
           <Link to="/lar" className={path.startsWith("/lar") ? "on" : ""}>
             <IconLearn /> <span className="wide">Lär dig VVS</span>
+          </Link>
+          <Link to="/material" className={path.startsWith("/material") ? "on" : ""}>
+            <IconMaterial /> <span className="wide">Material</span>
           </Link>
           <Link to="/installningar" className={path.startsWith("/installningar") ? "on" : ""}>
             <IconRules /> <span className="wide">Inställningar</span>

@@ -418,6 +418,53 @@ def undo_correction(drawing_id: str, correction_id: str, user: User = Depends(cu
     return _correction_out(c)
 
 
+_MATERIAL: dict | None = None
+
+
+def _material() -> dict:
+    """Materialboken, läst en gång.
+
+    Femtiofemtusen artiklar är för många att skicka till en webbläsare och för få att förtjäna en databas. Den
+    ligger som en komprimerad fil bredvid koden, läses in vid första frågan och stannar - sökningen sker här,
+    och bara det som frågades efter går över tråden.
+    """
+    global _MATERIAL
+    if _MATERIAL is None:
+        import gzip
+        path = os.path.join(os.path.dirname(__file__), "data", "material.json.gz")
+        if not os.path.exists(path):
+            _MATERIAL = {"n": 0, "rows": [], "source": None}
+        else:
+            with gzip.open(path, "rt", encoding="utf-8") as fh:
+                _MATERIAL = json.load(fh)
+    return _MATERIAL
+
+
+@app.get("/api/materials")
+def materials(q: str = "", group: str = "", unit: str = "", limit: int = 60, offset: int = 0,
+              user: User = Depends(current_user)):
+    """Artiklar ur materialboken, sökta på benämning eller artikelnummer.
+
+    Varje ord i frågan måste finnas i raden, i vilken ordning som helst: "110 pp mark" hittar markrör i PP av
+    dimension 110 utan att någon behöver veta hur leverantören stavar sin benämning.
+    """
+    book = _material()
+    rows = book["rows"]
+    words = [w for w in (q or "").lower().split() if w]
+    if group:
+        rows = [r for r in rows if r.get("gr") == group]
+    if unit:
+        rows = [r for r in rows if (r.get("e") or "").lower() == unit.lower()]
+    if words:
+        rows = [r for r in rows if all(w in f'{r["n"]} {r["a"]}'.lower() for w in words)]
+    limit = max(1, min(int(limit), 300))
+    return {"total": len(rows), "offset": offset, "limit": limit,
+            "rows": rows[offset:offset + limit],
+            "book": {"n": book["n"], "source": book.get("source")},
+            "units": sorted({(r.get("e") or "") for r in book["rows"] if r.get("e")})[:24],
+            "groups": sorted({(r.get("gr") or "") for r in book["rows"] if r.get("gr")})[:60]}
+
+
 @app.get("/api/rules")
 def rules_catalogue(user: User = Depends(current_user), db: Session = Depends(get_db)):
     """Every rule the reading follows, what it decides, and what it stands at for this account.

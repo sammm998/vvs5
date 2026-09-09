@@ -356,17 +356,38 @@ def vector_text_rows(page: RawPage, timing: dict | None = None, say=None) -> Vec
                                    "named_from_layer_names": named})
 
 
+SPACE_FLOOR = 0.15        # of the row height: below this a gap is how the row sets its own letters
+SPACE_TIMES = 2.0         # ...and a space is a gap this many times the row's own letter spacing
+
+
 def _inject_spaces(glyphs: list[Glyph], rc: RowCluster) -> list[Glyph]:
+    """Where the row stops being one word.
+
+    A fixed fraction of the row height cannot say this. An office that sets its labels tight leaves three points
+    between two whole designations and none at all between the letters of either - and against a threshold of six
+    points the two labels become one word, which is a name the drawing does not contain, standing where two names
+    it does contain should have been. Both are then lost: the invented one is measured, and the two real ones are
+    missing from the takeoff.
+
+    The row says it itself. Take the spacing it sets its own letters with, and a space is a gap clearly wider
+    than that - twice as wide, and at least a fraction of the height so that rounding is not a word break. The
+    old fixed threshold is kept as an upper bound: a gap that wide was always a space and still is.
+    """
     a = math.radians(rc.angle)
     d = (math.cos(a), math.sin(a))
-    out: list[Glyph] = []
-    prev_end = None
     H = rc.height
+    spans = []
     for g in glyphs:
         corners = [(g.bbox[0], g.bbox[1]), (g.bbox[2], g.bbox[1]), (g.bbox[0], g.bbox[3]), (g.bbox[2], g.bbox[3])]
         ps = [x * d[0] + y * d[1] for x, y in corners]
-        start, end = min(ps), max(ps)
-        if prev_end is not None and start - prev_end > 0.55 * H:
+        spans.append((min(ps), max(ps)))
+    gaps = sorted(max(0.0, spans[i][0] - spans[i - 1][1]) for i in range(1, len(spans)))
+    typical = gaps[len(gaps) // 2] if gaps else 0.0        # what this row puts between its own letters
+    cut = min(0.55 * H, max(SPACE_FLOOR * H, SPACE_TIMES * typical))
+    out: list[Glyph] = []
+    prev_end = None
+    for g, (start, end) in zip(glyphs, spans):
+        if prev_end is not None and start - prev_end > cut:
             out.append(Glyph(gid=g.gid + "_sp", char=" ", bbox=(g.bbox[0], g.bbox[1], g.bbox[0], g.bbox[3]), source=g.source, layer=g.layer))
         out.append(g)
         prev_end = end

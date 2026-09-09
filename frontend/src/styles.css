@@ -1655,6 +1655,12 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
   .lfa .lfa-fill { width: var(--w); }
 }
 
+/* ---------- materialboken ---------- */
+.matbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.matbar .grow { flex: 1 1 320px; }
+.matbar select { flex: none; }
+.matbar .check { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink); white-space: nowrap; }
+
 /* ---------- reglerna, öppna ---------- */
 .rules { display: flex; flex-direction: column; }
 .rulerow { border-top: 1px solid var(--line); }
