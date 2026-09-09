@@ -86,9 +86,18 @@ class PageAnalysis:
     vision: dict | None = None              # what a look at the rendered page said the reading may have missed
 
 
+# A label over a bundle has found its pipes - the leader landed on as many drawn parallel lines as the block has
+# rows - even though which line is which is still open. For "did this reading find the geometry the sheet is
+# labelling?", that is a hit; the ordering is settled later, and on a sheet that stacks every label it is settled
+# only after the reading has been chosen. Counting it as a miss let a reading that had found nothing but the
+# heating pipes beat one that had found the water and waste runs it was being asked about.
+FOUND_ITS_PIPES = ("multi_row_bundle_awaiting_elimination",)
+
+
 def reached_labels(anchors, pipe_labels: set[str]) -> set[str]:
-    """The sheet's own pipe labels that ended up verified on a pipe."""
-    return {a.designation_id for a in anchors if a.state == "VERIFIED_PIPE_ATTACHMENT"} & pipe_labels
+    """The sheet's own pipe labels whose leader ended on the geometry they name."""
+    return {a.designation_id for a in anchors
+            if a.state == "VERIFIED_PIPE_ATTACHMENT" or a.reason in FOUND_ITS_PIPES} & pipe_labels
 
 
 def reach_is_poor(families, anchors, pipe_labels: set[str]) -> bool:
@@ -279,6 +288,174 @@ def claimed_runs(anchors, ownership, graphs) -> dict[str, dict[int, list[str]]]:
                 if code not in out[fk][pid]:
                     out[fk][pid].append(code)
     return {fk: dict(v) for fk, v in out.items()}
+
+
+def _components(graph) -> dict[int, int]:
+    """The drawn geometry of one family, split into single lines.
+
+    Not connected components: on a real sheet the water, hot water and circulation runs all meet at the fixtures
+    they serve, so everything the family draws is one or two connected pieces and the split says nothing. A line
+    is what a bundle run is - the chain you get by following a stroke through the nodes where nothing else joins,
+    and stopping where something does. A junction is where the drawing does something, and that is where one line
+    ends and another begins.
+    """
+    from collections import defaultdict
+    adj: dict[int, set[int]] = defaultdict(set)
+    for node in graph.nodes.values():
+        if node.degree > 2:
+            continue                     # a junction: the lines meeting here are not the same line
+        ps = list(node.prims)
+        for a in ps:
+            for b in ps:
+                if a != b:
+                    adj[a].add(b); adj[b].add(a)
+    comp: dict[int, int] = {}
+    n = 0
+    for pid in sorted(graph.prims):
+        if pid in comp:
+            continue
+        n += 1
+        stack = [pid]
+        while stack:
+            cur = stack.pop()
+            if cur in comp:
+                continue
+            comp[cur] = n
+            stack.extend(x for x in adj[cur] if x not in comp)
+    return comp
+
+
+def settle_bundles_by_sheet_consistency(anchors, graphs) -> int:
+    """The bundles a sheet cannot settle one at a time, settled by taking the sheet as a whole.
+
+    A stacked label over a bundle says which codes are there and not which line is which. On a sheet that names
+    a system on its own somewhere, elimination is enough. On a sheet that never does - one that puts KV, VV and
+    VVC on two shared layers and labels them only in stacks - elimination has nothing to work from, and reading
+    the order off a drawing convention would swap systems wherever that convention did not hold.
+
+    But the sheet is not one bundle. It is dozens, and they run over the same pipes: a line belongs to one
+    connected piece of geometry, that piece carries one system along its length, and every block that touches it
+    names that system among its codes. So each piece can only be a system that appears in EVERY block reaching
+    it, no two pieces in one block can be the same system, and a piece the reading already named is fixed. Where
+    those three things leave a piece with one possible system, the sheet has said which it is - not a convention,
+    not an order, but the only reading its own labels are all consistent with.
+
+    Where they leave a choice, nothing is assigned. That is the ordinary outcome and it is the honest one.
+    """
+    from collections import defaultdict
+
+    by_block: dict[tuple, list] = defaultdict(list)
+    for a in anchors:
+        if a.reason == "multi_row_bundle_awaiting_elimination" and a.evidence.get("bundle"):
+            by_block[(a.block_id, a.leader_id)].append(a)
+    if not by_block:
+        return 0
+
+    comps = {fk: _components(g) for fk, g in graphs.items()}
+    prim_of: dict[tuple[str, str, int], int] = {}
+    for fk, g in graphs.items():
+        for pid, prim in g.prims.items():
+            prim_of[(fk, prim.pid, prim.seg_index)] = pid
+
+    def piece_of(fam_pid: str, seg: int) -> tuple[str, int] | None:
+        """Which connected piece of which family a drawn segment belongs to."""
+        for fk in graphs:
+            pid = prim_of.get((fk, fam_pid, seg))
+            if pid is not None:
+                c = comps[fk].get(pid)
+                if c is not None:
+                    return (fk, c)
+        return None
+
+    # what the reading already settled: a piece a verified label sits on carries that label's system
+    pinned: dict[tuple[str, int], set[str]] = defaultdict(set)
+    for a in anchors:
+        if a.state != "VERIFIED_PIPE_ATTACHMENT" or not a.system_token:
+            continue
+        for c in a.contacts:
+            pc = piece_of(c.pid, c.seg_index)
+            if pc:
+                pinned[pc].add(a.system_token)
+
+    # every block, as the pieces its runs lie on and the systems its rows name
+    cases: list[tuple[tuple, list, list[tuple[str, int] | None], list[str]]] = []
+    for key, group in sorted(by_block.items(), key=lambda kv: str(kv[0])):
+        b = group[0].evidence["bundle"]
+        runs = b["runs"]
+        if len(group) != b["n"] or len(runs) != b["n"]:
+            continue
+        group.sort(key=lambda a: a.evidence["bundle"]["pos"])
+        systems = [(a.system_token or "").upper() for a in group]
+        if not all(systems):
+            continue
+        pieces: list[tuple[str, int] | None] = []
+        for run in runs:
+            hit = {piece_of(fam_pid, seg) for fam_pid, seg in run}
+            hit.discard(None)
+            pieces.append(hit.pop() if len(hit) == 1 else None)
+        if any(p is None for p in pieces) or len(set(pieces)) != len(pieces):
+            continue                      # a run on no piece, or two runs on one: says nothing about order
+        cases.append((key, group, pieces, systems))
+    if not cases:
+        return 0
+
+    # A piece can only be a system that every block reaching it names, and only one the reading has not already
+    # settled as something else.
+    domain: dict[tuple[str, int], set[str]] = {}
+    for _, _, pieces, systems in cases:
+        for pc in pieces:
+            want = set(systems)
+            domain[pc] = (domain[pc] & want) if pc in domain else set(want)
+    for pc, fixed in pinned.items():
+        if pc in domain:
+            domain[pc] = domain[pc] & fixed if (domain[pc] & fixed) else set()
+
+    # and no two pieces of one bundle are the same system: a system placed on one is off the others
+    for _ in range(8):
+        changed = False
+        for _, _, pieces, systems in cases:
+            for i, pc in enumerate(pieces):
+                if len(domain.get(pc, ())) != 1:
+                    continue
+                only = next(iter(domain[pc]))
+                for j, other in enumerate(pieces):
+                    if i != j and only in domain.get(other, ()):
+                        domain[other] = domain[other] - {only}
+                        changed = True
+            # a system only one piece of this bundle can take belongs to that piece
+            for sysname in set(systems):
+                takers = [pc for pc in pieces if sysname in domain.get(pc, ())]
+                if len(takers) == 1 and len(domain[takers[0]]) > 1:
+                    domain[takers[0]] = {sysname}
+                    changed = True
+        if not changed:
+            break
+
+    settled = 0
+    for key, group, pieces, systems in cases:
+        # a row can be given its line where that line can only be its system, and no other row of the block
+        # shares that system - two KV rows over one bundle are still two KV rows
+        take: list[tuple] = []
+        for i, a in enumerate(group):
+            sysname = systems[i]
+            if systems.count(sysname) != 1:
+                continue
+            mine = [pc for pc in pieces if domain.get(pc) == {sysname}]
+            if len(mine) != 1:
+                continue
+            idx = pieces.index(mine[0])
+            touching = [c for c in a.contacts
+                        if [c.pid, c.seg_index] in group[0].evidence["bundle"]["runs"][idx]]
+            if touching:
+                take.append((a, idx, touching, sysname))
+        for a, idx, touching, sysname in take:
+            a.state = "VERIFIED_PIPE_ATTACHMENT"
+            a.reason = "multi_row_bundle_settled_by_sheet_consistency"
+            a.contacts = touching
+            a.evidence["sheet_consistency"] = {"run": idx, "system": sysname,
+                                               "blocks_agreeing": sum(1 for _, _, ps, _ in cases if pieces[idx] in ps)}
+            settled += 1
+    return settled
 
 
 def _settle_bundles_by_elimination(anchors, ownership, graphs) -> int:
@@ -818,6 +995,10 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     identities = _pipe_identities(designations, anchors, grammar, legend=legend)
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     if _settle_bundles_by_elimination(anchors, ownership, graphs):
+        identities = _pipe_identities(designations, anchors, grammar, legend=legend)
+        ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
+    # and what one bundle at a time cannot settle, the sheet taken as a whole sometimes can
+    if settle_bundles_by_sheet_consistency(anchors, graphs):
         identities = _pipe_identities(designations, anchors, grammar, legend=legend)
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     _close_labels_on_owned_runs(anchors, ownership, graphs)
