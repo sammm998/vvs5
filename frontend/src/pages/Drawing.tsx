@@ -4,12 +4,25 @@ import { api, fileSize } from "../api";
 import { StatusBadge, stageText } from "../components/Status";
 import Tilted from "../components/Tilted";
 
+/** Whether anything on the page is still moving. A list of finished readings does not change on its own. */
+function anythingRunning(jobs: any[]): boolean {
+  return (jobs ?? []).some((j) => j && j.status !== "COMPLETED" && j.status !== "FAILED");
+}
+
 export default function DrawingPage() {
   const { id } = useParams();
   const [d, setD] = useState<any>(null);
   const [err, setErr] = useState("");
   const load = () => api.drawing(id!).then(setD).catch((e) => setErr(e.message));
-  useEffect(() => { load(); const t = setInterval(load, 3000); return () => clearInterval(t); }, [id]);
+  // Poll while a reading is running; stop when none is. A page of finished readings asked the server twenty
+  // times a minute for an answer that could not change.
+  const live = anythingRunning(d?.jobs);
+  useEffect(() => {
+    load();
+    if (!live) return;
+    const t = setInterval(load, 3000);
+    return () => clearInterval(t);
+  }, [id, live]);
   if (!d) return <main>{err ? <p className="error">{err}</p> : "Laddar…"}</main>;
   return (
     <main>

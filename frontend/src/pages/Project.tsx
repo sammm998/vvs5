@@ -14,11 +14,26 @@ export default function ProjectPage() {
   const [picked, setPicked] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
   const load = () => api.project(id!).then(setProject).catch((e) => setErr(e.message));
-  useEffect(() => { load(); const t = setInterval(load, 4000); return () => clearInterval(t); }, [id]);
+  // the list only changes while a reading is running, or just after an upload; otherwise it can sit still
+  const live = (project?.drawings ?? []).some((d: any) =>
+    d?.latest_job && d.latest_job.status !== "COMPLETED" && d.latest_job.status !== "FAILED");
+  useEffect(() => {
+    load();
+    if (!live) return;
+    const t = setInterval(load, 4000);
+    return () => clearInterval(t);
+  }, [id, live]);
   const upload = async () => {
     const f = fileRef.current?.files?.[0]; if (!f) return;
     setBusy(true); setErr("");
-    try { await api.upload(id!, f); fileRef.current!.value = ""; setPicked(""); load(); } catch (ex: any) { setErr(ex.message); } finally { setBusy(false); }
+    try {
+      await api.upload(id!, f);
+      // clearing the field is tidying up after a finished upload, not part of it: if the input is gone by now
+      // the upload still happened, and asserting it is there turns a success into an error message
+      if (fileRef.current) fileRef.current.value = "";
+      setPicked("");
+      load();
+    } catch (ex: any) { setErr(ex.message); } finally { setBusy(false); }
   };
   if (!project) return <main>{err ? <p className="error">{err}</p> : "Laddar…"}</main>;
   return (

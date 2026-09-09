@@ -221,26 +221,36 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
 
   // Dragging pans, except while a correction is being drawn - then the drag is the drawing. The middle button
   // always pans, so a reader in the middle of an edit can still move the sheet.
+  // A press is not yet a drag. Capturing the pointer on the way down retargets everything that follows to the
+  // frame, so the click never reaches the run under the finger - and picking a run by clicking it, which is
+  // what the correction panel asks you to do, did nothing at all. The pan starts when the hand actually moves.
+  const PAN_SLOP = 4;
   const panDown = (e: React.PointerEvent) => {
     if (e.button !== 1 && (e.button !== 0 || kind)) return;
     const el = container.current;
     if (!el) return;
-    auto.current = false;
     pan.current = { x: e.clientX, y: e.clientY, l: el.scrollLeft, t: el.scrollTop };
-    setPanning(true);
-    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
   };
   const panMove = (e: React.PointerEvent) => {
     const el = container.current, p = pan.current;
     if (!el || !p) return;
-    el.scrollLeft = p.l - (e.clientX - p.x);
-    el.scrollTop = p.t - (e.clientY - p.y);
+    const dx = e.clientX - p.x, dy = e.clientY - p.y;
+    if (!panning) {
+      if (Math.abs(dx) < PAN_SLOP && Math.abs(dy) < PAN_SLOP) return;
+      auto.current = false;
+      setPanning(true);
+      (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+    }
+    el.scrollLeft = p.l - dx;
+    el.scrollTop = p.t - dy;
   };
   const panUp = (e: React.PointerEvent) => {
     if (!pan.current) return;
     pan.current = null;
-    setPanning(false);
-    (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+    if (panning) {
+      setPanning(false);
+      (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+    }
   };
 
   // the wheel listener has to be non-passive to be allowed to hold the page still while the sheet zooms
