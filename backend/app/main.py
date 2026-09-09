@@ -485,7 +485,10 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
     leaders = _load(rd, "leader-forensics.json")["leaders"]
     geom = _load(rd, "pipe-geometry-inventory.json")["primitives"]
     declined = _load_optional(rd, "declined-geometry.json") or {"families": [], "totals": {}, "drawn_twice": {}}
-    unowned = [g for g in geom if g["state"] == "UNOWNED"]
+    # A line a label's leader actually reaches but no identity could take. It is not measured and it is not
+    # hidden: filing it with the ink nobody mentioned is how a drawn, labelled pipe disappears off the sheet.
+    claimed = [g for g in geom if g["state"] == "UNOWNED" and g.get("claimed_by")]
+    unowned = [g for g in geom if g["state"] == "UNOWNED" and not g.get("claimed_by")]
     ambiguous = [g for g in geom if g["state"] == "AMBIGUOUS"]
     hatched = [g for g in geom if g["state"] == "CONFIRMED" and g.get("in_hatch")]
     mpp = quantities["scale"].get("meters_per_pdf_point")
@@ -512,6 +515,7 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
                      "names_a_pipe": a.get("names_a_pipe", True)} for a in anchors],
         "ambiguous_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "candidates": g["candidates"], "reason": g["reason"]} for g in ambiguous],
         "unowned_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "family": g["family"]} for g in unowned],
+        "claimed_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "claimed_by": g["claimed_by"]} for g in claimed],
         "hatched_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "identity": g["identity"]} for g in hatched],
         # Ink the reading looked at and decided was not pipe. Without it a declined wall and a missed run look
         # the same on the sheet - both are simply grey - and the reader has no way to tell which one they see.
@@ -526,6 +530,9 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
             "no_attachments": sum(1 for a in anchors if a["state"] == "NO_PIPE_ATTACHMENT"),
             "physical_pipes": len(pipes),
             "unowned_m": round(rec["unowned_pt"] * mpp, 2) if mpp else None, "ambiguous_m": quantities["totals"]["ambiguous_m"],
+            # how much drawn pipe a label reaches without the reading being able to name it: the size of what is
+            # shown but not counted, which is the one number that says how much a sheet is actually missing
+            "claimed_m": round(sum(g["length"] for g in claimed) * mpp, 2) if mpp else None,
             "unsupported_families": len(prof["unknown_structure"]["unsupported_families"]),
             "reconciliation": rec["state"],
             # Determinism is a property of the engine, checked in the test suite on every change. Re-running

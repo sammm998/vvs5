@@ -37,10 +37,11 @@ const NO_LEADER_SV: Record<string, string> = {
   the_row_rule_never_leaves_the_label: "radens linjal lämnar aldrig etiketten",
 };
 
-const LAYER_LABELS: Record<Layer, string> = { pipes: "Mätta rör", ambiguous: "Tvetydigt", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar", inWall: "I vägg (räknas ej)" };
+const LAYER_LABELS: Record<Layer, string> = { pipes: "Mätta rör", ambiguous: "Tvetydigt", claimed: "Påpekad men onämnd", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", leaders: "CAD-leaders", anchors: "Anslutningar", inWall: "I vägg (räknas ej)" };
 const LAYER_HINTS: Record<Layer, string> = {
   pipes: "Sträckor som fått en identitet och en längd, en färg per beteckning",
   ambiguous: "Ritad linje som kunde tillhöra mer än en beteckning — mäts inte",
+  claimed: "Ritad linje som en beteckning faktiskt pekar på, men som läsningen inte kunde ge till en enda identitet. Den mäts inte — men den finns på ritningen, så den göms inte heller. Håll pekaren över den för att se vilka beteckningar som gör anspråk.",
   unowned: "Ritad linje i en accepterad rörfamilj som ingen beteckning nådde. Avstängt från början: det är ett fynd att titta på, inte ett fel i mätningen.",
   declined: "Ritad linje läsningen tittade på och inte tog som rör, med skälet",
   designations: "Alla lästa beteckningar på bladet",
@@ -103,7 +104,7 @@ export default function AnalysisPage() {
   // The sheet opens showing what was measured. Ink the reading accepted as pipe but no label reached is a real
   // finding and has its own switch - shown first it reads as a fault, and a grey tangle over a good reading is
   // the fastest way to make a correct answer look wrong.
-  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, unowned: false, declined: false, designations: false, leaders: false, anchors: false, inWall: false });
+  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, claimed: true, unowned: false, declined: false, designations: false, leaders: false, anchors: false, inWall: false });
   // which bortvald family the reader is pointing at, so the sheet can show that ink and not all of it at once
   const [selDeclined, setSelDeclined] = useState<string | null>(null);
   const [layersOpen, setLayersOpen] = useState(false);
@@ -250,7 +251,7 @@ export default function AnalysisPage() {
             )}
           </div>
         </div>
-        <PdfViewer ref={viewer} data={pdf} page={page} pipes={pipesOnPage} ambiguous={result.ambiguous_geometry} unowned={result.unowned_geometry}
+        <PdfViewer ref={viewer} data={pdf} page={page} pipes={pipesOnPage} ambiguous={result.ambiguous_geometry} unowned={result.unowned_geometry} claimed={result.claimed_geometry ?? []}
           designations={result.designations} leaders={result.leaders} anchors={result.anchors} hatched={result.hatched_geometry ?? []} selectedIdentity={selIdent}
           declined={[...(result.declined_geometry?.families ?? []), ...(result.declined_geometry?.unconsidered ?? [])]} selectedDeclined={selDeclined}
           selectedPipe={selPipe?.physical_pipe_id ?? null} layers={layers} onPipeClick={onPipeClick} onPageCount={setNPages}
@@ -558,6 +559,7 @@ export default function AnalysisPage() {
               <div className="card"><div className="v">{result.totals.confirmed_vertical_m.toFixed(1)} m</div><div className="l">Vertikalt</div></div>
               <div className="card"><div className="v">{result.totals.confirmed_total_m.toFixed(1)} m</div><div className="l">Totalt</div></div>
               <div className="card"><div className="v">{result.totals.ambiguous_m.toFixed(1)} m</div><div className="l">Tvetydigt</div></div>
+              <div className="card"><div className="v">{c.claimed_m ?? "?"} m</div><div className="l">Påpekad men onämnd</div></div>
               <div className="card"><div className="v">{c.unowned_m ?? "?"} m</div><div className="l">Oidentifierad geometri</div></div>
               <div className="card"><div className="v">{c.unsupported_families}</div><div className="l">Unsupported styles</div></div>
               <div className="card"><div className="v">{c.ambiguous_attachments + c.no_attachments}</div><div className="l">Ej anslutna beteckningar</div></div>

@@ -210,6 +210,62 @@ def _close_labels_on_owned_runs(anchors, ownership, graphs) -> None:
             a.evidence["closed_on_owned_run"] = {"identity": stated, "distance_pt": round(best, 2)}
 
 
+CLAIM_WALK_LIMIT = 600      # a line, not a network: a claim that runs away is not worth drawing
+
+
+def claimed_runs(anchors, ownership, graphs) -> dict[str, dict[int, list[str]]]:
+    """The lines a label points at that no identity could take, and which labels point at them.
+
+    A designation whose case the reading could not settle still reached geometry - the leader touched a drawn
+    line, and that line is on the sheet whether or not anyone can say what it is called. Left as plain unowned
+    ink it is indistinguishable from the ink nothing points at, so it is drawn as neither: it is not measured,
+    because nothing here settles anything, and it is not hidden, because the drawing plainly has a pipe there.
+
+    The walk follows the line and stops where the drawing does something: at a junction, and at the point the
+    run becomes owned. Following the whole network instead would light up half a sheet from one open label.
+    """
+    from collections import defaultdict
+    out: dict[str, dict[int, list[str]]] = defaultdict(lambda: defaultdict(list))
+    prim_of: dict[tuple[str, str, int], int] = {}
+    for fk, g in graphs.items():
+        for pid, prim in g.prims.items():
+            prim_of[(fk, prim.pid, prim.seg_index)] = pid
+    for a in sorted(anchors, key=lambda x: x.anchor_id):
+        if a.state == "VERIFIED_PIPE_ATTACHMENT" or not a.contacts:
+            continue
+        code = a.designation_display or a.designation
+        if not code:
+            continue
+        for c in a.contacts:
+            fk = c.family
+            g = graphs.get(fk)
+            if g is None:
+                continue
+            start = prim_of.get((fk, c.pid, c.seg_index))
+            if start is None:
+                continue
+            states = ownership.prim_states.get(fk) or {}
+            seen: set[int] = set()
+            stack = [start]
+            while stack and len(seen) < CLAIM_WALK_LIMIT:
+                cur = stack.pop()
+                if cur in seen:
+                    continue
+                st = states.get(cur)
+                if st is not None and st.state != "UNOWNED":
+                    continue                  # the run is spoken for from here on; the claim stops
+                seen.add(cur)
+                for nid in g.prim_nodes.get(cur, ()):
+                    node = g.nodes.get(nid)
+                    if node is None or node.degree > 2:
+                        continue              # a junction: the drawing changes something here
+                    stack.extend(x for x in node.prims if x not in seen)
+            for pid in seen:
+                if code not in out[fk][pid]:
+                    out[fk][pid].append(code)
+    return {fk: dict(v) for fk, v in out.items()}
+
+
 def _settle_bundles_by_elimination(anchors, ownership, graphs) -> int:
     """A bundle of parallel runs named by one stacked label, settled by what the rest of the sheet already says.
 

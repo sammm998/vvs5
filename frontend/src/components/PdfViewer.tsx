@@ -4,7 +4,7 @@ import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 (pdfjsLib as any).GlobalWorkerOptions.workerSrc = workerUrl;
 
-export type Layer = "pipes" | "ambiguous" | "unowned" | "declined" | "designations" | "leaders" | "anchors" | "inWall";
+export type Layer = "pipes" | "ambiguous" | "claimed" | "unowned" | "declined" | "designations" | "leaders" | "anchors" | "inWall";
 export type EditKind = "extend" | "draw" | "erase" | null;
 
 /** What a finished edit gesture produced: the line drawn, and what it does to the measurement. */
@@ -42,6 +42,7 @@ export interface ViewerProps {
   pipes: any[];
   ambiguous: any[];
   unowned: any[];
+  claimed: any[];
   designations: any[];
   leaders: any[];
   anchors: any[];
@@ -304,6 +305,14 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
               }))}
             {props.layers.unowned && props.unowned.map((g, i) => (
               <line key={`u${i}`} x1={g.x0} y1={g.y0} x2={g.x1} y2={g.y1} stroke="#8a8f99" strokeWidth={sw(2)} strokeOpacity={0.8} />
+            ))}
+            {/* A line a designation's leader reaches that the reading could not give to one identity. It is not
+                measured and it must not be invisible either: hidden, a drawn and labelled pipe looks missing. */}
+            {props.layers.claimed && (props.claimed ?? []).map((g, i) => (
+              <line key={`c${i}`} x1={g.x0} y1={g.y0} x2={g.x1} y2={g.y1} stroke="#a855f7" strokeWidth={sw(3)}
+                strokeOpacity={0.9} strokeDasharray={`${sw(7)} ${sw(4)}`}>
+                <title>{`Påpekad av ${(g.claimed_by || []).join(", ")} — läsningen kunde inte avgöra vilken`}</title>
+              </line>
             ))}
             {props.layers.ambiguous && props.ambiguous.map((g, i) => (
               <line key={`a${i}`} x1={g.x0} y1={g.y0} x2={g.x1} y2={g.y1} stroke="#ff9500" strokeWidth={sw(3)} strokeOpacity={0.9} />

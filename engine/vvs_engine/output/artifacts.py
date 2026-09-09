@@ -432,13 +432,19 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
         anc_out.append(ad)
     W("pipe-code-anchors.json", {"anchors": anc_out})
     W("pipe-representation-families.json", {"families": [rf.as_dict() for rf in pa.pipe_families.values()]})
+    # Which unowned lines a label actually points at. Not a measurement - nothing here settles anything - but a
+    # line the sheet plainly draws and plainly labels must not be filed with the ink nobody mentioned.
+    from ..pipeline import claimed_runs
+    claimed = claimed_runs(pa.anchors, pa.ownership, pa.graphs)
     inv = []
     for fk, g in pa.graphs.items():
         for pid, q in g.prims.items():
             st = pa.ownership.prim_states[fk][pid]
+            by = (claimed.get(fk) or {}).get(pid) or []
             inv.append({"family": fk, "prim": pid, "pid": q.pid, "seg": q.seg_index, "x0": round(q.seg.x0, 2), "y0": round(q.seg.y0, 2), "x1": round(q.seg.x1, 2), "y1": round(q.seg.y1, 2),
                         "length": round(q.seg.length, 3), "state": st.state, "identity": st.identity.key if st.identity else None,
                         "candidates": sorted(c.key for c in st.candidates), "reason": st.reason,
+                        "claimed_by": sorted(by),
                         "in_hatch": bool(pa.hatch_families) and inside_hatch(pa.hatch_families, *q.seg.mid) is not None})
     W("pipe-geometry-inventory.json", {"primitives": inv})
     W("declined-geometry.json", declined_geometry(pa))
