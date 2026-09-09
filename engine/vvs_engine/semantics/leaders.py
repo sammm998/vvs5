@@ -18,6 +18,14 @@ from ..text.model import project, row_axes
 from ..text.vector_text import Mark
 from .annotation import AnnotationBlock, FreeSeg, row_span
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 TOUCH_TOL = 0.15      # PDF export precision for shared endpoints
 MAX_SEGMENTS = 8
 START_PRIORITY = {"underline_end": 0, "box_corner": 0, "row_baseline": 1, "underline_touch": 1, "bbox_corner": 2, "bbox_edge": 3,
@@ -392,7 +400,7 @@ def _grow_chain(f: FreeSeg, start_ep, fmap, ep_idx: GridIndex, used: set[int]):
     points = [start_ep, _other(f, start_ep)]
     cur = points[-1]
     reason = None
-    while len(chain) < MAX_SEGMENTS:
+    while len(chain) < _R("semantics.leaders.MAX_SEGMENTS", MAX_SEGMENTS):
         nxt = []
         for fid in ep_idx.query_point(cur[0], cur[1], TOUCH_TOL):
             g = fmap[fid]
@@ -413,7 +421,7 @@ def _grow_chain(f: FreeSeg, start_ep, fmap, ep_idx: GridIndex, used: set[int]):
         chain.append(g)
         cur = _other(g, ep)
         points.append(cur)
-    if len(chain) >= MAX_SEGMENTS:
+    if len(chain) >= _R("semantics.leaders.MAX_SEGMENTS", MAX_SEGMENTS):
         reason = "max_segments"
     return chain, points, reason
 

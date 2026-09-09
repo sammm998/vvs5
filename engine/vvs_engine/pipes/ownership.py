@@ -20,6 +20,14 @@ from ..geometry.core import GridIndex, angle_diff, dist, point_seg_distance, sta
 from ..semantics.attachment import PipeCodeAnchor, system_layer_match
 from .representation import PipeGraph, Prim, chains as graph_chains
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 
 @dataclass(frozen=True)
 class Identity:
@@ -190,7 +198,7 @@ def _bound_junction_flow(g: PipeGraph, st: dict[int, PrimState], fk: str, ambigu
             flowed += g.prims[pid].seg.length
         else:
             labelled += g.prims[pid].seg.length
-    if flowed <= FLOW_LIMIT * labelled:
+    if flowed <= _R("pipes.ownership.FLOW_LIMIT", FLOW_LIMIT) * labelled:
         return
     caught: list[int] = []
     for pid in sorted(st):
@@ -238,7 +246,7 @@ def _recurring_gaps(gaps: list[float]) -> list[tuple[float, float]]:
     Clustered on the values themselves with a relative tolerance, so a band means the same thing on a sheet drawn
     at 1:50 and one at 1:100. A cluster the drawing returns to is its own statement about how it draws an object;
     a one-off is where two pipes passed close."""
-    if len(gaps) < SLIVER_MIN_REPEATS:
+    if len(gaps) < _R("pipes.ownership.SLIVER_MIN_REPEATS", SLIVER_MIN_REPEATS):
         return []
     clusters: list[list[float]] = []
     for v in sorted(gaps):
@@ -248,7 +256,7 @@ def _recurring_gaps(gaps: list[float]) -> list[tuple[float, float]]:
             clusters.append([v])
     bands = []
     for c in clusters:
-        if len(c) < SLIVER_MIN_REPEATS or len(c) < SLIVER_MIN_SHARE * len(gaps):
+        if len(c) < _R("pipes.ownership.SLIVER_MIN_REPEATS", SLIVER_MIN_REPEATS) or len(c) < _R("pipes.ownership.SLIVER_MIN_SHARE", SLIVER_MIN_SHARE) * len(gaps):
             continue
         mid = c[len(c) // 2]
         bands.append((mid, max(c[-1] - mid, mid - c[0])))
@@ -284,10 +292,10 @@ def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, amb
         How far to look is set by the run itself: a pair only reads as one drawn object while it runs many times
         further than it is wide, so nothing beyond that ratio is a candidate and no paper measure is needed."""
         seg = g.prims[pid].seg
-        if seg.length < SLIVER_ELONGATION * 0.5:
+        if seg.length < _R("pipes.ownership.SLIVER_ELONGATION", SLIVER_ELONGATION) * 0.5:
             return None
         # both bounds come off the drawing: its own pen, and this run's own length
-        reach = min(seg.length / SLIVER_ELONGATION, SLIVER_PENS * pen)
+        reach = min(seg.length / _R("pipes.ownership.SLIVER_ELONGATION", SLIVER_ELONGATION), _R("pipes.ownership.SLIVER_PENS", SLIVER_PENS) * pen)
         if reach <= 0:
             return None
         ux, uy = (seg.x1 - seg.x0) / seg.length, (seg.y1 - seg.y0) / seg.length
@@ -296,7 +304,7 @@ def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, amb
             if tid == pid:
                 continue
             t = g.prims[tid].seg
-            if t.length < seg.length * SLIVER_COVER:
+            if t.length < seg.length * _R("pipes.ownership.SLIVER_COVER", SLIVER_COVER):
                 continue
             vx, vy = (t.x1 - t.x0) / t.length, (t.y1 - t.y0) / t.length
             if abs(ux * vx + uy * vy) < 0.999:                       # parallel within ~2.5 degrees
@@ -307,7 +315,7 @@ def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, amb
                 continue
             lo, hi = sorted(((t.x0 - seg.x0) * ux + (t.y0 - seg.y0) * uy,
                              (t.x1 - seg.x0) * ux + (t.y1 - seg.y0) * uy))
-            if max(0.0, min(hi, seg.length) - max(lo, 0.0)) < seg.length * SLIVER_COVER:
+            if max(0.0, min(hi, seg.length) - max(lo, 0.0)) < seg.length * _R("pipes.ownership.SLIVER_COVER", SLIVER_COVER):
                 continue
             return gap
         return None
@@ -330,7 +338,8 @@ def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, amb
         s.state, s.identity, s.reason = "AMBIGUOUS", None, "AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE"
         s.candidates = {ident} if ident is not None else set()
         s.evidence.append(f"parallel_twin_of_the_same_family_{gap:.2f}pt_away_covers_this_run_end_to_end")
-        s.evidence.append(f"closer_than_{SLIVER_PENS:g}_pen_widths_of_this_family_{pen:.2f}pt")
+        s.evidence.append(f"closer_than_{_R('pipes.ownership.SLIVER_PENS', SLIVER_PENS):g}"
+                                  f"_pen_widths_of_this_family_{pen:.2f}pt")
         if repeated:
             s.evidence.append("and_that_spacing_recurs_on_this_sheet_"
                               + "_".join(f"{m:.2f}" for m, _ in bands))
@@ -448,7 +457,7 @@ def _chain_seed_groups(g: PipeGraph, c: list[int], nodes: list[int], seeds) -> l
             if kind in TICK_KINDS:
                 n0, n1 = g.nodes[nodes[k]], g.nodes[nodes[k + 1]]
                 d0 = dist(pt, (n0.x, n0.y)); d1 = dist(pt, (n1.x, n1.y))
-                if min(d0, d1) <= BOUNDARY_TOL:
+                if min(d0, d1) <= _R("pipes.ownership.BOUNDARY_TOL", BOUNDARY_TOL):
                     pos, boundary = (float(k) if d0 <= d1 else float(k + 1)), True
                 else:
                     # tick beyond the primitive's end (in a dash gap): boundary at the node on that side

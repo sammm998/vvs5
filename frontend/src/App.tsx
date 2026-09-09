@@ -10,6 +10,7 @@ import DrawingPage from "./pages/Drawing";
 import AnalysisPage from "./pages/Analysis";
 import Boundary from "./components/Boundary";
 import LearnPage from "./pages/LearnPage";
+import SettingsPage from "./pages/Settings";
 
 function Guard({ children }: { children: JSX.Element }) {
   return getToken() ? children : <Navigate to="/login" replace />;
@@ -37,6 +38,16 @@ function IconRail() {
     <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <rect x="2.5" y="3.5" width="13" height="11" stroke="currentColor" strokeWidth="1.3" />
       <path d="M7 3.5v11" stroke="currentColor" strokeWidth="1.3" />
+    </svg>
+  );
+}
+
+function IconRules() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <circle cx="9" cy="9" r="2.4" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M9 1.6v2.2M9 14.2v2.2M1.6 9h2.2M14.2 9h2.2M3.8 3.8l1.6 1.6M12.6 12.6l1.6 1.6M14.2 3.8l-1.6 1.6M5.4 12.6l-1.6 1.6"
+        stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     </svg>
   );
 }
@@ -70,6 +81,7 @@ const ROUTES = (
     <Route path="/drawings/:id" element={<Guard><DrawingPage /></Guard>} />
     <Route path="/jobs/:id" element={<Guard><AnalysisPage /></Guard>} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
+    <Route path="/installningar" element={<Guard><SettingsPage /></Guard>} />
   </Routes>
   </Boundary>
 );
@@ -110,6 +122,9 @@ export default function App() {
           </Link>
           <Link to="/lar" className={path.startsWith("/lar") ? "on" : ""}>
             <IconLearn /> <span className="wide">Lär dig VVS</span>
+          </Link>
+          <Link to="/installningar" className={path.startsWith("/installningar") ? "on" : ""}>
+            <IconRules /> <span className="wide">Inställningar</span>
           </Link>
         </nav>
         <div className="foot">

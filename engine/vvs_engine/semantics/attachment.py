@@ -19,6 +19,14 @@ from ..profile.layers import layer_tokens
 from .annotation import AnnotationBlock, Designation
 from .leaders import Leader
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 CONTACT_TOL = 0.6
 MARKER_MAX = 3.0          # pt: closed end markers (dots, small circles) of pipes
 DASH_GAP_MAX = 8.0        # pt: the widest drawn gap in a dashed run a leader end may land in
@@ -165,7 +173,7 @@ class GeometryIndex:
     def __init__(self, page: RawPage, exclude_families: set[str], exclude_pids: set[str]):
         self.idx = GridIndex(cell=12.0)
         self.items: list[tuple[RawPath, int, Seg]] = []
-        self.tol = CONTACT_TOL
+        self.tol = _R("semantics.attachment.CONTACT_TOL", CONTACT_TOL)
         # closed small symbols (riser marks, end circles, fittings) are indexed from ALL stroke paths: a circle
         # read as a text glyph ('O', '0') is still the symbol a leader may point at
         self.symbols: list[RawPath] = []
@@ -224,7 +232,7 @@ def _symbol_hits(symbol: RawPath, gidx: "GeometryIndex", skip: set[str]) -> list
         if p.pid in skip or p.pid == symbol.pid:
             continue
         d, _ = point_seg_distance(cx, cy, sg)
-        if d <= r + CONTACT_TOL:
+        if d <= r + _R("semantics.attachment.CONTACT_TOL", CONTACT_TOL):
             out.append((p, k, d))
     out.sort(key=lambda t: (t[0].pid, t[1]))
     return out
@@ -239,14 +247,14 @@ def _dash_gap_hits(pt: tuple[float, float], gidx: GeometryIndex, pipe_families: 
     point between them, are one run interrupted by its own pattern - so the point touches that run.
     """
     ends: list[tuple[RawPath, int, Seg, tuple[float, float]]] = []
-    for i in gidx.idx.query_point(pt[0], pt[1], DASH_GAP_MAX + 2):
+    for i in gidx.idx.query_point(pt[0], pt[1], _R("semantics.attachment.DASH_GAP_MAX", DASH_GAP_MAX) + 2):
         p, k, sg = gidx.items[i]
         if p.pid in skip or (pipe_families is not None and family_of(p) not in pipe_families):
             continue
         if sg.length < 1e-6:
             continue
         for e in ((sg.x0, sg.y0), (sg.x1, sg.y1)):
-            if dist(e, pt) <= DASH_GAP_MAX:
+            if dist(e, pt) <= _R("semantics.attachment.DASH_GAP_MAX", DASH_GAP_MAX):
                 ends.append((p, k, sg, e))
     best: dict[str, tuple[float, tuple, tuple]] = {}
     for i in range(len(ends)):
@@ -255,13 +263,13 @@ def _dash_gap_hits(pt: tuple[float, float], gidx: GeometryIndex, pipe_families: 
             if family_of(a[0]) != family_of(b[0]) or (a[0].pid == b[0].pid and a[1] == b[1]):
                 continue
             gap = dist(a[3], b[3])
-            if gap < 1e-6 or gap > DASH_GAP_MAX:
+            if gap < 1e-6 or gap > _R("semantics.attachment.DASH_GAP_MAX", DASH_GAP_MAX):
                 continue
             ux, uy = (b[3][0] - a[3][0]) / gap, (b[3][1] - a[3][1]) / gap
             t = (pt[0] - a[3][0]) * ux + (pt[1] - a[3][1]) * uy
             if t < -0.5 or t > gap + 0.5:
                 continue                                    # the point is not inside the gap
-            if abs(-(pt[1] - a[3][1]) * ux + (pt[0] - a[3][0]) * uy) > CONTACT_TOL + 0.5 * max(a[0].width, b[0].width):
+            if abs(-(pt[1] - a[3][1]) * ux + (pt[0] - a[3][0]) * uy) > _R("semantics.attachment.CONTACT_TOL", CONTACT_TOL) + 0.5 * max(a[0].width, b[0].width):
                 continue                                    # the point is beside the run, not on it
             if _angle_to(a[2], ux, uy) > 5.0 or _angle_to(b[2], ux, uy) > 5.0:
                 continue                                    # the two dashes do not continue one straight line
@@ -298,20 +306,20 @@ def _near_miss_hits(pt: tuple[float, float], gidx: "GeometryIndex", pipe_familie
     said which - and no amount of arithmetic on the difference in distance turns that into an answer.
     """
     near: list[tuple[RawPath, int, float, tuple[float, float]]] = []
-    for i in gidx.idx.query_point(pt[0], pt[1], NEAR_MISS + 1.0):
+    for i in gidx.idx.query_point(pt[0], pt[1], _R("semantics.attachment.NEAR_MISS", NEAR_MISS) + 1.0):
         p, k, sg = gidx.items[i]
         if p.pid in skip:
             continue
         if pipe_families is not None and family_of(p) not in pipe_families:
             continue
         d, t = point_seg_distance(pt[0], pt[1], sg)
-        if d <= NEAR_MISS:
+        if d <= _R("semantics.attachment.NEAR_MISS", NEAR_MISS):
             near.append((p, k, d, (sg.x0 + t * (sg.x1 - sg.x0), sg.y0 + t * (sg.y1 - sg.y0))))
     if not near:
         return []
     for a in near:
         for b in near:
-            if math.hypot(a[3][0] - b[3][0], a[3][1] - b[3][1]) > NEAR_ONE:
+            if math.hypot(a[3][0] - b[3][0], a[3][1] - b[3][1]) > _R("semantics.attachment.NEAR_ONE", NEAR_ONE):
                 return []                   # more than one drawn thing within reach: the sheet has not said which
     return sorted(((p, k, d) for p, k, d, _ in near), key=lambda t: (t[0].pid, t[1]))
 
@@ -365,7 +373,7 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
             # markers form one cluster (stacked end markers of parallel pipes): every pipe end at any marker of
             # the cluster is a contact.
             n_before = len(out)
-            for p in _marker_cluster([p for p, _, _ in others if max(p.bbox[2] - p.bbox[0], p.bbox[3] - p.bbox[1]) <= MARKER_MAX], gidx, pipe_families, skip):
+            for p in _marker_cluster([p for p, _, _ in others if max(p.bbox[2] - p.bbox[0], p.bbox[3] - p.bbox[1]) <= _R("semantics.attachment.MARKER_MAX", MARKER_MAX)], gidx, pipe_families, skip):
                 for q, kk, de, ep in _pipe_ends_at_marker(p, gidx, pipe_families, skip):
                     if (q.pid, kk) not in seen:
                         seen.add((q.pid, kk))
@@ -414,7 +422,7 @@ def _is_closed_symbol(p: RawPath) -> bool:
     if p.kind != "s" or len(p.segs) < 3:
         return False
     size = max(p.bbox[2] - p.bbox[0], p.bbox[3] - p.bbox[1])
-    if size < 1.0 or size > SYMBOL_MAX:
+    if size < 1.0 or size > _R("semantics.attachment.SYMBOL_MAX", SYMBOL_MAX):
         return False
     a = (p.segs[0].x0, p.segs[0].y0); b = (p.segs[-1].x1, p.segs[-1].y1)
     return dist(a, b) <= 0.25
@@ -470,7 +478,7 @@ def _marker_cluster(seeds: list[RawPath], gidx: GeometryIndex, pipe_families: se
             if q.pid in cluster or q.pid in skip or (pipe_families and family_of(q) in pipe_families) or q.kind == "f":
                 continue
             qsize = max(q.bbox[2] - q.bbox[0], q.bbox[3] - q.bbox[1])
-            if qsize > MARKER_MAX:
+            if qsize > _R("semantics.attachment.MARKER_MAX", MARKER_MAX):
                 continue
             gx = max(0.0, max(p.bbox[0], q.bbox[0]) - min(p.bbox[2], q.bbox[2]))
             gy = max(0.0, max(p.bbox[1], q.bbox[1]) - min(p.bbox[3], q.bbox[3]))
@@ -510,7 +518,7 @@ def parallel_runs(contacts: list[Contact], paths: dict) -> list[list[Contact]] |
     th = math.radians(a0)
     nx, ny = -math.sin(th), math.cos(th)
     off = [((s.x0 + s.x1) / 2 * nx + (s.y0 + s.y1) / 2 * ny) for _, s in segs]
-    if max(off) - min(off) > BUNDLE_SPAN:
+    if max(off) - min(off) > _R("semantics.attachment.BUNDLE_SPAN", BUNDLE_SPAN):
         return None                       # too far apart to be drawn as one bundle
     runs: list[tuple[float, list[Contact]]] = []
     for (c, _), o in sorted(zip(segs, off), key=lambda z: z[1]):

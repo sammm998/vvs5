@@ -17,6 +17,14 @@ from .pdf.extract import extract_document
 from .pipeline import PageAnalysis, analyze_page, prepare_page, reading_coverage, summarize
 from .semantics.legend import DrawingLegend, learn_roles, merged
 
+from . import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 CONFIG = {"contact_tolerance_pt": 0.6, "touch_tolerance_pt": 0.15, "unknown_glyph_threshold": 0.14, "grid": 32}
 
 
@@ -42,7 +50,7 @@ def _vocabulary(doc, known_legend: DrawingLegend | None, progress, ocr_assist: b
         # with nothing to show. So it narrates while it goes, on the sheet the film is about.
         prep = prepare_page(doc.pages[i], progress if i == 0 else None, ocr_assist,
                             Film(film_sink) if i == 0 else None)
-        if len(held) < VOCAB_HOLD:
+        if len(held) < _R("cli.VOCAB_HOLD", VOCAB_HOLD):
             held[i] = prep
         elif i > 0:
             doc.pages.release(i)
@@ -66,11 +74,11 @@ def scale_of_the_set(sheets: list[dict]) -> float | None:
     settled = [(sh.get("scale") or {}).get("meters_per_pt") for sh in sheets
                if (sh.get("scale") or {}).get("state") in ("VERIFIED", "TEXT_ONLY", "BAR_ONLY")]
     got = [v for v in settled if v]
-    if len(got) < SET_SCALE_MIN:
+    if len(got) < _R("cli.SET_SCALE_MIN", SET_SCALE_MIN):
         return None
     got.sort()
     mid = got[len(got) // 2]
-    if any(abs(v - mid) > SET_SCALE_TOL * mid for v in got):
+    if any(abs(v - mid) > _R("cli.SET_SCALE_TOL", SET_SCALE_TOL) * mid for v in got):
         return None                 # plans and details in one file: the set has no single scale to lend
     return mid
 

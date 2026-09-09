@@ -16,6 +16,14 @@ import numpy as np
 from ..geometry.core import EXPORT_EPS, GridIndex, Seg, angle_diff, collinear, dist, point_seg_distance, seg_intersection, stable_id
 from ..pdf.extract import RawPage, RawPath
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 TOUCH_TOL = 0.15
 
 
@@ -179,13 +187,13 @@ def duplicate_overlaps(prims: list[Prim]) -> tuple[float, list[dict]]:
         nx, ny = -dy, dx
         b = s.bbox()
         shared = 0.0
-        for k in idx.query((b[0] - OVERLAP_OFF, b[1] - OVERLAP_OFF, b[2] + OVERLAP_OFF, b[3] + OVERLAP_OFF)):
+        for k in idx.query((b[0] - _R("pipes.representation.OVERLAP_OFF", OVERLAP_OFF), b[1] - _R("pipes.representation.OVERLAP_OFF", OVERLAP_OFF), b[2] + _R("pipes.representation.OVERLAP_OFF", OVERLAP_OFF), b[3] + _R("pipes.representation.OVERLAP_OFF", OVERLAP_OFF))):
             r = kept[k].seg
-            if angle_diff(s.angle, r.angle) > OVERLAP_ANG:
+            if angle_diff(s.angle, r.angle) > _R("pipes.representation.OVERLAP_ANG", OVERLAP_ANG):
                 continue
             o0 = (r.x0 - s.x0) * nx + (r.y0 - s.y0) * ny
             o1 = (r.x1 - s.x0) * nx + (r.y1 - s.y0) * ny
-            if abs(o0) > OVERLAP_OFF or abs(o1) > OVERLAP_OFF:
+            if abs(o0) > _R("pipes.representation.OVERLAP_OFF", OVERLAP_OFF) or abs(o1) > _R("pipes.representation.OVERLAP_OFF", OVERLAP_OFF):
                 continue            # beside this line, not on it
             t0 = (r.x0 - s.x0) * dx + (r.y0 - s.y0) * dy
             t1 = (r.x1 - s.x0) * dx + (r.y1 - s.y0) * dy

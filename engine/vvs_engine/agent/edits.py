@@ -24,6 +24,14 @@ from typing import Any
 from .model import DrawingModel
 from .tools import _num, _set, tool
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 # a proposal that would touch this much of the sheet is almost certainly a misunderstanding rather than a
 # correction, and a person confirming a one-line summary cannot see that it was
 LARGE_CHANGE_M = 50.0
@@ -37,7 +45,7 @@ def _refuse(why: str, **extra) -> dict:
 def _offer(forslag: list[dict], sammanfattning: str, pipe_ids: list[str] | None = None, **extra) -> dict:
     total = round(sum(abs(_num(f.get("meter"))) for f in forslag), 3)
     return {"tillstand": "FORESLAGEN", "forslag": forslag, "sammanfattning": sammanfattning,
-            "berord_meter": total, "stor_andring": total > LARGE_CHANGE_M,
+            "berord_meter": total, "stor_andring": total > _R("agent.edits.LARGE_CHANGE_M", LARGE_CHANGE_M),
             "pipe_ids": pipe_ids or [], **extra}
 
 

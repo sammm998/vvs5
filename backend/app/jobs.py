@@ -193,7 +193,23 @@ def project_legend(db, drawing):
     return DrawingLegend(own=False, entries=entries) if entries else None
 
 
+def account_rules(db, drawing) -> dict:
+    """The rules this account has moved, for the reading about to run.
+
+    Read once, here, and bound to the thread that does the reading. Jobs share a process, so a rule set globally
+    would hold for whatever else is being read at the same moment - and a takeoff measured under someone else's
+    settings is the worst kind of wrong, because nothing on the page says it happened.
+    """
+    from .db import Project, RuleSetting
+    proj = db.get(Project, drawing.project_id)
+    if proj is None:
+        return {}
+    return {r.rule_id: r.value for r in
+            db.query(RuleSetting).filter(RuleSetting.user_id == proj.owner_id).all()}
+
+
 def run_job(job_id: str) -> None:
+    from vvs_engine import rules as engine_rules
     from vvs_engine.cli import analyze_pdf
     from vvs_engine.pdf.extract import UnsupportedInputError
     with SessionLocal() as db:
@@ -205,24 +221,27 @@ def run_job(job_id: str) -> None:
         result_key = f"results/{drawing.id}/{job.id}"
         known = project_system_families(db, drawing)
         vocab = project_legend(db, drawing)
+        moved = account_rules(db, drawing)
         job.status = "RUNNING"; job.started_at = dt.datetime.now(dt.timezone.utc); job.result_key = result_key
         db.commit()
     out_dir = storage.path(result_key)
     try:
-        summary = analyze_pdf(pdf_path, out_dir, name=os.path.splitext(drawing.filename)[0],
-                              deadline_s=settings.analysis_deadline_s, determinism=settings.run_determinism,
-                              contamination=True, progress=_progress_cb(job_id),
-                              review=settings.run_review, review_ocr=settings.review_ocr,
-                              ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir),
-                              second_reader=_second_reader(), known_families=known, known_legend=vocab)
-        # which readers this installation actually had available, and by what name - a reading that quietly used a
-        # model, or quietly did without one, is not a reading anyone can check
-        on, why = second_reader_state()
-        sr = dict(summary["summary"].get("second_reader") or {})
-        sr.update({"enabled": on, "why": why,
-                   "model": os.environ.get("VVS_SECOND_READER_MODEL", "gpt-6-astra") if on else None})
-        _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
-             summary={"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr})
+        # the account's own rules, bound to this thread and to nothing else
+        with engine_rules.using(moved):
+            summary = analyze_pdf(pdf_path, out_dir, name=os.path.splitext(drawing.filename)[0],
+                                deadline_s=settings.analysis_deadline_s, determinism=settings.run_determinism,
+                                contamination=True, progress=_progress_cb(job_id),
+                                review=settings.run_review, review_ocr=settings.review_ocr,
+                                ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir),
+                                second_reader=_second_reader(), known_families=known, known_legend=vocab)
+            # which readers this installation actually had available, and by what name - a reading that quietly used a
+            # model, or quietly did without one, is not a reading anyone can check
+            on, why = second_reader_state()
+            sr = dict(summary["summary"].get("second_reader") or {})
+            sr.update({"enabled": on, "why": why,
+                     "model": os.environ.get("VVS_SECOND_READER_MODEL", "gpt-6-astra") if on else None})
+            _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
+               summary={"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr})
     except UnsupportedInputError as e:
         # not a defect: the PDF carries no vector drawing, so there is nothing to read
         _set(job_id, status="FAILED", stage="FAILED", finished_at=dt.datetime.now(dt.timezone.utc),

@@ -24,6 +24,11 @@ from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, e
 from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, layer_system_tokens, leader_contacts,
                                    resolve_block, system_layer_match)
 from .semantics.legend import DrawingLegend, adopt, assign_roles, read_legend, roles_of
+
+# Under measurement: whether a dimension on the row below means the label names a stack and nothing else. Off
+# until the reference set says otherwise - an earlier measurement on four drawings said stripping the run
+# fragmented the takeoff, and the set is now thirty-three.
+DN_ROWS_ARE_VERTICAL_ONLY = os.environ.get("VVS_DN_ROWS_VERTICAL_ONLY") == "1"
 from .semantics.leaders import Leader, annotation_layers, discover_leaders, leader_family_report
 from .text.searchable import searchable_rows
 from .text.vector_text import VectorTextResult, vector_text_rows
@@ -32,6 +37,14 @@ from .measure.measure import PipeMeasure, aggregate, measure_pipes
 from .pipes.ownership import Identity, OwnershipResult, identity_of, propagate
 from .film import Film
 from .routes import apply_routes, cross_check, review, run_routes
+
+from . import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
 
 # a drawing draws its leaders alike: a family carrying this share of the leaders is where it draws them
 LEADER_MIN_SHARE = 0.25
@@ -110,9 +123,9 @@ def reach_is_poor(families, anchors, pipe_labels: set[str]) -> bool:
     layer called VS1 and places four labels, has been read wrong; the name on that layer is true and beside the
     point.
     """
-    if not families or len(pipe_labels) < LABELS_MIN:
+    if not families or len(pipe_labels) < _R("pipeline.LABELS_MIN", LABELS_MIN):
         return False
-    return len(reached_labels(anchors, pipe_labels)) < LABELS_MUST_REACH * len(pipe_labels)
+    return len(reached_labels(anchors, pipe_labels)) < _R("pipeline.LABELS_MUST_REACH", LABELS_MUST_REACH) * len(pipe_labels)
 
 
 def label_reach_fails(families, anchors, pipe_labels: set[str]) -> bool:
@@ -230,7 +243,7 @@ def _close_labels_on_owned_runs(anchors, ownership, graphs) -> None:
                 d = point_seg_distance(a.endpoint[0], a.endpoint[1], graphs[fk].prims[i].seg)[0]
                 if best is None or d < best:
                     best = d
-        if best is not None and best <= CLOSE_ON_OWNED_TOL:
+        if best is not None and best <= _R("pipeline.CLOSE_ON_OWNED_TOL", CLOSE_ON_OWNED_TOL):
             a.evidence["closed_on_owned_run"] = {"identity": stated, "distance_pt": round(best, 2)}
 
 
@@ -271,7 +284,7 @@ def claimed_runs(anchors, ownership, graphs) -> dict[str, dict[int, list[str]]]:
             states = ownership.prim_states.get(fk) or {}
             seen: set[int] = set()
             stack = [start]
-            while stack and len(seen) < CLAIM_WALK_LIMIT:
+            while stack and len(seen) < _R("pipeline.CLAIM_WALK_LIMIT", CLAIM_WALK_LIMIT):
                 cur = stack.pop()
                 if cur in seen:
                     continue
@@ -606,10 +619,10 @@ def _settle_by_system_usage(anchors) -> int:
             continue
         among = {f: used.get(f, 0) for f in touched}
         total = sum(among.values())
-        if total < SYSTEM_FAMILY_MIN:
+        if total < _R("pipeline.SYSTEM_FAMILY_MIN", SYSTEM_FAMILY_MIN):
             continue
         best, n = max(sorted(among.items()), key=lambda kv: kv[1])
-        if n < SYSTEM_FAMILY_SHARE * total:
+        if n < _R("pipeline.SYSTEM_FAMILY_SHARE", SYSTEM_FAMILY_SHARE) * total:
             continue                    # the sheet uses more than one family for this system: no habit to read
         a.contacts = [c for c in a.contacts if c.family == best]
         a.candidate_families = [best]
@@ -694,7 +707,7 @@ def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             progress("RESOLVING_UNREADABLE_TEXT")
         from .text.ocr_assist import resolve_unknown_glyphs
         # bounded, and it says where it is: an assist that holds a finished reading is worse than no assist
-        ocr_report = resolve_unknown_glyphs(page, vtext.rows, budget_s=OCR_ASSIST_BUDGET_S,
+        ocr_report = resolve_unknown_glyphs(page, vtext.rows, budget_s=_R("pipeline.OCR_ASSIST_BUDGET_S", OCR_ASSIST_BUDGET_S),
                                             progress=(lambda t: progress(f"RESOLVING_UNREADABLE_TEXT {t}"))
                                             if progress else None,
                                             seen=film.seeing if film else None)
@@ -864,8 +877,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 fam_ink[fk] += sgm.length
         leader_fams = {f for f, c in lead_count.items()
                        if f.split("|s|")[0]
-                       or c >= LEADER_MIN_SHARE * top
-                       and not (admit_leader_pens and lead_ink[f] < LEADER_INK_SHARE * fam_ink.get(f, 0.0))} \
+                       or c >= _R("pipeline.LEADER_MIN_SHARE", LEADER_MIN_SHARE) * top
+                       and not (admit_leader_pens and lead_ink[f] < _R("pipeline.LEADER_INK_SHARE", LEADER_INK_SHARE) * fam_ink.get(f, 0.0))} \
             | (set(ann_layers) if ann_layers else set())
         if os.environ.get("VVS_DEBUG_INK"):
             for f, c in lead_count.most_common():
@@ -931,9 +944,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             similar = any(_layer_template_similar(layer, tl) for tl in token_layers)
             accept = (token_votes[f] >= 1) or (tick_votes[f] >= 2 and similar) \
                 or (tick_votes[f] >= 3 and style in token_styles) or (tick_votes[f] >= 5 and tick_votes[f] / total_ticks >= 0.15) \
-                or (not token_fams and tick_votes[f] >= 2 and tick_votes[f] >= PEER_SHARE * best_ticks) \
-                or (not token_fams and votes[f] >= 5 and votes[f] >= PEER_SHARE * best_votes) \
-                or (not token_fams and leader_votes[f] >= PEER_LABELS_MIN and leader_votes[f] >= PEER_SHARE * best_leaders)
+                or (not token_fams and tick_votes[f] >= 2 and tick_votes[f] >= _R("pipeline.PEER_SHARE", PEER_SHARE) * best_ticks) \
+                or (not token_fams and votes[f] >= 5 and votes[f] >= _R("pipeline.PEER_SHARE", PEER_SHARE) * best_votes) \
+                or (not token_fams and leader_votes[f] >= _R("pipeline.PEER_LABELS_MIN", PEER_LABELS_MIN) and leader_votes[f] >= _R("pipeline.PEER_SHARE", PEER_SHARE) * best_leaders)
             # A leader that ends on a valve or a floor drain and only then reaches the pipe leaves no tick on the
             # pipe itself, and a sum of contact weights counts one label several times when its leader runs along
             # several pieces of the same family. Neither says what a reader would say, which is simply: how many
@@ -985,7 +998,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         # Keep the drawn strokes of the declined families so a reader can see them, spending the budget on the
         # ones a label came closest to: a wall layer holds tens of thousands of strokes and would drown both the
         # payload and the eye, while the family that nearly became pipe is the one worth looking at.
-        budget = DECLINED_SEGMENT_BUDGET
+        budget = _R("pipeline.DECLINED_SEGMENT_BUDGET", DECLINED_SEGMENT_BUDGET)
         for f in sorted(declined, key=lambda k: (-declined[k]["tick_votes"], -declined[k]["votes"], -declined[k]["total_length_pt"])):
             take = min(budget, DECLINED_SEGMENTS_PER_FAMILY, declined[f]["n_segments"])
             qs = (prims_all.get(f) or [])[:take]
@@ -1208,14 +1221,14 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         second = dict(st.as_dict(), applied=apply_answers(anchors, st.answers))
         anchors.sort(key=lambda a: a.anchor_id)
 
-    identities = _pipe_identities(designations, anchors, grammar, legend=legend)
+    identities = _pipe_identities(designations, anchors, grammar, _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend)
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     if _settle_bundles_by_elimination(anchors, ownership, graphs):
-        identities = _pipe_identities(designations, anchors, grammar, legend=legend)
+        identities = _pipe_identities(designations, anchors, grammar, _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend)
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     # and what one bundle at a time cannot settle, the sheet taken as a whole sometimes can
     if settle_bundles_by_sheet_consistency(anchors, graphs, known_families):
-        identities = _pipe_identities(designations, anchors, grammar, legend=legend)
+        identities = _pipe_identities(designations, anchors, grammar, _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend)
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     _close_labels_on_owned_runs(anchors, ownership, graphs)
     film.pipes(ownership.pipes)
@@ -1295,26 +1308,39 @@ def _risers_from_dn_rows(designations, anchors, leaders, identities) -> dict[str
     Reported alongside the risers found from drawn symbols rather than merged into them. Against the reference
     takeoff of drawing A the two sources disagree - symbols 58, labels 41, reference 55 - and their union (68) is
     further off than either, so the operator chooses which one the quantity uses.
+
+    A stack is counted from what the label says, not from how well its leader landed. Whether the leader could be
+    tied to one drawn run decides which run gets metres; it does not decide whether the drawing wrote a stack
+    there. So an ambiguous attachment counts too - a count is not a length, and no metre can come out of it.
+
+    What it still may not do is count a code the sheet never uses as a pipe: a fitting tag with a size under it
+    would otherwise become a stack. The test is the drawing's own: the base has to be one the sheet already
+    carries as a pipe identity somewhere else.
     """
+    from .pipes.ownership import identity_from_text
     des = {d.did: d for d in designations}
     ends = {l.lid: l.end for l in leaders}
+    known = {i.base for i in identities.values()}
     labelled: dict[str, list[dict]] = {}
     for a in sorted(anchors, key=lambda x: x.anchor_id):
-        if a.state != "VERIFIED_PIPE_ATTACHMENT":
-            continue
         d = des.get(a.designation_id)
         if d is None or not _is_vertical_label(d):
             continue
         pt = ends.get(a.leader_id)
-        ident = identities.get(a.anchor_id)
-        if pt is None or ident is None:
+        if pt is None:
             continue
+        ident = identities.get(a.anchor_id)
+        if ident is None:
+            ident = identity_from_text(a.designation_display or a.designation, d.dn, a.system_token, None)
+            if ident.base not in known:
+                continue
         key = f"{ident.base}|DN{d.dn}"
         lst = labelled.setdefault(key, [])
         if any(dist(tuple(r["point"]), pt) <= 3.0 for r in lst):
             continue                      # two leaders of one label onto the same riser
         lst.append({"designation": d.text, "dn": d.dn, "point": [round(pt[0], 2), round(pt[1], 2)],
-                    "evidence": "dimension_on_the_row_below_states_a_vertical_pipe", "designation_id": d.did})
+                    "evidence": "dimension_on_the_row_below_states_a_vertical_pipe",
+                    "attachment": a.state, "designation_id": d.did})
     return labelled
 
 
@@ -1461,10 +1487,17 @@ def _split_at_tick_contacts(page: RawPage, graphs: dict, pipe_families: dict, an
     return graphs, pipe_families
 
 
-def _pipe_identities(designations, anchors, grammar, vertical_dn_rows: bool = True, legend=None) -> dict[str, Identity]:
+def _pipe_identities(designations, anchors, grammar, dn_rows_are_vertical_only: bool = False,
+                    legend=None) -> dict[str, Identity]:
     """Anchors of pipe-designation grammar families: a family qualifies when >= 50 % of its members carry a DN
     (inline or DN row) or >= 50 % of its verified attachments have layer-token support. Other code families
-    (component tags) never seed pipe ownership."""
+    (component tags) never seed pipe ownership.
+
+    dn_rows_are_vertical_only: whether a label whose dimension stands on the row below names ONLY a vertical pipe,
+    so that the run its leader touches gets no horizontal metres from it. The reading of the convention is not in
+    doubt - a dimension on the row below is a stack - but what the takeoff does with the run underneath it is a
+    measured question, not a deduced one, and the switch is here so it can be measured rather than argued.
+    """
     des_by_id = {d.did: d for d in designations}
     fam_members: Counter = Counter()
     fam_dn: Counter = Counter()
@@ -1498,6 +1531,8 @@ def _pipe_identities(designations, anchors, grammar, vertical_dn_rows: bool = Tr
         # share the shape of the system codes, the whole shape fails the test and the systems go with it. The
         # sheet's own designation list settles it directly, so a code it lists as a system qualifies whatever the
         # pattern statistics say - and a code it lists as an object never does.
+        if dn_rows_are_vertical_only and _is_vertical_label(d):
+            continue                # the label names a stack; it does not claim the run its leader lands on
         by_legend = legend is not None and legend.systems() and legend.names_a_pipe(d)
         if d.family not in pipe_fams and not by_legend:
             continue

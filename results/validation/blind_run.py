@@ -90,6 +90,13 @@ with TestClient(app) as c:
             "advisory": sum(1 for i in res["issues"] if i.get("severity") == "advisory"),
             "ambiguous_geometry": len(res["ambiguous_geometry"]),
             "unowned_geometry": len(res["unowned_geometry"]),
+            # The page and the drawn runs, so a scorer can hold the reading against a hand-painted sheet point
+            # by point. A summary that matches can be two errors cancelling; only the geometry says where.
+            "page": {"width_pt": res["page"]["width_pt"], "height_pt": res["page"]["height_pt"]},
+            "pipes": [{"identity": p.get("identity"), "horizontal_m": p.get("horizontal_m"),
+                       "geometry": [[[round(x, 1), round(y, 1)] for x, y in pl] for pl in (p.get("geometry") or [])]}
+                      for p in res.get("pipes") or []],
+            "unowned": [[g["x0"], g["y0"], g["x1"], g["y1"]] for g in res.get("unowned_geometry") or []],
             "exports": exports,
             "artifacts": arts,
         }

@@ -28,6 +28,14 @@ from .geometry.core import angle_diff
 from .pipes.ownership import Identity, identity_from_text
 from .text.model import project, row_axes
 
+from . import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 ROUTES = ("pointing", "writing", "closure")
 INDEPENDENT = ("pointing", "writing")       # those that read the drawing rather than carry a reading on
 
@@ -120,13 +128,13 @@ def writing_route(pa) -> RouteReport:
         found: set[tuple[str, int]] = set()
         for fk, g in pa.graphs.items():
             for pid, q in g.prims.items():
-                if angle_diff(q.seg.angle, d.angle % 180.0) > ALONGSIDE_ANGLE:
+                if angle_diff(q.seg.angle, d.angle % 180.0) > _R("routes.ALONGSIDE_ANGLE", ALONGSIDE_ANGLE):
                     continue
                 a0 = min(project(q.a, d_dir), project(q.b, d_dir))
                 a1 = max(project(q.a, d_dir), project(q.b, d_dir))
-                if min(a1, s1) - max(a0, s0) < ALONGSIDE_COVER * max(s1 - s0, 1e-6):
+                if min(a1, s1) - max(a0, s0) < _R("routes.ALONGSIDE_COVER", ALONGSIDE_COVER) * max(s1 - s0, 1e-6):
                     continue
-                if abs(0.5 * (project(q.a, d_nrm) + project(q.b, d_nrm)) - base) > ALONGSIDE_BAND * H:
+                if abs(0.5 * (project(q.a, d_nrm) + project(q.b, d_nrm)) - base) > _R("routes.ALONGSIDE_BAND", ALONGSIDE_BAND) * H:
                     continue
                 found.add((fk, chain_of[fk][pid]))
         if len(found) == 1:
@@ -135,7 +143,7 @@ def writing_route(pa) -> RouteReport:
     rep.stats = {"labels_without_a_leader": len(cand), "runs_named": len(named),
                  "runs_with_several_labels": sum(1 for v in hits.values() if len(v) > 1),
                  "used": False}
-    if len(named) < ALONGSIDE_MIN_LABELS or len(named) < ALONGSIDE_MIN_SHARE * max(len(pipe_labels), 1):
+    if len(named) < _R("routes.ALONGSIDE_MIN_LABELS", ALONGSIDE_MIN_LABELS) or len(named) < _R("routes.ALONGSIDE_MIN_SHARE", ALONGSIDE_MIN_SHARE) * max(len(pipe_labels), 1):
         return rep      # this sheet does not label by writing along its runs; a stray adjacency says nothing
     rep.stats["used"] = True
     for (fk, ci), d in sorted(named.items()):

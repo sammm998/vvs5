@@ -20,7 +20,7 @@ from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_cor
 from vvs_engine.learning import KEYS, lessons, settle, situation
 from .auth import create_token, current_user, hash_password, verify_password
 from .config import settings
-from .db import Correction, AnalysisJob, Drawing, Project, User, get_db, init_db
+from .db import Correction, AnalysisJob, Drawing, Project, RuleSetting, User, get_db, init_db
 from .storage import storage
 
 app = FastAPI(title=settings.app_name, version="0.1.0")
@@ -416,6 +416,70 @@ def undo_correction(drawing_id: str, correction_id: str, user: User = Depends(cu
     c.undone = True
     db.commit()
     return _correction_out(c)
+
+
+@app.get("/api/rules")
+def rules_catalogue(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Every rule the reading follows, what it decides, and what it stands at for this account.
+
+    A takeoff nobody can question is not evidence. The engine's limits are all written down where they are used,
+    which serves whoever reads the code and nobody else - so they are served here too, in the words of the
+    drawing, together with what each one has been moved to and why.
+    """
+    from vvs_engine import rules as R
+    mine = {r.rule_id: r for r in db.query(RuleSetting).filter(RuleSetting.user_id == user.id).all()}
+    cat = R.catalogue({k: v.value for k, v in mine.items()})
+    for g in cat["groups"]:
+        for row in g["rules"]:
+            s = mine.get(row["id"])
+            row["changed"] = s is not None
+            row["note"] = s.note if s else None
+            row["shot"] = s.shot if s else None
+            row["changed_at"] = s.created_at.isoformat() if s else None
+    cat["n_changed"] = len(mine)
+    return cat
+
+
+@app.put("/api/rules/{rule_id:path}")
+def set_rule(rule_id: str, body: dict, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Move one rule for this account, or put it back.
+
+    A value outside what the rule can mean is refused rather than clamped: a limit silently rewritten is a limit
+    nobody can reason about afterwards. Rules the code does not let anyone move are refused with the reason.
+    """
+    from vvs_engine import rules as R
+    rule = R.BY_ID.get(rule_id)
+    if rule is None:
+        raise HTTPException(404, "okänd regel")
+    if not rule.tunable:
+        raise HTTPException(400, rule.fixed_why or "regeln går inte att ändra")
+    row = db.query(RuleSetting).filter(RuleSetting.user_id == user.id, RuleSetting.rule_id == rule_id).first()
+    if body.get("reset"):
+        if row:
+            db.delete(row); db.commit()
+        return {"id": rule_id, "value": rule.default, "changed": False}
+    v = body.get("value")
+    if isinstance(rule.default, bool):
+        v = bool(v)
+    else:
+        try:
+            v = float(v)
+        except (TypeError, ValueError):
+            raise HTTPException(400, "värdet är inget tal")
+        if rule.lo is not None and v < rule.lo or rule.hi is not None and v > rule.hi:
+            raise HTTPException(400, f"värdet ligger utanför vad regeln kan betyda ({rule.lo}–{rule.hi})")
+    shot = body.get("shot")
+    if shot and (not isinstance(shot, str) or not shot.startswith("data:image/") or len(shot) > 4_000_000):
+        raise HTTPException(400, "skärmbilden måste vara en bild och under 4 MB")
+    if row is None:
+        row = RuleSetting(user_id=user.id, rule_id=rule_id, value=float(v))
+        db.add(row)
+    row.value = float(v)
+    row.note = (body.get("note") or None)
+    if shot is not None:
+        row.shot = shot or None
+    db.commit()
+    return {"id": rule_id, "value": v, "changed": True, "note": row.note, "shot": bool(row.shot)}
 
 
 @app.get("/api/lessons")

@@ -15,6 +15,14 @@ from dataclasses import dataclass, field
 
 from ..text.model import Glyph, TextRow
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 TWINS = {"O": "0", "0": "O", "I": "1", "1": "I", "S": "5", "5": "S", "B": "8", "8": "B", "Z": "2", "2": "Z", "G": "6", "6": "G"}
 SEPARATORS = "-/+.,:()[]"
 MARGIN = 0.07
@@ -204,7 +212,7 @@ class DesignationGrammar:
             # a pattern carried by fewer than two words is no evidence: often the only word carrying it IS this
             # word, whose reading would then be voting for itself (the same floor typicality already applies)
             w = self.pattern_weight.get(self._base(r.pattern), 0.0)
-            return w if w >= PATTERN_FLOOR else 0.0
+            return w if w >= _R("semantics.grammar.PATTERN_FLOOR", PATTERN_FLOOR) else 0.0
 
         def dimension(r: WordReading) -> int:
             """How completely the whole word reads as a dimension: 2 for a bare generic nominal size, 1 for one

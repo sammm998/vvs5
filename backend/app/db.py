@@ -97,6 +97,27 @@ class Correction(Base):
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
 
+class RuleSetting(Base):
+    """A rule a person changed, and what they changed it to.
+
+    The engine's rules have defaults that hold for most drawings and not for all. An office that draws its
+    leaders a hair short, or writes a designation list of four rows, is not wrong - the reading is, for that
+    office. So the rules can be moved, per account, and what was moved is kept here rather than in the code:
+    the code keeps what holds generally, this keeps what one reader found for their own drawings.
+
+    Kept against the user and not the drawing on purpose. A rule that had to be changed for one sheet almost
+    always has to be changed for every sheet the same office drew.
+    """
+    __tablename__ = "rule_settings"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    rule_id: Mapped[str] = mapped_column(String(128), index=True)
+    value: Mapped[float] = mapped_column(Float)
+    note: Mapped[str | None] = mapped_column(Text, nullable=True)     # varför den flyttades
+    shot: Mapped[str | None] = mapped_column(Text, nullable=True)     # skärmbild som visar fallet (data-URL)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime, default=_now)
+
+
 def init_db() -> None:
     Base.metadata.create_all(engine)
 

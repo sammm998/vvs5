@@ -19,6 +19,14 @@ from scipy import ndimage
 from ..geometry.core import Seg
 from .hershey import hershey_fonts
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 GRID = 32
 INNER = 26
 CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789abdefghijmnqrty-/+.,:()[]=%°Ø&*•"
@@ -86,7 +94,7 @@ def rasterize_segments_oriented(segs: list[Seg], angle_deg: float = 0.0) -> tupl
     # deterministic: longer segments assigned last so they dominate at junctions
     order = np.argsort(np.hypot((x1 - x0) * sx, (y1 - y0) * sy), kind="stable")
     omap[ys[order].ravel(), xs[order].ravel()] = np.repeat(bins[order], xs.shape[1]).astype(np.int8)
-    return img, float(min(max(w / h, 1.0 / MAX_ASPECT), MAX_ASPECT)), omap
+    return img, float(min(max(w / h, 1.0 / _R("text.recognize.MAX_ASPECT", MAX_ASPECT)), _R("text.recognize.MAX_ASPECT", MAX_ASPECT))), omap
 
 
 def rasterize_polygon_fill(segs: list[Seg], angle_deg: float = 0.0) -> tuple[np.ndarray, float]:
@@ -128,7 +136,7 @@ def rasterize_polygon_fill(segs: list[Seg], angle_deg: float = 0.0) -> tuple[np.
                 fill[row, max(0, a0):min(G, a1 + 1)] = True
     small = fill.reshape(GRID, R, GRID, R).mean(axis=(1, 3)) > 0.5
     sk = zhang_suen(small.astype(np.uint8))
-    return sk, float(min(max(w / h, 1.0 / MAX_ASPECT), MAX_ASPECT))
+    return sk, float(min(max(w / h, 1.0 / _R("text.recognize.MAX_ASPECT", MAX_ASPECT)), _R("text.recognize.MAX_ASPECT", MAX_ASPECT)))
 
 
 def skeleton_orientation(img: np.ndarray) -> np.ndarray:
@@ -334,7 +342,7 @@ def _render_reference(ch: str, font: str, buffer: bytes | None = None):
     img = np.zeros((GRID, GRID), dtype=np.uint8)
     oy = (GRID - th) // 2; ox = (GRID - tw) // 2
     img[oy:oy + th, ox:ox + tw] = sk
-    return img, float(min(max(w / h, 1.0 / MAX_ASPECT), MAX_ASPECT))
+    return img, float(min(max(w / h, 1.0 / _R("text.recognize.MAX_ASPECT", MAX_ASPECT)), _R("text.recognize.MAX_ASPECT", MAX_ASPECT)))
 
 
 def chamfer(img_a: np.ndarray, dt_a: np.ndarray, img_b: np.ndarray, dt_b: np.ndarray) -> float:
@@ -371,10 +379,10 @@ def _ref_arrays(embedded: tuple[tuple[str, bytes], ...] = ()):
     raw_bins = np.stack([r.dt_bins.reshape(NBINS, -1) for r in refs])        # (n_ref, NBINS, 1024)
     bdm = _bin_dist_matrix()
     # relaxed[r, b, p] = min_b' ( dt_bins[r, b', p] + lambda * bindist(b, b') ): cost for a glyph pixel of bin b at p
-    dt_bins = np.stack([(raw_bins[:, bp, :] + ORIENT_LAMBDA * bdm[b, bp]) for b in range(NBINS) for bp in [slice(None)]], axis=1) if False else None
+    dt_bins = np.stack([(raw_bins[:, bp, :] + _R("text.recognize.ORIENT_LAMBDA", ORIENT_LAMBDA) * bdm[b, bp]) for b in range(NBINS) for bp in [slice(None)]], axis=1) if False else None
     dt_bins = np.empty_like(raw_bins)
     for b in range(NBINS):
-        dt_bins[:, b, :] = (raw_bins + (ORIENT_LAMBDA * bdm[b])[None, :, None]).min(axis=1)
+        dt_bins[:, b, :] = (raw_bins + (_R("text.recognize.ORIENT_LAMBDA", ORIENT_LAMBDA) * bdm[b])[None, :, None]).min(axis=1)
     ref_bins = np.stack([np.where(r.omap.ravel() < 0, 0, r.omap.ravel()) for r in refs])   # (n_ref, 1024)
     # sparse ink representation of refs for term 2
     kmax = int(max(int((r.img > 0).sum()) for r in refs))
@@ -443,7 +451,7 @@ def classify(img: np.ndarray, aspect: float, holes: int, allow_lower: bool = Tru
         g_raw[b] = ndimage.distance_transform_edt(~mb).ravel() if mb.any() else float(GRID)
     g_rel = np.empty_like(g_raw)
     for b in range(NBINS):
-        g_rel[b] = (g_raw + (ORIENT_LAMBDA * bdm[b])[:, None]).min(axis=0)
+        g_rel[b] = (g_raw + (_R("text.recognize.ORIENT_LAMBDA", ORIENT_LAMBDA) * bdm[b])[:, None]).min(axis=0)
     ink_idx, ink_bin, ink_valid = masks
     c2 = np.minimum(g_rel[ink_bin, ink_idx], tau) ** 2                          # (n_ref, kmax)
     t2 = (c2 * ink_valid).sum(axis=1) / np.maximum(counts, 1)
@@ -480,4 +488,4 @@ def decide(char: str, score: float, alternatives: list[tuple[str, float]]) -> tu
     drawing-local grammar then reinforced it. An unnamed character costs one label; a confidently wrong one
     silently splits an identity in two.
     """
-    return (char, False) if score <= UNKNOWN_THRESHOLD else ("?", False)
+    return (char, False) if score <= _R("text.recognize.UNKNOWN_THRESHOLD", UNKNOWN_THRESHOLD) else ("?", False)

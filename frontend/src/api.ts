@@ -86,6 +86,9 @@ export const api = {
   undoCorrection: (drawingId: string, id: string) =>
     req(`/api/drawings/${drawingId}/corrections/${id}`, { method: "DELETE" }),
   lessons: () => req("/api/lessons"),
+  rules: () => req("/api/rules"),
+  setRule: (id: string, body: any) =>
+    req(`/api/rules/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   fetchBlob: async (path: string) => { const res = await fetch(path, { headers: { Authorization: `Bearer ${getToken()}` } }); if (!res.ok) throw new Error("Hämtning misslyckades"); return res.blob(); },
 };
 

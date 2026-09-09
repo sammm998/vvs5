@@ -16,6 +16,14 @@ from typing import Any
 
 from ..semantics.grammar import NOMINAL_SIZES, is_code_like
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 
 @dataclass
 class Finding:
@@ -202,7 +210,7 @@ def _ocr_crosscheck_agent(pa, progress=None) -> tuple[list[Finding], str]:
     first: Exception | None = None
     for dpi in OCR_REVIEW_DPI:
         try:
-            words = ocr_words(pa.page, dpi=dpi, budget_s=OCR_REVIEW_BUDGET_S,
+            words = ocr_words(pa.page, dpi=dpi, budget_s=_R("review.agents.OCR_REVIEW_BUDGET_S", OCR_REVIEW_BUDGET_S),
                               progress=(lambda t: progress(f"ocr {t}")) if progress else None)
             dpi_used = dpi
             break

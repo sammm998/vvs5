@@ -238,3 +238,42 @@ def test_an_agent_proposal_is_only_written_when_a_person_accepts_it(client, synt
                              "arguments": {"ror_id": [pipe["physical_pipe_id"]],
                                            "till_beteckning": "PÅHITT-1-999"}}).status_code == 409
     assert client.get(f"/api/drawings/{d['id']}/corrections", headers=H).json()[0]["undone"] is True
+
+
+def test_rules_are_open_and_movable(client):
+    """Reglerna ska gå att läsa, flytta och sätta tillbaka - och vägra det som inte betyder något."""
+    tok = client.post("/api/auth/register", json={"email": "regler@example.com", "password": "hemligt1"}).json()["access_token"]
+    H = {"Authorization": f"Bearer {tok}"}
+
+    cat = client.get("/api/rules", headers=H).json()
+    assert cat["n_rules"] > 30 and cat["n_tunable"] > 20
+    ids = {r["id"] for g in cat["groups"] for r in g["rules"]}
+    assert "semantics.attachment.NEAR_MISS" in ids
+    assert all(r["title"] and r["why"] for g in cat["groups"] for r in g["rules"])
+
+    rid = "semantics.attachment.NEAR_MISS"
+    assert client.put(f"/api/rules/{rid}", json={"value": 9.5, "note": "kort ledare"}, headers=H).status_code == 200
+    row = next(r for g in client.get("/api/rules", headers=H).json()["groups"] for r in g["rules"] if r["id"] == rid)
+    assert row["value"] == 9.5 and row["changed"] and row["note"] == "kort ledare"
+
+    # utanför vad regeln kan betyda, en regel som inte får flyttas, och en som inte finns
+    assert client.put(f"/api/rules/{rid}", json={"value": 10_000}, headers=H).status_code == 400
+    assert client.put("/api/rules/semantics.leaders.TOUCH_TOL", json={"value": 1.0}, headers=H).status_code == 400
+    assert client.put("/api/rules/inte.en.regel", json={"value": 1}, headers=H).status_code == 404
+
+    assert client.put(f"/api/rules/{rid}", json={"reset": True}, headers=H).status_code == 200
+    assert client.get("/api/rules", headers=H).json()["n_changed"] == 0
+
+
+def test_one_readers_rules_do_not_reach_another(client):
+    """Ett konto som flyttat en regel får inte flytta den för någon annan."""
+    a = client.post("/api/auth/register", json={"email": "a@example.com", "password": "hemligt1"}).json()["access_token"]
+    b = client.post("/api/auth/register", json={"email": "b@example.com", "password": "hemligt1"}).json()["access_token"]
+    rid = "semantics.attachment.NEAR_MISS"
+    client.put(f"/api/rules/{rid}", json={"value": 11.0}, headers={"Authorization": f"Bearer {a}"})
+    mine = next(r for g in client.get("/api/rules", headers={"Authorization": f"Bearer {a}"}).json()["groups"]
+                for r in g["rules"] if r["id"] == rid)
+    theirs = next(r for g in client.get("/api/rules", headers={"Authorization": f"Bearer {b}"}).json()["groups"]
+                  for r in g["rules"] if r["id"] == rid)
+    assert mine["value"] == 11.0 and mine["changed"]
+    assert theirs["value"] == theirs["default"] and not theirs["changed"]

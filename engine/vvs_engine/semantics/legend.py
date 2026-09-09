@@ -25,6 +25,14 @@ from typing import Any
 
 from ..text.model import TextRow
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
 MIN_ENTRIES = 6                 # a shorter stack is a table cell or a note, not a designation list
 MIN_CODES = 6                   # ...and it must say six different things, or it is one table column repeated
 USED_MIN = 2                    # codes the drawing writes out itself, for the list to be its own vocabulary
@@ -33,7 +41,7 @@ MAX_CODE_LEN = 10
 DESC_GAP_ROWS = 12.0            # how far right of the code its description may start, in row heights
 COL_TOL = 3.0                   # how far two rows' left edges may differ and still be one column
 
-_INLINE = re.compile(r"^([^\s]{1,%d})\s+(\S.{2,})$" % MAX_CODE_LEN)
+_INLINE = re.compile(r"^([^\s]{1,%d})\s+(\S.{2,})$" % _R("semantics.legend.MAX_CODE_LEN", MAX_CODE_LEN))
 
 
 def is_code_token(tok: str) -> bool:
@@ -169,7 +177,7 @@ class DrawingLegend:
                 "entries": [e.as_dict() for e in self.entries]}
 
 
-def densest_edge(xs: list[float], tol: float = COL_TOL) -> float | None:
+def densest_edge(xs: list[float], tol: float | None = None) -> float | None:
     """The left edge that carries the most rows: the start of the narrow window holding the most of them.
 
     A designation list is found by the edge its codes share, and rows on a real sheet do not share one exactly -
@@ -180,6 +188,8 @@ def densest_edge(xs: list[float], tol: float = COL_TOL) -> float | None:
 
     Ties go to the leftmost edge, as the widest thing a column can be is what stands furthest left.
     """
+    if tol is None:
+        tol = _R("semantics.legend.COL_TOL", COL_TOL)
     xs = sorted(xs)
     best_n, best_x, j = 0, None, 0
     for i, x in enumerate(xs):
@@ -205,7 +215,7 @@ def _description_x(line: TextRow, at: int) -> float:
 
 def _candidate(rows: list[TextRow], found: dict, edge: float) -> list[LegendEntry]:
     """The list that would be read off one left edge: its entries, under the headings standing above them."""
-    column = sorted((l for l in rows if edge - 0.1 <= l.bbox[0] <= edge + COL_TOL),
+    column = sorted((l for l in rows if edge - 0.1 <= l.bbox[0] <= edge + _R("semantics.legend.COL_TOL", COL_TOL)),
                     key=lambda l: (l.bbox[1], l.bbox[0]))
     entries: list[LegendEntry] = []
     heading = ""
@@ -258,7 +268,7 @@ def read_legend(lines: list[TextRow], designations=()) -> DrawingLegend:
         if m and any(c.isalpha() for c in m.group(2)):
             found[l.rid] = (m.group(1), m.group(2), _description_x(l, m.start(2)))
             continue
-        if len(t) > MAX_CODE_LEN or " " in t:
+        if len(t) > _R("semantics.legend.MAX_CODE_LEN", MAX_CODE_LEN) or " " in t:
             continue
         best = None
         band = round(l.bbox[1] / 2.0)
@@ -267,7 +277,7 @@ def read_legend(lines: list[TextRow], designations=()) -> DrawingLegend:
                 if o is l or o.bbox[0] <= l.bbox[2] - 0.1 or abs(o.bbox[1] - l.bbox[1]) > 0.6 * h:
                     continue
                 gap = o.bbox[0] - l.bbox[2]
-                if 0.0 <= gap <= DESC_GAP_ROWS * h and (best is None or gap < best[0]):
+                if 0.0 <= gap <= _R("semantics.legend.DESC_GAP_ROWS", DESC_GAP_ROWS) * h and (best is None or gap < best[0]):
                     best = (gap, o)
         if best is not None and any(c.isalpha() for c in best[1].text):
             found[l.rid] = (t, best[1].text.strip(), best[1].bbox[0])
@@ -280,17 +290,17 @@ def read_legend(lines: list[TextRow], designations=()) -> DrawingLegend:
     best_list: tuple[tuple, list[LegendEntry], float] | None = None
     for edge in sorted({by_rid[rid].bbox[0] for rid in found}):
         entries = _candidate(rows, found, edge)
-        if len(entries) < MIN_ENTRIES:
+        if len(entries) < _R("semantics.legend.MIN_ENTRIES", MIN_ENTRIES):
             continue
         codes = {e.code.upper() for e in entries}
-        if len(codes) < MIN_CODES:
+        if len(codes) < _R("semantics.legend.MIN_CODES", MIN_CODES):
             continue                    # a column that repeats one word is a table, not a vocabulary
         used = sum(1 for c in codes if any(h == c or h.startswith(c) for h in heads))
         dxs = [found[rid][2] for rid in (l.rid for l in rows)
-               if rid in found and edge - 0.1 <= by_rid[rid].bbox[0] <= edge + COL_TOL]
+               if rid in found and edge - 0.1 <= by_rid[rid].bbox[0] <= edge + _R("semantics.legend.COL_TOL", COL_TOL)]
         dedge = densest_edge(dxs)
-        lined = sum(1 for x in dxs if dedge is not None and dedge - 0.1 <= x <= dedge + COL_TOL)
-        if used < USED_MIN and lined < ALIGNED_SHARE * len(dxs):
+        lined = sum(1 for x in dxs if dedge is not None and dedge - 0.1 <= x <= dedge + _R("semantics.legend.COL_TOL", COL_TOL))
+        if used < _R("semantics.legend.USED_MIN", USED_MIN) and lined < _R("semantics.legend.ALIGNED_SHARE", ALIGNED_SHARE) * len(dxs):
             continue
         score = (used, lined, len(entries))
         if best_list is None or score > best_list[0]:
