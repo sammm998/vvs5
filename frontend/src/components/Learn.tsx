@@ -13,7 +13,7 @@ import { MODULES, readProgress, markDone, type Block, type Lesson, type Module }
 
 function FigDesignation() {
   return (
-    <svg viewBox="0 0 520 168" role="img" aria-label="Beteckningen KV1-X31-16 uppdelad i sina tre delar">
+    <svg viewBox="0 0 600 170" role="img" aria-label="Beteckningen KV1-X31-16 uppdelad i sina tre delar">
       <g className="lf-mono">
         <text x="60" y="66" fontSize="34" fill="var(--ink)">KV1</text>
         <text x="146" y="66" fontSize="34" fill="var(--faint)">-</text>
@@ -24,12 +24,12 @@ function FigDesignation() {
       {/* the three drops get shorter to the right, and each caption runs right from where its own drop lands,
           so no line ever crosses a line of text */}
       <g stroke="var(--line-2)" strokeWidth="1" fill="none">
-        <path d="M92 82 V140" /><path d="M204 82 V112" /><path d="M298 82 V84" />
+        <path d="M92 84 V142" /><path d="M204 84 V112" /><path d="M298 84 V90" />
       </g>
-      <g className="lf-mono" fontSize="12" fill="var(--muted)">
-        <text x="102" y="144">system · tappkallvatten 1</text>
+      <g className="lf-mono" fontSize="12.5" fill="var(--muted)">
+        <text x="102" y="146">system · tappkallvatten 1</text>
         <text x="214" y="116">material · ur bladets lista</text>
-        <text x="308" y="88">dimension · 16 mm ytterdiameter</text>
+        <text x="308" y="94">dimension · ytterdiameter 16 mm</text>
       </g>
     </svg>
   );

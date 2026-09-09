@@ -37,33 +37,37 @@ export default function AcademySection() {
       </div>
       <div className={`lp-acad${seen ? " in" : ""}`} ref={ref}>
         <div className="lp-acad-deck" {...handlers} style={tiltStyle(tilt, 12)}>
+          {/* six cards leaning back from the one you would start with: every title readable, the whole course
+              visible as one thing. The card under the pointer comes forward and says what it is about. */}
           {MODULES.map((m, i) => (
             <article key={m.id} className="lp-acad-card"
               style={{
-                transform: `translateZ(${(MODULES.length - i) * -26}px) translateY(${i * 14}px) `
-                  + `translateX(${i * 9}px)`,
+                top: `${i * 66}px`,
+                transform: `scale(${1 - i * 0.018}) rotateX(${i * 0.9}deg)`,
                 zIndex: MODULES.length - i,
-                animationDelay: `${0.08 * i}s`,
+                animationDelay: `${0.07 * i}s`,
               }}>
-              <span className="no">{String(i + 1).padStart(2, "0")}</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d={ICONS[m.id]} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"
-                  strokeLinejoin="round" />
-              </svg>
+              <span className="ic">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d={ICONS[m.id]} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"
+                    strokeLinejoin="round" />
+                </svg>
+              </span>
               <h3>{m.title}</h3>
-              <p>{m.blurb}</p>
               <span className="n">{m.lessons.length} delmoment</span>
+              <span className="no">{String(i + 1).padStart(2, "0")}</span>
+              <p>{m.blurb}</p>
             </article>
           ))}
         </div>
         <div className="lp-acad-say">
           <ul className="lp-beats">
             <li className="on"><span className="no">01</span><span><b>Sex moduler</b><em>{lessons} delmoment, {minutes} minuter totalt</em></span></li>
-            <li><span className="no">02</span><span><b>Kontrollfrågor</b><em>varje moment slutar med en fråga och ett svar som förklarar varför</em></span></li>
-            <li><span className="no">03</span><span><b>Ett övningsblad</b><em>para ihop beteckning och sträcka, och få rättat direkt</em></span></li>
-            <li><span className="no">04</span><span><b>Sparas där du är</b><em>fortsätt nästa gång en ritning läses</em></span></li>
+            <li className="on"><span className="no">02</span><span><b>Kontrollfrågor</b><em>varje moment slutar med en fråga och ett svar som förklarar varför</em></span></li>
+            <li className="on"><span className="no">03</span><span><b>Ett övningsblad</b><em>para ihop beteckning och sträcka, och få rättat direkt</em></span></li>
+            <li className="on"><span className="no">04</span><span><b>Sparas där du är</b><em>fortsätt nästa gång en ritning läses</em></span></li>
           </ul>
-          <Link className="lp-btn lp-btn-primary" to="/lar">Öppna akademin</Link>
+          <Link className="lp-btn primary lg" to="/lar">Öppna akademin</Link>
         </div>
       </div>
     </section>
