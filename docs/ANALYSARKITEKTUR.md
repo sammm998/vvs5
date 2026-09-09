@@ -132,6 +132,12 @@ rörnamn var och en placerade, och vilken som behölls.
 | 11 | Skriv ned varför ett pass vann, som artefakt | inspekterbarhet | **klart** |
 | 12 | Sida-till-sida-fortsättningar | dubbelräkning och tappade sträckor | senare |
 
+Kvar av listan är tre poster, och de är kvar av tre olika skäl. **#9** (rör mot byggnad på blad utan lager) är
+forskning: ett försök är mätt och förkastat, och nästa måste skilja rör från byggnad innan familjerna bedöms.
+**#10** (parallell sidläsning) är bygge med verklig risk — minne per process och en stor läsning att skicka
+tillbaka — och vinsten syns bara på handlingar med många blad. **#12** kräver att man först kan säga att två
+sträckor på olika blad är samma rör, vilket ingen del av systemet gör i dag.
+
 
 ## Mätt och förkastat
 
