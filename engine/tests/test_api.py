@@ -759,3 +759,64 @@ def test_a_file_that_is_not_the_expected_drawing_answers_in_a_sentence(client, t
     assert j["error"] and "vektor" in j["error"].lower(), j["error"]
     assert "Traceback" not in j["error"] and "/home/" not in j["error"] and ".py" not in j["error"], (
         "felrutan visas för kunden; en stackspårning där lämnar ut serverns insida")
+
+
+def test_every_export_actually_opens_in_the_program_it_is_meant_for(client, synthetic_pdf):
+    """Ett svar med status 200 är inte en fil som går att öppna.
+
+    Excel-filen ska gå att läsa med openpyxl och bära samma beteckningar som resultatet; CSV:n ska ha en
+    BOM så Excel läser å, ä och ö rätt, och lika många rader; JSON:en ska vara JSON; PDF:en ska ha sidor;
+    rapporten ska nämna ritningen. Det är vad mängdaren gör med filen sekunden efter nedladdningen.
+    """
+    import csv
+    import io
+    import json as _json
+
+    import openpyxl
+    import pymupdf
+
+    r = client.post("/api/auth/register", json={"email": "export@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Export", "description": ""}, headers=H).json()
+    with open(synthetic_pdf, "rb") as fh:
+        d = client.post(f"/api/projects/{p['id']}/drawings",
+                        files={"file": ("Kv Björken plan 2.pdf", fh, "application/pdf")}, headers=H).json()
+    j = client.post(f"/api/drawings/{d['id']}/analyze", headers=H).json()
+    for _ in range(240):
+        j = client.get(f"/api/jobs/{j['id']}", headers=H).json()
+        if j["status"] in ("COMPLETED", "FAILED"):
+            break
+        time.sleep(0.5)
+    assert j["status"] == "COMPLETED", j
+    res = client.get(f"/api/jobs/{j['id']}/result", headers=H).json()
+    names = {q["designation"] for q in res["quantities"]}
+    assert names
+
+    x = client.get(f"/api/jobs/{j['id']}/export/xlsx", headers=H)
+    assert x.status_code == 200
+    assert 'filename="' in x.headers.get("content-disposition", ""), "utan filnamn heter filen 'download'"
+    wb = openpyxl.load_workbook(io.BytesIO(x.content), data_only=True)
+    cells = {str(c.value) for ws in wb.worksheets for row in ws.iter_rows() for c in row if c.value is not None}
+    assert names <= cells, f"beteckningar som inte kom med i Excel: {names - cells}"
+
+    c = client.get(f"/api/jobs/{j['id']}/export/csv", headers=H)
+    assert c.content.startswith(b"\xef\xbb\xbf"), "utan BOM läser Excel svenska tecken fel"
+    # semikolon, för svensk Excel: kommat är decimaltecknet där, och en kommaseparerad fil blir en enda kolumn
+    rows = list(csv.reader(io.StringIO(c.content.decode("utf-8-sig")), delimiter=";"))
+    assert len(rows) >= 1 + len(names), f"{len(rows)} rader för {len(names)} beteckningar"
+    assert names <= {cell for row in rows for cell in row}
+
+    js = client.get(f"/api/jobs/{j['id']}/export/json", headers=H)
+    body = _json.loads(js.content)
+    assert {q["designation"] for q in body["rows"]} == names
+
+    pdf = client.get(f"/api/jobs/{j['id']}/export/pdf", headers=H)
+    doc = pymupdf.open(stream=pdf.content, filetype="pdf")
+    assert len(doc) >= 1, "den markerade PDF:en har inga sidor"
+    doc.close()
+
+    rep = client.get(f"/api/jobs/{j['id']}/export/report", headers=H)
+    assert rep.status_code == 200
+    text = rep.content.decode("utf-8", "replace")
+    assert "Björken" in text or "Bj\\u00f6rken" in text, "rapporten nämner inte ritningen"
+    assert any(n in text for n in names), "rapporten nämner ingen av beteckningarna"

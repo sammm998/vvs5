@@ -933,6 +933,22 @@ def why(job_id: str, pipe_id: str, user: User = Depends(current_user), db: Sessi
     return {"pipe": p, "evidence_chain": chain, "scale": scale}
 
 
+def _attachment(name: str) -> dict:
+    """En nedladdning med ett svenskt filnamn.
+
+    Ett HTTP-huvud får bara bära latin-1, och ett filnamn med ö i skickat rakt av föll hela svaret - så en
+    ritning som heter "Kv Björken plan 2" gick inte att exportera alls, vilket är varenda svensk ritning.
+    RFC 5987 löser det med två namn: ett rent ASCII-namn som varje läsare förstår, och det riktiga namnet
+    procentkodat i `filename*`, som moderna webbläsare föredrar. Starlettes FileResponse gör redan så; det
+    här är samma sak för de svar som byggs i minnet.
+    """
+    from urllib.parse import quote
+    import unicodedata
+    plain = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii")
+    plain = "".join(ch if ch.isalnum() or ch in "-_. " else "_" for ch in plain).strip() or "fil"
+    return {"Content-Disposition": f"attachment; filename=\"{plain}\"; filename*=UTF-8''{quote(name)}"}
+
+
 @app.get("/api/jobs/{job_id}/export/{fmt}")
 def export(job_id: str, fmt: str, floor_height: float | None = None, include_hatched: bool = False,
            riser_source: str = "labels",
@@ -950,14 +966,14 @@ def export(job_id: str, fmt: str, floor_height: float | None = None, include_hat
             if corr else quantities["rows"])
     if fmt == "xlsx":
         return Response(exports.to_xlsx(rd, fh, include_hatched, rows, riser_source), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        headers={"Content-Disposition": f'attachment; filename="{base}-mangder.xlsx"'})
+                        headers=_attachment(f"{base}-mangder.xlsx"))
     if fmt == "csv":
-        return Response(exports.to_csv(rd, fh, include_hatched, rows, riser_source).encode("utf-8-sig"), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="{base}-mangder.csv"'})
+        return Response(exports.to_csv(rd, fh, include_hatched, rows, riser_source).encode("utf-8-sig"), media_type="text/csv", headers=_attachment(f"{base}-mangder.csv"))
     if fmt == "json":
         return Response(json.dumps({**quantities, "rows": rows, "corrections_applied": len(corr)},
                                    ensure_ascii=False, indent=1).encode("utf-8"),
                         media_type="application/json",
-                        headers={"Content-Disposition": f'attachment; filename="{base}-quantities.json"'})
+                        headers=_attachment(f"{base}-quantities.json"))
     if fmt == "report":
         return FileResponse(os.path.join(rd, "analysis-report.md"), media_type="text/markdown", filename=f"{base}-analysrapport.md")
     if fmt == "pdf":
