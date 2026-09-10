@@ -169,6 +169,13 @@ RULES: tuple[Rule, ...] = (
     Rule("pipes.ownership.BOUNDARY_TOL", G_PIPE, "Gräns mellan två sträckor",
          "Hur nära en gränspunkt en primitiv får ligga och räknas som på gränsen.",
          "pt", 0.75, 0.0, 5.0, None, True),
+    Rule("pipeline.WRITE_INK_SHARE", G_PIPE, "När en penna skriver i stället för ritar",
+         "Läsningen håller bladets skrivpennor utanför andra genomgången, så att en hänvisningslinje aldrig "
+         "mäts som rör. Att bära en linje eller ett streck under en beteckning räckte som bevis - och på ett "
+         "kontor som ritar rör och etikettramar med samma penna på samma lager försvann därmed ritningen. "
+         "Regeln säger hur stor del av pennans eget bläck som måste vara just linjer och ramar för att den ska "
+         "räknas som en skrivpenna. Glyferna är redan utanför räkningen: de är text vilketdera det än är.",
+         "andel", 0.5, 0.0, 1.0, None, True),
     Rule("pdf.extract.ANNOTATION_INK_IS_REVIEW", G_PIPE, "Påskrift på bladet är inte ritning",
          "En PDF-annotation - ett moln kring en ändring, en notering, eller en mängdning någon redan gjort och "
          "ritat som färgade linjer med längden i kommentaren - ligger ovanpå ritningen och ser i filen ut som "

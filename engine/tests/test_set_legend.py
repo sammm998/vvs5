@@ -71,7 +71,10 @@ def _settled() -> DrawingLegend:
     lg = read_legend([_row("BETECKNINGAR", 100, 10)]
                      + [_row(f"{c} {d}", 100, 30 + 12 * i) for i, (c, d) in enumerate(LIST)], DRAWN)
     assign_roles(lg, DRAWN)
-    assert lg.systems() == {"KV01", "S01"} and lg.components() == {"TS1", "BL2"}
+    # VV01 står som system fast bladet aldrig ritar det: listan skriver ut "TAPPVARMVATTEN", och det är vad
+    # koden är. Förut gissades rollen ur användningen, och en kod bladet inte använder blev därför "material" -
+    # ett svar som inte betydde något. Att listan säger det räcker, och den säger det för varje kod den har.
+    assert lg.systems() == {"KV01", "S01", "VV01"} and lg.components() == {"TS1", "BL2"}
     return lg
 
 
@@ -79,7 +82,7 @@ def test_a_borrowed_list_names_the_pipes_the_sheet_never_lists():
     borrowed = adopt(_settled())
     assign_roles(borrowed, [D("KV01-X7-16", "KV01", 16)], prior=roles_of(_settled()))
     assert not borrowed.own
-    assert borrowed.systems() == {"KV01", "S01"}
+    assert borrowed.systems() == {"KV01", "S01", "VV01"}
     assert borrowed.names_a_pipe(D("S01-S13-110", "S01", 110))
     assert not borrowed.names_a_pipe(D("TS1", "TS1", None))
     # Rollen kommer nu ur listans egna ord - "SPILLVATTEN" säger vad S01 är - och behöver inget annat blad.

@@ -399,9 +399,10 @@ def test_legend_is_read_from_its_shape_and_roles_from_how_the_drawing_uses_it():
     assert all(e.heading == "TAPPVATTENSYSTEM" for e in lg.entries)
 
     assign_roles(lg, drawn)
-    assert lg.systems() == {"KV01", "S01"}
+    # VV01 hör hit fast bladet aldrig ritar det: raden säger "TAPPVARMVATTEN", och det avgör vad koden är.
+    assert lg.systems() == {"KV01", "S01", "VV01"}
     assert lg.components() == {"BLXXX", "TS1"}          # BL3 matches the placeholder code BLxxx
-    assert {e.code for e in lg.entries if e.role == "material"} == {"VV01", "X31", "G3"}
+    assert {e.code for e in lg.entries if e.role == "material"} == {"X31", "G3"}
     assert lg.names_a_pipe(D("S01-G3-110", "S01", 110, out_on_the_drawing))
     assert not lg.names_a_pipe(D("TS1", "TS1", None, out_on_the_drawing))
     assert code_matches("BL3", "BLxxx") and not code_matches("BL3", "TS1")

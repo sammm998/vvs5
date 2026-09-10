@@ -53,6 +53,11 @@ PEER_SHARE = 0.15          # a drawn family carrying this much of the best famil
 PEER_LABELS_MIN = 2        # and two of the sheet's own labels pointing at it is the least that can say so
 # and with no layer name to vouch for it, this share of the sheet's own pipe labels must have reached it
 LABELS_MUST_REACH = 0.15
+# How much of a pen's own ink has to be the sheet's writing before withholding it is safe. Measured over the
+# style library: a pen that genuinely writes carries leaders and label frames for nearly all of what it draws
+# beside its glyphs, while a pipe pen that happens to rule a few bars carries them for a few per cent of it.
+# Half is far above every writing pen seen and far below every drawing pen.
+WRITE_INK_SHARE = 0.5
 OCR_ASSIST_BUDGET_S = 90.0  # naming a handful of glyphs may not hold a reading that is otherwise finished
 LABELS_MIN = 20
 DECLINED_SEGMENT_BUDGET = 8000        # strokes of declined families a reading carries, so they can be looked at
@@ -153,7 +158,13 @@ def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_l
     the title block would cost the reading its time for nothing.
     """
     seen_fams = set(pipe_families) | set(contact_stats.get("declined_families") or {})
-    ann = set(ann_layers or {}) | (set(contact_stats.get("votes") or {}) - seen_fams)
+    ann = set(ann_layers or {})
+    # A pen a label's leader actually pointed at, which the reading nonetheless did not take as pipe, is its own
+    # case and the most important one on the page. It used to be reported as "on a layer the reading treats as
+    # text and frames", which on a sheet exported without layer names is not merely imprecise but false - there
+    # is no such layer - and it sends whoever reads it looking for a layer problem that does not exist. What
+    # actually happened is that the sheet's own labels found this ink and the reading refused it anyway.
+    pointed = (set(contact_stats.get("votes") or {}) - seen_fams) - ann
     lead_pids = {pid for ld in leaders for pid in ld.path_ids}
     fams: dict[str, dict] = {}
     for pth in page.paths:
@@ -162,7 +173,9 @@ def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_l
         fk = stroke_family(pth.layer, pth.width, pth.color)
         if fk in seen_fams:
             continue
-        why = "ON_A_LAYER_THE_READING_TREATS_AS_ANNOTATION" if fk in ann else "NO_LEADER_EVER_CAME_NEAR_IT"
+        why = ("ON_A_LAYER_THE_READING_TREATS_AS_ANNOTATION" if fk in ann else
+               "A_LABEL_POINTED_AT_IT_AND_IT_WAS_NOT_TAKEN" if fk in pointed else
+               "NO_LEADER_EVER_CAME_NEAR_IT")
         r = fams.setdefault(fk, {"family": fk, "why": why, "width": round(pth.width, 2),
                                  "total_length_pt": 0.0, "n_segments": 0, "paths": []})
         r["total_length_pt"] += pth.length
@@ -1134,7 +1147,38 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     if ann_layers:
         # a vector family accepted as pipe geometry in pass 1 is never an annotation family (an underline bar that
         # happens to share the pipes' stroke class must not remove the pipes)
-        keep = {k: v for k, v in ann_layers.items() if (v >= 2 or v >= 0.05 * max(ann_layers.values())) and k not in pipe_families}
+        #
+        # And a pen is a writing pen only if that is what it mostly does. Carrying a leader or a bar under a
+        # designation was taken as proof on its own, and on a sheet whose office draws its pipes and its label
+        # frames with one pen on one layer that took the drawing away: the second reading withheld the pen, the
+        # pipes went with it, and the sheet reported three thousand metres of "never weighed as pipe, on a layer
+        # the reading treats as text and frames". No office writes three thousand metres of labels.
+        #
+        # So it is measured instead of assumed, over the ink that could have become pipe - the glyphs are already
+        # out of that reckoning, being text either way. A pen where most of the rest is leaders and label frames
+        # writes; a pen where most of the rest is something else draws, whatever few frames it also carries.
+        write_pt: Counter = Counter()
+        for ld in leaders:
+            for sgm in ld.segs:
+                write_pt[stroke_family(ld.layer, ld.width, ld.color)] += sgm.seg.length
+        for b in blocks:
+            for r in b.rows:
+                for u in r.underline:
+                    write_pt[stroke_family(u.layer, u.width, u.color)] += u.seg.length
+            for sgm in b.box_segs:
+                write_pt[stroke_family(sgm.layer, sgm.width, sgm.color)] += sgm.seg.length
+        candidate_pt: Counter = Counter()
+        for pth in page.paths:
+            if pth.kind == "s" and pth.pid not in glyph_pids:
+                candidate_pt[stroke_family(pth.layer, pth.width, pth.color)] += pth.length
+
+        def _writes_more_than_it_draws(fk: str) -> bool:
+            ink = candidate_pt.get(fk, 0.0)
+            return ink <= 0.0 or write_pt[fk] >= _R("pipeline.WRITE_INK_SHARE", WRITE_INK_SHARE) * ink
+
+        keep = {k: v for k, v in ann_layers.items()
+                if (v >= 2 or v >= 0.05 * max(ann_layers.values())) and k not in pipe_families
+                and _writes_more_than_it_draws(k)}
         if film:
             film.note("RESOLVING_PIPE_REPRESENTATION",
                       f"Läser om bladet med {len(keep)} pennor undantagna - de som den första läsningens "
