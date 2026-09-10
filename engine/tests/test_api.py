@@ -855,3 +855,23 @@ def test_a_guesser_is_slowed_down_and_cannot_tell_which_accounts_exist(client):
     # och när fönstret gått ut öppnas dörren igen, och ett lyckat försök nollar räkningen
     auth._fails.clear()
     assert client.post("/api/auth/login", data={"username": "gissa@example.com", "password": "hemligt1"}).status_code == 200
+
+
+def test_a_storage_key_cannot_reach_outside_the_root_not_even_a_sibling_with_the_same_prefix(tmp_path):
+    """Ett prefix utan avskiljare släpper igenom grannen.
+
+    Med roten /data/storage dög /data/storage2/x som "innanför", för strängen börjar ju likadant. Nyckeln
+    "../storage2/x" nådde alltså en katalog bredvid lagret. Antingen roten själv, eller något under den med
+    avskiljaren emellan - ingenting annat.
+    """
+    import os
+    import pytest
+    from app.storage import LocalStorage
+    root = tmp_path / "storage"
+    (tmp_path / "storage2").mkdir()
+    st = LocalStorage(str(root))
+    assert st.path("drawings/x/y.pdf").startswith(str(root) + os.sep)
+    for bad in ("../storage2/x", "../../etc/passwd", "/etc/passwd", "..", "../storage2"):
+        with pytest.raises(ValueError):
+            st.path(bad)
+    assert st.path("") == str(root) or st.path(".") == str(root)

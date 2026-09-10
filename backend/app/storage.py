@@ -24,7 +24,9 @@ class LocalStorage:
 
     def _p(self, key: str) -> str:
         p = os.path.abspath(os.path.join(self.root, key))
-        if not p.startswith(self.root):
+        # Ett prefix utan avskiljare släpper igenom grannen: med roten /data/storage duger /data/storage2/x som
+        # "innanför". Så antingen roten själv, eller något under den med avskiljaren emellan.
+        if p != self.root and not p.startswith(self.root + os.sep):
             raise ValueError("invalid storage key")
         return p
 

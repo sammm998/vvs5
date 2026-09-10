@@ -1016,6 +1016,7 @@ if os.path.isfile(os.path.join(_STATIC, "index.html")):
         if full_path.startswith("api/"):
             raise HTTPException(404, "Okänd API-väg")
         candidate = os.path.normpath(os.path.join(_STATIC, full_path))
-        if full_path and candidate.startswith(_STATIC) and os.path.isfile(candidate):
+        # samma sak som i lagret: under katalogen med avskiljaren emellan, inte bara ett prefix
+        if full_path and candidate.startswith(_STATIC + os.sep) and os.path.isfile(candidate):
             return FileResponse(candidate)
         return FileResponse(os.path.join(_STATIC, "index.html"))
