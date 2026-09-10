@@ -85,12 +85,28 @@ def facit(tag):
     return horiz, vert
 
 
+def _system(name):
+    """The system a designation belongs to: the first token, which is what the facit's layers sort by."""
+    return str(name).split("-")[0].strip().upper()
+
+
 def score_one(tag, rec):
     fh, fv = facit(tag)
     ours = {q["designation"]: q["confirmed_total_m"] for q in rec["quantities"]}
     # a row of 0.00 m is not a claim about the drawing, it is a designation read with no metres behind it
     ours = {k: v for k, v in ours.items() if v > 0.005}
     fh = {k: v for k, v in fh.items() if v > 0.005}
+
+    # What the facit is about. Several sheets in the set were taken off one system at a time: A0211 and A0221
+    # carry drainage the drawing plainly draws and labels, and their facit lists heating and nothing else.
+    # Scored flat, every correctly measured drainage metre on those sheets counts as invented - A0221 read as
+    # 94 % false while measuring the drawing correctly - and a gate that says that would drive the reading to
+    # unlearn what it got right. So the score is taken over the systems the facit actually covers, and the rest
+    # is reported beside it as out of scope rather than dropped: a system the facit never mentions cannot be
+    # scored either way, and saying how much of it there is keeps it from disappearing.
+    scope = {_system(k) for k in fh}
+    outside = {k: v for k, v in ours.items() if _system(k) not in scope}
+    ours = {k: v for k, v in ours.items() if _system(k) in scope}
 
     hit = set(ours) & set(fh)
     invented_names = set(ours) - set(fh)
@@ -110,6 +126,8 @@ def score_one(tag, rec):
                          "precision": len(hit) / len(ours) if ours else 0.0,
                          "recall": len(hit) / len(fh) if fh else 0.0,
                          "invented": sorted(invented_names), "missed": sorted(missed_names)},
+        "outside_scope": {"systems": sorted({_system(k) for k in outside}), "m": sum(outside.values()),
+                          "names": sorted(outside)},
         "metres": {"facit": sum(fh.values()), "owned": owned, "false_owned": false_owned, "missed": missed,
                    "coverage": owned / sum(fh.values()) if fh else 0.0,
                    "false_rate": false_owned / sum(fh.values()) if fh else 0.0,
@@ -158,6 +176,16 @@ def main(blind_path, tags):
     print(f"Facit har därutöver {tot_v:.2f} m i Total_vertikalhöjd_VS: stigare gånger en våningshöjd som "
           f"mängdaren\nantagit. Motorn räknar inte fram dem utan att få höjden, så de ingår varken i täckningen "
           f"eller i felet\n- de står här för att inte försvinna.")
+
+    out_m = sum(r["outside_scope"]["m"] for r in rows)
+    if out_m:
+        print(f"\nUtanför facits omfattning: {out_m:.2f} m på system inget facit i uppsättningen tar upp för sitt "
+              f"blad.\nDe räknas varken som täckning eller som fel - ett system facit inte nämner går inte att "
+              f"pröva mot det.")
+        for r in rows:
+            o = r["outside_scope"]
+            if o["m"] > 0.005:
+                print(f"  {r['tag']}: {o['m']:8.2f} m  {', '.join(o['systems'])}")
 
     print("\nvad som saknas och vad som hittats på:")
     for r in rows:

@@ -218,6 +218,11 @@ export default function AnalysisPage() {
   const nm = c.named_vs_measured ?? {};
   const namedShare: number | null = typeof nm.share === "number" ? nm.share : null;
   const covWarn = namedShare !== null && namedShare < 0.6;
+  /* Someone else's marks on the sheet. A drawing that arrives with a takeoff already drawn on it in coloured
+   * polylines carries somebody's answer on top of the drawing, and the reading takes that ink off before it
+   * reads - otherwise it would measure an opinion of the drawing and hand it back as the drawing. That is worth
+   * saying out loud: whoever uploaded the file may not know the marks are in it, and may want them counted. */
+  const markup = nm.markup_set_aside ?? null;
   const setDoc = result.document ?? null;
   const nSheets = setDoc?.totals?.sheets ?? 1;
   const viewtabs = (
@@ -327,6 +332,15 @@ export default function AnalysisPage() {
         </div>
         {tab === "mangder" && (
           <div className="card">
+            {markup && (
+              <p className={`badge${markup.removed ? "" : " warn"}`}>
+                {markup.removed
+                  ? `Bladet bar ${markup.n} markeringar från ${Object.keys(markup.authors ?? {}).join(", ") || "någon annan"}`
+                    + `${markup.ink_m ? ` på ${markup.ink_m} m` : ""}. De är påskrift på ritningen och inte ritning, `
+                    + "så de lyftes av innan bladet lästes och ingår inte i mängden."
+                  : `Bladet bär ${markup.n} markeringar som inte gick att lyfta av: ${markup.why}.`}
+              </p>
+            )}
             {covWarn && (
               <p className="badge warn">
                 {`${nm.pipe_names_with_metres} av ${nm.pipe_names} rörbeteckningar som ritningen skriver ut fick meter `
