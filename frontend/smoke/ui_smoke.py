@@ -138,6 +138,10 @@ async def main():
             else: print(f"  {mode}: rent (sidan lever: {alive})")
 
         print("== en rättelse hela vägen: rita, namnge, spara, ångra ==")
+        # zoomstegen ovan har flyttat sidan utanför rutan: passa in hela sidan igen och mät ritytan på nytt,
+        # annars landar klicken utanför skärmen och inget utkast blir till
+        await pg.locator(".toolbar button", has_text="Sida").click(); await pg.wait_for_timeout(600)
+        box = await pg.locator(".viewer canvas").first.bounding_box()
         await pg.get_by_role("button", name="Rita nytt rör", exact=False).click(); await pg.wait_for_timeout(400)
         x, y = box["x"] + 240, box["y"] + 260
         await pg.mouse.click(x, y); await pg.wait_for_timeout(250)
