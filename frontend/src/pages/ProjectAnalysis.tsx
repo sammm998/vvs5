@@ -198,9 +198,72 @@ function Tree({ tree, projectId, fixes, onFixed }:
   );
 }
 
-function Versions({ report }: { report: any }) {
+/* Ändringslistan för ett par.
+ *
+ * Den står mellan två LÄSNINGAR och inte mellan två ritningar, och det är skillnaden som avgör hur den får
+ * läsas. Att en beteckning bara finns på ena bladet är starkt. Att dess meter skiljer sig är svagt: två
+ * läsningar av samma oförändrade rör rör sig något. Och saknas läsningen på någon av sidorna finns ingen lista
+ * alls - att fylla i den saknade sidan med noll skulle göra hela den lästa sidan till en ändring.
+ */
+function Changes({ projectId, pairKey }: { projectId: string; pairKey: string }) {
+  const [d, setD] = useState<any>(null);
+  const [err, setErr] = useState("");
+  useEffect(() => { api.changes(projectId, pairKey).then(setD).catch((e) => setErr(e.message)); }, [projectId, pairKey]);
+  if (err) return <p className="error">{err}</p>;
+  if (!d) return <p className="muted">Jämför…</p>;
+  const c = d.changes;
+  if (c.state !== "JÄMFÖRD") {
+    return (
+      <div className="pa-unread">
+        <b>Går inte att jämföra ännu.</b>
+        <p className="muted" style={{ margin: "6px 0 0" }}>{c.why}</p>
+        <p className="muted small" style={{ margin: "6px 0 0" }}>
+          Saknas: {c.missing.map((m: string) => (m === "before" ? "före-bladet" : "efter-bladet")).join(" och ")}.
+        </p>
+      </div>
+    );
+  }
+  const t = c.totals;
+  const moved = c.rows.filter((r: any) => r.what !== "OFÖRÄNDRAD");
+  return (
+    <div className="pa-changes">
+      <div className="row" style={{ gap: 8 }}>
+        <span className="badge ok small">{t.added} tillkomna</span>
+        <span className="badge bad small">{t.removed} borttagna</span>
+        <span className="badge warn small">{t.changed} ändrade</span>
+        <span className="badge small">{t.unchanged} oförändrade</span>
+        <span className="muted small">{t.before_m} m → {t.after_m} m</span>
+      </div>
+      {moved.length ? (
+        <div className="tablewrap" style={{ marginTop: 10 }}>
+          <table className="qty">
+            <thead><tr><th>Beteckning</th><th>Vad</th><th className="num">Före</th><th className="num">Efter</th>
+              <th className="num">Skillnad</th><th>Styrka</th><th>Skäl</th></tr></thead>
+            <tbody>
+              {moved.map((r: any) => (
+                <tr key={r.designation}>
+                  <td className="lf-mono"><b>{r.designation}</b></td>
+                  <td><span className={`badge small${r.what === "TILLKOMMEN" ? " ok" : r.what === "BORTTAGEN" ? " bad" : " warn"}`}>{r.what}</span></td>
+                  <td className="num">{r.before_m == null ? "–" : `${r.before_m} m`}</td>
+                  <td className="num">{r.after_m == null ? "–" : `${r.after_m} m`}</td>
+                  <td className="num">{r.delta_m == null ? "–" : `${r.delta_m > 0 ? "+" : ""}${r.delta_m} m`}</td>
+                  <td className={r.strength === "stark" ? "" : "muted"}>{r.strength}</td>
+                  <td className="muted small">{r.why}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : <p className="muted" style={{ marginBottom: 0 }}>Ingenting skiljer de två läsningarna åt.</p>}
+      <p className="muted small" style={{ margin: "10px 0 0" }}>{c.caveat}</p>
+    </div>
+  );
+}
+
+function Versions({ report, projectId }: { report: any; projectId: string }) {
   const pairs = report.pairs ?? [];
   const unclear = report.unclear ?? [];
+  const [open, setOpen] = useState<string>("");
   return (
     <>
       <div className="card">
@@ -232,6 +295,10 @@ function Versions({ report }: { report: any }) {
             ))}
           </div>
           <p className="muted">Skäl: {p.why.join(" · ")}</p>
+          <button className="ghost small" onClick={() => setOpen(open === p.key ? "" : p.key)}>
+            {open === p.key ? "Dölj ändringarna" : "Vad ändrades?"}
+          </button>
+          {open === p.key && <Changes projectId={projectId} pairKey={p.key} />}
         </section>
       )) : (
         <div className="card" style={{ marginTop: 14 }}>
@@ -459,7 +526,7 @@ export default function ProjectAnalysisPage() {
               </>
             )}
             {tab === "handlingar" && <Tree tree={rep.tree} projectId={id!} fixes={fixes} onFixed={fixed} />}
-            {tab === "versioner" && <Versions report={rep} />}
+            {tab === "versioner" && <Versions report={rep} projectId={id!} />}
             {tab === "mangder" && <Quantities q={rep.quantities} />}
           </div>
         </>

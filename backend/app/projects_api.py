@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import datetime as dt
 import os
-from collections import defaultdict
+from collections import Counter, defaultdict
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -150,6 +150,52 @@ def run_project_analysis(analysis_id: str) -> None:
         db.close()
 
 
+def _latest_readings(db: Session, project_id: str) -> dict[str, AnalysisJob]:
+    """Den senaste färdiga läsningen per ritning.
+
+    En ritning kan ha lästs flera gånger - efter en rättelse, efter en regeländring. Det är den sista som
+    gäller, och en läsning som inte gick igenom gäller inte alls.
+    """
+    out: dict[str, AnalysisJob] = {}
+    rows = (db.query(AnalysisJob, Drawing).join(Drawing, AnalysisJob.drawing_id == Drawing.id)
+            .filter(Drawing.project_id == project_id, AnalysisJob.status == "COMPLETED")
+            .order_by(AnalysisJob.created_at).all())
+    for job, d in rows:
+        out[d.id] = job                              # sorterad på tid: den sista skriver över de tidigare
+    return out
+
+
+def _rows_of(db: Session, job: AnalysisJob) -> list[dict]:
+    """Beteckningsraderna ur en läsning, med kundens rättelser lagda ovanpå.
+
+    Raderna står i läsningens egen artefakt och inte i jobbets sammanfattning - sammanfattningen bär bara
+    totaler. Rättelserna läggs ovanpå av samma skäl som på bladet: projektet ska visa samma meter som ritningen
+    gör, annars är det två svar på samma fråga.
+    """
+    import json
+    import os
+
+    from vvs_engine.corrections import apply as apply_corrections
+
+    from .db import Correction
+    if not job.result_key:
+        return []
+    path = os.path.join(storage.path(job.result_key), "quantities.json")
+    if not os.path.isfile(path):
+        return []
+    with open(path, "r", encoding="utf-8") as fh:
+        q = json.load(fh)
+    rows = q.get("rows") or []
+    corr = db.query(Correction).filter(Correction.drawing_id == job.drawing_id,
+                                       Correction.undone.is_(False)).all()
+    if not corr:
+        return rows
+    out = [{"id": c.id, "drawing_id": c.drawing_id, "job_id": c.job_id, "page": c.page, "kind": c.kind,
+            "designation": c.designation, "payload": c.payload, "situation": c.situation, "note": c.note,
+            "undone": c.undone} for c in corr]
+    return apply_corrections(rows, out, (q.get("scale") or {}).get("meters_per_pdf_point"))["quantities"]
+
+
 def _quantities_by_building(db: Session, project_id: str, report: dict) -> dict:
     """Mängderna från de läsningar som redan gjorts, hållna per hus.
 
@@ -158,14 +204,13 @@ def _quantities_by_building(db: Session, project_id: str, report: dict) -> dict:
     stå under det huset och ingen annanstans.
     """
     by_drawing = {r["drawing_id"]: r for r in report["documents"] if r.get("drawing_id")}
-    rows = (db.query(AnalysisJob, Drawing).join(Drawing, AnalysisJob.drawing_id == Drawing.id)
-            .filter(Drawing.project_id == project_id, AnalysisJob.status == "DONE").all())
+    jobs = _latest_readings(db, project_id)
+    names = {d.id: d.filename for d in db.query(Drawing).filter(Drawing.project_id == project_id).all()}
     out: dict[str, dict[str, dict]] = {}
-    for job, d in rows:
-        doc = by_drawing.get(d.id) or {}
+    for did, job in jobs.items():
+        doc = by_drawing.get(did) or {}
         b = ((doc.get("building") or {}).get("value")) or "Okänt hus"
-        s = job.summary or {}
-        for q in (s.get("quantities") or []):
+        for q in _rows_of(db, job):
             name = q.get("designation")
             if not name:
                 continue
@@ -175,12 +220,116 @@ def _quantities_by_building(db: Session, project_id: str, report: dict) -> dict:
             e["horizontal_m"] += q.get("confirmed_horizontal_m") or 0.0
             e["risers"] += max(q.get("riser_count") or 0, q.get("riser_count_from_labels") or 0)
             e["labels"] += q.get("label_count") or 0
-            if d.filename not in e["sheets"]:
-                e["sheets"].append(d.filename)
+            fn = names.get(did)
+            if fn and fn not in e["sheets"]:
+                e["sheets"].append(fn)
     for b in out:
         for e in out[b].values():
             e["horizontal_m"] = round(e["horizontal_m"], 2)
     return {b: sorted(v.values(), key=lambda e: e["designation"]) for b, v in out.items()}
+
+
+# ------------------------------------------------------------------------------------------------------------
+# ändringsregistret
+# ------------------------------------------------------------------------------------------------------------
+
+CHANGE_FLOOR_M = 0.5        # under en halvmeter säger två läsningar av samma rör ingenting om varandra
+CHANGE_SHARE = 0.05         # och en skillnad under fem procent av sträckan är läsningens spridning, inte en ändring
+
+
+def _changes(db: Session, before_id: str | None, after_id: str | None) -> dict:
+    """Vad som skiljer två versioner av samma blad.
+
+    Det här är en jämförelse mellan två LÄSNINGAR, inte mellan två ritningar, och det är en viktig skillnad.
+    Två läsningar av samma oförändrade rör kan skilja sig något åt. Att en beteckning finns på det ena bladet
+    och inte på det andra är starkt: den är antingen tillkommen eller borttagen. Att dess meter skiljer sig är
+    svagare, och en halvmeter är inom vad läsningen själv rör sig.
+
+    Och framför allt: finns det ingen läsning på någon av sidorna finns det ingen jämförelse. Då står det så.
+    Att fylla i den saknade sidan med noll skulle göra hela den lästa sidan till "tillkommet", och den listan
+    ser ut precis som en riktig ändringslista.
+    """
+    jobs = {}
+    for side, did in (("before", before_id), ("after", after_id)):
+        if not did:
+            continue
+        j = (db.query(AnalysisJob).filter(AnalysisJob.drawing_id == did, AnalysisJob.status == "COMPLETED")
+             .order_by(AnalysisJob.created_at.desc()).first())
+        if j is not None:
+            jobs[side] = j
+    missing = [side for side in ("before", "after") if side not in jobs]
+    if missing:
+        return {"state": "OLÄST", "missing": missing,
+                "why": "Bladen måste vara mängdade var för sig innan de går att jämföra. En sida som inte "
+                       "lästs är inte en sida utan rör - den är en sida ingen vägt, och skillnaden mellan de "
+                       "två är hela ändringslistan."}
+
+    a = {r["designation"]: r for r in _rows_of(db, jobs["before"]) if r.get("designation")}
+    b = {r["designation"]: r for r in _rows_of(db, jobs["after"]) if r.get("designation")}
+
+    def m(r):
+        return round(r.get("confirmed_horizontal_m") or 0.0, 2)
+
+    rows = []
+    for k in sorted(set(a) | set(b)):
+        fa, fb = a.get(k), b.get(k)
+        if fa is None:
+            rows.append({"designation": k, "what": "TILLKOMMEN", "before_m": None, "after_m": m(fb),
+                         "dn": fb.get("dn"), "strength": "stark",
+                         "why": "beteckningen finns bara på efter-bladet"})
+        elif fb is None:
+            rows.append({"designation": k, "what": "BORTTAGEN", "before_m": m(fa), "after_m": None,
+                         "dn": fa.get("dn"), "strength": "stark",
+                         "why": "beteckningen finns bara på före-bladet"})
+        else:
+            d = m(fb) - m(fa)
+            big = abs(d) >= CHANGE_FLOOR_M and abs(d) >= CHANGE_SHARE * max(m(fa), m(fb), 1e-9)
+            dn_moved = fa.get("dn") != fb.get("dn")
+            rows.append({
+                "designation": k, "what": "ÄNDRAD" if (big or dn_moved) else "OFÖRÄNDRAD",
+                "before_m": m(fa), "after_m": m(fb), "delta_m": round(d, 2),
+                "dn": fb.get("dn"), "dn_before": fa.get("dn"),
+                "strength": "stark" if dn_moved else ("svag" if big else "ingen"),
+                "why": ("dimensionen är läst olika på de två bladen" if dn_moved else
+                        f"skillnaden är {abs(d):.2f} m" if big else
+                        "skillnaden ryms inom vad två läsningar av samma rör kan skilja sig åt")})
+
+    counts = Counter(r["what"] for r in rows)
+    return {
+        "state": "JÄMFÖRD",
+        "jobs": {side: {"id": j.id, "at": j.created_at.isoformat()} for side, j in jobs.items()},
+        "totals": {"before_m": round(sum(m(r) for r in a.values()), 2),
+                   "after_m": round(sum(m(r) for r in b.values()), 2),
+                   "added": counts.get("TILLKOMMEN", 0), "removed": counts.get("BORTTAGEN", 0),
+                   "changed": counts.get("ÄNDRAD", 0), "unchanged": counts.get("OFÖRÄNDRAD", 0)},
+        "rows": rows,
+        "caveat": "Jämförelsen står mellan två läsningar. En beteckning som bara finns på ena bladet är ett "
+                  "starkt tecken; en skillnad i meter är ett svagt, för två läsningar av samma oförändrade rör "
+                  f"kan skilja sig åt. Under {CHANGE_FLOOR_M} m eller "
+                  f"{int(CHANGE_SHARE * 100)} % av sträckan räknas skillnaden inte som en ändring alls.",
+    }
+
+
+@router.get("/{project_id}/analysis/changes")
+def changes(project_id: str, key: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Ändringsregistret för ett versionspar. Nyckeln är parets egen, ur den senaste projektanalysen."""
+    p = _project(db, user, project_id)
+    pa = (db.query(ProjectAnalysis).filter(ProjectAnalysis.project_id == p.id,
+                                           ProjectAnalysis.status == "DONE")
+          .order_by(ProjectAnalysis.created_at.desc()).first())
+    if pa is None or not pa.report:
+        raise HTTPException(404, "Ingen projektanalys körd ännu")
+    pair = next((x for x in (pa.report.get("pairs") or []) if x.get("key") == key), None)
+    if pair is None:
+        raise HTTPException(404, "Det finns inget säkert versionspar med den nyckeln. Ett par som inte gick "
+                                 "att ordna har inget före och inget efter, och därmed ingen ändringslista.")
+    return {"key": key, "why": pair.get("why"), "confidence": pair.get("confidence"),
+            "before": {"drawing_id": (pair.get("before") or {}).get("drawing_id"),
+                       "filename": (pair.get("before") or {}).get("filename")},
+            "after": {"drawing_id": (pair.get("after") or {}).get("drawing_id"),
+                      "filename": (pair.get("after") or {}).get("filename")},
+            "changes": _changes(db, (pair.get("before") or {}).get("drawing_id"),
+                                (pair.get("after") or {}).get("drawing_id"))}
 
 
 @router.post("/{project_id}/analysis")

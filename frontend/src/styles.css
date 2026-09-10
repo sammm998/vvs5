@@ -2076,6 +2076,14 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
   border-color: var(--warn); background: var(--warn-bg); margin-top: 14px;
 }
 
+/* ändringsregistret: bara det som faktiskt skiljer de två läsningarna åt, och alltid med förbehållet under */
+.pa-changes { margin-top: 12px; padding: 12px 13px; border: 1px solid var(--line); border-radius: var(--r-m); background: var(--bg-2); }
+.pa-changes .tablewrap { background: #fff; border-radius: var(--r-s); }
+.pa-unread {
+  margin-top: 12px; padding: 12px 13px; border: 1px solid var(--warn); border-radius: var(--r-m);
+  background: var(--warn-bg);
+}
+
 /* ---------- på en liten skärm ---------- */
 /* Skalet är byggt för ett skrivbord: en 296 px list plus sidan bredvid. På en telefon sköt det ut hela
    innehållet ur rutan. Under 900 px viks listan ihop till sin ikonrad, och allt som stod i två spalter står

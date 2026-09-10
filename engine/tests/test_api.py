@@ -402,3 +402,93 @@ def test_another_reader_cannot_read_or_correct_someone_elses_handling(client, tm
         assert client.get(f"/api/projects/{p['id']}/mode", headers=h).status_code == code
     assert client.post(f"/api/projects/{p['id']}/analysis", headers=HB).status_code == 404
     assert client.get(f"/api/projects/{p['id']}/overrides", headers=HB).status_code == 404
+
+
+def test_a_change_list_needs_two_readings_and_never_fills_in_the_missing_one(client, tmp_path, synthetic_pdf):
+    """Ett par utan två mängdade blad har ingen ändringslista, och får inte låtsas ha en.
+
+    Fylls den saknade sidan i med noll blir varje beteckning på den lästa sidan "tillkommen" eller
+    "borttagen", och den listan ser ut precis som en riktig ändringslista. Så länge bara ena sidan är läst
+    står det att jämförelsen inte går att göra, och vilken sida som saknas.
+    """
+    r = client.post("/api/auth/register", json={"email": "andring@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Revision", "description": ""}, headers=H).json()
+
+    # samma blad i två revisioner: A och B. Revisionsbeteckningen bär ordningen, så det blir ett par.
+    ids = {}
+    for rev, name in (("A", "rev-a.pdf"), ("B", "rev-b.pdf")):
+        f = _titled(str(tmp_path / name),
+                    ["V-50-1-A0130", "HUS A, PLAN 1, RORINSTALLATIONER", "BYGGHANDLING",
+                     f"REV {rev}", "2024-05-07"])
+        with open(f, "rb") as fh:
+            ids[rev] = client.post(f"/api/projects/{p['id']}/drawings",
+                                   files={"file": (name, fh, "application/pdf")}, headers=H).json()["id"]
+
+    rep = _run_handling(client, H, p["id"])
+    assert rep["totals"]["pairs"] == 1, rep["pairs"] or rep["unclear"]
+    key = rep["pairs"][0]["key"]
+
+    ch = client.get(f"/api/projects/{p['id']}/analysis/changes?key={key}", headers=H).json()["changes"]
+    assert ch["state"] == "OLÄST", ch
+    assert set(ch["missing"]) == {"before", "after"}, ch
+    assert "rows" not in ch, "en jämförelse som inte gick att göra har inga rader"
+
+    # en sida mängdad räcker inte heller - då vore hela den sidan 'tillkommen'
+    j = client.post(f"/api/drawings/{ids['B']}/analyze", headers=H).json()
+    for _ in range(120):
+        j = client.get(f"/api/jobs/{j['id']}", headers=H).json()
+        if j["status"] in ("COMPLETED", "FAILED"):
+            break
+        time.sleep(0.5)
+    ch = client.get(f"/api/projects/{p['id']}/analysis/changes?key={key}", headers=H).json()["changes"]
+    assert ch["state"] == "OLÄST" and ch["missing"] == ["before"], ch
+
+    # och ett par som aldrig gick att ordna har ingen ändringslista alls
+    assert client.get(f"/api/projects/{p['id']}/analysis/changes?key=finns-inte",
+                      headers=H).status_code == 404
+
+
+def test_two_readings_of_the_same_sheet_are_compared_without_inventing_a_change(client, tmp_path, synthetic_pdf):
+    """Samma ritning i två revisioner, båda mängdade: ingenting har ändrats, och det ska listan säga.
+
+    Två läsningar av samma oförändrade rör kan skilja sig något åt, och den spridningen får aldrig redovisas
+    som en projektändring.
+    """
+    r = client.post("/api/auth/register", json={"email": "lika@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Oförändrat", "description": ""}, headers=H).json()
+
+    ids = {}
+    for rev in ("A", "B"):
+        with open(synthetic_pdf, "rb") as fh:
+            d = client.post(f"/api/projects/{p['id']}/drawings",
+                            files={"file": (f"rev{rev}.pdf", fh, "application/pdf")}, headers=H).json()
+        ids[rev] = d["id"]
+        # bladet bär ingen namnruta, så revisionen sätts för hand - det är precis vad rättelserna finns till för
+        client.post(f"/api/projects/{p['id']}/overrides", headers=H,
+                    json={"drawing_id": d["id"], "field": "number", "value": "V-50-1-A0140"})
+        j = client.post(f"/api/drawings/{d['id']}/analyze", headers=H).json()
+        for _ in range(120):
+            j = client.get(f"/api/jobs/{j['id']}", headers=H).json()
+            if j["status"] in ("COMPLETED", "FAILED"):
+                break
+            time.sleep(0.5)
+        assert j["status"] == "COMPLETED", j
+
+    rep = _run_handling(client, H, p["id"])
+    # båda bladen är identiska och bär ingen ordning: de blir oklara, inte ett par - och det är rätt svar
+    assert rep["totals"]["pairs"] == 0 and rep["totals"]["unclear"] == 1, (rep["pairs"], rep["unclear"])
+
+    # jämförelsen i sig, på två läsningar av exakt samma ritning: ingen rad får heta ändrad
+    from app.db import SessionLocal
+    from app.projects_api import _changes
+    db = SessionLocal()
+    try:
+        ch = _changes(db, ids["A"], ids["B"])
+    finally:
+        db.close()
+    assert ch["state"] == "JÄMFÖRD"
+    assert ch["totals"]["added"] == 0 and ch["totals"]["removed"] == 0, ch["totals"]
+    assert ch["totals"]["changed"] == 0, [r for r in ch["rows"] if r["what"] == "ÄNDRAD"]
+    assert ch["totals"]["unchanged"] > 0, ch["totals"]

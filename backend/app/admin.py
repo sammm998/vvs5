@@ -54,7 +54,7 @@ def overview(days: int = 30, admin: User = Depends(current_admin), db: Session =
     """
     since = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=max(1, days))
     jobs = db.query(AnalysisJob).filter(AnalysisJob.created_at >= since).all()
-    done = [j for j in jobs if j.status == "DONE"]
+    done = [j for j in jobs if j.status == "COMPLETED"]
     failed = [j for j in jobs if j.status == "FAILED"]
 
     cov, false_share, secs = [], [], []
@@ -107,7 +107,7 @@ def timeline(days: int = 60, admin: User = Depends(current_admin), db: Session =
     for j in db.query(AnalysisJob).filter(AnalysisJob.created_at >= since).all():
         d = by_day[j.created_at.date().isoformat()]
         d["readings"] += 1
-        if j.status == "DONE":
+        if j.status == "COMPLETED":
             d["done"] += 1
             share = ((j.summary or {}).get("coverage") or {}).get("named_vs_measured", {}).get("share")
             if isinstance(share, (int, float)):

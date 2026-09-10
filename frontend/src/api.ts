@@ -108,6 +108,10 @@ export const api = {
     req(`/api/projects/${projectId}/mode`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode }) }),
   projectAnalysis: (projectId: string) => req(`/api/projects/${projectId}/analysis`),
   startProjectAnalysis: (projectId: string) => req(`/api/projects/${projectId}/analysis`, { method: "POST" }),
+  // Ändringslistan för ett versionspar. Den finns bara när båda bladen är mängdade var för sig - en sida som
+  // inte lästs fylls aldrig i med noll, för då blir hela den lästa sidan "tillkommen".
+  changes: (projectId: string, key: string) =>
+    req(`/api/projects/${projectId}/analysis/changes?key=${encodeURIComponent(key)}`),
   // Vad en människa rättat om ett blad går före vad läsningen kom fram till, och ligger kvar när den körs om.
   overrides: (projectId: string) => req(`/api/projects/${projectId}/overrides`),
   setOverride: (projectId: string, body: { drawing_id: string; field: string; value: string; note?: string }) =>
