@@ -176,7 +176,15 @@ async def main():
         opt = pg.locator(".wz-quiz-opts button").first
         if await opt.count():
             await opt.click(); await pg.wait_for_timeout(200)
-        await pg.locator(".wz-foot button", has_text="Nästa").click(); await pg.wait_for_timeout(500)
+        # ett steg framåt om guiden har ett; på sista steget heter knappen "Klart" - alla 22 stegen täcks av
+        # det första rökprovet, det här ska bara lämna ett spår på kontot
+        nxt = pg.locator(".wz-foot button", has_text="Nästa")
+        if await nxt.count():
+            await nxt.first.click(); await pg.wait_for_timeout(500)
+        else:
+            klar = pg.locator(".wz-foot button", has_text="Klart")
+            if await klar.count():
+                await klar.first.click(); await pg.wait_for_timeout(500)
         await pg.keyboard.press("Escape"); await pg.wait_for_timeout(500)
         note("ett steg i guiden")
         await pg.evaluate("localStorage.removeItem('vvs.learn')")     # glöm det lokala: bara kontot är kvar
