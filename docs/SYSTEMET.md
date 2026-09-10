@@ -206,9 +206,16 @@ meterraden. En struken markering står kvar i lagret så att den går att få ti
 Fliken **Kalkyl** på en läsning gör mängden till pris, i två steg som hålls isär så att varje krona går att
 spåra till en rad på ritningen (`backend/app/calc.py`):
 
-*Material.* Varje beteckning matchas mot materialboken (55 000 artiklar med nettopris): bladets egen
-förklaringslista säger vad materialkoden betyder, dimensionen står i beteckningen. Matchningen är ett förslag
-med alternativ bredvid - den som räknar väljer, och valet sparas.
+*Material.* Varje beteckning matchas mot materialboken (55 000 artiklar med nettopris). Bladets egen
+förklaringslista säger vad materialkoden betyder ("R8 = LEDNINGAR AV ROSTFRIA RÖR"), men boken använder andra
+ord ("rostfritt rör", "rf AISI 304", "EN1.4432"), så förklaringen läses först till en *materialklass* (pex,
+koppar, rostfri, pp, pe, pvc, gjut, galv, stål) och boken söks på klassens egna ord, som metervara, i rätt
+dimension - DN för plaströr och rostfria avloppsrör, ytterdiametern för övriga metallrör. Bland träffarna går
+ett riktigt pris före ett tomt, sedan den som bär flest av förklaringens egna ord (står det RIR vinner
+rör-i-rör), sedan det billigaste. Matchningen är ett förslag med alternativ bredvid - den som räknar väljer, och
+valet sparas. Där förklaringen inte säger vad röret är gjort av föreslås inget: alternativen i rätt dimension
+finns att välja bland, men ett rör i fel material prissatt med säker min är värre än en tom ruta, så raden står
+som förbehåll tills någon valt.
 
 *Arbete.* Timmarna kommer ur Normtid VVS (`vvs_engine/normtid.py`): grundtid per meter efter ytterdiameter och
 material, tillägg för skarvmetod och höjd, avvikelseanalysens bedömning av objektet. Stigare räknas som en

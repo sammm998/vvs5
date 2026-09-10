@@ -61,25 +61,57 @@ DN_TO_DY_METAL = {10: 12.0, 12: 15.0, 15: 18.0, 16: 18.0, 18: 18.0, 20: 22.0, 22
                   32: 35.0, 35: 35.0, 40: 42.0, 42: 42.0, 50: 54.0, 54: 54.0, 65: 76.1, 80: 88.9, 100: 114.3,
                   125: 139.7, 150: 168.3, 200: 219.1}
 PLASTIC_LETTERS = ("P", "R", "E", "G")     # PP, PEM/PE, PVC ... - avlopps- och markrör i plast
-STOP = {"och", "med", "för", "av", "i", "till", "enligt", "typ", "el", "eller", "samt", "mm", "m", "st"}
+STOP = {"och", "med", "för", "av", "i", "till", "enligt", "typ", "el", "eller", "samt", "mm", "m", "st",
+        "ledningar", "ledning", "rör", "röret"}
+
+# Materialklasser: vad förklaringens ord betyder, och vilka ord boken använder för samma sak. Förklaringen på
+# bladet säger "LEDNINGAR AV ROSTFRIA RÖR"; boken säger "rostfritt rör", "rf AISI 304" eller "1.4432". Ingen
+# av dem använder den andras ord, så klassen är bron: ett mönster för förklaringen, ett för artikelnamnet.
+MATERIAL_CLASSES: list[tuple[str, str, str, bool]] = [
+    # (klass, mönster i förklaringen, mönster i artikelnamnet, plaströr)
+    ("pex",     r"pe-?x|ipe-?x|\brir\b|rör.?i.?rör|multipex|sanipex", r"pex|pe-x|\brir\b|rör i rör|kombirör", True),
+    ("koppar",  r"koppar|\bcu\b",                                   r"koppar|cupori|\bcu\b",                  False),
+    ("rostfri", r"rostfri|syrafast|\brf\b|aisi|1[.,]44",               r"rostfri|syrafast|\brf\b|aisi|1[.,]44",   False),
+    ("pp",      r"\bpp\b|pp-|polypropen|\bhtp\b",                    r"\bpp\b|pp-|polypropen|\bhtp\b",         True),
+    ("pe",      r"\bpem\b|\bpeh\b|\bpe\s?\d{2,3}\b|polyet(en|ylen)",  r"\bpem\b|\bpeh\b|\bpe\d{2,3}|pe-rör|\bpe\b", True),
+    ("pvc",     r"pvc",                                                r"pvc",                                     True),
+    ("gjut",    r"gjut|\bgjj\b|segjärn|\bsml\b|\bma-?rör",              r"\bgjj\b|gjut|segjärn|\bsml\b|ma-rör",      False),
+    ("galv",    r"förzink|galv",                                       r"förzink|galv",                            False),
+    ("stal",    r"stål|svart|tunnvägg|mapress|kolstål|\bsms\b",         r"stål|svartrör|tunnvägg|mapress|kolstål",   False),
+]
+_CLASS = {c[0]: c for c in MATERIAL_CLASSES}
 
 
-def _material_words(code: str, legend: list[dict]) -> list[str]:
-    """Orden att söka artikeln på: bladets egen förklaring av koden, annars vad bokstaven brukar betyda."""
+def _legend_text(code: str, legend: list[dict]) -> str:
     code = (code or "").upper()
     for e in legend or []:
         c = str(e.get("code") or e.get("kod") or "").upper()
         if c and c == code:
-            text = str(e.get("text") or e.get("label") or e.get("description") or "")
-            words = [w for w in re.findall(r"[a-zåäöA-ZÅÄÖ]{3,}", text.lower()) if w not in STOP]
-            if words:
-                return words[:3]
-    first = code[:1]
-    return {"K": ["koppar"], "X": ["rostfri"], "S": ["stål"], "P": ["pp"], "R": ["pe"],
-            "E": ["pvc"], "G": ["gjut"]}.get(first, [])
+            return str(e.get("description") or e.get("text") or e.get("label") or "")
+    return ""
 
 
-def _is_plastic(code: str) -> bool:
+def _material_class(text: str) -> str | None:
+    """Klassen ur förklaringens ord - eller ingen. En bokstav utan förklaring säger inte vad röret är gjort av
+    (R8 var rostfritt på ett blad och skulle kunna vara PE på nästa), så här gissas inget."""
+    t = (text or "").lower()
+    for klass, in_legend, _, _ in MATERIAL_CLASSES:
+        if re.search(in_legend, t):
+            return klass
+    return None
+
+
+def _material_words(code: str, legend: list[dict]) -> list[str]:
+    """Orden som visar vad raden matchades på: klassen först, sedan förklaringens egna ord."""
+    text = _legend_text(code, legend)
+    klass = _material_class(text)
+    words = [w for w in re.findall(r"[a-zåäöA-ZÅÄÖ][a-zåäö0-9A-ZÅÄÖ-]{2,}", text.lower()) if w not in STOP and w != klass]
+    return ([klass] if klass else []) + words[:3]
+
+
+def _is_plastic(code: str, klass: str | None = None) -> bool:
+    if klass and klass in _CLASS:
+        return _CLASS[klass][3]
     return (code or "").upper()[:1] in PLASTIC_LETTERS
 
 
@@ -94,32 +126,69 @@ def _book() -> dict:
     return _material()
 
 
-def _find_articles(words: list[str], dn: int | None, unit: str = "m", limit: int = 6) -> list[dict]:
-    """Artiklar som bär alla orden och dimensionen, som meter-varor. Kortast benämning först: det är rörret."""
-    rows = _book()["rows"]
-    q = list(words) + ([str(dn)] if dn else [])
-    hits = [r for r in rows if (r.get("e") or "").lower() == unit
-            and all(w in f'{r["n"]} {r["a"]}'.lower() for w in q)]
-    if not hits and dn and words:
-        hits = [r for r in rows if (r.get("e") or "").lower() == unit
-                and all(w in f'{r["n"]}'.lower() for w in words[:1] + [str(dn)])]
-    hits.sort(key=lambda r: (len(r["n"]), r["a"]))
-    out = []
-    for r in hits[:limit]:
-        p = r.get("p")
-        net = None if p is None else round(float(p) * (1 - float(r.get("r") or 0)), 2)
-        out.append({"a": r["a"], "n": r["n"], "e": r.get("e"), "brutto": p, "netto": net,
-                    "w": r.get("w"), "co2": r.get("co2")})
+def _leading_dim(name: str) -> float | None:
+    """Dimensionen ett artikelnamn börjar med: '18x1,0 Cupori', '75 Blücher', 'Dy48 ...', '76,1x3,0 rör'."""
+    m = re.match(r"\s*(?:dy|dn|d|ø)?\s*(\d+(?:[.,]\d+)?)(?![.,]?\d)", name or "", re.I)
+    if not m:
+        m = re.search(r"\b(\d+(?:[.,]\d+)?)x\d", name or "")
+    return float(m.group(1).replace(",", ".")) if m else None
+
+
+def _dims_for(dn: int | None, plastic: bool) -> set[float]:
+    """Talen boken kan skriva för en nominell dimension: DN själv, och för metallrör ytterdiametern."""
+    if not dn:
+        return set()
+    out = {float(dn)}
+    if not plastic and dn in DN_TO_DY_METAL:
+        out.add(DN_TO_DY_METAL[dn])
     return out
+
+
+def _shape(r: dict) -> dict:
+    p = r.get("p")
+    net = None if p is None else round(float(p) * (1 - float(r.get("r") or 0)), 2)
+    return {"a": r["a"], "n": r["n"], "e": r.get("e"), "brutto": p, "netto": net, "w": r.get("w"), "co2": r.get("co2")}
+
+
+def _find_articles(words: list[str], dn: int | None, unit: str = "m", limit: int = 6,
+                   klass: str | None = None, plastic: bool = False) -> list[dict]:
+    """Metervaror i rätt material och rätt dimension, bäst först.
+
+    Materialet är ett krav när klassen är känd, dimensionen ett krav när den står i beteckningen. Bland dem som
+    klarar båda går ett riktigt pris före ett tomt, sedan vinner den som bär flest av förklaringens egna ord
+    (säger förklaringen RIR vinner rör-i-rör), sedan ett rör före annat, sedan det billigaste. Utan känd klass
+    returneras rör i rätt dimension som ALTERNATIV att välja bland - inget väljs åt någon."""
+    rows = _book()["rows"]
+    if klass is None and words:
+        klass = _material_class(" ".join(words))
+    in_name = re.compile(_CLASS[klass][2], re.I) if klass else None
+    dims = _dims_for(dn, plastic if klass is None else _CLASS[klass][3])
+    extra = [w for w in words if w != klass and len(w) >= 3]
+    scored = []
+    for r in rows:
+        if (r.get("e") or "").lower() != unit:
+            continue
+        n = r.get("n") or ""
+        if in_name is not None and not in_name.search(n):
+            continue
+        if in_name is None and "rör" not in n.lower():
+            continue
+        if dims:
+            d = _leading_dim(n)
+            if d is None or not any(abs(d - x) <= 0.6 for x in dims):
+                continue
+        low = n.lower()
+        hits = sum(1 for w in extra if w in low)
+        price = float(r.get("p") or 0.0)
+        scored.append((price < 1.0, -hits, "rör" not in low, price, len(n), r))
+    scored.sort(key=lambda t: t[:5])
+    return [_shape(r) for *_, r in scored[:limit]]
 
 
 def _article_by_number(a: str) -> dict | None:
     for r in _book()["rows"]:
         if r["a"] == a:
-            p = r.get("p")
-            return {"a": r["a"], "n": r["n"], "e": r.get("e"), "brutto": p,
-                    "netto": None if p is None else round(float(p) * (1 - float(r.get("r") or 0)), 2),
-                    "w": r.get("w"), "co2": r.get("co2")}
+            return _shape(r)
     return None
 
 
@@ -127,9 +196,10 @@ def _norm_hours_per_m(dn: int | None, plastic: bool, riser: bool) -> tuple[float
     """Grundtid per meter ur boken, och vilken tabell den kom ur. Ingen tid är ett svar."""
     if dn is None:
         return None, "dimension saknas"
-    dy = float(dn) if plastic else DN_TO_DY_METAL.get(int(dn))
-    if dy is None:
-        return None, f"ingen ytterdiameter för DN{dn}"
+    # Plaströr och rostfria avloppsrör (75, 110, 160) bär ytterdiametern som beteckning; för övriga metallrör
+    # står DN på bladet och boken går på dy. En DN utanför rörtabellen läses som dy - det är vad den är på de
+    # blad som skriver så, och boken svarar ändå bara inom sina egna band.
+    dy = float(dn) if plastic else DN_TO_DY_METAL.get(int(dn), float(dn))
     if not riser and not plastic and dy <= 35.0:
         t = NT.base_time("kopplingsledning", dy, 1)
         if t is not None:
@@ -170,17 +240,20 @@ def build(rows: list[dict], legend: list[dict], assumptions: dict, overrides: di
         ov = (overrides or {}).get(name) or {}
         system, mcode = _split(q.get("base") or name)
         dn = q.get("dn")
-        plastic = _is_plastic(mcode)
+        words = _material_words(mcode, legend)
+        klass = words[0] if words and words[0] in _CLASS else None
+        plastic = _is_plastic(mcode, klass)
         horiz = float(q.get("confirmed_horizontal_m") or 0.0)
         risers = int(max(q.get("riser_count") or 0, q.get("riser_count_from_labels") or 0))
         vert = risers * float(A["floor_height_m"])
         netto_m = horiz + vert
         kalkyl_m = netto_m * (1 + float(A["spill_pct"]) / 100.0)
 
-        # material: förslaget, alternativen, eller det som valdes
-        words = _material_words(mcode, legend)
-        alts = _find_articles(words, dn) if (words or dn) else []
-        art = _article_by_number(ov["artikel"]) if ov.get("artikel") else (alts[0] if alts else None)
+        # material: förslaget, alternativen, eller det som valdes. Utan känd materialklass föreslås inget -
+        # alternativen finns att välja bland, men ett rör i fel material prissatt med säker min är värre än en
+        # tom ruta.
+        alts = _find_articles(words, dn, klass=klass, plastic=plastic) if (klass or dn) else []
+        art = _article_by_number(ov["artikel"]) if ov.get("artikel") else (alts[0] if alts and klass else None)
         unit_price = None if art is None else art.get("netto")
         material_kr = round(unit_price * kalkyl_m, 2) if unit_price is not None else None
 
@@ -208,8 +281,10 @@ def build(rows: list[dict], legend: list[dict], assumptions: dict, overrides: di
                "summa_kr": round((material_kr or 0) + (arbete_kr or 0), 2),
                "vald_artikel": bool(ov.get("artikel")), "timmar_for_hand": ov.get("timmar") is not None}
         out_rows.append(row)
-        if art is None:
-            caveats.append(f"{name}: ingen artikel hittad i materialboken - välj en.")
+        if art is None and klass is None:
+            caveats.append(f"{name}: materialet framgår inte av bladets förklaring ({mcode or 'ingen kod'}) - välj artikel.")
+        elif art is None:
+            caveats.append(f"{name}: ingen artikel i materialboken för {klass} DN{dn or '?'} - välj en.")
         if timmar is None:
             caveats.append(f"{name}: normtid saknas ({source}) - ange timmar.")
 
@@ -377,7 +452,8 @@ body { font-family: sans-serif; font-size: 9.5pt; color: #111; }
 .k { font-size: 7.5pt; letter-spacing: 1pt; color: #777; text-transform: uppercase; }
 .muted { color: #777; font-size: 8pt; }
 .intro { margin: 6pt 0 10pt 0; line-height: 1.4; }
-.total { background: #f2f7f8; border-left: 3pt solid #0b7285; padding: 8pt 10pt; margin: 6pt 0 12pt 0; }
+/* en ram, ingen fyllning: Story ritar om ett blocks bakgrund överst på varje följande sida */
+.total { border: 0.8pt solid #b9d3d9; border-left: 3pt solid #0b7285; padding: 8pt 10pt; margin: 6pt 0 12pt 0; }
 .total .v { font-size: 20pt; font-weight: bold; margin: 2pt 0; }
 .total .sub { color: #555; font-size: 8.5pt; }
 h2 { font-size: 11pt; margin: 12pt 0 4pt 0; letter-spacing: 0.5pt; text-transform: uppercase; color: #0b7285; }

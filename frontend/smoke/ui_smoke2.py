@@ -180,9 +180,11 @@ async def main():
             note("förhandsgranska anbud")
             frame = pg.frame_locator("iframe[title='Anbud']")
             has = await frame.locator("body").count()
-            txt = (await frame.locator("body").inner_text()) if has else ""
-            print(f"  anbudet i förhandsgranskningen: {'ANBUD' in txt and 'Specifikation' in txt}")
-            if not ("ANBUD" in txt and "Specifikation" in txt):
+            # innerText bär CSS:ens versaler (rubrikerna är text-transform: uppercase), så jämför utan skiftläge
+            txt = ((await frame.locator("body").inner_text()) if has else "").lower()
+            ok = "anbud" in txt and "specifikation" in txt and "förbehåll" in txt
+            print(f"  anbudet i förhandsgranskningen: {ok}")
+            if not ok:
                 found.append("anbudets förhandsgranskning saknar rubrik eller specifikation")
         else:
             found.append("anbudsknapparna syns inte efter spar")
