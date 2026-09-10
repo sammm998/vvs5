@@ -15,8 +15,14 @@ os.environ["VVS_STORAGE_ROOT"] = f"{tmp}/storage"
 os.environ["VVS_SECRET_KEY"] = "ui"
 os.environ["VVS_SECOND_READER"] = "false"
 sys.path.insert(0, os.path.join(ROOT, "backend")); sys.path.insert(0, os.path.join(ROOT, "engine"))
+import socket
 import uvicorn
 from app.main import app
+# En äldre instans som håller porten är ett fel att stanna på, inte att prata förbi: annars seedar den här sin
+# egen databas och skriver ett token som porten aldrig känner till, och rökprovet hittar inga projekt.
+with socket.socket() as probe:
+    if probe.connect_ex(("127.0.0.1", 8077)) == 0:
+        raise SystemExit("port 8077 är upptagen - stoppa den gamla seedade tjänsten först (pkill -f serve_seeded)")
 threading.Thread(target=lambda: uvicorn.run(app, host="127.0.0.1", port=8077, log_level="warning"), daemon=True).start()
 time.sleep(2)
 from fastapi.testclient import TestClient
