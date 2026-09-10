@@ -379,6 +379,10 @@ export default function ProjectAnalysisPage() {
   const [fixes, setFixes] = useState<Record<string, Record<string, string>>>({});
   const [stale, setStale] = useState(false);
 
+  // Varje start av en läsning måste starta om avfrågningen. Den satt tidigare bara på sidladdningen, så efter
+  // "Läs handlingen" frågade ingen servern igen: läsningen var klar på en tiondels sekund och sidan stod kvar
+  // på "I kö" för alltid. Rökprovet i webbläsaren fann det.
+  const [poll, setPoll] = useState(0);
   const loadMode = () => api.mode(id!).then(setMode).catch((e) => setErr(e.message));
   const loadFixes = () => api.overrides(id!)
     .then((r) => {
@@ -392,11 +396,15 @@ export default function ProjectAnalysisPage() {
     if (mode?.effective !== "project") return;
     let stop = false;
     const tick = () => api.projectAnalysis(id!)
-      .then((r) => { if (!stop) { setRun(r); if (r.status === "RUNNING" || r.status === "QUEUED") setTimeout(tick, 1200); } })
-      .catch(() => { /* ingen körd ännu */ });
+      .then((r) => {
+        if (stop) return;
+        setRun(r.status === "NONE" ? null : r);            // ingen körd ännu är inget att visa, och inget fel
+        if (r.status === "RUNNING" || r.status === "QUEUED") setTimeout(tick, 1200);
+      })
+      .catch((e) => setErr(e.message));
     tick();
     return () => { stop = true; };
-  }, [id, mode?.effective]);
+  }, [id, mode?.effective, poll]);
 
   const start = async () => {
     setBusy(true); setErr("");
@@ -404,6 +412,7 @@ export default function ProjectAnalysisPage() {
       await api.startProjectAnalysis(id!);
       setRun({ status: "QUEUED", stage: "I kö", progress: 0 });
       setStale(false); loadMode();
+      setPoll((n) => n + 1);                                 // och fråga servern tills den är klar
     } catch (e: any) { setErr(e.message); } finally { setBusy(false); }
   };
   const fixed = () => { setStale(true); loadFixes(); };

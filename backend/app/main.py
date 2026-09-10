@@ -7,6 +7,7 @@ import shutil
 import tempfile
 
 import subprocess
+from contextlib import asynccontextmanager
 from functools import lru_cache
 from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,7 +25,16 @@ from .config import demand_a_real_secret, settings
 from .db import Correction, AnalysisJob, Drawing, Project, RuleSetting, User, get_db, init_db
 from .storage import storage
 
-app = FastAPI(title=settings.app_name, version="0.1.0")
+@asynccontextmanager
+async def _lifespan(_app: FastAPI):
+    # Först av allt: en tjänst som undertecknar inloggningsbevis med den nyckel som står i källkoden ska inte
+    # gå upp alls. Ett varningsmeddelande i en logg ingen läser är samma sak som ingenting.
+    demand_a_real_secret()
+    init_db()
+    yield
+
+
+app = FastAPI(title=settings.app_name, version="0.1.0", lifespan=_lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=[o.strip() for o in settings.cors_origins.split(",")], allow_credentials=True,
                    allow_methods=["*"], allow_headers=["*"])
 
@@ -34,14 +44,6 @@ app.include_router(public_api.router)
 app.include_router(projects_api.router)
 app.include_router(academy_api.router)
 app.include_router(markups_api.router)
-
-
-@app.on_event("startup")
-def _startup():
-    # Först av allt: en tjänst som undertecknar inloggningsbevis med den nyckel som står i källkoden ska inte
-    # gå upp alls. Ett varningsmeddelande i en logg ingen läser är samma sak som ingenting.
-    demand_a_real_secret()
-    init_db()
 
 
 # ---------------------------------------------------------------- health / auth

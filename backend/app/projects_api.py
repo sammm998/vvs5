@@ -353,7 +353,10 @@ def latest_analysis(project_id: str, user: User = Depends(current_user), db: Ses
     pa = (db.query(ProjectAnalysis).filter(ProjectAnalysis.project_id == p.id)
           .order_by(ProjectAnalysis.created_at.desc()).first())
     if pa is None:
-        raise HTTPException(404, "Ingen projektanalys körd ännu")
+        # Att ingen läsning körts ännu är ett vanligt läge, inte ett fel. Ett 404 här fick gränssnittet att
+        # svälja svaret och webbläsaren att logga ett fel på varje sidladdning.
+        return {"id": None, "status": "NONE", "stage": "", "progress": 0.0, "error": None, "report": None,
+                "created_at": None, "finished_at": None}
     return {"id": pa.id, "status": pa.status, "stage": pa.stage, "progress": pa.progress,
             "error": pa.error, "report": pa.report,
             "created_at": pa.created_at.isoformat(),

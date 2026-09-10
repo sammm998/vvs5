@@ -1,6 +1,7 @@
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY frontend/package.json /app/
+# låsfilen med: utan den installerar två byggen olika versioner, och det ena fungerar
+COPY frontend/package.json frontend/package-lock.json* /app/
 RUN npm install --no-audit --no-fund
 COPY frontend /app
 RUN npm run build
