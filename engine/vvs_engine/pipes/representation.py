@@ -30,6 +30,7 @@ TOUCH_TOL = 0.15
 # that trusts its angle finds every dash-to-dot gap "not collinear" and breaks the run at every dot. A dot
 # never claims a continuation; it is claimed, by the dash whose ray it lies on.
 DOT_MAX = 2.5
+DOT_GAP_MAX = 4.0     # pt: a dot this close on the dash's own ray belongs to the line whatever the pen's gap statistics say
 # A valve, pump or filter drawn in the line of a pipe interrupts the stroke: the pipe stops at one side of the
 # symbol and goes on from the other. The two free ends face each other across the symbol, collinear, and the
 # symbol - a small drawn thing of another pen - sits in the gap. That is the drawing saying the pipe runs
@@ -558,7 +559,7 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
                         best = (along, pid2, ep)
         if best is not None:
             gaps.append(best[0])
-            cand_bridges.append((n.nid, best[1], best[2], best[0]))
+            cand_bridges.append((n.nid, best[1], best[2], best[0], pmap[best[1]].seg.length <= DOT_MAX))
     gap_mode = None
     gap_modes: list[float] = []
     if len(gaps) >= 6:
@@ -569,19 +570,21 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
         gap_modes = [g for g, cnt in hist.most_common(3) if cnt >= 0.15 * len(gaps)]
         gap_mode = gap_modes[0] if gap_modes else None
     bridges = []
-    if gap_mode is not None:
-        gtol = max(0.6, tol.gap_slack * gap_mode)
+    if gap_mode is not None or any(is_dot and g <= DOT_GAP_MAX for _, _, _, g, is_dot in cand_bridges):
+        gtol = max(0.6, tol.gap_slack * gap_mode) if gap_mode is not None else 0.6
         # the commonest gap keeps the family's own slack; a further gap of the pattern is matched tightly, since
         # it is evidence of a repeat and not a licence to close any distance
-        bands = [(gap_mode, gtol)] + [(g, max(0.6, 0.25 * g)) for g in gap_modes[1:]]
+        bands = ([(gap_mode, gtol)] if gap_mode is not None else []) + [(g, max(0.6, 0.25 * g)) for g in gap_modes[1:]]
         # unique continuation: each free end names the nearest collinear end ahead of it within the family's own
         # gap; the two ends of one break name each other, and that mutual naming is the drawing's own statement
         # that the run continues there. A third end further back that also names one of them is looking past the
         # break, not competing for it, so it must not stop the pair from being joined. A one-sided claim only
         # bridges when nothing else claims either end.
         claim: dict[int, tuple[int, str, float]] = {}
-        for (nid, pid2, ep, g) in cand_bridges:
-            if not any(abs(g - m) <= t for m, t in bands):
+        for (nid, pid2, ep, g, is_dot) in cand_bridges:
+            # a dot on the dash's own ray, this close, is the line's own dot whether or not the pen draws
+            # enough of them for the gap to show up as a mode: it is claimed on the geometry alone
+            if not (is_dot and g <= DOT_GAP_MAX) and not any(abs(g - m) <= t for m, t in bands):
                 continue
             tn = find_node(ep[0], ep[1])
             if tn is None or tn == nid:
@@ -613,7 +616,7 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
         # corner bridges: a dashed run that turns a corner inside a gap leaves two free ends that are not
         # collinear. Their outward rays meet at the corner, and the two legs together span exactly one gap of
         # this line style - the drawing's own evidence that the run continues around the bend.
-        for nid, tn, g, kind in _corner_bridges(nodes, pmap, prim_nodes, idx, gap_mode, gtol, tol):
+        for nid, tn, g, kind in (_corner_bridges(nodes, pmap, prim_nodes, idx, gap_mode, gtol, tol) if gap_mode is not None else []):
             _merge_nodes(nodes, prim_nodes, nid, tn)
             bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": kind,
                             "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})

@@ -77,7 +77,9 @@ kunna heta får inget. Varje sådan meter märks `DECLARED_CONNECTION_PIPE_BY_SH
 ett rör som förklarats. Regeln som lästes skrivs till `drawing-declarations.json`.
 
 Det är inget närmaste-antagande: det är ritningens egen regel, skriven i ord, för exakt de rör ritaren inte
-namngett. Utan tabellen ägs ingenting.
+namngett. Utan tabellen ägs ingenting. Och regeln namnger kopplingsledningar, som är korta: en onämnd,
+sammanhängande sträcka längre än `pipes.ownership.DECLARED_RUN_MAX_M` (15 m) på den förklarade pennan är en stam
+vars etikett läsningen inte nådde, och den står kvar som onämnd i stället för att döpas efter tabellen.
 
 ### 2c. Vad som är ett rör: streck-prick, ventiler, dubbellinjer
 
@@ -86,8 +88,10 @@ Tre ritkonventioner som läsningen läser som geometri, inte som antaganden (`pi
 
 * **Streck-prick-linjen** är ett rör. Pricken är en och en halv punkt lång och exportens avrundning vrider den
   några grader, så den har ingen riktning att lita på; strecket vars stråle den ligger på gör anspråk på den
-  (`DOT_MAX`). Då är springan streck-till-prick en springa av linjens stil och bryggas, även där en prick
-  saknas. Utan regeln blev nittio meter värmeledning tvåhundrafyrtiosju bitar.
+  (`DOT_MAX`), på geometrin ensam - en prick inom `DOT_GAP_MAX` på strålen hör till linjen oavsett om pennan
+  ritar nog många prickar för att springan ska bli ett mönster. Då är springan streck-till-prick en springa av
+  linjens stil och bryggas, även där en prick saknas och även i en svag knäck. Utan regeln blev nittio meter
+  värmeledning tvåhundrafyrtiosju bitar.
 * **En ventil i linjen** avslutar inte röret. Ritaren drar röret fram till ventilsymbolen, ritar ventilen med
   symbolpennan och drar vidare på andra sidan. Två fria, kollineära ändar med en liten symbol av en annan
   penna i springan (`SYMBOL_SPAN`, `SYMBOL_SIZE`) hör ihop: bryggan heter `symbol` i grafen och bär symbolens

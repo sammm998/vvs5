@@ -36,7 +36,7 @@ from .text.searchable import searchable_rows
 from .text.vector_text import VectorTextResult, vector_text_rows
 from .measure.scale import ScaleResult, discover_scale, scale_from_the_set
 from .measure.measure import PipeMeasure, aggregate, measure_pipes
-from .pipes.ownership import (Identity, OwnershipResult, complete_identities, identity_of, propagate)
+from .pipes.ownership import (Identity, OwnershipResult, complete_identities, identity_of, propagate, DECLARED_RUN_MAX_M)
 from .film import Film
 from .routes import apply_routes, cross_check, review, run_routes
 
@@ -1315,18 +1315,25 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             designations, anchors, grammar,
             _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend))
 
+    scale = discover_scale(page, lines)
+    if known_scale is not None and scale.state in ("NONE", "CONFLICT"):
+        # the rest of the set agreed about how big it is, and this sheet's own stamp did not settle it
+        scale = scale_from_the_set(known_scale, f"ritningsomgången är enig; bladets eget besked: {scale.reason}")
+    # the rule for connection pipes names short runs; how short is a length in metres, so the scale comes first
+    _mpp = scale.meters_per_pt if scale.meters_per_pt else None
+    declared_max_pt = (_R("pipes.ownership.DECLARED_RUN_MAX_M", DECLARED_RUN_MAX_M) / _mpp) if _mpp else None
     identities = _identities_now()
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
-                          declared=declarations.connection_pipes)
+                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt)
     if _settle_bundles_by_elimination(anchors, ownership, graphs):
         identities = _identities_now()
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
-                          declared=declarations.connection_pipes)
+                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt)
     # and what one bundle at a time cannot settle, the sheet taken as a whole sometimes can
     if settle_bundles_by_sheet_consistency(anchors, graphs, known_families):
         identities = _identities_now()
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
-                          declared=declarations.connection_pipes)
+                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt)
     _close_labels_on_owned_runs(anchors, ownership, graphs)
     film.pipes(ownership.pipes)
     t0 = _t(timings, "physical_pipes_ms", t0)
@@ -1338,10 +1345,6 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                   f"{st.get('VERIFIED_PIPE_ATTACHMENT', 0)} beteckningar möter sitt rör, "
                   f"{st.get('AMBIGUOUS_PIPE_ATTACHMENT', 0)} är tvetydiga och "
                   f"{st.get('NO_PIPE_ATTACHMENT', 0)} når ingen rörgeometri alls.")
-    scale = discover_scale(page, lines)
-    if known_scale is not None and scale.state in ("NONE", "CONFLICT"):
-        # the rest of the set agreed about how big it is, and this sheet's own stamp did not settle it
-        scale = scale_from_the_set(known_scale, f"ritningsomgången är enig; bladets eget besked: {scale.reason}")
     if film:
         sv = {"FROM_THE_SET": "hämtad från handlingen - bladets egen stämpel avgjorde inget",
               "VERIFIED": "verifierad - utskriven skala och skalstock säger samma sak",

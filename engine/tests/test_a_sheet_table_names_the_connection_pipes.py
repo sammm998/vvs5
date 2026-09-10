@@ -47,7 +47,7 @@ def _table(page, x, y, stems=("VV01-X31", "KV01-X31"), dims=(("BL", "16", "16"),
                 page.insert_text((cols[k] + 12, ry), v, fontsize=9, fontname="helv")
 
 
-def _sheet(path, declare=True, stems=("VV01-X31", "KV01-X31")):
+def _sheet(path, declare=True, stems=("VV01-X31", "KV01-X31"), long_run_m=0.0):
     """En namngiven stamledning och sex namnlösa kopplingsledningar från ett fördelarskåp, alla på KV-lagret."""
     doc = pymupdf.open()
     page = doc.new_page(width=842, height=595)
@@ -60,11 +60,28 @@ def _sheet(path, declare=True, stems=("VV01-X31", "KV01-X31")):
     for k in range(6):
         x = 212 + k * 30
         page.draw_line((x, 420), (x, 420 + 2 * M), width=PIPE, color=(0, 0, 0), oc=oc)
+    if long_run_m:
+        # en lång onämnd sträcka på samma lager, dragen i ett U så att den ryms: en stam vars etikett aldrig
+        # lästes, inte en kopplingsledning
+        leg = (long_run_m * M - 40.0) / 2.0
+        page.draw_polyline([(100, 500), (100 + leg, 500), (100 + leg, 540), (100, 540)], width=PIPE, color=(0, 0, 0), oc=oc)
     if declare:
         _table(page, 560, 80, stems=stems)
     _scale(page)
     doc.save(path); doc.close()
     return path
+
+
+def test_a_long_unnamed_run_is_not_a_declared_connection_pipe(tmp_path):
+    """Tolv meter kopplingsledningar förklaras; tjugotvå meter onämnd stam på samma lager är ingen
+    kopplingsledning, och står kvar som onämnd i stället för att döpas efter tabellen."""
+    rows, pa = _rows(_sheet(str(tmp_path / "lang.pdf"), long_run_m=22.0))
+    q = rows["KV01-X31-16"]
+    assert 11.0 <= q["confirmed_horizontal_m"] <= 13.0, q
+    fk = next(f for f in pa.ownership.prim_states if "KV" in f)
+    long_unowned = [p for p, st in pa.ownership.prim_states[fk].items() if st.state == "UNOWNED"]
+    assert long_unowned, "den långa sträckan ägs av ingen"
+    assert any("too_long_for_a_declared_connection_pipe" in st.evidence for st in pa.ownership.prim_states[fk].values())
 
 
 def _rows(path):

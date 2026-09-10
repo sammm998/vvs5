@@ -223,10 +223,40 @@ def _fullest(ids, stem: str, dn: int | None) -> str:
 
 
 DECLARED_REASON = "DECLARED_CONNECTION_PIPE_BY_SHEET_TABLE"
+# "Kopplingsledningar från fördelare till apparat": a connection pipe runs from a distributor to a fixture and
+# is short. A run longer than this on the declared pen is a main whose label the reading did not reach, and the
+# rule the sheet wrote for connection pipes does not name it - it stays unowned and is reported as such.
+DECLARED_RUN_MAX_M = 15.0
+
+
+def _unowned_components(g: PipeGraph, st: dict[int, "PrimState"]) -> list[list[int]]:
+    """Connected sets of UNOWNED primitives: a run nobody named, taken as one piece."""
+    adj: dict[int, set[int]] = defaultdict(set)
+    for pid, nodes in g.prim_nodes.items():
+        if st[pid].state != "UNOWNED":
+            continue
+        for n in nodes:
+            adj[n].add(pid)
+    seen: set[int] = set()
+    out: list[list[int]] = []
+    for pid in sorted(g.prims):
+        if pid in seen or st[pid].state != "UNOWNED":
+            continue
+        comp, stack = [], [pid]
+        while stack:
+            q = stack.pop()
+            if q in seen:
+                continue
+            seen.add(q)
+            comp.append(q)
+            for n in g.prim_nodes[q]:
+                stack.extend(r for r in adj[n] if r not in seen)
+        out.append(sorted(comp))
+    return out
 
 
 def _declare_unowned(graphs: dict[str, PipeGraph], states: dict[str, dict[int, "PrimState"]], declared,
-                     spelled_out: frozenset[str]) -> dict[str, int]:
+                     spelled_out: frozenset[str], max_run_pt: float | None = None) -> dict[str, int]:
     """Geometry no label reached, named by the rule the sheet wrote for exactly that case.
 
     "Kopplingsledningar från fördelare till apparat enligt tabell om inget annat anges": the table gives a
@@ -246,8 +276,14 @@ def _declare_unowned(graphs: dict[str, PipeGraph], states: dict[str, dict[int, "
         d = match[0]
         ident = identity_from_text(d.text, d.dn, d.system_token, len(split_tokens(d.stem)))
         n = 0
-        for pid, st in states[fk].items():
-            if st.state == "UNOWNED":
+        for comp in _unowned_components(g, states[fk]):
+            run = sum(g.prims[pid].seg.length for pid in comp)
+            if max_run_pt is not None and run > max_run_pt:
+                for pid in comp:
+                    states[fk][pid].evidence.append("too_long_for_a_declared_connection_pipe")
+                continue                    # a main the rule for connection pipes does not name
+            for pid in comp:
+                st = states[fk][pid]
                 st.state, st.identity, st.reason = "CONFIRMED", ident, DECLARED_REASON
                 st.evidence = [f"sheet_table:{d.text}"]
                 n += 1
@@ -258,7 +294,7 @@ def _declare_unowned(graphs: dict[str, PipeGraph], states: dict[str, dict[int, "
 
 def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page: int,
               identities: dict[str, Identity], spelled_out: frozenset[str] = frozenset(),
-              declared=None) -> OwnershipResult:
+              declared=None, declared_max_pt: float | None = None) -> OwnershipResult:
     """identities: anchor_id -> Identity (only anchors that are verified AND belong to pipe-designation families).
     declared: the sheet's written rules for unlabelled pipes (semantics.declarations.DeclaredPipe), applied last
     and only to geometry every other reading left unowned."""
@@ -281,7 +317,7 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
         _demote_sliver_outlines(g, states[fk], fk, ambiguous_runs)
     for fk, g in graphs.items():
         _bound_junction_flow(g, states[fk], fk, ambiguous_runs)
-    given = _declare_unowned(graphs, states, list(declared), spelled_out) if declared else {}
+    given = _declare_unowned(graphs, states, list(declared), spelled_out, declared_max_pt) if declared else {}
     pipes: list[PhysicalPipe] = []
     for fk, g in graphs.items():
         pipes.extend(_build_pipes(g, states[fk], fk, page))

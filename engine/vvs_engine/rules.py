@@ -67,6 +67,11 @@ RULES: tuple[Rule, ...] = (
          "delas vid en skärning. En sådan stump får inte ta ett namn och bära det vidare - som brygga tar den "
          "namnet över glapp som aldrig var anslutningar.",
          "pt", 0.6, 0.0, 5.0, "pipe", True),
+    Rule("pipes.ownership.DECLARED_RUN_MAX_M", G_LEADER, "Så lång får en förklarad kopplingsledning vara",
+         "Bladets tabell namnger kopplingsledningar från fördelare till apparat, och en sådan är kort. En "
+         "onämnd sträcka längre än så på den förklarade pennan är en stam vars etikett läsningen inte nådde; "
+         "regeln för kopplingsledningar namnger den inte, och den står kvar som onämnd.",
+         "m", 15.0, 3.0, 60.0, "pipe", True),
     Rule("measure.measure.DOUBLE_LINE_MAX", G_LEADER, "Så tätt ligger ett rörs två kanter",
          "Ett grövre rör ritas som två linjer - sina två kanter - några punkter isär, och en etikett med ett "
          "streck på var kant namnger båda. Två sträckor med samma namn och samma penna som ligger sida vid sida, "
