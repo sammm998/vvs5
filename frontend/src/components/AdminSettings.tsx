@@ -41,6 +41,28 @@ export function Assumptions() {
         </label>
       </div>
       {saved && <p className="muted small" style={{ marginBottom: 0 }}>Sparat. Gäller nästa läsning.</p>}
+
+      <div className="rule" style={{ margin: "18px 0 14px" }} />
+      <h3 style={{ marginTop: 0 }}>Vad läsningen kör</h3>
+      <p className="muted">
+        De två OCR-passen läser sidan som bild vid sidan av vektorkoden. De är avstängda som standard därför att
+        de är mätta: korsprovet kan aldrig ändra ett mått (granskningen får inte röra läsningen) och kostade
+        17 sekunder av 75 på ett A1-blad, och teckenhjälpen kostade 15–17 sekunder per blad utan att ändra
+        mängden på något av de tre blad den provades på. Slå på dem om era ritningar läses sämre än så – det
+        syns i granskningen, och analysen tar då ungefär dubbelt så lång tid.
+      </p>
+      <div className="adm-form" style={{ marginTop: 10 }}>
+        <label className="small check">
+          <input type="checkbox" checked={!!s.review_ocr} disabled={busy}
+            onChange={(e) => save({ review_ocr: e.target.checked })} />
+          {" "}Synagentens korsprov: läs sidan en gång till och varna för beteckningar vektorläsningen saknar
+        </label>
+        <label className="small check">
+          <input type="checkbox" checked={!!s.ocr_assist} disabled={busy}
+            onChange={(e) => save({ ocr_assist: e.target.checked })} />
+          {" "}Teckenhjälp: låt OCR namnge tecken som streckläsaren inte kunde
+        </label>
+      </div>
     </section>
   );
 }

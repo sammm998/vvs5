@@ -522,6 +522,11 @@ def materials(q: str = "", group: str = "", unit: str = "", limit: int = 60, off
 
 ASSUMPTION_DEFAULTS = {"floor_height_m": None, "riser_source": "labels", "include_hatched": False}
 
+# Vad läsningen kör, till skillnad från vad den antar. De två OCR-passen kostar tid och är mätta: se
+# `Settings.review_ocr` och `Settings.ocr_assist` för siffrorna. Standarden kommer ur installationens miljö;
+# den som sätts här gäller för tjänsten och kan ändras utan att något behöver läggas om.
+RUN_KEYS = ("review_ocr", "ocr_assist")
+
 
 def service_rules(db: Session) -> dict[str, float | bool]:
     """Reglerna som flyttats för tjänsten: regel-id -> värde."""
@@ -606,8 +611,18 @@ def read_settings(user: User = Depends(current_user), db: Session = Depends(get_
     out = dict(ASSUMPTION_DEFAULTS)
     for row in db.query(ServiceSetting).filter(ServiceSetting.key.like("assume:%")).all():
         out[row.key[7:]] = (row.value or {}).get("v")
+    for k in RUN_KEYS:
+        out[k] = run_setting(db, k)
     out["may_edit"] = (user.role or "member") == "admin"
     return out
+
+
+def run_setting(db: Session, key: str) -> bool:
+    """Vad tjänsten kör, med installationens miljö som utgångsläge."""
+    row = db.get(ServiceSetting, f"run:{key}")
+    if row is not None and isinstance(row.value, dict) and "v" in row.value:
+        return bool(row.value["v"])
+    return bool(getattr(settings, key))
 
 
 @app.put("/api/settings")
@@ -632,6 +647,14 @@ def write_settings(body: dict, admin: User = Depends(current_admin), db: Session
         clean["riser_source"] = body["riser_source"]
     if "include_hatched" in body:
         clean["include_hatched"] = bool(body["include_hatched"])
+    for k in RUN_KEYS:
+        if k in body:
+            row = db.get(ServiceSetting, f"run:{k}")
+            if row is None:
+                row = ServiceSetting(key=f"run:{k}", value={"v": bool(body[k])})
+                db.add(row)
+            row.value = {"v": bool(body[k])}
+            row.updated_by = admin.id
     for k, v in clean.items():
         row = db.get(ServiceSetting, f"assume:{k}")
         if row is None:

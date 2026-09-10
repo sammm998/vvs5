@@ -234,6 +234,9 @@ def run_job(job_id: str) -> None:
         known = project_system_families(db, drawing)
         vocab = project_legend(db, drawing)
         moved = account_rules(db, drawing)
+        # vad den här tjänsten kör, läst medan sessionen finns kvar - OCR-passen kostar tid och är valbara
+        from .main import RUN_KEYS, run_setting
+        run_ocr = {k: run_setting(db, k) for k in RUN_KEYS}
         job.status = "RUNNING"; job.started_at = dt.datetime.now(dt.timezone.utc); job.result_key = result_key
         db.commit()
     out_dir = storage.path(result_key)
@@ -243,8 +246,8 @@ def run_job(job_id: str) -> None:
             summary = analyze_pdf(pdf_path, out_dir, name=os.path.splitext(drawing.filename)[0],
                                 deadline_s=settings.analysis_deadline_s, determinism=settings.run_determinism,
                                 contamination=True, progress=_progress_cb(job_id),
-                                review=settings.run_review, review_ocr=settings.review_ocr,
-                                ocr_assist=settings.ocr_assist, film_sink=_film_sink(out_dir),
+                                review=settings.run_review, review_ocr=run_ocr["review_ocr"],
+                                ocr_assist=run_ocr["ocr_assist"], film_sink=_film_sink(out_dir),
                                 second_reader=_second_reader(), known_families=known, known_legend=vocab)
             # which readers this installation actually had available, and by what name - a reading that quietly used a
             # model, or quietly did without one, is not a reading anyone can check

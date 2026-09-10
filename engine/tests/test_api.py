@@ -293,6 +293,21 @@ def test_a_moved_rule_holds_for_the_service_and_only_the_administrator_moves_it(
     assert s["floor_height_m"] == 2.8 and s["riser_source"] == "symbols" and s["include_hatched"] is True
     mine = client.get("/api/settings", headers=B).json()
     assert mine["floor_height_m"] == 2.8 and mine["may_edit"] is False
+    # vad läsningen kör: OCR-passen är avstängda som standard och går att slå på för tjänsten
+    from app.config import settings as _cfg
+    from app.main import RUN_KEYS, run_setting
+    assert mine["review_ocr"] is False and mine["ocr_assist"] is False, "OCR-passen kostar tid och är av som standard"
+    on = client.put("/api/settings", json={"review_ocr": True}, headers=A).json()
+    assert on["review_ocr"] is True and on["ocr_assist"] is False
+    assert client.put("/api/settings", json={"review_ocr": True}, headers=B).status_code == 403
+    from app.db import SessionLocal
+    db = SessionLocal()
+    try:
+        assert run_setting(db, "review_ocr") is True and run_setting(db, "ocr_assist") is bool(_cfg.ocr_assist)
+        assert set(RUN_KEYS) == {"review_ocr", "ocr_assist"}
+    finally:
+        db.close()
+    client.put("/api/settings", json={"review_ocr": False}, headers=A)
     # portalens egna vyer
     att = client.get("/api/admin/attention", headers=A).json()
     assert "items" in att and "badges" in att

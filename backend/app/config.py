@@ -20,8 +20,20 @@ class Settings(BaseSettings):
     # a wall-clock budget for one analysis; without it a single dense page holds the worker forever
     analysis_deadline_s: int = 1800
     run_review: bool = True       # review agents check the finished result
-    review_ocr: bool = True       # let the review read the page with OCR as an independent second opinion
-    ocr_assist: bool = True       # let OCR name the characters the stroke recogniser could not
+    # De två OCR-passen är avstängda som standard, för de är mätta och de kostade mer än de gav.
+    #
+    # `review_ocr` är synagentens korsprov: den läser sidan en gång till och säger om den ser en beteckning där
+    # vektorläsningen inte har någon text. Den kan aldrig ändra ett mått - granskningen får inte röra läsningen
+    # - och den kostade 17 s av 75 s på blad A. Vad man förlorar är en varning, inte en meter.
+    #
+    # `ocr_assist` får namnge tecken som streckläsaren inte kunde. Mätt på tre blad kostade den 15-17 s och
+    # ändrade ingenting: A0124 löste 0 av 59 okända tecken, B0122 0 av 30, A 3 av 24 - och mängden blev
+    # identisk i alla tre fallen. På de tyngre bladen är den halva analystiden.
+    #
+    # Båda går att slå på igen: VVS_REVIEW_OCR=true / VVS_OCR_ASSIST=true, eller under Administration för den
+    # här tjänsten. En installation vars ritningar är sämre lästa kan mycket väl vilja ha dem på.
+    review_ocr: bool = False      # let the review read the page with OCR as an independent second opinion
+    ocr_assist: bool = False      # let OCR name the characters the stroke recogniser could not
     # Ask a second reader about cases the geometry itself declared open, among the candidates the drawing offers.
     #
     # Unset means: on where this installation holds an OPENAI_API_KEY, off where it does not. Putting that key

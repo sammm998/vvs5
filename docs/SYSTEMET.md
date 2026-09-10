@@ -170,6 +170,37 @@ tillsammans med läsningens egna sträckor ritade ovanpå.
 text i granskningen (finns det beteckningar vektorläsningen missade?), och för att namnge de tecken
 streckigenkännaren inte kunde. Den läser aldrig ritningen på egen hand; vektorgeometrin förblir mätningens källa.
 
+**Båda är avstängda som standard, och det är mätt.** Samma blad kört med och utan:
+
+| blad | allt på | utan OCR-korsprov | utan teckenhjälp | ändrad mängd |
+|---|---:|---:|---:|---|
+| A (A1, 176 beteckningar) | 74,8 s | 58,1 s | 57,8 s | nej - identisk rad för rad |
+| A0124 | 34,6 s | – | 17,4 s | nej |
+| B0122 | 34,0 s | – | 18,7 s | nej |
+
+Korsprovet **kan** aldrig ändra ett mått: granskningen får inte röra läsningen, och mängderna var byte för byte
+lika med och utan. Teckenhjälpen **kunde** ha ändrat något men gjorde det inte: på A0124 löste den 0 av 59
+okända tecken, på B0122 0 av 30, på A 3 av 24 - och mängden blev densamma i alla tre fallen. På de tyngre
+bladen är den halva analystiden.
+
+Vad man förlorar är alltså en varning, inte en meter. Slå på dem under **Administration → Vad läsningen kör**
+(eller `VVS_REVIEW_OCR=true` / `VVS_OCR_ASSIST=true`) på en installation vars ritningar läses sämre - det syns i
+granskningen, och analysen tar då ungefär dubbelt så lång tid.
+
+### 3.4b Vad andra läsaren är värd, i meter
+
+Andra läsaren (3.1) rör bara fall motorn förklarat tvetydiga. Över de 33 bladen i porten är det **179,5 m** -
+2,9 % av facit, 14 % av det vi missar - och det är ett *tak*: så mycket skulle den flytta om den svarade rätt
+på varje fråga. Ett fel svar gör i stället en saknad meter till en falsk, vilket är dyrare. Porten kördes utan
+den (`consulted: false`), så 80,0 % täckning och 27,3 % falskt är siffror utan språkmodell.
+
+De stora felkällorna ligger någon annanstans: deklarerade anslutningsrör som facit inte räknar, och lodräta
+meter som tabellen har men planen inte ritar. Ingen av dem är en tvetydighet en modell kan avgöra.
+
+**Var tiden faktiskt går** (blad A, 94 s): hänvisningslinjer och fästen 52,8 s, teckenrekonstruktion 5,3 s,
+PDF-läsning 0,7 s, mätning 0,6 s. Att stänga av båda OCR-passen tar bort ungefär en tredjedel av tiden; resten
+är geometri.
+
 ### 3.5 Vad som *inte* är AI: inlärningen (`learning.py`, `corrections.py`)
 
 Systemet "blir smartare" av rättelser, men inte genom träning och inte genom en modell. Regeln är smal och
