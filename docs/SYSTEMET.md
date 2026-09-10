@@ -306,6 +306,35 @@ eller normtid står som förbehåll, liksom det onämnda röret och det som inte
 isolering som egen post, rivning). **Förhandsgranskningen** i appen visar anbudets sidor som bilder ur samma PDF
 som laddas ner (`/calc/anbud/sida-{n}.png`) - det dokument som skickas, inte en efterlikning av det.
 
+---
+
+## 6c. Granska handlingen (frågor, markeringslista, status)
+
+**Granska** är en egen flik i sidomenyn och ett eget rum (`/granska`, `frontend/src/pages/Review.tsx`). Det är
+varken läsning eller mängdning: här ritas *frågor* på bladet - ett moln runt något som inte stämmer, en
+anteckning, ett kontrollmått - och sedan arbetas listan tills varje fråga har ett svar.
+
+**Markeringslistan** (`frontend/src/components/MarkupsList.tsx`) är rummets arbetsbord: sortering på sida,
+verktyg, ämne, lager, mått och status; filter på fritext, sida, lager, verktyg och status; status ändrad på en
+rad eller på många på en gång; och radering. Urvalet följer med åt båda hållen - väljs en rad bläddrar bladet
+dit och zoomar in på markeringen, pekas en markering ut på bladet hoppar listan dit.
+
+En fråga hör till **handlingen och inte till bladet**: listan läser alla sidor (`?all_pages=true`) och säger
+vilken sida raden hör hemma på. Statusflödet är **öppen → åtgärdad → godkänd**, med **avvisad** för den fråga
+vars svar är att ingen åtgärd behövs; färgen syns både i listan och på bladet, och sammanställningen högst upp
+räknar hur många som står i varje läge.
+
+Att svara i listan (`PATCH`) rör aldrig geometrin, och därför räknas måttet inte om: ett svar är ord, inte en
+ny mätning. Ska markeringen mätas om ritas den om på bladet. Ett svep över flera markeringar är helt eller
+inte alls - träffar id-listan något som inte finns på handlingen avvisas hela anropet, så att den som markerade
+tjugo rader aldrig behöver gissa vilka sjutton som gick igenom. Listan går att ta ut som CSV med ämne, status,
+kommentar och källa, hela handlingen eller ett blad.
+
+Måtten räknas av samma mätmotor som mängdningen använder (`engine/vvs_engine/takeoff/`). En granskning som
+räknade själv skulle kunna komma till ett annat tal än mängden, och då vore den ingen granskning.
+
+---
+
 ## 7. Akademin
 
 Nio kurser, tjugotvå steg, femton kunskapsfrågor och tre fristående övningar med facit

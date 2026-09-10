@@ -76,7 +76,58 @@ export interface ViewerProps {
   onDrawn?: (d: Drawn) => void;
   corrections?: { id: string; kind: string; designation: string | null; payload: any }[];
   /** What the reader drew in by hand: measured, marked or noted. Beside the reading, never in it. */
-  markups?: { id: string; tool: string; points: number[][]; layer?: string; text?: string; measure?: any }[];
+  markups?: { id: string; tool: string; points: number[][]; layer?: string; text?: string; measure?: any;
+              status?: string; subject?: string }[];
+  /** Vilken markering som är utpekad i listan; den ritas framhävd på bladet. */
+  selectedMarkup?: string | null;
+  /** Någon pekade på en markering på bladet - listan ska följa med dit. */
+  onMarkupClick?: (id: string) => void;
+}
+
+/* Ett granskningsmoln ritas som ett moln.
+ *
+ * Bågarna är inte pynt: molnet är den markering på ett blad som ska gå att se att den inte är ritningens eget
+ * streck, ens i en utskrift utan färg. Bågarna läggs längs polygonens kanter med jämn båglängd, och en kant
+ * som är kortare än en båge får ändå en - annars öppnar sig molnet i hörnen.
+ */
+export function cloudRadius(pts: number[][]): number {
+  const xs = pts.map((q) => q[0]), ys = pts.map((q) => q[1]);
+  const span = Math.hypot(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+  // bucklan följer molnets storlek, men aldrig så liten att den försvinner eller så stor att formen tappas
+  return Math.min(28, Math.max(5, span / 22));
+}
+
+export function cloudPath(pts: number[][], radius: number): string {
+  if (pts.length < 2) return "";
+  const ring = [...pts, pts[0]];
+  const bits: string[] = [`M ${ring[0][0]} ${ring[0][1]}`];
+  for (let i = 1; i < ring.length; i++) {
+    const a = ring[i - 1], b = ring[i];
+    const dx = b[0] - a[0], dy = b[1] - a[1];
+    const len = Math.hypot(dx, dy);
+    if (len < 1e-6) continue;
+    const n = Math.max(1, Math.round(len / (radius * 1.9)));
+    const r = (len / n) * 0.62;
+    for (let k = 1; k <= n; k++) {
+      const x = a[0] + (dx * k) / n;
+      const y = a[1] + (dy * k) / n;
+      // samma svepriktning hela vägen runt ringen, så bucklorna hamnar utåt och inte varannan inåt
+      bits.push(`A ${r.toFixed(2)} ${r.toFixed(2)} 0 0 1 ${x.toFixed(2)} ${y.toFixed(2)}`);
+    }
+  }
+  return `${bits.join(" ")} Z`;
+}
+
+/* Granskningens färger: var markeringen står i sitt förlopp syns på bladet och inte bara i listan.
+ *
+ * En markering utan status är mängdarens eget mått och behåller sin blågröna färg; den hör inte till något
+ * förlopp och ska inte se ut att göra det.
+ */
+const MARKUP_COLOR: Record<string, string> = {
+  oppen: "#0b7285", atgardad: "#b26a00", godkand: "#1a7f37", avvisad: "#6b7280",
+};
+export function markupColor(status?: string): string {
+  return MARKUP_COLOR[status ?? ""] ?? "#0b7285";
 }
 
 export interface ViewerHandle {
@@ -621,29 +672,37 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                 : typeof me.m === "number" ? `${me.m.toFixed(2)} m`
                 : typeof me.antal === "number" ? `${me.antal} st` : (m.text || "");
               const anchor = pts[0];
+              const sel = props.selectedMarkup === m.id;
+              const c = sel ? "#ff2d00" : markupColor(m.status);
+              const pick: React.CSSProperties = props.onMarkupClick && !kind
+                ? { pointerEvents: "all", cursor: "pointer" } : { pointerEvents: "none" };
+              const hit = () => props.onMarkupClick?.(m.id);
               if (m.tool === "antal") {
                 return (
-                  <g key={m.id}>
-                    {pts.map((q, i) => <circle key={i} cx={q[0]} cy={q[1]} r={sw(5)} fill="#0b7285" fillOpacity={0.85} stroke="#fff" strokeWidth={sw(1.2)} />)}
-                    {anchor && <text x={anchor[0] + sw(8)} y={anchor[1] - sw(6)} fontSize={sw(11)} fill="#0b7285" fontFamily="ui-monospace, monospace">{label}</text>}
+                  <g key={m.id} style={pick} onClick={hit}>
+                    {pts.map((q, i) => <circle key={i} cx={q[0]} cy={q[1]} r={sw(sel ? 7 : 5)} fill={c} fillOpacity={0.85} stroke="#fff" strokeWidth={sw(1.2)} />)}
+                    {anchor && <text x={anchor[0] + sw(8)} y={anchor[1] - sw(6)} fontSize={sw(11)} fill={c} fontFamily="ui-monospace, monospace">{label}</text>}
                   </g>
                 );
               }
               if (m.tool === "text") {
                 return anchor ? (
-                  <g key={m.id}>
-                    <circle cx={anchor[0]} cy={anchor[1]} r={sw(3)} fill="#0b7285" />
-                    <text x={anchor[0] + sw(6)} y={anchor[1] - sw(4)} fontSize={sw(11)} fill="#0b7285" fontFamily="ui-monospace, monospace">{m.text}</text>
+                  <g key={m.id} style={pick} onClick={hit}>
+                    <circle cx={anchor[0]} cy={anchor[1]} r={sw(sel ? 5 : 3)} fill={c} />
+                    <text x={anchor[0] + sw(6)} y={anchor[1] - sw(4)} fontSize={sw(11)} fill={c} fontFamily="ui-monospace, monospace">{m.text}</text>
                   </g>
                 ) : null;
               }
               const closed = m.tool === "area" || m.tool === "rektangel" || m.tool === "moln";
               return pts.length >= 2 ? (
-                <g key={m.id}>
-                  {closed
-                    ? <polygon points={pts.map((q) => q.join(",")).join(" ")} fill="#0b7285" fillOpacity={0.12} stroke="#0b7285" strokeWidth={sw(2.5)} strokeLinejoin="round" />
-                    : <polyline points={pts.map((q) => q.join(",")).join(" ")} fill="none" stroke="#0b7285" strokeWidth={sw(3.5)} strokeOpacity={0.9} strokeLinecap="round" strokeLinejoin="round" />}
-                  {anchor && <text x={anchor[0] + sw(6)} y={anchor[1] - sw(6)} fontSize={sw(11)} fill="#0b7285" fontFamily="ui-monospace, monospace">{label}</text>}
+                <g key={m.id} style={pick} onClick={hit}>
+                  {m.tool === "moln"
+                    ? <path d={cloudPath(pts, Math.max(6, cloudRadius(pts)))} fill={c} fillOpacity={sel ? 0.12 : 0.06}
+                        stroke={c} strokeWidth={sw(sel ? 3.5 : 2.4)} strokeLinejoin="round" strokeLinecap="round" />
+                    : closed
+                    ? <polygon points={pts.map((q) => q.join(",")).join(" ")} fill={c} fillOpacity={sel ? 0.2 : 0.12} stroke={c} strokeWidth={sw(sel ? 4 : 2.5)} strokeLinejoin="round" />
+                    : <polyline points={pts.map((q) => q.join(",")).join(" ")} fill="none" stroke={c} strokeWidth={sw(sel ? 5.5 : 3.5)} strokeOpacity={0.9} strokeLinecap="round" strokeLinejoin="round" />}
+                  {anchor && <text x={anchor[0] + sw(6)} y={anchor[1] - sw(6)} fontSize={sw(11)} fill={c} fontFamily="ui-monospace, monospace">{label}</text>}
                 </g>
               ) : null;
             })}

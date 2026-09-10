@@ -1117,3 +1117,74 @@ def test_the_takeoff_tool_measures_what_a_person_draws(client, synthetic_pdf):
     assert client.get(f"/api/drawings/{d['id']}/markups", headers=OH).status_code == 404
     assert client.put(f"/api/drawings/{d['id']}/calibration", headers=OH,
                       json={"points": [[0, 0], [100, 0]], "length_m": 10}).status_code == 404
+
+
+def test_the_review_list_keeps_the_questions_on_a_drawing(client, synthetic_pdf):
+    """Granskningen: frågor ritade på handlingen, listade över alla sidor, och stängda en och en eller i klump.
+
+    En fråga hör till handlingen och inte till det blad som råkar visas, statusen är listans arbete och inte
+    geometrins, och ett svep över tjugo rader är antingen helt eller inte alls.
+    """
+    r = client.post("/api/auth/register", json={"email": "granskare@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Granskning", "description": ""}, headers=H).json()
+    with open(synthetic_pdf, "rb") as fh:
+        d = client.post(f"/api/projects/{p['id']}/drawings",
+                        files={"file": ("plan.pdf", fh, "application/pdf")}, headers=H).json()
+
+    moln = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                       json={"tool": "moln", "layer": "Granskning", "points": [[0, 0], [50, 0], [50, 40], [0, 40]],
+                             "subject": "Saknad avstängning", "comment": "Var stängs stammen av?"}).json()
+    assert moln["status"] == "oppen" and moln["source"] == "manuell"
+    assert moln["subject"] == "Saknad avstängning"
+
+    # en fråga på ett annat blad: den hör till handlingen och ska inte försvinna för att någon bläddrat
+    andra = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                        json={"tool": "text", "page": 1, "layer": "Granskning", "points": [[10, 10]],
+                              "text": "Kontrollera håltagning", "subject": "Håltagning"}).json()
+    assert client.get(f"/api/drawings/{d['id']}/markups", headers=H).json()["rows"] == [
+        x for x in client.get(f"/api/drawings/{d['id']}/markups", headers=H).json()["rows"] if x["page"] == 0]
+    alla = client.get(f"/api/drawings/{d['id']}/markups?all_pages=true", headers=H).json()
+    assert len(alla["rows"]) == 2 and alla["pages"] == [0, 1]
+    assert alla["status_counts"] == {"oppen": 2}
+
+    # en påhittad status är inget svar
+    assert client.patch(f"/api/drawings/{d['id']}/markups/{moln['id']}", headers=H,
+                        json={"status": "kanske"}).status_code == 400
+
+    # statusen ändras utan att måttet räknas om: geometrin är orörd
+    fore = client.get(f"/api/drawings/{d['id']}/markups?all_pages=true", headers=H).json()["rows"][0]["measure"]
+    svar = client.patch(f"/api/drawings/{d['id']}/markups/{moln['id']}", headers=H,
+                        json={"status": "atgardad", "comment": "Avstängning finns i schaktet"}).json()
+    assert svar["status"] == "atgardad" and svar["comment"] == "Avstängning finns i schaktet"
+    assert svar["measure"] == fore, "ett svar i listan får aldrig ändra vad markeringen mätte"
+
+    # ett svep: båda stängs på en gång
+    bulk = client.patch(f"/api/drawings/{d['id']}/markups", headers=H,
+                        json={"ids": [moln["id"], andra["id"]], "change": {"status": "godkand"}}).json()
+    assert bulk["andrade"] == 2
+    assert client.get(f"/api/drawings/{d['id']}/markups?all_pages=true",
+                      headers=H).json()["status_counts"] == {"godkand": 2}
+
+    # en id-lista med något främmande i går inte igenom till hälften
+    innan = client.get(f"/api/drawings/{d['id']}/markups?all_pages=true", headers=H).json()
+    assert client.patch(f"/api/drawings/{d['id']}/markups", headers=H,
+                        json={"ids": [moln["id"], "finns-inte"], "change": {"status": "avvisad"}}).status_code == 404
+    assert client.get(f"/api/drawings/{d['id']}/markups?all_pages=true", headers=H).json()["status_counts"] \
+        == innan["status_counts"]
+
+    # listan som fil bär granskningens ord, inte bara måtten
+    csv = client.get(f"/api/drawings/{d['id']}/markups.csv?all_pages=true", headers=H)
+    assert csv.status_code == 200
+    text = csv.content.decode("utf-8-sig")
+    assert "Ämne" in text and "Status" in text and "Kommentar" in text
+    assert "Saknad avstängning" in text and "Håltagning" in text
+
+    # en annan användare når varken listan eller svepet
+    o = client.post("/api/auth/register", json={"email": "granskare2@example.com", "password": "hemligt1"}).json()
+    OH = {"Authorization": f"Bearer {o['access_token']}"}
+    assert client.get(f"/api/drawings/{d['id']}/markups?all_pages=true", headers=OH).status_code == 404
+    assert client.patch(f"/api/drawings/{d['id']}/markups/{moln['id']}", headers=OH,
+                        json={"status": "avvisad"}).status_code == 404
+    assert client.patch(f"/api/drawings/{d['id']}/markups", headers=OH,
+                        json={"ids": [moln["id"]], "change": {"status": "avvisad"}}).status_code == 404

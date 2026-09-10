@@ -16,6 +16,8 @@ import ProjectAnalysisPage from "./pages/ProjectAnalysis";
 import CalcPage from "./pages/CalcPage";
 import TakeoffPage from "./pages/Takeoff";
 import TakeoffPickPage from "./pages/TakeoffPick";
+import ReviewPage from "./pages/Review";
+import ReviewPickPage from "./pages/ReviewPick";
 
 function Guard({ children }: { children: JSX.Element }) {
   return getToken() ? children : <Navigate to="/login" replace />;
@@ -76,6 +78,17 @@ function IconRuler() {
   );
 }
 
+function IconReview() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
+         strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 3.5h11l5 5V20a.5.5 0 0 1-.5.5h-15A.5.5 0 0 1 4 20V3.5Z" />
+      <path d="M14.5 3.6V9h5.2" />
+      <path d="m8 14.2 2.3 2.3 4.4-4.6" />
+    </svg>
+  );
+}
+
 function IconAdmin() {
   return (
     <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -108,6 +121,8 @@ const ROUTES = (
     <Route path="/jobs/:id/kalkyl" element={<Guard><CalcPage /></Guard>} />
     <Route path="/mangda" element={<Guard><TakeoffPickPage /></Guard>} />
     <Route path="/mangda/:id" element={<Guard><TakeoffPage /></Guard>} />
+    <Route path="/granska" element={<Guard><ReviewPickPage /></Guard>} />
+    <Route path="/granska/:id" element={<Guard><ReviewPage /></Guard>} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
     <Route path="/installningar" element={<Navigate to="/admin" replace />} />
@@ -193,6 +208,9 @@ export default function App() {
           </Link>
           <Link to="/mangda" className={path.startsWith("/mangda") ? "on" : ""}>
             <IconRuler /> <span className="wide">Mängda</span>
+          </Link>
+          <Link to="/granska" className={path.startsWith("/granska") ? "on" : ""}>
+            <IconReview /> <span className="wide">Granska</span>
           </Link>
           <Link to="/material" className={path.startsWith("/material") ? "on" : ""}>
             <IconMaterial /> <span className="wide">Material</span>

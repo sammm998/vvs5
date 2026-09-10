@@ -152,11 +152,18 @@ export const api = {
     req(`/api/drawings/${drawingId}/calibration`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   clearCalibration: (drawingId: string, page = 0) =>
     req(`/api/drawings/${drawingId}/calibration?page=${page}`, { method: "DELETE" }),
-  markupsCsvUrl: (drawingId: string, page = 0) => `/api/drawings/${drawingId}/markups.csv?page=${page}`,
+  markupsCsvUrl: (drawingId: string, page = 0, allPages = false) =>
+    `/api/drawings/${drawingId}/markups.csv?page=${page}${allPages ? "&all_pages=true" : ""}`,
   toolPresets: () => req("/api/tools"),
   addToolPreset: (body: any) => req("/api/tools", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   deleteToolPreset: (id: string) => req(`/api/tools/${id}`, { method: "DELETE" }),
   markups: (drawingId: string, page: number) => req(`/api/drawings/${drawingId}/markups?page=${page}`),
+  // granskningen läser hela handlingen: en fråga ställd på sidan fyra hör inte ihop med vilken sida som visas
+  allMarkups: (drawingId: string) => req(`/api/drawings/${drawingId}/markups?all_pages=true`),
+  patchMarkup: (drawingId: string, id: string, change: any) =>
+    req(`/api/drawings/${drawingId}/markups/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(change) }),
+  patchMarkups: (drawingId: string, ids: string[], change: any) =>
+    req(`/api/drawings/${drawingId}/markups`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ids, change }) }),
   addMarkup: (drawingId: string, body: any) =>
     req(`/api/drawings/${drawingId}/markups`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   updateMarkup: (drawingId: string, id: string, body: any) =>

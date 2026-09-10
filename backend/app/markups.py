@@ -32,6 +32,10 @@ router = APIRouter(prefix="/api/drawings", tags=["markeringar"])
 
 TOOLS = ("langd", "area", "antal", "polylinje", "rektangel", "text", "moln", "frihand", "volym", "vinkel")
 MAX_POINTS = 4000                 # en frihandslinje har många punkter; en ritning har inte oändligt många
+# Granskningens statusflöde. En markering börjar som en fråga och slutar som ett besked; däremellan ska det gå
+# att se vilka som väntar på någon. Orden är listans, inte databasens: vad de betyder står i gränssnittet.
+STATUSES = ("oppen", "atgardad", "godkand", "avvisad")
+SOURCES = ("manuell", "matning", "cad", "ai", "ocr", "import")
 LENGTH_TOOLS = ("langd", "polylinje", "frihand")
 AREA_TOOLS = ("area", "rektangel", "moln", "volym")
 COUNT_TOOLS = ("antal",)
@@ -161,6 +165,9 @@ def _out(m: Markup) -> dict:
     return {"id": m.id, "page": m.page, "tool": m.tool, "layer": m.layer, "designation": m.designation,
             "points": m.points, "style": m.style, "text": m.text, "measure": m.measure,
             "props": m.props or {}, "seq": m.seq,
+            "subject": m.subject or "", "status": m.status or "oppen", "comment": m.comment or "",
+            "meta": m.meta or {}, "source": m.source or "manuell", "confidence": m.confidence,
+            "space_id": m.space_id,
             "created_at": m.created_at.isoformat(), "updated_at": m.updated_at.isoformat() if m.updated_at else None}
 
 
@@ -173,11 +180,41 @@ class MarkupIn(BaseModel):
     style: dict = Field(default_factory=dict)
     props: dict = Field(default_factory=dict)
     text: str = ""
+    subject: str = Field(default="", max_length=120)
+    status: str = "oppen"
+    comment: str = Field(default="", max_length=4000)
+    meta: dict = Field(default_factory=dict)
+    source: str = "manuell"
+    confidence: float | None = Field(default=None, ge=0.0, le=1.0)
+
+
+class MarkupPatch(BaseModel):
+    """Det listan ändrar: ord om markeringen, aldrig dess geometri.
+
+    Att flytta en markering är att rita om den, och det görs på bladet. Härifrån ändras vad den handlar om,
+    var den hör hemma och hur långt den kommit - och då behöver måttet inte räknas om.
+    """
+    layer: str | None = Field(default=None, max_length=64)
+    designation: str | None = Field(default=None, max_length=128)
+    subject: str | None = Field(default=None, max_length=120)
+    status: str | None = None
+    comment: str | None = Field(default=None, max_length=4000)
+    text: str | None = Field(default=None, max_length=4000)
+    meta: dict | None = None
+
+
+class BulkPatch(BaseModel):
+    ids: list[str] = Field(default_factory=list, max_length=2000)
+    change: MarkupPatch
 
 
 def _check(body: MarkupIn) -> None:
     if body.tool not in TOOLS:
         raise HTTPException(400, f"Okänt verktyg: {body.tool}")
+    if body.status not in STATUSES:
+        raise HTTPException(400, f"Okänd status: {body.status}")
+    if body.source not in SOURCES:
+        raise HTTPException(400, f"Okänd källa: {body.source}")
     if len(body.points) > MAX_POINTS:
         raise HTTPException(400, f"För många punkter (högst {MAX_POINTS})")
     for p in body.points:
@@ -202,12 +239,18 @@ def _check(body: MarkupIn) -> None:
 
 
 @router.get("/{drawing_id}/markups")
-def list_markups(drawing_id: str, page: int = 0, user: User = Depends(current_user),
-                 db: Session = Depends(get_db)):
+def list_markups(drawing_id: str, page: int = 0, all_pages: bool = False,
+                 user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Markeringarna på ett blad, eller i hela handlingen.
+
+    Mängdningen arbetar på ett blad i taget och summerar det bladet. Granskningen läser hela handlingen: en
+    fråga ställd på sidan fyra ska inte försvinna för att någon bläddrat till sidan ett. Därför `all_pages`.
+    """
     _drawing(db, user, drawing_id)
-    rows = (db.query(Markup).filter(Markup.drawing_id == drawing_id, Markup.page == page,
-                                    Markup.deleted.is_(False))
-            .order_by(Markup.created_at).all())
+    q = db.query(Markup).filter(Markup.drawing_id == drawing_id, Markup.deleted.is_(False))
+    if not all_pages:
+        q = q.filter(Markup.page == page)
+    rows = q.order_by(Markup.page, Markup.created_at).all()
     mpp, source = _mpp(db, drawing_id, page)
     c = _calibration(db, drawing_id, page)
 
@@ -221,13 +264,16 @@ def list_markups(drawing_id: str, page: int = 0, user: User = Depends(current_us
                 "antal": round(sum((m.measure or {}).get("antal") or 0 for m in rs if m.tool in COUNT_TOOLS), 3),
                 "rader": len(rs)}
 
-    by_layer, by_tool, by_des = {}, {}, {}
+    by_layer, by_tool, by_des, by_status = {}, {}, {}, {}
     for m in rows:
         by_layer.setdefault(m.layer, []).append(m)
         by_tool.setdefault(m.tool, []).append(m)
+        by_status.setdefault(m.status or "oppen", []).append(m)
         if m.designation:
             by_des.setdefault(m.designation, []).append(m)
     return {"rows": [_out(m) for m in rows], "meters_per_pdf_point": mpp, "scale_source": source,
+            "status_counts": {k: len(v) for k, v in sorted(by_status.items())},
+            "pages": sorted({m.page for m in rows}),
             "calibration": ({"meters_per_pdf_point": c.meters_per_pdf_point, "length_m": c.length_m,
                              "points": c.points, "note": c.note, "at": c.created_at.isoformat()} if c else None),
             "layers": sorted({m.layer for m in rows}),
@@ -272,6 +318,51 @@ def edit_markup(drawing_id: str, markup_id: str, body: MarkupIn, user: User = De
     return _out(m)
 
 
+def _apply(m: Markup, change: MarkupPatch) -> None:
+    got = change.model_dump(exclude_none=True)
+    if "status" in got and got["status"] not in STATUSES:
+        raise HTTPException(400, f"Okänd status: {got['status']}")
+    if "layer" in got and not got["layer"].strip():
+        raise HTTPException(400, "Ett lager behöver ett namn")
+    for k, v in got.items():
+        setattr(m, k, v)
+
+
+@router.patch("/{drawing_id}/markups/{markup_id}")
+def patch_markup(drawing_id: str, markup_id: str, body: MarkupPatch, user: User = Depends(current_user),
+                 db: Session = Depends(get_db)):
+    """Ändra vad markeringen handlar om utan att röra det den mätte."""
+    _drawing(db, user, drawing_id)
+    m = db.get(Markup, markup_id)
+    if m is None or m.drawing_id != drawing_id or m.deleted:
+        raise HTTPException(404, "Okänd markering")
+    _apply(m, body)
+    db.commit()
+    return _out(m)
+
+
+@router.patch("/{drawing_id}/markups")
+def patch_many(drawing_id: str, body: BulkPatch, user: User = Depends(current_user),
+               db: Session = Depends(get_db)):
+    """Samma ändring på flera markeringar: tjugo frågor som är besvarade stängs i ett svep.
+
+    Ingen halv ändring: träffar listan en markering som inte finns på bladet avvisas hela anropet, så att den
+    som markerade tjugo rader aldrig behöver gissa vilka sjutton som gick igenom.
+    """
+    _drawing(db, user, drawing_id)
+    ids = list(dict.fromkeys(body.ids))
+    if not ids:
+        raise HTTPException(400, "Inga markeringar att ändra")
+    rows = (db.query(Markup).filter(Markup.drawing_id == drawing_id, Markup.id.in_(ids),
+                                    Markup.deleted.is_(False)).all())
+    if len(rows) != len(ids):
+        raise HTTPException(404, "Någon av markeringarna finns inte på handlingen")
+    for m in rows:
+        _apply(m, body.change)
+    db.commit()
+    return {"andrade": len(rows), "rows": [_out(m) for m in rows]}
+
+
 @router.delete("/{drawing_id}/markups/{markup_id}")
 def drop_markup(drawing_id: str, markup_id: str, user: User = Depends(current_user),
                 db: Session = Depends(get_db)):
@@ -287,25 +378,31 @@ def drop_markup(drawing_id: str, markup_id: str, user: User = Depends(current_us
 
 
 @router.get("/{drawing_id}/markups.csv")
-def markups_csv(drawing_id: str, page: int = 0, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def markups_csv(drawing_id: str, page: int = 0, all_pages: bool = False,
+                user: User = Depends(current_user), db: Session = Depends(get_db)):
     """Markeringslistan som en fil att öppna i Excel: en rad per markering, med måttet och vad det räknades på."""
     from fastapi.responses import Response
 
     from .main import _attachment
     d = _drawing(db, user, drawing_id)
-    rows = (db.query(Markup).filter(Markup.drawing_id == drawing_id, Markup.page == page,
-                                    Markup.deleted.is_(False)).order_by(Markup.layer, Markup.created_at).all())
+    q = db.query(Markup).filter(Markup.drawing_id == drawing_id, Markup.deleted.is_(False))
+    if not all_pages:
+        q = q.filter(Markup.page == page)
+    rows = q.order_by(Markup.page, Markup.layer, Markup.created_at).all()
     mpp, source = _mpp(db, drawing_id, page)
-    head = ["Lager", "Verktyg", "Löpnr", "Beteckning", "Längd m", "Yta m²", "Volym m³", "Antal",
-            "Djup m", "Multiplikator", "Tillägg m", "Avdrag m²", "Text", "Skala", "Skapad"]
+    head = ["Sida", "Lager", "Verktyg", "Löpnr", "Beteckning", "Ämne", "Status", "Längd m", "Yta m²", "Volym m³",
+            "Antal", "Djup m", "Multiplikator", "Tillägg m", "Avdrag m²", "Text", "Kommentar", "Källa", "Skala",
+            "Skapad"]
     lines = [";".join(head)]
     for m in rows:
         me = m.measure or {}
         P = m.props or {}
-        cells = [m.layer, m.tool, str(m.seq or ""), m.designation or "",
+        cells = [m.page + 1, m.layer, m.tool, str(m.seq or ""), m.designation or "",
+                 (m.subject or "").replace(";", ","), m.status or "oppen",
                  f"{me.get('m', ''):}", f"{me.get('kvm', ''):}", f"{me.get('m3', ''):}", f"{me.get('antal', ''):}",
                  f"{P.get('djup_m', ''):}", f"{P.get('multiplikator', ''):}", f"{P.get('tillagg_m', ''):}",
                  f"{me.get('avdrag_kvm', ''):}", (m.text or "").replace(";", ","),
+                 (m.comment or "").replace(";", ",").replace("\n", " "), m.source or "manuell",
                  me.get("scale", ""), m.created_at.isoformat(timespec="minutes")]
         lines.append(";".join(str(c).replace(".", ",") if isinstance(c, float) else str(c) for c in cells))
     lines.append("")
