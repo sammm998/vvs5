@@ -207,8 +207,17 @@ def why(pa, pipe_id: str) -> dict[str, Any]:
             "attachment": a.as_dict(),
         })
     m = next((m for m in pa.measures if m.pipe.physical_pipe_id == pipe_id), None)
+    from ..pipes.ownership import DECLARED_REASON
+    declared = None
+    if DECLARED_REASON in (p.evidence or []):
+        # no label reached this run: the sheet's own written rule named it, and that rule is the evidence
+        declared = {"rule": pa.declarations.as_dict(),
+                    "text": "Ingen etikett når den här sträckan. Bladet skriver att kopplingsledningar från fördelare "
+                            "till apparat följer tabellen om inget annat anges, och tabellen ger "
+                            f"{p.identity.display}; sträckan ligger på ett lager som bär systemet {p.identity.system}."}
     return {"pipe_id": pipe_id, "identity": p.identity.key, "designation": p.identity.display, "dn": p.identity.dn, "family": p.family,
-            "evidence_chain": chain, "topology": {"nodes": p.nodes, "primitives": len(p.prim_ids), "evidence": p.evidence},
+            "evidence_chain": chain, "declared_by_sheet": declared,
+            "topology": {"nodes": p.nodes, "primitives": len(p.prim_ids), "evidence": p.evidence},
             "source_paths": p.source_paths, "source_segments": p.source_segments,
             "scale": pa.scale.as_dict(),
             "measurement": {"horizontal_pdf_units": round(p.length_pt, 3), "raw_pt": round(p.raw_length_pt, 3), "bridged_gap_pt": round(p.bridged_gap_pt, 3),
@@ -498,6 +507,7 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     # the list is a fact about this sheet, and the set-wide copy is marked borrowed for everybody by construction.
     _lg = doc_legend if doc_legend is not None and doc_legend.entries else pa.legend
     W("drawing-legend.json", {**_lg.as_dict(), "own": pa.legend.own and bool(pa.legend.entries)})
+    W("drawing-declarations.json", pa.declarations.as_dict())
     W("document-quantities.json", document_quantities(sheets or []))
     # How much of what the drawing names the reading carried through to a metre. It is the only figure that
     # tells a sheet the reading got through from a sheet it barely opened, so it is written down as its own

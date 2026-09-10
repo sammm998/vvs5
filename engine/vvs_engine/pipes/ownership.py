@@ -216,9 +216,46 @@ def _fullest(ids, stem: str, dn: int | None) -> str:
     return min((i.display for i in said), key=lambda t: (-len(t), t)) if said else stem
 
 
+DECLARED_REASON = "DECLARED_CONNECTION_PIPE_BY_SHEET_TABLE"
+
+
+def _declare_unowned(graphs: dict[str, PipeGraph], states: dict[str, dict[int, "PrimState"]], declared,
+                     spelled_out: frozenset[str]) -> dict[str, int]:
+    """Geometry no label reached, named by the rule the sheet wrote for exactly that case.
+
+    "Kopplingsledningar från fördelare till apparat enligt tabell om inget annat anges": the table gives a
+    designation per system and a dimension, and the rule applies to the pipes nobody labelled. So an UNOWNED
+    primitive - never AMBIGUOUS, never one a label reached - on a pen whose layer name carries the declared
+    system's token takes the declared identity. A layer that two declared systems could both name gets nothing:
+    the sheet has not said which. The reason is written on every primitive so the takeoff can show which metres
+    were pointed at and which were declared."""
+    from ..semantics.attachment import system_layer_match
+    from ..semantics.grammar import split_tokens
+    given: dict[str, int] = {}
+    for fk, g in graphs.items():
+        layer = fk.split("|s|")[0]
+        match = [d for d in declared if d.dn is not None and system_layer_match(d.system_token, layer, spelled_out)]
+        if len(match) != 1:
+            continue
+        d = match[0]
+        ident = identity_from_text(d.text, d.dn, d.system_token, len(split_tokens(d.stem)))
+        n = 0
+        for pid, st in states[fk].items():
+            if st.state == "UNOWNED":
+                st.state, st.identity, st.reason = "CONFIRMED", ident, DECLARED_REASON
+                st.evidence = [f"sheet_table:{d.text}"]
+                n += 1
+        if n:
+            given[fk] = n
+    return given
+
+
 def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page: int,
-              identities: dict[str, Identity], spelled_out: frozenset[str] = frozenset()) -> OwnershipResult:
-    """identities: anchor_id -> Identity (only anchors that are verified AND belong to pipe-designation families)."""
+              identities: dict[str, Identity], spelled_out: frozenset[str] = frozenset(),
+              declared=None) -> OwnershipResult:
+    """identities: anchor_id -> Identity (only anchors that are verified AND belong to pipe-designation families).
+    declared: the sheet's written rules for unlabelled pipes (semantics.declarations.DeclaredPipe), applied last
+    and only to geometry every other reading left unowned."""
     identities = complete_identities(identities)
     states: dict[str, dict[int, PrimState]] = {fk: {pid: PrimState() for pid in g.prims} for fk, g in graphs.items()}
     seeds: dict[str, dict[int, list[tuple[Identity, str, str, tuple[float, float]]]]] = {fk: defaultdict(list) for fk in graphs}
@@ -238,6 +275,7 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
         _demote_sliver_outlines(g, states[fk], fk, ambiguous_runs)
     for fk, g in graphs.items():
         _bound_junction_flow(g, states[fk], fk, ambiguous_runs)
+    given = _declare_unowned(graphs, states, list(declared), spelled_out) if declared else {}
     pipes: list[PhysicalPipe] = []
     for fk, g in graphs.items():
         pipes.extend(_build_pipes(g, states[fk], fk, page))
@@ -246,7 +284,10 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
     for fk in graphs:
         for st in states[fk].values():
             stats[st.state] += 1
-    return OwnershipResult(prim_states=states, pipes=pipes, ambiguous_runs=ambiguous_runs, stats=dict(stats))
+    out = dict(stats)
+    if given:
+        out["declared_prims"] = sum(given.values())
+    return OwnershipResult(prim_states=states, pipes=pipes, ambiguous_runs=ambiguous_runs, stats=out)
 
 
 # the two rules that carry an identity into geometry no label touched and no drawn boundary delimits

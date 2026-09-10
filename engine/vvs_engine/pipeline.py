@@ -25,6 +25,7 @@ from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, e
 from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, layer_system_tokens, leader_contacts,
                                    resolve_block, system_layer_match)
 from .semantics.legend import DrawingLegend, adopt, assign_roles, read_legend, roles_of
+from .semantics.declarations import Declarations, read_declarations
 
 # Under measurement: whether a dimension on the row below means the label names a stack and nothing else. Off
 # until the reference set says otherwise - an earlier measurement on four drawings said stripping the run
@@ -101,6 +102,7 @@ class PageAnalysis:
     crosscheck: dict = field(default_factory=dict)                  # the routes side by side, and where they differ
     review_findings: dict = field(default_factory=dict)             # what the reading did not reach, and why
     legend: DrawingLegend = field(default_factory=DrawingLegend)    # the sheet's own designation list
+    declarations: Declarations = field(default_factory=Declarations)   # the sheet's written rules for unlabelled pipes
     second_reader: dict | None = None       # bounded cases put to a second reader, and what it did with them
     vision: dict | None = None              # what a look at the rendered page said the reading may have missed
 
@@ -671,6 +673,7 @@ class PreparedPage:
     ocr_report: Any
     timings: dict
     vt_timing: dict
+    declarations: Declarations = field(default_factory=Declarations)
 
 
 def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
@@ -739,6 +742,11 @@ def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     blocks = build_blocks(page, lines, free)
     designations, grammar, _ = extract_designations(page, blocks)
     legend = read_legend(lines, designations)
+    declarations = read_declarations(lines)
+    if film and declarations:
+        film.note("READING_DESIGNATIONS",
+                  "Bladet förklarar i ord vad rören utan etikett är: kopplingsledningar enligt tabell - "
+                  + ", ".join(d.text for d in declarations.connection_pipes) + ".")
     if film:
         with_dn = sum(1 for d in designations if d.dn is not None)
         film.note("READING_DESIGNATIONS",
@@ -759,7 +767,7 @@ def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     _t(timings, "designation_ms", t0)
     return PreparedPage(page=page, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
                         free=free, consumed=consumed, designations=designations, grammar=grammar, legend=legend,
-                        ocr_report=ocr_report, timings=timings, vt_timing=vt_timing)
+                        ocr_report=ocr_report, timings=timings, vt_timing=vt_timing, declarations=declarations)
 
 
 def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
@@ -789,6 +797,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         film.text(vtext.rows)
         film.designations(designations)
     legend = prep.legend                         # the sheet's own designation list, read against what it draws
+    declarations = prep.declarations             # ...and its written rules for the pipes it does not label
     if not legend.entries and known_legend is not None and known_legend.entries:
         legend = adopt(known_legend)             # ...or the one the rest of the set carries for it
     else:
@@ -1307,14 +1316,17 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend))
 
     identities = _identities_now()
-    ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
+    ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
+                          declared=declarations.connection_pipes)
     if _settle_bundles_by_elimination(anchors, ownership, graphs):
         identities = _identities_now()
-        ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
+        ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
+                          declared=declarations.connection_pipes)
     # and what one bundle at a time cannot settle, the sheet taken as a whole sometimes can
     if settle_bundles_by_sheet_consistency(anchors, graphs, known_families):
         identities = _identities_now()
-        ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
+        ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
+                          declared=declarations.connection_pipes)
     _close_labels_on_owned_runs(anchors, ownership, graphs)
     film.pipes(ownership.pipes)
     t0 = _t(timings, "physical_pipes_ms", t0)
@@ -1375,7 +1387,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     film.measured(quantities, scale)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
-    return PageAnalysis(page=page, legend=legend, second_reader=second, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
+    return PageAnalysis(page=page, legend=legend, declarations=declarations, second_reader=second, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
                         designations=designations, grammar=grammar, ann_layers=ann_layers, leaders=leaders,
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,
@@ -1831,6 +1843,8 @@ def summarize(pa: PageAnalysis) -> dict[str, Any]:
         "scale": pa.scale.state if pa.scale else None,
         "confirmed_horizontal_m": round(sum(q["confirmed_horizontal_m"] for q in pa.quantities), 2),
         "ambiguous_m": round(sum(q["ambiguous_m"] for q in pa.quantities), 2),
+        "declared_m": round(sum(q.get("declared_m", 0.0) for q in pa.quantities), 2),
+        "declarations": pa.declarations.as_dict() if pa.declarations else None,
         "coverage": reading_coverage(pa),
         "timings_ms": {k: round(v) for k, v in pa.timings.items()},
     }

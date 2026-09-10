@@ -5,7 +5,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any
 
-from ..pipes.ownership import OwnershipResult, PhysicalPipe
+from ..pipes.ownership import OwnershipResult, PhysicalPipe, DECLARED_REASON
 from .scale import ScaleResult
 
 
@@ -99,8 +99,10 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         r = rows.setdefault(k, {"designation": m.pipe.identity.display, "base": m.pipe.identity.base, "dn": m.pipe.identity.dn, "system": m.pipe.identity.system,
                                 "physical_pipe_count": 0, "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0,
                                 "confirmed_total_m": 0.0, "horizontal_pdf_units": 0.0, "ambiguous_m": 0.0, "vertical_known": False,
-                                "in_hatched_area_m": 0.0, "state": "CONFIRMED", "pipe_ids": []})
+                                "in_hatched_area_m": 0.0, "declared_m": 0.0, "state": "CONFIRMED", "pipe_ids": []})
         r["physical_pipe_count"] += 1
+        if m.horizontal_m is not None and DECLARED_REASON in (m.pipe.evidence or []):
+            r["declared_m"] += m.horizontal_m       # named by the sheet's written rule, not by a label
         r["horizontal_pdf_units"] += m.horizontal_pdf_units
         r["pipe_ids"].append(m.pipe.physical_pipe_id)
         if m.horizontal_m is not None:
@@ -126,6 +128,8 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
     for k, n in (label_counts or {}).items():
         if k in rows:
             rows[k]["label_count"] = n
+    for r in rows.values():
+        r.setdefault("label_count", 0)          # a declared run has metres and no label: zero, not missing
     # Both riser readings make a row of their own. A designation the sheet writes only over a riser - a stack
     # that drops away out of the plan, drawn as a point and named with its dimension on the row below - has no
     # horizontal run to be aggregated from, and left to the measured rows alone it would not be reported at all.

@@ -59,6 +59,26 @@ ritningsspecifika literaler. Det skannas (`contamination.py`) och står som `PAS
 
 ---
 
+### 2b. Vad bladet förklarar i ord
+
+En ritning kan säga en sak om rör utan att skriva den vid varje rör. Ett helt projekt skriver på varje blad
+*"Kopplingsledningar från fördelare till apparat enligt tabell om inget annat anges"* och en tabell med
+beteckningsstammen per system (VV01-X31, KV01-X31) och dimensionen per apparat (16), och drar sedan nittio korta
+rör från fördelarskåpen till blandare, tvättställ och toaletter utan en enda etikett. Läsningen, som bara följer
+hänvisningslinjer, ägde inget av det - fjortonhundra meter på trettiotre blad.
+
+`semantics/declarations.py` läser den regeln av form och av ritspråkets få ord för den (ett stycke som nämner
+kopplingsledningar och säger "enligt tabell" eller "om inget annat anges", och under det en rad stammar med
+talkolumner). Ägandet (`pipes/ownership.py`) tillämpar den sist av allt och bara på geometri som ingen annan
+läsning rört: en primitiv som är **oägd** - aldrig tvetydig, aldrig en som en etikett nått - på en penna vars
+lagernamn bär det förklarade systemet får den förklarade identiteten. Ett lager som två förklarade system skulle
+kunna heta får inget. Varje sådan meter märks `DECLARED_CONNECTION_PIPE_BY_SHEET_TABLE` och redovisas som
+`declared_m` på mängdraden, med `label_count` 0, så att en människa ser skillnaden på ett rör som pekats ut och
+ett rör som förklarats. Regeln som lästes skrivs till `drawing-declarations.json`.
+
+Det är inget närmaste-antagande: det är ritningens egen regel, skriven i ord, för exakt de rör ritaren inte
+namngett. Utan tabellen ägs ingenting.
+
 ## 3. Vilka AI-modeller som används, och exakt hur
 
 Det här är det viktigaste avsnittet att läsa rätt, så det är rakt.
