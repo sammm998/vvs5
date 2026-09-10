@@ -48,6 +48,13 @@ The root `Dockerfile` builds the frontend, installs the engine and the API and s
 FastAPI (`railway.json` points Railway at it). Environment: `PORT` (honoured), `VVS_SECRET_KEY`, optionally
 `VVS_DATABASE_URL` (PostgreSQL) and a volume at `/data` for uploads and the SQLite database.
 
+`VVS_SECRET_KEY` signs every sign-in token, and the default sits in the source. A service running on it signs
+tokens with a string anyone who has read the repository can read too - and anyone can then write their own token
+for any account, the admin account included. Nothing downstream would notice: sign-in, ownership and the admin
+gate all look only at the signature. So the service **refuses to start** on a deployment platform while that
+default stands, rather than warning into a log nobody reads. Generate one with
+`python -c "import secrets; print(secrets.token_urlsafe(48))"`.
+
 ## What a vector PDF actually contains
 
 Worth being precise about, because it decides what is readable and what must be recognised. Drawing A's content

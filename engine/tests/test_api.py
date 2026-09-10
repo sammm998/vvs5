@@ -669,3 +669,47 @@ def test_a_markup_is_measured_by_the_server_and_never_by_the_browser(client, syn
     assert client.get(f"/api/drawings/{d['id']}/markups", headers=OH).status_code == 404
     assert client.post(f"/api/drawings/{d['id']}/markups", headers=OH,
                        json={"tool": "langd", "points": [[0, 0], [1, 1]]}).status_code == 404
+
+
+def test_the_service_refuses_to_run_on_the_secret_that_is_in_the_source(client):
+    """Ett bevis undertecknat med en publik sträng är inget bevis.
+
+    Standardnyckeln står i källkoden. Startar tjänsten i drift med den kan vem som helst som läst koden skriva
+    sitt eget inloggningsbevis för vilket konto som helst - adminkontot inräknat - och ingenting i tjänsten
+    skulle märka det. Varken inloggningen, ägarkontrollen eller adminspärren tittar på annat än signaturen.
+
+    Ett varningsmeddelande i en logg ingen läser är samma sak som ingenting, så tjänsten går inte upp alls.
+    På en utvecklingsmaskin är standardvärdet däremot precis vad man vill ha.
+
+    (`client` tas in för att den lägger backend på importvägen, inte för att provet gör något anrop.)
+    """
+    import os as _os
+    from app import config
+
+    real = dict(_os.environ)
+    try:
+        for k in ("VVS_DEV", "PYTEST_CURRENT_TEST", "RAILWAY_ENVIRONMENT", "RAILWAY_PROJECT_ID",
+                  "RAILWAY_SERVICE_ID", "FLY_APP_NAME", "RENDER", "HEROKU_APP_NAME",
+                  "KUBERNETES_SERVICE_HOST", "VVS_PRODUCTION"):
+            _os.environ.pop(k, None)
+        was = config.settings.secret_key
+
+        # en utvecklingsmaskin: ingenting säger drift, och standardnyckeln duger
+        config.settings.secret_key = config.DEV_SECRET
+        config.demand_a_real_secret()
+
+        # men på en driftplattform ska den inte gå upp
+        _os.environ["RAILWAY_ENVIRONMENT"] = "production"
+        try:
+            config.demand_a_real_secret()
+            raise AssertionError("tjänsten startade med källkodens nyckel i drift")
+        except RuntimeError as e:
+            assert "VVS_SECRET_KEY" in str(e), e
+
+        # och med en riktig nyckel går den upp igen
+        config.settings.secret_key = "en-lang-slumpstrang-som-ingen-last-i-koden"
+        config.demand_a_real_secret()
+        config.settings.secret_key = was
+    finally:
+        _os.environ.clear()
+        _os.environ.update(real)

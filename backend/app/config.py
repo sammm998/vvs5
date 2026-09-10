@@ -3,12 +3,17 @@ from __future__ import annotations
 import os
 from pydantic_settings import BaseSettings
 
+DEV_SECRET = "change-me-in-production"
+
 
 class Settings(BaseSettings):
     app_name: str = "VVS Mängdning"
     database_url: str = "sqlite:///./data/vvs.db"
     storage_root: str = "./data/storage"
-    secret_key: str = "change-me-in-production"
+    # Nyckeln varje inloggningsbevis undertecknas med. Standardvärdet står i källkoden, och en tjänst som
+    # startar med det undertecknar alltså varje bevis med en sträng vem som helst kan läsa - då går det att
+    # skriva sitt eget bevis för vilket konto som helst, adminkontot inräknat. Se `demand_a_real_secret()`.
+    secret_key: str = DEV_SECRET
     access_token_minutes: int = 60 * 24
     worker_threads: int = 1
     run_determinism: bool = False
@@ -40,6 +45,37 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
+def demand_a_real_secret() -> None:
+    """Vägra starta i drift med den nyckel som står i källkoden.
+
+    Ett bevis undertecknat med en publik sträng är inget bevis. Vem som helst som läst koden kan skriva sitt
+    eget för vilket konto som helst, och ingenting i tjänsten skulle märka det - inte inloggningen, inte
+    ägarkontrollen, inte adminspärren.
+
+    Att skrika vid start är hela poängen. Ett varningsmeddelande i en logg ingen läser är samma sak som
+    ingenting; en tjänst som inte går upp märks inom en minut, och felet står i klartext med vad som ska
+    sättas. På en utvecklingsmaskin är standardvärdet däremot precis vad man vill ha, så det som avgör är
+    om något säger att det här är drift.
+    """
+    if settings.secret_key != DEV_SECRET:
+        return
+    dev = (os.environ.get("VVS_DEV") == "1"
+           or os.environ.get("PYTEST_CURRENT_TEST")
+           or not any(os.environ.get(k) for k in
+                      ("RAILWAY_ENVIRONMENT", "RAILWAY_PROJECT_ID", "RAILWAY_SERVICE_ID",
+                       "FLY_APP_NAME", "RENDER", "HEROKU_APP_NAME", "KUBERNETES_SERVICE_HOST",
+                       "VVS_PRODUCTION")))
+    if dev:
+        return
+    raise RuntimeError(
+        "VVS_SECRET_KEY är inte satt. Tjänsten skulle underteckna varje inloggningsbevis med den nyckel som "
+        "står i källkoden, och då kan vem som helst skriva sitt eget bevis för vilket konto som helst. "
+        "Sätt VVS_SECRET_KEY till en lång slumpsträng - till exempel `python -c \"import secrets; "
+        "print(secrets.token_urlsafe(48))\"` - och starta om.")
+
+
 os.makedirs(settings.storage_root, exist_ok=True)
 if settings.database_url.startswith("sqlite:///"):
     os.makedirs(os.path.dirname(os.path.abspath(settings.database_url.replace("sqlite:///", ""))) or ".", exist_ok=True)

@@ -20,7 +20,7 @@ from . import (academy as academy_api, admin as admin_api, exports, jobs, markup
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
 from vvs_engine.learning import KEYS, lessons, settle, situation
 from .auth import create_token, current_user, hash_password, verify_password
-from .config import settings
+from .config import demand_a_real_secret, settings
 from .db import Correction, AnalysisJob, Drawing, Project, RuleSetting, User, get_db, init_db
 from .storage import storage
 
@@ -38,6 +38,9 @@ app.include_router(markups_api.router)
 
 @app.on_event("startup")
 def _startup():
+    # Först av allt: en tjänst som undertecknar inloggningsbevis med den nyckel som står i källkoden ska inte
+    # gå upp alls. Ett varningsmeddelande i en logg ingen läser är samma sak som ingenting.
+    demand_a_real_secret()
     init_db()
 
 
