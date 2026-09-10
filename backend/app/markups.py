@@ -22,7 +22,10 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from .auth import current_user
-from .db import AnalysisJob, Calibration, Drawing, Markup, ToolPreset, User, get_db
+from vvs_engine.takeoff import Scale, Viewport
+from vvs_engine.takeoff import measure as engine_measure
+
+from .db import (AnalysisJob, Calibration, Drawing, DrawingViewport, Markup, Space, ToolPreset, User, get_db)
 from .storage import storage
 
 router = APIRouter(prefix="/api/drawings", tags=["markeringar"])
@@ -73,69 +76,84 @@ def _mpp(db: Session, drawing_id: str, page: int = 0) -> tuple[float | None, str
     return (m, "LÄSNINGEN") if m else (None, "INGEN")
 
 
-def _ring_area(pts: list) -> float:
-    """Skoformeln över den slutna formen; sista punkten binds till den första."""
-    a = 0.0
-    for i in range(len(pts)):
-        x0, y0 = pts[i]
-        x1, y1 = pts[(i + 1) % len(pts)]
-        a += x0 * y1 - x1 * y0
-    return abs(a) / 2.0
+def _viewports(db: Session, drawing_id: str, page: int) -> list[Viewport]:
+    """Områdena med egen skala på sidan, i den ordning motorn ska pröva dem."""
+    rows = (db.query(DrawingViewport).filter(DrawingViewport.drawing_id == drawing_id,
+                                             DrawingViewport.page == page)
+            .order_by(DrawingViewport.order, DrawingViewport.created_at).all())
+    out = []
+    for v in rows:
+        try:
+            out.append(Viewport(name=v.name or "viewport", ring=[(float(x), float(y)) for x, y in (v.ring or [])],
+                                scale=Scale(meters_per_point=v.meters_per_pdf_point, source="ANGIVEN",
+                                            label=v.label or ""), order=v.order, unit=v.unit or "m"))
+        except Exception:
+            continue        # en trasig viewport tar inte ner mätningen; den gäller bara inte
+    return out
 
 
-def _measure(tool: str, points: list, mpp: float | None, props: dict | None = None, source: str = "INGEN") -> dict:
-    """Vad markeringen mäter, räknat ur punkterna och mängdarens egna påslag.
+def _measure(tool: str, points: list, mpp: float | None, props: dict | None = None, source: str = "INGEN",
+             viewports: list[Viewport] | None = None) -> dict:
+    """Vad markeringen mäter, räknat av den gemensamma mätmotorn.
 
-    En längd är summan av sträckorna, gånger multiplikatorn och plus tillägget - så att en stigare räknad som
-    en punkt på planen ändå kan bära sina meter. En yta är polygonens area minus de avdrag som ritats i den,
-    och med ett djup blir den en volym. Ett antal är antalet punkter gånger multiplikatorn. Varje steg
-    redovisas: rått mått, påslag, resultat - annars är slutsiffran ett tal ingen kan följa.
+    Formen och skalan går in, måttet och varje steg kommer ut. Ingen räkning sker här och ingen i webbläsaren:
+    en meter ska betyda samma sak i mängdningen, i CAD och i kalkylen, och det gör den bara om ett enda ställe
+    räknar den. Svaret packas i de nycklar tabellen och exporten redan känner (`m`, `kvm`, `m3`, `antal`), så
+    allt som läser en markering fortsätter att fungera.
     """
     P = props or {}
-    mult = float(P.get("multiplikator") or 1.0)
-    add_m = float(P.get("tillagg_m") or 0.0)
-    depth = float(P.get("djup_m") or 0.0)
-    pts = [(float(x), float(y)) for x, y in points]
-    out: dict = {"points": len(pts), "scale": {"UPPMÄTT": "UPPMÄTT", "LÄSNINGEN": "VERIFIERAD"}.get(source, "INGEN_SKALA")}
-    if mult != 1.0:
-        out["multiplikator"] = mult
-    if add_m:
-        out["tillagg_m"] = add_m
-    if tool in COUNT_TOOLS:
-        out["antal"] = round(len(pts) * mult, 3) if mult != 1.0 else len(pts)
-        return out
-    if len(pts) < 2:
-        return out
-    length_pt = sum(math.dist(pts[i], pts[i + 1]) for i in range(len(pts) - 1))
-    out["langd_pt"] = round(length_pt, 2)
+    scale = None
     if mpp:
-        raw = length_pt * mpp
-        out["ratt_m"] = round(raw, 3)
-        out["m"] = round(raw * mult + add_m, 3)
-    if tool in AREA_TOOLS and len(pts) >= 3:
-        area_pt = _ring_area(pts)
-        cut_pt = 0.0
-        for ring in (P.get("avdrag") or []):
-            r = [(float(x), float(y)) for x, y in ring]
-            if len(r) >= 3:
-                cut_pt += _ring_area(r)
-        cut_pt = min(cut_pt, area_pt)
-        out["area_pt"] = round(area_pt - cut_pt, 2)
-        if cut_pt:
-            out["avdrag_pt"] = round(cut_pt, 2)
-        if mpp:
-            kvm = (area_pt - cut_pt) * mpp * mpp
-            out["kvm"] = round(kvm * mult, 3)
-            if cut_pt:
-                out["avdrag_kvm"] = round(cut_pt * mpp * mpp, 3)
-            if depth:
-                out["djup_m"] = depth
-                out["m3"] = round(kvm * mult * depth, 3)
-        # omkretsen är en längd men ingen tar av den som en sträcka: den står för sig
-        out["omkrets_pt"] = round(length_pt + math.dist(pts[-1], pts[0]), 2)
-        if mpp:
-            out["omkrets_m"] = round(out["omkrets_pt"] * mpp, 3)
-        out.pop("m", None)
+        try:
+            scale = Scale(meters_per_point=float(mpp), source={"UPPMÄTT": "UPPMÄTT", "LÄSNINGEN": "LÄSNINGEN"}.get(source, "ANGIVEN"))
+        except Exception:
+            scale = None
+    kind = "volym" if tool == "volym" else tool
+    r = engine_measure(kind, points, scale,
+                       viewports=viewports or (),
+                       holes=P.get("avdrag") or (),
+                       multiplier=float(P.get("multiplikator") or 1.0),
+                       addition=float(P.get("tillagg_m") or 0.0),
+                       depth=float(P.get("djup_m") or 0.0) or None,
+                       waste=float(P.get("spill_pct") or 0.0))
+    out: dict = {"points": r.points,
+                 "scale": {"UPPMÄTT": "UPPMÄTT", "LÄSNINGEN": "VERIFIERAD", "ANGIVEN": "VERIFIERAD"}.get(r.scale_source, "INGEN_SKALA")}
+    if r.viewport:
+        out["viewport"] = r.viewport
+    if r.steps:
+        out["steg"] = r.steps
+    if r.warnings:
+        out["varningar"] = r.warnings
+    if tool in COUNT_TOOLS:
+        out["antal"] = r.value
+        return out
+    if r.unit == "pt":
+        out["langd_pt"] = r.value
+        if "area_pt2" in r.extra:
+            out["area_pt"] = r.extra["area_pt2"]
+        return out
+    if tool in AREA_TOOLS:
+        out["kvm"] = r.value
+        if r.extra.get("area_pt2") is not None:
+            out["area_pt"] = r.extra["area_pt2"]
+        if r.extra.get("perimeter") is not None:
+            out["omkrets_m"] = r.extra["perimeter"]
+        if r.extra.get("holes"):
+            out["avdrag_kvm"] = r.extra["holes"]
+        if r.extra.get("volume") is not None:
+            out["m3"] = r.extra["volume"]
+            out["djup_m"] = float(P.get("djup_m") or 0.0)
+        if r.extra.get("with_waste") is not None:
+            out["med_spill_kvm"] = r.extra["with_waste"]
+        return out
+    out["m"] = r.value
+    out["ratt_m"] = r.raw
+    if r.extra.get("with_waste") is not None:
+        out["med_spill_m"] = r.extra["with_waste"]
+    if float(P.get("multiplikator") or 1.0) != 1.0:
+        out["multiplikator"] = float(P["multiplikator"])
+    if float(P.get("tillagg_m") or 0.0):
+        out["tillagg_m"] = float(P["tillagg_m"])
     return out
 
 
@@ -227,7 +245,7 @@ def add_markup(drawing_id: str, body: MarkupIn, user: User = Depends(current_use
     _check(body)
     m = Markup(drawing_id=drawing_id, user_id=user.id, **body.model_dump())
     mpp, source = _mpp(db, drawing_id, body.page)
-    m.measure = _measure(body.tool, body.points, mpp, body.props, source)
+    m.measure = _measure(body.tool, body.points, mpp, body.props, source, _viewports(db, drawing_id, body.page))
     if body.tool in COUNT_TOOLS:
         # löpnummer inom lagret, som i en mängdningslista: den femte pumpen ska gå att peka ut
         last = (db.query(Markup).filter(Markup.drawing_id == drawing_id, Markup.layer == body.layer,
@@ -249,7 +267,7 @@ def edit_markup(drawing_id: str, markup_id: str, body: MarkupIn, user: User = De
     for k, v in body.model_dump().items():
         setattr(m, k, v)
     mpp, source = _mpp(db, drawing_id, body.page)
-    m.measure = _measure(body.tool, body.points, mpp, body.props, source)
+    m.measure = _measure(body.tool, body.points, mpp, body.props, source, _viewports(db, drawing_id, body.page))
     db.commit()
     return _out(m)
 
@@ -339,7 +357,7 @@ def set_calibration(drawing_id: str, body: CalibrationIn, user: User = Depends(c
     # varje markering på sidan mäts om i den nya skalan: en gammal siffra i ny skala är fel siffra
     for m in db.query(Markup).filter(Markup.drawing_id == drawing_id, Markup.page == body.page,
                                      Markup.deleted.is_(False)).all():
-        m.measure = _measure(m.tool, m.points, mpp, m.props, "UPPMÄTT")
+        m.measure = _measure(m.tool, m.points, mpp, m.props, "UPPMÄTT", _viewports(db, drawing_id, body.page))
     db.commit()
     return read_calibration(drawing_id, body.page, user, db)
 
@@ -355,7 +373,7 @@ def drop_calibration(drawing_id: str, page: int = 0, user: User = Depends(curren
     mpp, source = _mpp(db, drawing_id, page)
     for m in db.query(Markup).filter(Markup.drawing_id == drawing_id, Markup.page == page,
                                      Markup.deleted.is_(False)).all():
-        m.measure = _measure(m.tool, m.points, mpp, m.props, source)
+        m.measure = _measure(m.tool, m.points, mpp, m.props, source, _viewports(db, drawing_id, page))
     db.commit()
     return read_calibration(drawing_id, page, user, db)
 

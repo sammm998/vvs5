@@ -357,6 +357,47 @@ class Calibration(Base):
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
 
+class DrawingViewport(Base):
+    """Ett område på en sida med en egen skala: detaljen i hörnet är inte i planens skala.
+
+    Ordningen avgör överlapp, så att två viewportar som täcker samma punkt alltid ger samma svar - annars kunde
+    en mängd ändras av i vilken ordning någon råkade rita dem.
+    """
+    __tablename__ = "drawing_viewports"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    drawing_id: Mapped[str] = mapped_column(ForeignKey("drawings.id"), index=True)
+    page: Mapped[int] = mapped_column(Integer, default=0)
+    name: Mapped[str] = mapped_column(String(80), default="")
+    ring: Mapped[list] = mapped_column(JSON, default=list)                 # [[x, y], ...] i sidans punkter
+    meters_per_pdf_point: Mapped[float] = mapped_column(Float)
+    label: Mapped[str] = mapped_column(String(32), default="")            # "1:20" när den är känd
+    unit: Mapped[str] = mapped_column(String(8), default="m")
+    order: Mapped[int] = mapped_column(Integer, default=0)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class Space(Base):
+    """Ett ställe i bygget: hus, plan, rum, lägenhet - ritat som ett område på ett blad.
+
+    En mätning inne i ett space hör till det stället, och mängdtabellen kan grupperas efter det. Spaces kan
+    ligga i varandra (hus > plan > rum), och det djupaste som håller punkten vinner.
+    """
+    __tablename__ = "spaces"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    project_id: Mapped[str] = mapped_column(ForeignKey("projects.id"), index=True)
+    drawing_id: Mapped[str | None] = mapped_column(ForeignKey("drawings.id"), nullable=True, index=True)
+    page: Mapped[int] = mapped_column(Integer, default=0)
+    parent_id: Mapped[str | None] = mapped_column(ForeignKey("spaces.id"), nullable=True, index=True)
+    kind: Mapped[str] = mapped_column(String(24), default="rum")          # byggnad | plan | rum | lagenhet | zon
+    name: Mapped[str] = mapped_column(String(120), default="")
+    code: Mapped[str] = mapped_column(String(64), default="")
+    ring: Mapped[list] = mapped_column(JSON, default=list)
+    props: Mapped[dict] = mapped_column(JSON, default=dict)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
 class ToolPreset(Base):
     """Ett verktyg mängdaren ställt in och vill ha kvar: lager, färg, djup, multiplikator, beteckning.
 
@@ -425,6 +466,13 @@ class Markup(Base):
     style: Mapped[dict] = mapped_column(JSON, default=dict)                # färg, bredd, streck, fyllning
     text: Mapped[str] = mapped_column(Text, default="")
     props: Mapped[dict] = mapped_column(JSON, default=dict)                # djup, multiplikator, tillägg, avdrag
+    subject: Mapped[str] = mapped_column(String(120), default="")          # vad markeringen handlar om
+    status: Mapped[str] = mapped_column(String(32), default="oppen")       # oppen | klar | avvisad | granskad
+    comment: Mapped[str] = mapped_column(Text, default="")
+    space_id: Mapped[str | None] = mapped_column(ForeignKey("spaces.id"), nullable=True, index=True)
+    meta: Mapped[dict] = mapped_column(JSON, default=dict)                 # kostnadskod, disciplin, material, egna fält
+    source: Mapped[str] = mapped_column(String(24), default="manuell")     # manuell | matning | cad | ai | ocr | import
+    confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
     seq: Mapped[int | None] = mapped_column(Integer, nullable=True)        # löpnummer inom lagret, för antal
     measure: Mapped[dict] = mapped_column(JSON, default=dict)              # {m, kvm, m3, antal} som verktyget räknade
     deleted: Mapped[bool] = mapped_column(Boolean, default=False)

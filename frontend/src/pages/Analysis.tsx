@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
+import AnalysisCompletionReveal from "../components/AnalysisCompletionReveal";
+import DrawingTo3DTransition from "../components/DrawingTo3DTransition";
 import PdfViewer, { Drawn, EditKind, InkVerdict, Layer, ViewerHandle } from "../components/PdfViewer";
 import QuantityTable, { withFloorHeight } from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
@@ -12,6 +14,9 @@ import LegendView from "../components/LegendView";
 import Reasoning from "../components/Reasoning";
 import AgentChat from "../components/AgentChat";
 import { StatusBadge, stageText } from "../components/Status";
+
+// three.js är tungt och behövs först när någon vill se ritningen i 3D: hämtas då, inte vid sidladdning.
+const Drawing3DView = lazy(() => import("../components/Drawing3DView"));
 
 
 // why a label never got a line to follow, said the way a person reads a drawing
@@ -64,6 +69,9 @@ export default function AnalysisPage() {
     try { localStorage.setItem("vvs.panelOpen", v ? "1" : "0"); } catch { /* private window */ }
   };
   const [draft, setDraft] = useState<Draft>(null);
+  const [show3d, setShow3d] = useState(false);
+  const [drawing, setDrawing] = useState<any>(null);
+  const [rising, setRising] = useState(false);
   const [panel, setPanel] = useState<number>(() => {
     const v = Number((() => { try { return localStorage.getItem("vvs.panel"); } catch { return null; } })());
     return v >= 360 && v <= 1400 ? v : 480;
@@ -122,6 +130,7 @@ export default function AnalysisPage() {
             loaded = true;
             const r = await api.result(id!); setResult(r);
             const b = await api.fetchBlob(api.fileUrl(j.drawing_id)); setPdf(await b.arrayBuffer());
+            try { setDrawing(await api.drawing(j.drawing_id)); } catch { /* namnet är trevligt, inte nödvändigt */ }
             setArtifacts(await api.artifacts(id!));
             try { setCorrections(await api.corrections(j.drawing_id)); } catch { /* corrections are optional */ }
           }
@@ -273,7 +282,17 @@ export default function AnalysisPage() {
     );
   }
   return (
-    <div className="workspace">
+    <AnalysisCompletionReveal status={job.status === "COMPLETED" ? "completed" : job.status === "FAILED" ? "failed" : "processing"}
+      label={`Analys klar · ${result.quantities.length} beteckningar`}>
+    <div className={`workspace${rising ? " rising" : ""}`}>
+    {show3d && (
+      <DrawingTo3DTransition onDone={() => setRising(false)}>
+        <Suspense fallback={<div className="d3-wrap"><div className="d3-loading"><span /></div></div>}>
+          <Drawing3DView result={result} title={drawing?.filename?.replace(/\.pdf$/i, "") ?? undefined}
+            onClose={() => { setShow3d(false); setRising(false); }} />
+        </Suspense>
+      </DrawingTo3DTransition>
+    )}
     {viewtabs}
     <div className={`analysis${panelOpen ? "" : " closed"}`}
       style={{ gridTemplateColumns: `minmax(0, 1fr) 6px ${panel}px` }}>
@@ -293,6 +312,8 @@ export default function AnalysisPage() {
             <button onClick={() => viewer.current?.fitWidth()} title="Full bredd">Bredd</button>
           </span>
           <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>Helskärm</button>
+          <button className="small d3-open" title="Res ritningen till en byggnad"
+            onClick={() => { setRising(true); setShow3d(true); }}>Visa i 3D</button>
           {nPages > 1 && <select value={page} onChange={(e) => {
             // the selected run belongs to the page it was found on; carrying it across would put its ends,
             // and any correction dragged from them, on geometry that is not it
@@ -558,5 +579,6 @@ export default function AnalysisPage() {
       </div>
     </div>
     </div>
+    </AnalysisCompletionReveal>
   );
 }

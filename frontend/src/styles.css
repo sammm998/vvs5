@@ -2308,7 +2308,15 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 /* ---- mängdningsverktyget: bladet till vänster, verktyget till höger ------------------------------------- */
 .tk-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); gap: 16px; align-items: start; }
 @media (max-width: 1100px) { .tk-grid { grid-template-columns: 1fr; } }
-.tk-sheet { min-width: 0; border: 1px solid var(--line); border-radius: var(--r-m); background: #fff; overflow: hidden; box-shadow: var(--e1); }
+/* Bladet behöver en egen höjd: .viewer är flex:1 och faller ihop till ingenting i en låda utan mått, och då
+   ritas pdf:en aldrig - verktygen finns men det finns inget att rita på. */
+.tk-sheet {
+  min-width: 0; border: 1px solid var(--line); border-radius: var(--r-m); background: #fff;
+  overflow: hidden; box-shadow: var(--e1);
+  display: flex; flex-direction: column; min-height: 0;
+  height: calc(100vh - 220px);
+}
+@media (max-width: 1100px) { .tk-sheet { height: 70vh; } }
 .tk-sheet .toolbar { display: flex; gap: 6px; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 .tk-side { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; }
 .tk-side .card { margin-bottom: 0; }
@@ -2320,3 +2328,101 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .tk-preset .x { padding: 4px 8px; }
 .tk-layer { margin-top: 12px; }
 .tk-layer:first-of-type { margin-top: 6px; }
+
+/* ---- 3D-vyn: ritningen rest till en byggnad ------------------------------------------------------------ */
+.d3-wrap { position: fixed; inset: 0; z-index: 70; background: #0f1216; display: flex; flex-direction: column; }
+.d3-canvas { position: absolute; inset: 0; }
+.d3-canvas canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.d3-canvas canvas:active { cursor: grabbing; }
+.d3-top {
+  position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px 18px; color: #eef2f6;
+  background: linear-gradient(180deg, rgba(10, 13, 17, 0.86), rgba(10, 13, 17, 0));
+}
+.d3-top .d3-title { display: flex; flex-direction: column; gap: 3px; }
+.d3-top .d3-title b { font-size: 15px; letter-spacing: -0.01em; }
+.d3-top .muted { color: #9fb0c2; }
+.d3-top button { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.22); color: #eef2f6; }
+.d3-top button:hover { background: rgba(255, 255, 255, 0.18); }
+.d3-controls {
+  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 2;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center;
+  padding: 10px 14px; border-radius: 999px; color: #eef2f6;
+  background: rgba(18, 22, 28, 0.72); border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+.d3-controls .seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); }
+.d3-controls .seg button {
+  background: transparent; border: 0; color: #cfdae6; border-radius: 999px; padding: 7px 12px; box-shadow: none;
+}
+.d3-controls .seg button:hover { background: rgba(255, 255, 255, 0.14); color: #fff; opacity: 1; transform: none; }
+.d3-controls button.secondary { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: #eef2f6; }
+.d3-controls .check { color: #cfdae6; text-transform: none; letter-spacing: 0; }
+.d3-controls .d3-hint { color: #7f93a8; max-width: 46ch; }
+@media (max-width: 760px) { .d3-controls .d3-hint { display: none; } }
+.d3-info {
+  position: absolute; right: 18px; top: 74px; z-index: 3; width: min(340px, 82vw); padding: 14px 16px;
+  border-radius: var(--r-m); color: #eef2f6; background: rgba(18, 22, 28, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+}
+.d3-info table.qty td { color: #d6e0ea; border-color: rgba(255, 255, 255, 0.08); }
+.d3-info .muted { color: #92a5b8; }
+.d3-info button.ghost { color: #9fb0c2; }
+.d3-loading { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.d3-loading span {
+  width: 34px; height: 34px; border-radius: 999px; border: 2px solid rgba(255, 255, 255, 0.18);
+  border-top-color: #6fd3e6; animation: d3spin 0.9s linear infinite;
+}
+@keyframes d3spin { to { transform: rotate(360deg); } }
+button.d3-open {
+  background: linear-gradient(135deg, #0b7285, #129eb0); border-color: #0b7285; color: #fff;
+  box-shadow: 0 2px 10px rgba(18, 158, 176, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+.d3-transition { position: fixed; inset: 0; z-index: 70; }
+.d3-transition.lyft { animation: d3in 620ms cubic-bezier(0.22, 0.9, 0.28, 1) both; }
+@keyframes d3in { from { opacity: 0; transform: scale(1.03); } to { opacity: 1; transform: none; } }
+.workspace.rising .left { filter: brightness(1.08) saturate(1.1); transition: filter 500ms var(--ease); }
+
+/* ---- portarna: resultatet avslöjas när motorn säger att det finns --------------------------------------- */
+.reveal-wrap { position: relative; }
+.reveal-body { opacity: 1; }
+.reveal-wrap .reveal-body:not(.shown) { opacity: 0.001; }
+.reveal-body.shown { animation: revealin 520ms cubic-bezier(0.22, 0.9, 0.28, 1) both; }
+@keyframes revealin { from { opacity: 0; transform: scale(0.994); } to { opacity: 1; transform: none; } }
+.gate { position: fixed; inset: 0; z-index: 65; pointer-events: none; overflow: hidden; }
+.gate-panel {
+  position: absolute; top: 0; bottom: 0; width: 50.6%;
+  background: linear-gradient(180deg, #101720 0%, #0c1118 100%);
+  box-shadow: inset 0 0 120px rgba(18, 158, 176, 0.09);
+}
+.gate-panel.left { left: 0; border-right: 1px solid rgba(120, 200, 220, 0.25); }
+.gate-panel.right { right: 0; border-left: 1px solid rgba(120, 200, 220, 0.25); }
+.gate-panel::after {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 46px);
+}
+.gate-seam {
+  position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%);
+  background: linear-gradient(180deg, transparent, #6fd3e6 18%, #eaffff 50%, #6fd3e6 82%, transparent);
+  opacity: 0; filter: blur(0.3px);
+}
+.gate-label {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, calc(-50% + 46px));
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #8fd8e6; opacity: 0; white-space: nowrap;
+}
+.gate.oppnar .gate-seam { animation: seam 620ms ease-out both; }
+.gate.oppnar .gate-label { animation: gatelabel 900ms ease-out both; }
+.gate.oppnar .gate-panel.left { animation: gateleft 1250ms cubic-bezier(0.16, 0.84, 0.24, 1) both; }
+.gate.oppnar .gate-panel.right { animation: gateright 1250ms cubic-bezier(0.16, 0.84, 0.24, 1) both; }
+@keyframes seam { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0.25; } }
+@keyframes gatelabel { 0% { opacity: 0; } 25% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes gateleft { 0%, 26% { transform: none; } 100% { transform: translateX(-101%); } }
+@keyframes gateright { 0%, 26% { transform: none; } 100% { transform: translateX(101%); } }
+@media (prefers-reduced-motion: reduce) {
+  .gate.oppnar .gate-panel.left, .gate.oppnar .gate-panel.right { animation: gatefade 200ms ease-out both; }
+  .gate.oppnar .gate-seam, .gate.oppnar .gate-label { animation: none; opacity: 0; }
+  .reveal-body.shown, .d3-transition.lyft { animation-duration: 120ms; }
+  @keyframes gatefade { to { opacity: 0; } }
+}

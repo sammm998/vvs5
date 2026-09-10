@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
-import { identityColor } from "./PdfViewer";
+import { identityColor } from "../palette";
 
 export type Draft = { points: number[][]; meters: number; hits?: string[] } | null;
 

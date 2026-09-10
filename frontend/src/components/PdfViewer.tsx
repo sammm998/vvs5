@@ -16,13 +16,10 @@ export interface Drawn {
   hits?: string[];
 }
 
-// one colour per identity; none dark enough to read as the drawing's own black line work (same order as the engine palette)
-const PALETTE = ["#0d9a1a", "#0059e6", "#d91a1a", "#8c00b3", "#009999", "#cc7300", "#4d4de6", "#99591a", "#e6007f", "#1a734d", "#808000", "#73bf00"];
-export function identityColor(key: string): string {
-  let h = 0;
-  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
-  return PALETTE[h % PALETTE.length];
-}
+// paletten bor i src/palette.ts så att bladet, tabellen och 3D-vyn ger samma rör samma färg; den lånas vidare
+// härifrån för dem som redan hämtar den från vyn
+import { identityColor } from "../palette";
+export { identityColor };
 
 const len = (a: number[], b: number[]) => Math.hypot(b[0] - a[0], b[1] - a[1]);
 const pathLen = (pts: number[][]) => pts.slice(1).reduce((s, q, i) => s + len(pts[i], q), 0);

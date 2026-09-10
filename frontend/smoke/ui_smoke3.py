@@ -62,6 +62,10 @@ async def main():
             await pg.wait_for_timeout(400)
             if await canvas.count() and (await canvas.bounding_box()):
                 break
+        # passa in hela sidan innan något ritas: annars ligger den där provet klickar utanför rutan
+        fit = pg.locator(".tk-sheet .toolbar button", has_text="Sida")
+        if await fit.count():
+            await fit.first.click(); await pg.wait_for_timeout(800)
         box = await canvas.bounding_box()
         print(f"  bladet ritat: {bool(box)}")
         if not box:
@@ -75,9 +79,10 @@ async def main():
 
         print("== kalibrera skalan ==")
         await pg.get_by_role("button", name=re.compile("Kalibrera skala")).click(); await pg.wait_for_timeout(400)
-        x, y = box["x"] + 160, box["y"] + 200
+        x, y = box["x"] + box["width"] * 0.25, box["y"] + box["height"] * 0.30
+        step = max(80.0, box["width"] * 0.18)
         await pg.mouse.click(x, y); await pg.wait_for_timeout(200)
-        await pg.mouse.dblclick(x + 200, y); await pg.wait_for_timeout(500)
+        await pg.mouse.dblclick(x + step, y); await pg.wait_for_timeout(500)
         await pg.locator(".tk-side input").first.fill("10")
         await pg.get_by_role("button", name="Spara skalan").click(); await pg.wait_for_timeout(1500)
         note("kalibrering")
@@ -88,14 +93,14 @@ async def main():
 
         print("== mät en längd och räkna två saker ==")
         await pg.locator(".tk-tools button", has_text="Längd").click(); await pg.wait_for_timeout(300)
-        await pg.mouse.click(x, y + 120); await pg.wait_for_timeout(200)
-        await pg.mouse.dblclick(x + 240, y + 120); await pg.wait_for_timeout(500)
+        await pg.mouse.click(x, y + step * 0.5); await pg.wait_for_timeout(200)
+        await pg.mouse.dblclick(x + step * 1.2, y + step * 0.5); await pg.wait_for_timeout(500)
         await pg.get_by_role("button", name="Spara markering").click(); await pg.wait_for_timeout(1500)
         note("sparade längd")
         await pg.locator(".tk-tools button", has_text="Antal").click(); await pg.wait_for_timeout(300)
         for k in range(2):
-            await pg.mouse.click(x + 60 + k * 40, y + 220); await pg.wait_for_timeout(200)
-        await pg.mouse.dblclick(x + 60 + 2 * 40, y + 220); await pg.wait_for_timeout(400)
+            await pg.mouse.click(x + 30 + k * 30, y + step); await pg.wait_for_timeout(200)
+        await pg.mouse.dblclick(x + 30 + 2 * 30, y + step); await pg.wait_for_timeout(400)
         await pg.get_by_role("button", name="Spara markering").click(); await pg.wait_for_timeout(1500)
         note("sparade antal")
 
