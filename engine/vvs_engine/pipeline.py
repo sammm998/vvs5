@@ -973,7 +973,16 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                           f"{leader_votes[f]} etiketter pekar hit, {tick_votes[f]} lämnar ett märke, "
                           f"längsta sträcka {int(desc[f][0].longest_chain)} pt "
                           + ("-> tas som rör." if accept else "-> tas inte."))
-        pipe_families, graphs = _generalize_families(page, pipe_families, graphs)
+        # what this sheet writes with: the pens its leaders run on, and the pens the bars under its own
+        # designations are ruled with. Neither is ever pipe, and neither may be reached by a family template.
+        writing_pens = set(leader_fams)
+        for b in blocks:
+            for r in b.rows:
+                for u in r.underline:
+                    writing_pens.add(stroke_family(u.layer, u.width, u.color))
+            for sgm in b.box_segs:
+                writing_pens.add(stroke_family(sgm.layer, sgm.width, sgm.color))
+        pipe_families, graphs = _generalize_families(page, pipe_families, graphs, writing_pens - set(pipe_families))
         # Every drawn family the reading looked at and did not take, with the reason it did not. A family that is
         # declined is drawn on the sheet and simply absent from the reading afterwards, and geometry that is
         # absent without a word is indistinguishable from geometry that was never seen. Declining is often
@@ -1036,6 +1045,21 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     leaders, pipe_families, graphs, anchors, contact_stats = run_pass(None)
     ann_layers: Counter = Counter()
     ver_blocks = {a.block_id for a in anchors if a.state == "VERIFIED_PIPE_ATTACHMENT"}
+    # The bar the draughtsman rules under a designation is annotation and nothing else - no pipe is an underline
+    # under a label - and it is drawn for every label the sheet writes, not only for the ones whose leader the
+    # first reading managed to verify. Learning the writing pens from the verified blocks alone cost whole
+    # systems on a sheet whose office puts each system's text on a layer of its own: the systems that happened
+    # not to verify were then not writing pens either, their leaders were withdrawn in the second reading, and
+    # the pipes they named went unlabelled and unmeasured. What every block's frame is drawn with is the same
+    # evidence, available for all of them.
+    for b in blocks:
+        if not any(r.role == "designation" for r in b.rows):
+            continue
+        for r in b.rows:
+            for u in r.underline:
+                ann_layers[stroke_family(u.layer, u.width, u.color)] += 1
+        for sgm in b.box_segs:
+            ann_layers[stroke_family(sgm.layer, sgm.width, sgm.color)] += 1
     for a in anchors:
         if a.state != "VERIFIED_PIPE_ATTACHMENT":
             continue
@@ -1615,11 +1639,20 @@ def _layer_template_similar(a: str, b: str) -> bool:
     return same >= 0.6 * max(len(ta), len(tb))
 
 
-def _generalize_families(page: RawPage, pipe_families: dict, graphs: dict):
+def _generalize_families(page: RawPage, pipe_families: dict, graphs: dict, never: set[str] | None = None):
     """Layers that follow the same name template as discovered pipe layers (same token count, same style)
-    and carry chain-like geometry are pipe geometry as well (their pipes may remain UNNAMED)."""
+    and carry chain-like geometry are pipe geometry as well (their pipes may remain UNNAMED).
+
+    `never` is what the sheet writes with rather than draws with - the pens its leaders and the bars under its
+    designations are drawn with. An office that names each system's layer after that system names the layer it
+    writes that system's labels on the same way, so the template that gathers the pipe layers gathers the text
+    layer with them. Taken as pipe, that layer turns every leader the tracer did not follow into measured metres
+    and, worse, wins the reading: the labels reach their own leaders, which is a reading that places labels
+    without measuring anything the drawing draws.
+    """
     if not pipe_families:
         return pipe_families, graphs
+    never = never or set()
     from .profile.layers import layer_tokens
     templates = set()
     styles = set()
@@ -1649,7 +1682,7 @@ def _generalize_families(page: RawPage, pipe_families: dict, graphs: dict):
             all_fams[family_key(p)] += 1
     add = set()
     for fk in all_fams:
-        if fk in pipe_families:
+        if fk in pipe_families or fk in never:
             continue
         layer, _, style = fk.partition("|s|")
         if style not in styles:
@@ -1702,13 +1735,20 @@ def reading_coverage(pa: PageAnalysis) -> dict[str, Any]:
             key = {"CONFIRMED": "confirmed_pt", "AMBIGUOUS": "ambiguous_pt"}.get(getattr(st, "state", ""), "unowned_pt")
             ink[key] += L
     mpp = (pa.scale.meters_per_pt if pa.scale else None) or 0.0
-    return {
+    out = {
         "pipe_names": len(named), "pipe_names_with_metres": len(got),
         "share": round(len(got) / len(named), 3) if named else None,
         "without_metres": sorted(named - got)[:40],
         "drawn_m": round(ink["drawn_pt"] * mpp, 2), "confirmed_m": round(ink["confirmed_pt"] * mpp, 2),
         "ambiguous_m": round(ink["ambiguous_pt"] * mpp, 2), "unowned_m": round(ink["unowned_pt"] * mpp, 2),
     }
+    # Someone else's marks on the sheet, and how far they ran. A page that arrives already measured by hand
+    # carries the answer drawn on top of the drawing; the reading takes that ink off before it reads, and says
+    # here that it did, so nobody has to wonder whether a number came from the drawing or from the markup.
+    mk = getattr(getattr(pa.page, "info", None), "markup_set_aside", None) if getattr(pa, "page", None) else None
+    if mk:
+        out["markup_set_aside"] = {**mk, "ink_m": round((mk.get("ink_pt") or 0.0) * mpp, 2)}
+    return out
 
 
 def summarize(pa: PageAnalysis) -> dict[str, Any]:

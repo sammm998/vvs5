@@ -169,6 +169,13 @@ RULES: tuple[Rule, ...] = (
     Rule("pipes.ownership.BOUNDARY_TOL", G_PIPE, "Gräns mellan två sträckor",
          "Hur nära en gränspunkt en primitiv får ligga och räknas som på gränsen.",
          "pt", 0.75, 0.0, 5.0, None, True),
+    Rule("pdf.extract.ANNOTATION_INK_IS_REVIEW", G_PIPE, "Påskrift på bladet är inte ritning",
+         "En PDF-annotation - ett moln kring en ändring, en notering, eller en mängdning någon redan gjort och "
+         "ritat som färgade linjer med längden i kommentaren - ligger ovanpå ritningen och ser i filen ut som "
+         "vilket streck som helst. Med regeln på lyfts den av innan bladet läses, och räknas alltså aldrig som "
+         "rör; hur mycket som lades åt sidan står kvar i läsningen. Ett blad som inte har någon egen ritning "
+         "under påskriften behåller den ändå - där är påskriften det enda som finns att läsa.",
+         "", True, None, None, None, True),
 
     # ---- vem sträckan tillhör ----------------------------------------------------------------------------
     Rule("pipes.ownership.FLOW_LIMIT", G_OWN, "Hur långt en identitet får rinna",

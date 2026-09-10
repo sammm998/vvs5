@@ -15,6 +15,16 @@ import pymupdf
 
 from ..geometry.core import Seg, bbox_union, flatten_bezier, stable_id
 
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
+ANNOTATION_INK_IS_REVIEW = True   # en annotation är någons påskrift, inte det ritaren ritade
+
 
 @dataclass
 class RawPath:
@@ -89,6 +99,7 @@ class PageInfo:
     xobjects: list[dict]
     fonts: list[dict]
     annots: list[dict]
+    markup_set_aside: dict | None = None   # påskrift som lades åt sidan: hur mycket och av vilket slag
 
 
 @dataclass
@@ -266,7 +277,81 @@ def _color(c) -> tuple | None:
     return tuple(round(float(v), 4) for v in c)
 
 
-def _read_page(doc, pno: int, pdf_path: str) -> RawPage | dict:
+def _annot_length(a) -> float:
+    """How far a markup runs, in points, when its shape says so."""
+    try:
+        pts = a.vertices or []
+    except Exception:
+        return 0.0
+    if not pts or not isinstance(pts[0], (tuple, list)) or len(pts) < 2:
+        return 0.0
+    tot = 0.0
+    for i in range(1, len(pts)):
+        (x0, y0), (x1, y1) = pts[i - 1][:2], pts[i][:2]
+        tot += math.hypot(x1 - x0, y1 - y0)
+    return tot
+
+
+def _read_annotations(page, keep: bool = False) -> tuple[list[dict], dict | None]:
+    """Read the page's annotations, and take their ink off the page before the drawing is read.
+
+    An annotation is not what the engineer drew. It is what somebody wrote afterwards on top of it: a cloud
+    round a change, a note to the contractor, or - the one that matters here - a takeoff someone has already
+    measured, drawn as coloured polylines with the length in the comment. PyMuPDF renders those appearance
+    streams into `get_drawings()` alongside the drawing's own strokes, and nothing downstream can tell them
+    apart: they carry a stroke width and a colour like any other line. A reading that keeps them measures one
+    person's opinion of the drawing and reports it as the drawing.
+
+    So the ink goes, and the record of it stays: how many marks, of what kind, whose, and how far they ran. A
+    page whose only content is annotations is a different case - there the annotations are the drawing, and
+    taking them away would leave nothing to read - so that page keeps them.
+    """
+    annots: list[dict] = []
+    kinds: dict[str, int] = {}
+    who: dict[str, int] = {}
+    ink = 0.0
+    try:
+        a = page.first_annot
+    except Exception:
+        return annots, None
+    while a:
+        try:
+            kind = a.type[1]
+            info = a.info or {}
+            rec = {"type": kind, "rect": [round(v, 2) for v in a.rect],
+                   "content": (info.get("content") or "")[:80], "subject": (info.get("subject") or "")[:80],
+                   "author": (info.get("title") or "")[:60]}
+            annots.append(rec)
+            kinds[kind] = kinds.get(kind, 0) + 1
+            if rec["author"]:
+                who[rec["author"]] = who.get(rec["author"], 0) + 1
+            ink += _annot_length(a)
+        except Exception:
+            pass
+        try:
+            a = a.next
+        except Exception:
+            break
+    if not annots:
+        return annots, None
+    if not _R("pdf.extract.ANNOTATION_INK_IS_REVIEW", ANNOTATION_INK_IS_REVIEW):
+        return annots, {"n": len(annots), "kinds": kinds, "authors": who, "ink_pt": round(ink, 1), "removed": False,
+                        "why": "regeln som lägger påskrift åt sidan är avstängd"}
+    if keep:                              # asked for again by a page that had nothing else on it
+        return annots, {"n": len(annots), "kinds": kinds, "authors": who, "ink_pt": round(ink, 1), "removed": False,
+                        "why": "bladet har ingen egen ritning under påskriften"}
+    try:
+        a = page.first_annot
+        while a:
+            a = page.delete_annot(a)
+    except Exception:
+        return annots, {"n": len(annots), "kinds": kinds, "authors": who, "ink_pt": round(ink, 1), "removed": False,
+                        "why": "påskriften gick inte att lyfta av bladet"}
+    return annots, {"n": len(annots), "kinds": kinds, "authors": who, "ink_pt": round(ink, 1), "removed": True,
+                    "why": "en annotation är någons påskrift på ritningen, inte det ritaren ritade"}
+
+
+def _read_page(doc, pno: int, pdf_path: str, keep_markup: bool = False) -> RawPage | dict:
     """One page's vector content, or the reason it was not read.
 
     Layer ids are numbered within the page, from its own layer names sorted. They used to be handed out in the
@@ -283,7 +368,13 @@ def _read_page(doc, pno: int, pdf_path: str) -> RawPage | dict:
     # coordinates; map them with rotation_matrix so all downstream geometry matches the rendered page.
     M = page.rotation_matrix if rot else None
     rect = page.rect
+    annots, markup = _read_annotations(page, keep=keep_markup)
     drawings = page.get_drawings()
+    if markup and markup.get("removed") and not drawings:
+        # Nothing was drawn under the marks: on this page they are not somebody's comment on a drawing, they
+        # are the drawing. The file itself was never touched, so the page is simply read again from it.
+        with pymupdf.open(pdf_path) as again:
+            return _read_page(again, pno, pdf_path, keep_markup=True)
     layer_ids = {name: i for i, name in enumerate(sorted({d.get("layer") or "" for d in drawings}))}
     paths: list[RawPath] = []
     for seq, d in enumerate(drawings):
@@ -319,16 +410,10 @@ def _read_page(doc, pno: int, pdf_path: str) -> RawPage | dict:
             fonts.append({"xref": f[0], "ext": f[1], "type": f[2], "basefont": f[3], "name": f[4], "encoding": f[5]})
     except Exception:
         pass
-    annots = []
-    try:
-        for a in page.annots():
-            annots.append({"type": a.type[1], "rect": [round(v, 2) for v in a.rect], "content": (a.info.get("content") or "")[:80]})
-    except Exception:
-        pass
     info = PageInfo(index=pno, width=float(rect.width), height=float(rect.height), rotation=rot,
                     mediabox=[round(v, 2) for v in page.mediabox], cropbox=[round(v, 2) for v in page.cropbox],
                     n_images=len(page.get_images()), n_annots=len(annots), n_xobjects=len(xobjs), xobjects=xobjs,
-                    fonts=fonts, annots=annots)
+                    fonts=fonts, annots=annots, markup_set_aside=markup)
     rp = RawPage(info=info, paths=paths, spans=spans)
     rp.input_class = klass.as_dict()
     rp.source_path = pdf_path
