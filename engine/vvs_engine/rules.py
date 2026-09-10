@@ -67,6 +67,12 @@ RULES: tuple[Rule, ...] = (
          "delas vid en skärning. En sådan stump får inte ta ett namn och bära det vidare - som brygga tar den "
          "namnet över glapp som aldrig var anslutningar.",
          "pt", 0.6, 0.0, 5.0, "pipe", True),
+    Rule("measure.measure.DOUBLE_LINE_MAX", G_LEADER, "Så tätt ligger ett rörs två kanter",
+         "Ett grövre rör ritas som två linjer - sina två kanter - några punkter isär, och en etikett med ett "
+         "streck på var kant namnger båda. Två sträckor med samma namn och samma penna som ligger sida vid sida, "
+         "så nära som det här, längs större delen av den kortare, är ett rör: den längre kanten bär metrarna. "
+         "Två rör med samma namn som bara löper bredvid varandra en bit förblir två.",
+         "pt", 8.0, 2.0, 20.0, "pipe", True),
     Rule("semantics.attachment.COLLECTOR_MAX", G_LEADER, "Så lång får en samlingslinje vara",
          "Ritaren drar flera hänvisningslinjer till ett streck och det strecket vidare till röret. Ett sådant "
          "streck på skrivpennan får bära ledaren till röret om det är kort och rakt; en lång linje på "

@@ -79,6 +79,25 @@ ett rör som förklarats. Regeln som lästes skrivs till `drawing-declarations.j
 Det är inget närmaste-antagande: det är ritningens egen regel, skriven i ord, för exakt de rör ritaren inte
 namngett. Utan tabellen ägs ingenting.
 
+### 2c. Vad som är ett rör: streck-prick, ventiler, dubbellinjer
+
+Tre ritkonventioner som läsningen läser som geometri, inte som antaganden (`pipes/representation.py`,
+`measure/measure.py`):
+
+* **Streck-prick-linjen** är ett rör. Pricken är en och en halv punkt lång och exportens avrundning vrider den
+  några grader, så den har ingen riktning att lita på; strecket vars stråle den ligger på gör anspråk på den
+  (`DOT_MAX`). Då är springan streck-till-prick en springa av linjens stil och bryggas, även där en prick
+  saknas. Utan regeln blev nittio meter värmeledning tvåhundrafyrtiosju bitar.
+* **En ventil i linjen** avslutar inte röret. Ritaren drar röret fram till ventilsymbolen, ritar ventilen med
+  symbolpennan och drar vidare på andra sidan. Två fria, kollineära ändar med en liten symbol av en annan
+  penna i springan (`SYMBOL_SPAN`, `SYMBOL_SIZE`) hör ihop: bryggan heter `symbol` i grafen och bär symbolens
+  id.
+* **Ett rör ritat som två linjer** är ett rör. Ett grövre rör ritas som sina två kanter några punkter isär,
+  och etiketten med ett streck på var kant namnger båda. Två sträckor med samma namn och samma penna sida vid
+  sida längs större delen av den kortare (`measure.measure.DOUBLE_LINE_MAX`) räknas en gång: den längre kanten bär
+  metrarna, den andra redovisas som `double_line_m` på raden och i exporten. Två rör med samma namn som bara
+  löper bredvid varandra en bit förblir två.
+
 ## 3. Vilka AI-modeller som används, och exakt hur
 
 Det här är det viktigaste avsnittet att läsa rätt, så det är rakt.

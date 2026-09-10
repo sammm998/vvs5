@@ -5,8 +5,96 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any
 
+import math
+
 from ..pipes.ownership import OwnershipResult, PhysicalPipe, DECLARED_REASON
 from .scale import ScaleResult
+
+# A pipe of some size is drawn as two lines - its two edges - a few points apart, and a label with a tick on
+# each edge names them both. Counting both edges is counting the pipe twice. Two runs of one identity and one
+# pen that lie side by side, this close, for most of the shorter one's length, are one pipe: the longer edge
+# carries the metres, the other is its second edge and carries none. Two pipes of the same name that only run
+# side by side for a stretch stay two pipes.
+DOUBLE_LINE_MAX = 8.0       # pt between the two edges
+DOUBLE_LINE_SHARE = 0.6     # share of the shorter run that has to lie alongside the longer
+TWIN_REASON = "second_edge_of_a_double_line"
+
+
+def _R(rule_id: str, default: float) -> float:
+    try:
+        from ..rules import value
+        return float(value(rule_id, default))
+    except Exception:
+        return default
+
+
+def _segments(p: PhysicalPipe) -> list[tuple[float, float, float, float]]:
+    out = []
+    for poly in p.points or []:
+        for (x0, y0), (x1, y1) in zip(poly, poly[1:]):
+            if (x1 - x0) ** 2 + (y1 - y0) ** 2 > 1e-6:
+                out.append((x0, y0, x1, y1))
+    return out
+
+
+def _alongside(seg, others, dmax: float) -> bool:
+    """The segment's midpoint lies within dmax of one of the other run's segments, at nearly the same angle."""
+    x0, y0, x1, y1 = seg
+    mx, my = (x0 + x1) / 2, (y0 + y1) / 2
+    ang = math.atan2(y1 - y0, x1 - x0)
+    for ox0, oy0, ox1, oy1 in others:
+        if min(ox0, ox1) - dmax > mx or max(ox0, ox1) + dmax < mx or min(oy0, oy1) - dmax > my or max(oy0, oy1) + dmax < my:
+            continue
+        dx, dy = ox1 - ox0, oy1 - oy0
+        L2 = dx * dx + dy * dy
+        t = max(0.0, min(1.0, ((mx - ox0) * dx + (my - oy0) * dy) / L2))
+        cx, cy = ox0 + t * dx, oy0 + t * dy
+        if math.hypot(mx - cx, my - cy) > dmax:
+            continue
+        da = abs(ang - math.atan2(dy, dx)) % math.pi
+        if min(da, math.pi - da) <= math.radians(4.0):
+            return True
+    return False
+
+
+def twin_edges(pipes: list[PhysicalPipe]) -> dict[str, str]:
+    """physical_pipe_id -> the pipe it is the second edge of. Runs are compared within one pen and one identity;
+    the longer run keeps the metres. A run that is someone's second edge is never anyone's first."""
+    dmax = _R("measure.measure.DOUBLE_LINE_MAX", DOUBLE_LINE_MAX)
+    share = DOUBLE_LINE_SHARE
+    groups: dict[tuple[str, str], list[PhysicalPipe]] = defaultdict(list)
+    for p in pipes:
+        groups[(p.family, p.identity.key)].append(p)
+    out: dict[str, str] = {}
+    for key, grp in groups.items():
+        if len(grp) < 2:
+            continue
+        segs = {p.physical_pipe_id: _segments(p) for p in grp}
+        length = {p.physical_pipe_id: sum(math.hypot(x1 - x0, y1 - y0) for x0, y0, x1, y1 in segs[p.physical_pipe_id]) for p in grp}
+        boxes = {}
+        for p in grp:
+            ss = segs[p.physical_pipe_id]
+            if ss:
+                boxes[p.physical_pipe_id] = (min(min(a[0], a[2]) for a in ss), min(min(a[1], a[3]) for a in ss),
+                                             max(max(a[0], a[2]) for a in ss), max(max(a[1], a[3]) for a in ss))
+        by_len = sorted(grp, key=lambda p: (-length[p.physical_pipe_id], p.physical_pipe_id))
+        for i, b in enumerate(by_len):
+            bid = b.physical_pipe_id
+            if bid in out or not segs[bid] or length[bid] <= 0:
+                continue
+            for a in by_len[:i]:
+                aid = a.physical_pipe_id
+                if aid in out or aid not in boxes or bid not in boxes:
+                    continue
+                A, B = boxes[aid], boxes[bid]
+                if A[0] - dmax > B[2] or A[2] + dmax < B[0] or A[1] - dmax > B[3] or A[3] + dmax < B[1]:
+                    continue
+                beside = sum(math.hypot(x1 - x0, y1 - y0) for (x0, y0, x1, y1) in segs[bid]
+                             if _alongside((x0, y0, x1, y1), segs[aid], dmax))
+                if beside >= share * length[bid]:
+                    out[bid] = aid
+                    break
+    return out
 
 
 @dataclass
@@ -21,6 +109,8 @@ class PipeMeasure:
     reasons: list[str] = field(default_factory=list)
     hatched_pdf_units: float = 0.0
     hatched_m: float | None = None      # part of the horizontal length running inside a hatched area
+    twin_of: str | None = None          # the run this one is the second drawn edge of: its metres are counted there
+    twin_pdf_units: float = 0.0
 
 
 def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str, list[dict]],
@@ -35,13 +125,20 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
     # single run can be read as confidently measured when the sheet's own scale is unsettled.
     scale_note = (f"scale_{scale.state.lower()}:{scale.reason}"
                   if scale.state not in ("VERIFIED",) and mpp is not None else None)
+    twins = twin_edges(own.pipes)
     for p in own.pipes:
         # hatched length is measured on drawn primitives; scale it by the bridged-gap share of the run
         factor = (p.length_pt / p.raw_length_pt) if p.raw_length_pt > 0 else 1.0
         hpt = min((hatched_pt or {}).get(p.physical_pipe_id, 0.0) * factor, p.length_pt)
         hpu = p.length_pt - hpt          # horizontal quantity = drawn length outside hatched (wall) areas
+        twin_of = twins.get(p.physical_pipe_id)
+        twin_pu = 0.0
+        if twin_of is not None:
+            twin_pu, hpu = hpu, 0.0      # the second edge of a double line: the metres are its partner's
         hm = hpu * mpp if mpp is not None else None
         reasons = []
+        if twin_of is not None:
+            reasons.append(f"{TWIN_REASON}:{twin_of}")
         if mpp is None:
             reasons.append("no_verified_scale")
         elif scale_note:
@@ -53,7 +150,8 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
             reasons.extend(p.frontier_reasons)
         out.append(PipeMeasure(pipe=p, horizontal_pdf_units=hpu, horizontal_m=hm, vertical_m=vert, vertical_evidence=vev,
                                total_m=total, state=state, reasons=reasons, hatched_pdf_units=hpt,
-                               hatched_m=(hpt * mpp if mpp is not None else None)))
+                               hatched_m=(hpt * mpp if mpp is not None else None),
+                               twin_of=twin_of, twin_pdf_units=twin_pu))
     return out
 
 
@@ -99,7 +197,12 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         r = rows.setdefault(k, {"designation": m.pipe.identity.display, "base": m.pipe.identity.base, "dn": m.pipe.identity.dn, "system": m.pipe.identity.system,
                                 "physical_pipe_count": 0, "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0,
                                 "confirmed_total_m": 0.0, "horizontal_pdf_units": 0.0, "ambiguous_m": 0.0, "vertical_known": False,
-                                "in_hatched_area_m": 0.0, "declared_m": 0.0, "state": "CONFIRMED", "pipe_ids": []})
+                                "in_hatched_area_m": 0.0, "declared_m": 0.0, "double_line_m": 0.0, "state": "CONFIRMED", "pipe_ids": []})
+        if m.twin_of is not None:
+            # the second edge of a double line: its metres are the partner's, and it is not another run
+            r["double_line_m"] += m.twin_pdf_units * mpp if mpp else 0.0
+            r["pipe_ids"].append(m.pipe.physical_pipe_id)
+            continue
         r["physical_pipe_count"] += 1
         if m.horizontal_m is not None and DECLARED_REASON in (m.pipe.evidence or []):
             r["declared_m"] += m.horizontal_m       # named by the sheet's written rule, not by a label
@@ -146,12 +249,13 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         r.setdefault("riser_count_from_labels", len((label_risers or {}).get(k, [])))
         r.setdefault("label_count", (label_counts or {}).get(k, 0))
         r.setdefault("in_hatched_area_m", 0.0)
+        r.setdefault("double_line_m", 0.0)
         r.setdefault("ambiguous_pdf_units", 0.0)
         if r["physical_pipe_count"] == 0 and r["ambiguous_pdf_units"] == 0 \
                 and max(r["riser_count"], r["riser_count_from_labels"]) > 0:
             r["state"] = "RISER_LABELS_ONLY"
         for f in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
-                  "horizontal_pdf_units", "in_hatched_area_m", "ambiguous_pdf_units"):
+                  "horizontal_pdf_units", "in_hatched_area_m", "ambiguous_pdf_units", "double_line_m"):
             r[f] = round(r[f], 3)
         r["vertical_m"] = r["confirmed_vertical_m"] if r["vertical_known"] else "UNKNOWN"
         out.append(r)

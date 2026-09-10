@@ -213,7 +213,13 @@ def _fullest(ids, stem: str, dn: int | None) -> str:
     said = [i for i in ids if i.stem == stem and i.qualifier is not None and (dn is None or i.dn == dn)]
     if not said:
         said = [i for i in ids if i.stem == stem and i.dn is not None and (dn is None or i.dn == dn)]
-    return min((i.display for i in said), key=lambda t: (-len(t), t)) if said else stem
+    if not said:
+        return stem
+    # the fuller name - the one with more parts, since a part says how the run is insulated or qualified - wins;
+    # among names with the same parts the one most of the sheet's labels use, so that a stray letter one
+    # dimension row picked up from its neighbour ("110L" beside eight "110") does not rename the run
+    votes = Counter(i.display for i in said)
+    return min(votes, key=lambda t: (-len([x for x in t.split("-") if x]), -votes[t], -len(t), t))
 
 
 DECLARED_REASON = "DECLARED_CONNECTION_PIPE_BY_SHEET_TABLE"
