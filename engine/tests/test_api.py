@@ -713,3 +713,49 @@ def test_the_service_refuses_to_run_on_the_secret_that_is_in_the_source(client):
     finally:
         _os.environ.clear()
         _os.environ.update(real)
+
+
+def test_a_file_that_is_not_the_expected_drawing_answers_in_a_sentence(client, tmp_path):
+    """Den sortens fil en kund laddar upp först.
+
+    Ett tydligt fel är ett svar. En stackspårning i felrutan är det inte: den säger ingenting till en mängdare
+    och lämnar ut serverns filvägar och moduler på köpet. Och en lösenordsskyddad PDF ska stoppas där den
+    laddas upp, inte falla på jobbkön långt från den som skickade den.
+    """
+    import pymupdf
+    r = client.post("/api/auth/register", json={"email": "skrap@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Skräp", "description": ""}, headers=H).json()
+
+    def up(name, data):
+        return client.post(f"/api/projects/{p['id']}/drawings",
+                           files={"file": (name, data, "application/pdf")}, headers=H)
+
+    assert up("tom.pdf", b"").status_code == 400
+    assert up("text.pdf", b"det har ar inte en pdf alls\n" * 40).status_code == 400
+    assert up("bild.png", b"%PDF-1.4 ...").status_code == 400, "bara PDF stöds"
+
+    lock = str(tmp_path / "las.pdf")
+    d = pymupdf.open(); d.new_page(width=842, height=595)
+    d.save(lock, encryption=pymupdf.PDF_ENCRYPT_AES_256, owner_pw="o", user_pw="u"); d.close()
+    with open(lock, "rb") as fh:
+        r2 = up("las.pdf", fh.read())
+    assert r2.status_code == 400
+    assert "lösenordsskyddad" in r2.json()["detail"], r2.json()
+
+    # en giltig men tom vektorritning tas emot och avvisas av läsningen, med ett skäl en mängdare förstår
+    blank = str(tmp_path / "blank.pdf")
+    d = pymupdf.open(); d.new_page(width=842, height=595); d.save(blank); d.close()
+    with open(blank, "rb") as fh:
+        got = up("blank.pdf", fh.read())
+    assert got.status_code == 200, got.text
+    j = client.post(f"/api/drawings/{got.json()['id']}/analyze", headers=H).json()
+    for _ in range(240):
+        j = client.get(f"/api/jobs/{j['id']}", headers=H).json()
+        if j["status"] in ("COMPLETED", "FAILED"):
+            break
+        time.sleep(0.4)
+    assert j["status"] == "FAILED", j["status"]
+    assert j["error"] and "vektor" in j["error"].lower(), j["error"]
+    assert "Traceback" not in j["error"] and "/home/" not in j["error"] and ".py" not in j["error"], (
+        "felrutan visas för kunden; en stackspårning där lämnar ut serverns insida")

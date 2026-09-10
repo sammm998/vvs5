@@ -7,12 +7,14 @@ import time
 import json
 import sys
 import threading
-import traceback
+import logging
 from concurrent.futures import ThreadPoolExecutor
 
 from .config import settings
 from .db import AnalysisJob, Drawing, SessionLocal
 from .storage import storage
+
+log = logging.getLogger(__name__)
 
 ENGINE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "engine"))
 if ENGINE_DIR not in sys.path:
@@ -249,7 +251,13 @@ def run_job(job_id: str) -> None:
                    "utifrån bildpunkter, så en skannad eller bildbaserad PDF kan inte mängdas. Ladda upp filen som "
                    f"vektor-PDF (exporterad från CAD, inte skannad). Klassificering: {e}")
     except Exception as e:  # noqa: BLE001
-        _set(job_id, status="FAILED", stage="FAILED", error=f"{e}\n{traceback.format_exc()[-4000:]}", finished_at=dt.datetime.now(dt.timezone.utc))
+        # Felet som skrivs på jobbet visas för den som laddade upp ritningen. En stackspårning där är två fel
+        # på en gång: den säger ingenting till en mängdare, och den lämnar ut serverns filvägar och moduler.
+        # Spårningen hör hemma i loggen, där den som driver tjänsten kan läsa den.
+        log.exception("Analysen misslyckades för jobb %s", job_id)
+        _set(job_id, status="FAILED", stage="FAILED",
+             error=f"Analysen kunde inte slutföras: {type(e).__name__}: {e}"[:600],
+             finished_at=dt.datetime.now(dt.timezone.utc))
 
 
 def submit(job_id: str) -> None:

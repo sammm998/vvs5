@@ -215,9 +215,19 @@ async def upload_drawing(project_id: str, file: UploadFile = File(...), user: Us
     import pymupdf
     try:
         doc = pymupdf.open(stream=data, filetype="pdf")
-        n_pages = len(doc); doc.close()
+        # En lösenordsskyddad PDF går att öppna men inte att läsa. Släpps den igenom faller läsningen först på
+        # jobbkön, långt från den som laddade upp den, och svaret blir "document closed or encrypted" i stället
+        # för den enda mening som hjälper: ta bort skyddet och ladda upp igen.
+        locked = bool(doc.needs_pass or doc.is_encrypted)
+        n_pages = len(doc)
+        doc.close()
     except Exception:
         raise HTTPException(400, "PDF-filen kunde inte läsas")
+    if locked:
+        raise HTTPException(400, "PDF-filen är lösenordsskyddad och går inte att läsa. Spara om den utan "
+                                 "lösenord och ladda upp igen.")
+    if not n_pages:
+        raise HTTPException(400, "PDF-filen innehåller inga sidor")
     d = Drawing(project_id=p.id, filename=os.path.basename(file.filename), storage_key="", sha256=hashlib.sha256(data).hexdigest(),
                 size_bytes=len(data), n_pages=n_pages)
     db.add(d); db.flush()
