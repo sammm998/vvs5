@@ -20,7 +20,8 @@ from .pipes.representation import (Prim, RepresentationFamily, build_graph, chai
                                    graph_tolerances, split_prims_at_points)
 from .profile.layers import compute_layer_stats
 from .profile.hatch import HatchFamily, discover_hatch, inside_hatch
-from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, extract_designations, free_segments, merge_lines)
+from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, extract_designations,
+                                    free_segments, merge_lines, one_reading_per_place)
 from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, layer_system_tokens, leader_contacts,
                                    resolve_block, system_layer_match)
 from .semantics.legend import DrawingLegend, adopt, assign_roles, read_legend, roles_of
@@ -728,6 +729,11 @@ def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     if progress:
         progress("READING_DESIGNATIONS")
     lines = merge_lines(srows + vtext.rows, page.info.index)
+    # Ett blad som bär sin text två gånger - som text i filen och som strecken som ritar den - ger två rader
+    # per etikett, och blocket ser då ut som en staplad etikett som pekar på ett enda rör. En läsning per
+    # ställe, den bättre av de två.
+    twice: dict = {}
+    lines = one_reading_per_place(lines, twice)
     consumed = set(pid for r in vtext.rows for pid in r.provenance) | set(pid for m in vtext.marks for pid in m.path_ids)
     free = free_segments(page, consumed)
     blocks = build_blocks(page, lines, free)
@@ -1042,7 +1048,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             contacts = leader_contacts(ld, gidx, pf, paths)
             if not contacts and ld.length < 2.5 * max(block.height, 1.0) and not ld.end_marks:
                 continue        # dangling frame stub, not a leader
-            anchors.extend(resolve_block(block, rows, ld, contacts, system_tokens, spelled_out, paths))
+            anchors.extend(resolve_block(block, rows, ld, contacts, system_tokens, spelled_out, paths, gidx))
         anchors.sort(key=lambda a: a.anchor_id)
         stats = {"votes": dict(votes.most_common()), "token_votes": dict(token_votes.most_common()), "candidate_families": sorted(pipe_families), "tick_votes": dict(tick_votes.most_common()),
                  "leader_votes": dict(leader_votes.most_common()), "declined_families": declined,

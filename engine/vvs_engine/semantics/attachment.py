@@ -528,9 +528,66 @@ def parallel_runs(contacts: list[Contact], paths: dict) -> list[list[Contact]] |
             runs.append((o, [c]))
     return [r for _, r in runs]
 
+def bundle_at(contacts: list[Contact], gidx: GeometryIndex, want: int, skip: set[str],
+              paths: dict) -> list[list[Contact]] | None:
+    """De parallella rören vid kontaktpunkten, när en etikett namnger fler än linjen råkade träffa.
+
+    En ritare som drar fram och retur bredvid varandra skriver beteckningen två gånger på två rader och drar EN
+    hänvisningslinje till paret. Linjens ände landar på det ena röret. Läsningen såg då en etikett med två rader
+    som pekar på ett enda rör, kunde inte avgöra vilken rad som gällde, och kallade hela fallet tvetydigt - så
+    både fram och retur blev omätta. Samma sak när KV, VV och VVC går i samma stråk under en etikett med tre
+    rader.
+
+    Så här letas partnern upp: bland det bladet ritar med SAMMA penna, parallellt inom sex grader, och inom
+    buntens bredd tvärs linjen. Och antalet måste stämma exakt - hittas inte lika många rör som etiketten har
+    rader avgörs ingenting och fallet står kvar som tvetydigt. Det är skillnaden mot att gissa: två rader och
+    två rör är ett par, två rader och tre rör är en fråga ritningen inte har svarat på.
+    """
+    if not contacts or want < 2:
+        return None
+    base = None
+    for c in contacts:
+        p = paths.get(c.pid)
+        if p is not None and c.seg_index < len(p.segs) and p.segs[c.seg_index].length > 1e-6:
+            base = (c, p.segs[c.seg_index])
+            break
+    if base is None:
+        return None
+    c0, s0 = base
+    a0 = math.degrees(math.atan2(s0.y1 - s0.y0, s0.x1 - s0.x0)) % 180
+    th = math.radians(a0)
+    nx, ny = -math.sin(th), math.cos(th)
+    span = _R("semantics.attachment.BUNDLE_SPAN", BUNDLE_SPAN)
+
+    def across(sg):
+        return (sg.x0 + sg.x1) / 2 * nx + (sg.y0 + sg.y1) / 2 * ny
+
+    o0 = across(s0)
+    found: dict[int, Contact] = {}
+    for p, k, d in gidx.hits(c0.point[0], c0.point[1], tol=span, skip_pids=skip):
+        if family_of(p) != c0.family or k >= len(p.segs):
+            continue
+        sg = p.segs[k]
+        if sg.length < 1e-6:
+            continue
+        a = math.degrees(math.atan2(sg.y1 - sg.y0, sg.x1 - sg.x0)) % 180
+        if min(abs(a - a0), 180 - abs(a - a0)) > 6.0:
+            continue
+        off = across(sg)
+        if abs(off - o0) > span:
+            continue
+        key = round(off / 1.2)
+        if key not in found or d < found[key].distance:
+            found[key] = Contact(point=c0.point, kind="bundle_partner", family=c0.family, pid=p.pid,
+                                 seg_index=k, distance=d, via=c0.pid)
+    if len(found) != want:
+        return None
+    return [[found[k]] for k in sorted(found)]
+
+
 def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, contacts: list[Contact],
                   system_tokens_in_drawing: set[str], spelled_out: frozenset[str] = frozenset(),
-                  paths: dict | None = None) -> list[PipeCodeAnchor]:
+                  paths: dict | None = None, gidx: GeometryIndex | None = None) -> list[PipeCodeAnchor]:
     """Map designation rows of a block to contacted vector-family groups (bijection required)."""
     groups: dict[str, list[Contact]] = defaultdict(list)
     for c in contacts:
@@ -603,8 +660,21 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
     settles_nothing = not any(len(match[d.did]) == 1 and len(owner[match[d.did][0]]) == 1 for d in rows)
     if paths is not None and settles_nothing:
         runs = parallel_runs([c for g in gkeys for c in groups[g]], paths)
+        if (runs is None or len(runs) != len(rows)) and gidx is not None:
+            # linjen nådde färre rör än etiketten namnger: se efter om resten går parallellt bredvid
+            runs = bundle_at([c for g in gkeys for c in groups[g]], gidx, len(rows), set(ld.path_ids), paths) or runs
         if runs is not None and len(runs) == len(rows):
             order = sorted(rows, key=lambda d: d.row_index)
+            # Bär varje rad samma beteckning finns ingenting att avgöra: ritaren har skrivit ut att alla rören i
+            # bunten är det röret. Det är fram och retur av samma värme- eller kylledning, skrivet två gånger
+            # över paret, eller tre likadana rader över tre rör i ett stråk. Läsningen kallade det tvetydigt och
+            # väntade på ett utpekande som aldrig kunde komma - det finns inget att peka ut när svaret är samma
+            # oavsett vilken rad som gäller vilket rör. Tio meter stråk är då tjugo meter rör, som ritningen
+            # säger, och inte noll.
+            if len({(d.text or "").strip().upper() for d in order}) == 1:
+                return [mk(d, "VERIFIED_PIPE_ATTACHMENT", "every_row_of_the_bundle_names_the_same_run", runs[i],
+                           {"bundle": {"pos": i, "n": len(order), "all_rows_agree": True}})
+                        for i, d in enumerate(order)]
             return [mk(d, "AMBIGUOUS_PIPE_ATTACHMENT", "multi_row_bundle_awaiting_elimination",
                        [c for r in runs for c in r],
                        {"bundle": {"pos": i, "n": len(order),

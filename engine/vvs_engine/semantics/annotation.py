@@ -12,6 +12,24 @@ from typing import Any
 
 from ..geometry.core import GridIndex, Seg, bbox_expand, bbox_intersects, bbox_union, stable_id
 from ..pdf.extract import RawPage, RawPath
+
+from .. import rules as _rules
+
+
+def _R(rule_id, default):
+    """Vad regeln står på för den läsning som körs på den här tråden."""
+    return _rules.value(rule_id, default)
+
+
+# Hur mycket av den mindre rutan som måste ligga inuti den större för att det ska vara samma text ritad två
+# gånger. Halva rutan är långt över vad två olika etiketter någonsin delar och långt under vad två läsningar av
+# samma etikett delar - de ligger i praktiken ovanpå varandra.
+SAME_PLACE_SHARE = 0.5
+
+# Hur mycket längre bort blockets näst närmaste etikett måste ligga för att den närmaste ska få svara. Mätt på
+# ritningar där två etiketter står staplade över var sitt rör: den som linjen hör till ligger tre till fem
+# gånger närmare, och de fall där de ligger lika nära är fall ritningen inte har avgjort.
+UNIT_MARGIN = 1.5
 from ..text.model import Glyph, TextRow, make_row, project, row_axes
 from .grammar import DesignationGrammar, NOMINAL_SIZES, compress_pattern, dn_plausible, is_code_like, split_tokens, strip_count_prefix, word_readings
 
@@ -19,6 +37,68 @@ from .grammar import DesignationGrammar, NOMINAL_SIZES, compress_pattern, dn_pla
 # ----------------------------------------------------------------------------------------------------------------
 # lines (rows merged along the baseline)
 # ----------------------------------------------------------------------------------------------------------------
+
+def _reading_quality(line: TextRow) -> tuple:
+    """Hur väl en rad lästes, för att välja mellan två läsningar av samma rad.
+
+    Sökbar text är vad filen säger; återskapade glyfer är vad formerna ser ut som. Finns båda vinner filen, och
+    därefter den läsning som har färst tecken den inte kunde namnge, och sedan den vars glyfer den var säkrast
+    på. Sist raden själv, så att samma blad alltid läses likadant.
+    """
+    gl = getattr(line, "glyphs", ()) or ()
+    scores = [getattr(g, "score", 1.0) for g in gl]
+    return (1 if getattr(line, "source", "") == "text" else 0,
+            -int(getattr(line, "unknown_chars", 0) or 0),
+            sum(scores) / len(scores) if scores else 0.0,
+            len(line.text or ""),
+            getattr(line, "rid", ""))
+
+
+def _overlap_share(a: tuple, b: tuple) -> float:
+    """Hur stor del av den mindre rutan som ligger inuti den större."""
+    ix = min(a[2], b[2]) - max(a[0], b[0])
+    iy = min(a[3], b[3]) - max(a[1], b[1])
+    if ix <= 0 or iy <= 0:
+        return 0.0
+    small = min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1]))
+    return (ix * iy) / small if small > 0 else 0.0
+
+
+def one_reading_per_place(rows: list[TextRow], report: dict | None = None) -> list[TextRow]:
+    """En läsning per ställe på bladet.
+
+    Ett blad kan bära sin text två gånger: en gång som text i filen och en gång som strecken som ritar den,
+    lagda på varandra så att en läsare ser en enda. Läsningen såg två, och den sämre halvan var skräp - `I I`
+    där filen säger `12`, `O 8` där den säger `08`.
+
+    Det kostar mer än några felstavade koder. Två läsningar av samma etikett hamnar i samma etikettblock, och
+    blocket ser då ut som en staplad etikett med två rader som pekar på ett enda rör - det som en ritare skriver
+    när KV, VV och VVC går i samma stråk. Läsningen kan inte veta vilken rad som namnger röret, kallar fallet
+    tvetydigt och lägger ner. På ett blad av det slaget blev åttiosju beteckningar av fyrtioen verkliga, arton
+    av trettio rörnamn tvetydiga på just det skälet, och bladet mätte noll meter av tvåtusen.
+
+    Två rader vars rutor täcker varandra i båda led är alltså samma text ritad två gånger, och den bättre
+    läsningen behålls. Det krävs överlappning i BÅDA led med flit: två olika etiketter på samma rad, en till
+    vänster och en till höger, är två etiketter och får aldrig slås ihop.
+    """
+    kept: list[TextRow] = []
+    dropped = 0
+    for line in sorted(rows, key=lambda r: (r.bbox[1], r.bbox[0], r.rid)):
+        for i, other in enumerate(kept):
+            if _overlap_share(line.bbox, other.bbox) <= _R("semantics.annotation.SAME_PLACE_SHARE", SAME_PLACE_SHARE):
+                continue
+            dropped += 1
+            if _reading_quality(line) > _reading_quality(other):
+                kept[i] = line
+            break
+        else:
+            kept.append(line)
+    if report is not None:
+        report["rows_in"] = len(rows)
+        report["rows_kept"] = len(kept)
+        report["read_twice"] = dropped
+    return kept
+
 
 def merge_lines(rows: list[TextRow], page: int) -> list[TextRow]:
     """Merge rows sharing angle + baseline whose gap is <= 1.6 H into one line (words separated by a space)."""
@@ -190,7 +270,40 @@ class AnnotationBlock:
                     d = math.hypot(c[0] - pt[0], c[1] - pt[1])
                     if d <= 0.35 * max(self.height, 1.0) and (best is None or d < best[0]):
                         best = (d, u)
-        return best[1] if best else None
+        if best is not None:
+            return best[1]
+        return self._nearest_unit(pt)
+
+    def _nearest_unit(self, pt: tuple[float, float]) -> list[int] | None:
+        """Vilken av blockets etiketter en linje hör till, när den inte startar tillräckligt nära någon av dem.
+
+        Att linjen hör till det HÄR blocket är redan avgjort - det avgjordes när linjen hittades. Kvar är bara
+        frågan vilken av blockets etiketter, och att inte svara på den kostar allt: den som frågade tog då
+        blockets alla rader som en enda staplad etikett, och två etiketter över var sitt rör blev ett fall
+        läsningen inte kunde avgöra och lade ner. På ett blad av det slaget blev arton av trettio rörnamn
+        tvetydiga på just det, och bladet mätte noll meter av tvåtusen.
+
+        Så närmast vinner - men bara när den är TYDLIGT närmast, med samma disciplin som gäller när en
+        hänvisningslinje stannar strax intill ett rör: den näst närmaste måste ligga betydligt längre bort.
+        Ligger de lika nära har ritningen inte svarat, och då svarar inte läsningen heller.
+        """
+        if len(self.units) < 2:
+            return self.units[0] if self.units else None
+        ds: list[tuple[float, list[int]]] = []
+        for u in self.units:
+            d = min((math.hypot(x - pt[0], y - pt[1])
+                     for ri in u
+                     for x, y in ([(ep[0], ep[1]) for ul in self.rows[ri].underline
+                                   for ep in ((ul.seg.x0, ul.seg.y0), (ul.seg.x1, ul.seg.y1))]
+                                  + [(self.rows[ri].line.bbox[i], self.rows[ri].line.bbox[j])
+                                     for i, j in ((0, 1), (2, 1), (0, 3), (2, 3))])), default=None)
+            if d is not None:
+                ds.append((d, u))
+        if len(ds) < 2:
+            return ds[0][1] if ds else None
+        ds.sort(key=lambda t: t[0])
+        margin = _R("semantics.annotation.UNIT_MARGIN", UNIT_MARGIN)
+        return ds[0][1] if ds[1][0] >= margin * max(ds[0][0], 1e-6) else None
 
     @property
     def boundary_points(self) -> list[tuple[float, float]]:
