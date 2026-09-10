@@ -364,9 +364,24 @@ ladda upp, mängda, läs av API:t - och poängsätts efteråt av ett skript som 
 Två tal bär: **täckning** (andel av facits meter läsningen äger under rätt namn) och **falskhet** (meter under
 fel namn, i andel av facit). Bara de system facit faktiskt täcker poängsätts.
 
-Senaste grinden: **56,1 % täckning, 12,4 % falskt**, 245 av 365 beteckningar rätt. Kurvan över de senaste
-rättelserna gick 49,6 → 56,1 % täckning och 18,1 → 12,4 % falskt, och det är den andra siffran som varit
-svårast att sänka - varje regel som tar bort påhittade meter prövas mot att den inte tar riktiga med sig.
+Senaste grinden: **79,7 % täckning, 26,8 % falskt**, 268 av 365 beteckningar rätt. Kurvan över de senaste
+rättelserna, en regel i taget:
+
+| grind | regel | täckning | falskt |
+|---|---|---|---|
+| 45 | samlarlinjen bär ledaren till röret | 56,1 % | 12,5 % |
+| 46 | bladets tabell namnger de onämnda kopplingsledningarna (§2b) | 76,5 % | 22,2 % |
+| 47 | streck-prick-linjen är ett rör; en ventil avslutar det inte (§2c) | 79,5 % | 27,5 % |
+| 48 | dubbellinjen viks ihop - för brett: DN16-buntar vek sig också | 72,7 % | 22,7 % |
+| 49 | dubbellinjen följer diametern i skala; pricken bryggas på geometrin; tabellen namnger bara korta sträckor | 79,7 % | 26,8 % |
+
+Det falska steg med täckningen, och det är den siffran som ska ner. Där den kommer ifrån, blad för blad:
+en del är facit-policy som läsningen inte kan veta (kopplingsledningar och avloppsgrenar som facit inte räknat
+på vissa blad men på andra; rör ritade utanför bladets egen del av byggnaden, bortom "DEL 21 | DEL 22"-linjen,
+som facit inte tar med), en del är riktiga överanspråk: värmeledningar där DN15-etiketterna flödar in i en
+DN22-stam som bara har en egen etikett vid stigaren, och rör ritade som par (tillopp och retur på samma penna)
+där facit räknar paret en gång. Nästa steg är kända: ventilernas egna beteckningar (AV601-22, RV601-15) som
+dimensionsgräns i linjen, och bladets delgräns som klippning.
 
 Det som fattas i täckningen är till största delen det systemet vägrar gissa: rör som ingen hänvisningslinje når,
 och blad exporterade utan lagernamn där väggar och rör ritas med samma penna. Där står metrarna som *onämnda*
