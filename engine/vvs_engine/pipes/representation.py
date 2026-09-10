@@ -25,6 +25,11 @@ def _R(rule_id, default):
 
 
 TOUCH_TOL = 0.15
+# A stroke shorter than this is a dot of the line style - the dot of a dash-dot line - and has no direction of
+# its own: at a point and a half long, the export's rounding turns it a few degrees, and a collinearity test
+# that trusts its angle finds every dash-to-dot gap "not collinear" and breaks the run at every dot. A dot
+# never claims a continuation; it is claimed, by the dash whose ray it lies on.
+DOT_MAX = 2.5
 
 
 @dataclass(frozen=True)
@@ -411,6 +416,8 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
     deg1 = [n for n in nodes.values() if n.degree == 1]
     for n in deg1:
         q = pmap[n.prims[0]]
+        if q.seg.length <= DOT_MAX:
+            continue                      # a dot's direction is noise: it never claims, it gets claimed
         # direction pointing outward from the node
         far = q.b if dist(q.a, (n.x, n.y)) < dist(q.b, (n.x, n.y)) else q.a
         dx, dy = n.x - far[0], n.y - far[1]
@@ -426,8 +433,13 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
             if pid2 == q.prim_id:
                 continue
             r = pmap[pid2]
-            if not collinear(q.seg, r.seg, ang_tol=tol.ang_tol, off_tol=tol.off_tol):
+            is_dot = r.seg.length <= DOT_MAX
+            if not is_dot and not collinear(q.seg, r.seg, ang_tol=tol.ang_tol, off_tol=tol.off_tol):
                 continue
+            if is_dot:
+                # the whole dot has to sit on the dash's own ray, not only the end nearest the gap
+                if any(abs(-(e[0] - n.x) * uy + (e[1] - n.y) * ux) > tol.off_tol + 0.15 for e in (r.a, r.b)):
+                    continue
             # nearest endpoint of r ahead of the node
             for ep in (r.a, r.b):
                 vx, vy = ep[0] - n.x, ep[1] - n.y
