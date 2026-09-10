@@ -82,7 +82,9 @@ def test_a_borrowed_list_names_the_pipes_the_sheet_never_lists():
     assert borrowed.systems() == {"KV01", "S01"}
     assert borrowed.names_a_pipe(D("S01-S13-110", "S01", 110))
     assert not borrowed.names_a_pipe(D("TS1", "TS1", None))
-    assert [e.role_from for e in borrowed.entries if e.code == "S01"] == ["other_sheet"]
+    # Rollen kommer nu ur listans egna ord - "SPILLVATTEN" säger vad S01 är - och behöver inget annat blad.
+    # Att veta det av raden själv är starkare än att ärva det, och när orden räcker används de.
+    assert [e.role_from for e in borrowed.entries if e.code == "S01"] == ["the_list_says_so"]
 
 
 def test_a_borrowed_list_lends_no_geometry():

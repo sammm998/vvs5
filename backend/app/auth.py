@@ -39,3 +39,23 @@ def current_user(token: str = Depends(oauth2), db: Session = Depends(get_db)) ->
     if user is None:
         raise HTTPException(status_code=401, detail="Okänd användare")
     return user
+
+
+def current_admin(user: User = Depends(current_user)) -> User:
+    """The one gate the service side sits behind.
+
+    Every admin route depends on this and not on a check written out inside the route, because a check written
+    out inside a route is a check somebody forgets to write in the next one. A member reaching an admin route is
+    told it is not theirs, not that it does not exist: pretending the page is missing only makes them ask
+    support what happened to it.
+    """
+    if (user.role or "member") != "admin":
+        raise HTTPException(status_code=403, detail="Det här är administratörens sidor")
+    return user
+
+
+def current_staff(user: User = Depends(current_user)) -> User:
+    """A partner sees their own referrals and their own commission; an admin sees everyone's."""
+    if (user.role or "member") not in ("admin", "partner"):
+        raise HTTPException(status_code=403, detail="Kräver partner- eller administratörsbehörighet")
+    return user

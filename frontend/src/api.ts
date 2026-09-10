@@ -91,7 +91,67 @@ export const api = {
   setRule: (id: string, body: any) =>
     req(`/api/rules/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   fetchBlob: async (path: string) => { const res = await fetch(path, { headers: { Authorization: `Bearer ${getToken()}` } }); if (!res.ok) throw new Error("Hämtning misslyckades"); return res.blob(); },
+
+  // ---- att driva tjänsten -------------------------------------------------------------------------------
+  myRole: () => req("/api/me/role"),
+  adm: (path: string) => req(`/api/admin/${path}`),
+  admPut: (path: string, body?: any) =>
+    req(`/api/admin/${path}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) }),
+  admPost: (path: string, body: any) =>
+    req(`/api/admin/${path}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+
+  // ---- akademin -----------------------------------------------------------------------------------------
+  progress: () => req("/api/academy/progress"),
+  saveProgress: (course: string, body: any) =>
+    req(`/api/academy/progress/${course}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+
+  // ---- egna markeringar på ritningen --------------------------------------------------------------------
+  markups: (drawingId: string, page: number) => req(`/api/drawings/${drawingId}/markups?page=${page}`),
+  addMarkup: (drawingId: string, body: any) =>
+    req(`/api/drawings/${drawingId}/markups`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  updateMarkup: (drawingId: string, id: string, body: any) =>
+    req(`/api/drawings/${drawingId}/markups/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  deleteMarkup: (drawingId: string, id: string) =>
+    req(`/api/drawings/${drawingId}/markups/${id}`, { method: "DELETE" }),
 };
+
+/* Vad besökaren gjorde, samlat ihop och skickat sällan.
+ *
+ * En händelse per anrop skulle betyda ett nätverksanrop per klick, och det är gränssnittets egen svarstid som
+ * betalar för det. Så de samlas i en hink och töms med några sekunders mellanrum, och när fliken stängs.
+ * Sessionsnyckeln byts när fliken stängs: den finns för att kunna räkna en besökare en gång i ett A/B-prov,
+ * inte för att kunna följa någon.
+ */
+type Ev = { name: string; path?: string; x?: number; y?: number; target?: string; experiment?: string; variant?: string; meta?: any };
+const bucket: Ev[] = [];
+let flushing: any = null;
+
+export function sessionKey(): string {
+  try {
+    let k = sessionStorage.getItem("vvs_session");
+    if (!k) { k = Math.random().toString(36).slice(2) + Date.now().toString(36); sessionStorage.setItem("vvs_session", k); }
+    return k;
+  } catch { return "anon"; }
+}
+
+export function flushEvents(useBeacon = false) {
+  if (!bucket.length) return;
+  const body = JSON.stringify({ session: sessionKey(), events: bucket.splice(0, 60) });
+  if (useBeacon && navigator.sendBeacon) {
+    navigator.sendBeacon("/api/events", new Blob([body], { type: "application/json" }));
+    return;
+  }
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const tok = getToken();
+  if (tok) headers["Authorization"] = `Bearer ${tok}`;
+  fetch("/api/events", { method: "POST", headers, body, keepalive: true }).catch(() => { /* en förlorad händelse är ingen händelse */ });
+}
+
+export function track(e: Ev) {
+  bucket.push({ ...e, path: e.path ?? window.location.pathname });
+  if (bucket.length >= 40) { flushEvents(); return; }
+  if (!flushing) flushing = setTimeout(() => { flushing = null; flushEvents(); }, 4000);
+}
 
 /** File size the way a person reads it, not in raw kilobytes. */
 export function fileSize(bytes: number): string {

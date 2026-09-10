@@ -31,6 +31,12 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    # vad inloggningen får se, och vilken kund den hör till. En medlem ser sitt eget arbete; en admin ser
+    # tjänsten. Rollen står här och ingen annanstans, så att frågan "får den här se det" har ett svar.
+    role: Mapped[str] = mapped_column(String(16), default="member")
+    account_id: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    name: Mapped[str] = mapped_column(String(255), default="")
+    last_seen_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     projects: Mapped[list["Project"]] = relationship(back_populates="owner")
 
 
@@ -118,8 +124,214 @@ class RuleSetting(Base):
     created_at: Mapped[dt.datetime] = mapped_column(DateTime, default=_now)
 
 
+# ---------------------------------------------------------------------------------------------------------
+# Att driva tjänsten, inte att läsa en ritning
+#
+# Allt ovanför handlar om en ritning och vad som står på den. Allt härunder handlar om företaget runt
+# omkring: vem som använder tjänsten, vad de betalar, vem som förde dem hit, vad de sett och vad som lärts
+# av deras rättelser. Det är avsiktligt skilt åt - en tabell här får aldrig avgöra hur en ritning läses.
+# ---------------------------------------------------------------------------------------------------------
+
+
+class Role:
+    """Vad ett konto får se. En medlem ser sitt eget; en admin ser tjänsten."""
+    MEMBER = "member"
+    PARTNER = "partner"      # affiliate eller ambassadör: ser sina egna värvningar och sin provision
+    ADMIN = "admin"
+
+
+class Account(Base):
+    """Kontot bakom en användare: företaget, planen, rabatten och vem som förde dem hit.
+
+    Skilt från `users` därför att en användare är en inloggning och ett konto är en kund. Ett företag med
+    fyra rörläggare är ett konto och fyra inloggningar, och rabatten, fakturan och partnern hör till kontot.
+    """
+    __tablename__ = "accounts"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    name: Mapped[str] = mapped_column(String(255), default="")
+    org_no: Mapped[str] = mapped_column(String(32), default="")
+    plan: Mapped[str] = mapped_column(String(32), default="prov")          # prov | grund | kontor | obegransad
+    discount_pct: Mapped[float] = mapped_column(Float, default=0.0)        # rabatt kunden fått, i procent
+    mrr_ore: Mapped[int] = mapped_column(Integer, default=0)               # månadsintäkt i ören, aldrig flyttal
+    status: Mapped[str] = mapped_column(String(32), default="aktiv")       # aktiv | pausad | uppsagd
+    partner_id: Mapped[str | None] = mapped_column(ForeignKey("partners.id"), nullable=True, index=True)
+    referral_code: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    note: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class Partner(Base):
+    """En affiliate eller ambassadör: vem som värvar, vad kunden får och vad partnern får.
+
+    Två procenttal, aldrig ett. Rabatten är kundens skäl att komma; provisionen är partnerns skäl att värva.
+    De sätts var för sig därför att de betalas av olika sidor av samma affär.
+    """
+    __tablename__ = "partners"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    name: Mapped[str] = mapped_column(String(255))
+    email: Mapped[str] = mapped_column(String(255), index=True)
+    kind: Mapped[str] = mapped_column(String(32), default="affiliate")     # affiliate | ambassador | aterforsaljare
+    code: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    discount_pct: Mapped[float] = mapped_column(Float, default=10.0)       # vad kunden får
+    commission_pct: Mapped[float] = mapped_column(Float, default=20.0)     # vad partnern får
+    commission_months: Mapped[int] = mapped_column(Integer, default=12)    # hur länge provisionen löper, 0 = alltid
+    status: Mapped[str] = mapped_column(String(32), default="aktiv")
+    payout_ref: Mapped[str] = mapped_column(String(255), default="")       # bankgiro eller motsvarande
+    note: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class Payout(Base):
+    """En utbetalning till en partner, med perioden den avser."""
+    __tablename__ = "payouts"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    partner_id: Mapped[str] = mapped_column(ForeignKey("partners.id"), index=True)
+    period: Mapped[str] = mapped_column(String(16))                        # 2026-08
+    amount_ore: Mapped[int] = mapped_column(Integer, default=0)
+    status: Mapped[str] = mapped_column(String(32), default="oppen")       # oppen | utbetald | makulerad
+    note: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    paid_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class CrmNote(Base):
+    """Vad som hänt med en kund: ett samtal, ett mejl, ett löfte, ett problem."""
+    __tablename__ = "crm_notes"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    account_id: Mapped[str] = mapped_column(ForeignKey("accounts.id"), index=True)
+    author_id: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    kind: Mapped[str] = mapped_column(String(32), default="anteckning")    # anteckning | samtal | mejl | mote | arende
+    subject: Mapped[str] = mapped_column(String(255), default="")
+    body: Mapped[str] = mapped_column(Text, default="")
+    due_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    done: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class Content(Base):
+    """En text på webbplatsen, redigerad utan att koden byggs om.
+
+    Utkast och publicerat i samma rad: ingen ska behöva välja mellan att skriva färdigt och att inte råka
+    publicera halvfärdigt.
+    """
+    __tablename__ = "content"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    slug: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    title: Mapped[str] = mapped_column(String(255), default="")
+    body: Mapped[str] = mapped_column(Text, default="")
+    draft: Mapped[str | None] = mapped_column(Text, nullable=True)
+    published: Mapped[bool] = mapped_column(Boolean, default=False)
+    updated_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)
+
+
+class Experiment(Base):
+    """Ett A/B-prov: två sätt att göra samma sak, och vilket som visade sig bättre.
+
+    Andelen som ser B står i raden. Ett prov utan mål är ingen fråga, så målet är obligatoriskt: det är den
+    händelse som räknas som att provet lyckades.
+    """
+    __tablename__ = "experiments"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    key: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    title: Mapped[str] = mapped_column(String(255), default="")
+    hypothesis: Mapped[str] = mapped_column(Text, default="")
+    goal_event: Mapped[str] = mapped_column(String(64))
+    variants: Mapped[dict] = mapped_column(JSON, default=lambda: {"a": "Nuvarande", "b": "Nytt"})
+    split_b: Mapped[float] = mapped_column(Float, default=0.5)
+    status: Mapped[str] = mapped_column(String(32), default="utkast")      # utkast | igang | avslutad
+    winner: Mapped[str | None] = mapped_column(String(8), nullable=True)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    ended_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class Event(Base):
+    """En sak som hände i gränssnittet.
+
+    Bär både A/B-provets utfall och heatmapens punkter, därför att de är samma sak sedd två gånger: var någon
+    klickade och vad det ledde till. Koordinaterna är andelar av fönstret, inte bildpunkter - en heatmap i
+    bildpunkter är en heatmap av en enda skärmstorlek.
+    """
+    __tablename__ = "events"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    user_id: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True, index=True)
+    session: Mapped[str] = mapped_column(String(64), index=True)
+    name: Mapped[str] = mapped_column(String(64), index=True)              # klick | sidvisning | mal
+    path: Mapped[str] = mapped_column(String(255), index=True, default="")
+    x: Mapped[float | None] = mapped_column(Float, nullable=True)          # 0..1 av bredden
+    y: Mapped[float | None] = mapped_column(Float, nullable=True)          # 0..1 av den skrollade höjden
+    target: Mapped[str] = mapped_column(String(255), default="")
+    experiment: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    variant: Mapped[str | None] = mapped_column(String(8), nullable=True)
+    meta: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, index=True)
+
+
+class CourseProgress(Base):
+    """Var någon är i akademin: vilket steg i vilken kurs, och vad de fått för det."""
+    __tablename__ = "course_progress"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    course: Mapped[str] = mapped_column(String(64), index=True)
+    step: Mapped[int] = mapped_column(Integer, default=0)
+    done_steps: Mapped[dict] = mapped_column(JSON, default=dict)           # steg-id -> försök och resultat
+    completed: Mapped[bool] = mapped_column(Boolean, default=False)
+    score: Mapped[int] = mapped_column(Integer, default=0)
+    awards: Mapped[dict] = mapped_column(JSON, default=dict)               # utmärkelse-id -> när den togs
+    started_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)
+
+
+class Markup(Base):
+    """Vad någon ritat själv ovanpå ritningen - mätt, markerat eller antecknat.
+
+    Det ligger vid sidan av läsningen, aldrig i den. Motorn mäter det ritaren ritade; det här är vad
+    mängdaren lade till, och de två redovisas var för sig så att ingen behöver undra vilket som är vilket.
+    """
+    __tablename__ = "markups"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    drawing_id: Mapped[str] = mapped_column(ForeignKey("drawings.id"), index=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    page: Mapped[int] = mapped_column(Integer, default=0)
+    tool: Mapped[str] = mapped_column(String(32))     # langd | area | antal | polylinje | rektangel | text | moln | frihand
+    layer: Mapped[str] = mapped_column(String(64), default="Mängdning")
+    designation: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    points: Mapped[list] = mapped_column(JSON, default=list)               # [[x, y], ...] i sidans punkter
+    style: Mapped[dict] = mapped_column(JSON, default=dict)                # färg, bredd, streck, fyllning
+    text: Mapped[str] = mapped_column(Text, default="")
+    measure: Mapped[dict] = mapped_column(JSON, default=dict)              # {m, kvm, antal} som verktyget räknade
+    deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)
+
+
+# Kolumner som kom till efter att en databas redan var i drift. SQLAlchemys create_all skapar tabeller som
+# saknas men rör aldrig en tabell som finns, så en ny kolumn på en gammal tabell måste läggas till för hand.
+# Listan står här hellre än i ett migreringsverktyg därför att den är kort och läses en gång per uppstart.
+_ADDED_COLUMNS = (
+    ("users", "role", "VARCHAR(16) DEFAULT 'member'"),
+    ("users", "account_id", "VARCHAR(32)"),
+    ("users", "name", "VARCHAR(255) DEFAULT ''"),
+    ("users", "last_seen_at", "TIMESTAMP"),
+)
+
+
+def _add_missing_columns() -> None:
+    from sqlalchemy import inspect, text
+    insp = inspect(engine)
+    have = set(insp.get_table_names())
+    with engine.begin() as cx:
+        for table, column, ddl in _ADDED_COLUMNS:
+            if table not in have:
+                continue                       # create_all just made it, with the column already on it
+            if column in {c["name"] for c in insp.get_columns(table)}:
+                continue
+            cx.execute(text(f"ALTER TABLE {table} ADD COLUMN {column} {ddl}"))
+
+
 def init_db() -> None:
     Base.metadata.create_all(engine)
+    _add_missing_columns()
 
 
 def get_db():

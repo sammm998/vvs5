@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ..text.model import TextRow
+from .grammar import split_tokens
 
 from .. import rules as _rules
 
@@ -110,6 +111,37 @@ class DrawingLegend:
     def systems(self) -> set[str]:
         return {e.code.upper() for e in self.entries if e.role == "system"}
 
+    def code_for(self, head: str) -> str | None:
+        """Vilken av listans koder en etikett faktiskt öppnar med.
+
+        Den längsta som passar, och det är hela poängen. En lista som har både `T` för tilluft och `TD102` för
+        ett tilluftsdon läser `TD102-100` som ett don och inte som hundra millimeter tilluft - men bara om den
+        längre koden får gå före den kortare. Prövat kortaste först blev varje don ett system, och en ritnings
+        alla trettio don blev trettio rörsystem utan meter.
+        """
+        h = (head or "").upper().strip()
+        if not h:
+            return None
+        best = None
+        for e in self.entries:
+            c = e.code.upper()
+            if not c:
+                continue
+            if h == c or (h.startswith(c) and len(h) > len(c)):
+                if best is None or len(c) > len(best):
+                    best = c
+        return best
+
+    def role_of_head(self, head: str) -> str | None:
+        """Vad listan säger om koden en etikett öppnar med."""
+        c = self.code_for(head)
+        if c is None:
+            return None
+        for e in self.entries:
+            if e.code.upper() == c:
+                return e.role
+        return None
+
     def names_a_pipe(self, designation) -> bool:
         """Whether the sheet's own designation list says this label names a pipe.
 
@@ -126,7 +158,15 @@ class DrawingLegend:
         if not systems:
             return True
         head = (getattr(designation, "system_token", "") or "").upper()
-        if self.names_a_component(getattr(designation, "text", "") or head):
+        text = (getattr(designation, "text", "") or "").upper() or head
+        # Vilken kod etiketten öppnar med avgörs av den längsta som passar, inte av den första. Prövat på
+        # etikettens hela text först: den bär hela koden även när system_token bara bär dess början.
+        role = self.role_of_head(text) or self.role_of_head(head)
+        if role == "component":
+            return False
+        if role == "system":
+            return True
+        if self.names_a_component(text):
             return False
         if any(head == c or head.startswith(c) for c in systems):
             return True
@@ -146,8 +186,9 @@ class DrawingLegend:
         head = (text or "").upper().strip()
         if not head:
             return False
-        if any(head == c or head.startswith(c) for c in self.systems()):
-            return False
+        role = self.role_of_head(head)
+        if role is not None:
+            return role == "component"
         for code in self.components():
             stem = code.rstrip("X")
             if not stem or stem == code:                     # no trailing placeholder: an exact code
@@ -213,10 +254,55 @@ def _description_x(line: TextRow, at: int) -> float:
     return line.bbox[2]
 
 
+def _quality(line: TextRow) -> tuple:
+    """How well a row was read, for choosing between two readings of the same row.
+
+    Searchable text is what the file says; reconstructed glyphs are what the shapes look like. Where both exist
+    the file wins, and after that the reading with fewer characters it could not name, and then the one whose
+    glyphs it was surest of.
+    """
+    gl = getattr(line, "glyphs", ()) or ()
+    scores = [getattr(g, "score", 1.0) for g in gl]
+    return (1 if getattr(line, "source", "") == "text" else 0,
+            -int(getattr(line, "unknown_chars", 0) or 0),
+            sum(scores) / len(scores) if scores else 0.0,
+            len(line.text or ""))
+
+
+def _one_per_line(column: list[TextRow]) -> list[TextRow]:
+    """One reading per line of the list.
+
+    A sheet can carry its designation list twice over: once as text in the file and once as the strokes that
+    draw it, laid on top of each other so a reader sees one list. The reading saw two, and the second was the
+    worse one - `RL1O1` beside `RL101`, `LD1OZ` beside `LD102`, `1OOmm` beside `100mm`. Sixty rows where the
+    sheet has thirty, half of them codes that do not exist, each becoming a name the takeoff then reports as a
+    pipe it never found.
+
+    Rows that occupy the same line of the same column are therefore one row, and the better reading of it is
+    kept. Overlap is measured against the shorter of the two so that a tall row and a short one on the same
+    baseline still count as one.
+    """
+    kept: list[TextRow] = []
+    for line in column:
+        y0, y1 = line.bbox[1], line.bbox[3]
+        h = max(y1 - y0, 0.01)
+        for i, other in enumerate(kept):
+            o0, o1 = other.bbox[1], other.bbox[3]
+            over = min(y1, o1) - max(y0, o0)
+            if over > 0.5 * min(h, max(o1 - o0, 0.01)):
+                if _quality(line) > _quality(other):
+                    kept[i] = line
+                break
+        else:
+            kept.append(line)
+    return kept
+
+
 def _candidate(rows: list[TextRow], found: dict, edge: float) -> list[LegendEntry]:
     """The list that would be read off one left edge: its entries, under the headings standing above them."""
     column = sorted((l for l in rows if edge - 0.1 <= l.bbox[0] <= edge + _R("semantics.legend.COL_TOL", COL_TOL)),
                     key=lambda l: (l.bbox[1], l.bbox[0]))
+    column = _one_per_line(column)
     entries: list[LegendEntry] = []
     heading = ""
     for line in column:
@@ -372,6 +458,84 @@ def learn_roles(vocab: DrawingLegend | None, sheet: DrawingLegend) -> None:
         v.role, v.role_from = e.role, "usage"
 
 
+# ---------------------------------------------------------------------------------------------------------
+# Vad listan själv säger att en kod är
+#
+# Resten av modulen kan ingen svenska, och ska inte kunna det: en lista hittas på sin form och läses på hur
+# ritningen använder den. Men listan skriver också ut vad varje kod betyder, med ingenjörens egna ord, och att
+# inte läsa dem är att kasta bort det starkaste beviset som finns på bladet.
+#
+# Svenskan gör det ovanligt lätt. Ett svenskt sammansatt ord bär sitt huvudord sist: en TILLUFTSDON är ett DON,
+# ett BRANDGASSPJÄLL är ett SPJÄLL, en CIRKULATIONSFLÄKT är en FLÄKT. Så det räcker att se efter vad ordet
+# slutar på för att veta vad saken är. Det är därför listorna nedan är ändelser och inte ord.
+#
+# Skillnaden som betyder något för en mängd: en KANAL och en LEDNING mäts i meter, ett DON och ett SPJÄLL i
+# stycken. En kod som listan kallar ett don är aldrig rör, hur ritningen än skriver den - och just det var vad
+# som gick fel: TD102 skrivs TD102-100 med anslutningsmåttet, läsningen såg en dimension och tog donet för ett
+# system, och femtio meter kanal hamnade under ett tilluftsdon.
+# ---------------------------------------------------------------------------------------------------------
+
+# Saker som köps i stycken. Sista ledet i ordet säger vad det är, så listan är ändelser: ett BRANDGASSPJÄLL
+# slutar på SPJÄLL, ett TILLUFTSDON på DON, en CIRKULATIONSFLÄKT på FLÄKT, ett VATTENLÅS på LÅS.
+COMPONENT_HEADS = (
+    "DON", "SPJÄLL", "SPJALL", "DÄMPARE", "DAMPARE", "FLÄKT", "FLAKT", "AGGREGAT", "LUCKA", "GALLER",
+    "HUV", "KÅPA", "KAPA", "VENTIL", "RENARE", "FILTER", "BATTERI", "PUMP", "RADIATOR", "BRUNN",
+    "LÅS", "BLANDARE", "MÄTARE", "MATARE", "GIVARE", "ENHET", "GENOMFÖRING", "GENOMFORING",
+    "KASSETT", "AVSKILJARE", "VÄXLARE", "VAXLARE", "BEREDARE", "TANK", "CISTERN", "ARMATUR", "STOS",
+    "TERMOMETER", "MANOMETER", "REGULATOR", "TVÄTTSTÄLL", "TVATTSTALL", "HANDFAT", "URINOAR", "BADKAR",
+    "DUSCH", "TORKSKÅP", "DISKMASKIN", "TVÄTTMASKIN", "ELPATRON", "EXPANSIONSKÄRL", "KÄRL",
+)
+# ...och det som bara beskriver vad något är gjort av eller klätt med
+MATERIAL_HEADS = ("PLÅT", "PLAT", "ISOLERING", "FOLIE", "MATTA", "SKIVA")
+# ett medium som flödar, och som listan förklarar för sig självt
+SYSTEM_WORDS = ("TILLUFT", "FRÅNLUFT", "FRANLUFT", "UTELUFT", "AVLUFT", "ÖVERLUFT", "OVERLUFT",
+                "CIRKULATIONSLUFT", "KALLVATTEN", "VARMVATTEN", "SPILLVATTEN", "DAGVATTEN", "DRÄNVATTEN",
+                "FJÄRRVÄRME", "FJARRVARME", "TAPPVATTEN", "VARMVATTENCIRKULATION")
+
+
+def _is_fire_class(w: str) -> bool:
+    """EI15, EI30, EI60, E60: en brandklass beskriver en klädsel, aldrig ett medium."""
+    return len(w) >= 3 and w[0] == "E" and (w[1] == "I" or w[1].isdigit()) and w[-1].isdigit()
+
+
+def _words(text: str) -> list[str]:
+    out, cur = [], []
+    for ch in (text or "").upper():
+        if ch.isalpha() or ch.isdigit():
+            cur.append(ch)
+        elif cur:
+            out.append("".join(cur)); cur = []
+    if cur:
+        out.append("".join(cur))
+    return out
+
+
+def role_from_words(description: str) -> str | None:
+    """Vad listan säger att koden är, eller None om den inte säger något om saken.
+
+    Sista ledet vinner, och en sak vinner över ett medium: `= TILLUFSDON, VENTIL` är ett don och inte tilluft,
+    fast ordet börjar på tilluft. Ett medium räknas bara när listan skriver ut mediets eget namn.
+
+    Vad den med flit inte gör: säger att något är ett rör. `RENSRÖR MED LOCK` slutar på RÖR och mäts ändå i
+    stycken, `STUPRÖR` slutar likadant och mäts i meter, och ordet skiljer dem inte åt. Där orden inte räcker
+    får ritningens egen användning avgöra, som förut. Det som står här är bara det som orden avgör säkert - och
+    ett don, ett spjäll eller en brunn är aldrig meter, hur ritningen än skriver dem.
+    """
+    ws = _words(description)
+    if not ws:
+        return None
+    for w in ws:
+        if any(w.endswith(h) for h in COMPONENT_HEADS):
+            return "component"
+    # samma sammansättningsregel som för sakerna: TAPPKALLVATTEN är KALLVATTEN, TILLUFT är TILLUFT
+    if any(any(w.endswith(sw) for sw in SYSTEM_WORDS) for w in ws):
+        return "system"
+    for w in ws:
+        if any(w.endswith(h) for h in MATERIAL_HEADS) or _is_fire_class(w):
+            return "material"
+    return None
+
+
 def assign_roles(legend: DrawingLegend, designations, prior: dict[str, str] | None = None) -> None:
     """Settle what each legend code is, from how the drawing uses it.
 
@@ -431,14 +595,38 @@ def assign_roles(legend: DrawingLegend, designations, prior: dict[str, str] | No
                 if code_matches(text, c):
                     standalone.add(c)
                     break
+    # Där listan säger att en kod är ett föremål och bladet ändå skriver den som ett rör, avgör bladet - men
+    # bara på ett bevis och inte på en likhet: att etiketten bär ett materialled som listan själv räknar upp.
+    # `TS1-X7-16` är ett tvättställ enligt orden och en PEX-ledning enligt bladet, för X7 står i listan som ett
+    # material; `TD102-100` är ett tilluftsdon med anslutningsmåttet 100 och bär inget material alls. Det är den
+    # skillnaden som skiljer en ledning från en pryl med ett mått, och den är hämtad ur listan och inte gissad.
+    materials = {e.code.upper() for e in legend.entries
+                 if role_from_words(e.description) == "material" or e.role == "material"}
+    writes_a_pipe: set[str] = set()
+    for d in designations:
+        if getattr(d, "dn", None) is None or not outside(d):
+            continue
+        toks = [t.upper() for t in (getattr(d, "tokens", None) or split_tokens(getattr(d, "text", "") or ""))]
+        c = owner((getattr(d, "system_token", "") or "").upper())
+        if c and any(t in materials for t in toks[1:]):
+            writes_a_pipe.add(c)
+
     for e in legend.entries:
         c = e.code.upper()
-        if c in opens:
-            e.role = "system"
+        # Vad listan själv säger går före vad bladet råkar göra med koden. Ingenjören har skrivit ut svaret
+        # bredvid koden; att gissa det ur användningen när det står där är att gissa i onödan - och gissningen
+        # blev fel åt det dyra hållet, med kanalmeter under ett tilluftsdon.
+        said = role_from_words(e.description)
+        if said == "component" and c in writes_a_pipe:
+            e.role, e.role_from = "system", "the_sheet_writes_it_as_a_pipe"
+        elif said is not None:
+            e.role, e.role_from = said, "the_list_says_so"
+        elif c in opens:
+            e.role, e.role_from = "system", "usage"
         elif c in standalone:
-            e.role = "component"
+            e.role, e.role_from = "component", "usage"
         else:
-            e.role = "material"
+            e.role, e.role_from = "material", "usage"
 
     # What another sheet of the same set already worked out about a code this sheet never uses. A plan sheet
     # draws a floor of a building, not the whole vocabulary: a set's cold water code appears on every sheet, its
@@ -450,7 +638,7 @@ def assign_roles(legend: DrawingLegend, designations, prior: dict[str, str] | No
     if prior:
         for e in legend.entries:
             was = prior.get(e.code.upper())
-            if e.role == "material" and was in ("system", "component"):
+            if e.role == "material" and e.role_from != "the_list_says_so" and was in ("system", "component"):
                 e.role, e.role_from = was, "other_sheet"
 
     # A sheet only shows what a sheet shows. A code the legend lists under "SYSTEM SPILLVATTEN" is a system code

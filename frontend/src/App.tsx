@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { getToken, setToken, currentEmail } from "./api";
+import { api, getToken, setToken, currentEmail, flushEvents, track } from "./api";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Docs from "./pages/Docs";
@@ -12,6 +12,7 @@ import Boundary from "./components/Boundary";
 import LearnPage from "./pages/LearnPage";
 import SettingsPage from "./pages/Settings";
 import MaterialPage from "./pages/Material";
+import AdminPage from "./pages/Admin";
 
 function Guard({ children }: { children: JSX.Element }) {
   return getToken() ? children : <Navigate to="/login" replace />;
@@ -72,6 +73,16 @@ function IconLearn() {
   );
 }
 
+function IconAdmin() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M9 1.8 15.2 4v4.6c0 3.6-2.5 6.6-6.2 7.6-3.7-1-6.2-4-6.2-7.6V4L9 1.8Z"
+        stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M6.6 9 8.4 10.8 11.6 7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function IconOut() {
   return (
     <svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -93,13 +104,22 @@ const ROUTES = (
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
     <Route path="/installningar" element={<Guard><SettingsPage /></Guard>} />
+    <Route path="/admin" element={<Guard><AdminPage /></Guard>} />
   </Routes>
   </Boundary>
 );
 
 export default function App() {
   const nav = useNavigate();
+  // Admin-länken visas bara för den som är admin, och rollen kommer från servern och inte från något
+  // webbläsaren kan hitta på. Att dölja länken är ingen spärr - spärren sitter på varje route i tjänsten -
+  // men en länk som leder till ett nej är ett dåligt gränssnitt.
+  const [role, setRole] = useState<string | null>(null);
   const { pathname } = useLocation();
+  useEffect(() => {
+    if (!getToken()) { setRole(""); return; }
+    api.myRole().then((r) => setRole(r.role)).catch(() => setRole(""));
+  }, [pathname]);
   const [rail, setRail] = useState<boolean>(() => {
     try { return localStorage.getItem("vvs.rail") === "1"; } catch { return false; }
   });
@@ -140,6 +160,11 @@ export default function App() {
           <Link to="/installningar" className={path.startsWith("/installningar") ? "on" : ""}>
             <IconRules /> <span className="wide">Inställningar</span>
           </Link>
+          {(role === "admin" || role === "partner") && (
+            <Link to="/admin" className={path.startsWith("/admin") ? "on" : ""}>
+              <IconAdmin /> <span className="wide">{role === "admin" ? "Administration" : "Min provision"}</span>
+            </Link>
+          )}
         </nav>
         <div className="foot">
           {email && <div className="who wide">{email}</div>}

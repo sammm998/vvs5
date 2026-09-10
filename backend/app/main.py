@@ -15,7 +15,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
-from . import exports, jobs
+from . import admin as admin_api, exports, jobs, public as public_api
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
 from vvs_engine.learning import KEYS, lessons, settle, situation
 from .auth import create_token, current_user, hash_password, verify_password
@@ -26,6 +26,10 @@ from .storage import storage
 app = FastAPI(title=settings.app_name, version="0.1.0")
 app.add_middleware(CORSMiddleware, allow_origins=[o.strip() for o in settings.cors_origins.split(",")], allow_credentials=True,
                    allow_methods=["*"], allow_headers=["*"])
+
+
+app.include_router(admin_api.router)
+app.include_router(public_api.router)
 
 
 @app.on_event("startup")
@@ -99,9 +103,14 @@ def register(body: RegisterIn, db: Session = Depends(get_db)):
         raise HTTPException(400, "E-postadressen är redan registrerad")
     if len(body.password) < 6:
         raise HTTPException(400, "Lösenordet måste vara minst 6 tecken")
-    u = User(email=body.email.lower(), password_hash=hash_password(body.password))
+    # The first account to register runs the service. Somebody has to be able to reach the admin pages, and the
+    # alternatives are worse: a password in an environment variable is a password in a deployment log, and a
+    # hard-coded address is an account nobody can take away. After the first, every admin is made by an admin.
+    first = (db.query(User).count() == 0)
+    u = User(email=body.email.lower(), password_hash=hash_password(body.password),
+             role="admin" if first else "member")
     db.add(u); db.commit()
-    return {"access_token": create_token(u), "token_type": "bearer", "email": u.email}
+    return {"access_token": create_token(u), "token_type": "bearer", "email": u.email, "role": u.role}
 
 
 @app.post("/api/auth/login")
@@ -109,12 +118,12 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
     u = db.query(User).filter(User.email == form.username.lower()).first()
     if not u or not verify_password(form.password, u.password_hash):
         raise HTTPException(401, "Fel e-post eller lösenord")
-    return {"access_token": create_token(u), "token_type": "bearer", "email": u.email}
+    return {"access_token": create_token(u), "token_type": "bearer", "email": u.email, "role": u.role}
 
 
 @app.get("/api/auth/me")
 def me(user: User = Depends(current_user)):
-    return {"id": user.id, "email": user.email}
+    return {"id": user.id, "email": user.email, "role": user.role or "member", "account_id": user.account_id}
 
 
 # ---------------------------------------------------------------- projects
