@@ -12,7 +12,7 @@ The script is deliberately dumb: it clicks everything it can see and prints what
 of it - a click handler that read its event after the event was over, and a frame that took the pointer on the
 way down so a run could never be picked by clicking it.
 """
-import asyncio, os
+import asyncio, re, os
 from playwright.async_api import async_playwright
 SP = os.environ.get("SP", os.path.dirname(os.path.abspath(__file__)))
 job, tok = open(f"{SP}/ui/job.txt").read().split()
@@ -59,7 +59,8 @@ async def main():
 
         print("== akademin: alla steg ==")
         await pg.goto(f"{BASE}/lar", wait_until="networkidle"); await pg.wait_for_timeout(700)
-        await pg.get_by_role("button", name="Starta guiden").click(); await pg.wait_for_timeout(700)
+        # knappen heter olika beroende på hur långt kontot kommit: ett annat rökprov kan ha hunnit före
+        await pg.get_by_role("button", name=re.compile("Starta guiden|Fortsätt guiden|Gå igenom igen")).click(); await pg.wait_for_timeout(700)
         # every step of the course, however many the course has grown to - a fixed count silently stops testing
         # the steps added after it was written
         head = await pg.locator(".wz-kicker").inner_text()
