@@ -875,3 +875,51 @@ def test_a_storage_key_cannot_reach_outside_the_root_not_even_a_sibling_with_the
         with pytest.raises(ValueError):
             st.path(bad)
     assert st.path("") == str(root) or st.path(".") == str(root)
+
+
+def test_the_project_agent_answers_from_the_reading_and_names_its_sheets(client, tmp_path):
+    """Projektagentens verktyg utan modell: svaren kommer ur rapporten och nämner bladen de vilar på.
+
+    Före en projektanalys finns inget att svara ur, och då är det ett tydligt nej (409) - agenten svarar
+    aldrig ur något annat än det som lästs. Och en främling får inte fråga (404).
+    """
+    r = client.post("/api/auth/register", json={"email": "agent@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Agentprojekt", "description": ""}, headers=H).json()
+    for name, lines in {
+        "V-50-1-A0111.pdf": ["V-50-1-A0111", "HUS A, PLAN 1, RORINSTALLATIONER", "BYGGHANDLING", "2024-05-07"],
+        "V-50-1-B0112.pdf": ["V-50-1-B0112", "HUS B, PLAN 1, RORINSTALLATIONER", "BYGGHANDLING", "2024-05-07"],
+    }.items():
+        f = _titled(str(tmp_path / name), lines)
+        with open(f, "rb") as fh:
+            client.post(f"/api/projects/{p['id']}/drawings", files={"file": (name, fh, "application/pdf")}, headers=H)
+
+    # ingen analys ännu: inget att svara ur
+    r0 = client.post(f"/api/projects/{p['id']}/agent/tool", headers=H, json={"name": "hamta_handling"})
+    assert r0.status_code == 409, r0.text
+
+    _run_handling(client, H, p["id"])
+    tools = client.get(f"/api/projects/{p['id']}/agent/tools", headers=H).json()["tools"]
+    assert {t["name"] for t in tools} >= {"hamta_handling", "hitta_blad", "mangder_per_hus", "versioner",
+                                          "vad_andrades", "kontrollera_handlingen"}
+
+    h = client.post(f"/api/projects/{p['id']}/agent/tool", headers=H, json={"name": "hamta_handling"}).json()
+    res = h["verktyg"][0]["resultat"]
+    assert res["hus"] == ["A", "B"] and res["totalt"]["documents"] == 2
+    assert len(res["blad_utan_lasning"]) == 2, "inget blad är mängdat ännu, och det ska stå"
+
+    b = client.post(f"/api/projects/{p['id']}/agent/tool", headers=H,
+                    json={"name": "hitta_blad", "arguments": {"hus": "B"}}).json()["verktyg"][0]["resultat"]
+    assert b["antal"] == 1 and b["blad"][0]["blad"] == "V-50-1-B0112.pdf", "ett svar om hus B bygger bara på hus B:s blad"
+    assert b["blad"][0]["drawing_id"], "varje svar säger vilket blad det vilar på"
+
+    v = client.post(f"/api/projects/{p['id']}/agent/tool", headers=H,
+                    json={"name": "vad_andrades", "arguments": {"nyckel": "finns-inte"}}).json()["verktyg"][0]["resultat"]
+    assert "fel" in v and v["tillgangliga"] == [], "ett par som inte finns har ingen ändringslista"
+
+    assert client.post(f"/api/projects/{p['id']}/agent/tool", headers=H,
+                       json={"name": "hitta_på"}).status_code == 404
+
+    o = client.post("/api/auth/register", json={"email": "agent2@example.com", "password": "hemligt1"}).json()
+    assert client.post(f"/api/projects/{p['id']}/agent/tool", json={"name": "hamta_handling"},
+                       headers={"Authorization": f"Bearer {o['access_token']}"}).status_code == 404

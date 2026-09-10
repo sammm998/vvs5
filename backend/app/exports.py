@@ -57,8 +57,25 @@ def _fmt(v):
     return v if v != "UNKNOWN" else "OKÄNT"
 
 
+MARKUP_HEADERS = ["Verktyg", "Lager", "Beteckning", "Sida", "Meter", "Kvadratmeter", "Antal", "Skala", "Text"]
+
+
+def _markup_row(m: dict) -> list:
+    """En egen markering som en rad: vad den mäter, i det den mäter. Aldrig en ytas omkrets i meterkolumnen."""
+    me = m.get("measure") or {}
+    tool = m.get("tool", "")
+    metres = me.get("m") if tool in ("langd", "polylinje", "frihand") else None
+    sqm = me.get("kvm") if tool in ("area", "rektangel", "moln") else None
+    n = me.get("antal") if tool == "antal" else None
+    return [tool, m.get("layer", ""), m.get("designation") or "", m.get("page", 0),
+            round(metres, 2) if isinstance(metres, (int, float)) else "",
+            round(sqm, 2) if isinstance(sqm, (int, float)) else "",
+            n if isinstance(n, int) else "", "verifierad" if me.get("scale") == "VERIFIERAD" else "ingen skala",
+            m.get("text") or ""]
+
+
 def to_xlsx(result_dir: str, floor_height: float | None = None, include_hatched: bool = False,
-          rows: list[dict] | None = None, riser_source: str = "labels") -> bytes:
+          rows: list[dict] | None = None, riser_source: str = "labels", markups: list[dict] | None = None) -> bytes:
     wb = Workbook()
     ws = wb.active
     ws.title = "Mängder"
@@ -73,6 +90,17 @@ def to_xlsx(result_dir: str, floor_height: float | None = None, include_hatched:
                    r.get("riser_count_from_labels", 0), r["state"]])
     for i, _ in enumerate(HEADERS, 1):
         ws.column_dimensions[get_column_letter(i)].width = 20
+    # Det mängdaren själv ritade in, på ett eget blad. Aldrig i samma tabell som läsningen: de två svarar på
+    # olika frågor, och en summa som blandar dem går inte att härleda.
+    if markups:
+        ws2 = wb.create_sheet("Egna markeringar")
+        ws2.append(MARKUP_HEADERS)
+        for c in ws2[1]:
+            c.font = Font(bold=True)
+        for m in markups:
+            ws2.append(_markup_row(m))
+        for i, _ in enumerate(MARKUP_HEADERS, 1):
+            ws2.column_dimensions[get_column_letter(i)].width = 18
     buf = io.BytesIO()
     wb.save(buf)
     return buf.getvalue()

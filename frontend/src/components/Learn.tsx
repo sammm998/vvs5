@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { MODULES, readProgress, syncProgress, type Module } from "../learn";
+import { api } from "../api";
 import LearnWizard from "./LearnWizard";
 import LearnExercise, { EXERCISE_IDS } from "./LearnExercises";
 
@@ -127,15 +128,52 @@ export function Exercise() {
   );
 }
 
+/* Kurs för kurs.
+ *
+ * Kapitlen är kurser, och de tas i ordning: den kurs man är på står öppen, de bakom är klara, de framför är
+ * låsta tills den pågående är gjord. Ordningen är innehållets egen - man kan inte läsa en beteckning innan man
+ * vet vad ett system är - men en lås som inte går att öppna är en fälla, så varje låst kurs går att öppna ändå
+ * med ett klick som säger att man hoppar.
+ */
+function Awards() {
+  const [rows, setRows] = useState<any[] | null>(null);
+  useEffect(() => { api.awards().then((r) => setRows(r.awards)).catch(() => setRows([])); }, []);
+  if (!rows || !rows.length) return null;
+  const taken = rows.filter((a) => a.taken_at).length;
+  return (
+    <section className="lf-awards">
+      <div className="row" style={{ justifyContent: "space-between" }}>
+        <h3 style={{ margin: 0 }}>Utmärkelser</h3>
+        <span className="muted small">{taken} av {rows.length}</span>
+      </div>
+      <div className="lf-award-grid">
+        {rows.map((a) => (
+          <div key={a.key} className={`lf-award${a.taken_at ? " on" : ""}`} title={a.why}>
+            <span className="medal" aria-hidden="true">{a.taken_at ? "★" : "☆"}</span>
+            <b>{a.title}</b>
+            <span className="muted small">{a.why}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function Learn({ compact }: { compact?: boolean }) {
   const [prog, setProg] = useState<Record<string, boolean>>(() => readProgress());
   const [open, setOpen] = useState<string | null>(null);
+  const [skipTo, setSkipTo] = useState<string | null>(null);        // en låst kurs någon valde att öppna ändå
   // Det lokala ritas direkt; kontots svar vinner så snart det kommer. Den som byter dator ska hitta sina steg
   // där de var, inte börja om.
   useEffect(() => { syncProgress().then(setProg); }, []);
   const flat = useMemo(() => MODULES.flatMap((m) => m.lessons.map((l) => ({ m, l }))), []);
   const done = flat.filter(({ l }) => prog[l.id]).length;
   const next = flat.find(({ l }) => !prog[l.id]) ?? flat[0];
+  // den pågående kursen: det första kapitlet som inte är klart
+  const moduleDone = (m: Module) => m.lessons.every((l) => prog[l.id]);
+  const currentIdx = Math.max(0, MODULES.findIndex((m) => !moduleDone(m)));
+  const current = MODULES[currentIdx];
+  const allDone = MODULES.every(moduleDone);
 
   return (
     <div className={`learn${compact ? " compact" : ""}`}>
@@ -159,25 +197,58 @@ export default function Learn({ compact }: { compact?: boolean }) {
           <span>{done}<i>/{flat.length}</i></span>
         </div>
       </div>
+      {!compact && !allDone && (
+        <div className="lf-current">
+          <div className="k">Kurs {currentIdx + 1} av {MODULES.length}</div>
+          <h3>{current.title}</h3>
+          <p className="muted">{current.blurb}</p>
+          <div className="row">
+            <button onClick={() => setOpen((current.lessons.find((l) => !prog[l.id]) ?? current.lessons[0]).id)}>
+              Fortsätt kursen
+            </button>
+            <span className="muted small">
+              {current.lessons.filter((l) => prog[l.id]).length} av {current.lessons.length} steg klara
+              {currentIdx + 1 < MODULES.length && ` · nästa kurs: ${MODULES[currentIdx + 1].title}`}
+            </span>
+          </div>
+        </div>
+      )}
+      {!compact && allDone && (
+        <div className="lf-current done">
+          <div className="k">Alla kurser klara</div>
+          <h3>Du har gått igenom hela akademin.</h3>
+          <p className="muted">Kapitlen står öppna att gå igenom igen, och övningarna nedan går att göra hur många gånger som helst.</p>
+        </div>
+      )}
+      {!compact && <Awards />}
       <div className="lf-mods">
         {MODULES.map((m: Module, mi) => {
           const d = m.lessons.filter((l) => prog[l.id]).length;
+          const full = d === m.lessons.length;
+          const locked = !compact && mi > currentIdx && skipTo !== m.id;
           return (
-            <section key={m.id} className={`lf-mod${d === m.lessons.length ? " full" : ""}`}>
+            <section key={m.id} className={`lf-mod${full ? " full" : ""}${mi === currentIdx && !allDone ? " now" : ""}${locked ? " locked" : ""}`}>
               <div className="lf-mod-no">{String(mi + 1).padStart(2, "0")}</div>
               <h3>{m.title}</h3>
               <p className="muted">{m.blurb}</p>
-              <ol className="lf-less">
-                {m.lessons.map((l) => (
-                  <li key={l.id} className={prog[l.id] ? "done" : ""}>
-                    <button className="ghost" onClick={() => setOpen(l.id)}>
-                      <span className="tick" aria-hidden="true" />
-                      <span className="nm">{l.title}</span>
-                      <span className="mi">{l.minutes} min</span>
-                    </button>
-                  </li>
-                ))}
-              </ol>
+              {locked ? (
+                <div className="lf-lock">
+                  <span className="muted small">Låst tills kurs {currentIdx + 1} är klar.</span>
+                  <button className="ghost small" onClick={() => setSkipTo(m.id)}>Öppna ändå</button>
+                </div>
+              ) : (
+                <ol className="lf-less">
+                  {m.lessons.map((l) => (
+                    <li key={l.id} className={prog[l.id] ? "done" : ""}>
+                      <button className="ghost" onClick={() => setOpen(l.id)}>
+                        <span className="tick" aria-hidden="true" />
+                        <span className="nm">{l.title}</span>
+                        <span className="mi">{l.minutes} min</span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              )}
             </section>
           );
         })}

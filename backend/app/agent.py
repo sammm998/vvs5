@@ -44,9 +44,14 @@ def _clip(obj: Any) -> str:
 
 
 def run_turn(model, ask, question: str, selection: dict | None = None,
-             history: list[dict] | None = None) -> dict:
-    """One question, answered through the tools. Returns the words, the calls made and what to light up."""
-    from vvs_engine.agent import tools as T
+             history: list[dict] | None = None, tools=None) -> dict:
+    """One question, answered through the tools. Returns the words, the calls made and what to light up.
+
+    `tools` is the registry the model may call - the drawing's by default, the project's for the project agent.
+    The loop is the same either way: the model chooses, the registry answers, nothing else can.
+    """
+    from vvs_engine.agent import tools as _drawing_tools
+    T = tools or _drawing_tools
 
     lines = [question.strip()]
     if selection:

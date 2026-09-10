@@ -67,6 +67,11 @@ RULES: tuple[Rule, ...] = (
          "delas vid en skärning. En sådan stump får inte ta ett namn och bära det vidare - som brygga tar den "
          "namnet över glapp som aldrig var anslutningar.",
          "pt", 0.6, 0.0, 5.0, "pipe", True),
+    Rule("semantics.attachment.COLLECTOR_MAX", G_LEADER, "Så lång får en samlingslinje vara",
+         "Ritaren drar flera hänvisningslinjer till ett streck och det strecket vidare till röret. Ett sådant "
+         "streck på skrivpennan får bära ledaren till röret om det är kort och rakt; en lång linje på "
+         "skrivpennan är något annat och får aldrig bli en brygga.",
+         "pt", 90.0, 10.0, 300.0, "leader", True),
     Rule("semantics.attachment.CONTACT_TOL", G_LEADER, "Kontakt räknas som kontakt",
          "Hur nära en hänvisningslinjes ände måste ligga rörets linje för att räknas som att den rör vid den. "
          "Under det här är det samma punkt så långt en PDF-export kan uttrycka den.",

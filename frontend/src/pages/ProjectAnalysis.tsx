@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
+import ProjectAgentChat from "../components/ProjectAgentChat";
 
 /* Projektet läst som en handling.
  *
@@ -372,7 +373,7 @@ export default function ProjectAnalysisPage() {
   const { id } = useParams();
   const [mode, setMode] = useState<any>(null);
   const [run, setRun] = useState<any>(null);
-  const [tab, setTab] = useState<"oversikt" | "handlingar" | "versioner" | "mangder">("oversikt");
+  const [tab, setTab] = useState<"oversikt" | "handlingar" | "versioner" | "mangder" | "agent">("oversikt");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
   // vad någon rättat om bladen, och om det gjorts en rättelse sedan den läsning som står på skärmen
@@ -504,7 +505,7 @@ export default function ProjectAnalysisPage() {
 
           <div className="tabs" style={{ marginTop: 18 }}>
             {([["oversikt", "Översikt"], ["handlingar", "Handlingar"], ["versioner", "Före / efter"],
-               ["mangder", "Mängder"]] as const).map(([k, label]) => (
+               ["mangder", "Mängder"], ["agent", "Agent"]] as const).map(([k, label]) => (
               <button key={k} className={tab === k ? "active" : ""} onClick={() => setTab(k as any)}>{label}</button>
             ))}
           </div>
@@ -537,6 +538,7 @@ export default function ProjectAnalysisPage() {
             {tab === "handlingar" && <Tree tree={rep.tree} projectId={id!} fixes={fixes} onFixed={fixed} />}
             {tab === "versioner" && <Versions report={rep} projectId={id!} />}
             {tab === "mangder" && <Quantities q={rep.quantities} />}
+            {tab === "agent" && <ProjectAgentChat projectId={id!} />}
           </div>
         </>
       )}

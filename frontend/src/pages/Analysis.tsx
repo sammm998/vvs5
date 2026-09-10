@@ -6,6 +6,7 @@ import QuantityTable, { withFloorHeight } from "../components/QuantityTable";
 import AnalysisFilm from "../components/AnalysisFilm";
 import LearnWizard from "../components/LearnWizard";
 import Boundary from "../components/Boundary";
+import Markups, { type MarkDraft, type MarkTool } from "../components/Markups";
 import Corrections, { Draft } from "../components/Corrections";
 import LegendView from "../components/LegendView";
 import Reasoning from "../components/Reasoning";
@@ -36,7 +37,11 @@ export default function AnalysisPage() {
   const [pdf, setPdf] = useState<ArrayBuffer | null>(null);
   const [err, setErr] = useState("");
   const [learn, setLearn] = useState(false);
-  const [tab, setTab] = useState<"mangder" | "agent" | "oversikt" | "artefakter" | "rattelser">("mangder");
+  const [tab, setTab] = useState<"mangder" | "agent" | "oversikt" | "artefakter" | "rattelser" | "markera">("mangder");
+  // egna markeringar: verktyget som är laddat, det som ritas just nu, och det som redan sparats på sidan
+  const [markTool, setMarkTool] = useState<MarkTool>(null);
+  const [markDraft, setMarkDraft] = useState<MarkDraft>(null);
+  const [markups, setMarkups] = useState<any[]>([]);
   // what the agent means by "this": the runs the reader has clicked, and the box they dragged
   const [agentIds, setAgentIds] = useState<string[]>([]);
   // The three things a reader comes here for, and they are not the same thing: what the drawing says its codes
@@ -301,9 +306,14 @@ export default function AnalysisPage() {
           declined={[...(result.declined_geometry?.families ?? []), ...(result.declined_geometry?.unconsidered ?? [])]} selectedDeclined={selDeclined}
           selectedPipe={selPipe?.physical_pipe_id ?? null} layers={layers} onPipeClick={onPipeClick} onPageCount={setNPages}
           ink={ink} onInkClick={setInk}
-          editKind={(drawKind === "extend" || drawKind === "draw" || drawKind === "erase" ? drawKind : null) as EditKind}
+          editKind={(tab === "markera"
+            ? (markTool ? "draw" : null)
+            : (drawKind === "extend" || drawKind === "draw" || drawKind === "erase" ? drawKind : null)) as EditKind}
+          markups={markups}
           editPipe={selPipe} meterPerPt={result.scale?.meters_per_pdf_point ?? null}
-          onDrawn={(d: Drawn) => setDraft({ points: d.points, meters: d.meters, hits: d.hits })}
+          onDrawn={(d: Drawn) => tab === "markera"
+            ? setMarkDraft({ points: d.points, meters: d.meters })
+            : setDraft({ points: d.points, meters: d.meters, hits: d.hits })}
           corrections={corrections.filter((c: any) => !c.undone && c.page === page)} /></Boundary>
       </div>
       <div className="splitter" role="separator" aria-orientation="vertical" aria-label="Dra för att ändra bredd"
@@ -327,6 +337,7 @@ export default function AnalysisPage() {
           <button className={tab === "rattelser" ? "active" : ""} onClick={() => setTab("rattelser")}>
             Rätta{corrections.filter((c: any) => !c.undone).length ? ` (${corrections.filter((c: any) => !c.undone).length})` : ""}
           </button>
+          <button className={tab === "markera" ? "active" : ""} onClick={() => setTab("markera")}>Markera</button>
           <button className={tab === "oversikt" ? "active" : ""} onClick={() => setTab("oversikt")}>Översikt</button>
           <button className={tab === "artefakter" ? "active" : ""} onClick={() => setTab("artefakter")}>Export</button>
         </div>
@@ -456,6 +467,11 @@ export default function AnalysisPage() {
               setCorrections(await api.corrections(job.drawing_id));
               setResult(await api.result(id!));
             }} />
+        )}
+        {tab === "markera" && (
+          <Markups drawingId={job.drawing_id} page={page} tool={markTool} draft={markDraft}
+            meterPerPt={result.scale?.meters_per_pdf_point ?? null}
+            onToolChange={setMarkTool} onDraftClear={() => setMarkDraft(null)} onChanged={setMarkups} />
         )}
         {tab === "oversikt" && (() => {
           // The overview used to read the engine's raw totals while the table beside it read the same numbers

@@ -78,6 +78,8 @@ export interface ViewerProps {
   meterPerPt?: number | null;
   onDrawn?: (d: Drawn) => void;
   corrections?: { id: string; kind: string; designation: string | null; payload: any }[];
+  /** What the reader drew in by hand: measured, marked or noted. Beside the reading, never in it. */
+  markups?: { id: string; tool: string; points: number[][]; layer?: string; text?: string; measure?: any }[];
 }
 
 export interface ViewerHandle {
@@ -613,6 +615,41 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                   strokeLinecap="round" strokeLinejoin="round" />
               )
             ))}
+
+            {/* the reader's own markups: teal so they never read as the reading's colours or the drawing's black */}
+            {(props.markups ?? []).map((m) => {
+              const pts = m.points || [];
+              const me = m.measure || {};
+              const label = typeof me.kvm === "number" ? `${me.kvm.toFixed(2)} m²`
+                : typeof me.m === "number" ? `${me.m.toFixed(2)} m`
+                : typeof me.antal === "number" ? `${me.antal} st` : (m.text || "");
+              const anchor = pts[0];
+              if (m.tool === "antal") {
+                return (
+                  <g key={m.id}>
+                    {pts.map((q, i) => <circle key={i} cx={q[0]} cy={q[1]} r={sw(5)} fill="#0b7285" fillOpacity={0.85} stroke="#fff" strokeWidth={sw(1.2)} />)}
+                    {anchor && <text x={anchor[0] + sw(8)} y={anchor[1] - sw(6)} fontSize={sw(11)} fill="#0b7285" fontFamily="ui-monospace, monospace">{label}</text>}
+                  </g>
+                );
+              }
+              if (m.tool === "text") {
+                return anchor ? (
+                  <g key={m.id}>
+                    <circle cx={anchor[0]} cy={anchor[1]} r={sw(3)} fill="#0b7285" />
+                    <text x={anchor[0] + sw(6)} y={anchor[1] - sw(4)} fontSize={sw(11)} fill="#0b7285" fontFamily="ui-monospace, monospace">{m.text}</text>
+                  </g>
+                ) : null;
+              }
+              const closed = m.tool === "area" || m.tool === "rektangel" || m.tool === "moln";
+              return pts.length >= 2 ? (
+                <g key={m.id}>
+                  {closed
+                    ? <polygon points={pts.map((q) => q.join(",")).join(" ")} fill="#0b7285" fillOpacity={0.12} stroke="#0b7285" strokeWidth={sw(2.5)} strokeLinejoin="round" />
+                    : <polyline points={pts.map((q) => q.join(",")).join(" ")} fill="none" stroke="#0b7285" strokeWidth={sw(3.5)} strokeOpacity={0.9} strokeLinecap="round" strokeLinejoin="round" />}
+                  {anchor && <text x={anchor[0] + sw(6)} y={anchor[1] - sw(6)} fontSize={sw(11)} fill="#0b7285" fontFamily="ui-monospace, monospace">{label}</text>}
+                </g>
+              ) : null;
+            })}
 
             {/* what the eraser is over right now, struck through in red as the hand moves */}
             {erased.segs.map(([a, b], i) => (

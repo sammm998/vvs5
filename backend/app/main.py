@@ -991,13 +991,19 @@ def export(job_id: str, fmt: str, floor_height: float | None = None, include_hat
             db.query(Correction).filter(Correction.drawing_id == j.drawing_id, Correction.undone == False).all()]  # noqa: E712
     rows = (apply_corrections(quantities["rows"], corr, quantities["scale"].get("meters_per_pdf_point"))["quantities"]
             if corr else quantities["rows"])
+    # de egna markeringarna följer med Excel-filen på ett eget blad, och JSON:en under eget namn
+    from .db import Markup
+    marks = [{"tool": m.tool, "layer": m.layer, "designation": m.designation, "page": m.page, "text": m.text,
+              "measure": m.measure, "points": m.points}
+             for m in db.query(Markup).filter(Markup.drawing_id == j.drawing_id, Markup.deleted.is_(False))
+             .order_by(Markup.created_at).all()]
     if fmt == "xlsx":
-        return Response(exports.to_xlsx(rd, fh, include_hatched, rows, riser_source), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        return Response(exports.to_xlsx(rd, fh, include_hatched, rows, riser_source, marks), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         headers=_attachment(f"{base}-mangder.xlsx"))
     if fmt == "csv":
         return Response(exports.to_csv(rd, fh, include_hatched, rows, riser_source).encode("utf-8-sig"), media_type="text/csv", headers=_attachment(f"{base}-mangder.csv"))
     if fmt == "json":
-        return Response(json.dumps({**quantities, "rows": rows, "corrections_applied": len(corr)},
+        return Response(json.dumps({**quantities, "rows": rows, "corrections_applied": len(corr), "markups": marks},
                                    ensure_ascii=False, indent=1).encode("utf-8"),
                         media_type="application/json",
                         headers=_attachment(f"{base}-quantities.json"))

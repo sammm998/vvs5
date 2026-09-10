@@ -122,6 +122,15 @@ export const api = {
   saveProgress: (course: string, body: any) =>
     req(`/api/academy/progress/${course}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
 
+  awards: () => req("/api/academy/awards"),
+
+  // ---- projektagenten -----------------------------------------------------------------------------------
+  projectAgent: (projectId: string, body: any) =>
+    req(`/api/projects/${projectId}/agent`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  projectAgentTool: (projectId: string, name: string, args: any = {}) =>
+    req(`/api/projects/${projectId}/agent/tool`, { method: "POST", headers: { "Content-Type": "application/json" },
+                                                    body: JSON.stringify({ name, arguments: args }) }),
+
   // ---- egna markeringar på ritningen --------------------------------------------------------------------
   markups: (drawingId: string, page: number) => req(`/api/drawings/${drawingId}/markups?page=${page}`),
   addMarkup: (drawingId: string, body: any) =>

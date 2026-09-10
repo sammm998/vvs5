@@ -14,6 +14,8 @@ results/         Frozen artifacts for the development drawings (A, B, C) and the
 data/dev/        The three clean development drawings (A, B, C)
 ```
 
+**Hur allt fungerar, vilka AI-modeller som används och exakt hur, säkerhet, drift och validering: se [`docs/SYSTEMET.md`](docs/SYSTEMET.md).**
+
 ## Install and run locally
 
 ```bash

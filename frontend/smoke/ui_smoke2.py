@@ -111,11 +111,57 @@ async def main():
         if "Horisontellt" not in body:
             found.append("mängdfliken visar inga mängder trots två färdiga läsningar")
 
+        print("== projektagenten: en färdig fråga utan modell ==")
+        await pg.locator(".tabs button", has_text="Agent").click(); await pg.wait_for_timeout(500)
+        await pg.get_by_role("button", name="Vad består handlingen av?").click()
+        for _ in range(40):
+            await pg.wait_for_timeout(400)
+            if await pg.locator(".agentchat .msg.agent").count():
+                break
+        note("projektagenten")
+        ans = (await pg.locator(".agentchat .msg.agent").last.inner_text()) if await pg.locator(".agentchat .msg.agent").count() else ""
+        print(f"  svar med hus och blad: {('hus' in ans) and ('.pdf' in ans)}")
+        if not (("hus" in ans) and (".pdf" in ans)):
+            found.append("projektagentens svar nämner inte hus och blad")
+
+        print("== markera: en längd ritad och sparad på ritningen ==")
+        await pg.goto(f"{BASE}/jobs/{job}", wait_until="networkidle"); await pg.wait_for_timeout(5000)
+        await pg.locator(".tabs button", has_text="Markera").click(); await pg.wait_for_timeout(600)
+        note("markera-fliken")
+        await pg.get_by_role("button", name="Längd", exact=True).click(); await pg.wait_for_timeout(300)
+        box = await pg.locator(".viewer .page").bounding_box()
+        x, y = box["x"] + 260, box["y"] + 300
+        await pg.mouse.click(x, y); await pg.wait_for_timeout(200)
+        await pg.mouse.click(x + 120, y); await pg.wait_for_timeout(200)
+        await pg.mouse.dblclick(x + 120, y + 80); await pg.wait_for_timeout(600)
+        note("rita längd")
+        save = pg.get_by_role("button", name="Spara markering")
+        print(f"  utkast att spara: {await save.count() > 0}")
+        if await save.count():
+            await save.first.click(); await pg.wait_for_timeout(1500)
+            note("spara markering")
+            rows = await pg.locator(".corr table tbody tr").count()
+            body = await pg.inner_text("body")
+            print(f"  rader i listan: {rows} · mått i meter: {' m' in body}")
+            if rows < 1:
+                found.append("markeringen sparades inte i listan")
+        else:
+            found.append("ingen markering att spara efter ritandet")
+
         print("== akademin: övningarna och framstegen på kontot ==")
         await pg.goto(f"{BASE}/lar", wait_until="networkidle"); await pg.wait_for_timeout(900)
         note("akademin")
         n = await pg.locator(".lf-drills .lx").count()
         print(f"  {n} övningar synliga")
+        cur = await pg.locator(".lf-current").count()
+        locked = await pg.locator(".lf-mod.locked").count()
+        print(f"  pågående kurs visas: {bool(cur)} · låsta kurser: {locked}")
+        if not cur:
+            found.append("ingen pågående kurs visas i akademin")
+        opn = pg.locator(".lf-lock button", has_text="Öppna ändå")
+        if await opn.count():
+            await opn.first.click(); await pg.wait_for_timeout(300)
+            note("öppna låst kurs ändå")
         await click_all(pg, ".lf-drills button", "övningsknapp", limit=25)
         # ett steg i guiden, och sedan en omladdning: framsteget ska komma från kontot, inte bara från lagret
         await pg.get_by_role("button", name="Starta guiden").click(); await pg.wait_for_timeout(700)

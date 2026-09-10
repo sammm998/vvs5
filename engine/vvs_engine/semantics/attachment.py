@@ -15,6 +15,7 @@ from typing import Any
 
 from ..geometry.core import GridIndex, Seg, dist, point_seg_distance, stable_id
 from ..pdf.extract import RawPage, RawPath
+from ..pipes.representation import stroke_family
 from ..profile.layers import layer_tokens
 from .annotation import AnnotationBlock, Designation
 from .leaders import Leader
@@ -363,7 +364,30 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
                         seen.add((q.pid, kk))
                         out.append(Contact(point=ep, kind="via_symbol", family=family_of(q), pid=q.pid, seg_index=kk, distance=de, mark_id=mid, via=p.pid))
             continue
-        for p, k, d in direct:
+        # En samlingslinje - ett kort, rakt, öppet streck på ledarens EGEN penna som ledaren landar på - är
+        # ingen kontakt utan en väg. I den första läsningen, där pennorna ännu röstas fram, räknas varje träff,
+        # och då röstade ledaren på samlingslinjens skrivpenna som rör medan pennan strecket faktiskt leder
+        # till aldrig fick en röst. Så strecket tas bort ur de direkta träffarna och dess ändar frågas i
+        # stället - bara när ledaren inte rörde något annat ritat, så en verklig kontakt aldrig byts bort.
+        own = stroke_family(ld.layer, ld.width, ld.color)
+        via_own = [(p, k, d) for p, k, d in direct if family_of(p) == own and _collector_shaped(p, pt)]
+        real = [(p, k, d) for p, k, d in direct if (p.pid, k) not in {(q.pid, kk) for q, kk, _ in via_own}]
+        if not real and via_own:
+            bridged = 0
+            for p, _, _ in via_own:
+                for q, kk, dd, ep in _collector_far_ends(p, pt, gidx, pipe_families, own, skip):
+                    if (q.pid, kk) in seen:
+                        continue
+                    seen.add((q.pid, kk))
+                    bridged += 1
+                    out.append(Contact(point=ep, kind="via_collector", family=family_of(q), pid=q.pid,
+                                       seg_index=kk, distance=dd, mark_id=mid, via=p.pid))
+            if bridged:
+                continue
+            # Strecket leder ingenstans på en annan penna: då är det ingen samlingslinje utan det ritade
+            # ledaren rörde vid - på ett blad ritat med EN penna är det själva röret. Kontakten står som förut.
+            real = direct
+        for p, k, d in real:
             if (p.pid, k) in seen:
                 continue
             seen.add((p.pid, k))
@@ -391,6 +415,29 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
                             if family_of(q) in pipe_families and (q.pid, kk) not in seen:
                                 seen.add((q.pid, kk))
                                 out.append(Contact(point=(ep[0], ep[1]), kind="via_fitting", family=family_of(q), pid=q.pid, seg_index=kk, distance=dd, mark_id=mid, via=p.pid))
+    if not out:
+        # Samlingslinjen. Ritaren drar flera hänvisningslinjer till ETT streck, och det strecket vidare till
+        # röret - en linje på skrivpennan som samlar etiketterna. Ledaren tar slut där den landar på strecket,
+        # och strecket är ingen rörfamilj, så läsningen sa "linjen rör inget rör" om ett rör som ligger femtio
+        # punkter bort med en ritad linje hela vägen dit. Två etiketter som slutar i exakt samma punkt är hur
+        # det ser ut.
+        #
+        # Bara ett rakt, kort, öppet streck (ett eller två segment, under COLLECTOR_MAX) som ledaren landar
+        # PÅ - inte ett tecken, inte en ram, inte en lång linje - och bara där ingenting annat alls hittades.
+        # Också under röstningen (rörfamiljerna okända): i den andra läsningen står skrivpennorna utanför
+        # indexet, så samlingslinjen syns varken som direkt träff eller som "annat" - och utan den här vägen
+        # fick pennan strecket leder till aldrig sin röst, och hela systemet stod utan meter.
+        # Kontakten tas i strecktes egna ändar, med samma tolerans som beslagsbryggan. Det är en svag kontakt:
+        # ett markeringsstreck på röret vinner alltid över den.
+        own = stroke_family(ld.layer, ld.width, ld.color)
+        for (pt, kind, mid) in contact_points(ld):
+            for p in _collectors_at(pt, own, skip, all_paths):
+                for q, kk, dd, ep in _collector_far_ends(p, pt, gidx, pipe_families, own, skip):
+                    if (q.pid, kk) in seen:
+                        continue
+                    seen.add((q.pid, kk))
+                    out.append(Contact(point=ep, kind="via_collector", family=family_of(q), pid=q.pid,
+                                       seg_index=kk, distance=dd, mark_id=mid, via=p.pid))
     if not out and pipe_families:
         # last resort - the leader touched nothing at all: it may have landed in the drawn gap of a dashed run
         # (see _dash_gap_hits). Only a leader with nothing else to point at is read this way, so a run that was
@@ -414,7 +461,8 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
     return out
 
 
-WEAK_KINDS = ("via_symbol", "via_marker", "via_fitting")
+WEAK_KINDS = ("via_symbol", "via_marker", "via_fitting", "via_collector")
+COLLECTOR_MAX = 90.0      # pt: en samlingslinje är kort; en lång linje på skrivpennan är något annat
 SYMBOL_MAX = 20.0         # pt: closed symbols a leader may point at (riser marks, end circles, fittings)
 
 
@@ -441,6 +489,59 @@ def _enclosing_symbol(pt: tuple[float, float], gidx: GeometryIndex, pipe_familie
             if best is None or size < best[0] or (size == best[0] and p.pid < best[1].pid):
                 best = (size, p)
     return best[1] if best else None
+
+
+def _collector_shaped(p: RawPath, pt: tuple[float, float]) -> bool:
+    """Ett kort, rakt, öppet streck som punkten ligger PÅ - så ser en samlingslinje ut, och inget annat."""
+    if p.kind != "s" or not (1 <= len(p.segs) <= 2) or _is_closed_symbol(p):
+        return False
+    L = sum(sg.length for sg in p.segs)
+    if L < 4.0 or L > _R("semantics.attachment.COLLECTOR_MAX", COLLECTOR_MAX):
+        return False
+    tol = _R("semantics.attachment.CONTACT_TOL", CONTACT_TOL)
+    return any(point_seg_distance(pt[0], pt[1], sg)[0] <= tol + 0.5 * p.width for sg in p.segs)
+
+
+def _collectors_at(pt: tuple[float, float], own: str, skip: set[str],
+                   all_paths: dict[str, RawPath]) -> list[RawPath]:
+    """Samlingslinjer på ledarens egen penna vid punkten, sökta bland bladets alla vägar.
+
+    Inte i indexet: skrivpennorna är just de familjer indexet lämnar utanför i den andra läsningen, och
+    samlingslinjen är ritad med en skrivpenna.
+    """
+    x, y = pt
+    out = []
+    for pid in sorted(all_paths):
+        p = all_paths[pid]
+        if pid in skip or family_of(p) != own:
+            continue
+        if not (p.bbox[0] - 1.0 <= x <= p.bbox[2] + 1.0 and p.bbox[1] - 1.0 <= y <= p.bbox[3] + 1.0):
+            continue
+        if _collector_shaped(p, pt):
+            out.append(p)
+    return out
+
+
+def _collector_far_ends(p: RawPath, pt: tuple[float, float], gidx: GeometryIndex, pipe_families: set[str] | None,
+                        own: str, skip: set[str]) -> list[tuple[RawPath, int, float, tuple[float, float]]]:
+    """Vad samlingslinjens ändar rör vid: ritad geometri på en annan penna än ledarens egen.
+
+    Med rörfamiljerna kända bara de; under röstningen vilken annan penna som helst - det är så strecket får
+    rösta på pennan det faktiskt leder till.
+    """
+    tol = _R("semantics.attachment.CONTACT_TOL", CONTACT_TOL)
+    out: list[tuple[RawPath, int, float, tuple[float, float]]] = []
+    for ex, ey in ((p.segs[0].x0, p.segs[0].y0), (p.segs[-1].x1, p.segs[-1].y1)):
+        if dist((ex, ey), pt) <= tol:
+            continue                                     # änden ledaren kom ifrån
+        for q, kk, dd in gidx.hits(ex, ey, tol=1.5, skip_pids=skip | {p.pid}):
+            fam = family_of(q)
+            if fam == own:
+                continue
+            if pipe_families is not None and fam not in pipe_families:
+                continue
+            out.append((q, kk, dd, (ex, ey)))
+    return out
 
 
 def _pipe_ends_at_marker(p: RawPath, gidx: GeometryIndex, pipe_families: set[str] | None, skip: set[str]) -> list[tuple[RawPath, int, float, tuple[float, float]]]:

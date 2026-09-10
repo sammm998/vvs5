@@ -363,6 +363,90 @@ def latest_analysis(project_id: str, user: User = Depends(current_user), db: Ses
             "finished_at": pa.finished_at.isoformat() if pa.finished_at else None}
 
 
+# ------------------------------------------------------------------------------------------------------------
+# projektagenten
+# ------------------------------------------------------------------------------------------------------------
+
+PROJECT_AGENT_SYSTEM_NOTE = (
+    "Du arbetar mot en hel handling - flera blad, flera hus - och inte mot en ritning. Svar om ett hus bygger "
+    "bara på det husets blad; en summa över projektet är en summa över två olika saker. Varje svar ska säga "
+    "vilka blad det vilar på, med bladets namn eller nummer."
+)
+
+
+def _project_model(db: Session, p: Project):
+    """Projektet som agenten ser det, byggt ur den senaste färdiga projektanalysen och bladens läsningar."""
+    from vvs_engine.agent.project_tools import ProjectModel
+    pa = (db.query(ProjectAnalysis).filter(ProjectAnalysis.project_id == p.id, ProjectAnalysis.status == "DONE")
+          .order_by(ProjectAnalysis.created_at.desc()).first())
+    if pa is None or not pa.report:
+        raise HTTPException(409, "Kör projektanalysen först - agenten svarar ur det som lästs, aldrig ur något annat.")
+    jobs = _latest_readings(db, p.id)
+    rows = {did: _rows_of(db, job) for did, job in jobs.items()}
+    report = pa.report
+
+    def changes_for(key: str) -> dict:
+        pair = next((x for x in (report.get("pairs") or []) if x.get("key") == key), None)
+        if pair is None:
+            return {"state": "OKÄNT_PAR"}
+        return _changes(db, (pair.get("before") or {}).get("drawing_id"), (pair.get("after") or {}).get("drawing_id"))
+
+    over = [{"drawing_id": o.drawing_id, "falt": o.field, "varde": o.value, "notering": o.note}
+            for o in db.query(DocumentOverride).filter(DocumentOverride.project_id == p.id).all()]
+    return ProjectModel(report, rows, changes_for=changes_for, overrides=over)
+
+
+class ProjectAsk(BaseModel):
+    question: str
+    history: list[dict] | None = None
+
+
+@router.post("/{project_id}/agent")
+def project_agent(project_id: str, body: ProjectAsk, user: User = Depends(current_user),
+                  db: Session = Depends(get_db)):
+    """Fråga hela handlingen. Modellen väljer verktyg, verktygen svarar ur det som lästs."""
+    p = _project(db, user, project_id)
+    model = _project_model(db, p)
+    from vvs_engine.agent import project_tools as PT
+
+    from .agent import run_turn
+    try:
+        from tools.astra_transport import agent_transport
+    except Exception as e:                                      # noqa: BLE001
+        raise HTTPException(503, f"agenttransporten kunde inte laddas: {type(e).__name__}")
+    question = f"{PROJECT_AGENT_SYSTEM_NOTE}\n\n{body.question}"
+    try:
+        out = run_turn(model, agent_transport(), question, history=body.history or [], tools=PT)
+    except Exception as e:                                      # noqa: BLE001
+        raise HTTPException(502, f"Agenten kunde inte nås: {type(e).__name__}: {str(e)[:160]}")
+    return out
+
+
+class ProjectToolIn(BaseModel):
+    name: str
+    arguments: dict = {}
+
+
+@router.post("/{project_id}/agent/tool")
+def project_agent_tool(project_id: str, body: ProjectToolIn, user: User = Depends(current_user),
+                       db: Session = Depends(get_db)):
+    """Ett verktyg rakt av, utan modell: de färdiga frågorna i panelen. Kan inte hitta på en siffra."""
+    p = _project(db, user, project_id)
+    model = _project_model(db, p)
+    from vvs_engine.agent import project_tools as PT
+    if body.name not in PT.TOOLS:
+        raise HTTPException(404, f"Okänt verktyg: {body.name}")
+    return {"svar": "", "verktyg": [{"namn": body.name, "argument": body.arguments,
+                                     "resultat": PT.run(body.name, model, body.arguments)}]}
+
+
+@router.get("/{project_id}/agent/tools")
+def project_agent_tools(project_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    _project(db, user, project_id)
+    from vvs_engine.agent import project_tools as PT
+    return {"tools": [{"name": t["name"], "description": t["description"]} for t in PT.TOOLS.values()]}
+
+
 class OverrideIn(BaseModel):
     drawing_id: str
     field: str

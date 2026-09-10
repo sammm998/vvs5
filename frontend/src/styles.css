@@ -2089,6 +2089,37 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .lf-drills > h3 { margin: 0; }
 .lf-drills > p { margin: 0 0 10px; max-width: 62ch; }
 
+/* akademin kurs för kurs: den pågående lyft, de framför låsta men öppningsbara */
+.lf-current {
+  margin: 18px 0 8px; padding: 16px 18px; border: 1px solid var(--line-2); border-left: 3px solid var(--ink);
+  border-radius: var(--r-m); background: #fff; box-shadow: var(--e1), var(--lift);
+}
+.lf-current.done { border-left-color: var(--ok); }
+.lf-current .k { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.11em; text-transform: uppercase; color: var(--faint); }
+.lf-current h3 { margin: 4px 0 2px; }
+.lf-current p { margin: 0 0 10px; }
+.lf-mod.now { border-color: var(--ink); }
+.lf-mod.locked { opacity: 0.72; }
+.lf-lock { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0 2px; flex-wrap: wrap; }
+.lf-awards { margin: 14px 0 6px; }
+.lf-award-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-top: 8px; }
+.lf-award {
+  display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px dashed var(--line-2);
+  border-radius: var(--r-m); color: var(--muted); background: var(--bg-2);
+}
+.lf-award.on { border-style: solid; border-color: var(--ok); background: var(--ok-bg); color: var(--ink); }
+.lf-award .medal { font-size: 18px; line-height: 1; }
+.lf-award.on .medal { color: var(--ok); }
+
+/* projektagenten: de färdiga frågorna i grupper, svaren som ren text med bladen namngivna */
+.agentchat .quick { display: flex; flex-direction: column; gap: 8px; }
+.agentchat .qgrp { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.agentchat .qgrp .lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); margin-right: 4px; }
+.agentchat .msgs { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; max-height: 56vh; overflow: auto; }
+.agentchat .msg { padding: 10px 12px; border-radius: var(--r-m); border: 1px solid var(--line); background: #fff; }
+.agentchat .msg.user { background: var(--bg-2); border-color: var(--line-2); align-self: flex-end; max-width: 80%; }
+.agentchat .msg .lf-pre { max-height: none; color: var(--ink); }
+
 /* ---------- på en liten skärm ---------- */
 /* Skalet är byggt för ett skrivbord: en 296 px list plus sidan bredvid. På en telefon sköt det ut hela
    innehållet ur rutan. Under 900 px viks listan ihop till sin ikonrad, och allt som stod i två spalter står
