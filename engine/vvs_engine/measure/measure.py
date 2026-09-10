@@ -54,35 +54,78 @@ def _segments(p: PhysicalPipe) -> list[tuple[float, float, float, float]]:
     return out
 
 
-def _alongside(seg, others, dmax: float) -> bool:
-    """The segment's midpoint lies within dmax of one of the other run's segments, at nearly the same angle."""
+def _overlap_pt(seg, others, dmax: float) -> float:
+    """Hur långt av segmentet som verkligen går bredvid den andra sträckan, mätt i punkter.
+
+    Provet var förut "ligger segmentets mittpunkt nära?", och svaret på det beror på var segmentgränserna
+    råkar hamna: samma sträcka uppdelad i mindre bitar gav ett annat svar. Här klipps segmentet i stället mot
+    varje granne, och de klippta bitarna slås ihop till en union - så två ritningar med samma geometri men
+    olika uppdelning ger samma längd.
+
+    Bara det som är nästan parallellt räknas: en linje som korsar en annan går bredvid den i en punkt, inte i
+    en sträcka, och en dubbellinjes två kanter följs åt.
+    """
     x0, y0, x1, y1 = seg
-    mx, my = (x0 + x1) / 2, (y0 + y1) / 2
+    L = math.hypot(x1 - x0, y1 - y0)
+    if L <= 1e-9:
+        return 0.0
+    ux, uy = (x1 - x0) / L, (y1 - y0) / L
     ang = math.atan2(y1 - y0, x1 - x0)
+    spans: list[tuple[float, float]] = []
     for ox0, oy0, ox1, oy1 in others:
-        if min(ox0, ox1) - dmax > mx or max(ox0, ox1) + dmax < mx or min(oy0, oy1) - dmax > my or max(oy0, oy1) + dmax < my:
-            continue
         dx, dy = ox1 - ox0, oy1 - oy0
-        L2 = dx * dx + dy * dy
-        t = max(0.0, min(1.0, ((mx - ox0) * dx + (my - oy0) * dy) / L2))
-        cx, cy = ox0 + t * dx, oy0 + t * dy
-        if math.hypot(mx - cx, my - cy) > dmax:
+        ol = math.hypot(dx, dy)
+        if ol <= 1e-9:
             continue
         da = abs(ang - math.atan2(dy, dx)) % math.pi
-        if min(da, math.pi - da) <= math.radians(4.0):
-            return True
-    return False
+        if min(da, math.pi - da) > math.radians(4.0):
+            continue
+        # grannens ändar projicerade på det här segmentets riktning, och deras avstånd i sidled
+        t0 = (ox0 - x0) * ux + (oy0 - y0) * uy
+        t1 = (ox1 - x0) * ux + (oy1 - y0) * uy
+        n0 = abs(-(ox0 - x0) * uy + (oy0 - y0) * ux)
+        n1 = abs(-(ox1 - x0) * uy + (oy1 - y0) * ux)
+        if min(n0, n1) > dmax:
+            continue                     # hela grannen ligger för långt åt sidan
+        lo, hi = (t0, t1) if t0 <= t1 else (t1, t0)
+        lo, hi = max(0.0, lo), min(L, hi)
+        if hi - lo > 1e-9:
+            spans.append((lo, hi))
+    if not spans:
+        return 0.0
+    spans.sort()
+    total, cur_lo, cur_hi = 0.0, spans[0][0], spans[0][1]
+    for lo, hi in spans[1:]:
+        if lo > cur_hi:
+            total += cur_hi - cur_lo
+            cur_lo, cur_hi = lo, hi
+        else:
+            cur_hi = max(cur_hi, hi)
+    return total + (cur_hi - cur_lo)
 
 
 def twin_edges(pipes: list[PhysicalPipe], mpp: float | None = None) -> dict[str, str]:
-    """physical_pipe_id -> the pipe it is the second edge of. Runs are compared within one pen and one identity,
-    at the spacing a pipe of that size has between its edges on this sheet; the longer run keeps the metres. A
-    run that is someone's second edge is never anyone's first."""
+    """physical_pipe_id -> the pipe it is the second edge of. Se `twin_overlap_pt`; den här formen bär bara
+    vem som är vems andra kant, för den som inte behöver längden."""
+    return {pid: partner for pid, (partner, _) in twin_overlap_pt(pipes, mpp).items()}
+
+
+def twin_overlap_pt(pipes: list[PhysicalPipe], mpp: float | None = None) -> dict[str, tuple[str, float]]:
+    """physical_pipe_id -> (röret det är andra kanten av, hur många punkter som verkligen går bredvid).
+
+    Sträckor jämförs inom en penna och en identitet, på det avstånd ett rör av den storleken har mellan sina
+    kanter på det här bladet; den längre sträckan behåller metrarna. En sträcka som är någons andra kant är
+    aldrig någon annans första.
+
+    Längden följer med, för den behövs: två rör som följs åt en bit och sedan går skilda vägar är två rör, och
+    bara den gemensamma biten är ritad två gånger. Utan längden lämnade den kortare ifrån sig allt den hade,
+    och den fria delen försvann ur mängden utan att synas någonstans.
+    """
     share = DOUBLE_LINE_SHARE
     groups: dict[tuple[str, str], list[PhysicalPipe]] = defaultdict(list)
     for p in pipes:
         groups[(p.family, p.identity.key)].append(p)
-    out: dict[str, str] = {}
+    out: dict[str, tuple[str, float]] = {}
     for key, grp in groups.items():
         if len(grp) < 2:
             continue
@@ -109,10 +152,9 @@ def twin_edges(pipes: list[PhysicalPipe], mpp: float | None = None) -> dict[str,
                 A, B = boxes[aid], boxes[bid]
                 if A[0] - dmax > B[2] or A[2] + dmax < B[0] or A[1] - dmax > B[3] or A[3] + dmax < B[1]:
                     continue
-                beside = sum(math.hypot(x1 - x0, y1 - y0) for (x0, y0, x1, y1) in segs[bid]
-                             if _alongside((x0, y0, x1, y1), segs[aid], dmax))
+                beside = sum(_overlap_pt(sg, segs[aid], dmax) for sg in segs[bid])
                 if beside >= share * length[bid]:
-                    out[bid] = aid
+                    out[bid] = (aid, min(beside, length[bid]))
                     break
     return out
 
@@ -145,16 +187,20 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
     # single run can be read as confidently measured when the sheet's own scale is unsettled.
     scale_note = (f"scale_{scale.state.lower()}:{scale.reason}"
                   if scale.state not in ("VERIFIED",) and mpp is not None else None)
-    twins = twin_edges(own.pipes, mpp)
+    twins = twin_overlap_pt(own.pipes, mpp)
     for p in own.pipes:
         # hatched length is measured on drawn primitives; scale it by the bridged-gap share of the run
         factor = (p.length_pt / p.raw_length_pt) if p.raw_length_pt > 0 else 1.0
         hpt = min((hatched_pt or {}).get(p.physical_pipe_id, 0.0) * factor, p.length_pt)
         hpu = p.length_pt - hpt          # horizontal quantity = drawn length outside hatched (wall) areas
-        twin_of = twins.get(p.physical_pipe_id)
+        twin = twins.get(p.physical_pipe_id)
+        twin_of = twin[0] if twin else None
         twin_pu = 0.0
-        if twin_of is not None:
-            twin_pu, hpu = hpu, 0.0      # the second edge of a double line: the metres are its partner's
+        if twin is not None:
+            # Den andra kanten av en dubbellinje lämnar sina meter till den första - men bara den del som
+            # verkligen går bredvid. Det som går sin egen väg är ett eget rör och stannar i mängden.
+            twin_pu = min(hpu, twin[1] * factor)
+            hpu -= twin_pu
         hm = hpu * mpp if mpp is not None else None
         reasons = []
         if twin_of is not None:

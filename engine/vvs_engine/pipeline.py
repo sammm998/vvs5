@@ -821,7 +821,13 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     system_tokens = {d.system_token for d in designations}
     # the sheet's own designation list says which labels name pipes; the rest describe objects and may sit
     # anywhere, so they say nothing about what pipe geometry looks like
-    pipe_labels = {d.did for d in designations if legend.names_a_pipe(d) and (d.text or "").upper() not in legend.components()}
+    # Koder bladets egen förklaringslista aldrig nämner är inga rörbeteckningar på det bladet - rumsnummer har
+    # samma form som en rörbeteckning, och formen kan inte skilja dem åt. Räknas de som rörnamn drar de dessutom
+    # ned bladets etikettäckning och kan få hela läsningen att förkastas.
+    unknown_codes = _unknown_to_the_legend(legend, designations)
+    pipe_labels = {d.did for d in designations
+                   if legend.names_a_pipe(d) and (d.text or "").upper() not in legend.components()
+                   and d.did not in unknown_codes}
     spelled_out = layer_system_tokens(page)      # the system names the file writes on layers of its own
 
     def run_pass(ann_layers: dict[str, int] | None, admit_leader_pens: bool = False):
@@ -1326,7 +1332,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         """
         return complete_identities(_pipe_identities(
             designations, anchors, grammar,
-            _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend))
+            _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend,
+            unknown_codes=unknown_codes))
 
     scale = discover_scale(page, lines)
     if known_scale is not None and scale.state in ("NONE", "CONFLICT"):
@@ -1448,8 +1455,16 @@ def _risers_from_dn_rows(designations, anchors, leaders, identities) -> dict[str
             if ident.stem not in known:
                 continue
         mine[a.anchor_id] = ident if ident.dn is not None else replace(ident, dn=d.dn)
-    # a stack named the short way is the same stack as the one named in full: the counts belong on one row
-    mine = complete_identities({**identities, **mine})
+    # En stigare namngiven det korta sättet är samma stigare som den namngiven i sin helhet, så kompletteringen
+    # måste se hela bladet: `S01-P5` vid stammen tar sin dimension ur `S01-P5-110` bredvid.
+    #
+    # Men kompletteringen svarar för varje etikett den fick, och skrevs svaret rakt tillbaka hit blev
+    # kandidatlistan bladets alla etiketter. Nästa slinga går igenom kandidaterna, och en vågrät etikett med
+    # dimensionen inne i raden räknades då som en stigare - stigarantalet blev etikettantalet, och med en satt
+    # våningshöjd blev det meter ingen ritning bär. Kandidaternas id:n hålls därför fast genom kompletteringen.
+    candidates = list(mine)
+    completed = complete_identities({**identities, **mine})
+    mine = {aid: completed[aid] for aid in candidates if aid in completed}
     labelled: dict[str, list[dict]] = {}
     for a in sorted(anchors, key=lambda x: x.anchor_id):
         if a.anchor_id not in mine:
@@ -1610,7 +1625,7 @@ def _split_at_tick_contacts(page: RawPage, graphs: dict, pipe_families: dict, an
 
 
 def _pipe_identities(designations, anchors, grammar, dn_rows_are_vertical_only: bool = False,
-                    legend=None) -> dict[str, Identity]:
+                    legend=None, unknown_codes: set[str] | None = None) -> dict[str, Identity]:
     """Anchors of pipe-designation grammar families: a family qualifies when >= 50 % of its members carry a DN
     (inline or DN row) or >= 50 % of its verified attachments have layer-token support. Other code families
     (component tags) never seed pipe ownership.
@@ -1621,11 +1636,17 @@ def _pipe_identities(designations, anchors, grammar, dn_rows_are_vertical_only: 
     measured question, not a deduced one, and the switch is here so it can be measured rather than argued.
     """
     des_by_id = {d.did: d for d in designations}
+    unknown = unknown_codes or set()
     fam_members: Counter = Counter()
     fam_dn: Counter = Counter()
     fam_ver: Counter = Counter()
     fam_tok: Counter = Counter()
+    # En kod bladets egen förklaringslista aldrig nämner röstar inte om vad en formfamilj är. Rumsnummer har
+    # samma form som en rörbeteckning, och räknades de med spädde de ut familjen tills den inte längre var en
+    # rörfamilj - och då tappade bladet också de riktiga rören i den. Felet syntes som en tom mängdtabell.
     for d in designations:
+        if d.did in unknown:
+            continue
         fam_members[d.family] += 1
         if d.dn is not None:
             fam_dn[d.family] += 1
@@ -1633,7 +1654,7 @@ def _pipe_identities(designations, anchors, grammar, dn_rows_are_vertical_only: 
         if a.state != "VERIFIED_PIPE_ATTACHMENT":
             continue
         d = des_by_id.get(a.designation_id)
-        if d is None:
+        if d is None or d.did in unknown:
             continue
         fam_ver[d.family] += 1
         if a.evidence.get("layer_token_match") or a.evidence.get("layer_token"):
@@ -1660,6 +1681,8 @@ def _pipe_identities(designations, anchors, grammar, dn_rows_are_vertical_only: 
             continue
         if legend is not None and (d.text or "").upper() in legend.components():
             continue        # the legend says this code names an object, not a pipe
+        if d.did in (unknown_codes or set()):
+            continue        # bladets egen förklaringslista nämner aldrig den här koden
         gf = grammar.families.get(d.pattern)
         dn_idx = gf.dn_token_index if gf is not None else None
         if dn_idx is None and d.dn_source == "inline":
@@ -1668,6 +1691,51 @@ def _pipe_identities(designations, anchors, grammar, dn_rows_are_vertical_only: 
             dn_idx = cand[0] if cand else None
         out[a.anchor_id] = identity_of(a, dn_idx)
     return out
+
+
+# Hur stor en förklaringslista ska vara för att få stänga ute en kod, och hur mycket av bladets egna etiketter
+# den ska ha visat sig känna igen innan den får göra det. Båda finns för att en lista som inte täcker bladets
+# rörordförråd aldrig ska kunna radera ett rör den bara råkat utelämna.
+LEGEND_MIN_ENTRIES = 8
+LEGEND_MIN_KNOWN_HEADS = 3
+
+
+def _unknown_to_the_legend(legend, designations) -> set[str]:
+    """Beteckningar vars kod bladets egen förklaringslista aldrig nämner.
+
+    Ett rumsnummer har samma form som en rörbeteckning. `C 2004` med `FRD` under sig ser ut precis som
+    `KV11-16` med sin dimension på raden under - bokstäver, siffror, rader - och formen kan inte skilja dem åt.
+    Ett helt hus av rumsnummer hamnade i mängden med meter och stigare, och de metrarna finns inte.
+
+    Listan kan skilja dem åt: `C` står inte i den. Så en kod bladets egen lista aldrig nämner är ingen
+    rörbeteckning på det bladet.
+
+    Regeln är smal med flit, för en lista kan vara ofullständig. Den gäller bara när bladet har en egen lista av
+    någon storlek, och bara när listan bevisligen känner igen bladets eget ordförråd - flera av de koder
+    etiketterna faktiskt öppnar med ska stå i den. Gör de inte det säger listan ingenting om det här bladet, och
+    då stänger den inte ute någonting. En kod som står i listan får passera vad den än fått för roll.
+    """
+    if legend is None or not getattr(legend, "own", False):
+        return set()
+    entries = getattr(legend, "entries", []) or []
+    if len(entries) < _R("pipeline.LEGEND_MIN_ENTRIES", LEGEND_MIN_ENTRIES):
+        return set()
+    codes = {c.upper() for c in (getattr(legend, "by_code", {}) or {})}
+    if not codes:
+        return set()
+
+    def known(d) -> bool:
+        text = (getattr(d, "text", "") or "").upper()
+        head = (getattr(d, "system_token", "") or "").upper()
+        if legend.role_of_head(text) is not None or (head and legend.role_of_head(head) is not None):
+            return True
+        return any((text and text.startswith(c)) or (head and head.startswith(c)) for c in codes)
+
+    heads_known = {(getattr(d, "system_token", "") or "").upper() for d in designations if known(d)}
+    heads_known.discard("")
+    if len(heads_known) < _R("pipeline.LEGEND_MIN_KNOWN_HEADS", LEGEND_MIN_KNOWN_HEADS):
+        return set()
+    return {d.did for d in designations if not known(d)}
 
 
 def _is_vertical_label(d) -> bool:

@@ -312,7 +312,7 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
     for fk, g in graphs.items():
         _resolve_family(g, states[fk], seeds[fk], ambiguous_runs, fk)
     for fk, g in graphs.items():
-        _family_uniform_identity(fk, states[fk], anchors, identities, spelled_out)
+        _family_uniform_identity(fk, states[fk], anchors, identities, spelled_out, g)
     for fk, g in graphs.items():
         _demote_sliver_outlines(g, states[fk], fk, ambiguous_runs)
     for fk, g in graphs.items():
@@ -509,10 +509,23 @@ def _demote_sliver_outlines(g: PipeGraph, st: dict[int, PrimState], fk: str, amb
                                "n_primitives": len(caught)})
 
 def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[PipeCodeAnchor], identities: dict[str, Identity],
-                             spelled_out: frozenset[str] = frozenset()) -> None:
+                             spelled_out: frozenset[str] = frozenset(), g: "PipeGraph | None" = None) -> None:
     """A vector family whose layer name structurally carries one system token (exact or abbreviated tail, never a
     wildcard) and whose verified anchors (>= 2) all agree on one designation AND DN is a single-system, single-size
-    layer: its unlabeled runs carry that identity (evidence: layer token + every anchor of the family)."""
+    layer: its unlabeled runs carry that identity (evidence: layer token + every anchor of the family).
+
+    Men bara det bläck som hänger ihop med det etiketterna nådde.
+
+    Ett lagernamn säger vilket system bläcket tillhör. Det säger inte att två streck i var sin ände av bladet är
+    samma rör, och det säger inte att en lös bit alls är ett rör. Regeln gav namnet åt allt i familjen, hur
+    långt bort det än låg - och då blev en frånkopplad sträcka en bekräftad meter som ingen etikett hade pekat
+    på, med samma säkerhet som en mätt sträcka. Det är precis den sortens fel som inte syns: talet ser ut som
+    de andra talen.
+
+    Så kravet är lokal koppling. Sträckan ska sitta i samma sammanhängande nät som någon av familjens egna
+    ankare. Det som ligger för sig självt får stå kvar som onämnt - ett ärligt "vi vet inte" - tills ritningen
+    eller en människa säger något om det.
+    """
     aids = sorted({a.anchor_id for a in anchors if a.anchor_id in identities and any(c.family == fk for c in a.contacts)})
     if len(aids) < 2:
         return
@@ -529,12 +542,44 @@ def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[Pi
     S, TU = uni.system.upper(), tok.upper()
     if not (TU == S or (len(S) > len(TU) and S.endswith(TU))):
         return      # alpha-only or wildcard layer tokens cover several systems: no family-level identity
+    # vilka sammanhängande nät familjens egna ankare faktiskt sitter i
+    reach = _components_with_anchors(g, st, set(aids)) if g is not None else None
     for pid in sorted(st):
         s = st[pid]
+        if reach is not None and pid not in reach:
+            continue                 # ligger inte i något nät en etikett nådde: lagernamnet räcker inte
         if s.state == "UNOWNED" or (s.state == "AMBIGUOUS" and s.candidates and all(_merge_identity([uni, c]) is not None for c in s.candidates)):
             s.state, s.identity, s.reason, s.candidates = "CONFIRMED", uni, "family_uniform_identity", set()
             s.anchors |= set(aids)
             s.evidence.append(f"layer_token_{tok}_and_{len(aids)}_agreeing_anchors_{uni.key}")
+
+
+def _components_with_anchors(g: "PipeGraph", st: dict[int, PrimState], aids: set[str]) -> set[int]:
+    """Primitiverna i de sammanhängande nät som något av ankarna sitter i.
+
+    Nätet är familjens graf: två primitiver hänger ihop när de delar en nod. Ett ankare sitter i det nät vars
+    primitiver bär dess id. Allt annat är en egen ö, och en ö är inte samma rör bara för att den ritats med
+    samma penna på samma lager.
+    """
+    parent: dict[int, int] = {pid: pid for pid in g.prims}
+
+    def find(x: int) -> int:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a: int, b: int) -> None:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[max(ra, rb)] = min(ra, rb)
+
+    for node in g.nodes.values():
+        ps = sorted(node.prims)
+        for q in ps[1:]:
+            union(ps[0], q)
+    seeded = {find(pid) for pid, s in st.items() if pid in parent and (s.anchors & aids)}
+    return {pid for pid in parent if find(pid) in seeded}
 
 
 SLIVER_RUN = 0.6            # pt: kortare än så är ingen sträcka, det är avrundningen i utdraget
@@ -857,6 +902,101 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
             return None
         return pids, dead(ci, nodes[-1] if side == 0 else nodes[0])
 
+    def spread_into_unowned_chains() -> bool:
+        """Vad en onämnd kedja får heta, vägt mot varje korsning den möter - inte bara den första.
+
+        En vågrät förbindelse mellan ett DN20-stråk och ett DN40-stråk möter två korsningar och har ingen egen
+        dimensionsgräns. Läsningen tog identiteten från den korsning den råkade nå först, och vilken det blev
+        följde primitivernas numrering: samma ritning kunde ge DN20 eller DN40, båda som CONFIRMED. Det är två
+        fel i ett - mängden blev olika för samma ritning, och den blev säker på något ritningen inte säger.
+
+        Så stödet samlas först. Kedjans båda ändnoder får lämna sina bekräftade identiteter, och bara om allt
+        stöd pekar åt samma håll tar kedjan det namnet. Pekar det åt två håll är kedjan tvetydig tills ritningen
+        ger en gräns eller en identitet - en tick, en etikett - och det är ett ärligare svar än ett tal.
+
+        Körs efter att korsningsslingan lagt sig, så att grannarna är färdigbestämda när kedjan vägs. Att den
+        körs om medan något ändras är vad som låter ett avgjort stråk föra namnet vidare genom nätet.
+        """
+        touched = False
+        for nid in sorted(g.nodes):
+            n = g.nodes[nid]
+            if n.degree < 3:
+                continue
+            arms = sorted(n.prims)
+            resolved = [p for p in arms if st[p].state == "CONFIRMED"]
+            unresolved = [p for p in arms if st[p].state == "UNOWNED"]
+            if not resolved or not unresolved:
+                continue
+            for u in unresolved:
+                # En stump kortare än kontakttoleransen får inte ta ett namn och bära det vidare. Den är inget
+                # ritat rör, och som brygga tar den namnet över glapp som aldrig var anslutningar.
+                if _too_short_to_carry(g, ch, chain_of[u]):
+                    continue
+                ci = chain_of[u]
+                # collinear resolved partner?
+                partners = [p for p in resolved if angle_diff(g.prims[p].seg.angle, g.prims[u].seg.angle) <= 3.0]
+                idents = {st[p].identity for p in partners}
+                if len(idents) == 1:
+                    ident = next(iter(idents))
+                    # extend along u's chain until a junction/terminal
+                    for pid in ch[ci]:
+                        s = st[pid]
+                        if s.state == "UNOWNED":
+                            s.state, s.identity, s.reason = "CONFIRMED", ident, "collinear_through_junction"
+                            s.anchors |= set().union(*(st[p].anchors for p in partners))
+                            s.evidence.append(f"straight_through_node_{nid}")
+                    touched = True
+                    continue
+                # Allt stöd kedjan har, från varje korsning den möter. Den lokala noden ensam räcker inte: en
+                # förbindelse mellan två dimensioner ser en enda kandidat vid var ände och skulle bekräftas av
+                # båda, var för sig, till olika svar.
+                chain_prims = set(ch[ci])
+                cands: set = set()
+                aids: set[str] = set()
+                for end in {chain_nodes[ci][0], chain_nodes[ci][-1]}:
+                    for p in g.nodes[end].prims:
+                        if p in chain_prims:
+                            continue
+                        sp = st[p]
+                        if sp.state == "CONFIRMED" and sp.identity is not None:
+                            cands.add(sp.identity)
+                            aids |= sp.anchors
+                if not cands:
+                    continue
+                # En korsning är ingen anslutning. Två rör kan korsa varandra utan att mötas, och en gren
+                # skapas aldrig bara för att linjer korsas - det är ritningsläsningens egen regel, och det
+                # ritade beviset för den står i noden: en gren tar slut där den grenar av, medan en linje
+                # som bara passerar fortsätter rakt ut på andra sidan som ännu en onämnd arm.
+                #
+                # Men det räcker inte att de är parallella. En linje som passerar går IN på ena sidan av
+                # noden och UT på den andra - de två armarna pekar åt var sitt håll. Två onämnda armar som
+                # pekar åt SAMMA håll är samma linje ritad två gånger, eller en stump ovanpå ledningen, och
+                # där finns ingenting som passerar.
+                passes_through = any(q != u
+                                     and angle_diff(g.prims[q].seg.angle, g.prims[u].seg.angle) <= 3.0
+                                     and _opposite_sides(g, n, q, u)
+                                     for q in unresolved)
+                only = next(iter(cands)) if len(cands) == 1 else None
+                if only is not None and only.dn is not None and not groups_of.get(ci) and not passes_through:
+                    for pid in ch[ci]:
+                        s = st[pid]
+                        if s.state == "UNOWNED":
+                            s.state, s.identity, s.reason = "CONFIRMED", only, "unlabeled_branch_takes_the_only_junction_identity"
+                            s.anchors |= aids
+                            s.evidence.append(f"single_candidate_at_node_{nid}")
+                else:
+                    for pid in ch[ci]:
+                        s = st[pid]
+                        if s.state == "UNOWNED":
+                            s.state, s.candidates, s.reason = "AMBIGUOUS", set(cands), "AMBIGUOUS_BRANCH"
+                            s.evidence.append(f"unlabeled_branch_at_node_{nid}")
+                    if len(cands) > 1:
+                        ambiguous_runs.append({"family": fk, "chain": ci, "from_prim": ch[ci][0],
+                                               "to_prim": ch[ci][-1], "reason": "AMBIGUOUS_BRANCH",
+                                               "identities": sorted({i.key for i in cands})})
+                touched = True
+        return touched
+
     # 2. junction resolution (iterative): the junction's identity flows into a labeled arm up to its tick boundary;
     #    collinear continuation into unowned arms; other unlabeled arms ambiguous
     changed = True
@@ -969,70 +1109,13 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                 for p in pids:
                     if f"tick_on_branch_at_junction_{nid}_taken_as_label_pointer" not in st[p].evidence:
                         st[p].evidence.append(f"tick_on_branch_at_junction_{nid}_taken_as_label_pointer")
-            resolved = [p for p in arms if st[p].state == "CONFIRMED"]
-            unresolved = [p for p in arms if st[p].state == "UNOWNED"]
-            if not resolved or not unresolved:
-                continue
-            for u in unresolved:
-                # En stump kortare än kontakttoleransen får inte ta ett namn och bära det vidare. Den är inget
-                # ritat rör, och som brygga tar den namnet över glapp som aldrig var anslutningar.
-                if _too_short_to_carry(g, ch, chain_of[u]):
-                    continue
-                # collinear resolved partner?
-                partners = [p for p in resolved if angle_diff(g.prims[p].seg.angle, g.prims[u].seg.angle) <= 3.0]
-                idents = {st[p].identity for p in partners}
-                if len(idents) == 1:
-                    ident = next(iter(idents))
-                    # extend along u's chain until a junction/terminal
-                    ci = chain_of[u]
-                    for pid in ch[ci]:
-                        s = st[pid]
-                        if s.state == "UNOWNED":
-                            s.state, s.identity, s.reason = "CONFIRMED", ident, "collinear_through_junction"
-                            s.anchors |= set().union(*(st[p].anchors for p in partners))
-                            s.evidence.append(f"straight_through_node_{nid}")
-                    changed = True
-                else:
-                    cands = {st[p].identity for p in resolved}
-                    ci = chain_of[u]
-                    # an unlabeled branch where every labeled arm of the junction carries the SAME identity has no
-                    # competing candidate: a size change is drawn with its own label, so an unnamed branch is the
-                    # identity that feeds it. Only a junction with two or more candidates is genuinely ambiguous.
-                    # En korsning är ingen anslutning. Två rör kan korsa varandra utan att mötas, och en gren
-                    # skapas aldrig bara för att linjer korsas - det är ritningsläsningens egen regel, och det
-                    # ritade beviset för den står i noden: en gren tar slut där den grenar av, medan en linje
-                    # som bara passerar fortsätter rakt ut på andra sidan som ännu en onämnd arm.
-                    #
-                    # Utan den skillnaden blev varje vägg som korsar ett rör en gren och tog rörets namn - och
-                    # på ett blad exporterat utan lagernamn, där väggar och rör ritas med samma penna, kaskadade
-                    # det: nittiofem grenar, tvåhundrafyrtio meter byggnad redovisad som DN16 tappvatten.
-                    #
-                    # Men det räcker inte att de är parallella. En linje som passerar går IN på ena sidan av
-                    # noden och UT på den andra - de två armarna pekar åt var sitt håll. Två onämnda armar som
-                    # pekar åt SAMMA håll är samma linje ritad två gånger, eller en stump ovanpå ledningen, och
-                    # där finns ingenting som passerar. Utan riktningen stannade ledningen vid varje sådan
-                    # dubbelritning: trettio meter rätt rör försvann på ett enda blad.
-                    passes_through = any(q != u
-                                         and angle_diff(g.prims[q].seg.angle, g.prims[u].seg.angle) <= 3.0
-                                         and _opposite_sides(g, n, q, u)
-                                         for q in unresolved)
-                    only = next(iter(cands)) if len(cands) == 1 else None
-                    if only is not None and only.dn is not None and not groups_of.get(ci) and not passes_through:
-                        aids = set().union(*(st[p].anchors for p in resolved))
-                        for pid in ch[ci]:
-                            s = st[pid]
-                            if s.state == "UNOWNED":
-                                s.state, s.identity, s.reason = "CONFIRMED", only, "unlabeled_branch_takes_the_only_junction_identity"
-                                s.anchors |= aids
-                                s.evidence.append(f"single_candidate_at_node_{nid}")
-                    else:
-                        for pid in ch[ci]:
-                            s = st[pid]
-                            if s.state == "UNOWNED":
-                                s.state, s.candidates, s.reason = "AMBIGUOUS", set(cands), "AMBIGUOUS_BRANCH"
-                                s.evidence.append(f"unlabeled_branch_at_node_{nid}")
-                    changed = True
-
+            # Onämnda armar avgörs inte här. Se `spread_into_unowned_chains`: en kedja som möter två
+            # korsningar ska vägas mot båda, och det går bara när grannarna slutat ändra sig.
+            continue
+        # När korsningarnas egna regler lagt sig för den här omgången vägs de onämnda kedjorna mot allt stöd de
+        # har. Ändrade det något körs korsningarna om, så ett namn kan bäras vidare genom nätet.
+        if not changed and spread_into_unowned_chains():
+            changed = True
 
 def _build_pipes(g: PipeGraph, st: dict[int, PrimState], fk: str, page: int) -> list[PhysicalPipe]:
     pipes: list[PhysicalPipe] = []

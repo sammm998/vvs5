@@ -172,6 +172,8 @@ class _Label:
     bbox: tuple
     angle: float
     height: float
+    unit: str | None = None      # enheten etiketten själv bär, när den skriver ut den
+    value: float = 0.0
 
     @property
     def cx(self):
@@ -182,8 +184,14 @@ class _Label:
         return (self.bbox[1] + self.bbox[3]) / 2
 
 
-def _numeric_words(lines: list[TextRow]) -> list[_Label]:
-    out = []
+# Ett tal, dess eventuella decimaler, och enheten det bär om den står skriven mot talet.
+NUMBER_RE = re.compile(r"(\d{1,5}(?:[.,]\d{1,3})?)\s*(mm|cm|dm|m)?[:.;]?", re.IGNORECASE)
+# Enheten skriven som ett eget ord: `0 1 2 3 4 5   m`.
+UNIT_RE = re.compile(r"(mm|cm|dm|m)\.?", re.IGNORECASE)
+
+
+def _words(lines: list[TextRow]):
+    """Orden i varje rad, med sina egna rutor: (texten, glyferna, raden)."""
     for ln in lines:
         cur = []
         for g in list(ln.glyphs) + [None]:
@@ -191,14 +199,50 @@ def _numeric_words(lines: list[TextRow]) -> list[_Label]:
                 if cur:
                     # twin shapes inside scale-bar labels: an O whose recognizer alternatives include 0 reads as 0
                     t = "".join("0" if (x.char == "O" and (any(a == "0" for a, _ in x.alternatives) or ln.source == "text")) else x.char for x in cur)
-                    m = re.fullmatch(r"(\d{1,3})(m|M|cm|mm|CM|MM)?[:.,;]?", t)
-                    if m:
-                        t = m.group(1)
-                        bb = (min(x.bbox[0] for x in cur), min(x.bbox[1] for x in cur), max(x.bbox[2] for x in cur), max(x.bbox[3] for x in cur))
-                        out.append(_Label(t, bb, ln.angle, ln.height))
+                    yield t, cur, ln
                 cur = []
             else:
                 cur.append(g)
+
+
+def _box(glyphs):
+    return (min(x.bbox[0] for x in glyphs), min(x.bbox[1] for x in glyphs),
+            max(x.bbox[2] for x in glyphs), max(x.bbox[3] for x in glyphs))
+
+
+def _numeric_words(lines: list[TextRow]) -> list[_Label]:
+    """Talen längs en skalstock, var och en med den enhet det självt bär.
+
+    Enheten kastades förut bort, och då lästes `5000 mm` som fem tusen meter och förkastades - eller värre,
+    `5 m` kunde tolkas om till millimeter för att metertolkningen råkade ge en orimlig skala. Ett värde med
+    enhet är ritningens besked och ska bäras hela vägen fram.
+
+    Rutan är talets egen, inte hela ordets: bär ordet också en enhet (`500cm`) drar enhetens tecken annars
+    talets mittpunkt åt höger, och stocken mäts längre än den är ritad.
+    """
+    out = []
+    for t, cur, ln in _words(lines):
+        m = NUMBER_RE.fullmatch(t)
+        if not m:
+            continue
+        try:
+            val = float(m.group(1).replace(",", "."))
+        except ValueError:
+            continue
+        unit = (m.group(2) or "").lower() or None
+        digits = cur[:len(m.group(1))] or cur
+        out.append(_Label(m.group(1), _box(digits), ln.angle, ln.height, unit, val))
+    return out
+
+
+def _unit_words(lines: list[TextRow]) -> list[_Label]:
+    """Enheter skrivna som egna ord. De är inga tal och hör inte hemma bland stockens etiketter - de säger
+    bara vad stockens tal räknas i, och läses bara som det."""
+    out = []
+    for t, cur, ln in _words(lines):
+        m = UNIT_RE.fullmatch(t)
+        if m:
+            out.append(_Label("", _box(cur), ln.angle, ln.height, m.group(1).lower(), 0.0))
     return out
 
 
@@ -282,16 +326,37 @@ def find_tick_bar(page: RawPage) -> tuple[float, float] | None:
     return best
 
 
+def _unit_beside(units: list[_Label], a: _Label, d, n, span_p: float) -> str | None:
+    """Enheten skriven som ett eget ord vid stockens ände: `0 1 2 3 4 5   m`.
+
+    Den räknas som stockens enhet när den ligger på stockens egen rad, i dess egen storlek, och inom en bit
+    efter dess sista tal. Ett `m` någon annanstans på bladet säger ingenting om den här stocken.
+    """
+    H = max(a.height, 1)
+    base = project((a.cx, a.cy), d)
+    said = set()
+    for b in units:
+        if abs(((b.angle - a.angle) + 180) % 360 - 180) > 3 or abs(b.height - a.height) > 0.3 * H:
+            continue
+        if abs(project((b.cx, b.cy), n) - project((a.cx, a.cy), n)) > 0.6 * H:
+            continue
+        t = project((b.cx, b.cy), d) - base
+        if -0.5 - 6 * H <= t <= span_p + 6 * H:
+            said.add(b.unit)
+    return said.pop() if len(said) == 1 else None
+
+
 def _find_scale_bar(page: RawPage, lines: list[TextRow]) -> ScaleEvidence | None:
     nums = _numeric_words(lines)
     if len(nums) < 3:
         return None
+    units = _unit_words(lines)
     idx = GridIndex(cell=60.0)
     for i, ln in enumerate(nums):
         idx.insert(i, ln.bbox)
     best = None
     for i, a in enumerate(nums):
-        if a.text.strip() != "0":
+        if a.value != 0.0 or a.text.strip().strip("0.,") not in ("", "0"):
             continue
         d, n = row_axes(a.angle)
         H = max(a.height, 1)
@@ -303,7 +368,7 @@ def _find_scale_bar(page: RawPage, lines: list[TextRow]) -> ScaleEvidence | None
                 continue
             if abs(project((b.cx, b.cy), n) - project((a.cx, a.cy), n)) > 0.6 * H:
                 continue
-            cands.append((project((b.cx, b.cy), d) - project((a.cx, a.cy), d), int(b.text), b))
+            cands.append((project((b.cx, b.cy), d) - project((a.cx, a.cy), d), b.value, b))
         cands = sorted((c for c in cands if c[0] >= -0.5), key=lambda c: (c[0], c[1]))
         if len(cands) < 3:
             continue
@@ -364,21 +429,45 @@ def _find_scale_bar(page: RawPage, lines: list[TextRow]) -> ScaleEvidence | None
         # (a glyph centre sits a fraction of a character off the graduation it labels). Use the extent whenever
         # both ends of the bar coincide with the outer labels within half a graduation.
         span_used, ref = span_p, "label_centres"
-        step = span_p / max(span_v, 1)
+        # en gradering är avståndet mellan två etiketter på pappret - inte skillnaden mellan deras tal. Räknat
+        # på talen blev graderingen försvinnande liten så fort stocken var skriven i mm eller cm, och stockens
+        # egen ritade längd användes då aldrig.
+        step = span_p / max(len(vals) - 1, 1)
         if bar_lo is not None and abs(bar_lo - lo) <= 0.5 * step and abs(bar_hi - hi) <= 0.5 * step and bar_hi - bar_lo > 20:
             span_used, ref = bar_hi - bar_lo, "bar_extent"
-        # unit: labels are meters when spacing implies a plausible drawing scale (1:10 .. 1:2000)
-        mpp = span_v / span_used     # meters per pt if labels are meters
-        ratio = mpp * 1000.0 / MM_PER_PT
-        unit = "m"
-        if ratio < 5:            # labels likely in cm or mm -> unrealistic; try mm
-            mpp_mm = mpp / 1000.0
-            if 5 <= mpp_mm * 1000.0 / MM_PER_PT <= 5000:
-                mpp, unit, ratio = mpp_mm, "mm", mpp_mm * 1000.0 / MM_PER_PT
-            else:
+        # Enheten: den ritningen skriver ut, annars den som gör skalan rimlig.
+        #
+        # Skriver stocken ut sin enhet - `5 m`, `5000 mm`, `500 cm` - är det ritningens besked, och det gäller.
+        # Att tolka om ett värde med enhet till en annan enhet är ett fel på tusen gånger i varje meter bladet
+        # mäter, och det syns inte i något tal. Ger den utskrivna enheten en orimlig skala läses stocken inte
+        # alls, hellre än att den läses i en enhet ritningen inte skrev.
+        #
+        # Står ingen enhet någonstans gissas den, som förut: meter först, och den enhet som ger en rimlig skala
+        # om metertolkningen inte gör det.
+        stated = {c[2].unit for c in cands if c[2].unit}
+        if len(stated) > 1:
+            continue                 # stocken skriver två enheter: den säger inte vilken som gäller
+        told = next(iter(stated), None) or _unit_beside(units, a, d, n, span_p)
+        per = {"m": 1.0, "dm": 0.1, "cm": 0.01, "mm": 0.001}
+        if told:
+            mpp = span_v * per[told] / span_used
+            ratio = mpp * 1000.0 / MM_PER_PT
+            if not (5 <= ratio <= 5000):
                 continue
-        if ratio > 5000:
-            continue
+            unit = told
+        else:
+            mpp = span_v / span_used     # meters per pt if labels are meters
+            ratio = mpp * 1000.0 / MM_PER_PT
+            unit = "m"
+            if ratio < 5 or ratio > 5000:
+                for u in ("dm", "cm", "mm"):
+                    cand_mpp = span_v * per[u] / span_used
+                    cand_ratio = cand_mpp * 1000.0 / MM_PER_PT
+                    if 5 <= cand_ratio <= 5000:
+                        mpp, unit, ratio = cand_mpp, u, cand_ratio
+                        break
+                else:
+                    continue
         cand = ScaleEvidence(kind="scale_bar", text=" ".join(str(v) for v in vals), bbox=[round(v, 1) for v in (min(c[2].bbox[0] for c in cands), min(c[2].bbox[1] for c in cands), max(c[2].bbox[2] for c in cands), max(c[2].bbox[3] for c in cands))],
                              value=mpp, detail={"labels": vals, "span_pt": round(span_p, 2), "measured_from": ref, "bar_extent_pt": round(span_used, 2),
                                                "unit": unit, "implied_ratio": round(ratio, 1), "n_labels": len(vals)})
