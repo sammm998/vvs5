@@ -13,7 +13,7 @@ import re
 
 import math
 from collections import Counter, defaultdict, deque
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 from ..geometry.core import GridIndex, angle_diff, dist, point_seg_distance, stable_id
@@ -31,17 +31,33 @@ def _R(rule_id, default):
 
 @dataclass(frozen=True)
 class Identity:
-    base: str                 # designation without its inline DN token (system + material tokens)
+    base: str                 # designation without its inline DN token (system + material tokens + qualifier)
     dn: int | None
     system: str
     display: str              # designation as written (most common form)
+    stem: str = ""            # ...and without the qualifier either: what the two ways of writing it share
+    qualifier: str | None = None   # what the drawing writes after the dimension: insulation, covering, medium
+
+    def __post_init__(self) -> None:
+        if not self.stem:
+            object.__setattr__(self, "stem", self.base)
 
     @property
     def key(self) -> str:
         return f"{self.base}|DN{self.dn if self.dn is not None else '?'}"
 
     def compatible(self, other: "Identity") -> bool:
-        return self.base == other.base and (self.dn is None or other.dn is None or self.dn == other.dn)
+        """Two labels name the same pipe when nothing either of them states contradicts the other.
+
+        A drawing states a run's dimension and its insulation where it has room to and leaves them off where it
+        has not: the same heating run is written `VS21-S13-15-F50` at one end and `VS21-S13` with `15` on the row
+        below at the other. Silence is not a different answer, so a label that says nothing about the insulation
+        agrees with one that names it - and a label that names a different one does not, because a second
+        insulation on the same dimension is a second thing to order.
+        """
+        return (self.stem == other.stem
+                and (self.dn is None or other.dn is None or self.dn == other.dn)
+                and (self.qualifier is None or other.qualifier is None or self.qualifier == other.qualifier))
 
 
 @dataclass
@@ -107,15 +123,22 @@ def identity_from_text(text: str, dn: int | None, system_token: str, dn_token_in
         if dn is not None:
             pat = re.compile(re.escape(str(dn)) + r"[A-Za-zÅÄÖÅäö]{0,3}")
             idx = next((i for i, t in enumerate(toks) if i > 0 and pat.fullmatch(t)), None)
-    base_toks = list(toks)
+    stem_toks = list(toks)
+    tail: list[str] = []
     if idx is not None:
-        # the dimension token goes, and with it a short qualifier written after it: the medium belongs to the
-        # dimension, so a qualifier the recogniser reads badly cannot split one pipe into two
+        # The dimension token goes, and with it the short code the drawing writes after it - F50, W40, F60 - which
+        # names the insulation or covering rather than the pipe. It is kept beside the name instead of inside it,
+        # because a drawing writes it where it has room and leaves it off where it has not: held as part of the
+        # name, the same run read at both ends became two runs and was reported twice.
         end = idx + 1
-        while end < len(toks) and len(toks[end]) <= 3 and toks[end].isalpha():
+        while end < len(toks) and len(toks[end]) <= 4 and toks[end][:1].isalpha():
+            tail.append(toks[end])
             end += 1
-        base_toks = toks[:idx] + toks[end:]
-    return Identity(base="-".join(base_toks), dn=dn, system=system_token, display=text)
+        stem_toks = toks[:idx] + toks[end:]
+    stem = "-".join(stem_toks)
+    qual = "-".join(tail) or None
+    return Identity(base="-".join([stem, qual]) if qual else stem, dn=dn, system=system_token, display=text,
+                    stem=stem, qualifier=qual)
 
 
 TICK_KINDS = ("end_tick", "crossing_tick")
@@ -142,9 +165,61 @@ def _seed_prims(a: PipeCodeAnchor, graphs: dict[str, PipeGraph]) -> dict[str, li
     return out
 
 
+def complete_identities(identities: dict[str, Identity]) -> dict[str, Identity]:
+    """What a label leaves out, read off the rest of the sheet - but only where the sheet says it once.
+
+    A draughtsman writes as much of a designation as the space allows. The same heating run is `VS21-S13-15-F50`
+    where it runs through open floor and `VS21-S13` with `15` on the row below where it threads between two
+    walls; a stack is `S01-P5-110` at the riser and `S01-P5` beside it. Read literally, one run becomes two
+    entries in the takeoff - the metres split between them, the estimator ordering twice - and on twenty-five of
+    thirty-three reference sheets that is what happened, to four hundred metres of correctly measured pipe.
+
+    So a label that leaves the dimension or the insulation unsaid takes what the sheet says elsewhere for the
+    same designation, on one condition: the sheet must say it exactly one way. Where a sheet runs `VV01-X7-25`
+    both as F50 and as F60, silence does not pick one of them - the run keeps its own short name and is reported
+    under it, which is the reading a person can argue with rather than a guess they cannot see.
+    """
+    stated_dn: dict[str, set[int]] = defaultdict(set)
+    for i in identities.values():
+        if i.dn is not None:
+            stated_dn[i.stem].add(i.dn)
+    out: dict[str, Identity] = {}
+    for aid, i in identities.items():
+        if i.dn is None and len(stated_dn.get(i.stem) or ()) == 1:
+            i = replace(i, dn=next(iter(stated_dn[i.stem])), display=_fullest(identities.values(), i.stem, None))
+        out[aid] = i
+    stated_q: dict[tuple[str, int | None], set[str]] = defaultdict(set)
+    for i in out.values():
+        if i.qualifier is not None:
+            stated_q[(i.stem, i.dn)].add(i.qualifier)
+    for aid, i in list(out.items()):
+        if i.qualifier is not None:
+            continue
+        q = stated_q.get((i.stem, i.dn)) or ()
+        if len(q) == 1:
+            qual = next(iter(q))
+            out[aid] = replace(i, qualifier=qual, base="-".join([i.stem, qual]),
+                               display=_fullest(out.values(), i.stem, i.dn))
+    return out
+
+
+def _fullest(ids, stem: str, dn: int | None) -> str:
+    """How the drawing writes this run where it writes it out in full.
+
+    A run named in two ways is reported the fuller way. The estimator orders from this name, and `VS21-S13-15`
+    and `VS21-S13-15-F50` are the same pipe but not the same order: one of them says how it is insulated. Ties
+    go to the name that sorts first, so the same drawing is always read the same way.
+    """
+    said = [i for i in ids if i.stem == stem and i.qualifier is not None and (dn is None or i.dn == dn)]
+    if not said:
+        said = [i for i in ids if i.stem == stem and i.dn is not None and (dn is None or i.dn == dn)]
+    return min((i.display for i in said), key=lambda t: (-len(t), t)) if said else stem
+
+
 def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page: int,
               identities: dict[str, Identity], spelled_out: frozenset[str] = frozenset()) -> OwnershipResult:
     """identities: anchor_id -> Identity (only anchors that are verified AND belong to pipe-designation families)."""
+    identities = complete_identities(identities)
     states: dict[str, dict[int, PrimState]] = {fk: {pid: PrimState() for pid in g.prims} for fk, g in graphs.items()}
     seeds: dict[str, dict[int, list[tuple[Identity, str, str, tuple[float, float]]]]] = {fk: defaultdict(list) for fk in graphs}
     for a in sorted(anchors, key=lambda a: a.anchor_id):
@@ -380,19 +455,29 @@ def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[Pi
 
 
 def _merge_identity(ids: list[Identity]) -> Identity | None:
-    """Merge compatible identities (same base; DN None adopts the unique known DN). None if incompatible."""
+    """Merge compatible identities: same stem, and each of dimension and qualifier stated at most one way.
+
+    Where one label leaves the dimension or the insulation unsaid and another names it, the run takes the one
+    that names it - and is written out the way the label that names it wrote it, so the takeoff carries the
+    drawing's fullest statement of the run rather than its shortest.
+    """
     if not ids:
         return None
-    base = ids[0].base
-    if any(i.base != base for i in ids):
+    stem = ids[0].stem
+    if any(i.stem != stem for i in ids):
         return None
     dns = {i.dn for i in ids if i.dn is not None}
-    if len(dns) > 1:
+    quals = {i.qualifier for i in ids if i.qualifier is not None}
+    if len(dns) > 1 or len(quals) > 1:
         return None
     dn = next(iter(dns)) if dns else None
-    display = Counter(i.display for i in ids if i.dn == dn).most_common(1)
-    disp = display[0][0] if display else ids[0].display
-    return Identity(base=base, dn=dn, system=ids[0].system, display=disp)
+    qual = next(iter(quals)) if quals else None
+    # the fullest statement wins, not the most frequent one: a run written short in sixteen places and in full
+    # in three is still the run the three describe
+    seen = Counter(i.display for i in ids if i.dn == dn and i.qualifier == qual)
+    disp = min(seen, key=lambda t: (-len(t), t)) if seen else ids[0].display
+    return Identity(base="-".join([stem, qual]) if qual else stem, dn=dn, system=ids[0].system, display=disp,
+                    stem=stem, qualifier=qual)
 
 
 def _conflict_reason(ids: list[Identity]) -> str:

@@ -294,22 +294,59 @@ def test_dimension_row_is_folded_into_the_name():
 
 
 def test_one_pipe_written_two_ways_is_one_identity():
-    """The same pipe labelled inline and with the dimension on the row below must give one identity key, and a
-    medium qualifier the recogniser reads badly must not split it in two."""
-    from vvs_engine.pipes.ownership import identity_of
+    """The same pipe labelled inline and with the dimension on the row below is one pipe.
+
+    What the drawing writes after the dimension - a medium letter, an insulation code like F50 or W40 - belongs
+    to the run rather than to its name, and a draughtsman writes it where there is room and leaves it off where
+    there is not. So it is kept beside the name and not inside it: a label that says nothing about it agrees
+    with one that names it, and the run is reported the fuller way.
+    """
+    from vvs_engine.pipes.ownership import complete_identities, identity_of
     from vvs_engine.semantics.attachment import PipeCodeAnchor
 
-    def anc(designation, display, dn):
-        return PipeCodeAnchor(anchor_id="a", page=0, designation_id="d", designation=designation,
+    def anc(designation, display, dn, aid="a"):
+        return PipeCodeAnchor(anchor_id=aid, page=0, designation_id="d", designation=designation,
                               designation_display=display, system_token=designation.split("-")[0], dn=dn,
                               multiplier=1, block_id="b", leader_id="l", leader_paths=[], endpoint=(0.0, 0.0),
                               state="VERIFIED_PIPE_ATTACHMENT", reason="")
     inline = identity_of(anc("KV01-X7-50/W", "KV01-X7-50/W", 50), 2)
     row = identity_of(anc("KV01-X7", "KV01-X7-50/W", 50), None)
-    assert inline.key == row.key == "KV01-X7|DN50"
+    assert inline.stem == row.stem == "KV01-X7"
+    assert inline.compatible(row) and row.compatible(inline)
     assert inline.display == "KV01-X7-50/W"
     misread = identity_of(anc("KV01-X7", "KV01-X7-50ILI", 50), None)
     assert misread.key == "KV01-X7|DN50"
+
+    # and on the sheet they become one entry, written the way the label that wrote it out wrote it
+    done = complete_identities({"a": inline, "b": identity_of(anc("KV01-X7", "KV01-X7", 50, "b"), None)})
+    assert done["a"].key == done["b"].key
+    assert done["b"].display == "KV01-X7-50/W"
+
+
+def test_two_media_on_one_dimension_are_two_pipes():
+    """The rule that joins a short name to a full one may never join two full ones that disagree.
+
+    A run insulated 50 mm and a run insulated 60 mm are the same system at the same dimension and two different
+    things to order. The reading used to drop the code entirely and report them as one; it now keeps them apart,
+    and leaves a label that states neither under its own short name rather than picking one of them.
+    """
+    from vvs_engine.pipes.ownership import complete_identities, identity_of
+    from vvs_engine.semantics.attachment import PipeCodeAnchor
+
+    def anc(text, dn, aid):
+        return PipeCodeAnchor(anchor_id=aid, page=0, designation_id="d", designation=text,
+                              designation_display=text, system_token=text.split("-")[0], dn=dn,
+                              multiplier=1, block_id="b", leader_id="l", leader_paths=[], endpoint=(0.0, 0.0),
+                              state="VERIFIED_PIPE_ATTACHMENT", reason="")
+    f50 = identity_of(anc("VV01-X7-25-F50", 25, "a"), 2)
+    f60 = identity_of(anc("VV01-X7-25-F60", 25, "b"), 2)
+    assert not f50.compatible(f60)
+    assert f50.key != f60.key
+
+    bare = identity_of(anc("VV01-X7", 25, "c"), None)
+    done = complete_identities({"a": f50, "b": f60, "c": bare})
+    assert done["c"].qualifier is None, "with two answers on the sheet, silence picks neither"
+    assert done["c"].key not in (done["a"].key, done["b"].key)
 
 
 def test_a_word_that_starts_with_a_digit_is_not_a_code():

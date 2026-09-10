@@ -34,7 +34,7 @@ from .text.searchable import searchable_rows
 from .text.vector_text import VectorTextResult, vector_text_rows
 from .measure.scale import ScaleResult, discover_scale, scale_from_the_set
 from .measure.measure import PipeMeasure, aggregate, measure_pipes
-from .pipes.ownership import Identity, OwnershipResult, identity_of, propagate
+from .pipes.ownership import (Identity, OwnershipResult, complete_identities, identity_of, propagate)
 from .film import Film
 from .routes import apply_routes, cross_check, review, run_routes
 
@@ -1245,14 +1245,25 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         second = dict(st.as_dict(), applied=apply_answers(anchors, st.answers))
         anchors.sort(key=lambda a: a.anchor_id)
 
-    identities = _pipe_identities(designations, anchors, grammar, _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend)
+    def _identities_now() -> dict:
+        """What each verified label names, with what the sheet says elsewhere filled in.
+
+        The completion is done here rather than inside the ownership pass so that everything counting labels
+        works from the same names: a run written short in one place and in full in another is one entry in the
+        takeoff, one label count and one riser count, not two of each.
+        """
+        return complete_identities(_pipe_identities(
+            designations, anchors, grammar,
+            _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend))
+
+    identities = _identities_now()
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     if _settle_bundles_by_elimination(anchors, ownership, graphs):
-        identities = _pipe_identities(designations, anchors, grammar, _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend)
+        identities = _identities_now()
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     # and what one bundle at a time cannot settle, the sheet taken as a whole sometimes can
     if settle_bundles_by_sheet_consistency(anchors, graphs, known_families):
-        identities = _pipe_identities(designations, anchors, grammar, _R("pipeline.DN_ROWS_ARE_VERTICAL_ONLY", DN_ROWS_ARE_VERTICAL_ONLY), legend=legend)
+        identities = _identities_now()
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out)
     _close_labels_on_owned_runs(anchors, ownership, graphs)
     film.pipes(ownership.pipes)
@@ -1344,21 +1355,30 @@ def _risers_from_dn_rows(designations, anchors, leaders, identities) -> dict[str
     from .pipes.ownership import identity_from_text
     des = {d.did: d for d in designations}
     ends = {l.lid: l.end for l in leaders}
-    known = {i.base for i in identities.values()}
-    labelled: dict[str, list[dict]] = {}
+    # what the sheet carries as a pipe somewhere else, tested on the designation itself rather than on how it
+    # happened to be written out: a sheet that always states the insulation would otherwise refuse every stack
+    # whose label leaves it off, which is most of them
+    known = {i.stem for i in identities.values()}
+    mine: dict[str, Any] = {}
     for a in sorted(anchors, key=lambda x: x.anchor_id):
         d = des.get(a.designation_id)
-        if d is None or not _is_vertical_label(d):
-            continue
-        pt = ends.get(a.leader_id)
-        if pt is None:
+        if d is None or not _is_vertical_label(d) or ends.get(a.leader_id) is None:
             continue
         ident = identities.get(a.anchor_id)
         if ident is None:
             ident = identity_from_text(a.designation_display or a.designation, d.dn, a.system_token, None)
-            if ident.base not in known:
+            if ident.stem not in known:
                 continue
-        key = f"{ident.base}|DN{d.dn}"
+        mine[a.anchor_id] = ident if ident.dn is not None else replace(ident, dn=d.dn)
+    # a stack named the short way is the same stack as the one named in full: the counts belong on one row
+    mine = complete_identities({**identities, **mine})
+    labelled: dict[str, list[dict]] = {}
+    for a in sorted(anchors, key=lambda x: x.anchor_id):
+        if a.anchor_id not in mine:
+            continue
+        d = des.get(a.designation_id)
+        pt = ends[a.leader_id]
+        key = mine[a.anchor_id].key
         lst = labelled.setdefault(key, [])
         if any(dist(tuple(r["point"]), pt) <= 3.0 for r in lst):
             continue                      # two leaders of one label onto the same riser
