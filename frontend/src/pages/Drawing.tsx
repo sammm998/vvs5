@@ -60,6 +60,7 @@ export default function DrawingPage() {
             <div className="meta">
               <StatusBadge job={j} />
               <Link className="when" to={`/jobs/${j.id}`}>{j.status === "COMPLETED" ? "Visa resultat →" : "Följ →"}</Link>
+              {j.status === "COMPLETED" && <Link className="when" to={`/jobs/${j.id}/kalkyl`}>Kalkylera →</Link>}
             </div>
           </Tilted>
         ))}

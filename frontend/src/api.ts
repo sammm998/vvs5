@@ -133,6 +133,8 @@ export const api = {
   calc: (jobId: string) => req(`/api/jobs/${jobId}/calc`),
   anbudPdfUrl: (jobId: string) => `/api/jobs/${jobId}/calc/anbud.pdf`,
   anbudHtmlUrl: (jobId: string) => `/api/jobs/${jobId}/calc/anbud.html`,
+  anbudInfo: (jobId: string) => req(`/api/jobs/${jobId}/calc/anbud`),
+  anbudPageUrl: (jobId: string, n: number) => `/api/jobs/${jobId}/calc/anbud/sida-${n}.png`,
 
   // ---- projektagenten -----------------------------------------------------------------------------------
   projectAgent: (projectId: string, body: any) =>

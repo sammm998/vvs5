@@ -203,7 +203,8 @@ meterraden. En struken markering står kvar i lagret så att den går att få ti
 
 ## 6b. Kalkyl och anbud
 
-Fliken **Kalkyl** på en läsning gör mängden till pris, i två steg som hålls isär så att varje krona går att
+Knappen **Kalkylera →** i analysens flikrad (och på ritningssidan efter en färdig analys) leder till kalkylens
+egen sida, `/jobs/{id}/kalkyl`. Den gör mängden till pris, i två steg som hålls isär så att varje krona går att
 spåra till en rad på ritningen (`backend/app/calc.py`):
 
 *Material.* Varje beteckning matchas mot materialboken (55 000 artiklar med nettopris). Bladets egen
@@ -227,10 +228,16 @@ Sedan spill (kalkylmängd = netto + spill), påslag på material och arbete var 
 Det som sparas är valen och antagandena, aldrig resultatet: talen räknas om ur läsningen varje gång, med kundens
 rättelser ovanpå, så kalkylen och bladet aldrig visar två olika meter.
 
-**Anbudet** skrivs ur den sparade kalkylen som en formgiven PDF (PyMuPDF Story, HTML/CSS → A4): summan först,
-sedan specifikationen rad för rad, sedan förutsättningarna och förbehållen - på samma papper som summan. Rader
-utan artikel eller normtid står som förbehåll, liksom det onämnda röret och det som inte ingår (fittings,
-genomföringar, isolering som egen post, rivning).
+**Anbudet** skrivs ur den sparade kalkylen som en formgiven PDF i A4, satt i Liberation Sans. Kroppen -
+inledning, specifikation rad för rad, förutsättningar, avtalsvillkor, förbehåll, underskrift - flödas av PyMuPDF
+Story; huvudet (mörkt block med anbudsnummer, datum, giltighet, beställare, referens), summeringskortet (exkl.
+moms, moms, att betala) och foten med sidnummer ritas ovanpå med sid-API:et, eftersom Story ritar om ett blocks
+bakgrund överst på varje följande sida. **Avtalsvillkoren** väljs i kalkylen: ABT 06, AB 04, ABS 18,
+Hantverkarformuläret 17 eller inget; valet ger anbudet en villkorsrubrik med entreprenörens vanliga förbehåll under
+det regelverket (ÄTA, garantitid, ansvar) - anbudets egna formuleringar, inte avtalstexten. Rader utan artikel
+eller normtid står som förbehåll, liksom det onämnda röret och det som inte ingår (fittings, genomföringar,
+isolering som egen post, rivning). **Förhandsgranskningen** i appen visar anbudets sidor som bilder ur samma PDF
+som laddas ner (`/calc/anbud/sida-{n}.png`) - det dokument som skickas, inte en efterlikning av det.
 
 ## 7. Akademin
 

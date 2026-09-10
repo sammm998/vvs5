@@ -14,6 +14,7 @@ import SettingsPage from "./pages/Settings";
 import MaterialPage from "./pages/Material";
 import AdminPage from "./pages/Admin";
 import ProjectAnalysisPage from "./pages/ProjectAnalysis";
+import CalcPage from "./pages/CalcPage";
 
 function Guard({ children }: { children: JSX.Element }) {
   return getToken() ? children : <Navigate to="/login" replace />;
@@ -103,6 +104,7 @@ const ROUTES = (
     <Route path="/projects/:id/analys" element={<Guard><ProjectAnalysisPage /></Guard>} />
     <Route path="/drawings/:id" element={<Guard><DrawingPage /></Guard>} />
     <Route path="/jobs/:id" element={<Guard><AnalysisPage /></Guard>} />
+    <Route path="/jobs/:id/kalkyl" element={<Guard><CalcPage /></Guard>} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
     <Route path="/installningar" element={<Guard><SettingsPage /></Guard>} />

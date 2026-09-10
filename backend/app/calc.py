@@ -52,7 +52,52 @@ DEFAULTS = {
     "supplements": ["pressfog"],  # normtidens tillägg: skarvmetod, höjd, ombyggnad
     "factors": {},               # avvikelseanalysen: faktor-id -> -4..+4
     "valid_days": 30,
+    "regelverk": "ABT 06",       # avtalsvillkoren anbudet lämnas under: ABT 06, AB 04, ABS 18, Hantverkarformuläret 17, eller inget
+    "betalning": "30 dagar netto mot faktura, enligt betalningsplan",
     "company": "", "customer": "", "reference": "", "intro": "",
+}
+
+# Standardavtalen en svensk VVS-entreprenör lämnar anbud under, och vad var och ett brukar innebära för anbudet.
+# Klausulerna är anbudets EGNA förbehåll under respektive regelverk - inte återgivningar av avtalstexten - och den
+# som räknar kan byta regelverk eller stryka dem i förhandsgranskningen innan anbudet lämnas.
+REGELVERK: dict[str, dict] = {
+    "ABT 06": {
+        "label": "ABT 06 - Allmänna bestämmelser för totalentreprenader",
+        "clauses": [
+            "Anbudet lämnas enligt ABT 06 med de ändringar och tillägg som anges i förfrågningsunderlaget.",
+            "Ändringar, tilläggs- och avgående arbeten (ÄTA) regleras enligt ABT 06 kap. 2 och ersätts enligt "
+            "à-prislista eller på löpande räkning om inte annat avtalas skriftligt.",
+            "Garantitid enligt ABT 06 kap. 4 § 7: fem år för entreprenaden, två år för material och varor.",
+            "Funktionsansvaret omfattar de funktionskrav som anges i förfrågningsunderlaget; projektering ingår "
+            "i den omfattning handlingarna anger.",
+        ],
+    },
+    "AB 04": {
+        "label": "AB 04 - Allmänna bestämmelser för utförandeentreprenader",
+        "clauses": [
+            "Anbudet lämnas enligt AB 04 med de ändringar och tillägg som anges i förfrågningsunderlaget.",
+            "Ändringar, tilläggs- och avgående arbeten (ÄTA) regleras enligt AB 04 kap. 2 och ersätts enligt "
+            "à-prislista eller på löpande räkning om inte annat avtalas skriftligt.",
+            "Garantitid enligt AB 04 kap. 4 § 7: fem år för arbetsprestation, två år för material och varor.",
+            "Entreprenaden utförs enligt beställarens handlingar; ansvaret för projekteringen ligger hos beställaren.",
+        ],
+    },
+    "ABS 18": {
+        "label": "ABS 18 - Allmänna bestämmelser för småhusentreprenader",
+        "clauses": [
+            "Anbudet lämnas enligt ABS 18; konsumenttjänstlagen gäller och kan inte avtalas bort till konsumentens nackdel.",
+            "Ändringar och tilläggsarbeten beställs skriftligt och prissätts innan de påbörjas.",
+            "Garantitid enligt ABS 18: två år från slutbesiktningen, med ansvar för fel enligt konsumenttjänstlagen därefter.",
+        ],
+    },
+    "Hantverkarformuläret 17": {
+        "label": "Hantverkarformuläret 17 - reparations- och ombyggnadsarbeten åt konsument",
+        "clauses": [
+            "Anbudet lämnas enligt Hantverkarformuläret 17; konsumenttjänstlagen gäller.",
+            "Tilläggsarbeten utförs efter överenskommelse och ersätts enligt angivet timpris och materialpris.",
+            "ROT-avdrag hanteras enligt gällande regler och förutsätter att beställaren uppfyller villkoren.",
+        ],
+    },
 }
 
 # Ytterdiameter för en nominell dimension. Metallrör: DN -> dy enligt gängse rörtabell; plaströr (avlopp) har
@@ -336,7 +381,8 @@ class CalcIn(BaseModel):
 def underlag(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
     """Normtidsunderlaget och standardantagandena, så att gränssnittet kan visa vad som går att ställa in."""
     _job(db, user, job_id)
-    return {"defaults": DEFAULTS, "normtid": NT.catalogue()}
+    return {"defaults": DEFAULTS, "normtid": NT.catalogue(),
+            "regelverk": [{"id": k, "label": v["label"], "clauses": v["clauses"]} for k, v in REGELVERK.items()]}
 
 
 @router.post("/{job_id}/calc/preview")
@@ -378,21 +424,46 @@ def latest(job_id: str, user: User = Depends(current_user), db: Session = Depend
 def _kr(v: float | None) -> str:
     if v is None:
         return "–"
-    s = f"{v:,.2f}".replace(",", " ").replace(".", ",")
-    return f"{s} kr"
+    return f"{v:,.2f}".replace(",", " ").replace(".", ",") + " kr"
 
 
 def _num(v: float | None, d: int = 2) -> str:
     return "–" if v is None else f"{v:,.{d}f}".replace(",", " ").replace(".", ",")
 
 
-def tender_html(calc: dict, meta: dict) -> str:
-    """Anbudet som HTML. Samma tal som kalkylen, i en form en beställare läser: summan först, sedan vad den
-    består av, sedan vad den förutsätter. Förbehållen står på samma papper som summan."""
-    A = calc["assumptions"]; T = calc["totals"]
-    e = html.escape
+FONT_DIR = "/usr/share/fonts/truetype/liberation"
+FONT_REGULAR = os.path.join(FONT_DIR, "LiberationSans-Regular.ttf")
+FONT_BOLD = os.path.join(FONT_DIR, "LiberationSans-Bold.ttf")
+INK = (0.09, 0.12, 0.15)          # #171f27
+NAVY = (0.06, 0.16, 0.23)         # #0f2a3a
+TEAL = (0.07, 0.62, 0.69)         # #129eb0
+MUTED = (0.42, 0.47, 0.52)
+LINE = (0.86, 0.88, 0.90)
+
+
+def tender_meta(calc: dict, meta: dict) -> dict:
+    """Det anbudet skriver i sitt huvud: parter, objekt, datum, giltighet, nummer."""
+    A = calc["assumptions"]
     today = dt.date.today()
-    valid = today + dt.timedelta(days=int(A.get("valid_days") or 30))
+    return {
+        "company": A.get("company") or meta.get("company") or "VVS Mängdning",
+        "customer": A.get("customer") or "–",
+        "project": meta.get("project") or "–",
+        "drawing": meta.get("drawing") or "",
+        "reference": A.get("reference") or "–",
+        "number": f"A-{today:%Y%m%d}-{(meta.get('job') or 'X')[:8]}",
+        "date": today.isoformat(),
+        "valid": (today + dt.timedelta(days=int(A.get("valid_days") or 30))).isoformat(),
+        "regelverk": A.get("regelverk") if A.get("regelverk") in REGELVERK else "",
+    }
+
+
+def tender_html(calc: dict, meta: dict) -> str:
+    """Anbudets kropp: samma tal som kalkylen, i en form en beställare läser. Inledning, specifikation rad för
+    rad, vad summan förutsätter, vad som förbehålls, och plats för underskrift. Huvudet och summeringen ritas
+    ovanpå av tender_pdf; i webbläsaren skrivs de av anbud_html."""
+    A = calc["assumptions"]; T = calc["totals"]; M = tender_meta(calc, meta)
+    e = html.escape
     sup_labels = [NT.SUPPLEMENT_BY_ID[s].label for s in A.get("supplements") or [] if s in NT.SUPPLEMENT_BY_ID]
     rows_html = "".join(
         f"<tr><td class='n'>{i + 1}</td><td><b>{e(r['designation'])}</b><br><span class='muted'>"
@@ -402,21 +473,14 @@ def tender_html(calc: dict, meta: dict) -> str:
         f"<td class='r'><b>{_kr(r['summa_kr'])}</b></td></tr>"
         for i, r in enumerate(calc["rows"]))
     caveats = "".join(f"<li>{e(c)}</li>" for c in calc["caveats"])
-    intro = e(A.get("intro") or "Vi tackar för förfrågan och lämnar härmed anbud på rörinstallationer enligt "
-                                 "bifogad handling. Mängderna är läsna ur ritningens egna vektorer och kan spåras "
-                                 "rad för rad; förutsättningarna står nedan.")
+    rules = REGELVERK.get(M["regelverk"], {}).get("clauses", [])
+    rules_html = "".join(f"<li>{e(c)}</li>" for c in rules)
+    intro = e(A.get("intro") or
+              "Vi tackar för förfrågan och lämnar härmed anbud på rörinstallationer enligt bifogad handling. "
+              "Mängderna är lästa ur ritningens egna vektorer och kan spåras rad för rad till bladet; "
+              "förutsättningarna och förbehållen står nedan, på samma papper som summan.")
     return f"""<html><body>
-<div class="band"><div class="co">{e(A.get('company') or meta.get('company') or 'VVS Mängdning')}</div>
-<div class="title">ANBUD</div></div>
-<table class="meta"><tr>
-<td><span class="k">Beställare</span><br>{e(A.get('customer') or '–')}</td>
-<td><span class="k">Objekt</span><br>{e(meta.get('project') or '–')}<br><span class="muted">{e(meta.get('drawing') or '')}</span></td>
-<td><span class="k">Referens</span><br>{e(A.get('reference') or meta.get('job') or '–')}</td>
-<td><span class="k">Datum</span><br>{today.isoformat()}<br><span class="muted">giltigt till {valid.isoformat()}</span></td>
-</tr></table>
 <p class="intro">{intro}</p>
-<div class="total"><div class="k">Anbudssumma exkl. moms</div><div class="v">{_kr(T['netto_kr'])}</div>
-<div class="sub">Moms {_num(A['moms_pct'], 0)} %: {_kr(T['moms_kr'])} · inkl. moms {_kr(T['brutto_kr'])}</div></div>
 <h2>Specifikation</h2>
 <table class="spec"><tr><th class='n'>#</th><th>Post</th><th class='r'>Kalkylmängd</th><th class='r'>Material</th>
 <th class='r'>Timmar</th><th class='r'>Arbete</th><th class='r'>Summa</th></tr>{rows_html}
@@ -424,67 +488,174 @@ def tender_html(calc: dict, meta: dict) -> str:
 <td class='r'>{_num(T['timmar'])}</td><td class='r'>{_kr(T['arbete_kr'])}</td><td class='r'>{_kr(T['material_kr'] + T['arbete_kr'])}</td></tr>
 <tr><td></td><td>Påslag material {_num(A['paslag_material_pct'], 0)} %</td><td></td><td></td><td></td><td></td><td class='r'>{_kr(T['paslag_material_kr'])}</td></tr>
 <tr><td></td><td>Påslag arbete {_num(A['paslag_arbete_pct'], 0)} %</td><td></td><td></td><td></td><td></td><td class='r'>{_kr(T['paslag_arbete_kr'])}</td></tr>
-<tr class="sum"><td></td><td><b>Summa exkl. moms</b></td><td></td><td></td><td></td><td></td><td class='r'><b>{_kr(T['netto_kr'])}</b></td></tr>
+<tr class="sum"><td></td><td><b>Anbudssumma exkl. moms</b></td><td></td><td></td><td></td><td></td><td class='r'><b>{_kr(T['netto_kr'])}</b></td></tr>
+<tr><td></td><td>Moms {_num(A['moms_pct'], 0)} %</td><td></td><td></td><td></td><td></td><td class='r'>{_kr(T['moms_kr'])}</td></tr>
+<tr class="sum"><td></td><td><b>Att betala inkl. moms</b></td><td></td><td></td><td></td><td></td><td class='r'><b>{_kr(T['brutto_kr'])}</b></td></tr>
 </table>
 <h2>Förutsättningar</h2>
 <ul>
-<li>Timpris {_kr(A['timpris'])} per montörtimme. Normtider enligt Normtid VVS (Införlag): grundtid per meter efter dimension och material.</li>
+<li>Timpris {_kr(A['timpris'])} per montörtimme. Normtider enligt Normtid VVS: grundtid per meter efter dimension och material.</li>
 <li>Tillägg: {e(', '.join(sup_labels) or 'inga')}. Avvikelseanalys: {_num(calc['avvikelse_pct'], 0)} %.</li>
 <li>Kalkylmängd = nettomängd + {_num(A['spill_pct'], 0)} % spill. Stigare räknade som {_num(A['floor_height_m'], 1)} m per stigare där ritningen inte anger höjd.</li>
-<li>Materialpriser är nettopriser ur materialboken vid anbudsdagen.</li>
+<li>Materialpriser är nettopriser ur materialboken på anbudsdagen. Betalning: {e(A.get('betalning') or '30 dagar netto')}.</li>
+<li>Anbudet är giltigt till {M['valid']}.</li>
 </ul>
+{"<h2>Avtalsvillkor · " + e(M["regelverk"]) + "</h2><ul>" + rules_html + "</ul>" if rules else ""}
 <h2>Förbehåll</h2>
-<ul>{caveats or '<li>Inga.</li>'}
+<ul>{caveats or '<li>Inga förbehåll ur läsningen.</li>'}
 <li>Rör som ingen beteckning på ritningen når ingår inte i mängden; de redovisas som onämnda i läsningen.</li>
 <li>Fittings, genomföringar, isolering som egen post och rivning ingår inte om de inte står som egna rader.</li>
 </ul>
-<table class="sign"><tr><td>Ort och datum<br><br>______________________________</td><td>Underskrift<br><br>______________________________</td></tr></table>
+<table class="sign"><tr><td>Ort och datum<br><br><br>______________________________</td><td>För {e(M['company'])}<br><br><br>______________________________</td></tr></table>
 </body></html>"""
 
 
+# Kroppens stil. Ingen fyllning någonstans: Story ritar om ett blocks bakgrund överst på varje följande sida, så
+# allt som ska vara fyllt (huvudet, summeringskortet) ritas med sid-API:et efteråt.
 TENDER_CSS = """
-body { font-family: sans-serif; font-size: 9.5pt; color: #111; }
-.band { border-bottom: 2pt solid #0b7285; padding-bottom: 6pt; margin-bottom: 10pt; }
-.co { font-size: 9pt; letter-spacing: 1pt; color: #0b7285; text-transform: uppercase; }
-.title { font-size: 30pt; font-weight: bold; margin-top: 2pt; }
-.meta { width: 100%; border-collapse: collapse; margin-bottom: 10pt; }
-.meta td { vertical-align: top; padding: 4pt 6pt 4pt 0; font-size: 9pt; }
-.k { font-size: 7.5pt; letter-spacing: 1pt; color: #777; text-transform: uppercase; }
-.muted { color: #777; font-size: 8pt; }
-.intro { margin: 6pt 0 10pt 0; line-height: 1.4; }
-/* en ram, ingen fyllning: Story ritar om ett blocks bakgrund överst på varje följande sida */
-.total { border: 0.8pt solid #b9d3d9; border-left: 3pt solid #0b7285; padding: 8pt 10pt; margin: 6pt 0 12pt 0; }
-.total .v { font-size: 20pt; font-weight: bold; margin: 2pt 0; }
-.total .sub { color: #555; font-size: 8.5pt; }
-h2 { font-size: 11pt; margin: 12pt 0 4pt 0; letter-spacing: 0.5pt; text-transform: uppercase; color: #0b7285; }
+@font-face { font-family: Lib; src: url(LiberationSans-Regular.ttf); }
+@font-face { font-family: Lib; font-weight: bold; src: url(LiberationSans-Bold.ttf); }
+body { font-family: Lib; font-size: 9.5pt; color: #171f27; line-height: 1.35; }
+b { font-weight: bold; }
+.intro { margin: 0 0 12pt 0; line-height: 1.45; color: #2b3640; }
+h2 { font-family: Lib; font-size: 8pt; font-weight: bold; margin: 16pt 0 5pt 0; letter-spacing: 1.4pt;
+     text-transform: uppercase; color: #129eb0; }
 .spec { width: 100%; border-collapse: collapse; }
-.spec th { text-align: left; font-size: 7.5pt; letter-spacing: 0.8pt; text-transform: uppercase; color: #777;
-           border-bottom: 1pt solid #999; padding: 4pt 4pt; }
-.spec td { padding: 4pt 4pt; border-bottom: 0.5pt solid #ddd; vertical-align: top; }
+.spec th { text-align: left; font-size: 7pt; letter-spacing: 0.9pt; text-transform: uppercase; color: #6b7885;
+           border-bottom: 1pt solid #171f27; padding: 4pt 4pt 5pt 4pt; font-weight: bold; }
+.spec td { padding: 5pt 4pt; border-bottom: 0.5pt solid #dfe3e7; vertical-align: top; }
 .spec .r, .spec th.r { text-align: right; white-space: nowrap; }
-.spec .n { width: 14pt; color: #999; }
-.spec tr.sum td { border-top: 1pt solid #999; border-bottom: none; }
-ul { margin: 2pt 0 0 12pt; padding: 0; line-height: 1.4; }
-li { margin: 0 0 2pt 0; }
-.sign { width: 100%; margin-top: 22pt; }
-.sign td { width: 50%; font-size: 8.5pt; color: #555; }
+.spec .n { width: 12pt; color: #9aa4ad; }
+.spec tr.sum td { border-top: 1pt solid #171f27; border-bottom: none; padding-top: 6pt; }
+.muted { color: #6b7885; font-size: 8pt; }
+ul { margin: 2pt 0 0 11pt; padding: 0; line-height: 1.4; }
+li { margin: 0 0 3pt 0; }
+.sign { width: 100%; margin-top: 26pt; }
+.sign td { width: 50%; font-size: 8.5pt; color: #4a5560; }
 """
 
+PAGE_W, PAGE_H = 595.0, 842.0
+MARGIN = 46.0
+HEAD_1 = 232.0       # sidan 1: huvudblocket och summeringskortet
+HEAD_N = 52.0        # följande sidor: en rad och en linje
+FOOT = 44.0
 
-def tender_pdf(html_doc: str) -> bytes:
+
+def _body_pdf(html_doc: str) -> bytes:
+    """Kroppen som flödande sidor, med plats reserverad för huvud och fot."""
     import pymupdf
-    story = pymupdf.Story(html=html_doc, user_css=TENDER_CSS)
+    story = pymupdf.Story(html=html_doc, user_css=TENDER_CSS, archive=pymupdf.Archive(FONT_DIR))
     buf = io.BytesIO()
     writer = pymupdf.DocumentWriter(buf)
-    rect = pymupdf.paper_rect("a4")
-    more = True
+    rect = pymupdf.Rect(0, 0, PAGE_W, PAGE_H)
+    more, n = True, 0
     while more:
         dev = writer.begin_page(rect)
-        more, _ = story.place(rect + (46, 46, -46, -52))
+        top = HEAD_1 if n == 0 else HEAD_N
+        more, _ = story.place(pymupdf.Rect(MARGIN, top, PAGE_W - MARGIN, PAGE_H - FOOT))
         story.draw(dev)
         writer.end_page()
+        n += 1
+        if n > 60:
+            break
     writer.close()
     return buf.getvalue()
+
+
+def _text(page, x, y, s, size=9, bold=False, color=INK, align="left", width=None):
+    """En textrad med det typsnitt anbudet är satt i, vänster- eller högerställd mot x. Med `width` kortas
+    raden med en ellips tills den ryms - ett huvud som skriver över sig självt är värre än ett kortat namn."""
+    import pymupdf
+    font = pymupdf.Font(fontfile=FONT_BOLD if bold else FONT_REGULAR)
+    fname = "LibB" if bold else "LibR"
+    page.insert_font(fontname=fname, fontfile=FONT_BOLD if bold else FONT_REGULAR)
+    if width is not None:
+        while len(s) > 1 and font.text_length(s, fontsize=size) > width:
+            s = s[:-2].rstrip() + "…"
+    w = font.text_length(s, fontsize=size)
+    if align == "right":
+        x = x - w
+    elif align == "center":
+        x = x - w / 2
+    page.insert_text(pymupdf.Point(x, y), s, fontsize=size, fontname=fname, color=color)
+    return w
+
+
+def _decorate(pdf: bytes, calc: dict, meta: dict) -> bytes:
+    """Huvud, summeringskort och fot på varje sida - ritade, inte flödade, så de ligger där de ska."""
+    import pymupdf
+    T = calc["totals"]; A = calc["assumptions"]; M = tender_meta(calc, meta)
+    doc = pymupdf.open(stream=pdf, filetype="pdf")
+    n_pages = len(doc)
+    for i, page in enumerate(doc):
+        sh = page.new_shape()
+        if i == 0:
+            # huvudblocket: mörkt, fullbredd, med en smal accent under
+            sh.draw_rect(pymupdf.Rect(0, 0, PAGE_W, 150)); sh.finish(color=None, fill=NAVY)
+            sh.draw_rect(pymupdf.Rect(0, 150, PAGE_W, 153)); sh.finish(color=None, fill=TEAL)
+            # summeringskortet: vitt, med en mjuk kant, delvis över blockets nederkant
+            card = pymupdf.Rect(MARGIN, 118, PAGE_W - MARGIN, 210)
+            sh.draw_rect(card + (2, 3, 2, 3)); sh.finish(color=None, fill=(0.80, 0.84, 0.87))
+            sh.draw_rect(card); sh.finish(color=LINE, fill=(1, 1, 1), width=0.6)
+            # tre kolumner i kortet, skilda av hårfina linjer
+            cw = card.width / 3
+            for k in (1, 2):
+                x = card.x0 + cw * k
+                sh.draw_line(pymupdf.Point(x, card.y0 + 14), pymupdf.Point(x, card.y1 - 14)); sh.finish(color=LINE, width=0.5)
+            sh.commit()
+            _text(page, MARGIN, 40, M["company"].upper(), 8, True, (0.55, 0.85, 0.90), width=250)
+            _text(page, MARGIN, 80, "Anbud", 34, True, (1, 1, 1))
+            _text(page, MARGIN, 100, f"{M['project']}", 10.5, False, (0.92, 0.95, 0.96), width=270)
+            if M["drawing"]:
+                _text(page, MARGIN, 113, M["drawing"], 8, False, (0.70, 0.78, 0.82), width=270)
+            # högerspalten i huvudet
+            # högerspalten i huvudet: etiketten i en egen smal kolumn, värdet högerställt och kortat om det
+            # inte ryms - de två får aldrig mötas
+            rx = PAGE_W - MARGIN
+            for j, (k, v) in enumerate((("Anbudsnummer", M["number"]), ("Datum", M["date"]),
+                                        ("Giltigt till", M["valid"]), ("Beställare", M["customer"]),
+                                        ("Referens", M["reference"]))):
+                y = 38 + j * 16
+                _text(page, rx - 212, y, k.upper(), 6.5, True, (0.55, 0.85, 0.90))
+                _text(page, rx, y, v, 8.5, False, (1, 1, 1), align="right", width=146)
+            # kortets tal
+            for k, (lab, val, sub) in enumerate((
+                    ("Anbudssumma exkl. moms", _kr(T["netto_kr"]), f"{T['rader']} poster · {_num(T['timmar'], 1)} timmar"),
+                    (f"Moms {_num(A['moms_pct'], 0)} %", _kr(T["moms_kr"]), "tillkommer"),
+                    ("Att betala inkl. moms", _kr(T["brutto_kr"]), M["regelverk"] or "utan standardavtal"))):
+                x = card.x0 + cw * k + 14
+                _text(page, x, card.y0 + 28, lab.upper(), 6.5, True, MUTED)
+                _text(page, x, card.y0 + 54, val, 15 if k != 0 else 17, True, INK if k != 2 else TEAL)
+                _text(page, x, card.y0 + 72, sub, 7.5, False, MUTED)
+        else:
+            sh.draw_line(pymupdf.Point(MARGIN, 34), pymupdf.Point(PAGE_W - MARGIN, 34)); sh.finish(color=LINE, width=0.6)
+            sh.commit()
+            _text(page, MARGIN, 27, "ANBUD", 7.5, True, TEAL)
+            _text(page, MARGIN + 44, 27, f"{M['project']} · {M['number']}", 7.5, False, MUTED)
+        # foten: linje, avsändare, sidnummer
+        fs = page.new_shape()
+        fs.draw_line(pymupdf.Point(MARGIN, PAGE_H - 30), pymupdf.Point(PAGE_W - MARGIN, PAGE_H - 30)); fs.finish(color=LINE, width=0.6)
+        fs.commit()
+        _text(page, MARGIN, PAGE_H - 18, f"{M['company']} · Anbud {M['number']} · {M['date']}", 7, False, MUTED)
+        _text(page, PAGE_W - MARGIN, PAGE_H - 18, f"Sida {i + 1} av {n_pages}", 7, False, MUTED, align="right")
+    out = doc.tobytes(garbage=3, deflate=True)
+    doc.close()
+    return out
+
+
+def tender_pdf(html_doc: str, calc: dict | None = None, meta: dict | None = None) -> bytes:
+    """Anbudet som PDF: kroppen flödad av Story, huvud, summering och fot ritade ovanpå."""
+    body = _body_pdf(html_doc)
+    if calc is None:
+        return body
+    return _decorate(body, calc, meta or {})
+
+
+def tender_pages(pdf: bytes, dpi: int = 110) -> list[bytes]:
+    """Sidorna som PNG, för förhandsgranskningen i appen - samma dokument som skickas, inte en efterlikning."""
+    import pymupdf
+    doc = pymupdf.open(stream=pdf, filetype="pdf")
+    return [pg.get_pixmap(dpi=dpi).tobytes("png") for pg in doc]
 
 
 def _tender(db: Session, user: User, job_id: str) -> tuple[str, dict]:
@@ -496,19 +667,60 @@ def _tender(db: Session, user: User, job_id: str) -> tuple[str, dict]:
     calc = build(rows, legend, c.assumptions or {}, c.overrides or {})
     meta = {"project": j.drawing.project.name, "drawing": j.drawing.filename, "job": j.id[:8].upper(),
             "company": (user.name or "") or None}
-    return tender_html(calc, meta), meta
+    return tender_html(calc, meta), meta, calc
+
+
+def _tender_pdf(db: Session, user: User, job_id: str) -> tuple[bytes, dict]:
+    doc, meta, calc = _tender(db, user, job_id)
+    return tender_pdf(doc, calc, meta), meta
 
 
 @router.get("/{job_id}/calc/anbud.html")
 def anbud_html(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
-    doc, _ = _tender(db, user, job_id)
-    return Response(f"<style>{TENDER_CSS} body{{max-width:760px;margin:24px auto;padding:0 16px}}</style>" + doc,
-                    media_type="text/html; charset=utf-8")
+    """Anbudet som HTML, för den som vill läsa det som text: samma kropp, huvudet skrivet i stället för ritat."""
+    doc, meta, calc = _tender(db, user, job_id)
+    M = tender_meta(calc, meta); T = calc["totals"]; e = html.escape
+    head = (f"<div class='hd'><div class='co'>{e(M['company'])}</div><div class='ttl'>ANBUD</div>"
+            f"<div class='pr'>{e(M['project'])} · {e(M['drawing'])}</div>"
+            f"<div class='mt'>Anbudsnummer {e(M['number'])} · {M['date']} · giltigt till {M['valid']} · "
+            f"beställare {e(M['customer'])} · referens {e(M['reference'])}</div></div>"
+            f"<div class='sum'><div><span>Anbudssumma exkl. moms</span><b>{_kr(T['netto_kr'])}</b></div>"
+            f"<div><span>Moms</span><b>{_kr(T['moms_kr'])}</b></div><div><span>Att betala inkl. moms</span><b>{_kr(T['brutto_kr'])}</b></div></div>")
+    css = (TENDER_CSS.replace("@font-face { font-family: Lib; src: url(LiberationSans-Regular.ttf); }", "")
+           .replace("@font-face { font-family: Lib; font-weight: bold; src: url(LiberationSans-Bold.ttf); }", "")
+           .replace("font-family: Lib", "font-family: 'Liberation Sans', Arial, Helvetica, sans-serif"))
+    css += ("body{max-width:820px;margin:24px auto;padding:0 20px;font-size:13px}"
+            ".hd{background:#0f2a3a;color:#fff;padding:26px 28px;border-radius:10px;border-bottom:4px solid #129eb0}"
+            ".hd .co{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8dd9e0}"
+            ".hd .ttl{font-size:38px;font-weight:bold;margin:6px 0 2px}.hd .pr{font-size:14px}.hd .mt{font-size:11px;color:#b6c6cd;margin-top:8px}"
+            ".sum{display:flex;gap:12px;margin:14px 0 22px}.sum>div{flex:1;border:1px solid #dfe3e7;border-radius:10px;padding:12px 14px}"
+            ".sum span{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6b7885}.sum b{font-size:20px}"
+            "h2{font-size:12px}")
+    return Response(f"<style>{css}</style>{head}{doc}", media_type="text/html; charset=utf-8")
+
+
+@router.get("/{job_id}/calc/anbud")
+def anbud_info(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Hur många sidor anbudet har, så att förhandsgranskningen kan hämta dem en och en."""
+    pdf, meta = _tender_pdf(db, user, job_id)
+    import pymupdf
+    n = len(pymupdf.open(stream=pdf, filetype="pdf"))
+    return {"pages": n, "regelverk": sorted(REGELVERK), "project": meta["project"]}
+
+
+@router.get("/{job_id}/calc/anbud/sida-{n}.png")
+def anbud_page(job_id: str, n: int, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Sidan n av anbudet som bild: det dokument som skickas, inte en efterlikning av det."""
+    pdf, _ = _tender_pdf(db, user, job_id)
+    pages = tender_pages(pdf)
+    if n < 1 or n > len(pages):
+        raise HTTPException(404, "Ingen sådan sida i anbudet")
+    return Response(pages[n - 1], media_type="image/png", headers={"Cache-Control": "no-store"})
 
 
 @router.get("/{job_id}/calc/anbud.pdf")
 def anbud_pdf(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
     from .main import _attachment
-    doc, meta = _tender(db, user, job_id)
+    pdf, meta = _tender_pdf(db, user, job_id)
     name = f"Anbud {meta['project']} {dt.date.today().isoformat()}.pdf"
-    return Response(tender_pdf(doc), media_type="application/pdf", headers=_attachment(name))
+    return Response(pdf, media_type="application/pdf", headers=_attachment(name))

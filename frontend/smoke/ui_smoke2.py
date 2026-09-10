@@ -155,37 +155,47 @@ async def main():
         else:
             found.append("ingen markering att spara efter ritandet")
 
-        print("== kalkyl: räkna, spara, anbud ==")
-        await pg.locator(".tabs button", has_text="Kalkyl").click(); await pg.wait_for_timeout(1200)
-        note("kalkyl-fliken")
-        calc_btn = pg.locator(".calc button", has_text="Kalkylera")
+        print("== kalkyl: knappen, sidan, räkna, spara, anbud ==")
+        cta = pg.locator(".tabs .tabs-cta")
+        print(f"  kalkylera-knappen i flikraden: {await cta.count() > 0}")
+        if not await cta.count():
+            found.append("ingen Kalkylera-knapp i analysens flikrad")
+        else:
+            await cta.first.click(); await pg.wait_for_timeout(1500)
+            note("kalkylera-knappen")
+        on_page = "/kalkyl" in pg.url and await pg.locator(".calcpage").count() > 0
+        print(f"  egen kalkylsida: {on_page}")
+        if not on_page:
+            found.append("Kalkylera-knappen ledde inte till kalkylsidan")
+        calc_btn = pg.locator(".calc-actions button", has_text="Kalkylera")
         if not await calc_btn.count():
-            calc_btn = pg.locator(".calc button", has_text="Räkna om")
+            calc_btn = pg.locator(".calc-actions button", has_text="Räkna om")
         await calc_btn.first.click()
         for _ in range(40):
             await pg.wait_for_timeout(400)
-            if await pg.locator(".calc .adm-stat").count():
+            if await pg.locator(".calc-stats .adm-stat").count():
                 break
         note("kalkylera")
         body = (await pg.inner_text("body")).lower()
-        print(f"  summa visas: {'anbudssumma' in body} · rader: {await pg.locator('.calc table tbody tr').count()}")
+        print(f"  summa visas: {'anbudssumma' in body} · rader: {await pg.locator('.calc-table tbody tr').count()}")
         if "anbudssumma" not in body:
             found.append("kalkylen visar ingen anbudssumma")
-        await pg.locator(".calc button", has_text="Spara kalkyl").click(); await pg.wait_for_timeout(1500)
+        await pg.locator(".calc-actions button", has_text="Spara kalkyl").click(); await pg.wait_for_timeout(1500)
         note("spara kalkyl")
-        pv = pg.locator(".calc button", has_text="Förhandsgranska")
+        pv = pg.locator(".calc-anbud button", has_text="Förhandsgranska")
         print(f"  anbudsknappar efter spar: {await pv.count() > 0}")
         if await pv.count():
-            await pv.first.click(); await pg.wait_for_timeout(1500)
+            await pv.first.click()
+            for _ in range(40):
+                await pg.wait_for_timeout(500)
+                if await pg.locator("img.anbud-page").count():
+                    break
             note("förhandsgranska anbud")
-            frame = pg.frame_locator("iframe[title='Anbud']")
-            has = await frame.locator("body").count()
-            # innerText bär CSS:ens versaler (rubrikerna är text-transform: uppercase), så jämför utan skiftläge
-            txt = ((await frame.locator("body").inner_text()) if has else "").lower()
-            ok = "anbud" in txt and "specifikation" in txt and "förbehåll" in txt
-            print(f"  anbudet i förhandsgranskningen: {ok}")
-            if not ok:
-                found.append("anbudets förhandsgranskning saknar rubrik eller specifikation")
+            n_img = await pg.locator("img.anbud-page").count()
+            loaded = n_img > 0 and await pg.locator("img.anbud-page").first.evaluate("el => el.complete && el.naturalWidth > 200")
+            print(f"  anbudets sidor i förhandsgranskningen: {n_img} · bilden laddad: {loaded}")
+            if not loaded:
+                found.append("anbudets förhandsgranskning visar inga sidor")
         else:
             found.append("anbudsknapparna syns inte efter spar")
 

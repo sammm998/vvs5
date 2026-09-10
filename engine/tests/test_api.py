@@ -987,12 +987,27 @@ def test_a_calculation_prices_the_reading_and_the_tender_carries_the_same_number
     assert pdf.status_code == 200 and pdf.headers["content-type"].startswith("application/pdf")
     doc = pymupdf.open(stream=pdf.content, filetype="pdf")
     text = "".join(pg.get_text() for pg in doc)
-    assert len(doc) >= 1 and "ANBUD" in text and "Kv Björken" in text
+    assert len(doc) >= 1 and "Anbud" in text and "Kv Björken" in text
     brutto = f"{s['totals']['brutto_kr']:,.2f}".replace(",", " ").replace(".", ",")
     assert brutto in text, f"anbudet ska bära kalkylens summa {brutto}"
     assert "Förbehåll" in text and "Förutsättningar" in text
+    assert "ABT 06" in text and "Garantitid" in text, "standardavtalet och dess villkor står i anbudet"
+    assert f"Sida 1 av {len(doc)}" in text, "varje sida bär sitt nummer"
+    fonts = {f[3] for pg in doc for f in pg.get_fonts()}
+    assert any("Liberation" in f for f in fonts), fonts
     html_doc = client.get(f"/api/jobs/{j['id']}/calc/anbud.html", headers=H)
     assert html_doc.status_code == 200 and "ANBUD" in html_doc.text
+    info = client.get(f"/api/jobs/{j['id']}/calc/anbud", headers=H).json()
+    assert info["pages"] == len(doc) and "AB 04" in info["regelverk"]
+    png = client.get(f"/api/jobs/{j['id']}/calc/anbud/sida-1.png", headers=H)
+    assert png.status_code == 200 and png.headers["content-type"] == "image/png" and png.content[:8] == b"\x89PNG\r\n\x1a\n"
+    assert client.get(f"/api/jobs/{j['id']}/calc/anbud/sida-{len(doc) + 1}.png", headers=H).status_code == 404
+    # utan standardavtal: ingen villkorsrubrik, och inget påhittat
+    s2 = client.put(f"/api/jobs/{j['id']}/calc", headers=H,
+                    json={"assumptions": {**c["assumptions"], "regelverk": ""}, "overrides": ov}).json()
+    assert s2["assumptions"]["regelverk"] == ""
+    text2 = "".join(pg.get_text() for pg in pymupdf.open(stream=client.get(f"/api/jobs/{j['id']}/calc/anbud.pdf", headers=H).content, filetype="pdf"))
+    assert "Avtalsvillkor" not in text2 and "Garantitid" not in text2
 
     o = client.post("/api/auth/register", json={"email": "kalkyl2@example.com", "password": "hemligt1"}).json()
     OH = {"Authorization": f"Bearer {o['access_token']}"}

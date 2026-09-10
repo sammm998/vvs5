@@ -7,7 +7,6 @@ import AnalysisFilm from "../components/AnalysisFilm";
 import LearnWizard from "../components/LearnWizard";
 import Boundary from "../components/Boundary";
 import Markups, { type MarkDraft, type MarkTool } from "../components/Markups";
-import Calc from "../components/Calc";
 import Corrections, { Draft } from "../components/Corrections";
 import LegendView from "../components/LegendView";
 import Reasoning from "../components/Reasoning";
@@ -38,7 +37,7 @@ export default function AnalysisPage() {
   const [pdf, setPdf] = useState<ArrayBuffer | null>(null);
   const [err, setErr] = useState("");
   const [learn, setLearn] = useState(false);
-  const [tab, setTab] = useState<"mangder" | "agent" | "oversikt" | "artefakter" | "rattelser" | "markera" | "kalkyl">("mangder");
+  const [tab, setTab] = useState<"mangder" | "agent" | "oversikt" | "artefakter" | "rattelser" | "markera">("mangder");
   // egna markeringar: verktyget som är laddat, det som ritas just nu, och det som redan sparats på sidan
   const [markTool, setMarkTool] = useState<MarkTool>(null);
   const [markDraft, setMarkDraft] = useState<MarkDraft>(null);
@@ -339,9 +338,9 @@ export default function AnalysisPage() {
             Rätta{corrections.filter((c: any) => !c.undone).length ? ` (${corrections.filter((c: any) => !c.undone).length})` : ""}
           </button>
           <button className={tab === "markera" ? "active" : ""} onClick={() => setTab("markera")}>Markera</button>
-          <button className={tab === "kalkyl" ? "active" : ""} onClick={() => setTab("kalkyl")}>Kalkyl</button>
           <button className={tab === "oversikt" ? "active" : ""} onClick={() => setTab("oversikt")}>Översikt</button>
           <button className={tab === "artefakter" ? "active" : ""} onClick={() => setTab("artefakter")}>Export</button>
+          <Link className="tabs-cta" to={`/jobs/${id}/kalkyl`} title="Kalkylera mängderna: material, normtid, pris och anbud">Kalkylera →</Link>
         </div>
         {tab === "mangder" && (
           <div className="card">
@@ -475,7 +474,6 @@ export default function AnalysisPage() {
             meterPerPt={result.scale?.meters_per_pdf_point ?? null}
             onToolChange={setMarkTool} onDraftClear={() => setMarkDraft(null)} onChanged={setMarkups} />
         )}
-        {tab === "kalkyl" && <Calc jobId={id!} />}
         {tab === "oversikt" && (() => {
           // The overview used to read the engine's raw totals while the table beside it read the same numbers
           // under the takeoff's own assumptions. A sheet full of stacks then said "0,0 m vertikalt" on one tab
