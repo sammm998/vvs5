@@ -1,4 +1,4 @@
-"""Granskningsrummet: rita en fråga på bladet, arbeta listan, stäng frågan.
+"""CAD-rummet: rita en fråga på bladet, arbeta listan, stäng frågan.
 
 Kör mot serve_seeded.py på 127.0.0.1:8077. Provet klickar som en människa och läser av vad sidan svarar; det
 som mäts och sparas räknas på servern, så det listan visar är serverns svar och inte webbläsarens.
@@ -38,15 +38,15 @@ async def main():
         await pg.goto(f"{BASE}/login", wait_until="networkidle")
         await pg.evaluate(f"localStorage.setItem('vvs_token', '{tok}')")
 
-        print("== granska: fliken i sidomenyn ==")
+        print("== cad: fliken i sidomenyn ==")
         await pg.goto(f"{BASE}/projekt", wait_until="networkidle"); await pg.wait_for_timeout(600)
-        link = pg.locator(".side nav a", has_text="Granska")
+        link = pg.locator(".side nav a", has_text="CAD")
         print(f"  fliken finns: {await link.count() > 0}")
         if not await link.count():
-            found.append("ingen Granska-flik i sidomenyn")
+            found.append("ingen CAD-flik i sidomenyn")
         else:
             await link.first.click(); await pg.wait_for_timeout(2500)
-        note("granska-fliken")
+        note("cad-fliken")
 
         print("== välj en handling ==")
         first = pg.locator(".list .item .ttl").first
@@ -54,10 +54,10 @@ async def main():
             found.append("ingen handling att granska")
         else:
             await first.click(); await pg.wait_for_timeout(2500)
-        on = "/granska/" in pg.url and await pg.locator(".rv-grid").count() > 0
-        print(f"  granskningsrummet öppnat: {on}")
+        on = "/cad/" in pg.url and await pg.locator(".rv-grid").count() > 0
+        print(f"  cad-rummet öppnat: {on}")
         if not on:
-            found.append("granskningsrummet öppnades inte")
+            found.append("cad-rummet öppnades inte")
         note("öppnade rummet")
 
         canvas = pg.locator(".rv-sheet canvas").first

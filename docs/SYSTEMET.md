@@ -339,9 +339,9 @@ som laddas ner (`/calc/anbud/sida-{n}.png`) - det dokument som skickas, inte en 
 
 ---
 
-## 6c. Granska handlingen (frågor, markeringslista, status)
+## 6c. CAD-rummet (rita på bladet, markeringslista, status)
 
-**Granska** är en egen flik i sidomenyn och ett eget rum (`/granska`, `frontend/src/pages/Review.tsx`). Det är
+**CAD** är en egen flik i sidomenyn och ett eget rum (`/cad`, `frontend/src/pages/Cad.tsx`). Det är
 varken läsning eller mängdning: här ritas *frågor* på bladet - ett moln runt något som inte stämmer, en
 anteckning, ett kontrollmått - och sedan arbetas listan tills varje fråga har ett svar.
 

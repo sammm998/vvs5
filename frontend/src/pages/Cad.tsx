@@ -4,10 +4,10 @@ import { api } from "../api";
 import PdfViewer, { type ViewerHandle } from "../components/PdfViewer";
 import MarkupsList, { STATUSES, TOOL_LABEL, measureText, sourceLabel, type MarkupRow } from "../components/MarkupsList";
 
-/* Granskningsrummet: handlingen, frågorna på den, och listan man arbetar i.
+/* CAD-rummet: handlingen, det som ritas på den, och listan man arbetar i.
  *
- * Det här är inte mängdning och inte läsning. Här ritas frågor - ett moln runt något som inte stämmer, en
- * anteckning, ett mått som ska kontrolleras - och sedan arbetar man listan tills varje fråga har ett svar.
+ * Det här är inte mängdning och inte läsning. Här ritas på bladet - ett moln runt något som inte stämmer, en
+ * anteckning, ett kontrollmått, en linje - och sedan arbetar man listan tills varje sak har ett svar.
  * Frågan lever i hela handlingen och inte på ett blad, så listan visar alla sidor och säger vilken sida raden
  * hör hemma på; att välja en rad bläddrar dit och zoomar in på markeringen.
  *
@@ -33,7 +33,7 @@ const bbox = (pts: number[][]): number[] => {
   return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
 };
 
-export default function ReviewPage() {
+export default function CadPage() {
   const { id } = useParams();
   const drawingId = id!;
   const [drawing, setDrawing] = useState<any>(null);
@@ -116,24 +116,24 @@ export default function ReviewPage() {
     : "Bladet har ingen skala – kontrollmått blir i ritningens punkter.";
 
   return (
-    <main className="review">
+    <main className="review cad">
       <p className="crumb">
-        <Link to="/granska">Granska</Link>
+        <Link to="/cad">CAD</Link>
         {drawing && <> · <Link to={`/drawings/${drawingId}`}>{drawing.filename.replace(/\.pdf$/i, "")}</Link></>}
       </p>
       <div className="head">
         <div>
-          <h1>Granska</h1>
+          <h1>CAD</h1>
           <p className="lead">
-            Rita frågor på bladet och arbeta listan tills var och en har ett svar. {scale} Granskningen ligger
-            vid sidan av läsningen och ändrar den inte.
+            Rita, mät och ställ frågor direkt på bladet, och arbeta listan tills var och en har ett svar.
+            {" "}{scale} Det som ritas här ligger vid sidan av läsningen och ändrar den inte.
           </p>
         </div>
         <div className="row">
           <button className="secondary" onClick={async () => {
             const b = await api.fetchBlob(api.markupsCsvUrl(drawingId, page, true));
             const u = URL.createObjectURL(b); const a = document.createElement("a");
-            a.href = u; a.download = "granskning.csv"; a.click(); URL.revokeObjectURL(u);
+            a.href = u; a.download = "cad-markeringar.csv"; a.click(); URL.revokeObjectURL(u);
           }}>Listan som CSV</button>
           <Link className="secondary" to={`/mangda/${drawingId}`} style={{ textDecoration: "none" }}>Mängda bladet →</Link>
         </div>

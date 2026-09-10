@@ -158,20 +158,56 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     return () => { cancelled = true; };
   }, [props.data]);
 
-  const render = useCallback(async () => {
+  /* Bladets storlek i sina egna punkter. Den beror inte på zoomen och läses en gång per sida. */
+  useEffect(() => {
+    if (!doc) return;
+    let dead = false;
+    doc.getPage(props.page + 1).then((pg: any) => {
+      if (dead) return;
+      const v = pg.getViewport({ scale: 1, rotation: pg.rotate });
+      setVp({ w: v.width, h: v.height });
+    });
+    return () => { dead = true; };
+  }, [doc, props.page]);
+
+  /* Bilden ritas om när handen stannat, inte medan den rör sig.
+   *
+   * Att rita om PDF:en är det dyraste som händer i den här vyn, och en zoom är hundra små steg. Ritades den om
+   * vid varje steg blev zoomen en serie stillbilder med väntan emellan - det som kändes hackigt. I stället
+   * sträcks den bild som redan finns till den nya storleken direkt (webbläsaren gör det på grafikkortet), och
+   * en skarp bild ritas när det gått en kort stund utan att någon vridit på hjulet. Så är rörelsen mjuk och
+   * resultatet skarpt, i den ordningen.
+   *
+   * Den ritas dessutom i skärmens egen punkttäthet, med ett tak på antalet bildpunkter: en A1-ritning på 800 %
+   * blir annars en yta ingen webbläsare orkar hålla i minnet.
+   */
+  const rendered = useRef(0);
+  const MAX_PIXELS = 24e6;
+  const paint = useCallback(async (s: number) => {
     if (!doc || !canvasRef.current) return;
     const page = await doc.getPage(props.page + 1);
-    const viewport = page.getViewport({ scale, rotation: page.rotate });
+    const base = page.getViewport({ scale: 1, rotation: page.rotate });
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    let k = s * dpr;
+    if (base.width * base.height * k * k > MAX_PIXELS) {
+      k = Math.sqrt(MAX_PIXELS / (base.width * base.height));
+    }
+    const viewport = page.getViewport({ scale: k, rotation: page.rotate });
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d")!;
     canvas.width = Math.floor(viewport.width); canvas.height = Math.floor(viewport.height);
-    setVp({ w: viewport.width / scale, h: viewport.height / scale });
     if (renderTask.current) { try { renderTask.current.cancel(); } catch { /* ignore */ } }
     renderTask.current = page.render({ canvasContext: ctx, viewport });
-    try { await renderTask.current.promise; } catch { /* cancelled */ }
-  }, [doc, props.page, scale]);
+    try { await renderTask.current.promise; rendered.current = s; } catch { /* cancelled */ }
+  }, [doc, props.page]);
 
-  useEffect(() => { render(); }, [render]);
+  useEffect(() => { rendered.current = 0; }, [doc, props.page]);
+  useEffect(() => {
+    if (!doc || !vp) return;
+    // första bilden direkt, sedan först när hjulet stått stilla en stund
+    const t = window.setTimeout(() => paint(scale), rendered.current ? 150 : 0);
+    return () => window.clearTimeout(t);
+  }, [scale, doc, vp, paint]);
 
   const fit = useCallback((mode: "page" | "width") => {
     if (!vp || !container.current) return;
@@ -200,8 +236,8 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
   }, [fit]);
 
   useImperativeHandle(ref, () => ({
-    zoomIn: () => { auto.current = false; setScale((s) => Math.min(s * 1.25, 12)); },
-    zoomOut: () => { auto.current = false; setScale((s) => Math.max(s / 1.25, 0.1)); },
+    zoomIn: () => glide(scaleRef.current * 1.4),
+    zoomOut: () => glide(scaleRef.current / 1.4),
     fitPage: () => { auto.current = true; fit("page"); },
     fitWidth: () => { auto.current = false; fit("width"); },
     fullscreen: () => container.current?.requestFullscreen?.(),
@@ -250,6 +286,9 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
    * about the point under the pointer, and dragging moves it. Nothing else on the page moves.
    */
   const pageEl = useRef<HTMLDivElement | null>(null);
+  // den skala som gäller just nu, läsbar inne i en pågående rörelse utan att vänta på nästa rendering
+  const scaleRef = useRef(scale);
+  useLayoutEffect(() => { scaleRef.current = scale; }, [scale]);
   const [panning, setPanning] = useState(false);
   const [flash, setFlash] = useState<{ x: number; y: number; r: number; at: number } | null>(null);
   const pan = useRef<{ x: number; y: number; l: number; t: number } | null>(null);
@@ -264,9 +303,43 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     setScale((s) => {
       const next = Math.min(12, Math.max(0.05, s * factor));
       hold.current = { px: (cx - r.left) / s, py: (cy - r.top) / s, cx, cy };
+      scaleRef.current = next;
       return next;
     });
   }, []);
+
+  /* En zoom som glider dit i stället för att hoppa.
+   *
+   * Knapparna, dubbelklicket och tangenterna flyttar zoomen i ett stycke: ett hopp från 50 % till 70 % ger
+   * ingen känsla av var man hamnade, medan en kort glidning gör att ögat följer med. Den är förankrad i samma
+   * punkt hela vägen - den under pekaren, eller rutans mitt - så bladet inte kryper åt sidan medan den pågår.
+   * Den som slagit på reducerad rörelse får hoppet, för det var det hon bad om.
+   */
+  const anim = useRef(0);
+  const glide = useCallback((target: number, cx?: number, cy?: number) => {
+    const el = container.current;
+    if (!el) return;
+    auto.current = false;
+    if (anim.current) cancelAnimationFrame(anim.current);
+    const box = el.getBoundingClientRect();
+    const ax = cx ?? box.left + el.clientWidth / 2;
+    const ay = cy ?? box.top + el.clientHeight / 2;
+    const from = scaleRef.current;
+    const to = Math.min(12, Math.max(0.05, target));
+    if (Math.abs(to / from - 1) < 0.002) return;
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    if (reduced) { zoomAt(to / from, ax, ay); return; }
+    const t0 = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - t0) / 220);
+      const e = 1 - Math.pow(1 - t, 3);
+      // steget räknas mot den skala som faktiskt gäller, så en avbruten glidning aldrig drar iväg
+      const want = from * Math.pow(to / from, e);
+      zoomAt(want / scaleRef.current, ax, ay);
+      anim.current = t < 1 ? requestAnimationFrame(step) : 0;
+    };
+    anim.current = requestAnimationFrame(step);
+  }, [zoomAt]);
 
   // after the sheet has been laid out at its new size, put the held point back under the pointer
   useLayoutEffect(() => {
@@ -278,10 +351,21 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     el.scrollTop += (r.top + hcur.py * scale) - hcur.cy;
   }, [scale]);
 
+  /* Hjulet zoomar, och gör det lika mycket oavsett vad musen skickar.
+   *
+   * En mus skickar hundra punkter per hack, en styrplatta tre, och vissa möss räknar i rader eller sidor i
+   * stället för punkter. Läses talet rakt av blir samma vridning ett litet kliv på den ena maskinen och ett
+   * skutt tvärs igenom bladet på den andra. Här räknas allt om till punkter först, och varje enskild händelse
+   * får flytta zoomen högst en fjärdedel - så en snabb vridning blir många mjuka steg i stället för ett hopp.
+   */
   const onWheel = useCallback((e: React.WheelEvent) => {
     if (e.shiftKey) return;                       // shift-wheel keeps the browser's own sideways scroll
     e.preventDefault();
-    zoomAt(Math.exp(-e.deltaY * 0.0016), e.clientX, e.clientY);
+    if (anim.current) { cancelAnimationFrame(anim.current); anim.current = 0; }
+    const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1;
+    const dy = Math.max(-160, Math.min(160, e.deltaY * unit));
+    const factor = Math.exp(-dy * (e.ctrlKey ? 0.0022 : 0.0014));
+    zoomAt(Math.max(0.8, Math.min(1.25, factor)), e.clientX, e.clientY);
   }, [zoomAt]);
 
   // Dragging pans, except while a correction is being drawn - then the drag is the drawing. The middle button
@@ -290,10 +374,38 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
   // frame, so the click never reaches the run under the finger - and picking a run by clicking it, which is
   // what the correction panel asks you to do, did nothing at all. The pan starts when the hand actually moves.
   const PAN_SLOP = 4;
+  // Mellanslag är handen: hålls det nere drar man bladet även mitt i en ritning, precis som i varje annat
+  // ritprogram. Utan det måste den som håller på att rita först lägga ifrån sig verktyget för att flytta sig.
+  const space = useRef(false);
+  const [spacePan, setSpacePan] = useState(false);
+  useEffect(() => {
+    const el = container.current;
+    const down = (e: KeyboardEvent) => {
+      if (e.code !== "Space" || space.current) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if (!el?.matches(":hover")) return;
+      space.current = true; setSpacePan(true); e.preventDefault();
+    };
+    const up = (e: KeyboardEvent) => {
+      if (e.code !== "Space") return;
+      space.current = false; setSpacePan(false);
+    };
+    window.addEventListener("keydown", down);
+    window.addEventListener("keyup", up);
+    return () => { window.removeEventListener("keydown", down); window.removeEventListener("keyup", up); };
+  }, []);
+
+  // farten när handen släppte, för att låta bladet glida ut i stället för att tvärstanna
+  const fling = useRef({ vx: 0, vy: 0, at: 0, raf: 0 });
+  const stopFling = () => { if (fling.current.raf) cancelAnimationFrame(fling.current.raf); fling.current.raf = 0; };
+
   const panDown = (e: React.PointerEvent) => {
-    if (e.button !== 1 && (e.button !== 0 || kind)) return;
+    if (e.button !== 1 && (e.button !== 0 || (kind && !space.current))) return;
     const el = container.current;
     if (!el) return;
+    stopFling();
+    fling.current = { vx: 0, vy: 0, at: performance.now(), raf: 0 };
     pan.current = { x: e.clientX, y: e.clientY, l: el.scrollLeft, t: el.scrollTop };
   };
   const panMove = (e: React.PointerEvent) => {
@@ -306,8 +418,15 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
       setPanning(true);
       (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
     }
+    const before = { l: el.scrollLeft, t: el.scrollTop };
     el.scrollLeft = p.l - dx;
     el.scrollTop = p.t - dy;
+    const now = performance.now();
+    const dt = Math.max(8, now - fling.current.at);
+    // ett löpande medel: en enstaka ryckig händelse ska inte bestämma hur bladet glider ut
+    fling.current.vx = fling.current.vx * 0.7 + ((el.scrollLeft - before.l) / dt) * 0.3;
+    fling.current.vy = fling.current.vy * 0.7 + ((el.scrollTop - before.t) / dt) * 0.3;
+    fling.current.at = now;
   };
   const panUp = (e: React.PointerEvent) => {
     if (!pan.current) return;
@@ -315,8 +434,24 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     if (panning) {
       setPanning(false);
       (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+      const el = container.current;
+      const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      let { vx, vy } = fling.current;
+      if (el && !reduced && Math.hypot(vx, vy) > 0.25) {
+        let last = performance.now();
+        const step = (now: number) => {
+          const dt = Math.min(34, now - last); last = now;
+          el.scrollLeft += vx * dt;
+          el.scrollTop += vy * dt;
+          const decay = Math.pow(0.9925, dt);      // ungefär en halv sekund ut
+          vx *= decay; vy *= decay;
+          fling.current.raf = Math.hypot(vx, vy) > 0.02 ? requestAnimationFrame(step) : 0;
+        };
+        fling.current.raf = requestAnimationFrame(step);
+      }
     }
   };
+  useEffect(() => stopFling, []);
 
   // the wheel listener has to be non-passive to be allowed to hold the page still while the sheet zooms
   useEffect(() => {
@@ -527,6 +662,14 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     setPending([]);
   };
 
+  /* Dubbelklick zoomar in där man pekade, med alt för att zooma ut igen - det är så en karta läses, och det
+   * sparar resan till knappen. Mitt i en ritning betyder dubbelklicket fortfarande "här slutar linjen". */
+  const dblclick = (e: React.MouseEvent) => {
+    if (kind === "draw") { finish(); return; }
+    if (kind) return;
+    glide(scaleRef.current * (e.altKey ? 1 / 1.9 : 1.9), e.clientX, e.clientY);
+  };
+
   useEffect(() => {
     if (kind !== "draw") return;
     const key = (e: KeyboardEvent) => {
@@ -548,8 +691,8 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     <div className="viewer" ref={container} onWheel={onWheel}
       onPointerDown={panDown} onPointerMove={panMove} onPointerUp={panUp} onPointerCancel={panUp}>
       <div ref={pageEl} className={`page${kind ? " editing" : ""}${panning ? " panning" : ""}`}
-        style={{ width: w, height: h, cursor: panning ? "grabbing" : cur }}
-        onClick={click} onDoubleClick={finish} onMouseDown={down} onMouseMove={move} onMouseUp={up}
+        style={{ width: w, height: h, cursor: panning ? "grabbing" : spacePan ? "grab" : cur }}
+        onClick={click} onDoubleClick={dblclick} onMouseDown={down} onMouseMove={move} onMouseUp={up}
         onMouseLeave={() => { setCursor(null); if (stroke) up(); }}>
         <canvas ref={canvasRef} />
         {vp && (

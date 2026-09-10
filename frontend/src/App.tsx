@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import { api, getToken, setToken, currentEmail, flushEvents, track } from "./api";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -16,8 +16,8 @@ import ProjectAnalysisPage from "./pages/ProjectAnalysis";
 import CalcPage from "./pages/CalcPage";
 import TakeoffPage from "./pages/Takeoff";
 import TakeoffPickPage from "./pages/TakeoffPick";
-import ReviewPage from "./pages/Review";
-import ReviewPickPage from "./pages/ReviewPick";
+import CadPage from "./pages/Cad";
+import CadPickPage from "./pages/CadPick";
 
 function Guard({ children }: { children: JSX.Element }) {
   return getToken() ? children : <Navigate to="/login" replace />;
@@ -78,7 +78,13 @@ function IconRuler() {
   );
 }
 
-function IconReview() {
+/** Rummet hette Granska innan det blev CAD. En sparad länk ska öppna samma blad, inte en tom sida. */
+function GranskaRedirect() {
+  const { id } = useParams();
+  return <Navigate to={id ? `/cad/${id}` : "/cad"} replace />;
+}
+
+function IconCad() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
          strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -121,8 +127,11 @@ const ROUTES = (
     <Route path="/jobs/:id/kalkyl" element={<Guard><CalcPage /></Guard>} />
     <Route path="/mangda" element={<Guard><TakeoffPickPage /></Guard>} />
     <Route path="/mangda/:id" element={<Guard><TakeoffPage /></Guard>} />
-    <Route path="/granska" element={<Guard><ReviewPickPage /></Guard>} />
-    <Route path="/granska/:id" element={<Guard><ReviewPage /></Guard>} />
+    <Route path="/cad" element={<Guard><CadPickPage /></Guard>} />
+    <Route path="/cad/:id" element={<Guard><CadPage /></Guard>} />
+    {/* rummet hette Granska innan det blev CAD; gamla länkar ska inte gå i kras */}
+    <Route path="/granska" element={<Navigate to="/cad" replace />} />
+    <Route path="/granska/:id" element={<GranskaRedirect />} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
     <Route path="/installningar" element={<Navigate to="/admin" replace />} />
@@ -209,8 +218,8 @@ export default function App() {
           <Link to="/mangda" className={path.startsWith("/mangda") ? "on" : ""}>
             <IconRuler /> <span className="wide">Mängda</span>
           </Link>
-          <Link to="/granska" className={path.startsWith("/granska") ? "on" : ""}>
-            <IconReview /> <span className="wide">Granska</span>
+          <Link to="/cad" className={path.startsWith("/cad") || path.startsWith("/granska") ? "on" : ""}>
+            <IconCad /> <span className="wide">CAD</span>
           </Link>
           <Link to="/material" className={path.startsWith("/material") ? "on" : ""}>
             <IconMaterial /> <span className="wide">Material</span>

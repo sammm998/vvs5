@@ -189,7 +189,7 @@ Sidomenyns flikar och deras vägar:
 | — (kalkylen) | `/jobs/:id/kalkyl` | `CalcPage.tsx` |
 | Lär dig VVS | `/lar` | `LearnPage.tsx` |
 | Mängda | `/mangda`, `/mangda/:id` | `TakeoffPick.tsx`, `Takeoff.tsx` |
-| Granska | `/granska`, `/granska/:id` | `ReviewPick.tsx`, `Review.tsx` |
+| CAD | `/cad`, `/cad/:id` | `CadPick.tsx`, `Cad.tsx` |
 | Material | `/material` | `Material.tsx` |
 | Administration | `/admin` | `Admin.tsx` |
 
@@ -1205,9 +1205,9 @@ File storage abstraction: local filesystem now; the same interface can back an o
   exporterar: ModeChooser, ProjectAnalysisPage
 - `src/pages/Projects.tsx` — —  
   exporterar: Projects
-- `src/pages/Review.tsx` — Granskningsrummet: handlingen, frågorna på den, och listan man arbetar i.  
+- `src/pages/Cad.tsx` — Granskningsrummet: handlingen, frågorna på den, och listan man arbetar i.  
   exporterar: ReviewPage
-- `src/pages/ReviewPick.tsx` — Vilken handling ska granskas? Ritningarna med hur många frågor som står öppna på var och en. */  
+- `src/pages/CadPick.tsx` — Vilken handling ska öppnas i CAD-rummet? Ritningarna, och en väg att lägga upp en ny.  
   exporterar: ReviewPickPage
 - `src/pages/Takeoff.tsx` — Mängda för hand: mät, räkna och markera direkt på bladet.  
   exporterar: TakeoffPage

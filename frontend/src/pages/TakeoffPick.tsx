@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
+import DrawingUpload from "../components/DrawingUpload";
 
 /* Vilket blad ska mängdas? Projekten och deras ritningar, med den senaste först. */
 export default function TakeoffPickPage() {
   const [rows, setRows] = useState<any[] | null>(null);
   const [err, setErr] = useState("");
+  const nav = useNavigate();
+  const [tick, setTick] = useState(0);
   useEffect(() => {
     api.projects().then(async (ps: any[]) => {
       const out: any[] = [];
@@ -15,7 +18,7 @@ export default function TakeoffPickPage() {
       }
       setRows(out);
     }).catch((e) => setErr(e.message));
-  }, []);
+  }, [tick]);
   return (
     <main>
       <p className="crumb">Mängda</p>
@@ -29,9 +32,13 @@ export default function TakeoffPickPage() {
         </div>
       </div>
       <div className="rule" style={{ marginBottom: 20 }} />
+      <DrawingUpload verb="Mängda" onDone={(made) => {
+        if (made.length === 1) nav(`/mangda/${made[0].id}`);
+        else { setRows(null); setTick((n) => n + 1); }
+      }} />
       {err && <p className="error">{err}</p>}
       {!rows && <p className="muted">Laddar…</p>}
-      {rows && !rows.length && <p className="muted">Ingen ritning uppladdad ännu. Lägg upp en under Projekt.</p>}
+      {rows && !rows.length && <p className="muted">Ingen ritning uppladdad ännu. Lägg upp en här ovanför.</p>}
       <div className="list">
         {(rows ?? []).map((d) => (
           <article className="item" key={d.id}>
