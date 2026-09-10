@@ -337,6 +337,43 @@ class CourseProgress(Base):
     updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)
 
 
+class Calibration(Base):
+    """Skalan någon mätt upp själv på ett blad.
+
+    Motorn läser skalan ur bladets egen skalstock och utskrivna skala. Går det inte - ett urklipp, ett blad
+    utan stock, en detalj i annan skala - så mäter mängdaren upp den för hand: dra en linje över något vars
+    längd är känd och skriv vad det är. Den uppmätta skalan gäller framför läsningens för markeringarna på
+    just det bladet och den sidan, och den säger vem som satte den och mot vad.
+    """
+    __tablename__ = "calibrations"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    drawing_id: Mapped[str] = mapped_column(ForeignKey("drawings.id"), index=True)
+    page: Mapped[int] = mapped_column(Integer, default=0)
+    meters_per_pdf_point: Mapped[float] = mapped_column(Float)
+    length_m: Mapped[float] = mapped_column(Float)                        # vad sträckan var i verkligheten
+    points: Mapped[list] = mapped_column(JSON, default=list)              # sträckan som mättes
+    note: Mapped[str] = mapped_column(Text, default="")
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class ToolPreset(Base):
+    """Ett verktyg mängdaren ställt in och vill ha kvar: lager, färg, djup, multiplikator, beteckning.
+
+    Bluebeams verktygslåda i miniatyr. Den som mängdar tjugo blad ställer inte in samma sak tjugo gånger.
+    """
+    __tablename__ = "tool_presets"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    name: Mapped[str] = mapped_column(String(80))
+    tool: Mapped[str] = mapped_column(String(32))
+    layer: Mapped[str] = mapped_column(String(64), default="Mängdning")
+    designation: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    style: Mapped[dict] = mapped_column(JSON, default=dict)
+    props: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
 class ServiceSetting(Base):
     """Det tjänsten själv går efter, satt av en administratör: en flyttad regel, ett antagande.
 
@@ -387,7 +424,9 @@ class Markup(Base):
     points: Mapped[list] = mapped_column(JSON, default=list)               # [[x, y], ...] i sidans punkter
     style: Mapped[dict] = mapped_column(JSON, default=dict)                # färg, bredd, streck, fyllning
     text: Mapped[str] = mapped_column(Text, default="")
-    measure: Mapped[dict] = mapped_column(JSON, default=dict)              # {m, kvm, antal} som verktyget räknade
+    props: Mapped[dict] = mapped_column(JSON, default=dict)                # djup, multiplikator, tillägg, avdrag
+    seq: Mapped[int | None] = mapped_column(Integer, nullable=True)        # löpnummer inom lagret, för antal
+    measure: Mapped[dict] = mapped_column(JSON, default=dict)              # {m, kvm, m3, antal} som verktyget räknade
     deleted: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
     updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)

@@ -915,7 +915,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                       f"ledarfamilj={f in leader_fams}  {f}", file=sys.stderr)
         # evaluate the vector structure of every voted family first (kind: fragmented-dashed / continuous / sparse)
         voted = sorted(f for f in votes if f not in leader_fams)
-        prims_all = collect_prims(page, set(voted), exclude_pids=annotation_pids)
+        figures: dict[str, list] = {}
+        prims_all = collect_prims(page, set(voted), exclude_pids=annotation_pids, figures_out=figures)
         desc: dict[str, tuple] = {}
         for fk in voted:
             if not prims_all.get(fk):
@@ -1016,7 +1017,19 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         # absent without a word is indistinguishable from geometry that was never seen. Declining is often
         # right - walls and grids share a pen with pipes - so the point is not to take these, it is to say them.
         declined: dict[str, dict] = {}
+        # Ink that stands still: a radiator hatched with two dozen strokes, a pump, a gully. It is drawn on a pen
+        # the reading weighed, and it is not a run - so it is said here rather than silently left out.
+        for f, qs in sorted(figures.items()):
+            ink = sum(q.seg.length for q in qs)
+            declined[f] = {"family": f, "kind": "figure", "why": "DRAWN_FIGURE_NOT_A_RUN",
+                           "width": round(qs[0].width, 2), "longest_chain": 0.0,
+                           "total_length_pt": round(ink, 1), "votes": round(votes.get(f, 0.0), 2),
+                           "tick_votes": tick_votes.get(f, 0), "leader_votes": leader_votes.get(f, 0),
+                           "n_segments": len(qs), "figure_segments": [
+                               [round(q.seg.x0, 2), round(q.seg.y0, 2), round(q.seg.x1, 2), round(q.seg.y1, 2)] for q in qs[:400]]}
         for f in voted:
+            if f in declined:
+                continue
             if f in pipe_families or f not in desc:
                 continue
             rf = desc[f][0]

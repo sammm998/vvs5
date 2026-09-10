@@ -45,6 +45,7 @@ app.include_router(public_api.router)
 app.include_router(projects_api.router)
 app.include_router(academy_api.router)
 app.include_router(markups_api.router)
+app.include_router(markups_api.presets)
 app.include_router(calc_api.router)
 
 

@@ -262,9 +262,72 @@ def duplicate_overlaps(prims: list[Prim]) -> tuple[float, list[dict]]:
     return total, places
 
 
-def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | None = None) -> dict[str, list[Prim]]:
+# A run goes somewhere: the ink it spends buys distance. A drawn figure - a radiator hatched with two dozen
+# strokes, a pump, a floor gully - stands still: its ink is spent filling one small box, and no stroke of it ever
+# leaves that box. So a knot of strokes whose ink is many times the box it sits in is a figure, not a run.
+#
+# On the heating sheets the radiators are hatched on a pen of their own. The reading weighed that pen as pipe:
+# every leader that passed a radiator gained a second candidate family, the anchor went ambiguous, and the metres
+# on the real pipe went to nobody - a hundred metres a sheet. Measured over the corpus, a pipe pen's knots stand
+# at 0,8-2,9 and a hatched radiator at 8,8-15,7, so the two are not close.
+FIGURE_INK = 6.0          # times: ink over the diagonal of the box the knot sits in
+FIGURE_MIN_INK = 40.0     # pt: below this a knot is too small for the ratio to say anything
+FIGURE_MAX_SPAN = 200.0   # pt: a drawn object is small - 3,5 m at 1:50. A run may fill a room; a radiator may not.
+FIGURE_GAP = 3.0          # pt: strokes this close belong to the same knot
+
+
+def _knots(prims: list[Prim], gap: float = FIGURE_GAP) -> list[list[Prim]]:
+    """Strokes grouped by nearness, not by touching: a hatch stroke inside a radiator touches nothing."""
+    idx = GridIndex(cell=12.0)
+    for i, q in enumerate(prims):
+        idx.insert(i, q.seg.bbox())
+    parent = list(range(len(prims)))
+
+    def find(a: int) -> int:
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    for i, q in enumerate(prims):
+        b = q.seg.bbox()
+        for j in idx.query((b[0] - gap, b[1] - gap, b[2] + gap, b[3] + gap)):
+            if j <= i:
+                continue
+            ra, rb = find(i), find(j)
+            if ra != rb:
+                parent[max(ra, rb)] = min(ra, rb)
+    groups: dict[int, list[Prim]] = defaultdict(list)
+    for i, q in enumerate(prims):
+        groups[find(i)].append(q)
+    return [groups[k] for k in sorted(groups)]
+
+
+def figure_pieces(prims: list[Prim]) -> tuple[list[Prim], list[Prim]]:
+    """(runs, figures): the strokes that go somewhere, and the knots that stand still and fill a box."""
+    runs: list[Prim] = []
+    figures: list[Prim] = []
+    ratio = _R("pipes.representation.FIGURE_INK", FIGURE_INK)
+    for knot in _knots(prims):
+        ink = sum(q.seg.length for q in knot)
+        xs = [v for q in knot for v in (q.seg.x0, q.seg.x1)]
+        ys = [v for q in knot for v in (q.seg.y0, q.seg.y1)]
+        diag = math.hypot(max(xs) - min(xs), max(ys) - min(ys))
+        if ink >= FIGURE_MIN_INK and 1e-6 < diag <= FIGURE_MAX_SPAN and ink / diag >= ratio:
+            figures.extend(knot)
+        else:
+            runs.extend(knot)
+    return runs, figures
+
+
+def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | None = None,
+                  figures_out: dict[str, list[Prim]] | None = None) -> dict[str, list[Prim]]:
     """Primitives of the given families. exclude_pids drops individual paths - the leader lines of the drawing,
-    which on a sheet without layers are drawn with the same pen as the pipes and would otherwise be measured."""
+    which on a sheet without layers are drawn with the same pen as the pipes and would otherwise be measured.
+
+    Drawn figures - a radiator hatched solid on its own pen - are set aside here rather than measured: they are
+    ink that stands still, and every consumer of a family's geometry should see the same runs. What was set
+    aside is handed back through figures_out so the reading can say so."""
     out: dict[str, list[Prim]] = defaultdict(list)
     seen: dict[str, set[tuple]] = defaultdict(set)
     for p in sorted(page.paths, key=lambda p: p.pid):
@@ -285,6 +348,15 @@ def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | No
                 continue
             seen[fk].add(_stamp(s))
             out[fk].append(Prim(prim_id=0, pid=p.pid, seg_index=k, seg=s, family=fk, layer=p.layer, width=p.width))
+    # a pen's figures are not its runs: set them aside before anyone builds a graph on them
+    for fk in list(out):
+        runs, figures = figure_pieces(out[fk])
+        if figures:
+            out[fk] = runs
+            if figures_out is not None:
+                figures_out[fk] = figures
+            if not runs:
+                del out[fk]
     # deterministic prim ids by content order
     for fk in out:
         out[fk].sort(key=lambda q: (q.pid, q.seg_index))

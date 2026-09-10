@@ -1037,3 +1037,83 @@ def test_a_calculation_prices_the_reading_and_the_tender_carries_the_same_number
     OH = {"Authorization": f"Bearer {o['access_token']}"}
     assert client.get(f"/api/jobs/{j['id']}/calc", headers=OH).status_code == 404
     assert client.get(f"/api/jobs/{j['id']}/calc/anbud.pdf", headers=OH).status_code == 404
+
+
+def test_the_takeoff_tool_measures_what_a_person_draws(client, synthetic_pdf):
+    """Mängdningsverktyget: kalibrera skalan, mät längd med påslag, yta med djup och avdrag, räkna antal.
+
+    Måtten räknas på servern ur punkterna och den skala som gäller för bladet - en uppmätt skala går före
+    läsningens - och varje steg redovisas, så att slutsiffran går att följa bakåt till det någon ritade.
+    """
+    r = client.post("/api/auth/register", json={"email": "matare@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Mängdning", "description": ""}, headers=H).json()
+    with open(synthetic_pdf, "rb") as fh:
+        d = client.post(f"/api/projects/{p['id']}/drawings",
+                        files={"file": ("plan.pdf", fh, "application/pdf")}, headers=H).json()
+
+    # utan läsning och utan kalibrering finns ingen skala: punkter, inte påhittade meter
+    m = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                    json={"tool": "langd", "points": [[0, 0], [100, 0]]}).json()
+    assert m["measure"]["scale"] == "INGEN_SKALA" and "m" not in m["measure"]
+
+    # kalibrera: hundra punkter är tio meter
+    bad = client.put(f"/api/drawings/{d['id']}/calibration", headers=H,
+                     json={"points": [[0, 0], [2, 0]], "length_m": 10})
+    assert bad.status_code == 400, "en sträcka på två punkter är för kort att mäta skalan på"
+    cal = client.put(f"/api/drawings/{d['id']}/calibration", headers=H,
+                     json={"points": [[0, 0], [100, 0]], "length_m": 10, "note": "dörrbredd"}).json()
+    assert abs(cal["meters_per_pdf_point"] - 0.1) < 1e-9 and cal["source"] == "UPPMÄTT"
+    # den gamla markeringen mättes om i den nya skalan
+    rows = client.get(f"/api/drawings/{d['id']}/markups", headers=H).json()
+    assert rows["rows"][0]["measure"]["m"] == 10.0 and rows["scale_source"] == "UPPMÄTT"
+
+    # längd med multiplikator och tillägg: två stigare på tre meter var, plus en meter anslutning
+    L = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                    json={"tool": "langd", "layer": "Värme", "designation": "VS21-S13-22",
+                          "points": [[0, 0], [30, 0]], "props": {"multiplikator": 2, "tillagg_m": 1}}).json()
+    assert L["measure"]["ratt_m"] == 3.0 and L["measure"]["m"] == 7.0
+
+    # yta med djup och avdrag: tio gånger tio meter minus en ruta på två gånger två, en halv meter djup
+    A = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                    json={"tool": "volym", "layer": "Håltagning",
+                          "points": [[0, 0], [100, 0], [100, 100], [0, 100]],
+                          "props": {"djup_m": 0.5, "avdrag": [[[10, 10], [30, 10], [30, 30], [10, 30]]]}}).json()
+    assert A["measure"]["kvm"] == 96.0 and A["measure"]["avdrag_kvm"] == 4.0 and A["measure"]["m3"] == 48.0
+
+    # antal med löpnummer inom lagret
+    for k in range(3):
+        c = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                        json={"tool": "antal", "layer": "Don", "points": [[k, k]]}).json()
+        assert c["seq"] == k + 1 and c["measure"]["antal"] == 1
+
+    # listan summerar per lager, verktyg och beteckning
+    lst = client.get(f"/api/drawings/{d['id']}/markups", headers=H).json()
+    assert lst["by_layer"]["Värme"]["m"] == 7.0
+    assert lst["by_layer"]["Håltagning"]["kvm"] == 96.0 and lst["by_layer"]["Håltagning"]["m3"] == 48.0
+    assert lst["by_layer"]["Don"]["antal"] == 3 and lst["by_tool"]["antal"]["rader"] == 3
+    assert lst["by_designation"]["VS21-S13-22"]["m"] == 7.0
+    assert lst["totals"]["m"] == 17.0, lst["totals"]
+
+    # orimliga påslag avvisas, aldrig klipps
+    assert client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                       json={"tool": "langd", "points": [[0, 0], [1, 1]], "props": {"djup_m": -3}}).status_code == 400
+
+    # verktygslådan: ett förval som följer med till nästa blad
+    t = client.post("/api/tools", headers=H, json={"name": "Radiator", "tool": "antal", "layer": "Don",
+                                                   "props": {"multiplikator": 1}}).json()
+    assert client.get("/api/tools", headers=H).json()["rows"][0]["name"] == "Radiator"
+    assert client.delete(f"/api/tools/{t['id']}", headers=H).status_code == 200
+    assert client.get("/api/tools", headers=H).json()["rows"] == []
+
+    # tas kalibreringen bort gäller läsningens skala igen - här ingen alls
+    client.delete(f"/api/drawings/{d['id']}/calibration", headers=H)
+    back = client.get(f"/api/drawings/{d['id']}/markups", headers=H).json()
+    assert back["scale_source"] == "INGEN" and back["rows"][0]["measure"]["scale"] == "INGEN_SKALA"
+
+    # en annan användare når varken markeringar eller kalibrering
+    o = client.post("/api/auth/register", json={"email": "matare2@example.com", "password": "hemligt1"}).json()
+    OH = {"Authorization": f"Bearer {o['access_token']}"}
+    assert client.get(f"/api/drawings/{d['id']}/markups", headers=OH).status_code == 404
+    assert client.put(f"/api/drawings/{d['id']}/calibration", headers=OH,
+                      json={"points": [[0, 0], [100, 0]], "length_m": 10}).status_code == 404

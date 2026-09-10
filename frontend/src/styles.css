@@ -2304,3 +2304,19 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .lf-steps .no { font-family: var(--mono); font-size: 10.5px; color: var(--faint); min-width: 16px; }
 .lf-steps li.done .no { color: var(--ok); }
 .lf-drills > p { max-width: 74ch; }
+
+/* ---- mängdningsverktyget: bladet till vänster, verktyget till höger ------------------------------------- */
+.tk-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); gap: 16px; align-items: start; }
+@media (max-width: 1100px) { .tk-grid { grid-template-columns: 1fr; } }
+.tk-sheet { min-width: 0; border: 1px solid var(--line); border-radius: var(--r-m); background: #fff; overflow: hidden; box-shadow: var(--e1); }
+.tk-sheet .toolbar { display: flex; gap: 6px; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.tk-side { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; }
+.tk-side .card { margin-bottom: 0; }
+.tk-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 6px; }
+.tk-tools button { padding: 9px 10px; font-size: 10px; }
+.tk-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; margin-top: 10px; }
+.tk-presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.tk-preset { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; }
+.tk-preset .x { padding: 4px 8px; }
+.tk-layer { margin-top: 12px; }
+.tk-layer:first-of-type { margin-top: 6px; }

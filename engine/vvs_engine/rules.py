@@ -67,6 +67,12 @@ RULES: tuple[Rule, ...] = (
          "delas vid en skärning. En sådan stump får inte ta ett namn och bära det vidare - som brygga tar den "
          "namnet över glapp som aldrig var anslutningar.",
          "pt", 0.6, 0.0, 5.0, "pipe", True),
+    Rule("pipes.representation.FIGURE_INK", G_LEADER, "När ritat bläck är en figur och inte en sträcka",
+         "En rörsträcka går någonstans: bläcket den kostar köper avstånd. En ritad figur - en radiator "
+         "skrafferad tät, en pump, en golvbrunn - står still och fyller sin egen ruta om och om igen. En "
+         "sammanhängande del vars bläck är så här många gånger sin egen utsträckning är en figur, inte ett rör, "
+         "och mäts inte. Mätt på korpusen ligger sträckor på 0,7-3,1 och skrafferade figurer på 8,8-16.",
+         "gånger", 6.0, 3.0, 30.0, "pipe", True),
     Rule("pipes.ownership.DECLARED_RUN_MAX_M", G_LEADER, "Så lång får en förklarad kopplingsledning vara",
          "Bladets tabell namnger kopplingsledningar från fördelare till apparat, och en sådan är kort. En "
          "onämnd sträcka längre än så på den förklarade pennan är en stam vars etikett läsningen inte nådde; "

@@ -147,6 +147,15 @@ export const api = {
                                                     body: JSON.stringify({ name, arguments: args }) }),
 
   // ---- egna markeringar på ritningen --------------------------------------------------------------------
+  calibration: (drawingId: string, page = 0) => req(`/api/drawings/${drawingId}/calibration?page=${page}`),
+  setCalibration: (drawingId: string, body: any) =>
+    req(`/api/drawings/${drawingId}/calibration`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  clearCalibration: (drawingId: string, page = 0) =>
+    req(`/api/drawings/${drawingId}/calibration?page=${page}`, { method: "DELETE" }),
+  markupsCsvUrl: (drawingId: string, page = 0) => `/api/drawings/${drawingId}/markups.csv?page=${page}`,
+  toolPresets: () => req("/api/tools"),
+  addToolPreset: (body: any) => req("/api/tools", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  deleteToolPreset: (id: string) => req(`/api/tools/${id}`, { method: "DELETE" }),
   markups: (drawingId: string, page: number) => req(`/api/drawings/${drawingId}/markups?page=${page}`),
   addMarkup: (drawingId: string, body: any) =>
     req(`/api/drawings/${drawingId}/markups`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),

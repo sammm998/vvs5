@@ -14,6 +14,8 @@ import MaterialPage from "./pages/Material";
 import AdminPage from "./pages/Admin";
 import ProjectAnalysisPage from "./pages/ProjectAnalysis";
 import CalcPage from "./pages/CalcPage";
+import TakeoffPage from "./pages/Takeoff";
+import TakeoffPickPage from "./pages/TakeoffPick";
 
 function Guard({ children }: { children: JSX.Element }) {
   return getToken() ? children : <Navigate to="/login" replace />;
@@ -64,6 +66,16 @@ function IconLearn() {
   );
 }
 
+function IconRuler() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
+         strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="8" width="20" height="8" rx="1.5" />
+      <path d="M6 8v3M10 8v4M14 8v3M18 8v4" />
+    </svg>
+  );
+}
+
 function IconAdmin() {
   return (
     <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -94,6 +106,8 @@ const ROUTES = (
     <Route path="/drawings/:id" element={<Guard><DrawingPage /></Guard>} />
     <Route path="/jobs/:id" element={<Guard><AnalysisPage /></Guard>} />
     <Route path="/jobs/:id/kalkyl" element={<Guard><CalcPage /></Guard>} />
+    <Route path="/mangda" element={<Guard><TakeoffPickPage /></Guard>} />
+    <Route path="/mangda/:id" element={<Guard><TakeoffPage /></Guard>} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
     <Route path="/installningar" element={<Navigate to="/admin" replace />} />
@@ -176,6 +190,9 @@ export default function App() {
           </Link>
           <Link to="/lar" className={path.startsWith("/lar") ? "on" : ""}>
             <IconLearn /> <span className="wide">Lär dig VVS</span>
+          </Link>
+          <Link to="/mangda" className={path.startsWith("/mangda") ? "on" : ""}>
+            <IconRuler /> <span className="wide">Mängda</span>
           </Link>
           <Link to="/material" className={path.startsWith("/material") ? "on" : ""}>
             <IconMaterial /> <span className="wide">Material</span>
