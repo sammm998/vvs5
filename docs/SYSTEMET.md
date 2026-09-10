@@ -96,11 +96,13 @@ Tre ritkonventioner som läsningen läser som geometri, inte som antaganden (`pi
   symbolpennan och drar vidare på andra sidan. Två fria, kollineära ändar med en liten symbol av en annan
   penna i springan (`SYMBOL_SPAN`, `SYMBOL_SIZE`) hör ihop: bryggan heter `symbol` i grafen och bär symbolens
   id.
-* **Ett rör ritat som två linjer** är ett rör. Ett grövre rör ritas som sina två kanter några punkter isär,
-  och etiketten med ett streck på var kant namnger båda. Två sträckor med samma namn och samma penna sida vid
-  sida längs större delen av den kortare (`measure.measure.DOUBLE_LINE_MAX`) räknas en gång: den längre kanten bär
-  metrarna, den andra redovisas som `double_line_m` på raden och i exporten. Två rör med samma namn som bara
-  löper bredvid varandra en bit förblir två.
+* **Ett rör ritat som två linjer** är ett rör. Ett grövre rör ritas som sina två kanter, ytterdiametern isär i
+  bladets skala, och etiketten med ett streck på var kant namnger båda. Två sträckor med samma namn och samma
+  penna sida vid sida längs större delen av den kortare, på det avstånd rörets diameter ger (1,6 × dy i skala,
+  aldrig över `measure.measure.DOUBLE_LINE_MAX`), räknas en gång: den längre kanten bär metrarna, den andra
+  redovisas som `double_line_m` på raden och i exporten. Avståndet följer dimensionen av ett skäl: ett DN16-rör
+  är en punkt brett i 1:50 och kan inte ritas som två kanter, så två DN16-linjer några punkter isär är två
+  kopplingsledningar i en bunt - och båda räknas. Utan känd dimension eller skala viks ingenting.
 
 ## 3. Vilka AI-modeller som används, och exakt hur
 

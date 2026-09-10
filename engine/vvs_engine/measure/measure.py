@@ -15,9 +15,26 @@ from .scale import ScaleResult
 # pen that lie side by side, this close, for most of the shorter one's length, are one pipe: the longer edge
 # carries the metres, the other is its second edge and carries none. Two pipes of the same name that only run
 # side by side for a stretch stay two pipes.
-DOUBLE_LINE_MAX = 8.0       # pt between the two edges
+DOUBLE_LINE_MAX = 8.0       # pt: never further apart than this, whatever the size
+DOUBLE_LINE_MIN = 1.5       # pt: never closer than the pen itself allows
+DOUBLE_LINE_FACTOR = 1.6    # the edges lie the pipe's outer diameter apart, at the sheet's scale, give or take
 DOUBLE_LINE_SHARE = 0.6     # share of the shorter run that has to lie alongside the longer
 TWIN_REASON = "second_edge_of_a_double_line"
+# Outer diameter in mm for a nominal size - the distance the two drawn edges of a double-line pipe lie apart.
+# A DN16 pipe is one point wide at 1:50: it cannot be drawn as two lines, and two DN16 lines a few points
+# apart are two pipes - the connection pipes from a distributor run in bundles like that, and they are all real.
+DN_TO_DY_MM = {10: 12.0, 12: 15.0, 15: 18.0, 16: 18.0, 20: 22.0, 22: 22.0, 25: 28.0, 28: 28.0, 32: 35.0, 35: 35.0,
+               40: 42.0, 42: 42.0, 50: 54.0, 54: 54.0, 65: 76.1, 80: 88.9, 100: 114.3, 125: 139.7, 150: 168.3,
+               200: 219.1}
+
+
+def double_line_gap(dn: int | None, mpp: float | None) -> float | None:
+    """How far apart the two edges of a pipe of this size lie on this sheet - or None when the size or the
+    scale is unknown, in which case nothing is folded."""
+    if dn is None or not mpp:
+        return None
+    dy_pt = (DN_TO_DY_MM.get(int(dn), float(dn)) / 1000.0) / mpp
+    return min(_R("measure.measure.DOUBLE_LINE_MAX", DOUBLE_LINE_MAX), max(DOUBLE_LINE_MIN, DOUBLE_LINE_FACTOR * dy_pt))
 
 
 def _R(rule_id: str, default: float) -> float:
@@ -57,10 +74,10 @@ def _alongside(seg, others, dmax: float) -> bool:
     return False
 
 
-def twin_edges(pipes: list[PhysicalPipe]) -> dict[str, str]:
-    """physical_pipe_id -> the pipe it is the second edge of. Runs are compared within one pen and one identity;
-    the longer run keeps the metres. A run that is someone's second edge is never anyone's first."""
-    dmax = _R("measure.measure.DOUBLE_LINE_MAX", DOUBLE_LINE_MAX)
+def twin_edges(pipes: list[PhysicalPipe], mpp: float | None = None) -> dict[str, str]:
+    """physical_pipe_id -> the pipe it is the second edge of. Runs are compared within one pen and one identity,
+    at the spacing a pipe of that size has between its edges on this sheet; the longer run keeps the metres. A
+    run that is someone's second edge is never anyone's first."""
     share = DOUBLE_LINE_SHARE
     groups: dict[tuple[str, str], list[PhysicalPipe]] = defaultdict(list)
     for p in pipes:
@@ -68,6 +85,9 @@ def twin_edges(pipes: list[PhysicalPipe]) -> dict[str, str]:
     out: dict[str, str] = {}
     for key, grp in groups.items():
         if len(grp) < 2:
+            continue
+        dmax = double_line_gap(grp[0].identity.dn, mpp)
+        if dmax is None:
             continue
         segs = {p.physical_pipe_id: _segments(p) for p in grp}
         length = {p.physical_pipe_id: sum(math.hypot(x1 - x0, y1 - y0) for x0, y0, x1, y1 in segs[p.physical_pipe_id]) for p in grp}
@@ -125,7 +145,7 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
     # single run can be read as confidently measured when the sheet's own scale is unsettled.
     scale_note = (f"scale_{scale.state.lower()}:{scale.reason}"
                   if scale.state not in ("VERIFIED",) and mpp is not None else None)
-    twins = twin_edges(own.pipes)
+    twins = twin_edges(own.pipes, mpp)
     for p in own.pipes:
         # hatched length is measured on drawn primitives; scale it by the bridged-gap share of the run
         factor = (p.length_pt / p.raw_length_pt) if p.raw_length_pt > 0 else 1.0

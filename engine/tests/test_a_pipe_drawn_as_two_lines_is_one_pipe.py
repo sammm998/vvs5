@@ -27,15 +27,15 @@ def _label(page, x, y, text, to):
     page.draw_line((x + 80, y + 3), to, width=WRITE, color=(0, 0, 0))
 
 
-def _sheet(path, spacing):
+def _sheet(path, spacing, name="VP01-S2-65-F80"):
     """Två parallella linjer på 10 m, `spacing` punkter isär, var och en med sin egen etikett med samma namn."""
     doc = pymupdf.open()
     page = doc.new_page(width=842, height=595)
     x0, x1, y = 100.0, 100.0 + 10 * M, 300.0
     page.draw_line((x0, y), (x1, y), width=PIPE, color=(0, 0, 0))
     page.draw_line((x0, y + spacing), (x1, y + spacing), width=PIPE, color=(0, 0, 0))
-    _label(page, 200, 200, "VP01-S2-65-F80", (300, y))
-    _label(page, 420, 420, "VP01-S2-65-F80", (520, y + spacing))
+    _label(page, 200, 200, name, (300, y))
+    _label(page, 420, 420, name, (520, y + spacing))
     _scale(page)
     doc.save(path); doc.close()
     return path
@@ -57,5 +57,14 @@ def test_two_edges_four_points_apart_are_one_pipe(tmp_path):
 def test_two_pipes_thirty_points_apart_are_two(tmp_path):
     rows, _ = _rows(_sheet(str(tmp_path / "tva.pdf"), spacing=30.0))
     q = rows["VP01-S2-65-F80"]
+    assert 19.0 <= q["confirmed_horizontal_m"] <= 21.0, q
+    assert q["double_line_m"] == 0.0 and q["physical_pipe_count"] == 2
+
+
+def test_two_thin_pipes_four_points_apart_are_two_pipes(tmp_path):
+    """DN16 är en punkt brett i skala 1:50 och kan inte ritas som två kanter: två DN16-linjer fyra punkter isär
+    är två kopplingsledningar i en bunt, och båda räknas."""
+    rows, _ = _rows(_sheet(str(tmp_path / "bunt.pdf"), spacing=4.0, name="KV01-X31-16"))
+    q = rows["KV01-X31-16"]
     assert 19.0 <= q["confirmed_horizontal_m"] <= 21.0, q
     assert q["double_line_m"] == 0.0 and q["physical_pipe_count"] == 2
