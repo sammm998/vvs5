@@ -1,16 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "../api";
-import LearnFigure from "../components/LearnFigures";
+import LearnFigure from "./LearnFigures";
 
-/* Reglerna läsningen följer, öppna för den som behöver flytta en.
+/* Reglerna läsningen följer, öppna för den som driver tjänsten.
  *
  * En mängd som inte går att ifrågasätta är inget belägg. Varje gräns i motorn har ett skäl, och skälet står i
  * koden där gränsen används - vilket hjälper den som läser koden och ingen annan. Här står de i ritningens
  * språk: vad regeln avgör, vad den står på, vad den stod på från början, och en levande figur som visar vad den
  * handlar om.
  *
- * Går det ändå fel går regeln att flytta, med en anteckning om varför och en skärmbild av fallet - så att nästa
- * person kan se vad som fick någon att ändra den, i stället för att hitta en siffra som inte stämmer med koden.
+ * En flyttad regel gäller för tjänsten - varje ritning som läses härnäst - så den flyttas av administratören,
+ * med en anteckning om varför och en skärmbild av fallet, så att nästa person kan se vad som fick någon att
+ * ändra den i stället för att hitta en siffra som inte stämmer med koden.
  */
 
 type Rule = {
@@ -116,15 +117,11 @@ function RuleRow({ r, onSave }: { r: Rule; onSave: (id: string, body: any) => Pr
   );
 }
 
-export default function SettingsPage() {
+export function RulesCatalogue() {
   const [cat, setCat] = useState<any>(null);
   const [err, setErr] = useState("");
   const [q, setQ] = useState("");
-  const [tab, setTab] = useState<"regler" | "antaganden">("regler");
-  const [floorHeight, setFloorHeight] = useState<string>(() => { try { return localStorage.getItem("vvs.floorHeight") ?? ""; } catch { return ""; } });
-  const [riserSource, setRiserSource] = useState<string>(() => { try { return localStorage.getItem("vvs.riserSource") ?? "labels"; } catch { return "labels"; } });
-  const [includeHatched, setIncludeHatched] = useState<boolean>(() => { try { return localStorage.getItem("vvs.includeHatched") === "1"; } catch { return false; } });
-
+  const [only, setOnly] = useState<"alla" | "flyttade" | "flyttbara">("alla");
   const load = () => api.rules().then(setCat).catch((e) => setErr(e.message));
   useEffect(() => { load(); }, []);
   const save = async (id: string, body: any) => { await api.setRule(id, body); await load(); };
@@ -133,84 +130,37 @@ export default function SettingsPage() {
     if (!cat) return [];
     const t = q.trim().toLowerCase();
     return cat.groups
-      .map((g: any) => ({ ...g, rules: g.rules.filter((r: Rule) => !t || `${r.title} ${r.why} ${r.id}`.toLowerCase().includes(t)) }))
+      .map((g: any) => ({ ...g, rules: g.rules.filter((r: Rule) =>
+        (!t || `${r.title} ${r.why} ${r.id}`.toLowerCase().includes(t))
+        && (only === "alla" || (only === "flyttade" ? r.changed : r.tunable))) }))
       .filter((g: any) => g.rules.length);
-  }, [cat, q]);
-
-  const put = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* private window */ } };
+  }, [cat, q, only]);
 
   return (
-    <main>
-      <p className="crumb">Inställningar</p>
-      <div className="head">
-        <div>
-          <h1>Inställningar</h1>
-          <p className="lead">
-            Allt läsningen går efter, öppet. Reglerna avgör hur ritningen läses; antagandena avgör hur det lästa
-            räknas ihop till en mängd.
-          </p>
-        </div>
-      </div>
-
-      <div className="tabs" style={{ marginTop: 18 }}>
-        <button className={tab === "regler" ? "on" : ""} onClick={() => setTab("regler")}>Regler</button>
-        <button className={tab === "antaganden" ? "on" : ""} onClick={() => setTab("antaganden")}>Antaganden</button>
-      </div>
-
+    <>
       {err && <p className="error">{err}</p>}
-
-      {tab === "regler" && (
-        <>
-          <div className="card" style={{ marginTop: 14 }}>
-            <p className="muted" style={{ margin: 0 }}>
-              {cat ? <>
-                {cat.n_rules} regler, varav {cat.n_tunable} går att flytta
-                {cat.n_changed ? <> · <b>{cat.n_changed} flyttade i det här kontot</b></> : null}.
-              </> : "Laddar…"}
-              {" "}En regel som flyttas gäller alla ritningar det här kontot läser härnäst, inte de som redan
-              lästs. Öppna en rad för att se vad den avgör och figuren som visar det.
-            </p>
-            <input style={{ marginTop: 12, maxWidth: 360 }} value={q} placeholder="Sök regel…"
-              onChange={(e) => setQ(e.target.value)} />
-          </div>
-          {groups.map((g: any) => (
-            <section key={g.group} className="card" style={{ marginTop: 14 }}>
-              <h3 style={{ marginTop: 0 }}>{g.group}</h3>
-              <div className="rules">
-                {g.rules.map((r: Rule) => <RuleRow key={r.id} r={r} onSave={save} />)}
-              </div>
-            </section>
+      <div className="adm-toolbar">
+        <input value={q} placeholder="Sök regel…" onChange={(e) => setQ(e.target.value)} />
+        <div className="seg">
+          {(["alla", "flyttade", "flyttbara"] as const).map((k) => (
+            <button key={k} className={only === k ? "on" : ""} onClick={() => setOnly(k)}>
+              {k === "alla" ? "Alla" : k === "flyttade" ? "Flyttade" : "Går att flytta"}
+            </button>
           ))}
-        </>
-      )}
-
-      {tab === "antaganden" && (
-        <div className="card" style={{ marginTop: 14 }}>
-          <p className="muted">
-            Det här är inte regler för hur ritningen läses utan för hur det lästa räknas ihop. De gäller i den
-            här webbläsaren och syns i mängdtabellen och i exporten.
-          </p>
-          <div className="settings-grid">
-            <label>Våningshöjd för stigare (m)
-              <input style={{ width: 96 }} value={floorHeight} placeholder="t.ex. 2,8"
-                onChange={(e) => { setFloorHeight(e.target.value); put("vvs.floorHeight", e.target.value); }} /></label>
-            <label>Stigare räknas från
-              <select value={riserSource} onChange={(e) => { setRiserSource(e.target.value); put("vvs.riserSource", e.target.value); }}>
-                <option value="labels">etiketter med dimension på raden under</option>
-                <option value="symbols">ritade stigarsymboler</option>
-              </select></label>
-            <label className="check">
-              <input type="checkbox" checked={includeHatched}
-                onChange={(e) => { setIncludeHatched(e.target.checked); put("vvs.includeHatched", e.target.checked ? "1" : "0"); }} />
-              Räkna med rör i skrafferade ytor
-            </label>
-          </div>
-          <p className="muted">
-            Ritningen anger nästan aldrig våningshöjden, så stigare räknas som antal tills du anger en. Rör i
-            skrafferade ytor mäts alltid men ligger utanför den vågräta mängden om rutan är tom.
-          </p>
         </div>
-      )}
-    </main>
+        <span className="muted small">
+          {cat ? <>{cat.n_rules} regler · {cat.n_tunable} går att flytta · <b>{cat.n_changed} flyttade</b></> : "Laddar…"}
+        </span>
+      </div>
+      {groups.map((g: any) => (
+        <section key={g.group} className="card">
+          <h3 style={{ marginTop: 0 }}>{g.group}</h3>
+          <div className="rules">
+            {g.rules.map((r: Rule) => <RuleRow key={r.id} r={r} onSave={save} />)}
+          </div>
+        </section>
+      ))}
+      {cat && !groups.length && <p className="muted">Ingen regel matchar.</p>}
+    </>
   );
 }

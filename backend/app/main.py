@@ -20,10 +20,10 @@ from . import (academy as academy_api, admin as admin_api, calc as calc_api, exp
                markups as markups_api, projects_api, public as public_api)
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
 from vvs_engine.learning import KEYS, lessons, settle, situation
-from .auth import (create_token, current_user, hash_password, login_blocked, login_failed,
+from .auth import (create_token, current_user, hash_password, login_blocked, login_failed, current_admin,
                    login_succeeded, verify_or_burn, verify_password)
 from .config import demand_a_real_secret, settings
-from .db import Correction, AnalysisJob, Drawing, Project, RuleSetting, User, get_db, init_db
+from .db import ServiceSetting, Correction, AnalysisJob, Drawing, Project, RuleSetting, User, get_db, init_db
 from .storage import storage
 
 @asynccontextmanager
@@ -519,31 +519,44 @@ def materials(q: str = "", group: str = "", unit: str = "", limit: int = 60, off
             "groups": sorted({(r.get("gr") or "") for r in book["rows"] if r.get("gr")})[:60]}
 
 
+ASSUMPTION_DEFAULTS = {"floor_height_m": None, "riser_source": "labels", "include_hatched": False}
+
+
+def service_rules(db: Session) -> dict[str, float | bool]:
+    """Reglerna som flyttats för tjänsten: regel-id -> värde."""
+    out = {}
+    for row in db.query(ServiceSetting).filter(ServiceSetting.key.like("rule:%")).all():
+        out[row.key[5:]] = (row.value or {}).get("v")
+    return out
+
+
 @app.get("/api/rules")
 def rules_catalogue(user: User = Depends(current_user), db: Session = Depends(get_db)):
-    """Every rule the reading follows, what it decides, and what it stands at for this account.
+    """Every rule the reading follows, what it decides, and what it stands at for this service.
 
     A takeoff nobody can question is not evidence. The engine's limits are all written down where they are used,
     which serves whoever reads the code and nobody else - so they are served here too, in the words of the
-    drawing, together with what each one has been moved to and why.
+    drawing, together with what each one has been moved to and why. Anyone signed in may read them; moving one
+    is the administrator's, since a moved rule holds for every drawing the service reads next.
     """
     from vvs_engine import rules as R
-    mine = {r.rule_id: r for r in db.query(RuleSetting).filter(RuleSetting.user_id == user.id).all()}
-    cat = R.catalogue({k: v.value for k, v in mine.items()})
+    rows = {r.key[5:]: r for r in db.query(ServiceSetting).filter(ServiceSetting.key.like("rule:%")).all()}
+    cat = R.catalogue({k: (v.value or {}).get("v") for k, v in rows.items()})
     for g in cat["groups"]:
         for row in g["rules"]:
-            s = mine.get(row["id"])
-            row["changed"] = s is not None
-            row["note"] = s.note if s else None
-            row["shot"] = s.shot if s else None
-            row["changed_at"] = s.created_at.isoformat() if s else None
-    cat["n_changed"] = len(mine)
+            st = rows.get(row["id"])
+            row["changed"] = st is not None
+            row["note"] = st.note if st else None
+            row["shot"] = st.shot if st else None
+            row["changed_at"] = st.updated_at.isoformat() if st and st.updated_at else None
+    cat["n_changed"] = len(rows)
+    cat["may_edit"] = (user.role or "member") == "admin"
     return cat
 
 
 @app.put("/api/rules/{rule_id:path}")
-def set_rule(rule_id: str, body: dict, user: User = Depends(current_user), db: Session = Depends(get_db)):
-    """Move one rule for this account, or put it back.
+def set_rule(rule_id: str, body: dict, admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    """Move one rule for the service, or put it back.
 
     A value outside what the rule can mean is refused rather than clamped: a limit silently rewritten is a limit
     nobody can reason about afterwards. Rules the code does not let anyone move are refused with the reason.
@@ -554,7 +567,8 @@ def set_rule(rule_id: str, body: dict, user: User = Depends(current_user), db: S
         raise HTTPException(404, "okänd regel")
     if not rule.tunable:
         raise HTTPException(400, rule.fixed_why or "regeln går inte att ändra")
-    row = db.query(RuleSetting).filter(RuleSetting.user_id == user.id, RuleSetting.rule_id == rule_id).first()
+    key = f"rule:{rule_id}"
+    row = db.get(ServiceSetting, key)
     if body.get("reset"):
         if row:
             db.delete(row); db.commit()
@@ -573,14 +587,59 @@ def set_rule(rule_id: str, body: dict, user: User = Depends(current_user), db: S
     if shot and (not isinstance(shot, str) or not shot.startswith("data:image/") or len(shot) > 4_000_000):
         raise HTTPException(400, "skärmbilden måste vara en bild och under 4 MB")
     if row is None:
-        row = RuleSetting(user_id=user.id, rule_id=rule_id, value=float(v))
+        row = ServiceSetting(key=key, value={"v": v})
         db.add(row)
-    row.value = float(v)
+    row.value = {"v": v}
     row.note = (body.get("note") or None)
+    row.updated_by = admin.id
     if shot is not None:
         row.shot = shot or None
     db.commit()
     return {"id": rule_id, "value": v, "changed": True, "note": row.note, "shot": bool(row.shot)}
+
+
+@app.get("/api/settings")
+def read_settings(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Antagandena mängden räknas ihop med: våningshöjd för stigare, var stigare räknas ifrån, om rör i
+    skrafferade ytor ingår. Satta av administratören för tjänsten; varje läsning kan avvika i sin egen vy."""
+    out = dict(ASSUMPTION_DEFAULTS)
+    for row in db.query(ServiceSetting).filter(ServiceSetting.key.like("assume:%")).all():
+        out[row.key[7:]] = (row.value or {}).get("v")
+    out["may_edit"] = (user.role or "member") == "admin"
+    return out
+
+
+@app.put("/api/settings")
+def write_settings(body: dict, admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    """Ändra antagandena för tjänsten. Ett värde utanför vad det kan betyda avvisas, aldrig klipps."""
+    clean: dict[str, object] = {}
+    if "floor_height_m" in body:
+        v = body["floor_height_m"]
+        if v in (None, "", 0):
+            clean["floor_height_m"] = None
+        else:
+            try:
+                v = float(str(v).replace(",", "."))
+            except ValueError:
+                raise HTTPException(400, "våningshöjden är inget tal")
+            if not 1.0 <= v <= 8.0:
+                raise HTTPException(400, "våningshöjden ska ligga mellan 1 och 8 m")
+            clean["floor_height_m"] = v
+    if "riser_source" in body:
+        if body["riser_source"] not in ("labels", "symbols"):
+            raise HTTPException(400, "stigare räknas från etiketter eller symboler")
+        clean["riser_source"] = body["riser_source"]
+    if "include_hatched" in body:
+        clean["include_hatched"] = bool(body["include_hatched"])
+    for k, v in clean.items():
+        row = db.get(ServiceSetting, f"assume:{k}")
+        if row is None:
+            row = ServiceSetting(key=f"assume:{k}", value={"v": v})
+            db.add(row)
+        row.value = {"v": v}
+        row.updated_by = admin.id
+    db.commit()
+    return read_settings(admin, db)
 
 
 @app.get("/api/lessons")

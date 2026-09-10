@@ -287,8 +287,11 @@ som laddas ner (`/calc/anbud/sida-{n}.png`) - det dokument som skickas, inte en 
 ## 7. Akademin
 
 Nio kurser, tjugotvå steg, femton kunskapsfrågor och tre fristående övningar med facit
-(`frontend/src/learn.ts`, `components/Learn*.tsx`). Kurserna tas i ordning - den man är på står öppen, de framför
-är låsta tills den är gjord, men varje låst kurs går att öppna ändå.
+(`frontend/src/learn.ts`, `components/Learn*.tsx`). Sidan har tre delar och visar en åt gången: **Kurser**, med
+kurslistan som en gång till vänster - nummer, framstegsstapel, låsta märkta - och den valda kursens steg till
+höger; **Öva**, de fristående övningarna; **Utmärkelser**. Kurserna tas i ordning - den man är på står öppen, de
+framför är låsta tills den är gjord, men varje låst kurs går att öppna ändå. I väntan på en läsning visas samma
+akademi i ett kompakt läge, som kort, utan navigering.
 
 Framstegen ligger på kontot (`backend/app/academy.py`), inte i webbläsaren, så man fortsätter där man slutade
 även från en annan dator. Poängen räknas på servern ur stegen själva - rätt på första försöket är värt mer än
@@ -296,27 +299,41 @@ rätt till slut - och utmärkelserna prövas mot tabellen. Ett resultat klienten
 
 ---
 
-## 8. Adminsidan
+## 8. Adminportalen
 
-Två halvor som aldrig får blandas ihop (`backend/app/admin.py`, `frontend/src/pages/Admin.tsx`).
+Allt som styr tjänsten står här, i tre delar som aldrig blandas ihop (`backend/app/admin.py`,
+`frontend/src/pages/Admin.tsx`). Portalen är ett skal: sektionerna i en gång till vänster, sidan till höger, och
+märken i gången på det som väntar på någon.
 
-*Läsningen:* överblick (läsningar, täckning, tid), kurvan per dygn - staplarna är hur mycket som lästs, linjen
-hur långt läsningen kom; att staplarna växer säger något om marknadsföringen, att linjen sjunker säger att något
-gått sönder - varje läsning, varje rättelse med sin situation, inlärningen, och vilka regler kunder flyttat.
+*Läsningen:* **överblick** med "att ta hand om" - misslyckade läsningar, en kö som växer, regler flera konton
+flyttat åt samma håll, öppna utbetalningar - och kurvan per dygn, där staplarna är hur mycket som lästs och
+linjen hur långt läsningen kom; att staplarna växer säger något om marknadsföringen, att linjen sjunker säger att
+något gått sönder. Sedan **läsningar** (varje blad, hur långt det kom, hur lång tid det tog), **rättelser** med
+sin situation, **inlärningen**, **reglerna** och **antagandena**.
 
 *Företaget:* konton och planer, partners och ambassadörer med två procenttal (rabatten till kunden och
 provisionen till partnern, satta var för sig), utbetalningar räknade i ören ur samma funktion som visar
 provisionen - beloppet skrivs aldrig av från en skärm - kundvård, innehåll (CMS), A/B-prov med Wilson-intervall
 så att ett prov utan tillräckligt underlag säger det, och heatmap.
 
-Ingenting på adminsidan får avgöra hur en ritning läses. Den dagen en rabattsats kan flytta en meter går det
+*Systemet:* byggningen som kör, om andra läsaren nås, kön och trådarna, lagret, databasen och hur många regler
+som flyttats. Bara fakta som går att kontrollera; byggningen och andra läsaren svarar dessutom utan inloggning
+på `/api/version`.
+
+Ingenting på företagssidan får avgöra hur en ritning läses. Den dagen en rabattsats kan flytta en meter går det
 inte längre att svara på varför en mängd blev som den blev.
 
 **Reglerna** (`rules.py`) är öppna: varje tröskel läsningen använder står med namn, förklaring, enhet,
-standardvärde och tillåtet intervall, och går att flytta per konto. En flyttad regel gäller bara den som
-flyttade den, och varje läsning skriver ned vilka regler den kördes med.
+standardvärde, tillåtet intervall och en levande figur som visar vad den handlar om. De bodde förr per konto, i
+en egen inställningssida; nu bor de i portalen och gäller **tjänsten**. Alla som är inloggade får läsa katalogen -
+en mängd som inte går att ifrågasätta är inget belägg - men bara administratören flyttar en regel, med skäl och
+gärna en skärmbild av fallet, eftersom en flyttad regel gäller varje ritning som läses härnäst. Varje läsning
+skriver ned vilka regler den kördes med (`ServiceSetting`, `backend/app/main.py`).
 
----
+**Antagandena** är inte regler för hur ritningen läses utan för hur det lästa räknas ihop: våningshöjden en
+stigare räknas som, om stigare räknas ur etiketter eller ritade symboler, och om rör i skrafferade ytor ingår i
+den vågräta mängden. De sätts av administratören för tjänsten och är utgångsläget i varje ny läsning; den som
+tittar på en enskild läsning kan avvika för just den, och exporten säger vad den räknat med.
 
 ## 9. Säkerhet
 

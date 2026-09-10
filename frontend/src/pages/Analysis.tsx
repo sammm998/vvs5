@@ -73,6 +73,20 @@ export default function AnalysisPage() {
   const [floorHeight, setFloorHeight] = useState<string>(() => { try { return localStorage.getItem("vvs.floorHeight") ?? ""; } catch { return ""; } });
   const [includeHatched, setIncludeHatched] = useState<boolean>(() => { try { return localStorage.getItem("vvs.includeHatched") === "1"; } catch { return false; } });
   const [riserSource, setRiserSource] = useState<string>(() => { try { return localStorage.getItem("vvs.riserSource") ?? "labels"; } catch { return "labels"; } });
+  // the service's assumptions are the starting point; what this browser set for itself stays in front of them
+  useEffect(() => {
+    api.settings().then((s) => {
+      try {
+        if (localStorage.getItem("vvs.floorHeight") == null && s.floor_height_m != null) setFloorHeight(String(s.floor_height_m).replace(".", ","));
+        if (localStorage.getItem("vvs.riserSource") == null && s.riser_source) setRiserSource(s.riser_source);
+        if (localStorage.getItem("vvs.includeHatched") == null && s.include_hatched) setIncludeHatched(true);
+      } catch { /* privat läge: tjänstens antaganden gäller rakt av */
+        if (s.floor_height_m != null) setFloorHeight(String(s.floor_height_m).replace(".", ","));
+        if (s.riser_source) setRiserSource(s.riser_source);
+        setIncludeHatched(!!s.include_hatched);
+      }
+    }).catch(() => { /* utan svar gäller webbläsarens egna */ });
+  }, []);
   // the export has to be given the same choices the table is showing, or the file states a different quantity
   const exportQuery = [
     floorHeight.trim() && !Number.isNaN(Number(floorHeight.replace(",", "."))) ? `floor_height=${Number(floorHeight.replace(",", "."))}` : "",

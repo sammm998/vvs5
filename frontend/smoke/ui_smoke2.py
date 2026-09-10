@@ -202,18 +202,32 @@ async def main():
         print("== akademin: övningarna och framstegen på kontot ==")
         await pg.goto(f"{BASE}/lar", wait_until="networkidle"); await pg.wait_for_timeout(900)
         note("akademin")
-        n = await pg.locator(".lf-drills .lx").count()
-        print(f"  {n} övningar synliga")
         cur = await pg.locator(".lf-current").count()
-        locked = await pg.locator(".lf-mod.locked").count()
-        print(f"  pågående kurs visas: {bool(cur)} · låsta kurser: {locked}")
+        locked = await pg.locator(".lf-railitem.locked").count()
+        print(f"  pågående kurs visas: {bool(cur)} · låsta kurser i listan: {locked}")
         if not cur:
             found.append("ingen pågående kurs visas i akademin")
-        opn = pg.locator(".lf-lock button", has_text="Öppna ändå")
-        if await opn.count():
-            await opn.first.click(); await pg.wait_for_timeout(300)
-            note("öppna låst kurs ändå")
+        # en låst kurs går att öppna ändå: välj den i kurslistan och tryck
+        if locked:
+            await pg.locator(".lf-railitem.locked").first.click(); await pg.wait_for_timeout(300)
+            note("välj låst kurs")
+            opn = pg.locator(".lf-lock button", has_text="Öppna ändå")
+            if await opn.count():
+                await opn.first.click(); await pg.wait_for_timeout(300)
+                note("öppna låst kurs ändå")
+            else:
+                found.append("en låst kurs gick inte att öppna ändå")
+        await pg.locator(".lf-nav button", has_text="Öva").click(); await pg.wait_for_timeout(500)
+        note("öva-fliken")
+        n = await pg.locator(".lf-drills .lx").count()
+        print(f"  {n} övningar synliga")
+        if not n:
+            found.append("inga övningar under Öva")
         await click_all(pg, ".lf-drills button", "övningsknapp", limit=25)
+        await pg.locator(".lf-nav button", has_text="Utmärkelser").click(); await pg.wait_for_timeout(500)
+        note("utmärkelser")
+        print(f"  utmärkelser synliga: {await pg.locator('.lf-award').count()}")
+        await pg.locator(".lf-nav button", has_text="Kurser").click(); await pg.wait_for_timeout(400)
         # ett steg i guiden, och sedan en omladdning: framsteget ska komma från kontot, inte bara från lagret
         # knappen heter olika beroende på hur långt man kommit; det är hjältens första knapp oavsett text
         await pg.locator(".lf-hero .row button").first.click(); await pg.wait_for_timeout(700)
@@ -240,15 +254,15 @@ async def main():
         print("== admin: varje flik och varje knapp ==")
         await pg.goto(f"{BASE}/admin", wait_until="networkidle"); await pg.wait_for_timeout(1000)
         note("admin")
-        tabs = await pg.locator(".adm-tabs button").count()
+        tabs = await pg.locator(".adm-nav button").count()
         print(f"  {tabs} flikar")
         for i in range(tabs):
-            t = pg.locator(".adm-tabs button").nth(i)
+            t = pg.locator(".adm-nav button").nth(i)
             name = (await t.inner_text()).strip()
             await t.click(); await pg.wait_for_timeout(700)
             note(f"admin-flik {name}")
             # varje knapp som inte är destruktiv på fliken
-            btns = pg.locator("main button:not(.adm-tabs button)")
+            btns = pg.locator("main button:not(.adm-nav button)")
             m = await btns.count()
             for k in range(min(m, 12)):
                 bt = btns.nth(k)
@@ -265,7 +279,7 @@ async def main():
                 except Exception:
                     pass
         # partnerformuläret hela vägen: ny partner, spara, betala ut
-        await pg.locator(".adm-tabs button", has_text="Partners").click(); await pg.wait_for_timeout(600)
+        await pg.locator(".adm-nav button", has_text="Partners").click(); await pg.wait_for_timeout(600)
         np_ = pg.get_by_role("button", name="Ny partner")
         if await np_.count():
             await np_.click(); await pg.wait_for_timeout(300)

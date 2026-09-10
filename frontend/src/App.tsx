@@ -10,7 +10,6 @@ import DrawingPage from "./pages/Drawing";
 import AnalysisPage from "./pages/Analysis";
 import Boundary from "./components/Boundary";
 import LearnPage from "./pages/LearnPage";
-import SettingsPage from "./pages/Settings";
 import MaterialPage from "./pages/Material";
 import AdminPage from "./pages/Admin";
 import ProjectAnalysisPage from "./pages/ProjectAnalysis";
@@ -51,16 +50,6 @@ function IconMaterial() {
     <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <path d="M2.4 5.6 9 2.4l6.6 3.2v6.8L9 15.6 2.4 12.4V5.6Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
       <path d="M2.4 5.6 9 8.9l6.6-3.3M9 8.9v6.7" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function IconRules() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <circle cx="9" cy="9" r="2.4" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M9 1.6v2.2M9 14.2v2.2M1.6 9h2.2M14.2 9h2.2M3.8 3.8l1.6 1.6M12.6 12.6l1.6 1.6M14.2 3.8l-1.6 1.6M5.4 12.6l-1.6 1.6"
-        stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     </svg>
   );
 }
@@ -107,7 +96,7 @@ const ROUTES = (
     <Route path="/jobs/:id/kalkyl" element={<Guard><CalcPage /></Guard>} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
-    <Route path="/installningar" element={<Guard><SettingsPage /></Guard>} />
+    <Route path="/installningar" element={<Navigate to="/admin" replace />} />
     <Route path="/admin" element={<Guard><AdminPage /></Guard>} />
   </Routes>
   </Boundary>
@@ -190,9 +179,6 @@ export default function App() {
           </Link>
           <Link to="/material" className={path.startsWith("/material") ? "on" : ""}>
             <IconMaterial /> <span className="wide">Material</span>
-          </Link>
-          <Link to="/installningar" className={path.startsWith("/installningar") ? "on" : ""}>
-            <IconRules /> <span className="wide">Inställningar</span>
           </Link>
           {(role === "admin" || role === "partner") && (
             <Link to="/admin" className={path.startsWith("/admin") ? "on" : ""}>

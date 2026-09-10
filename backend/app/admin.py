@@ -29,9 +29,10 @@ from vvs_engine.learning import lessons as build_lessons
 
 from .auth import current_admin, current_staff
 from .db import (Account, AnalysisJob, Content, Correction, CourseProgress, CrmNote, Drawing, Event,
-                 Experiment, Partner, Payout, Project, RuleSetting, User, get_db)
+                 Experiment, Partner, Payout, Project, RuleSetting, User, get_db, ServiceSetting)
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
+_STARTED = dt.datetime.now(dt.timezone.utc)
 
 
 def _iso(v) -> str | None:
@@ -270,6 +271,99 @@ class AccountIn(BaseModel):
     status: str = "aktiv"
     partner_id: str | None = None
     note: str = ""
+
+
+@router.get("/attention")
+def attention(admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    """Det som väntar på någon: misslyckade läsningar, en kö som växer, regler flera konton flyttat åt samma
+    håll, provision som inte betalats ut, rättelser som strömmar in. Varje rad säger var man går för att göra
+    något åt den. Tomt är ett svar: då väntar inget."""
+    now = dt.datetime.now(dt.timezone.utc)
+    week = now - dt.timedelta(days=7)
+    items: list[dict] = []
+    failed = db.query(func.count(AnalysisJob.id)).filter(AnalysisJob.status == "FAILED", AnalysisJob.created_at >= week).scalar() or 0
+    if failed:
+        items.append({"kind": "failed", "n": failed, "text": f"{failed} läsningar misslyckades de senaste sju dygnen",
+                      "go": "lasningar", "tone": "bad"})
+    waiting = db.query(func.count(AnalysisJob.id)).filter(AnalysisJob.status.in_(("QUEUED", "RUNNING"))).scalar() or 0
+    if waiting > 3:
+        items.append({"kind": "queue", "n": waiting, "text": f"{waiting} läsningar står i kö eller pågår just nu",
+                      "go": "system", "tone": "warn"})
+    moved = rule_settings(admin, db)["rows"]
+    same = [r for r in moved if r["same_direction"]]
+    if same:
+        items.append({"kind": "rules", "n": len(same), "text": f"{len(same)} regler har flera konton flyttat åt samma håll - grundvärdet kan vara fel",
+                      "go": "regler", "tone": "warn"})
+    open_payouts = db.query(func.count(Payout.id)).filter(Payout.status == "oppen").scalar() or 0
+    if open_payouts:
+        items.append({"kind": "payouts", "n": open_payouts, "text": f"{open_payouts} provisionsutbetalningar är öppna",
+                      "go": "partners", "tone": "warn"})
+    corr = db.query(func.count(Correction.id)).filter(Correction.created_at >= week).scalar() or 0
+    if corr:
+        items.append({"kind": "corrections", "n": corr, "text": f"{corr} rättelser gjorda de senaste sju dygnen - se vad de lärt",
+                      "go": "rattelser", "tone": "info"})
+    trial = db.query(func.count(Account.id)).filter(Account.plan == "prov", Account.status == "aktiv",
+                                                     Account.created_at <= now - dt.timedelta(days=30)).scalar() or 0
+    if trial:
+        items.append({"kind": "trial", "n": trial, "text": f"{trial} provkonton är äldre än trettio dagar",
+                      "go": "konton", "tone": "info"})
+    return {"items": items, "badges": {"lasningar": failed, "regler": len(same), "partners": open_payouts,
+                                       "rattelser": corr, "konton": trial}}
+
+
+@router.get("/system")
+def system_health(admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    """Vad som kör, och hur det mår: byggning, andra läsaren, kön, lagret, databasen. Bara fakta som går att
+    kontrollera, inga hemligheter."""
+    import os
+    import platform
+    import shutil
+    import sys as _sys
+    from .config import settings as cfg
+    from .jobs import second_reader_state, _executor
+    from .storage import storage as _storage
+    on, why = second_reader_state()
+    try:
+        import pymupdf
+        mupdf = pymupdf.version[0]
+    except Exception:
+        mupdf = None
+    root = getattr(_storage, "root", None) or getattr(cfg, "storage_root", None) or "."
+    used = 0
+    try:
+        for dp, _, fns in os.walk(root):
+            for f in fns:
+                try:
+                    used += os.path.getsize(os.path.join(dp, f))
+                except OSError:
+                    pass
+    except Exception:
+        used = None
+    try:
+        free = shutil.disk_usage(root).free
+    except Exception:
+        free = None
+    db_url = str(getattr(cfg, "database_url", "") or "")
+    db_size = None
+    if db_url.startswith("sqlite"):
+        path = db_url.split("///")[-1]
+        try:
+            db_size = os.path.getsize(path)
+        except OSError:
+            db_size = None
+    counts = {k: (db.query(func.count(AnalysisJob.id)).filter(AnalysisJob.status == k).scalar() or 0)
+              for k in ("QUEUED", "RUNNING", "COMPLETED", "FAILED")}
+    return {
+        "build": os.environ.get("RAILWAY_GIT_COMMIT_SHA", os.environ.get("VVS_BUILD", ""))[:12] or None,
+        "python": platform.python_version(), "pymupdf": mupdf,
+        "second_reader": {"on": on, "why": why},
+        "workers": getattr(_executor, "_max_workers", None),
+        "jobs": counts,
+        "storage": {"root": root, "used_bytes": used, "free_bytes": free},
+        "database": {"kind": "sqlite" if db_url.startswith("sqlite") else (db_url.split(":")[0] or "okänd"), "size_bytes": db_size},
+        "rules_moved": db.query(func.count(ServiceSetting.key)).filter(ServiceSetting.key.like("rule:%")).scalar() or 0,
+        "started_at": _STARTED.isoformat(),
+    }
 
 
 @router.get("/accounts")

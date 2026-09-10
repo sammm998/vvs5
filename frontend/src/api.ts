@@ -87,6 +87,8 @@ export const api = {
     req(`/api/drawings/${drawingId}/corrections/${id}`, { method: "DELETE" }),
   lessons: () => req("/api/lessons"),
   rules: () => req("/api/rules"),
+  settings: () => req("/api/settings"),
+  setSettings: (body: any) => req("/api/settings", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   materials: (qs: string) => req(`/api/materials?${qs}`),
   setRule: (id: string, body: any) =>
     req(`/api/rules/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
@@ -94,6 +96,7 @@ export const api = {
 
   // ---- att driva tjänsten -------------------------------------------------------------------------------
   myRole: () => req("/api/me/role"),
+  version: () => req("/api/version"),
   adm: (path: string) => req(`/api/admin/${path}`),
   admPut: (path: string, body?: any) =>
     req(`/api/admin/${path}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) }),

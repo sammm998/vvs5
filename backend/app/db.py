@@ -337,6 +337,22 @@ class CourseProgress(Base):
     updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)
 
 
+class ServiceSetting(Base):
+    """Det tjänsten själv går efter, satt av en administratör: en flyttad regel, ett antagande.
+
+    Reglerna avgör hur en ritning läses och antagandena hur det lästa räknas ihop. Båda gällde förr per konto,
+    i webbläsaren eller på användaren; nu gäller de för tjänsten, och den som flyttar en skriver varför och kan
+    lägga bilden av fallet bredvid. Nyckeln säger vad raden är: `rule:<regel-id>` eller `assume:<antagande>`.
+    """
+    __tablename__ = "service_settings"
+    key: Mapped[str] = mapped_column(String(160), primary_key=True)
+    value: Mapped[dict] = mapped_column(JSON, default=dict)                   # {"v": ...}
+    note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    shot: Mapped[str | None] = mapped_column(Text, nullable=True)
+    updated_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    updated_at: Mapped[dt.datetime] = mapped_column(DateTime, default=_now, onupdate=_now)
+
+
 class Calculation(Base):
     """Kalkylen för en läsning: antagandena och valen. Talen räknas om ur läsningen varje gång.
 

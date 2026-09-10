@@ -244,6 +244,10 @@ def test_rules_are_open_and_movable(client):
     """Reglerna ska gå att läsa, flytta och sätta tillbaka - och vägra det som inte betyder något."""
     tok = client.post("/api/auth/register", json={"email": "regler@example.com", "password": "hemligt1"}).json()["access_token"]
     H = {"Authorization": f"Bearer {tok}"}
+    from app.db import SessionLocal, User
+    db = SessionLocal()
+    u = db.query(User).filter(User.email == "regler@example.com").first()
+    u.role = "admin"; db.commit(); db.close()
 
     cat = client.get("/api/rules", headers=H).json()
     assert cat["n_rules"] > 30 and cat["n_tunable"] > 20
@@ -265,18 +269,38 @@ def test_rules_are_open_and_movable(client):
     assert client.get("/api/rules", headers=H).json()["n_changed"] == 0
 
 
-def test_one_readers_rules_do_not_reach_another(client):
-    """Ett konto som flyttat en regel får inte flytta den för någon annan."""
+def test_a_moved_rule_holds_for_the_service_and_only_the_administrator_moves_it(client):
+    """Reglerna bor i adminportalen: en flyttad regel gäller varje läsning tjänsten gör härnäst, syns för alla
+    som läser katalogen, och flyttas bara av administratören. Antagandena likaså."""
     a = client.post("/api/auth/register", json={"email": "a@example.com", "password": "hemligt1"}).json()["access_token"]
     b = client.post("/api/auth/register", json={"email": "b@example.com", "password": "hemligt1"}).json()["access_token"]
+    A, B = {"Authorization": f"Bearer {a}"}, {"Authorization": f"Bearer {b}"}
     rid = "semantics.attachment.NEAR_MISS"
-    client.put(f"/api/rules/{rid}", json={"value": 11.0}, headers={"Authorization": f"Bearer {a}"})
-    mine = next(r for g in client.get("/api/rules", headers={"Authorization": f"Bearer {a}"}).json()["groups"]
-                for r in g["rules"] if r["id"] == rid)
-    theirs = next(r for g in client.get("/api/rules", headers={"Authorization": f"Bearer {b}"}).json()["groups"]
-                  for r in g["rules"] if r["id"] == rid)
-    assert mine["value"] == 11.0 and mine["changed"]
-    assert theirs["value"] == theirs["default"] and not theirs["changed"]
+    from app.db import SessionLocal, User
+    db = SessionLocal()
+    u = db.query(User).filter(User.email == "a@example.com").first()
+    u.role = "admin"; db.commit(); db.close()
+    assert client.put(f"/api/rules/{rid}", json={"value": 11.0}, headers=B).status_code == 403, "en medlem flyttar inget"
+    assert client.put(f"/api/rules/{rid}", json={"value": 11.0, "note": "kort ledare"}, headers=A).status_code == 200
+    for H in (A, B):
+        row = next(r for g in client.get("/api/rules", headers=H).json()["groups"] for r in g["rules"] if r["id"] == rid)
+        assert row["value"] == 11.0 and row["changed"] and row["note"] == "kort ledare"
+    assert client.get("/api/rules", headers=B).json()["may_edit"] is False
+    # antagandena
+    assert client.put("/api/settings", json={"floor_height_m": 2.8}, headers=B).status_code == 403
+    assert client.put("/api/settings", json={"floor_height_m": "12"}, headers=A).status_code == 400
+    s = client.put("/api/settings", json={"floor_height_m": "2,8", "riser_source": "symbols", "include_hatched": True}, headers=A).json()
+    assert s["floor_height_m"] == 2.8 and s["riser_source"] == "symbols" and s["include_hatched"] is True
+    mine = client.get("/api/settings", headers=B).json()
+    assert mine["floor_height_m"] == 2.8 and mine["may_edit"] is False
+    # portalens egna vyer
+    att = client.get("/api/admin/attention", headers=A).json()
+    assert "items" in att and "badges" in att
+    assert client.get("/api/admin/attention", headers=B).status_code == 403
+    sysh = client.get("/api/admin/system", headers=A).json()
+    assert sysh["rules_moved"] == 1 and "jobs" in sysh and sysh["python"]
+    assert client.put(f"/api/rules/{rid}", json={"reset": True}, headers=A).status_code == 200
+    assert client.get("/api/admin/system", headers=A).json()["rules_moved"] == 0
 
 
 # ----------------------------------------------------------------------------------------------------------

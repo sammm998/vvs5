@@ -163,99 +163,175 @@ export default function Learn({ compact }: { compact?: boolean }) {
   const [prog, setProg] = useState<Record<string, boolean>>(() => readProgress());
   const [open, setOpen] = useState<string | null>(null);
   const [skipTo, setSkipTo] = useState<string | null>(null);        // en låst kurs någon valde att öppna ändå
+  const [view, setView] = useState<"kurser" | "ova" | "utmarkelser">("kurser");
+  const [picked, setPicked] = useState<string | null>(null);        // kursen man tittar på, om inte den pågående
   // Det lokala ritas direkt; kontots svar vinner så snart det kommer. Den som byter dator ska hitta sina steg
   // där de var, inte börja om.
   useEffect(() => { syncProgress().then(setProg); }, []);
   const flat = useMemo(() => MODULES.flatMap((m) => m.lessons.map((l) => ({ m, l }))), []);
   const done = flat.filter(({ l }) => prog[l.id]).length;
   const next = flat.find(({ l }) => !prog[l.id]) ?? flat[0];
+  const minutesLeft = flat.filter(({ l }) => !prog[l.id]).reduce((a, { l }) => a + l.minutes, 0);
   // den pågående kursen: det första kapitlet som inte är klart
   const moduleDone = (m: Module) => m.lessons.every((l) => prog[l.id]);
   const currentIdx = Math.max(0, MODULES.findIndex((m) => !moduleDone(m)));
-  const current = MODULES[currentIdx];
   const allDone = MODULES.every(moduleDone);
+  const shownIdx = picked ? Math.max(0, MODULES.findIndex((m) => m.id === picked)) : currentIdx;
+  const shown = MODULES[shownIdx];
+  const shownLocked = shownIdx > currentIdx && skipTo !== shown.id;
+  const shownDone = shown.lessons.filter((l) => prog[l.id]).length;
 
-  return (
-    <div className={`learn${compact ? " compact" : ""}`}>
-      <div className="lf-hero">
-        <div>
-          <div className="lf-kicker">VVS-akademin</div>
-          <h2>Lär dig läsa och mängda en rörritning</h2>
-          <p className="muted">
-            {flat.length} steg i {MODULES.length} kapitel, ett i taget, vart och ett med en levande figur som
-            visar vad det handlar om — och övningar där du får svara själv och se facit. Stegen sparas på ditt
-            konto, så du fortsätter där du slutade även från en annan dator.
-          </p>
-          <div className="row" style={{ marginTop: 16 }}>
-            <button onClick={() => setOpen(next.l.id)}>
-              {done === 0 ? "Starta guiden" : done === flat.length ? "Gå igenom igen" : "Fortsätt guiden"}
-            </button>
-            {done > 0 && done < flat.length && <span className="muted">Härnäst: {next.l.title}</span>}
-          </div>
-        </div>
-        <div className="lf-ring" style={{ ["--p" as any]: `${Math.round((done / flat.length) * 100)}%` }}>
-          <span>{done}<i>/{flat.length}</i></span>
+  /* Hjälten: var man är, vad som är kvar och en enda knapp som fortsätter där man slutade. */
+  const hero = (
+    <div className="lf-hero">
+      <div>
+        <div className="lf-kicker">VVS-akademin</div>
+        <h2>Lär dig läsa och mängda en rörritning</h2>
+        <p className="muted">
+          {flat.length} steg i {MODULES.length} kurser, ett i taget, vart och ett med en levande figur som visar
+          vad det handlar om — och övningar där du svarar själv och ser facit. Stegen sparas på ditt konto, så du
+          fortsätter där du slutade även från en annan dator.
+        </p>
+        <div className="row" style={{ marginTop: 16 }}>
+          <button onClick={() => setOpen(next.l.id)}>
+            {done === 0 ? "Starta guiden" : done === flat.length ? "Gå igenom igen" : "Fortsätt guiden"}
+          </button>
+          {done > 0 && done < flat.length && <span className="muted">Härnäst: {next.l.title}</span>}
         </div>
       </div>
-      {!compact && !allDone && (
-        <div className="lf-current">
-          <div className="k">Kurs {currentIdx + 1} av {MODULES.length}</div>
-          <h3>{current.title}</h3>
-          <p className="muted">{current.blurb}</p>
-          <div className="row">
-            <button onClick={() => setOpen((current.lessons.find((l) => !prog[l.id]) ?? current.lessons[0]).id)}>
-              Fortsätt kursen
-            </button>
-            <span className="muted small">
-              {current.lessons.filter((l) => prog[l.id]).length} av {current.lessons.length} steg klara
-              {currentIdx + 1 < MODULES.length && ` · nästa kurs: ${MODULES[currentIdx + 1].title}`}
-            </span>
-          </div>
-        </div>
-      )}
-      {!compact && allDone && (
-        <div className="lf-current done">
-          <div className="k">Alla kurser klara</div>
-          <h3>Du har gått igenom hela akademin.</h3>
-          <p className="muted">Kapitlen står öppna att gå igenom igen, och övningarna nedan går att göra hur många gånger som helst.</p>
-        </div>
-      )}
-      {!compact && <Awards />}
-      <div className="lf-mods">
-        {MODULES.map((m: Module, mi) => {
-          const d = m.lessons.filter((l) => prog[l.id]).length;
-          const full = d === m.lessons.length;
-          const locked = !compact && mi > currentIdx && skipTo !== m.id;
-          return (
-            <section key={m.id} className={`lf-mod${full ? " full" : ""}${mi === currentIdx && !allDone ? " now" : ""}${locked ? " locked" : ""}`}>
+      <div className="lf-ring" style={{ ["--p" as any]: `${Math.round((done / flat.length) * 100)}%` }}>
+        <span>{done}<i>/{flat.length}</i></span>
+      </div>
+    </div>
+  );
+
+  if (compact) {
+    // I väntan på en läsning: hjälten och kurserna som kort, ingenting som kräver en till sida att navigera i.
+    return (
+      <div className="learn compact">
+        {hero}
+        <div className="lf-mods">
+          {MODULES.map((m: Module, mi) => (
+            <section key={m.id} className={`lf-mod${moduleDone(m) ? " full" : ""}`}>
               <div className="lf-mod-no">{String(mi + 1).padStart(2, "0")}</div>
               <h3>{m.title}</h3>
               <p className="muted">{m.blurb}</p>
-              {locked ? (
-                <div className="lf-lock">
-                  <span className="muted small">Låst tills kurs {currentIdx + 1} är klar.</span>
-                  <button className="ghost small" onClick={() => setSkipTo(m.id)}>Öppna ändå</button>
-                </div>
-              ) : (
-                <ol className="lf-less">
-                  {m.lessons.map((l) => (
-                    <li key={l.id} className={prog[l.id] ? "done" : ""}>
-                      <button className="ghost" onClick={() => setOpen(l.id)}>
-                        <span className="tick" aria-hidden="true" />
-                        <span className="nm">{l.title}</span>
-                        <span className="mi">{l.minutes} min</span>
-                      </button>
-                    </li>
-                  ))}
-                </ol>
-              )}
+              <ol className="lf-less">
+                {m.lessons.map((l) => (
+                  <li key={l.id} className={prog[l.id] ? "done" : ""}>
+                    <button className="ghost" onClick={() => setOpen(l.id)}>
+                      <span className="tick" aria-hidden="true" />
+                      <span className="nm">{l.title}</span>
+                      <span className="mi">{l.minutes} min</span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
             </section>
-          );
-        })}
+          ))}
+        </div>
+        <LearnWizard open={open !== null} start={open ?? undefined}
+          onClose={() => { setOpen(null); setProg(readProgress()); }} />
       </div>
-      {!compact && (
+    );
+  }
+
+  return (
+    <div className="learn">
+      {hero}
+
+      {/* Tre saker att göra, och bara en åt gången: gå kursen, öva, se vad man samlat. */}
+      <nav className="lf-nav">
+        <button className={view === "kurser" ? "on" : ""} onClick={() => setView("kurser")}>
+          Kurser <span className="n">{done}/{flat.length}</span>
+        </button>
+        <button className={view === "ova" ? "on" : ""} onClick={() => setView("ova")}>
+          Öva <span className="n">{EXERCISE_IDS.length}</span>
+        </button>
+        <button className={view === "utmarkelser" ? "on" : ""} onClick={() => setView("utmarkelser")}>
+          Utmärkelser
+        </button>
+        <span className="spacer" />
+        <span className="muted small">
+          {allDone ? "Alla kurser klara" : `${minutesLeft} min kvar`}
+        </span>
+      </nav>
+
+      {view === "kurser" && (
+        <div className="lf-split">
+          {/* Kurslistan som en gång, i innehållets egen ordning: klara bakom, pågående mitt i, låsta framför. */}
+          <aside className="lf-rail">
+            {MODULES.map((m: Module, mi) => {
+              const d = m.lessons.filter((l) => prog[l.id]).length;
+              const locked = mi > currentIdx && skipTo !== m.id;
+              const cls = [
+                "lf-railitem",
+                shownIdx === mi ? "on" : "",
+                d === m.lessons.length ? "full" : "",
+                mi === currentIdx && !allDone ? "now" : "",
+                locked ? "locked" : "",
+              ].filter(Boolean).join(" ");
+              return (
+                <button key={m.id} className={cls} onClick={() => setPicked(m.id)}>
+                  <span className="no">{String(mi + 1).padStart(2, "0")}</span>
+                  <span className="nm">
+                    {m.title}
+                    <i>{d} av {m.lessons.length} steg{locked ? " · låst" : ""}</i>
+                  </span>
+                  <span className="bar" aria-hidden="true"><i style={{ width: `${(d / m.lessons.length) * 100}%` }} /></span>
+                </button>
+              );
+            })}
+          </aside>
+
+          <section className="lf-course">
+            <div className={`lf-current${allDone ? " done" : ""}`}>
+              <div className="k">
+                Kurs {shownIdx + 1} av {MODULES.length}
+                {shownIdx === currentIdx && !allDone ? " · pågående" : shownDone === shown.lessons.length ? " · klar" : ""}
+              </div>
+              <h3>{shown.title}</h3>
+              <p className="muted">{shown.blurb}</p>
+              <div className="row">
+                <button disabled={shownLocked}
+                  onClick={() => setOpen((shown.lessons.find((l) => !prog[l.id]) ?? shown.lessons[0]).id)}>
+                  {shownDone === 0 ? "Börja kursen" : shownDone === shown.lessons.length ? "Gå igenom igen" : "Fortsätt kursen"}
+                </button>
+                <span className="muted small">
+                  {shownDone} av {shown.lessons.length} steg klara
+                  {shownIdx + 1 < MODULES.length && ` · nästa kurs: ${MODULES[shownIdx + 1].title}`}
+                </span>
+              </div>
+            </div>
+
+            {shownLocked ? (
+              <div className="lf-lock">
+                <span className="muted small">
+                  Låst tills kurs {currentIdx + 1} är klar. Ordningen är innehållets egen — man läser inte en
+                  beteckning innan man vet vad ett system är — men ett lås som inte går att öppna är en fälla.
+                </span>
+                <button className="ghost small" onClick={() => setSkipTo(shown.id)}>Öppna ändå</button>
+              </div>
+            ) : (
+              <ol className="lf-less lf-steps">
+                {shown.lessons.map((l, li) => (
+                  <li key={l.id} className={prog[l.id] ? "done" : ""}>
+                    <button className="ghost" onClick={() => setOpen(l.id)}>
+                      <span className="tick" aria-hidden="true" />
+                      <span className="no">{li + 1}</span>
+                      <span className="nm">{l.title}</span>
+                      <span className="mi">{l.minutes} min</span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </section>
+        </div>
+      )}
+
+      {view === "ova" && (
         <section className="lf-drills">
-          <h3>Öva</h3>
           <p className="muted">
             Att läsa om en regel och att tillämpa den är två olika saker, och det är den andra som fastnar.
             Ingen av övningarna går att klara genom att gissa på det som ligger närmast — det är hela poängen
@@ -264,6 +340,9 @@ export default function Learn({ compact }: { compact?: boolean }) {
           {EXERCISE_IDS.map((id) => <LearnExercise key={id} id={id} />)}
         </section>
       )}
+
+      {view === "utmarkelser" && <Awards />}
+
       <LearnWizard open={open !== null} start={open ?? undefined}
         onClose={() => { setOpen(null); setProg(readProgress()); }} />
     </div>

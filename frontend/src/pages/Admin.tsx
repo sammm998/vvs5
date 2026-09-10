@@ -2,33 +2,39 @@ import { useEffect, useMemo, useState } from "react";
 import { api } from "../api";
 import { Accounts, Content, Crm, Experiments, Heatmap, Partners } from "../components/AdminBusiness";
 import { Corrections, Learning, Readings, RulesMoved } from "../components/AdminReading";
+import { RulesCatalogue } from "../components/AdminRules";
+import { Assumptions } from "../components/AdminSettings";
+import { SystemHealth } from "../components/AdminSystem";
 
 /* Att driva tjänsten.
  *
- * Sidan är delad i två halvor som aldrig får blandas ihop. Den vänstra handlar om läsningen: vad som lästs, hur
- * det gick, vad kunder rättat och vad rättelserna lärt. Den högra handlar om företaget: konton, planer,
- * partners, provision, innehåll och prov.
+ * Portalen har tre delar som aldrig får blandas ihop. Läsningen: vad som lästs, hur det gick, vad kunder rättat,
+ * vad rättelserna lärt, och reglerna och antagandena läsningen går efter. Företaget: konton, planer, partners,
+ * provision, innehåll och prov. Systemet: vad som kör och hur det mår.
  *
- * Ingenting på den här sidan får avgöra hur en ritning läses. Den dagen en rabattsats kan flytta en meter går
+ * Ingenting på företagssidan får avgöra hur en ritning läses. Den dagen en rabattsats kan flytta en meter går
  * det inte längre att svara på varför en mängd blev som den blev, och hela systemet står och faller på att den
- * frågan går att besvara.
+ * frågan går att besvara. Reglerna bor här av motsatt skäl: en flyttad regel gäller varje ritning tjänsten
+ * läser härnäst, och den som flyttar den ska stå för det med namn, skäl och bild.
  */
 
-type Tab = "overblick" | "lasningar" | "rattelser" | "inlarning" | "regler"
-  | "konton" | "partners" | "crm" | "innehall" | "prov" | "heatmap";
+type Section = "overblick" | "lasningar" | "rattelser" | "inlarning" | "regler" | "antaganden"
+  | "konton" | "partners" | "crm" | "innehall" | "prov" | "heatmap" | "system";
 
-const TABS: { id: Tab; label: string; group: string }[] = [
-  { id: "overblick", label: "Överblick", group: "Läsningen" },
-  { id: "lasningar", label: "Läsningar", group: "Läsningen" },
-  { id: "rattelser", label: "Rättelser", group: "Läsningen" },
-  { id: "inlarning", label: "Inlärning", group: "Läsningen" },
-  { id: "regler", label: "Flyttade regler", group: "Läsningen" },
-  { id: "konton", label: "Konton", group: "Företaget" },
-  { id: "partners", label: "Partners", group: "Företaget" },
-  { id: "crm", label: "Kundvård", group: "Företaget" },
-  { id: "innehall", label: "Innehåll", group: "Företaget" },
-  { id: "prov", label: "A/B-prov", group: "Företaget" },
-  { id: "heatmap", label: "Heatmap", group: "Företaget" },
+const SECTIONS: { id: Section; label: string; group: string; lead: string }[] = [
+  { id: "overblick", label: "Överblick", group: "Läsningen", lead: "Hur läsningen mår, och vad som väntar på någon." },
+  { id: "lasningar", label: "Läsningar", group: "Läsningen", lead: "Varje blad som lästs: hur långt läsningen kom och hur lång tid det tog." },
+  { id: "rattelser", label: "Rättelser", group: "Läsningen", lead: "Vad kunderna rättat, efter slag. En rättelse är ett påstående om att läsningen hade fel." },
+  { id: "inlarning", label: "Inlärning", group: "Läsningen", lead: "Vad rättelserna lärt: sex nycklar, aldrig träning, alltid spårbart till en person och ett blad." },
+  { id: "regler", label: "Regler", group: "Läsningen", lead: "Varje gräns läsningen använder, med skäl och figur. En flyttad regel gäller nästa läsning, för alla." },
+  { id: "antaganden", label: "Antaganden", group: "Läsningen", lead: "Hur det lästa räknas ihop till en mängd: våningshöjd, stigare, skrafferade ytor." },
+  { id: "konton", label: "Konton", group: "Företaget", lead: "Kontona, deras planer och vad de betalar. Ingenting här når läsningen." },
+  { id: "partners", label: "Partners", group: "Företaget", lead: "Vilka som hänvisat kunder, vad de tjänat på det, och vad som är utbetalt." },
+  { id: "crm", label: "Kundvård", group: "Företaget", lead: "Anteckningar per konto: vad som sagts, lovats och väntar." },
+  { id: "innehall", label: "Innehåll", group: "Företaget", lead: "Texterna på landningssidan och i dokumentationen, redigerbara utan en driftsättning." },
+  { id: "prov", label: "A/B-prov", group: "Företaget", lead: "Två varianter av samma sak, och vilken som gick bäst." },
+  { id: "heatmap", label: "Heatmap", group: "Företaget", lead: "Var i gränssnittet folk klickar, och var de ger upp." },
+  { id: "system", label: "Systemet", group: "Systemet", lead: "Vad som kör och hur det mår: byggning, andra läsaren, kö, lager, databas." },
 ];
 
 const pct = (v: number | null | undefined) =>
@@ -85,7 +91,32 @@ function Trend({ rows }: { rows: any[] }) {
   );
 }
 
-function Overview() {
+/* Det som väntar på någon. Varje rad leder dit man gör något åt den; tom lista är ett svar. */
+function Attention({ items, go }: { items: any[]; go: (s: Section) => void }) {
+  return (
+    <section className="card adm-attn">
+      <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
+        <h3 style={{ margin: 0 }}>Att ta hand om</h3>
+        <span className="muted small">{items.length ? `${items.length} ${items.length === 1 ? "sak" : "saker"}` : "inget väntar"}</span>
+      </div>
+      {items.length ? (
+        <ul>
+          {items.map((it) => (
+            <li key={it.kind} className={it.tone}>
+              <span className="dot" />
+              <span className="txt">{it.text}</span>
+              <button className="ghost small" onClick={() => go(it.go as Section)}>Gå dit →</button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="muted" style={{ margin: "8px 0 0" }}>Inga misslyckade läsningar, ingen kö, inga öppna utbetalningar. Bra dag.</p>
+      )}
+    </section>
+  );
+}
+
+function Overview({ attention, go }: { attention: any[]; go: (s: Section) => void }) {
   const [o, setO] = useState<any>(null);
   const [t, setT] = useState<any>(null);
   const [days, setDays] = useState(30);
@@ -99,12 +130,10 @@ function Overview() {
   const r = o.readings, a = o.accounts;
   return (
     <>
-      <div className="row" style={{ marginBottom: 14 }}>
-        <label>Period
-          <select value={days} onChange={(e) => setDays(Number(e.target.value))}>
-            <option value={7}>7 dygn</option><option value={30}>30 dygn</option><option value={90}>90 dygn</option>
-          </select>
-        </label>
+      <div className="adm-toolbar">
+        <div className="seg">
+          {[7, 30, 90].map((d) => <button key={d} className={days === d ? "on" : ""} onClick={() => setDays(d)}>{d} dygn</button>)}
+        </div>
       </div>
       <div className="adm-stats">
         <Stat label="Läsningar" value={num(r.total)} sub={`${num(r.done)} klara · ${num(r.failed)} misslyckade`}
@@ -119,26 +148,8 @@ function Overview() {
         <Stat label="Ritningar" value={num(o.drawings)} sub={`${num(o.projects)} projekt`} />
       </div>
 
-      <section className="card" style={{ marginTop: 16 }}>
-        <h3 style={{ marginTop: 0 }}>Läsningar och täckning per dygn</h3>
-        <p className="muted">
-          Staplarna är hur mycket som lästs, den röda delen är det som misslyckades, linjen är hur långt
-          läsningen kom. Att staplarna växer säger något om marknadsföringen. Att linjen sjunker säger att
-          något gått sönder, och det är den enda av de två som är brådskande.
-        </p>
-        {t && <Trend rows={t.rows} />}
-      </section>
-
       <div className="adm-two" style={{ marginTop: 16 }}>
-        <section className="card">
-          <h3 style={{ marginTop: 0 }}>Planer</h3>
-          <table className="qty"><tbody>
-            {Object.entries(a.by_plan).map(([k, v]: any) => (
-              <tr key={k}><td>{k}</td><td className="num">{num(v)}</td></tr>
-            ))}
-            {!Object.keys(a.by_plan).length && <tr><td className="empty">Inga konton upplagda ännu.</td></tr>}
-          </tbody></table>
-        </section>
+        <Attention items={attention} go={go} />
         <section className="card">
           <h3 style={{ marginTop: 0 }}>Rättelser efter slag</h3>
           <table className="qty"><tbody>
@@ -149,23 +160,64 @@ function Overview() {
           </tbody></table>
         </section>
       </div>
+
+      <section className="card" style={{ marginTop: 16 }}>
+        <h3 style={{ marginTop: 0 }}>Läsningar och täckning per dygn</h3>
+        <p className="muted">
+          Staplarna är hur mycket som lästs, den röda delen är det som misslyckades, linjen är hur långt
+          läsningen kom. Att staplarna växer säger något om marknadsföringen. Att linjen sjunker säger att
+          något gått sönder, och det är den enda av de två som är brådskande.
+        </p>
+        {t && <Trend rows={t.rows} />}
+      </section>
+
+      <section className="card" style={{ marginTop: 16 }}>
+        <h3 style={{ marginTop: 0 }}>Planer</h3>
+        <table className="qty"><tbody>
+          {Object.entries(a.by_plan).map(([k, v]: any) => (
+            <tr key={k}><td>{k}</td><td className="num">{num(v)}</td></tr>
+          ))}
+          {!Object.keys(a.by_plan).length && <tr><td className="empty">Inga konton upplagda ännu.</td></tr>}
+        </tbody></table>
+      </section>
+    </>
+  );
+}
+
+function RulesSection() {
+  const [view, setView] = useState<"katalog" | "kunder">("katalog");
+  return (
+    <>
+      <div className="adm-toolbar">
+        <div className="seg">
+          <button className={view === "katalog" ? "on" : ""} onClick={() => setView("katalog")}>Katalogen</button>
+          <button className={view === "kunder" ? "on" : ""} onClick={() => setView("kunder")}>Vad kunderna flyttat</button>
+        </div>
+      </div>
+      {view === "katalog" ? <RulesCatalogue /> : <RulesMoved />}
     </>
   );
 }
 
 export default function AdminPage() {
-  const [tab, setTab] = useState<Tab>(() => {
-    try { return (localStorage.getItem("vvs.admtab") as Tab) || "overblick"; } catch { return "overblick"; }
+  const [sec, setSec] = useState<Section>(() => {
+    try { return (localStorage.getItem("vvs.admtab") as Section) || "overblick"; } catch { return "overblick"; }
   });
   const [role, setRole] = useState<string | null>(null);
+  const [attn, setAttn] = useState<{ items: any[]; badges: Record<string, number> }>({ items: [], badges: {} });
   const groups = useMemo(() => {
-    const g: Record<string, typeof TABS> = {};
-    TABS.forEach((t) => { (g[t.group] ||= []).push(t); });
+    const g: Record<string, typeof SECTIONS> = {};
+    SECTIONS.forEach((t) => { (g[t.group] ||= []).push(t); });
     return Object.entries(g);
   }, []);
 
   useEffect(() => { api.myRole().then((r) => setRole(r.role)).catch(() => setRole("member")); }, []);
-  const pick = (t: Tab) => { setTab(t); try { localStorage.setItem("vvs.admtab", t); } catch { /* privat läge */ } };
+  useEffect(() => {
+    if (role !== "admin") return;
+    api.adm("attention").then(setAttn).catch(() => { /* listan är en hjälp, inte ett krav */ });
+  }, [role, sec]);
+  const pick = (t: Section) => { setSec(t); try { localStorage.setItem("vvs.admtab", t); } catch { /* privat läge */ } };
+  const current = SECTIONS.find((s) => s.id === sec) ?? SECTIONS[0];
 
   if (role === null) return <main><p className="muted">Laddar…</p></main>;
   if (role !== "admin") {
@@ -183,41 +235,46 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="admin">
-      <p className="crumb">Administration</p>
-      <div className="head">
-        <div>
-          <h1>Att driva tjänsten</h1>
-          <p className="lead">
-            Vänstra halvan är läsningen: vad som lästs, hur det gick och vad kunderna rättat. Högra halvan är
-            företaget. Ingenting härifrån avgör hur en ritning läses.
-          </p>
-        </div>
-      </div>
-
-      <div className="adm-tabs">
+    <main className="admin adm-shell">
+      <aside className="adm-nav">
+        <p className="crumb">Administration</p>
         {groups.map(([g, items]) => (
           <div key={g} className="grp">
             <span className="lbl">{g}</span>
-            {items.map((t) => (
-              <button key={t.id} className={tab === t.id ? "on" : ""} onClick={() => pick(t.id)}>{t.label}</button>
-            ))}
+            {items.map((t) => {
+              const n = attn.badges?.[t.id] ?? 0;
+              return (
+                <button key={t.id} className={sec === t.id ? "on" : ""} onClick={() => pick(t.id)}>
+                  <span>{t.label}</span>
+                  {n > 0 && <span className="pill">{n}</span>}
+                </button>
+              );
+            })}
           </div>
         ))}
-      </div>
+        <p className="muted small adm-note">Ingenting på företagssidan når läsningen. Reglerna gäller varje ny läsning.</p>
+      </aside>
 
-      <div style={{ marginTop: 16 }}>
-        {tab === "overblick" && <Overview />}
-        {tab === "lasningar" && <Readings />}
-        {tab === "rattelser" && <Corrections />}
-        {tab === "inlarning" && <Learning />}
-        {tab === "regler" && <RulesMoved />}
-        {tab === "konton" && <Accounts />}
-        {tab === "partners" && <Partners />}
-        {tab === "crm" && <Crm />}
-        {tab === "innehall" && <Content />}
-        {tab === "prov" && <Experiments />}
-        {tab === "heatmap" && <Heatmap />}
+      <div className="adm-main">
+        <header className="adm-sec">
+          <h1>{current.label}</h1>
+          <p className="lead">{current.lead}</p>
+        </header>
+        <div className="adm-body">
+          {sec === "overblick" && <Overview attention={attn.items} go={pick} />}
+          {sec === "lasningar" && <Readings />}
+          {sec === "rattelser" && <Corrections />}
+          {sec === "inlarning" && <Learning />}
+          {sec === "regler" && <RulesSection />}
+          {sec === "antaganden" && <Assumptions />}
+          {sec === "konton" && <Accounts />}
+          {sec === "partners" && <Partners />}
+          {sec === "crm" && <Crm />}
+          {sec === "innehall" && <Content />}
+          {sec === "prov" && <Experiments />}
+          {sec === "heatmap" && <Heatmap />}
+          {sec === "system" && <SystemHealth />}
+        </div>
       </div>
     </main>
   );

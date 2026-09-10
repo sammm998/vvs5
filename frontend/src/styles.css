@@ -2211,3 +2211,96 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .calc-anbud { margin-top: 0; }
 .anbud-pages { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 18px; margin-top: 16px; }
 .anbud-page { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 6px; box-shadow: var(--e2); background: #fff; }
+
+/* ---- adminportalen: ett skal med sektionsnav till vänster och sidan till höger --------------------------- */
+.adm-shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 900px) { .adm-shell { grid-template-columns: 1fr; } .adm-nav { position: static; } }
+.adm-nav { position: sticky; top: 18px; display: flex; flex-direction: column; gap: 14px; }
+.adm-nav .crumb { margin-bottom: 2px; }
+.adm-nav .grp { display: flex; flex-direction: column; gap: 2px; }
+.adm-nav .lbl {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--faint); padding: 6px 10px 4px;
+}
+.adm-nav button {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left;
+  background: transparent; color: var(--muted); border: 0; border-radius: var(--r-s);
+  padding: 8px 10px; box-shadow: none; text-transform: none; letter-spacing: 0; font-family: var(--sans);
+  font-size: 13.5px; transition: color 0.16s var(--ease), background 0.16s var(--ease);
+}
+.adm-nav button:hover:not(.on) { color: var(--ink); background: rgba(13, 13, 13, 0.045); transform: none; box-shadow: none; opacity: 1; }
+.adm-nav button.on { color: var(--ink); background: #fff; box-shadow: var(--e1), var(--lift); font-weight: 500; }
+.adm-nav button .pill {
+  font-family: var(--mono); font-size: 10px; min-width: 20px; padding: 2px 6px; border-radius: 999px; text-align: center;
+  background: var(--warn-bg); color: var(--warn); border: 1px solid rgba(138, 90, 0, 0.18);
+}
+.adm-nav .adm-note { padding: 6px 10px 0; line-height: 1.45; }
+.adm-main { min-width: 0; }
+.adm-sec { margin-bottom: 18px; }
+.adm-sec h1 { font-size: clamp(30px, 3.6vw, 48px); }
+.adm-sec .lead { max-width: 72ch; }
+.adm-body > .card + .card, .adm-body section.card + section.card { margin-top: 14px; }
+.adm-toolbar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+.adm-toolbar input { max-width: 320px; }
+.adm-toolbar .seg {
+  display: inline-flex; gap: 3px; padding: 4px; border-radius: 999px; background: rgba(13, 13, 13, 0.04);
+  box-shadow: inset 0 1px 2px rgba(16, 18, 22, 0.05);
+}
+.adm-toolbar .seg button {
+  background: transparent; color: var(--faint); border: 0; border-radius: 999px; padding: 7px 13px; box-shadow: none;
+}
+.adm-toolbar .seg button:hover:not(.on) { color: var(--ink); opacity: 1; transform: none; box-shadow: none; background: rgba(13, 13, 13, 0.05); }
+.adm-toolbar .seg button.on { color: var(--ink); background: #fff; box-shadow: var(--e1), var(--lift); }
+.adm-attn ul { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.adm-attn li {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line);
+  border-radius: var(--r-s); background: #fff;
+}
+.adm-attn li .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--faint); flex: none; }
+.adm-attn li.bad .dot { background: var(--bad); }
+.adm-attn li.warn .dot { background: var(--warn); }
+.adm-attn li .txt { flex: 1; font-size: 13.5px; }
+.adm-attn li button { flex: none; }
+
+/* ---- akademin: sektioner, kurslista och kursens steg ------------------------------------------------------ */
+.lf-nav {
+  display: flex; align-items: center; gap: 3px; margin: 22px 0 16px; padding: 4px;
+  border-radius: 999px; background: rgba(13, 13, 13, 0.04); box-shadow: inset 0 1px 2px rgba(16, 18, 22, 0.05);
+}
+.lf-nav button {
+  background: transparent; color: var(--faint); border: 0; border-radius: 999px; padding: 8px 15px;
+  box-shadow: none; display: inline-flex; align-items: center; gap: 7px;
+}
+.lf-nav button:hover:not(.on) { color: var(--ink); opacity: 1; transform: none; box-shadow: none; background: rgba(13, 13, 13, 0.05); }
+.lf-nav button.on { color: var(--ink); background: #fff; box-shadow: var(--e1), var(--lift); }
+.lf-nav button .n { font-family: var(--mono); font-size: 10px; color: var(--faint); }
+.lf-nav button.on .n { color: var(--muted); }
+.lf-nav .muted { padding-right: 12px; }
+
+.lf-split { display: grid; grid-template-columns: minmax(220px, 290px) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 880px) { .lf-split { grid-template-columns: 1fr; } }
+.lf-rail { display: flex; flex-direction: column; gap: 4px; }
+.lf-railitem {
+  display: grid; grid-template-columns: auto 1fr; grid-template-areas: "no nm" "bar bar"; gap: 3px 11px;
+  text-align: left; background: transparent; border: 1px solid transparent; border-radius: var(--r-m);
+  padding: 11px 13px; box-shadow: none; text-transform: none; letter-spacing: 0; font-family: var(--sans);
+  color: var(--muted); transition: background 0.16s var(--ease), border-color 0.16s var(--ease);
+}
+.lf-railitem:hover:not(.on) { background: rgba(13, 13, 13, 0.035); color: var(--ink); transform: none; box-shadow: none; opacity: 1; }
+.lf-railitem.on { background: #fff; border-color: var(--line); box-shadow: var(--e1), var(--lift); color: var(--ink); }
+.lf-railitem .no { grid-area: no; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; color: var(--faint); padding-top: 2px; }
+.lf-railitem .nm { grid-area: nm; display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
+.lf-railitem .nm i { font-style: normal; font-size: 11px; color: var(--faint); }
+.lf-railitem .bar { grid-area: bar; height: 3px; border-radius: 999px; background: var(--line); overflow: hidden; margin-top: 6px; }
+.lf-railitem .bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; transition: width 0.3s var(--ease); }
+.lf-railitem.full .bar i { background: var(--ok); }
+.lf-railitem.now .no { color: var(--ink); }
+.lf-railitem.locked { opacity: 0.62; }
+.lf-railitem.locked .nm i::before { content: "🔒 "; }
+
+.lf-course { min-width: 0; }
+.lf-steps { border: 1px solid var(--line); border-radius: var(--r-m); background: #fff; overflow: hidden; margin-top: 14px; }
+.lf-steps li button { padding: 13px 16px; gap: 12px; }
+.lf-steps .no { font-family: var(--mono); font-size: 10.5px; color: var(--faint); min-width: 16px; }
+.lf-steps li.done .no { color: var(--ok); }
+.lf-drills > p { max-width: 74ch; }

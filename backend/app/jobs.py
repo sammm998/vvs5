@@ -208,12 +208,16 @@ def account_rules(db, drawing) -> dict:
     would hold for whatever else is being read at the same moment - and a takeoff measured under someone else's
     settings is the worst kind of wrong, because nothing on the page says it happened.
     """
-    from .db import Project, RuleSetting
+    from .db import Project, RuleSetting, ServiceSetting
+    out: dict = {}
+    for row in db.query(ServiceSetting).filter(ServiceSetting.key.like("rule:%")).all():
+        out[row.key[5:]] = (row.value or {}).get("v")          # what the administrator moved for the service
     proj = db.get(Project, drawing.project_id)
     if proj is None:
-        return {}
-    return {r.rule_id: r.value for r in
-            db.query(RuleSetting).filter(RuleSetting.user_id == proj.owner_id).all()}
+        return out
+    for r in db.query(RuleSetting).filter(RuleSetting.user_id == proj.owner_id).all():
+        out[r.rule_id] = r.value                               # what this account moved back when it could
+    return out
 
 
 def run_job(job_id: str) -> None:
