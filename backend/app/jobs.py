@@ -26,6 +26,12 @@ STAGE_ORDER = ["QUEUED", "READING_PDF", "DISCOVERING_DRAWING_GRAMMAR", "EXTRACTI
                "MEASURING", "REVIEWING", "GENERATING_OVERLAYS", "COMPLETED"]
 
 _executor = ThreadPoolExecutor(max_workers=max(1, settings.worker_threads))
+# Projektanalysen läser namnrutor: sekunder per blad, och ingen av den tunga geometrin. Mängdningen kan ta en
+# halvtimme per blad. Delar de kö hamnar den billiga läsningen bakom varje dyr - en användare som laddat upp
+# trettio blad och startat mängdningen får vänta ut alla trettio innan handlingsförteckningen ens börjar - och
+# åt andra hållet håller en trehundrabladig projektläsning mängdningen stilla. Två köer, för det är två sorters
+# arbete som inte konkurrerar om samma sak.
+_reader = ThreadPoolExecutor(max_workers=1, thread_name_prefix="handling")
 _lock = threading.Lock()
 
 

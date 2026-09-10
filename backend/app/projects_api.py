@@ -342,8 +342,8 @@ def start_analysis(project_id: str, user: User = Depends(current_user), db: Sess
         p.analysis_mode = "project"
     pa = ProjectAnalysis(project_id=p.id)
     db.add(pa); db.commit()
-    from .jobs import _executor
-    _executor.submit(run_project_analysis, pa.id)
+    from .jobs import _reader
+    _reader.submit(run_project_analysis, pa.id)      # egen kö: den här läsningen ska inte stå bakom mängdningen
     return {"id": pa.id, "status": pa.status}
 
 
