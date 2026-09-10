@@ -46,9 +46,48 @@ class Project(Base):
     owner_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
     name: Mapped[str] = mapped_column(String(255))
     description: Mapped[str] = mapped_column(Text, default="")
+    # Vilken sorts analys projektet använder. Saknas den är projektet ett av de gamla, och de fortsätter
+    # fungera precis som förut - "simple" är vad de alltid har gjort.
+    analysis_mode: Mapped[str] = mapped_column(String(16), default="")     # "" | simple | project
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
     owner: Mapped[User] = relationship(back_populates="projects")
     drawings: Mapped[list["Drawing"]] = relationship(back_populates="project", cascade="all, delete-orphan")
+
+
+class ProjectAnalysis(Base):
+    """Projektet läst som en handling: vad varje blad är, vad som hör ihop, och vad som inte gick att avgöra.
+
+    Skilt från analysis_jobs därför att det är en annan fråga. Ett jobb läser en ritning och svarar med meter.
+    Det här läser alla blad och svarar med vad handlingen består av - och det svaret ändras när ett blad läggs
+    till eller när någon rättar en klassificering, inte när en ritning mängdas om.
+    """
+    __tablename__ = "project_analyses"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    project_id: Mapped[str] = mapped_column(ForeignKey("projects.id"), index=True)
+    status: Mapped[str] = mapped_column(String(32), default="QUEUED")
+    stage: Mapped[str] = mapped_column(String(64), default="QUEUED")
+    progress: Mapped[float] = mapped_column(Float, default=0.0)
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    report: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    finished_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class DocumentOverride(Base):
+    """Vad en människa rättade om ett blad.
+
+    Den automatiska klassificeringen ska alltid gå att korrigera, och rättelsen ska överleva en omläsning. Den
+    ligger därför här och inte i rapporten: rapporten byggs om, det här gör den inte.
+    """
+    __tablename__ = "document_overrides"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    project_id: Mapped[str] = mapped_column(ForeignKey("projects.id"), index=True)
+    drawing_id: Mapped[str] = mapped_column(ForeignKey("drawings.id"), index=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    field: Mapped[str] = mapped_column(String(32))      # building | discipline | role | number | floor | part
+    value: Mapped[str] = mapped_column(String(128))
+    note: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
 
 class Drawing(Base):
@@ -313,6 +352,7 @@ _ADDED_COLUMNS = (
     ("users", "account_id", "VARCHAR(32)"),
     ("users", "name", "VARCHAR(255) DEFAULT ''"),
     ("users", "last_seen_at", "TIMESTAMP"),
+    ("projects", "analysis_mode", "VARCHAR(16) DEFAULT ''"),
 )
 
 

@@ -15,7 +15,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
-from . import admin as admin_api, exports, jobs, public as public_api
+from . import admin as admin_api, exports, jobs, projects_api, public as public_api
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
 from vvs_engine.learning import KEYS, lessons, settle, situation
 from .auth import create_token, current_user, hash_password, verify_password
@@ -30,6 +30,7 @@ app.add_middleware(CORSMiddleware, allow_origins=[o.strip() for o in settings.co
 
 app.include_router(admin_api.router)
 app.include_router(public_api.router)
+app.include_router(projects_api.router)
 
 
 @app.on_event("startup")

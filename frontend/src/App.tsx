@@ -13,6 +13,7 @@ import LearnPage from "./pages/LearnPage";
 import SettingsPage from "./pages/Settings";
 import MaterialPage from "./pages/Material";
 import AdminPage from "./pages/Admin";
+import ProjectAnalysisPage from "./pages/ProjectAnalysis";
 
 function Guard({ children }: { children: JSX.Element }) {
   return getToken() ? children : <Navigate to="/login" replace />;
@@ -99,6 +100,7 @@ const ROUTES = (
     <Route path="/dokumentation" element={<Docs />} />
     <Route path="/projekt" element={<Guard><Projects /></Guard>} />
     <Route path="/projects/:id" element={<Guard><ProjectPage /></Guard>} />
+    <Route path="/projects/:id/analys" element={<Guard><ProjectAnalysisPage /></Guard>} />
     <Route path="/drawings/:id" element={<Guard><DrawingPage /></Guard>} />
     <Route path="/jobs/:id" element={<Guard><AnalysisPage /></Guard>} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
@@ -120,6 +122,36 @@ export default function App() {
     if (!getToken()) { setRole(""); return; }
     api.myRole().then((r) => setRole(r.role)).catch(() => setRole(""));
   }, [pathname]);
+
+  // Vad besökaren gjorde. En klick sparas som en ruta i fönstret och inte som en punkt på en skärm: andelar
+  // av bredden och höjden, så att bilden gäller alla skärmstorlekar på en gång. Det som skickas med är vad
+  // som klickades - knappens text eller dess roll - och aldrig vad som stod i ett fält.
+  useEffect(() => { track({ name: "sidvisning", path: pathname }); }, [pathname]);
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement)?.closest?.("button, a, input, select, textarea, [role]");
+      const tag = el ? el.tagName.toLowerCase() : "";
+      // ett fälts innehåll är användarens, inte tjänstens: bara sorten sparas
+      const what = !el ? "" : tag === "input" || tag === "textarea" || tag === "select"
+        ? `${tag}:${(el as HTMLInputElement).type || tag}`
+        : `${tag}:${(el.textContent || "").trim().slice(0, 60)}`;
+      track({
+        name: "klick",
+        x: e.clientX / Math.max(window.innerWidth, 1),
+        y: e.clientY / Math.max(window.innerHeight, 1),
+        target: what,
+      });
+    };
+    // en flik som stängs mitt i en hink tar hinken med sig; sendBeacon hinner före
+    const onHide = () => { if (document.visibilityState === "hidden") flushEvents(true); };
+    window.addEventListener("click", onClick, { capture: true });
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      window.removeEventListener("click", onClick, { capture: true } as any);
+      document.removeEventListener("visibilitychange", onHide);
+      flushEvents();
+    };
+  }, []);
   const [rail, setRail] = useState<boolean>(() => {
     try { return localStorage.getItem("vvs.rail") === "1"; } catch { return false; }
   });

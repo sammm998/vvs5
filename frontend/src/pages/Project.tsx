@@ -49,6 +49,8 @@ export default function ProjectPage() {
             onChange={(e) => setPicked(e.target.files?.[0]?.name ?? "")} />
           <label className="pick" htmlFor="pdf">{picked || "Välj PDF…"}</label>
           <button onClick={upload} disabled={busy || !picked}>{busy ? "Laddar upp…" : "Ladda upp"}</button>
+          {/* En ritning i taget svarar med meter. Hela handlingen svarar med vad den består av. */}
+          <Link to={`/projects/${project.id}/analys`}><button className="secondary">Analysera projektet</button></Link>
         </div>
       </div>
       {err && <p className="error" style={{ marginTop: 18 }}>{err}</p>}

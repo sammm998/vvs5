@@ -100,6 +100,19 @@ export const api = {
   admPost: (path: string, body: any) =>
     req(`/api/admin/${path}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
 
+  // ---- projektanalys ------------------------------------------------------------------------------------
+  // Ett projekt utan valt läge svarar "simple" utan att skriva något: de gamla projekten fortsätter fungera
+  // precis som förut tills någon väljer.
+  mode: (projectId: string) => req(`/api/projects/${projectId}/mode`),
+  setMode: (projectId: string, mode: string) =>
+    req(`/api/projects/${projectId}/mode`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode }) }),
+  projectAnalysis: (projectId: string) => req(`/api/projects/${projectId}/analysis`),
+  startProjectAnalysis: (projectId: string) => req(`/api/projects/${projectId}/analysis`, { method: "POST" }),
+  // Vad en människa rättat om ett blad går före vad läsningen kom fram till, och ligger kvar när den körs om.
+  overrides: (projectId: string) => req(`/api/projects/${projectId}/overrides`),
+  setOverride: (projectId: string, body: { drawing_id: string; field: string; value: string; note?: string }) =>
+    req(`/api/projects/${projectId}/overrides`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+
   // ---- akademin -----------------------------------------------------------------------------------------
   progress: () => req("/api/academy/progress"),
   saveProgress: (course: string, body: any) =>

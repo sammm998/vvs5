@@ -277,3 +277,128 @@ def test_one_readers_rules_do_not_reach_another(client):
                   for r in g["rules"] if r["id"] == rid)
     assert mine["value"] == 11.0 and mine["changed"]
     assert theirs["value"] == theirs["default"] and not theirs["changed"]
+
+
+# ----------------------------------------------------------------------------------------------------------
+# projektanalysen: hela handlingen läst som en modell
+# ----------------------------------------------------------------------------------------------------------
+
+def _titled(path, lines):
+    """Ett blad med en namnruta, nere till höger där svenska ritningar bär den."""
+    import pymupdf
+    d = pymupdf.open()
+    pg = d.new_page(width=842, height=595)
+    y = 0.62 * 595
+    for t in lines:
+        pg.insert_text((0.60 * 842, y), t, fontsize=9, fontname="helv")
+        y += 13
+    d.save(path); d.close()
+    return path
+
+
+def test_a_project_is_read_as_one_handling_and_never_invents_a_before_and_after(client, tmp_path):
+    """Genom API:t som en människa gör det: välj läge, läs handlingen, se vad den består av.
+
+    Det som prövas här är inte att siffrorna blir rätt utan att påståendena är sanna. Tre blad i två hus är
+    två hus. Två blad från samma dag i samma skede är inte ett revisionspar - de ska stå som oklara med vad
+    de verkar vara, för en påhittad diff ser exakt ut som en riktig och varje rad i den är fel.
+    """
+    r = client.post("/api/auth/register", json={"email": "handling@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Toftaskolan", "description": ""}, headers=H).json()
+
+    # ett projekt utan valt läge är ett av de gamla: det svarar "simple" utan att skriva något
+    m = client.get(f"/api/projects/{p['id']}/mode", headers=H).json()
+    assert m["chosen"] is False and m["effective"] == "simple"
+
+    sheets = {
+        "V-50-1-A0111.pdf": ["V-50-1-A0111", "HUS A, PLAN 1, RORINSTALLATIONER", "BYGGHANDLING", "2024-05-07"],
+        "V-50-1-B0112.pdf": ["V-50-1-B0112", "HUS B, PLAN 1, RORINSTALLATIONER", "BYGGHANDLING", "2024-05-07"],
+        # samma nummer, samma dag, samma skede: två filer utan någon ordning i sig
+        "V-50-1-A0113 (1).pdf": ["V-50-1-A0113", "HUS A, PLAN 2, RORINSTALLATIONER", "BYGGHANDLING", "2024-05-07"],
+        "V-50-1-A0113 (2).pdf": ["V-50-1-A0113", "HUS A, PLAN 2, RORINSTALLATIONER", "BYGGHANDLING", "2024-05-07"],
+    }
+    ids = {}
+    for name, lines in sheets.items():
+        f = _titled(str(tmp_path / name), lines)
+        with open(f, "rb") as fh:
+            d = client.post(f"/api/projects/{p['id']}/drawings",
+                            files={"file": (name, fh, "application/pdf")}, headers=H).json()
+        ids[name] = d["id"]
+
+    assert client.put(f"/api/projects/{p['id']}/mode", json={"mode": "projekt"}, headers=H).status_code == 400
+    assert client.put(f"/api/projects/{p['id']}/mode", json={"mode": "project"}, headers=H).status_code == 200
+
+    rep = _run_handling(client, H, p["id"])
+    assert rep["totals"]["documents"] == 4
+    assert rep["buildings"] == ["A", "B"], rep["buildings"]
+    assert rep["disciplines"] == ["VVS"], rep["disciplines"]
+    assert rep["totals"]["pairs"] == 0, "ett tal i filnamnet är ingen revision"
+    assert rep["totals"]["unclear"] == 1, rep["unclear"]
+    assert rep["unclear"][0]["reading"] == "samma projektskede"
+    # bladen bär sina egna id:n, och aldrig lagringsvägen
+    assert all(row.get("drawing_id") for row in rep["documents"])
+    assert not any("path" in row for row in rep["documents"])
+
+    # husen hålls isär i trädet, och hus A:s blad hamnar aldrig under hus B
+    assert set(rep["tree"]) == {"A", "B"}
+    assert len(rep["tree"]["A"]["VVS"]) == 3 and len(rep["tree"]["B"]["VVS"]) == 1
+
+
+def _run_handling(client, H, pid):
+    """Starta läsningen och vänta ut den, som gränssnittet gör."""
+    a = client.post(f"/api/projects/{pid}/analysis", headers=H).json()
+    for _ in range(120):
+        a = client.get(f"/api/projects/{pid}/analysis", headers=H).json()
+        if a["status"] in ("DONE", "FAILED"):
+            break
+        time.sleep(0.25)
+    assert a["status"] == "DONE", a
+    return a["report"]
+
+
+def test_what_a_person_corrects_about_a_sheet_outranks_what_the_reading_found(client, tmp_path):
+    """Mappen hette hus B och innehöll hus C:s ritningar. Läsningen hade rätt - men den har inte alltid rätt.
+
+    En rättelse ligger kvar när analysen körs om, och den ska räkna om det den påverkar: står bladet under fel
+    hus efter en rättelse är rättelsen bara en etikett.
+    """
+    r = client.post("/api/auth/register", json={"email": "rattat@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Rättat hus", "description": ""}, headers=H).json()
+    f = _titled(str(tmp_path / "V-50-1-C0110.pdf"),
+                ["V-50-1-C0110", "HUS C, PLAN 1, RORINSTALLATIONER", "BYGGHANDLING", "2024-05-07"])
+    with open(f, "rb") as fh:
+        d = client.post(f"/api/projects/{p['id']}/drawings",
+                        files={"file": ("V-50-1-C0110.pdf", fh, "application/pdf")}, headers=H).json()
+
+    rep = _run_handling(client, H, p["id"])
+    assert rep["buildings"] == ["C"]
+
+    assert client.post(f"/api/projects/{p['id']}/overrides", headers=H,
+                       json={"drawing_id": d["id"], "field": "hus", "value": "B"}).status_code == 400
+    ok = client.post(f"/api/projects/{p['id']}/overrides", headers=H,
+                     json={"drawing_id": d["id"], "field": "building", "value": "B",
+                           "note": "mappen heter hus B"}).json()
+    assert ok["rerun_needed"] is True, "en rättelse som inte räknats om är bara en etikett"
+
+    rep = _run_handling(client, H, p["id"])
+    assert rep["buildings"] == ["B"], "rättelsen går före läsningen"
+    row = rep["tree"]["B"]["VVS"][0]
+    assert row["building"]["where"] == "rättelse", "och det syns att det var en människa som sa det"
+
+    rows = client.get(f"/api/projects/{p['id']}/overrides", headers=H).json()["rows"]
+    assert len(rows) == 1 and rows[0]["note"] == "mappen heter hus B"
+
+
+def test_another_reader_cannot_read_or_correct_someone_elses_handling(client, tmp_path):
+    """Ett projekt är sitt ägares. Det gäller projektanalysen precis som allt annat."""
+    a = client.post("/api/auth/register", json={"email": "min@example.com", "password": "hemligt1"}).json()
+    HA = {"Authorization": f"Bearer {a['access_token']}"}
+    b = client.post("/api/auth/register", json={"email": "din@example.com", "password": "hemligt1"}).json()
+    HB = {"Authorization": f"Bearer {b['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Mitt", "description": ""}, headers=HA).json()
+    for h, code in ((HB, 404), (HA, 200)):
+        assert client.get(f"/api/projects/{p['id']}/mode", headers=h).status_code == code
+    assert client.post(f"/api/projects/{p['id']}/analysis", headers=HB).status_code == 404
+    assert client.get(f"/api/projects/{p['id']}/overrides", headers=HB).status_code == 404

@@ -1903,6 +1903,179 @@ body.wz-open { overflow: hidden; }
   max-height: 130px; overflow: auto;
 }
 
+
+/* ---------- att driva tjänsten, och projektet läst som en handling ---------- */
+/* Adminsidan och projektanalysen delar formspråk med resten: hårfina linjer, siffror i monospace, varje yta
+   en panel som ligger på pappret. Skillnaden är tätheten - de här sidorna visar tal bredvid tal, och då är
+   luften mellan dem det enda som gör dem läsbara. */
+
+/* nyckeltalen: en siffra, vad den är, och vad den betyder - i den ordningen, för det är så de läses */
+.adm-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 10px; }
+.adm-stat {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--r-m);
+  padding: 14px 15px; box-shadow: var(--e1), var(--lift);
+  display: flex; flex-direction: column; gap: 2px; min-width: 0;
+  border-left: 3px solid var(--line-2);
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.adm-stat:hover { box-shadow: var(--e2), var(--lift); }
+.adm-stat .k {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--faint);
+}
+.adm-stat .v { font-size: 25px; line-height: 1.12; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.adm-stat .s { font-size: 11.5px; color: var(--muted); }
+.adm-stat.good { border-left-color: var(--ok); }
+.adm-stat.bad { border-left-color: var(--bad); }
+.adm-stat.bad .v { color: var(--bad); }
+
+/* flikarna, grupperade: läsningen till vänster, företaget till höger, och aldrig blandade */
+.adm-tabs { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+.adm-tabs .grp {
+  display: flex; gap: 3px; align-items: center; padding: 4px; border-radius: 999px;
+  background: rgba(13, 13, 13, 0.04); box-shadow: inset 0 1px 2px rgba(16, 18, 22, 0.05);
+  flex-wrap: wrap;
+}
+.adm-tabs .lbl {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--faint); padding: 0 9px 0 7px;
+}
+.adm-tabs button {
+  background: transparent; color: var(--faint); border: 0; border-radius: 999px;
+  padding: 7px 13px; white-space: nowrap; box-shadow: none;
+  transition: color 0.18s var(--ease), background 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.adm-tabs button:hover:not(.on) { color: var(--ink); opacity: 1; transform: none; box-shadow: none; background: rgba(13, 13, 13, 0.05); }
+.adm-tabs button.on { color: var(--ink); background: #fff; box-shadow: var(--e1), var(--lift); }
+
+.adm-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+
+/* kurvan: staplar för hur mycket som lästs, linje för hur långt läsningen kom */
+.adm-trend { width: 100%; height: auto; display: block; }
+.adm-trend .grid { stroke: var(--line); stroke-width: 1; }
+.adm-trend .ax { font-family: var(--mono); font-size: 9px; fill: var(--faint); }
+.adm-trend .bar { fill: var(--line-2); }
+.adm-trend .bar.bad { fill: var(--bad); opacity: 0.75; }
+.adm-trend .cov { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+.adm-trend .covdot { fill: #fff; stroke: var(--ink); stroke-width: 1.4; }
+
+/* formulären: fält bredvid fält tills raden tar slut, aldrig en spalt av ensamma rutor */
+.adm-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: end; }
+.adm-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.adm-field > span {
+  font-family: var(--mono); font-size: var(--label); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--muted);
+}
+.adm-field input, .adm-field select, .adm-field textarea { width: 100%; }
+
+/* A/B-provets två armar, med sitt konfidensintervall ritat som en stapel: ett prov utan intervall är ett
+   påstående om en slump */
+.adm-arms { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin: 12px 0; }
+.adm-arms .arm {
+  border: 1px solid var(--line); border-radius: var(--r-m); padding: 13px 14px; background: var(--bg-2);
+  display: flex; flex-direction: column; gap: 3px; min-width: 0;
+}
+.adm-arms .arm.win { border-color: var(--ok); background: var(--ok-bg); }
+.adm-arms .arm .k {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.adm-arms .arm .v { font-size: 23px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.adm-arms .arm .s { font-size: 11.5px; color: var(--muted); }
+.adm-arms .ci { position: relative; height: 6px; border-radius: 999px; background: rgba(13, 13, 13, 0.08); margin: 6px 0 2px; }
+.adm-arms .ci span { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: var(--ink); min-width: 2px; }
+.adm-arms .arm.win .ci span { background: var(--ok); }
+
+/* heatmapen: en sida i miniatyr, rutorna färgade efter hur många som klickade i dem */
+.adm-heat { width: 100%; height: auto; display: block; border-radius: var(--r-s); border: 1px solid var(--line); }
+.adm-heat .page { fill: #fff; }
+
+/* bilden som fick en regel att flyttas, i helskärm */
+.adm-shot {
+  position: fixed; inset: 0; z-index: 60; background: rgba(13, 13, 13, 0.55);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+  backdrop-filter: blur(3px);
+}
+.adm-shot .inner {
+  background: #fff; border-radius: var(--r-l); padding: 16px; max-width: min(1100px, 94vw); max-height: 92vh;
+  overflow: auto; box-shadow: var(--e3); display: flex; flex-direction: column; gap: 10px;
+}
+.adm-shot img { max-width: 100%; border-radius: var(--r-s); border: 1px solid var(--line); }
+
+.adm-limits { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+.adm-limits li { margin: 4px 0; }
+.adm-limits code { font-family: var(--mono); font-size: 11.5px; color: var(--ink); }
+
+.adm-sit { padding: 6px 0 10px; }
+.adm-sit b { font-size: 13px; }
+
+.lf-pre {
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+  margin: 0; color: var(--muted); max-height: 320px; overflow: auto;
+}
+
+/* Talens tabell. Den ärver allt från den vanliga, utom att den inte bryter raden: en tabell med tolv spalter
+   som viker sig blir en lista med tolv rader, och då går det inte att jämföra två rader med varandra. */
+.qty { font-size: 13px; }
+.qty th, .qty td { padding: 7px 9px; }
+.qty td { vertical-align: top; }
+.qty td.empty { padding: 22px 9px; border-bottom: 0; }
+
+/* framstegsstapeln: ett läge under gång, inte ett tal */
+div.bar { height: 6px; border-radius: 999px; background: rgba(13, 13, 13, 0.07); overflow: hidden; }
+div.bar > span {
+  display: block; height: 100%; border-radius: 999px; background: var(--ink);
+  transition: width 0.4s var(--ease);
+}
+
+/* ---------- projektanalysen ---------- */
+
+/* valet mellan att läsa en ritning och att läsa hela handlingen: två lika stora kort, för det är ett val
+   och inte en rekommendation */
+.pa-choice { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.pa-choice .card { display: flex; flex-direction: column; gap: 6px; }
+.pa-choice .card h3 { margin: 0; }
+.pa-choice .card p { margin: 0; }
+.pa-choice .card button { margin-top: auto; align-self: flex-start; }
+
+.pa-tree { display: flex; flex-direction: column; gap: 14px; }
+.pa-disc { padding: 10px 0 4px; border-top: 1px solid var(--line); margin-top: 10px; }
+.pa-disc:first-of-type { border-top: 0; margin-top: 0; }
+.pa-disc .tablewrap { margin: 8px 0; }
+
+/* före och efter, sida vid sida - och aldrig utan skälet under dem */
+.pa-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin: 12px 0 6px; }
+.pa-pair .side {
+  border: 1px solid var(--line); border-radius: var(--r-m); padding: 12px 13px; background: var(--bg-2);
+  display: flex; flex-direction: column; gap: 4px; align-items: flex-start; min-width: 0;
+}
+.pa-pair .side .k {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.11em; text-transform: uppercase; color: var(--faint);
+}
+
+.pa-unclear { padding: 12px 0; border-top: 1px solid var(--line); }
+.pa-unclear:first-of-type { border-top: 0; padding-top: 4px; }
+.pa-unclear p { margin: 6px 0; }
+
+/* Ett värde som lästs svagt får synas som svagt. Understrykningen är prickad med flit: den ser ut som en
+   stavningskontroll, och det är precis vad den är - inte ett fel, men något någon bör titta på. */
+.pa-weak { text-decoration: underline dotted var(--warn); text-underline-offset: 3px; }
+.pa-c { font-style: normal; font-family: var(--mono); font-size: 9.5px; color: var(--warn); }
+
+.pa-fix {
+  display: flex; flex-direction: column; gap: 8px; padding: 10px 2px 6px;
+  border-left: 3px solid var(--ink); padding-left: 12px; background: var(--bg-2); border-radius: var(--r-s);
+}
+.pa-fix input { flex: 1 1 180px; min-width: 0; }
+.pa-fix select { flex: none; }
+tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
+
+/* En rättelse som inte lästs om är en rättelse modellen inte sett. Det ska stå, och knappen ska stå bredvid. */
+.pa-stale {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  border-color: var(--warn); background: var(--warn-bg); margin-top: 14px;
+}
+
 /* ---------- på en liten skärm ---------- */
 /* Skalet är byggt för ett skrivbord: en 296 px list plus sidan bredvid. På en telefon sköt det ut hela
    innehållet ur rutan. Under 900 px viks listan ihop till sin ikonrad, och allt som stod i två spalter står
@@ -1939,6 +2112,13 @@ body.wz-open { overflow: hidden; }
   .lf-less .nm { overflow: hidden; text-overflow: ellipsis; }
   .toolbar { overflow-x: auto; flex-wrap: nowrap; }
   .toolbar::-webkit-scrollbar { height: 0; }
+
+  .adm-two, .adm-arms, .pa-pair { grid-template-columns: minmax(0, 1fr); }
+  .adm-stats { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  .adm-tabs { gap: 10px; }
+  .adm-tabs .grp { width: 100%; }
+  .pa-fix { padding-left: 10px; }
+  .pa-stale { align-items: flex-start; }
 
   .kpi { grid-template-columns: 1fr 1fr; }
   .item { grid-template-columns: 1fr; gap: 10px; padding: 20px 18px; }

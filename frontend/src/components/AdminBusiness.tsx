@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../api";
 
 /* Företagets halva av administrationen: konton, partners, provision, kundvård, innehåll, prov och heatmaps.
@@ -237,7 +237,7 @@ export function Partners() {
                   <tr key={p.id}>
                     <td><b>{p.name}</b><div className="muted small">{p.email}</div></td>
                     <td className="lf-mono">{p.code}</td>
-                    <td className="muted">{(KINDS.find(([v]) => v === p.kind) ?? [, p.kind])[1]}</td>
+                    <td className="muted">{KINDS.find(([v]) => v === p.kind)?.[1] ?? p.kind}</td>
                     <td className="num">{p.discount_pct} %</td>
                     <td className="num">{p.commission_pct} %
                       <div className="muted small">{p.commission_months ? `${p.commission_months} mån` : "löpande"}</div></td>
