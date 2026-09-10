@@ -68,9 +68,13 @@ async def main():
         assert pg.url.endswith("/analys"), pg.url
 
         print("== projektanalysen: valet, läsningen, flikarna, en rättelse ==")
-        await pg.get_by_role("button", name="Välj projektanalys").click(); await pg.wait_for_timeout(1000)
-        note("välj projektanalys")
-        await pg.get_by_role("button", name="Läs handlingen").click()
+        # andra körningen mot samma tjänst: valet är redan gjort och knappen finns inte - det är rätt beteende
+        pick = pg.get_by_role("button", name="Välj projektanalys")
+        if await pick.count():
+            await pick.click(); await pg.wait_for_timeout(1000)
+            note("välj projektanalys")
+        # "Läs handlingen" första gången, "Läs om" sedan: samma knapp, olika ord
+        await pg.locator(".head .row button").first.click()
         for _ in range(60):
             await pg.wait_for_timeout(500)
             if await pg.locator(".tabs button", has_text="Handlingar").count():
@@ -106,9 +110,10 @@ async def main():
         note("före/efter-fliken")
         await pg.locator(".tabs button", has_text="Mängder").click(); await pg.wait_for_timeout(500)
         note("mängder-fliken")
-        body = await pg.inner_text("body")
-        print(f"  mängder per hus visas: {'Horisontellt' in body}")
-        if "Horisontellt" not in body:
+        # tabellhuvuden är versala via CSS, och innerText följer CSS: jämför utan skiftläge
+        body = (await pg.inner_text("body")).lower()
+        print(f"  mängder per hus visas: {'horisontellt' in body}")
+        if "horisontellt" not in body:
             found.append("mängdfliken visar inga mängder trots två färdiga läsningar")
 
         print("== projektagenten: en färdig fråga utan modell ==")
@@ -120,9 +125,11 @@ async def main():
                 break
         note("projektagenten")
         ans = (await pg.locator(".agentchat .msg.agent").last.inner_text()) if await pg.locator(".agentchat .msg.agent").count() else ""
-        print(f"  svar med hus och blad: {('hus' in ans) and ('.pdf' in ans)}")
-        if not (("hus" in ans) and (".pdf" in ans)):
-            found.append("projektagentens svar nämner inte hus och blad")
+        # svaret på "vad består handlingen av" bär husen och totalen; bladen listas bara om något är oläst
+        ok = ("hus" in ans) and ("totalt" in ans or "documents" in ans)
+        print(f"  svar med hus och total: {ok}")
+        if not ok:
+            found.append("projektagentens svar saknar hus och total")
 
         print("== markera: en längd ritad och sparad på ritningen ==")
         await pg.goto(f"{BASE}/jobs/{job}", wait_until="networkidle"); await pg.wait_for_timeout(5000)
@@ -164,7 +171,8 @@ async def main():
             note("öppna låst kurs ändå")
         await click_all(pg, ".lf-drills button", "övningsknapp", limit=25)
         # ett steg i guiden, och sedan en omladdning: framsteget ska komma från kontot, inte bara från lagret
-        await pg.get_by_role("button", name="Starta guiden").click(); await pg.wait_for_timeout(700)
+        # knappen heter olika beroende på hur långt man kommit; det är hjältens första knapp oavsett text
+        await pg.locator(".lf-hero .row button").first.click(); await pg.wait_for_timeout(700)
         opt = pg.locator(".wz-quiz-opts button").first
         if await opt.count():
             await opt.click(); await pg.wait_for_timeout(200)

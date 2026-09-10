@@ -1,5 +1,8 @@
 # Known limitations (state at the open-world gate)
 
+> Nuläget - grindens siffror, vad som inte görs och varför - står i [`SYSTEMET.md`](SYSTEMET.md) §11-12.
+> Det här dokumentet beskriver begränsningarna som de såg ut vid den öppna grinden och gäller i sak fortfarande.
+
 * **Vertical quantities**: the drawing carries no floor height, so the engine never invents vertical metres. It
   counts risers per designation (closed riser marks a label points at, marks of the same riser-mark family at the
   end of or on a pipe, count prefixes such as `5x` for marker stacks) and reports `riser_count`; the application

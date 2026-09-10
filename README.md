@@ -42,7 +42,9 @@ docker compose up --build       # web UI on http://localhost:8080, API on http:/
 ```
 
 Workflow: skapa projekt → ladda upp VVS-PDF → analysera → följ förloppet → inspektera ritning och mängder →
-Ej lösta → ladda ner markerad PDF / Excel / CSV / JSON / analysrapport.
+Ej lösta → rätta, markera och mät själv (fliken Markera) → fråga agenten → ladda ner markerad PDF / Excel / CSV /
+JSON / analysrapport. Ett helt projekt: Analysera projektet → handlingsförteckning, versioner, ändringar, mängder
+per hus och projektagenten.
 
 ## Deploy as one container (Railway, any Docker host)
 
