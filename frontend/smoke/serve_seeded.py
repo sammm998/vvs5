@@ -26,7 +26,11 @@ with TestClient(app) as c:
     p = c.post("/api/projects", json={"name": "Kv Bjorken, hus A", "description": "VVS-plan, tre blad"}, headers=H).json()
     job = ""
     for tag, nm in (("A", "268140-W-50-P-A-00 VVS PLAN 2.pdf"), ("C", "268140-W-50-P-A-01 VVS PLAN 3.pdf")):
-        with open(f"{ROOT}/data/validation_{tag}/clean.pdf", "rb") as fh:
+        # facit-ritningarna ligger utanför repot; på en ren klon finns bara utvecklingsritningarna, och de duger
+        src = f"{ROOT}/data/validation_{tag}/clean.pdf"
+        if not os.path.exists(src):
+            src = f"{ROOT}/data/dev/DRAWING_{tag}.pdf"
+        with open(src, "rb") as fh:
             d = c.post(f"/api/projects/{p['id']}/drawings", files={"file": (nm, fh, "application/pdf")}, headers=H).json()
         j = c.post(f"/api/drawings/{d['id']}/analyze", headers=H).json()
         for _ in range(600):
