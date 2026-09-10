@@ -874,8 +874,18 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                     # an unlabeled branch where every labeled arm of the junction carries the SAME identity has no
                     # competing candidate: a size change is drawn with its own label, so an unnamed branch is the
                     # identity that feeds it. Only a junction with two or more candidates is genuinely ambiguous.
+                    # En korsning är ingen anslutning. Två rör kan korsa varandra utan att mötas, och en gren
+                    # skapas aldrig bara för att linjer korsas - det är ritningsläsningens egen regel, och det
+                    # ritade beviset för den står i noden: en gren tar slut där den grenar av, medan en linje
+                    # som bara passerar fortsätter rakt ut på andra sidan som ännu en onämnd arm.
+                    #
+                    # Utan den skillnaden blev varje vägg som korsar ett rör en gren och tog rörets namn - och
+                    # på ett blad exporterat utan lagernamn, där väggar och rör ritas med samma penna, kaskadade
+                    # det: nittiofem grenar, tvåhundrafyrtio meter byggnad redovisad som DN16 tappvatten.
+                    passes_through = any(q != u and angle_diff(g.prims[q].seg.angle, g.prims[u].seg.angle) <= 3.0
+                                         for q in unresolved)
                     only = next(iter(cands)) if len(cands) == 1 else None
-                    if only is not None and only.dn is not None and not groups_of.get(ci):
+                    if only is not None and only.dn is not None and not groups_of.get(ci) and not passes_through:
                         aids = set().union(*(st[p].anchors for p in resolved))
                         for pid in ch[ci]:
                             s = st[pid]

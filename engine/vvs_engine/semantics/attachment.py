@@ -492,6 +492,10 @@ def _marker_cluster(seeds: list[RawPath], gidx: GeometryIndex, pipe_families: se
 # A bundle is drawn tight - the runs have to be told apart by eye, so they sit a few points from each other and
 # not a few tens. Beyond this the lines near a leader endpoint are separate runs that happen to be parallel.
 BUNDLE_SPAN = 34.0
+# Hur lång en sträcka måste vara för att kunna vara ett rör i en bunt. Mätt på ritningar där en linje slutar vid
+# ett stråk: markeringsstrecken tvärs rören är tre punkter, hörnrundningarnas rester under en, och de verkliga
+# rören hundratals. Åtta punkter ligger långt över det ena och långt under det andra.
+BUNDLE_MIN_RUN = 8.0
 
 
 def parallel_runs(contacts: list[Contact], paths: dict) -> list[list[Contact]] | None:
@@ -511,6 +515,17 @@ def parallel_runs(contacts: list[Contact], paths: dict) -> list[list[Contact]] |
         segs.append((c, s))
     if len(segs) < 2:
         return None
+    # Markeringsstrecket är inte röret. En hänvisningslinje som slutar vid ett stråk lämnar ett litet snedstreck
+    # tvärs varje rör den menar - tre punkter långt, och ritat på tvären. Räknat som en av linjerna i bunten
+    # pekar det åt fel håll, och eftersom riktningen tas från den första kontakten avgjorde ett sådant streck
+    # vad hela bunten ansågs luta åt. Då stämde ingen av de verkliga rören med den riktningen och bunten fanns
+    # inte. Samma sak med de bråkdelar av punkter som en exporterad hörnrundning lämnar efter sig.
+    #
+    # Så bunten söks bland de sträckor som kan vara rör. Finns färre än två sådana finns ingen bunt att läsa.
+    runs_only = [(c, s) for c, s in segs if s.length >= _R("semantics.attachment.BUNDLE_MIN_RUN", BUNDLE_MIN_RUN)]
+    if len(runs_only) >= 2:
+        segs = runs_only
+    segs.sort(key=lambda z: -z[1].length)      # den längsta sträckan ger buntens riktning, inte den första
     angs = [math.degrees(math.atan2(s.y1 - s.y0, s.x1 - s.x0)) % 180 for _, s in segs]
     a0 = angs[0]
     if any(min(abs(a - a0), 180 - abs(a - a0)) > 6.0 for a in angs):
@@ -545,14 +560,16 @@ def bundle_at(contacts: list[Contact], gidx: GeometryIndex, want: int, skip: set
     """
     if not contacts or want < 2:
         return None
-    base = None
+    # riktningen tas från den längsta sträckan linjen rörde vid, av samma skäl som ovan: ett markeringsstreck
+    # tvärs röret får inte avgöra vad bunten anses luta åt
+    cand = []
     for c in contacts:
         p = paths.get(c.pid)
         if p is not None and c.seg_index < len(p.segs) and p.segs[c.seg_index].length > 1e-6:
-            base = (c, p.segs[c.seg_index])
-            break
-    if base is None:
+            cand.append((c, p.segs[c.seg_index]))
+    if not cand:
         return None
+    base = max(cand, key=lambda z: z[1].length)
     c0, s0 = base
     a0 = math.degrees(math.atan2(s0.y1 - s0.y0, s0.x1 - s0.x0)) % 180
     th = math.radians(a0)
@@ -568,8 +585,8 @@ def bundle_at(contacts: list[Contact], gidx: GeometryIndex, want: int, skip: set
         if family_of(p) != c0.family or k >= len(p.segs):
             continue
         sg = p.segs[k]
-        if sg.length < 1e-6:
-            continue
+        if sg.length < _R("semantics.attachment.BUNDLE_MIN_RUN", BUNDLE_MIN_RUN):
+            continue                       # ett märke eller en hörnrest, inte ett rör i bunten
         a = math.degrees(math.atan2(sg.y1 - sg.y0, sg.x1 - sg.x0)) % 180
         if min(abs(a - a0), 180 - abs(a - a0)) > 6.0:
             continue
