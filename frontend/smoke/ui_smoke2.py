@@ -89,13 +89,17 @@ async def main():
             print(f"  rättelse sparad · bannern 'läs om' visas: {bool(stale)}")
             if stale:
                 await pg.locator(".pa-stale button").click()
-                for _ in range(60):
+                # bannern försvinner i samma ögonblick som omläsningen STARTAR - att vänta på den är att läsa
+                # sidan innan svaret kommit. Vänta på det som faktiskt betyder klar: trädet ritas om med huset.
+                for _ in range(80):
                     await pg.wait_for_timeout(500)
-                    if not await pg.locator(".pa-stale").count():
+                    if "Hus B" in await pg.inner_text("body"):
                         break
                 note("läs om efter rättelse")
                 body = await pg.inner_text("body")
                 print(f"  efter omläsning: hus B i trädet: {'Hus B' in body}")
+                if "Hus B" not in body:
+                    found.append("rättelsen till hus B syns inte i trädet efter omläsning")
         else:
             print("  (ingen Rätta-knapp: inga blad med id?)")
         await pg.locator(".tabs button", has_text="Före / efter").click(); await pg.wait_for_timeout(500)
@@ -104,6 +108,8 @@ async def main():
         note("mängder-fliken")
         body = await pg.inner_text("body")
         print(f"  mängder per hus visas: {'Horisontellt' in body}")
+        if "Horisontellt" not in body:
+            found.append("mängdfliken visar inga mängder trots två färdiga läsningar")
 
         print("== akademin: övningarna och framstegen på kontot ==")
         await pg.goto(f"{BASE}/lar", wait_until="networkidle"); await pg.wait_for_timeout(900)
