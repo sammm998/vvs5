@@ -14,7 +14,7 @@ from typing import Any, Callable
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
 from .geometry.core import GridIndex, dist, point_seg_distance
-from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family,
+from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family, page_symbols,
                                    duplicate_overlaps, family_key,
                                    stroke_family,
                                    graph_tolerances, split_prims_at_points)
@@ -920,7 +920,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         for fk in voted:
             if not prims_all.get(fk):
                 continue
-            g = build_graph(prims_all[fk], fk, graph_tolerances(page))
+            g = build_graph(prims_all[fk], fk, graph_tolerances(page), symbols=page_symbols(page))
             rf = describe_family(fk, prims_all[fk], g)
             desc[fk] = (rf, g)
         def chain_like(fk):
@@ -1587,7 +1587,7 @@ def _split_at_tick_contacts(page: RawPage, graphs: dict, pipe_families: dict, an
         if not prims_all.get(fk):
             continue
         ps = split_prims_at_points(prims_all[fk], sorted(pts[fk]))
-        g = build_graph(ps, fk, graph_tolerances(page))
+        g = build_graph(ps, fk, graph_tolerances(page), symbols=page_symbols(page))
         graphs[fk] = g
         pipe_families[fk] = describe_family(fk, ps, g)
     return graphs, pipe_families
@@ -1778,7 +1778,7 @@ def _generalize_families(page: RawPage, pipe_families: dict, graphs: dict, never
         for fk in sorted(add):
             if not prims.get(fk):
                 continue
-            g = build_graph(prims[fk], fk, graph_tolerances(page))
+            g = build_graph(prims[fk], fk, graph_tolerances(page), symbols=page_symbols(page))
             rf = describe_family(fk, prims[fk], g)
             if rf.kind != "sparse" and rf.longest_chain >= 25 and rf.total_length >= 60:
                 pipe_families[fk] = rf

@@ -30,6 +30,51 @@ TOUCH_TOL = 0.15
 # that trusts its angle finds every dash-to-dot gap "not collinear" and breaks the run at every dot. A dot
 # never claims a continuation; it is claimed, by the dash whose ray it lies on.
 DOT_MAX = 2.5
+# A valve, pump or filter drawn in the line of a pipe interrupts the stroke: the pipe stops at one side of the
+# symbol and goes on from the other. The two free ends face each other across the symbol, collinear, and the
+# symbol - a small drawn thing of another pen - sits in the gap. That is the drawing saying the pipe runs
+# through it; a pipe does not end at a valve. The gap it may span, and how big a symbol may be.
+SYMBOL_SPAN = 24.0
+SYMBOL_SIZE = 30.0
+SYMBOL_OFF = 0.6            # pt: lateral tolerance for the far end, wider than a micro gap's since a symbol's ends are hand-placed
+
+
+class SymbolIndex:
+    """The small drawn things of a page - valves, pumps, filters, markers - by place, built once per page."""
+
+    def __init__(self, page):
+        self.idx = GridIndex(cell=12.0)
+        self.paths: dict[str, tuple[object, str]] = {}
+        for p in page.paths:
+            bb = p.bbox
+            diag = math.hypot(bb[2] - bb[0], bb[3] - bb[1])
+            if 1.5 <= diag <= SYMBOL_SIZE:
+                self.paths[p.pid] = (p, stroke_family(p.layer, p.width, p.color))
+                self.idx.insert(p.pid, bb)
+
+    def covering(self, x: float, y: float, family: str) -> list[str]:
+        """Symbols of another pen whose box holds the point."""
+        out = []
+        for pid in self.idx.query((x - 1.0, y - 1.0, x + 1.0, y + 1.0)):
+            p, fam = self.paths[pid]
+            if fam == family:
+                continue
+            bb = p.bbox
+            if bb[0] - 1.0 <= x <= bb[2] + 1.0 and bb[1] - 1.0 <= y <= bb[3] + 1.0:
+                out.append(pid)
+        return sorted(out)
+
+
+def page_symbols(page) -> SymbolIndex:
+    """The page's symbol index, built the first time it is asked for."""
+    cached = getattr(page, "_symbol_index", None)
+    if cached is None:
+        cached = SymbolIndex(page)
+        try:
+            page._symbol_index = cached
+        except Exception:
+            pass
+    return cached
 
 
 @dataclass(frozen=True)
@@ -371,9 +416,72 @@ def _corner_bridges(nodes, pmap, prim_nodes, idx, gap_mode: float, gtol: float, 
     return out
 
 
-def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = None) -> PipeGraph:
+def _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols: SymbolIndex, family: str):
+    """Two free ends of one run facing each other across a symbol of another pen: (node, node, gap, symbol).
+
+    Each free end of a real stroke (not a dot) looks ahead along its own ray for the nearest free end of a
+    collinear stroke within a symbol's span; the midpoint of the gap has to lie inside a small path of another
+    pen. Two ends that name each other are joined; a one-sided claim is joined only when nothing else claims
+    either end - the same rule as for a micro gap."""
+    claim: dict[int, tuple[int, float, str]] = {}
+    for n in sorted(nodes.values(), key=lambda m: m.nid):
+        if n.degree != 1:
+            continue
+        q = pmap[n.prims[0]]
+        if q.seg.length <= DOT_MAX:
+            continue
+        far = q.b if dist(q.a, (n.x, n.y)) < dist(q.b, (n.x, n.y)) else q.a
+        dx, dy = n.x - far[0], n.y - far[1]
+        L = math.hypot(dx, dy)
+        if L < 1e-9:
+            continue
+        ux, uy = dx / L, dy / L
+        R = SYMBOL_SPAN
+        box = (min(n.x, n.x + ux * R) - 1, min(n.y, n.y + uy * R) - 1, max(n.x, n.x + ux * R) + 1, max(n.y, n.y + uy * R) + 1)
+        best = None
+        for pid2 in idx.query(box):
+            if pid2 == q.prim_id:
+                continue
+            r = pmap[pid2]
+            if r.seg.length <= DOT_MAX or angle_diff(q.seg.angle, r.seg.angle) > 3.0:
+                continue
+            for ep in (r.a, r.b):
+                vx, vy = ep[0] - n.x, ep[1] - n.y
+                along = vx * ux + vy * uy
+                perp = abs(-vx * uy + vy * ux)
+                if 0.5 < along <= R and perp <= SYMBOL_OFF:
+                    tn = next((nn for nn in prim_nodes[pid2] if dist((nodes[nn].x, nodes[nn].y), ep) <= TOUCH_TOL + 0.05), None)
+                    if tn is None or tn == n.nid or nodes[tn].degree != 1:
+                        continue
+                    if best is None or along < best[0]:
+                        best = (along, tn)
+        if best is None:
+            continue
+        along, tn = best
+        sym = symbols.covering(n.x + ux * along / 2.0, n.y + uy * along / 2.0, family)
+        if not sym:
+            continue
+        claim[n.nid] = (tn, along, sym[0])
+    pairs: dict[tuple[int, int], tuple[int, int, float, str]] = {}
+    for nid in sorted(claim):
+        tn, g, sym = claim[nid]
+        if claim.get(tn, (None,))[0] == nid:
+            pairs.setdefault((min(nid, tn), max(nid, tn)), (nid, tn, g, sym))
+    taken = {n for key in pairs for n in key}
+    wanted = Counter(tn for tn, _, _ in claim.values())
+    for nid in sorted(claim):
+        tn, g, sym = claim[nid]
+        if nid in taken or tn in taken or tn in claim or wanted[tn] != 1:
+            continue
+        pairs[(min(nid, tn), max(nid, tn))] = (nid, tn, g, sym)
+        taken |= {nid, tn}
+    return [pairs[k] for k in sorted(pairs)]
+
+
+def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = None,
+                symbols: SymbolIndex | None = None) -> PipeGraph:
     """Nodes: shared endpoints (within TOUCH_TOL) incl. proven T-junctions. Then bridge collinear micro-gaps
-    with unique continuation."""
+    with unique continuation, and the gaps a symbol of another pen sits in."""
     tol = tol or VECTOR_TOL
     prims, junctions = split_t_junctions(prims)
     # 1. endpoint clustering on a lattice
@@ -508,6 +616,12 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
         for nid, tn, g, kind in _corner_bridges(nodes, pmap, prim_nodes, idx, gap_mode, gtol, tol):
             _merge_nodes(nodes, prim_nodes, nid, tn)
             bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": kind,
+                            "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
+    if symbols is not None:
+        # a valve in the line: the run goes on beyond it, whatever gap style the pen has
+        for nid, tn, g, sym in _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols, family):
+            _merge_nodes(nodes, prim_nodes, nid, tn)
+            bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": "symbol", "symbol": sym,
                             "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
     # remove emptied nodes
     nodes = {k: v for k, v in nodes.items() if v.prims}
