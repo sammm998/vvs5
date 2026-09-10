@@ -9,7 +9,7 @@ import tempfile
 import subprocess
 from contextlib import asynccontextmanager
 from functools import lru_cache
-from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Response
 from fastapi.security import OAuth2PasswordRequestForm
@@ -20,7 +20,8 @@ from . import (academy as academy_api, admin as admin_api, exports, jobs, markup
                projects_api, public as public_api)
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
 from vvs_engine.learning import KEYS, lessons, settle, situation
-from .auth import create_token, current_user, hash_password, verify_password
+from .auth import (create_token, current_user, hash_password, login_blocked, login_failed,
+                   login_succeeded, verify_or_burn, verify_password)
 from .config import demand_a_real_secret, settings
 from .db import Correction, AnalysisJob, Drawing, Project, RuleSetting, User, get_db, init_db
 from .storage import storage
@@ -123,10 +124,19 @@ def register(body: RegisterIn, db: Session = Depends(get_db)):
 
 
 @app.post("/api/auth/login")
-def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    u = db.query(User).filter(User.email == form.username.lower()).first()
-    if not u or not verify_password(form.password, u.password_hash):
+def login(request: Request, form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    email = form.username.lower().strip()
+    ip = (request.headers.get("x-forwarded-for") or "").split(",")[0].strip() or \
+        (request.client.host if request.client else "?")
+    wait = login_blocked(email, ip)
+    if wait:
+        raise HTTPException(429, f"För många misslyckade försök. Försök igen om {max(1, wait // 60)} minuter.",
+                            headers={"Retry-After": str(wait)})
+    u = db.query(User).filter(User.email == email).first()
+    if not verify_or_burn(form.password, u.password_hash if u else None):
+        login_failed(email, ip)
         raise HTTPException(401, "Fel e-post eller lösenord")
+    login_succeeded(email)
     return {"access_token": create_token(u), "token_type": "bearer", "email": u.email, "role": u.role}
 
 
@@ -206,12 +216,27 @@ def delete_project(project_id: str, user: User = Depends(current_user), db: Sess
 
 
 # ---------------------------------------------------------------- drawings
+MAX_UPLOAD_BYTES = 200 * 1024 * 1024      # samma tak som docker/nginx.conf: client_max_body_size 200m
+
+
 @app.post("/api/projects/{project_id}/drawings")
 async def upload_drawing(project_id: str, file: UploadFile = File(...), user: User = Depends(current_user), db: Session = Depends(get_db)):
     p = _project(db, user, project_id)
     if not (file.filename or "").lower().endswith(".pdf"):
         raise HTTPException(400, "Endast PDF-filer stöds")
-    data = await file.read()
+    # Läs in filen bit för bit och sluta vid taket. `file.read()` rakt av drar hela filen in i minnet innan
+    # någon tittat på storleken, och en tillräckligt stor fil tar då hela arbetaren med sig - ett tak som
+    # prövas först när allt redan är läst är inget tak. Samma gräns som nginx sätter framför tjänsten.
+    chunks, size = [], 0
+    while True:
+        chunk = await file.read(1024 * 1024)
+        if not chunk:
+            break
+        size += len(chunk)
+        if size > MAX_UPLOAD_BYTES:
+            raise HTTPException(413, f"Filen är större än {MAX_UPLOAD_BYTES // (1024 * 1024)} MB")
+        chunks.append(chunk)
+    data = b"".join(chunks)
     if not data.startswith(b"%PDF"):
         raise HTTPException(400, "Filen är inte en giltig PDF")
     import pymupdf

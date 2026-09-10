@@ -820,3 +820,38 @@ def test_every_export_actually_opens_in_the_program_it_is_meant_for(client, synt
     text = rep.content.decode("utf-8", "replace")
     assert "Björken" in text or "Bj\\u00f6rken" in text, "rapporten nämner inte ritningen"
     assert any(n in text for n in names), "rapporten nämner ingen av beteckningarna"
+
+
+def test_a_guesser_is_slowed_down_and_cannot_tell_which_accounts_exist(client):
+    """Ett lösenord på sex tecken tål inte obegränsat många försök.
+
+    Efter tio fel på en adress inom en kvart svarar tjänsten 429 med hur länge - också på det rätta lösenordet,
+    för det är just då gissaren har hittat det. Och en adress som inte finns kostar lika lång tid som en som
+    finns med fel lösenord; utan det säger svarstiden vilka konton som finns.
+    """
+    import time as _t
+    from app import auth
+    client.post("/api/auth/register", json={"email": "gissa@example.com", "password": "hemligt1"})
+
+    # samma svar, och ungefär samma tid, för en okänd adress och ett fel lösenord
+    t0 = _t.perf_counter(); a = client.post("/api/auth/login", data={"username": "gissa@example.com", "password": "fel"}); ta = _t.perf_counter() - t0
+    t0 = _t.perf_counter(); b = client.post("/api/auth/login", data={"username": "finns-inte@example.com", "password": "fel"}); tb = _t.perf_counter() - t0
+    assert a.status_code == b.status_code == 401 and a.json() == b.json()
+    assert tb > 0.4 * ta, f"den okända adressen svarade på {tb*1000:.0f} ms mot {ta*1000:.0f} ms: tiden avslöjar kontot"
+
+    auth._fails.clear()
+    for _ in range(auth.LOGIN_MAX_FAILS - 1):
+        assert client.post("/api/auth/login", data={"username": "gissa@example.com", "password": "fel"}).status_code == 401
+    # det tionde felet fyller fönstret; därefter är dörren stängd - även för rätt lösenord
+    assert client.post("/api/auth/login", data={"username": "gissa@example.com", "password": "fel"}).status_code == 401
+    r = client.post("/api/auth/login", data={"username": "gissa@example.com", "password": "hemligt1"})
+    assert r.status_code == 429, r.text
+    assert "Retry-After" in r.headers and "minuter" in r.json()["detail"]
+
+    # ett annat konto från samma håll spärras inte av det - spärren per avsändare är mycket vidare
+    client.post("/api/auth/register", json={"email": "annan-gissa@example.com", "password": "hemligt1"})
+    assert client.post("/api/auth/login", data={"username": "annan-gissa@example.com", "password": "hemligt1"}).status_code == 200
+
+    # och när fönstret gått ut öppnas dörren igen, och ett lyckat försök nollar räkningen
+    auth._fails.clear()
+    assert client.post("/api/auth/login", data={"username": "gissa@example.com", "password": "hemligt1"}).status_code == 200

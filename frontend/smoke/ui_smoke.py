@@ -37,7 +37,9 @@ async def click_all(pg, sel, label, limit=40):
 
 async def main():
     async with async_playwright() as p:
-        b = await p.chromium.launch(executable_path="/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+        # sökvägen till webbläsaren skiljer sig mellan maskiner; CHROME i miljön vinner, annars Playwrights egen
+        exe = os.environ.get("CHROME") or "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
+        b = await p.chromium.launch(executable_path=exe if os.path.exists(exe) else None)
         ctx = await b.new_context(viewport={"width": 1500, "height": 940})
         pg = await ctx.new_page()
         pg.on("pageerror", lambda e: errs.append(f"pageerror: {e}"))

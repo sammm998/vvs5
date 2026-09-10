@@ -8,8 +8,24 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, rela
 
 from .config import settings
 
-connect_args = {"check_same_thread": False} if settings.database_url.startswith("sqlite") else {}
+# SQLite under en trådpool: mätningen skriver framsteg medan API:t läser. I standardläget håller varje
+# skrivning hela filen låst och en läsare som kommer emellan får "database is locked" - inte efter en stund,
+# utan direkt. WAL låter läsare och en skrivare arbeta samtidigt, och en väntetid gör att den som ändå
+# krockar väntar i stället för att falla.
+_sqlite = settings.database_url.startswith("sqlite")
+connect_args = {"check_same_thread": False, "timeout": 30} if _sqlite else {}
 engine = create_engine(settings.database_url, connect_args=connect_args, pool_pre_ping=True)
+
+if _sqlite:
+    from sqlalchemy import event
+
+    @event.listens_for(engine, "connect")
+    def _sqlite_pragmas(dbapi_conn, _record):
+        cur = dbapi_conn.cursor()
+        cur.execute("PRAGMA journal_mode=WAL")
+        cur.execute("PRAGMA busy_timeout=30000")
+        cur.execute("PRAGMA foreign_keys=ON")
+        cur.close()
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
 
 

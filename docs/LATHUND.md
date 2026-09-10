@@ -16,11 +16,11 @@ En ärlig avstämning, punkt för punkt. `✓` betyder byggt och provat, `~` del
 
 | § | Krav | Läge | Var |
 |---|------|------|-----|
-| 1 | Läs ritningshuvud, revision, status, skala före geometrin | ~ | skala ✓, revision/status ✗ |
+| 1 | Läs ritningshuvud, revision, status, skala före geometrin | ✓ | skala i `measure/scale.py`; nummer, revision, status, datum och hus ur namnrutan i `handling.py` |
 | 2 | Bryt upp beteckningen i system + material + dimension + isolering | ✓ | `ownership.identity_from_text` |
 | 3 D | Streckad linje: mät hela sträckan, inte strecken | ✓ | `representation`, DASH_GAP_MAX |
 | 3 I/J | Två eller tre parallella rör är två eller tre mängder | ~ | undersöks |
-| 3 K/L | Korsning är inte automatiskt anslutning | ✓ | `_bound_junction_flow` |
+| 3 K/L | Korsning är inte automatiskt anslutning | ✓ | korsningsregeln i `ownership._resolve_family`: en linje som passerar går in på ena sidan av noden och ut på den andra; en stump kortare än kontakttoleransen bär aldrig ett namn |
 | 3 S | Dela mängden vid dimensionsbyte | ✓ | DN-frontier i `ownership` |
 | 3 T | Dela mängden vid materialbyte | ✓ | ingår i identitetens stam |
 | 3 U/V/W | Befintligt, rivning och nytt skiljs åt | ✗ | **saknas** |
@@ -42,7 +42,7 @@ En ärlig avstämning, punkt för punkt. `✓` betyder byggt och provat, `~` del
 | 20 | Genomföringar, hylsor, brandtätning | ✗ | **saknas** |
 | 21 | Isolering mängdas separat | ~ | koden bärs i identiteten, egen post saknas |
 | 22 | Status: nytt, befintligt, rivs, flyttas | ✗ | **saknas** |
-| 23 | Överlapp mellan ritningar räknas en gång | ~ | handlingsvy finns, överlapp prövas ej |
+| 23 | Överlapp mellan ritningar räknas en gång | ~ | projektanalysen håller husen isär och summerar per hus; överlapp mellan blad i samma hus prövas ej |
 | 24 | Dubbel CAD-geometri räknas en gång | ✓ | sammanfallande primitiver slås ihop |
 | 25 | Mät inte längd ur ett schema | ~ | skala krävs, schema känns ej igen |
 | 26 | Kalibrera mot skalstock | ✓ | `measure/scale.py` |
