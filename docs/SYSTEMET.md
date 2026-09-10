@@ -96,6 +96,13 @@ Tre ritkonventioner som läsningen läser som geometri, inte som antaganden (`pi
   symbolpennan och drar vidare på andra sidan. Två fria, kollineära ändar med en liten symbol av en annan
   penna i springan (`SYMBOL_SPAN`, `SYMBOL_SIZE`) hör ihop: bryggan heter `symbol` i grafen och bär symbolens
   id.
+* **En skrafferad figur** är inget rör. En radiator ritas som en tunn rektangel fylld med ett par dussin
+  skrafferstreck, på en penna för sig, och den pennan vägdes som rör: varje hänvisningslinje som gick förbi en
+  radiator fick en andra kandidatfamilj, ankaret blev tvetydigt, och metrarna på det riktiga röret gick till
+  ingen. En knut av streck vars bläck är mer än `pipes.representation.FIGURE_INK` (6) gånger sin egen
+  utsträckning står still och fyller sin ruta: den sätts åt sidan innan någon graf byggs och redovisas som
+  avvisad med skälet `DRAWN_FIGURE_NOT_A_RUN`, med strecken kvar att titta på. Mätt över korpusen ligger
+  rörpennor på 0,8-2,9 och skrafferade radiatorer på 8,8-15,7.
 * **Ett rör ritat som två linjer** är ett rör. Ett grövre rör ritas som sina två kanter, ytterdiametern isär i
   bladets skala, och etiketten med ett streck på var kant namnger båda. Två sträckor med samma namn och samma
   penna sida vid sida längs större delen av den kortare, på det avstånd rörets diameter ger (1,6 × dy i skala,
@@ -234,10 +241,25 @@ har inte alltid rätt.
 
 ---
 
-## 6. Egna markeringar (mät, markera, anteckna)
+## 6. Mängda för hand (mät, räkna, markera)
 
-Fliken **Markera** på en läsning låter mängdaren rita själv: längd, yta, antal, anteckning. Det ligger vid sidan
-av läsningen, aldrig i den; de två redovisas var för sig (eget blad i Excel-filen, eget namn i JSON:en).
+**Mängda** är en egen flik i sidomenyn och ett eget arbetsbord (`/mangda`, `frontend/src/pages/Takeoff.tsx`):
+bladet till vänster, verktyget till höger. Det ligger vid sidan av läsningen, aldrig i den; de två redovisas var
+för sig (eget blad i Excel-filen, eget namn i JSON:en). Fliken **Markera** på en läsning finns kvar för den som
+vill rita medan hon läser.
+
+Verktygen är de en mängdare behöver: **längd**, polylinje och frihand, med *multiplikator* och *tillägg* (en
+stigare räknad som en punkt bär ändå sina meter); **yta**, rektangel och moln, med *avdrag* för hål i ytan och
+*djup* som gör kvadratmetrarna till kubikmeter; **antal**, där varje klick får sitt löpnummer inom lagret; och
+**anteckning**. Varje markering bär lager och beteckning, listan summerar per lager, verktyg och beteckning, och
+hela listan går att ta ut som CSV.
+
+**Skalan** kommer ur läsningen av bladet - men går den inte att läsa, eller gäller den inte för ett urklipp,
+mäter mängdaren upp den själv: dra en linje över något vars längd är känd och skriv måttet. Den uppmätta skalan
+går före läsningens för det bladet och den sidan, varje markering på sidan räknas om i den, och varje rad säger
+vilken skala den mättes i. Utan skala står måttet i punkter, aldrig i påhittade meter.
+
+**Verktygslådan** sparar förval - lager, beteckning, djup, multiplikator - som följer med till nästa blad.
 
 Måtten räknas på servern ur punkterna och bladets egen skala (`backend/app/markups.py`) - aldrig i webbläsaren,
 för ett mått klienten räknar fram går inte att härleda till någonting. Utan en färdig läsning finns ingen
@@ -381,8 +403,7 @@ ladda upp, mängda, läs av API:t - och poängsätts efteråt av ett skript som 
 Två tal bär: **täckning** (andel av facits meter läsningen äger under rätt namn) och **falskhet** (meter under
 fel namn, i andel av facit). Bara de system facit faktiskt täcker poängsätts.
 
-Senaste grinden: **79,7 % täckning, 26,8 % falskt**, 268 av 365 beteckningar rätt. Kurvan över de senaste
-rättelserna, en regel i taget:
+Kurvan över de senaste rättelserna, en regel i taget:
 
 | grind | regel | täckning | falskt |
 |---|---|---|---|
@@ -391,6 +412,9 @@ rättelserna, en regel i taget:
 | 47 | streck-prick-linjen är ett rör; en ventil avslutar det inte (§2c) | 79,5 % | 27,5 % |
 | 48 | dubbellinjen viks ihop - för brett: DN16-buntar vek sig också | 72,7 % | 22,7 % |
 | 49 | dubbellinjen följer diametern i skala; pricken bryggas på geometrin; tabellen namnger bara korta sträckor | 79,7 % | 26,8 % |
+| 50 | skrafferade figurer (radiatorer) vägs inte som rör (§2c) | 80,0 % | 27,3 % |
+
+Senaste grinden är alltså **80,0 % täckning, 27,3 % falskt**, 270 av 365 beteckningar rätt.
 
 Det falska steg med täckningen, och det är den siffran som ska ner. Där den kommer ifrån, blad för blad:
 en del är facit-policy som läsningen inte kan veta (kopplingsledningar och avloppsgrenar som facit inte räknat
