@@ -2467,3 +2467,15 @@ button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 
 .mk-table tr.selectable { cursor: pointer; }
 .mk-table tr.selected td { background: #f4f8fa; }
 .mk-dot { display: inline-block; width: 9px; height: 9px; border-radius: 999px; margin-right: 7px; vertical-align: baseline; }
+
+/* siktet i gå-läget: ett litet kors i mitten, så att man vet vad ett klick pekar på */
+.d3-cross {
+  position: absolute; left: 50%; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px;
+  pointer-events: none; opacity: 0.75;
+}
+.d3-cross::before, .d3-cross::after {
+  content: ""; position: absolute; background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+}
+.d3-cross::before { left: 50%; top: 0; width: 1.5px; height: 100%; margin-left: -0.75px; }
+.d3-cross::after { top: 50%; left: 0; height: 1.5px; width: 100%; margin-top: -0.75px; }
