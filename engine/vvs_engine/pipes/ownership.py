@@ -454,6 +454,22 @@ def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[Pi
             s.evidence.append(f"layer_token_{tok}_and_{len(aids)}_agreeing_anchors_{uni.key}")
 
 
+SLIVER_RUN = 0.6            # pt: kortare än så är ingen sträcka, det är avrundningen i utdraget
+
+
+def _too_short_to_carry(g: PipeGraph, ch: list[list[int]], ci: int) -> bool:
+    """Är kedjan för kort för att bära ett namn vidare?
+
+    En kedja på en tiondels punkt är inte ett rör. Den är vad ett CAD-utdrag lämnar efter sig när två linjer
+    delas vid en skärning: en stump kortare än den tolerans som avgör om två saker alls rör vid varandra.
+
+    Den sortens stump bär ingen riktning och inget bevis, men den duger som brygga: tar den namnet vid en nod
+    blir den en löst arm vid nästa, och därifrån vandrar namnet vidare över ett glapp det aldrig borde ha
+    korsat. Femton sådana bryggor på ett enda blad, och sex och en halv meter byggnad redovisad som rör.
+    """
+    return sum(g.prims[q].seg.length for q in ch[ci]) < _R("pipes.ownership.SLIVER_RUN", SLIVER_RUN)
+
+
 def _opposite_sides(g: PipeGraph, n, a: int, b: int) -> bool:
     """Går de två armarna ut åt var sitt håll från noden?
 
@@ -875,6 +891,10 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
             if not resolved or not unresolved:
                 continue
             for u in unresolved:
+                # En stump kortare än kontakttoleransen får inte ta ett namn och bära det vidare. Den är inget
+                # ritat rör, och som brygga tar den namnet över glapp som aldrig var anslutningar.
+                if _too_short_to_carry(g, ch, chain_of[u]):
+                    continue
                 # collinear resolved partner?
                 partners = [p for p in resolved if angle_diff(g.prims[p].seg.angle, g.prims[u].seg.angle) <= 3.0]
                 idents = {st[p].identity for p in partners}

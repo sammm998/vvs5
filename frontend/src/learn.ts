@@ -1,3 +1,5 @@
+import { api } from "./api";
+
 /* VVS-akademin: vad en mängdare behöver kunna, i delmoment som går att göra en i taget.
  *
  * En läsning tar en stund, och den stunden är en av de få gånger en person sitter still framför verktyget. Det
@@ -576,13 +578,56 @@ export const ALL_LESSONS = MODULES.flatMap((m) => m.lessons.map((l) => ({ ...l, 
 
 const KEY = "vvs.learn";
 
+/* Var någon är i akademin.
+ *
+ * Framstegen låg bara i webbläsarens eget lager. Det räcker för en person som sitter vid samma dator hela
+ * tiden och aldrig rensar något - och för ingen annan. En kollega som byter dator började om från noll, och
+ * adminsidans "hur långt kommer folk" läste en tabell som ingenting någonsin skrev i.
+ *
+ * Nu ligger de på kontot. Det lokala lagret är kvar som det snabba svaret - sidan ska rita rätt direkt och
+ * inte efter ett nätverksanrop - och som reserv för den som inte loggat in. Men servern är den som gäller:
+ * kommer ett svar därifrån är det svaret som vinner.
+ */
+const LESSON_MODULE: Record<string, string> = Object.fromEntries(
+  MODULES.flatMap((m) => m.lessons.map((l) => [l.id, m.id])),
+);
+
 export function readProgress(): Record<string, boolean> {
   try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { return {}; }
 }
 
-export function markDone(lessonId: string, done = true) {
+function write(p: Record<string, boolean>) {
+  try { localStorage.setItem(KEY, JSON.stringify(p)); } catch { /* privat fönster: då sparas det bara inte */ }
+  return p;
+}
+
+/** Hämta det som ligger på kontot och lägg ihop det med det som ligger här. Ett klarat steg blir aldrig oklarat. */
+export async function syncProgress(): Promise<Record<string, boolean>> {
+  const local = readProgress();
+  try {
+    const r = await api.progress();
+    for (const c of Object.values<any>(r.courses ?? {})) {
+      for (const [id, step] of Object.entries<any>(c.done_steps ?? {})) {
+        if (step?.right) local[id] = true;
+      }
+    }
+    return write(local);
+  } catch {
+    return local;                        // utloggad, eller ingen uppkoppling: det lokala duger
+  }
+}
+
+export function markDone(lessonId: string, result?: { right?: boolean; tries?: number }) {
   const p = readProgress();
-  if (done) p[lessonId] = true; else delete p[lessonId];
-  try { localStorage.setItem(KEY, JSON.stringify(p)); } catch { /* private window: progress just does not persist */ }
+  p[lessonId] = true;
+  write(p);
+  const course = LESSON_MODULE[lessonId];
+  if (course) {
+    const of_steps = MODULES.find((m) => m.id === course)?.lessons.length;
+    // en förlorad rad är ett förlorat steg, inte ett fel värt att stanna för
+    api.saveProgress(course, {
+      step_id: lessonId, right: result?.right !== false, tries: Math.max(1, result?.tries ?? 1), of_steps,
+    }).catch(() => { /* det lokala står kvar */ });
+  }
   return p;
 }

@@ -16,6 +16,7 @@ Allt utom det sista är läsning av det som redan finns i databasen. Det sista �
 from __future__ import annotations
 
 import datetime as dt
+import re
 from collections import Counter, defaultdict
 from typing import Any
 
@@ -381,7 +382,10 @@ def _commission(db: Session, partner: Partner) -> dict:
                      "commission_kr": _kr(share)})
     paid = db.query(func.coalesce(func.sum(Payout.amount_ore), 0)).filter(
         Payout.partner_id == partner.id, Payout.status == "utbetald").scalar() or 0
-    return {"accounts": live, "monthly_commission_kr": _kr(earned), "paid_total_kr": _kr(paid)}
+    # Öret följer med ut. Utan det måste den som skapar en utbetalning multiplicera kronor med hundra igen,
+    # och då är beloppet räknat i flyttal precis som kommentaren ovan säger att det aldrig får vara.
+    return {"accounts": live, "monthly_commission_kr": _kr(earned), "paid_total_kr": _kr(paid),
+            "monthly_commission_ore": earned, "paid_total_ore": paid}
 
 
 @router.get("/partners")
@@ -450,6 +454,40 @@ def create_payout(body: PayoutIn, admin: User = Depends(current_admin), db: Sess
     p = Payout(**body.model_dump())
     db.add(p); db.commit()
     return {"id": p.id}
+
+
+class DraftIn(BaseModel):
+    partner_id: str
+    period: str                                   # 2026-08
+    note: str = ""
+
+
+@router.post("/payouts/draft")
+def draft_payout(body: DraftIn, admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    """Skapa en utbetalning ur den provision som faktiskt räknats fram.
+
+    Beloppet skrivs aldrig för hand och passerar aldrig gränssnittet: det räknas här, ur samma funktion som
+    visar provisionen i tabellen, och i ören hela vägen. Ett belopp som någon skrivit av från en skärm är ett
+    belopp som inte går att härleda till en rad.
+
+    En period per partner. Två utbetalningar för augusti är en dubbelbetalning som ingen upptäcker förrän
+    partnern hör av sig, och den sortens fel ska inte gå att göra av misstag.
+    """
+    p = db.get(Partner, body.partner_id)
+    if p is None:
+        raise HTTPException(404, "Okänd partner")
+    if not re.fullmatch(r"\d{4}-\d{2}", body.period or ""):
+        raise HTTPException(400, "Perioden skrivs som 2026-08")
+    old = (db.query(Payout).filter(Payout.partner_id == p.id, Payout.period == body.period,
+                                   Payout.status != "makulerad").first())
+    if old is not None:
+        raise HTTPException(400, f"Det finns redan en utbetalning för {body.period}")
+    ore = _commission(db, p)["monthly_commission_ore"]
+    if ore <= 0:
+        raise HTTPException(400, "Ingen provision att betala ut för perioden")
+    row = Payout(partner_id=p.id, period=body.period, amount_ore=ore, note=body.note)
+    db.add(row); db.commit()
+    return {"id": row.id, "amount_kr": _kr(ore), "period": row.period}
 
 
 @router.put("/payouts/{payout_id}")

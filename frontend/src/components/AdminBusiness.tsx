@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { api } from "../api";
 
 /* Företagets halva av administrationen: konton, partners, provision, kundvård, innehåll, prov och heatmaps.
@@ -175,13 +175,37 @@ export function Partners() {
   useEffect(() => { load(); }, []);
   const blank = { name: "", email: "", kind: "affiliate", code: "", discount_pct: 10, commission_pct: 20, commission_months: 12, status: "aktiv", payout_ref: "", note: "" };
 
+  // Skicka de fält servern vill ha, inte allt utom de vi råkar komma ihåg att stryka. En uträknad kolumn som
+  // läggs till på serversidan ska inte kunna följa med tillbaka in i en spara-knapp.
+  const FIELDS = ["name", "email", "kind", "code", "discount_pct", "commission_pct",
+                  "commission_months", "status", "payout_ref", "note"];
   const save = async () => {
-    const body = { ...edit };
-    ["id", "accounts", "monthly_commission_kr", "paid_total_kr", "n_accounts", "created_at"].forEach((k) => delete body[k]);
+    const body: any = {};
+    FIELDS.forEach((k) => { body[k] = edit[k]; });
     try {
       if (edit.id) await api.admPut(`partners/${edit.id}`, body); else await api.admPost("partners", body);
       setEdit(null); load();
     } catch (e: any) { setErr(e.message); }
+  };
+
+  /* Att göra en uträknad provision till en utbetalning.
+   *
+   * Beloppet skrivs aldrig här. Servern räknar det ur samma funktion som visar provisionen i tabellen, i ören
+   * hela vägen - ett belopp som någon skrivit av från en skärm är ett belopp som inte går att härleda. Det
+   * enda som frågas är vilken månad det gäller, och förslaget är den som gick. */
+  const lastMonth = () => {
+    const d = new Date();
+    d.setDate(1); d.setMonth(d.getMonth() - 1);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+  };
+  const draft = async (p: any) => {
+    const period = window.prompt(
+      `Vilken månad gäller utbetalningen till ${p.name}?\n\nProvisionen just nu är ${kr(p.monthly_commission_kr)}.`,
+      lastMonth());
+    if (!period) return;
+    setErr("");
+    try { await api.admPost("payouts/draft", { partner_id: p.id, period }); load(); }
+    catch (e: any) { setErr(e.message); }
   };
 
   return (
@@ -233,8 +257,10 @@ export function Partners() {
               <th className="num">Per månad</th><th className="num">Utbetalt</th><th></th></tr></thead>
             <tbody>
               {(d?.rows ?? []).map((p: any) => (
-                <>
-                  <tr key={p.id}>
+                /* nyckeln hör hemma på det yttersta elementet raden ger tillbaka - ligger den på den inre
+                   <tr> ser React en lista av namnlösa fragment och kan blanda ihop raderna vid en omsortering */
+                <Fragment key={p.id}>
+                  <tr>
                     <td><b>{p.name}</b><div className="muted small">{p.email}</div></td>
                     <td className="lf-mono">{p.code}</td>
                     <td className="muted">{KINDS.find(([v]) => v === p.kind)?.[1] ?? p.kind}</td>
@@ -247,10 +273,13 @@ export function Partners() {
                     <td>
                       <button className="ghost small" onClick={() => setOpen(open === p.id ? null : p.id)}>Kunder</button>
                       {d.is_admin && <button className="ghost small" onClick={() => setEdit({ ...p })}>Ändra</button>}
+                      {d.is_admin && p.monthly_commission_kr > 0 && (
+                        <button className="ghost small" onClick={() => draft(p)}>Betala ut</button>
+                      )}
                     </td>
                   </tr>
                   {open === p.id && (
-                    <tr key={`${p.id}-d`}><td colSpan={9}>
+                    <tr><td colSpan={9}>
                       <table className="qty">
                         <thead><tr><th>Kund</th><th>Plan</th><th>Läge</th><th className="num">Intäkt</th>
                           <th className="num">Månader</th><th className="num">Provision</th></tr></thead>
@@ -268,7 +297,7 @@ export function Partners() {
                       </table>
                     </td></tr>
                   )}
-                </>
+                </Fragment>
               ))}
               {d && !d.rows.length && <tr><td colSpan={9} className="empty">Inga partners upplagda.</td></tr>}
             </tbody>

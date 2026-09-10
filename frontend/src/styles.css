@@ -2084,6 +2084,11 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
   background: var(--warn-bg);
 }
 
+/* övningsavsnittet i akademin: de fristående övningarna efter kapitlen */
+.lf-drills { margin-top: 30px; display: flex; flex-direction: column; gap: 6px; }
+.lf-drills > h3 { margin: 0; }
+.lf-drills > p { margin: 0 0 10px; max-width: 62ch; }
+
 /* ---------- på en liten skärm ---------- */
 /* Skalet är byggt för ett skrivbord: en 296 px list plus sidan bredvid. På en telefon sköt det ut hela
    innehållet ur rutan. Under 900 px viks listan ihop till sin ikonrad, och allt som stod i två spalter står

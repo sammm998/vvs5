@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
-import { MODULES, readProgress, type Module } from "../learn";
+import { useEffect, useMemo, useState } from "react";
+import { MODULES, readProgress, syncProgress, type Module } from "../learn";
 import LearnWizard from "./LearnWizard";
+import LearnExercise, { EXERCISE_IDS } from "./LearnExercises";
 
 /* VVS-akademin.
  *
@@ -129,6 +130,9 @@ export function Exercise() {
 export default function Learn({ compact }: { compact?: boolean }) {
   const [prog, setProg] = useState<Record<string, boolean>>(() => readProgress());
   const [open, setOpen] = useState<string | null>(null);
+  // Det lokala ritas direkt; kontots svar vinner så snart det kommer. Den som byter dator ska hitta sina steg
+  // där de var, inte börja om.
+  useEffect(() => { syncProgress().then(setProg); }, []);
   const flat = useMemo(() => MODULES.flatMap((m) => m.lessons.map((l) => ({ m, l }))), []);
   const done = flat.filter(({ l }) => prog[l.id]).length;
   const next = flat.find(({ l }) => !prog[l.id]) ?? flat[0];
@@ -141,8 +145,8 @@ export default function Learn({ compact }: { compact?: boolean }) {
           <h2>Lär dig läsa och mängda en rörritning</h2>
           <p className="muted">
             {flat.length} steg i {MODULES.length} kapitel, ett i taget, vart och ett med en levande figur som
-            visar vad det handlar om — och övningar där du får svara själv och se facit. Stegen sparas i den här
-            webbläsaren, så du kan fortsätta där du slutade nästa gång en ritning läses.
+            visar vad det handlar om — och övningar där du får svara själv och se facit. Stegen sparas på ditt
+            konto, så du fortsätter där du slutade även från en annan dator.
           </p>
           <div className="row" style={{ marginTop: 16 }}>
             <button onClick={() => setOpen(next.l.id)}>
@@ -178,6 +182,17 @@ export default function Learn({ compact }: { compact?: boolean }) {
           );
         })}
       </div>
+      {!compact && (
+        <section className="lf-drills">
+          <h3>Öva</h3>
+          <p className="muted">
+            Att läsa om en regel och att tillämpa den är två olika saker, och det är den andra som fastnar.
+            Ingen av övningarna går att klara genom att gissa på det som ligger närmast — det är hela poängen
+            med dem.
+          </p>
+          {EXERCISE_IDS.map((id) => <LearnExercise key={id} id={id} />)}
+        </section>
+      )}
       <LearnWizard open={open !== null} start={open ?? undefined}
         onClose={() => { setOpen(null); setProg(readProgress()); }} />
     </div>

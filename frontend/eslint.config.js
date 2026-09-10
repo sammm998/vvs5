@@ -3,6 +3,7 @@
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import reactHooks from "eslint-plugin-react-hooks";
+import react from "eslint-plugin-react";
 
 export default tseslint.config(
   { ignores: ["dist/**", "node_modules/**"] },
@@ -10,10 +11,14 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     files: ["src/**/*.{ts,tsx}"],
-    plugins: { "react-hooks": reactHooks },
+    plugins: { "react-hooks": reactHooks, react },
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-hooks/rules-of-hooks": "error",
+      // En lista av namnlösa fragment är namnlös för React: den kan blanda ihop raderna vid en omsortering,
+      // och nyckeln som ligger på ett element INNE i fragmentet räknas inte. Två adminlistor hade precis det
+      // felet och ingenting sa till.
+      "react/jsx-key": ["error", { checkFragmentShorthand: true, checkKeyMustBeforeSpread: true }],
       "react-hooks/exhaustive-deps": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "no-empty": ["error", { allowEmptyCatch: true }],

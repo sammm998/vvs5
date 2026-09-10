@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { api } from "../api";
 
 /* Läsningens halva av administrationen: vad som lästs, vad kunderna rättat, och vad rättelserna lärt.
@@ -125,8 +125,9 @@ export function Corrections() {
               <th>Lär</th><th>Anteckning</th></tr></thead>
             <tbody>
               {(d?.rows ?? []).map((r: any) => (
-                <>
-                  <tr key={r.id} className={r.undone ? "muted" : ""}
+                /* nyckeln på fragmentet, inte på den inre raden: annars är listan namnlös för React */
+                <Fragment key={r.id}>
+                  <tr className={r.undone ? "muted" : ""}
                     onClick={() => setOpen(open === r.id ? null : r.id)} style={{ cursor: "pointer" }}>
                     <td className="muted">{when(r.created_at)}</td>
                     <td>{r.kind}{r.undone && <span className="badge small" style={{ marginLeft: 6 }}>ångrad</span>}</td>
@@ -138,7 +139,7 @@ export function Corrections() {
                     <td className="muted">{r.note ?? ""}</td>
                   </tr>
                   {open === r.id && (
-                    <tr key={`${r.id}-d`}><td colSpan={7}>
+                    <tr><td colSpan={7}>
                       <div className="adm-sit">
                         <b>Situationen rättelsen gjordes i</b>
                         <p className="muted">
@@ -156,7 +157,7 @@ export function Corrections() {
                       </div>
                     </td></tr>
                   )}
-                </>
+                </Fragment>
               ))}
               {d && !d.rows.length && <tr><td colSpan={7} className="empty">Ingen har rättat något ännu.</td></tr>}
             </tbody>

@@ -62,6 +62,11 @@ G_LIMIT = "Gränser för arbetet"
 
 RULES: tuple[Rule, ...] = (
     # ---- hänvisningslinjer -------------------------------------------------------------------------------
+    Rule("pipes.ownership.SLIVER_RUN", G_LEADER, "För kort för att bära ett namn",
+         "En kedja kortare än så är ingen sträcka utan det ett CAD-utdrag lämnar efter sig när två linjer "
+         "delas vid en skärning. En sådan stump får inte ta ett namn och bära det vidare - som brygga tar den "
+         "namnet över glapp som aldrig var anslutningar.",
+         "pt", 0.6, 0.0, 5.0, "pipe", True),
     Rule("semantics.attachment.CONTACT_TOL", G_LEADER, "Kontakt räknas som kontakt",
          "Hur nära en hänvisningslinjes ände måste ligga rörets linje för att räknas som att den rör vid den. "
          "Under det här är det samma punkt så långt en PDF-export kan uttrycka den.",

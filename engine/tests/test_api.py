@@ -492,3 +492,110 @@ def test_two_readings_of_the_same_sheet_are_compared_without_inventing_a_change(
     assert ch["totals"]["added"] == 0 and ch["totals"]["removed"] == 0, ch["totals"]
     assert ch["totals"]["changed"] == 0, [r for r in ch["rows"] if r["what"] == "ÄNDRAD"]
     assert ch["totals"]["unchanged"] > 0, ch["totals"]
+
+
+# ----------------------------------------------------------------------------------------------------------
+# akademin
+# ----------------------------------------------------------------------------------------------------------
+
+def test_academy_progress_lives_on_the_account_and_the_score_is_the_servers(client):
+    """Framstegen låg i webbläsarens eget lager, och en kollega som bytte dator började om från noll.
+
+    Poängen räknas på servern ur stegen själva. Ett resultat som klienten får bestämma är inte ett resultat,
+    det är ett önskemål - och en utmärkelse som går att sätta själv är ingen utmärkelse.
+    """
+    r = client.post("/api/auth/register", json={"email": "elev@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    assert client.get("/api/academy/progress").status_code == 401
+
+    empty = client.get("/api/academy/progress", headers=H).json()
+    assert empty["courses"] == {} and empty["score"] == 0 and empty["awards"] == []
+
+    # rätt på första försöket är värt mer än rätt till slut
+    a = client.put("/api/academy/progress/system", headers=H,
+                   json={"step_id": "system-vad", "right": True, "tries": 1, "of_steps": 3}).json()
+    b = client.put("/api/academy/progress/system", headers=H,
+                   json={"step_id": "system-tryck", "right": True, "tries": 3, "of_steps": 3}).json()
+    assert a["score"] == 10 and b["score"] == 14, (a["score"], b["score"])
+    assert b["completed"] is False, "två av tre steg är inte en klarad kurs"
+    assert "forsta-steget" in b["awards"], b["awards"]
+
+    done = client.put("/api/academy/progress/system", headers=H,
+                      json={"step_id": "system-sjalvfall", "right": True, "tries": 1, "of_steps": 3}).json()
+    assert done["completed"] is True
+    assert "kursen-klar" in done["awards"]
+    assert any(x["key"] == "kursen-klar" for x in done["new_awards"]), done["new_awards"]
+
+    # ett klarat steg blir aldrig oklarat av ett senare besök
+    again = client.put("/api/academy/progress/system", headers=H,
+                       json={"step_id": "system-vad", "right": False, "tries": 9}).json()
+    assert again["done_steps"]["system-vad"]["right"] is True
+    assert again["completed"] is True and again["score"] == done["score"]
+
+    all_of_it = client.get("/api/academy/progress", headers=H).json()
+    assert set(all_of_it["courses"]) == {"system"} and all_of_it["score"] == done["score"]
+
+    # och en annan elevs framsteg är inte mina
+    o = client.post("/api/auth/register", json={"email": "elev2@example.com", "password": "hemligt1"}).json()
+    other = client.get("/api/academy/progress",
+                       headers={"Authorization": f"Bearer {o['access_token']}"}).json()
+    assert other["courses"] == {} and other["score"] == 0
+
+
+def test_the_award_list_says_what_is_still_locked(client):
+    """En låst utmärkelse som inte syns är ingen morot. Villkoret står, och det prövas mot tabellen."""
+    r = client.post("/api/auth/register", json={"email": "utmark@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    rows = client.get("/api/academy/awards", headers=H).json()["awards"]
+    assert len(rows) >= 4 and all(a["taken_at"] is None for a in rows)
+    assert all(a["why"] for a in rows), "en utmärkelse utan villkor går inte att sikta på"
+    client.put("/api/academy/progress/system", headers=H, json={"step_id": "x", "right": True})
+    rows = client.get("/api/academy/awards", headers=H).json()["awards"]
+    assert next(a for a in rows if a["key"] == "forsta-steget")["taken_at"]
+    assert next(a for a in rows if a["key"] == "kursen-klar")["taken_at"] is None
+
+
+def test_a_commission_becomes_a_payout_without_the_amount_passing_through_a_screen(client):
+    """Provisionen räknades fram men gick aldrig att betala ut: gränssnittet kunde bara markera en utbetalning
+    som redan fanns, och ingen väg skapade någon.
+
+    Beloppet räknas på servern, i ören, ur samma funktion som visar provisionen. Ett belopp som någon skrivit
+    av från en skärm är ett belopp som inte går att härleda till en rad.
+    """
+    from app.db import SessionLocal, User
+    r = client.post("/api/auth/register", json={"email": "prov@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    db = SessionLocal()
+    u = db.query(User).filter(User.email == "prov@example.com").first()
+    u.role = "admin"; db.commit(); db.close()
+
+    p = client.post("/api/admin/partners", headers=H,
+                    json={"name": "Anna", "email": "anna@x.se", "kind": "ambassador", "code": "ANNA10",
+                          "discount_pct": 10, "commission_pct": 20, "commission_months": 0}).json()
+    a = client.post("/api/admin/accounts", headers=H, json={"name": "Kunden", "plan": "proffs"}).json()
+    client.put(f"/api/admin/accounts/{a['id']}", headers=H,
+               json={"plan": "proffs", "status": "aktiv", "mrr_ore": 199900, "partner_id": p["id"]})
+
+    row = next(x for x in client.get("/api/admin/partners", headers=H).json()["rows"] if x["id"] == p["id"])
+    assert row["monthly_commission_ore"] == 39980, row          # 20 % av 1 999,00 kr, räknat i ören
+    assert row["monthly_commission_kr"] == 399.80
+
+    # ingen period alls, och en som inte är en period
+    assert client.post("/api/admin/payouts/draft", headers=H,
+                       json={"partner_id": p["id"], "period": "augusti"}).status_code == 400
+
+    out = client.post("/api/admin/payouts/draft", headers=H,
+                      json={"partner_id": p["id"], "period": "2026-08"})
+    assert out.status_code == 200, out.text
+    assert out.json()["amount_kr"] == 399.80
+
+    # två utbetalningar för samma månad är en dubbelbetalning ingen upptäcker förrän partnern hör av sig
+    again = client.post("/api/admin/payouts/draft", headers=H,
+                        json={"partner_id": p["id"], "period": "2026-08"})
+    assert again.status_code == 400 and "2026-08" in again.json()["detail"]
+
+    rows = client.get("/api/admin/payouts", headers=H).json()["rows"]
+    assert len(rows) == 1 and rows[0]["status"] == "oppen" and rows[0]["amount_kr"] == 399.80
+    client.put(f"/api/admin/payouts/{out.json()['id']}?status=utbetald", headers=H)
+    row = next(x for x in client.get("/api/admin/partners", headers=H).json()["rows"] if x["id"] == p["id"])
+    assert row["paid_total_ore"] == 39980, "det utbetalda ska synas på partnern"

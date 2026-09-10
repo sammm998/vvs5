@@ -42,8 +42,11 @@ function More({ body }: { body: Block[] }) {
   );
 }
 
-function QuizStep({ q, onPass }: { q: Quiz; onPass: () => void }) {
+function QuizStep({ q, onPass }: { q: Quiz; onPass: (tries: number) => void }) {
   const [pick, setPick] = useState<number | null>(null);
+  // Antalet försök räknas här och skickas med. En utmärkelse som heter "utan fel" måste veta om det gick fel,
+  // och den som gissar sig fram till rätt svar har inte gjort samma sak som den som kunde det.
+  const [tries, setTries] = useState(0);
   return (
     <div className="wz-quiz">
       <div className="wz-quiz-q">{q.q}</div>
@@ -51,7 +54,7 @@ function QuizStep({ q, onPass }: { q: Quiz; onPass: () => void }) {
         {q.options.map((o, i) => (
           <button key={i} type="button"
             className={`secondary${pick === null ? "" : i === q.answer ? " right" : pick === i ? " wrong" : ""}`}
-            onClick={() => { setPick(i); if (i === q.answer) onPass(); }}>
+            onClick={() => { setPick(i); const n = tries + 1; setTries(n); if (i === q.answer) onPass(n); }}>
             <span className="k">{String.fromCharCode(65 + i)}</span>{o}
           </button>
         ))}
@@ -109,7 +112,7 @@ export default function LearnWizard({ open, onClose, start }: {
   if (!s) return null;
   const l = s.lesson;
   const done = steps.filter((x) => prog[x.lesson.id]).length;
-  const finish = () => setProg(markDone(l.id));
+  const finish = (tries = 1) => setProg(markDone(l.id, { right: true, tries }));
   const chapters = MODULES.map((m) => {
     const own = steps.filter((x) => x.moduleId === m.id);
     return {
@@ -166,7 +169,7 @@ export default function LearnWizard({ open, onClose, start }: {
             <More body={l.body} />
             {l.quiz && <QuizStep q={l.quiz} onPass={finish} />}
             {!l.quiz && (
-              <button className={prog[l.id] ? "secondary small" : "small"} onClick={finish}>
+              <button className={prog[l.id] ? "secondary small" : "small"} onClick={() => finish()}>
                 {prog[l.id] ? "Markerad som klar" : "Jag har läst det här"}
               </button>
             )}
