@@ -454,6 +454,27 @@ def _family_uniform_identity(fk: str, st: dict[int, PrimState], anchors: list[Pi
             s.evidence.append(f"layer_token_{tok}_and_{len(aids)}_agreeing_anchors_{uni.key}")
 
 
+def _opposite_sides(g: PipeGraph, n, a: int, b: int) -> bool:
+    """Går de två armarna ut åt var sitt håll från noden?
+
+    En linje som passerar en annan går in på ena sidan och ut på den andra. Två parallella armar som pekar åt
+    samma håll gör inte det: det är samma linje ritad två gånger, eller en stump som ligger ovanpå ledningen.
+    Riktningen räknas från noden och ut mot armens andra ände, för det är den änden som säger vart armen går.
+    """
+    def away(pid: int) -> tuple[float, float]:
+        s = g.prims[pid].seg
+        d0 = (s.x0 - n.x) ** 2 + (s.y0 - n.y) ** 2
+        d1 = (s.x1 - n.x) ** 2 + (s.y1 - n.y) ** 2
+        far = (s.x1, s.y1) if d1 >= d0 else (s.x0, s.y0)
+        vx, vy = far[0] - n.x, far[1] - n.y
+        L = math.hypot(vx, vy) or 1.0
+        return vx / L, vy / L
+
+    ax, ay = away(a)
+    bx, by = away(b)
+    return ax * bx + ay * by < 0.0
+
+
 def _merge_identity(ids: list[Identity]) -> Identity | None:
     """Merge compatible identities: same stem, and each of dimension and qualifier stated at most one way.
 
@@ -882,7 +903,15 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                     # Utan den skillnaden blev varje vägg som korsar ett rör en gren och tog rörets namn - och
                     # på ett blad exporterat utan lagernamn, där väggar och rör ritas med samma penna, kaskadade
                     # det: nittiofem grenar, tvåhundrafyrtio meter byggnad redovisad som DN16 tappvatten.
-                    passes_through = any(q != u and angle_diff(g.prims[q].seg.angle, g.prims[u].seg.angle) <= 3.0
+                    #
+                    # Men det räcker inte att de är parallella. En linje som passerar går IN på ena sidan av
+                    # noden och UT på den andra - de två armarna pekar åt var sitt håll. Två onämnda armar som
+                    # pekar åt SAMMA håll är samma linje ritad två gånger, eller en stump ovanpå ledningen, och
+                    # där finns ingenting som passerar. Utan riktningen stannade ledningen vid varje sådan
+                    # dubbelritning: trettio meter rätt rör försvann på ett enda blad.
+                    passes_through = any(q != u
+                                         and angle_diff(g.prims[q].seg.angle, g.prims[u].seg.angle) <= 3.0
+                                         and _opposite_sides(g, n, q, u)
                                          for q in unresolved)
                     only = next(iter(cands)) if len(cands) == 1 else None
                     if only is not None and only.dn is not None and not groups_of.get(ci) and not passes_through:

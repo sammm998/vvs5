@@ -89,3 +89,45 @@ def test_the_crossing_line_is_not_silently_lost(tmp_path):
     c = reading_coverage(pa)
     assert (c["unowned_m"] or 0) + (c["ambiguous_m"] or 0) > 1.0, (
         "det som inte fick ett namn ska redovisas som onämnt eller tvetydigt, inte tappas bort")
+
+
+def _splay(path: str) -> str:
+    """Två grenar som lämnar samma nod åt samma håll, med en liten vinkel mellan sig.
+
+    Det är en förgrening som ritas rakt av: två rör ned mot var sin apparat, och de skiljer sig bara några
+    grader åt. Båda tar slut där nere. Ingenting passerar noden - och skillnaden mot en korsning är riktningen,
+    för vinkeln ensam ser dem som parallella.
+    """
+    doc = pymupdf.open()
+    page = doc.new_page(width=842, height=595)
+    PEN = 1.44
+    page.draw_line((100, 300), (700, 300), width=PEN, color=(0, 0, 0))      # den namngivna ledningen
+    page.draw_line((400, 300), (400, 430), width=PEN, color=(0, 0, 0))      # gren rakt ned
+    page.draw_line((400, 300), (406, 430), width=PEN, color=(0, 0, 0))      # gren ned, knappt tre grader ifrån
+
+    for x in (150.0, 300.0, 560.0):
+        page.insert_text((x, 200), "KV01-X7-16", fontsize=10, fontname="helv")
+        page.draw_line((x, 203), (x + 62, 203), width=0.72, color=(0, 0, 0))
+        page.draw_line((x + 62, 203), (x + 72, 300), width=0.72, color=(0, 0, 0))
+        page.draw_line((x + 71, 299), (x + 73, 301), width=0.72, color=(0, 0, 0))
+
+    page.insert_text((100, 560), "SKALA 1:50", fontsize=10, fontname="helv")
+    for i in range(6):
+        page.insert_text((300 + i * 56.69, 560), str(i), fontsize=8, fontname="helv")
+    page.draw_line((302, 566), (302 + 5 * 56.69, 566), width=1.0, color=(0, 0, 0))
+    doc.save(path)
+    doc.close()
+    return path
+
+
+def test_two_branches_leaving_the_same_way_are_two_branches(tmp_path):
+    """En linje som passerar går IN på ena sidan och UT på den andra. Två grenar åt samma håll gör inte det.
+
+    Vinkeln ensam ser dem som parallella och lät dem avfärda varandra som en genomgående linje, och då tappade
+    ledningen båda sina grenar.
+    """
+    splay_m, pa = _measured(_splay(str(tmp_path / "splay.pdf")))
+    branch_m, _ = _measured(_sheet(str(tmp_path / "en.pdf"), crossing=False))
+    assert splay_m > branch_m + 1.0, (
+        "två grenar ned från samma nod ska räknas som två grenar, inte avfärdas som en korsning - "
+        f"en gren {branch_m:.2f} m, två grenar {splay_m:.2f} m")
