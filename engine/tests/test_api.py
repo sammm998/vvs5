@@ -923,3 +923,78 @@ def test_the_project_agent_answers_from_the_reading_and_names_its_sheets(client,
     o = client.post("/api/auth/register", json={"email": "agent2@example.com", "password": "hemligt1"}).json()
     assert client.post(f"/api/projects/{p['id']}/agent/tool", json={"name": "hamta_handling"},
                        headers={"Authorization": f"Bearer {o['access_token']}"}).status_code == 404
+
+
+def test_a_calculation_prices_the_reading_and_the_tender_carries_the_same_numbers(client, synthetic_pdf):
+    """Från mängd till anbud, med varje steg utskrivet.
+
+    Kalkylen räknar ur läsningens rader: artikel ur materialboken, timmar ur Normtid VVS, spill, påslag och
+    moms - och summan är summan av delarna. Anbudet skrivs ur den SPARADE kalkylen och bär samma tal; utan en
+    sparad kalkyl finns inget anbud. En annan användare får varken räkna eller läsa.
+    """
+    import pymupdf
+    r = client.post("/api/auth/register", json={"email": "kalkyl@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Kv Björken", "description": ""}, headers=H).json()
+    with open(synthetic_pdf, "rb") as fh:
+        d = client.post(f"/api/projects/{p['id']}/drawings",
+                        files={"file": ("plan2.pdf", fh, "application/pdf")}, headers=H).json()
+    j = client.post(f"/api/drawings/{d['id']}/analyze", headers=H).json()
+    for _ in range(240):
+        j = client.get(f"/api/jobs/{j['id']}", headers=H).json()
+        if j["status"] in ("COMPLETED", "FAILED"):
+            break
+        time.sleep(0.5)
+    assert j["status"] == "COMPLETED", j
+
+    u = client.get(f"/api/jobs/{j['id']}/calc/underlag", headers=H).json()
+    assert u["defaults"]["timpris"] > 0 and u["normtid"]["tables"], "underlaget bär boken och antagandena"
+    assert client.get(f"/api/jobs/{j['id']}/calc", headers=H).json()["status"] == "NONE"
+    assert client.get(f"/api/jobs/{j['id']}/calc/anbud.pdf", headers=H).status_code == 409, "inget anbud utan sparad kalkyl"
+
+    c = client.post(f"/api/jobs/{j['id']}/calc/preview", headers=H,
+                    json={"assumptions": {"timpris": 700, "spill_pct": 10, "paslag_material_pct": 10,
+                                          "paslag_arbete_pct": 0, "moms_pct": 25, "supplements": ["pressfog"]}}).json()
+    rows, T = c["rows"], c["totals"]
+    assert rows and T["rader"] == len(rows)
+    # varje rad: kalkylmängd = netto + spill, och summan är summan av delarna
+    for row in rows:
+        assert abs(row["kalkyl_m"] - row["netto_m"] * 1.10) < 0.02, row
+        assert abs(row["summa_kr"] - ((row["material_kr"] or 0) + (row["arbete_kr"] or 0))) < 0.02
+        if row["timmar"] is not None and not row["timmar_for_hand"]:
+            assert row["steg"]["tillagg_pct"] == 15.0, "pressfog är +15 % i boken"
+            assert abs(row["arbete_kr"] - row["timmar"] * 700) < 0.02
+    with_time = [x for x in rows if x["timmar"] is not None]
+    assert with_time, "minst en dimension i bladet ska ha en normtid i boken"
+    mat = sum(x["material_kr"] or 0 for x in rows); arb = sum(x["arbete_kr"] or 0 for x in rows)
+    assert abs(T["material_kr"] - mat) < 0.05 and abs(T["arbete_kr"] - arb) < 0.05
+    assert abs(T["netto_kr"] - (mat * 1.10 + arb)) < 0.05
+    assert abs(T["brutto_kr"] - T["netto_kr"] * 1.25) < 0.05
+
+    # en timme skriven för hand går före boken, och en vald artikel går före förslaget
+    first = rows[0]["designation"]
+    alt = rows[0]["alternativ"][1]["a"] if len(rows[0]["alternativ"]) > 1 else None
+    ov = {first: {"timmar": 3.5, **({"artikel": alt} if alt else {})}}
+    s = client.put(f"/api/jobs/{j['id']}/calc", headers=H,
+                   json={"assumptions": c["assumptions"], "overrides": ov}).json()
+    row0 = next(x for x in s["rows"] if x["designation"] == first)
+    assert row0["timmar"] == 3.5 and row0["timmar_for_hand"] and row0["normtid_kalla"] == "angiven för hand"
+    if alt:
+        assert row0["artikel"]["a"] == alt and row0["vald_artikel"]
+    assert client.get(f"/api/jobs/{j['id']}/calc", headers=H).json()["status"] == "SAVED"
+
+    pdf = client.get(f"/api/jobs/{j['id']}/calc/anbud.pdf", headers=H)
+    assert pdf.status_code == 200 and pdf.headers["content-type"].startswith("application/pdf")
+    doc = pymupdf.open(stream=pdf.content, filetype="pdf")
+    text = "".join(pg.get_text() for pg in doc)
+    assert len(doc) >= 1 and "ANBUD" in text and "Kv Björken" in text
+    brutto = f"{s['totals']['brutto_kr']:,.2f}".replace(",", " ").replace(".", ",")
+    assert brutto in text, f"anbudet ska bära kalkylens summa {brutto}"
+    assert "Förbehåll" in text and "Förutsättningar" in text
+    html_doc = client.get(f"/api/jobs/{j['id']}/calc/anbud.html", headers=H)
+    assert html_doc.status_code == 200 and "ANBUD" in html_doc.text
+
+    o = client.post("/api/auth/register", json={"email": "kalkyl2@example.com", "password": "hemligt1"}).json()
+    OH = {"Authorization": f"Bearer {o['access_token']}"}
+    assert client.get(f"/api/jobs/{j['id']}/calc", headers=OH).status_code == 404
+    assert client.get(f"/api/jobs/{j['id']}/calc/anbud.pdf", headers=OH).status_code == 404

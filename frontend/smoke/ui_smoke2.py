@@ -155,6 +155,38 @@ async def main():
         else:
             found.append("ingen markering att spara efter ritandet")
 
+        print("== kalkyl: räkna, spara, anbud ==")
+        await pg.locator(".tabs button", has_text="Kalkyl").click(); await pg.wait_for_timeout(1200)
+        note("kalkyl-fliken")
+        calc_btn = pg.locator(".calc button", has_text="Kalkylera")
+        if not await calc_btn.count():
+            calc_btn = pg.locator(".calc button", has_text="Räkna om")
+        await calc_btn.first.click()
+        for _ in range(40):
+            await pg.wait_for_timeout(400)
+            if await pg.locator(".calc .adm-stat").count():
+                break
+        note("kalkylera")
+        body = (await pg.inner_text("body")).lower()
+        print(f"  summa visas: {'anbudssumma' in body} · rader: {await pg.locator('.calc table tbody tr').count()}")
+        if "anbudssumma" not in body:
+            found.append("kalkylen visar ingen anbudssumma")
+        await pg.locator(".calc button", has_text="Spara kalkyl").click(); await pg.wait_for_timeout(1500)
+        note("spara kalkyl")
+        pv = pg.locator(".calc button", has_text="Förhandsgranska")
+        print(f"  anbudsknappar efter spar: {await pv.count() > 0}")
+        if await pv.count():
+            await pv.first.click(); await pg.wait_for_timeout(1500)
+            note("förhandsgranska anbud")
+            frame = pg.frame_locator("iframe[title='Anbud']")
+            has = await frame.locator("body").count()
+            txt = (await frame.locator("body").inner_text()) if has else ""
+            print(f"  anbudet i förhandsgranskningen: {'ANBUD' in txt and 'Specifikation' in txt}")
+            if not ("ANBUD" in txt and "Specifikation" in txt):
+                found.append("anbudets förhandsgranskning saknar rubrik eller specifikation")
+        else:
+            found.append("anbudsknapparna syns inte efter spar")
+
         print("== akademin: övningarna och framstegen på kontot ==")
         await pg.goto(f"{BASE}/lar", wait_until="networkidle"); await pg.wait_for_timeout(900)
         note("akademin")

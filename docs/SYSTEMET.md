@@ -201,6 +201,30 @@ meterraden. En struken markering står kvar i lagret så att den går att få ti
 
 ---
 
+## 6b. Kalkyl och anbud
+
+Fliken **Kalkyl** på en läsning gör mängden till pris, i två steg som hålls isär så att varje krona går att
+spåra till en rad på ritningen (`backend/app/calc.py`):
+
+*Material.* Varje beteckning matchas mot materialboken (55 000 artiklar med nettopris): bladets egen
+förklaringslista säger vad materialkoden betyder, dimensionen står i beteckningen. Matchningen är ett förslag
+med alternativ bredvid - den som räknar väljer, och valet sparas.
+
+*Arbete.* Timmarna kommer ur Normtid VVS (`vvs_engine/normtid.py`): grundtid per meter efter ytterdiameter och
+material, tillägg för skarvmetod och höjd, avvikelseanalysens bedömning av objektet. Stigare räknas som en
+våningshöjd där ritningen inte anger höjden. Där boken inte har någon tid står det, och timmen skrivs för hand -
+en gissad normtid är värre än ingen, för den ser ut som ett besked. Tabellerna är avlästa ur boken och ska
+kontrolleras mot utgåvan innan ett anbud lämnas; det står i gränssnittet.
+
+Sedan spill (kalkylmängd = netto + spill), påslag på material och arbete var för sig, och moms - allt utskrivet.
+Det som sparas är valen och antagandena, aldrig resultatet: talen räknas om ur läsningen varje gång, med kundens
+rättelser ovanpå, så kalkylen och bladet aldrig visar två olika meter.
+
+**Anbudet** skrivs ur den sparade kalkylen som en formgiven PDF (PyMuPDF Story, HTML/CSS → A4): summan först,
+sedan specifikationen rad för rad, sedan förutsättningarna och förbehållen - på samma papper som summan. Rader
+utan artikel eller normtid står som förbehåll, liksom det onämnda röret och det som inte ingår (fittings,
+genomföringar, isolering som egen post, rivning).
+
 ## 7. Akademin
 
 Nio kurser, tjugotvå steg, femton kunskapsfrågor och tre fristående övningar med facit
@@ -302,4 +326,4 @@ id-bärande väg med fel ägare.
   utan höjd, en revision ur ett filnamn, eller ett före och ett efter ur två discipliner.
 * Det låter ingen modell avgöra en meter, och ingen rättelse skapa en.
 * Det mängdar inte fittings, genomföringar, isolering som egen post, status (nytt/befintligt/rivs) eller
-  kalkyl- och beställningsmängd. Det står i `LATHUND.md` vad som är gjort och vad som inte är det.
+  beställningsmängd i handelslängder. Det står i `LATHUND.md` vad som är gjort och vad som inte är det.

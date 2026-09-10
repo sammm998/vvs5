@@ -337,6 +337,23 @@ class CourseProgress(Base):
     updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)
 
 
+class Calculation(Base):
+    """Kalkylen för en läsning: antagandena och valen. Talen räknas om ur läsningen varje gång.
+
+    Det som sparas är det en människa bestämde - timpris, påslag, vilken artikel, en timme skriven för hand -
+    aldrig resultatet. Ett lagrat resultat är ett tal som inte längre går att spåra till en meter.
+    """
+    __tablename__ = "calculations"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    job_id: Mapped[str] = mapped_column(ForeignKey("analysis_jobs.id"), index=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    assumptions: Mapped[dict] = mapped_column(JSON, default=dict)
+    overrides: Mapped[dict] = mapped_column(JSON, default=dict)               # beteckning -> {artikel, timmar}
+    totals: Mapped[dict] = mapped_column(JSON, default=dict)                  # senast räknade, för överblicken
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)
+
+
 class Markup(Base):
     """Vad någon ritat själv ovanpå ritningen - mätt, markerat eller antecknat.
 

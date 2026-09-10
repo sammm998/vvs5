@@ -47,7 +47,7 @@ En ärlig avstämning, punkt för punkt. `✓` betyder byggt och provat, `~` del
 | 25 | Mät inte längd ur ett schema | ~ | skala krävs, schema känns ej igen |
 | 26 | Kalibrera mot skalstock | ✓ | `measure/scale.py` |
 | 27 | Nettomängd | ✓ | |
-| 28 | Kalkylmängd = netto + spill | ✗ | **saknas** |
+| 28 | Kalkylmängd = netto + spill | ✓ | kalkylen i `backend/app/calc.py`: spill i procent, utskrivet per rad |
 | 29 | Beställningsmängd = handelslängder | ✗ | **saknas** |
 | 31 | Verifierad / härledd / osäker | ✓ | CONFIRMED / flödad / AMBIGUOUS |
 | 32 | De vanligaste mängdfelen | ~ | se raderna ovan |

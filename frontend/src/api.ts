@@ -124,6 +124,16 @@ export const api = {
 
   awards: () => req("/api/academy/awards"),
 
+  // ---- kalkyl och anbud ---------------------------------------------------------------------------------
+  calcUnderlag: (jobId: string) => req(`/api/jobs/${jobId}/calc/underlag`),
+  calcPreview: (jobId: string, body: any) =>
+    req(`/api/jobs/${jobId}/calc/preview`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  calcSave: (jobId: string, body: any) =>
+    req(`/api/jobs/${jobId}/calc`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  calc: (jobId: string) => req(`/api/jobs/${jobId}/calc`),
+  anbudPdfUrl: (jobId: string) => `/api/jobs/${jobId}/calc/anbud.pdf`,
+  anbudHtmlUrl: (jobId: string) => `/api/jobs/${jobId}/calc/anbud.html`,
+
   // ---- projektagenten -----------------------------------------------------------------------------------
   projectAgent: (projectId: string, body: any) =>
     req(`/api/projects/${projectId}/agent`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
