@@ -599,3 +599,73 @@ def test_a_commission_becomes_a_payout_without_the_amount_passing_through_a_scre
     client.put(f"/api/admin/payouts/{out.json()['id']}?status=utbetald", headers=H)
     row = next(x for x in client.get("/api/admin/partners", headers=H).json()["rows"] if x["id"] == p["id"])
     assert row["paid_total_ore"] == 39980, "det utbetalda ska synas på partnern"
+
+
+def test_a_markup_is_measured_by_the_server_and_never_by_the_browser(client, synthetic_pdf):
+    """Egna markeringar ligger vid sidan av läsningen, aldrig i den - och mäts där skalan finns.
+
+    Ett mått som klienten räknar fram går inte att härleda till någonting, och det skulle stå bredvid motorns
+    meter i samma tabell. Utan en färdig läsning finns ingen skala, och då redovisas markeringen i punkter med
+    ett uttryckligt "ingen skala" i stället för i påhittade meter.
+    """
+    r = client.post("/api/auth/register", json={"email": "mark@example.com", "password": "hemligt1"}).json()
+    H = {"Authorization": f"Bearer {r['access_token']}"}
+    p = client.post("/api/projects", json={"name": "Markering", "description": ""}, headers=H).json()
+    with open(synthetic_pdf, "rb") as fh:
+        d = client.post(f"/api/projects/{p['id']}/drawings",
+                        files={"file": ("m.pdf", fh, "application/pdf")}, headers=H).json()
+
+    # före läsningen: inga meter, och det står varför
+    first = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                        json={"tool": "langd", "points": [[0, 0], [100, 0]]}).json()
+    assert first["measure"]["scale"] == "INGEN_SKALA"
+    assert first["measure"]["langd_pt"] == 100.0 and "m" not in first["measure"]
+
+    j = client.post(f"/api/drawings/{d['id']}/analyze", headers=H).json()
+    for _ in range(240):
+        j = client.get(f"/api/jobs/{j['id']}", headers=H).json()
+        if j["status"] in ("COMPLETED", "FAILED"):
+            break
+        time.sleep(0.5)
+    assert j["status"] == "COMPLETED", j
+    mpp = client.get(f"/api/jobs/{j['id']}/result", headers=H).json()["scale"]["meters_per_pdf_point"]
+
+    line = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                       json={"tool": "langd", "designation": "KV01", "points": [[0, 0], [100, 0], [100, 50]]}).json()
+    assert line["measure"]["scale"] == "VERIFIERAD"
+    assert abs(line["measure"]["m"] - 150.0 * mpp) <= 5e-4, line["measure"]
+
+    # en yta räknas på den slutna formen: en kvadrat på hundra punkter är hundra gånger hundra
+    box = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                      json={"tool": "area", "points": [[0, 0], [100, 0], [100, 100], [0, 100]]}).json()
+    assert abs(box["measure"]["area_pt"] - 10000.0) < 1e-6
+    assert abs(box["measure"]["kvm"] - 10000.0 * mpp * mpp) <= 5e-4
+
+    n = client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                    json={"tool": "antal", "points": [[1, 1], [2, 2], [3, 3]]}).json()
+    assert n["measure"]["antal"] == 3
+
+    # ett okänt verktyg lagras inte som något gränssnittet sedan tyst hoppar över
+    assert client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                       json={"tool": "hitta-på", "points": []}).status_code == 400
+    assert client.post(f"/api/drawings/{d['id']}/markups", headers=H,
+                       json={"tool": "langd", "points": [[1, 2, 3]]}).status_code == 400
+
+    rows = client.get(f"/api/drawings/{d['id']}/markups?page=0", headers=H).json()
+    assert len(rows["rows"]) == 4 and rows["meters_per_pdf_point"] == mpp
+    assert abs(rows["totals"]["m"] - round(150.0 * mpp, 3)) < 0.02, rows["totals"]
+
+    # ändras punkterna räknas måttet om - klienten skickar aldrig med ett mått
+    moved = client.put(f"/api/drawings/{d['id']}/markups/{line['id']}", headers=H,
+                       json={"tool": "langd", "points": [[0, 0], [50, 0]]}).json()
+    assert abs(moved["measure"]["m"] - 50.0 * mpp) <= 5e-4
+
+    client.delete(f"/api/drawings/{d['id']}/markups/{line['id']}", headers=H)
+    assert len(client.get(f"/api/drawings/{d['id']}/markups", headers=H).json()["rows"]) == 3
+
+    # och en annan mängdares markeringar är inte mina
+    o = client.post("/api/auth/register", json={"email": "mark2@example.com", "password": "hemligt1"}).json()
+    OH = {"Authorization": f"Bearer {o['access_token']}"}
+    assert client.get(f"/api/drawings/{d['id']}/markups", headers=OH).status_code == 404
+    assert client.post(f"/api/drawings/{d['id']}/markups", headers=OH,
+                       json={"tool": "langd", "points": [[0, 0], [1, 1]]}).status_code == 404
