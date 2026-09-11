@@ -11,6 +11,7 @@ from collections import Counter
 from typing import Any
 
 from .. import __version__
+from .schema import ARTIFACT_SCHEMA, stamp
 from ..profile.layers import layer_tokens
 from ..pipeline import reading_coverage
 from ..measure.measure import SETTLED_SCALE
@@ -19,7 +20,7 @@ from ..semantics.leaders import leader_family_report
 
 def _dump(path: str, obj: Any) -> None:
     with open(path, "w", encoding="utf-8") as fh:
-        json.dump(obj, fh, indent=1, ensure_ascii=False, sort_keys=False, default=str)
+        json.dump(stamp(obj), fh, indent=1, ensure_ascii=False, sort_keys=False, default=str)
 
 
 def _sha(path: str) -> str:
@@ -603,7 +604,7 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     files["analysis-report.md"] = os.path.join(out_dir, "analysis-report.md")
     # freeze manifest
     manifest = {"state": "BLIND_FROZEN", "drawing": name, "input_pdf_sha256": _sha(pdf_path), "source_revision": source_revision(),
-                "engine_version": __version__, "configuration": config, "python": platform.python_version(), "created": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "engine_version": __version__, "artifact_schema": ARTIFACT_SCHEMA, "configuration": config, "python": platform.python_version(), "created": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "artifacts": {fn: _sha(path) for fn, path in sorted(files.items())}}
     W("freeze-manifest.json", manifest)
     return files

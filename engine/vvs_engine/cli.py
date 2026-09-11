@@ -11,6 +11,7 @@ from typing import Any
 from . import __version__
 from .contamination import scan_source
 from .determinism import run_determinism
+from .output.schema import stamp as _stamp
 from .output.artifacts import why as why_fn, write_all
 from .output.overlays import OverlayWriter
 from .pdf.extract import extract_document
@@ -240,7 +241,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
                "review": {"state": rev["state"], "n_findings": rev["n_findings"], "agents": rev["agents"]} if rev else None,
                "ocr_assist": first.ocr_assist}
     with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as fh:
-        json.dump(summary, fh, indent=1, default=str)
+        json.dump(_stamp(summary), fh, indent=1, default=str)
     if progress:
         progress("COMPLETED")
     return summary

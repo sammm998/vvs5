@@ -7,8 +7,8 @@
  },
  "verdict_counts": {
   "GOOD": 21,
-  "GOOD_BUT_FRAGILE": 17,
-  "PARTIAL": 6,
+  "GOOD_BUT_FRAGILE": 18,
+  "PARTIAL": 5,
   "MISSING": 1
  },
  "subsystems": [
@@ -282,13 +282,14 @@
   },
   {
    "area": "motor/utdata",
-   "subsystem": "Artefakter (35 filer), frysmanifest, bevisgraf",
+   "subsystem": "Artefakter (37 filer), version, kompatibilitetsadapter, frysmanifest, bevisgraf",
    "files": [
-    "engine/vvs_engine/output/artifacts.py"
+    "engine/vvs_engine/output/artifacts.py",
+    "engine/vvs_engine/output/schema.py"
    ],
-   "verdict": "PARTIAL",
-   "evidence": "Alla artefakter skrivs ur samma PageAnalysis; freeze-manifest med hash, version, konfiguration; evidence-graph svarar 'varför' per rör.",
-   "gap": "Ingen artefaktversion utöver engine_version 0.1.0; ingen kompatibilitetsadapter; pipe-extent-frontiers.json saknas; document-quantities saknar frontierstatus."
+   "verdict": "GOOD_BUT_FRAGILE",
+   "evidence": "Alla artefakter skrivs ur samma PageAnalysis och bär artifact_schema (3); backend läser genom upgrade() så att ett äldre resultat öppnas med tomma, inte felaktiga, fält (upgraded_from); freeze-manifest med hash, version, konfiguration; evidence-graph svarar 'varför' per rör; fyra prov.",
+   "gap": "Adaptern täcker de fyra artefakter vars form bytts; nya formbyten måste läggas till för hand."
   },
   {
    "area": "motor/utdata",

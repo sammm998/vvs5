@@ -18,6 +18,7 @@ from sqlalchemy.orm import Session
 
 from . import (academy as academy_api, admin as admin_api, cad as cad_api, calc as calc_api, exports,
                jobs, markups as markups_api, projects_api, public as public_api)
+from vvs_engine.output.schema import upgrade
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
 from vvs_engine.learning import KEYS, lessons, settle, situation
 from .auth import (create_token, current_user, hash_password, login_blocked, login_failed, current_admin,
@@ -720,7 +721,8 @@ def _load(rd: str, name: str):
     if not os.path.exists(p):
         raise HTTPException(404, f"Artefakten saknas: {name}")
     with open(p, "r", encoding="utf-8") as fh:
-        return json.load(fh)
+        # ett resultat räknat med en äldre motor läses som dagens: fält som inte fanns då är tomma, inte fel
+        return upgrade(name, json.load(fh))
 
 
 @app.get("/api/jobs/{job_id}/result")
@@ -821,7 +823,7 @@ def _load_optional(result_dir: str, name: str):
     if not os.path.isfile(path):
         return None
     with open(path, "r", encoding="utf-8") as fh:
-        return json.load(fh)
+        return upgrade(name, json.load(fh))
 
 
 @app.get("/api/jobs/{job_id}/artifacts")

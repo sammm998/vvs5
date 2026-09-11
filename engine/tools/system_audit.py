@@ -145,11 +145,11 @@ add("motor/kontroll", "Agent (frågor, förslag, projektfrågor)", ["engine/vvs_
     "Svar ur artefakter; redigeringar är förslag som en person måste acceptera; identiteter utanför läsningen avvisas.",
     "Svaren är bara så bra som artefakterna; ingen frontier att fråga om än.")
 # ------------------------------------------------------------------ motor: utdata
-add("motor/utdata", "Artefakter (35 filer), frysmanifest, bevisgraf", ["engine/vvs_engine/output/artifacts.py"], "PARTIAL",
-    "Alla artefakter skrivs ur samma PageAnalysis; freeze-manifest med hash, version, konfiguration; evidence-graph "
-    "svarar 'varför' per rör.",
-    "Ingen artefaktversion utöver engine_version 0.1.0; ingen kompatibilitetsadapter; pipe-extent-frontiers.json "
-    "saknas; document-quantities saknar frontierstatus.")
+add("motor/utdata", "Artefakter (37 filer), version, kompatibilitetsadapter, frysmanifest, bevisgraf", ["engine/vvs_engine/output/artifacts.py", "engine/vvs_engine/output/schema.py"], "GOOD_BUT_FRAGILE",
+    "Alla artefakter skrivs ur samma PageAnalysis och bär artifact_schema (3); backend läser genom upgrade() så "
+    "att ett äldre resultat öppnas med tomma, inte felaktiga, fält (upgraded_from); freeze-manifest med hash, "
+    "version, konfiguration; evidence-graph svarar 'varför' per rör; fyra prov.",
+    "Adaptern täcker de fyra artefakter vars form bytts; nya formbyten måste läggas till för hand.")
 add("motor/utdata", "Överlägg-PDF:er", ["engine/vvs_engine/output/overlays.py"], "GOOD",
     "Ritas ur pa.measures (samma PhysicalPipe-polylinjer som physical-pipes.json och mängdraderna); inga "
     "syntetiska strålar.")

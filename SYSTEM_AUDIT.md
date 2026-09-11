@@ -7,8 +7,8 @@ Domarna är satta efter implementationen (filerna i varje rad), efter körda pro
 | Dom | Antal |
 |---|---:|
 | GOOD | 21 |
-| GOOD_BUT_FRAGILE | 17 |
-| PARTIAL | 6 |
+| GOOD_BUT_FRAGILE | 18 |
+| PARTIAL | 5 |
 | BROKEN | 0 |
 | UNSAFE | 0 |
 | MISSING | 1 |
@@ -79,7 +79,7 @@ Det som är MISSING är uppdragets kärna, och det står överst i arbetsordning
 
 | Delsystem | Dom | Bevis | Vad som saknas |
 |---|---|---|---|
-| **Artefakter (35 filer), frysmanifest, bevisgraf**<br>`engine/vvs_engine/output/artifacts.py` | PARTIAL | Alla artefakter skrivs ur samma PageAnalysis; freeze-manifest med hash, version, konfiguration; evidence-graph svarar 'varför' per rör. | Ingen artefaktversion utöver engine_version 0.1.0; ingen kompatibilitetsadapter; pipe-extent-frontiers.json saknas; document-quantities saknar frontierstatus. |
+| **Artefakter (37 filer), version, kompatibilitetsadapter, frysmanifest, bevisgraf**<br>`engine/vvs_engine/output/artifacts.py`, `engine/vvs_engine/output/schema.py` | GOOD_BUT_FRAGILE | Alla artefakter skrivs ur samma PageAnalysis och bär artifact_schema (3); backend läser genom upgrade() så att ett äldre resultat öppnas med tomma, inte felaktiga, fält (upgraded_from); freeze-manifest med hash, version, konfiguration; evidence-graph svarar 'varför' per rör; fyra prov. | Adaptern täcker de fyra artefakter vars form bytts; nya formbyten måste läggas till för hand. |
 | **Överlägg-PDF:er**<br>`engine/vvs_engine/output/overlays.py` | GOOD | Ritas ur pa.measures (samma PhysicalPipe-polylinjer som physical-pipes.json och mängdraderna); inga syntetiska strålar. | - |
 | **Kanonisk geometri i viewer / PDF / tabell / export**<br>`backend/app/main.py`, `frontend/src/components/PdfViewer.tsx`, `frontend/src/three/model.ts`, `backend/app/exports.py` | GOOD | Viewer ritar props.pipes = physical-pipes.json; 3D-vyn läser result.pipes (samma); exporter läser quantities.json-raderna som räknas ur samma measures; PDF-överlägg ur pa.measures. En källa. | Ingen typad CanonicalMeasurementGeometry; likheten är en konsekvens av arkitekturen, inte ett kontrakt med prov. |
 | **Filmen (stegvis redovisning)**<br>`engine/vvs_engine/film.py` | GOOD | Varje steg skickas medan det pågår; backend /film. | - |
