@@ -2,7 +2,14 @@ import { useMemo, useState } from "react";
 import { identityColor } from "../palette";
 
 export const identityKey = (r: any) => `${r.base}|DN${r.dn ?? "?"}`;
-const STATE_LABELS: Record<string, string> = { CONFIRMED: "BEKRÄFTAD", AMBIGUOUS: "TVETYDIG", UNSUPPORTED_STYLE: "EJ STÖDD STIL", RISER_LABELS_ONLY: "ENDAST STIGARE" };
+const STATE_LABELS: Record<string, string> = { CONFIRMED: "BEKRÄFTAD", AMBIGUOUS: "TVETYDIG", NO_SCALE: "INGEN SKALA",
+  SCALE_UNSETTLED: "OAVGJORD SKALA", SCALE_FROM_THE_SET: "SKALA UR OMGÅNGEN", SCALE_GIVEN_BY_HAND: "ANGIVEN SKALA",
+  UNSUPPORTED_STYLE: "EJ STÖDD STIL", RISER_LABELS_ONLY: "ENDAST STIGARE" };
+
+/* En rad utan skala har ingen meter - och noll är inte samma sak som okänt. Tabellen skrev 0,00 i varje
+   meterkolumn på ett blad vars skala aldrig blev fastställd, vilket läses som "röret är noll meter långt"
+   när sanningen är "hur långt det är går inte att säga än". */
+const M = (v: number | null | undefined, noScale: boolean) => (noScale || v == null ? "–" : v.toFixed(2));
 
 export const riserCount = (r: any, source: string) => (source === "labels" ? r.riser_count_from_labels : r.riser_count) ?? 0;
 
@@ -40,12 +47,14 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
     </th>
   );
   const tot = (f: string) => list.reduce((s, r) => s + (typeof r[f] === "number" ? r[f] : 0), 0);
+  // bladet kunde inte ge en enda meter: då är varje meterruta ett streck, inte en nolla
+  const noScale = rows.length > 0 && rows.every((r) => r.state === "NO_SCALE");
   return (
     <div>
       <div className="row" style={{ marginBottom: 8 }}>
         <input placeholder="Sök beteckning/DN" value={q} onChange={(e) => setQ(e.target.value)} />
         <select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="">Alla status</option><option value="CONFIRMED">CONFIRMED</option><option value="AMBIGUOUS">AMBIGUOUS</option><option value="UNSUPPORTED_STYLE">UNSUPPORTED_STYLE</option>
+          <option value="">Alla status</option><option value="CONFIRMED">CONFIRMED</option><option value="AMBIGUOUS">AMBIGUOUS</option><option value="NO_SCALE">NO_SCALE</option>
         </select>
         {hatchedTotal > 0 && (
           <label title="Rör som är ritade inuti skrafferade ytor (väggsnitt, angränsande ritningsdel). Mäts alltid, men räknas normalt inte in i mängden.">
@@ -75,8 +84,8 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
                   </button>
                 ) : r.physical_pipe_count}
               </td>
-              <td className="num">{r.horizontal_calc.toFixed(2)}</td>
-              <td className="num">{r.vertical_calc == null
+              <td className="num">{M(r.horizontal_calc, noScale)}</td>
+              <td className="num">{noScale || r.vertical_calc == null
                 ? (r.risers_calc > 0
                   ? <span className="muted" title="Stigarna är hittade; ange våningshöjd för att räkna om dem till meter">{`${r.risers_calc} st × höjd`}</span>
                   : <span className="muted" title="Ritningen anger ingen höjd och inga stigare hittades">okänt</span>)
@@ -88,9 +97,9 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
                       <span className="assumed" title={`Antaget: ${r.risers_calc} stigare × ${String(floorHeight).replace(".", ",")} m våningshöjd. Ritningen anger ingen höjd.`}> ant.</span>
                     )}
                   </>}</td>
-              <td className="num strong">{r.total_calc.toFixed(2)}</td>
-              <td className="num">{r.ambiguous_m > 0 ? r.ambiguous_m.toFixed(2) : "–"}</td>
-              <td className="num">{(r.in_hatched_area_m ?? 0) > 0 ? Number(r.in_hatched_area_m).toFixed(2) : "–"}</td>
+              <td className="num strong">{M(r.total_calc, noScale)}</td>
+              <td className="num">{!noScale && r.ambiguous_m > 0 ? r.ambiguous_m.toFixed(2) : "–"}</td>
+              <td className="num">{!noScale && (r.in_hatched_area_m ?? 0) > 0 ? Number(r.in_hatched_area_m).toFixed(2) : "–"}</td>
               <td className="num" title={`Ritade stigarsymboler: ${r.riser_count ?? 0} · etiketter med dimension på raden under: ${r.riser_count_from_labels ?? 0}`}>{r.risers_calc > 0 ? r.risers_calc : "–"}</td>
               <td><span className={`badge ${r.state === "CONFIRMED" ? "ok" : r.state === "AMBIGUOUS" || r.state === "RISER_LABELS_ONLY" ? "warn" : "bad"}`}>{STATE_LABELS[r.state] ?? r.state}</span></td>
             </tr>,
@@ -121,7 +130,7 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
               : []),
           ])}
         </tbody>
-        <tfoot><tr><th>Summa</th><th></th><th className="num">{tot("label_count")}</th><th className="num">{tot("physical_pipe_count")}</th><th className="num">{tot("horizontal_calc").toFixed(2)}</th><th className="num">{tot("vertical_calc").toFixed(2)}</th><th className="num strong">{tot("total_calc").toFixed(2)}</th><th className="num">{tot("ambiguous_m").toFixed(2)}</th><th className="num">{tot("in_hatched_area_m").toFixed(2)}</th><th className="num">{tot("risers_calc")}</th><th></th></tr></tfoot>
+        <tfoot><tr><th>Summa</th><th></th><th className="num">{tot("label_count")}</th><th className="num">{tot("physical_pipe_count")}</th><th className="num">{M(tot("horizontal_calc"), noScale)}</th><th className="num">{M(tot("vertical_calc"), noScale)}</th><th className="num strong">{M(tot("total_calc"), noScale)}</th><th className="num">{M(tot("ambiguous_m"), noScale)}</th><th className="num">{M(tot("in_hatched_area_m"), noScale)}</th><th className="num">{tot("risers_calc")}</th><th></th></tr></tfoot>
       </table>
       </div>
     </div>

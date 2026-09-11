@@ -237,8 +237,12 @@ def run_job(job_id: str) -> None:
         # vad den här tjänsten kör, läst medan sessionen finns kvar - OCR-passen kostar tid och är valbara
         from .main import RUN_KEYS, run_setting
         run_ocr = {k: run_setting(db, k) for k in RUN_KEYS}
-        # att jobbet kördes om efter en omstart är en del av dess historia och följer med in i det färdiga svaret
-        carried = {k: v for k, v in (job.summary or {}).items() if k == "resubmitted_after_restart"}
+        # att jobbet kördes om efter en omstart är en del av dess historia och följer med in i det färdiga svaret,
+        # och likaså den skala någon skrev in för hand innan det kördes: en mängd ska bära hur den blev mätbar
+        carried = {k: v for k, v in (job.summary or {}).items()
+                   if k in ("resubmitted_after_restart", "given_scale")}
+        gs = (job.summary or {}).get("given_scale") or None
+        by_hand = {int(gs["page"]): float(gs["meters_per_pdf_point"])} if gs else None
         job.status = "RUNNING"; job.started_at = dt.datetime.now(dt.timezone.utc); job.result_key = result_key
         db.commit()
     out_dir = storage.path(result_key)
@@ -250,7 +254,8 @@ def run_job(job_id: str) -> None:
                                 contamination=True, progress=_progress_cb(job_id),
                                 review=settings.run_review, review_ocr=run_ocr["review_ocr"],
                                 ocr_assist=run_ocr["ocr_assist"], film_sink=_film_sink(out_dir),
-                                second_reader=_second_reader(), known_families=known, known_legend=vocab)
+                                second_reader=_second_reader(), known_families=known, known_legend=vocab,
+                                given_scale=by_hand)
             # which readers this installation actually had available, and by what name - a reading that quietly used a
             # model, or quietly did without one, is not a reading anyone can check
             on, why = second_reader_state()

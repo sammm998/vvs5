@@ -63,7 +63,12 @@ export const api = {
   upload: (projectId: string, file: File) => { const fd = new FormData(); fd.append("file", file); return req(`/api/projects/${projectId}/drawings`, { method: "POST", body: fd }); },
   drawing: (id: string) => req(`/api/drawings/${id}`),
   deleteDrawing: (id: string) => req(`/api/drawings/${id}`, { method: "DELETE" }),
-  analyze: (drawingId: string) => req(`/api/drawings/${drawingId}/analyze`, { method: "POST" }),
+  /** scaleRatio: nämnaren i 1:N, för ett blad vars egen stämpel inte räckte. Utelämnad läser bladet självt. */
+  analyze: (drawingId: string, scaleRatio?: number, page = 0) =>
+    req(`/api/drawings/${drawingId}/analyze`, scaleRatio
+      ? { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ scale_ratio: scaleRatio, page }) }
+      : { method: "POST" }),
   job: (id: string) => req(`/api/jobs/${id}`),
   result: (id: string) => req(`/api/jobs/${id}/result`),
   artifacts: (id: string) => req(`/api/jobs/${id}/artifacts`),

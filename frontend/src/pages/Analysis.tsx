@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../api";
 import AnalysisCompletionReveal from "../components/AnalysisCompletionReveal";
 import DrawingTo3DTransition from "../components/DrawingTo3DTransition";
@@ -39,6 +39,7 @@ const LAYER_HINTS: Record<Layer, string> = {
 
 export default function AnalysisPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [job, setJob] = useState<any>(null);
   const [result, setResult] = useState<any>(null);
   const [pdf, setPdf] = useState<ArrayBuffer | null>(null);
@@ -72,6 +73,11 @@ export default function AnalysisPage() {
   };
   const [draft, setDraft] = useState<Draft>(null);
   const [show3d, setShow3d] = useState(false);
+  /* Skalan någon skriver in för ett blad vars egen stämpel inte räckte. Den startar en ny läsning - mängden
+     räknas om från början under den skalan - i stället för att skala om en tabell efteråt, så att varje tal på
+     skärmen fortsätter komma ur en och samma läsning. */
+  const [ratio, setRatio] = useState("");
+  const [rescaling, setRescaling] = useState(false);
   const [drawing, setDrawing] = useState<any>(null);
   const [rising, setRising] = useState(false);
   const [panel, setPanel] = useState<number>(() => {
@@ -248,6 +254,10 @@ export default function AnalysisPage() {
   const nm = c.named_vs_measured ?? {};
   const namedShare: number | null = typeof nm.share === "number" ? nm.share : null;
   const covWarn = namedShare !== null && namedShare < 0.6;
+  /* Utan fastställd skala finns inga meter. Då är "0 av 12 fick meter" och "0 m ritat rör" sant om siffrorna
+   * och falskt om bladet: rören ÄR lästa, de går bara inte att räkna om till meter förrän någon säger vad
+   * bladet är ritat i. Den skillnaden ska stå i klartext, inte gömmas bakom nollor. */
+  const noScale = nm.scale_settled === false || nm.drawn_m == null;
   /* Someone else's marks on the sheet. A drawing that arrives with a takeoff already drawn on it in coloured
    * polylines carries somebody's answer on top of the drawing, and the reading takes that ink off before it
    * reads - otherwise it would measure an opinion of the drawing and hand it back as the drawing. That is worth
@@ -390,7 +400,31 @@ export default function AnalysisPage() {
                   : `Bladet bär ${markup.n} markeringar som inte gick att lyfta av: ${markup.why}.`}
               </p>
             )}
-            {covWarn && (
+            {noScale ? (
+              <>
+                <p className="badge bad">
+                  {`Bladets skala är inte fastställd${nm.scale_reason ? ` (${nm.scale_reason})` : ""}, så ingen sträcka `
+                    + "kan ges i meter. Läsningen hittade rören - de ligger ritade på bladet - men ett mått kräver "
+                    + "att någon vet vad bladet är ritat i. Skriv in skalan här, så läses bladet om under den."}
+                </p>
+                <div className="row" style={{ gap: 8, alignItems: "center", margin: "10px 0 4px" }}>
+                  <label className="small muted" htmlFor="skala">Skala 1:</label>
+                  <input id="skala" className="small" style={{ width: 90 }} inputMode="numeric" value={ratio}
+                    placeholder="50" onChange={(e) => setRatio(e.target.value.replace(/[^0-9]/g, ""))} />
+                  <button className="small" disabled={!ratio || rescaling}
+                    onClick={async () => {
+                      setRescaling(true); setErr("");
+                      try {
+                        const nj = await api.analyze(job.drawing_id, Number(ratio), page);
+                        navigate(`/jobs/${nj.id}`);
+                      } catch (e: any) { setErr(e.message); } finally { setRescaling(false); }
+                    }}>{rescaling ? "Läser om…" : "Läs om med den skalan"}</button>
+                  <span className="muted small">
+                    Metrarna heter då angiven skala, inte bekräftad: de vilar på ditt besked, inte på bladets.
+                  </span>
+                </div>
+              </>
+            ) : covWarn && (
               <p className="badge warn">
                 {`${nm.pipe_names_with_metres} av ${nm.pipe_names} rörbeteckningar som ritningen skriver ut fick meter `
                   + `(${Math.round((namedShare ?? 0) * 100)} %). Av ${nm.drawn_m} m ritat rör bar `

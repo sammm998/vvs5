@@ -116,7 +116,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
                 progress=None, pages: list[int] | None = None, review: bool = True, review_ocr: bool = True,
                 film_sink=None,
                 ocr_assist: bool = False, deadline_s: float | None = None, second_reader=None, known_families: dict | None = None,
-                known_legend: DrawingLegend | None = None) -> dict:
+                known_legend: DrawingLegend | None = None, given_scale: dict[int, float] | float | None = None) -> dict:
     """deadline_s: a wall-clock budget for the whole document, checked between pages.
 
     A drawing set can carry a page dense enough that reading it takes longer than anyone will wait, and without a
@@ -156,12 +156,15 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     overlay = OverlayWriter(pdf_path, out_dir)
     first: PageAnalysis | None = None
     sheets: list[dict] = []
+    # skalan någon har skrivit in: ett tal för hela handlingen, eller ett per blad
+    by_hand = given_scale if isinstance(given_scale, dict) else ({} if given_scale is None else None)
     for i in range(n_pages):
         check_budget()
         pg = doc.pages[i]
         pa = analyze_page(pg, progress, ocr_assist=ocr_assist,
                           film_sink=film_sink if pg.info.index == 0 else None,
                           second_reader=second_reader, known_families=known_families, known_legend=vocab,
+                          given_scale=(given_scale if by_hand is None else by_hand.get(i)),
                           prepared=held.pop(i, None))
         # what this sheet showed about its codes goes back into the set's list, so the sheets after it start
         # from what has been read rather than from a column of words with no verdict on any row
@@ -186,6 +189,8 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
         for i, sh in enumerate(sheets):
             if (sh.get("scale") or {}).get("state") not in ("NONE", "CONFLICT"):
                 continue
+            if (given_scale if by_hand is None else by_hand.get(i)):
+                continue        # någon har redan sagt vad bladet är ritat i; omgången får inte skriva över det
             check_budget()
             pa = analyze_page(doc.pages[i], progress, ocr_assist=ocr_assist,
                               film_sink=film_sink if i == 0 else None, second_reader=second_reader,

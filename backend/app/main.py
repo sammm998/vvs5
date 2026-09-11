@@ -295,10 +295,33 @@ def delete_drawing(drawing_id: str, user: User = Depends(current_user), db: Sess
 
 
 # ---------------------------------------------------------------- analysis jobs
+class AnalyzeIn(BaseModel):
+    """Skalan någon skriver in för ett blad vars egen stämpel inte räckte: 1:50 skrivs som 50.
+
+    Ett blad utan fastställd skala är omätt, inte omätbart - rören är lästa och deras längd i punkter är känd,
+    det som saknas är hur många meter en punkt är. Den uppgiften kommer från den som har ritningen framför sig.
+    Den går in i läsningen som ett besked från en person, inte från bladet, och ingen rad som vilar på den får
+    heta bekräftad.
+    """
+    scale_ratio: float | None = None      # nämnaren i 1:N
+    page: int = 0
+
+
 @app.post("/api/drawings/{drawing_id}/analyze")
-def analyze(drawing_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def analyze(drawing_id: str, body: AnalyzeIn | None = None, user: User = Depends(current_user),
+            db: Session = Depends(get_db)):
+    from vvs_engine.measure.scale import ratio_to_meters_per_pt
     d = _drawing(db, user, drawing_id)
-    j = AnalysisJob(drawing_id=d.id, status="QUEUED", stage="QUEUED", progress=0.0)
+    given: dict | None = None
+    if body is not None and body.scale_ratio:
+        if not (1 <= body.scale_ratio <= 20000):
+            raise HTTPException(422, "Skalan skrivs som nämnaren i 1:N, mellan 1 och 20000.")
+        if body.page < 0:
+            raise HTTPException(422, "Sidnumret börjar på noll.")
+        given = {"ratio": body.scale_ratio, "page": body.page,
+                 "meters_per_pdf_point": ratio_to_meters_per_pt(body.scale_ratio)}
+    j = AnalysisJob(drawing_id=d.id, status="QUEUED", stage="QUEUED", progress=0.0,
+                    summary={"given_scale": given} if given else None)
     db.add(j); db.commit()
     jobs.submit(j.id)
     return _job_out(j)

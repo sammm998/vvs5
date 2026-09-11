@@ -112,7 +112,7 @@ add("motor/mått", "Skala per blad: text + skalstock, hela handlingen", ["engine
     "Ingen skala per region (vyportar i olika skala på samma blad); D-bladet står i CONFLICT (text 1:S0 vs stock).")
 add("motor/mått", "Mätning och mängdrader, vertikalt UNKNOWN", ["engine/vvs_engine/measure/measure.py"], "GOOD",
     "Meter bara med satt skala; vertikalt bara med nivåbevis, annars 'UNKNOWN' i raden; radstatus CONFIRMED/"
-    "AMBIGUOUS/SCALE_UNSETTLED/SCALE_FROM_THE_SET/UNSUPPORTED_STYLE.")
+    "AMBIGUOUS/SCALE_UNSETTLED/SCALE_FROM_THE_SET/SCALE_GIVEN_BY_HAND/NO_SCALE.")
 add("motor/mått", "Geometrikonservering och läsningens giltighet (två frågor)", ["engine/vvs_engine/reconcile.py", "engine/vvs_engine/coverage.py", "engine/vvs_engine/pipeline.py"], "GOOD",
     "reconcile: VALID/INVALID med residual och dubbelräkning; coverage-validity.json: åtta mått (lästa "
     "beteckningar, andel med DN, verifierade anknytningar, namn med meter, ägt/tvetydigt/oägt bläck, förlustfronter) "

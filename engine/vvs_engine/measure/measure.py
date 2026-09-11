@@ -179,7 +179,8 @@ class PipeMeasure:
 # med sitt tal, för den som granskar behöver se vad stocken gav, men den får inte heta bekräftad. Skillnaden
 # mellan de två är hela skillnaden mellan ett mått och en gissning på tusen gånger fel.
 SETTLED_SCALE = ("VERIFIED", "TEXT_ONLY", "BAR_ONLY")
-UNSETTLED_ROW_STATE = {"CONFLICT": "SCALE_UNSETTLED", "FROM_THE_SET": "SCALE_FROM_THE_SET"}
+UNSETTLED_ROW_STATE = {"CONFLICT": "SCALE_UNSETTLED", "FROM_THE_SET": "SCALE_FROM_THE_SET",
+                       "GIVEN_BY_HAND": "SCALE_GIVEN_BY_HAND"}
 
 
 def scale_standing(scale: ScaleResult) -> str | None:
@@ -194,8 +195,8 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
     """elevations: anchor_id -> list of {tag, value} elevation annotations attached to the anchor's label unit.
     hatched_pt: physical_pipe_id -> length (pdf units) of the pipe inside hatched areas."""
     out: list[PipeMeasure] = []
-    mpp = scale.meters_per_pt if scale.state in ("VERIFIED", "TEXT_ONLY", "BAR_ONLY", "CONFLICT", "FROM_THE_SET") \
-        and scale.meters_per_pt else None
+    mpp = scale.meters_per_pt if scale.state in ("VERIFIED", "TEXT_ONLY", "BAR_ONLY", "CONFLICT", "FROM_THE_SET",
+                                                "GIVEN_BY_HAND") and scale.meters_per_pt else None
     # A sheet whose scale evidence disagrees still gets measured - the geometric bar is the better witness and
     # the reason for choosing it is recorded - but every metre that comes out of it carries the conflict, so no
     # single run can be read as confidently measured when the sheet's own scale is unsettled.
@@ -226,7 +227,9 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
             reasons.append(scale_note)
         vert, vev = _vertical(p, elevations)
         total = (hm + (vert or 0.0)) if hm is not None else None
-        state = ("UNSUPPORTED_STYLE" if hm is None else standing or "CONFIRMED")
+        # Utan skala finns ingen meter. Raden hette förut EJ STÖDD STIL, vilket pekade på fel sak: stilen gick
+        # att läsa, det var storleken bladet inte sa. NO_SCALE säger vad som saknas, och därmed vad som behövs.
+        state = ("NO_SCALE" if hm is None else standing or "CONFIRMED")
         if p.frontier_reasons:
             reasons.extend(p.frontier_reasons)
         out.append(PipeMeasure(pipe=p, horizontal_pdf_units=hpu, horizontal_m=hm, vertical_m=vert, vertical_evidence=vev,
@@ -296,7 +299,7 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
             if m.state in UNSETTLED_ROW_STATE.values() and r["state"] == "CONFIRMED":
                 r["state"] = m.state          # mätt under en skala bladet inte avgjort: ett förslag, inte ett besked
         else:
-            r["state"] = "UNSUPPORTED_STYLE"
+            r["state"] = "NO_SCALE"
         if m.vertical_m is not None:
             r["confirmed_vertical_m"] += m.vertical_m
             r["confirmed_total_m"] += m.vertical_m

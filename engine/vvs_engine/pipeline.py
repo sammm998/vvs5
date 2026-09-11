@@ -34,8 +34,8 @@ DN_ROWS_ARE_VERTICAL_ONLY = os.environ.get("VVS_DN_ROWS_VERTICAL_ONLY") == "1"
 from .semantics.leaders import Leader, annotation_layers, discover_leaders, leader_family_report
 from .text.searchable import searchable_rows
 from .text.vector_text import VectorTextResult, vector_text_rows
-from .measure.scale import ScaleResult, discover_scale, scale_from_the_set
-from .measure.measure import PipeMeasure, aggregate, measure_pipes
+from .measure.scale import ScaleResult, discover_scale, scale_from_the_set, scale_given_by_hand
+from .measure.measure import SETTLED_SCALE, PipeMeasure, aggregate, measure_pipes
 from .pipes.ownership import (Identity, OwnershipResult, complete_identities, identity_of, propagate, DECLARED_RUN_MAX_M)
 from .pipes.frontier import end_evidence, frontiers_of, summary as frontier_summary
 from .film import Film
@@ -779,6 +779,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                  known_legend: DrawingLegend | None = None,
                  known_scale: float | None = None,
                  known_scale_pages: list[int] | None = None,
+                 given_scale: float | None = None,
                  prepared: "PreparedPage | None" = None) -> PageAnalysis:
     """second_reader: an optional transport for putting the reading's own open cases to a language model.
 
@@ -1343,6 +1344,11 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         # the rest of the set agreed about how big it is, and this sheet's own stamp did not settle it
         scale = scale_from_the_set(known_scale, f"ritningsomgången är enig; bladets eget besked: {scale.reason}",
                                    known_scale_pages)
+    if given_scale:
+        # Någon har skrivit in skalan. Den går före bladets egen läsning - personen har ritningen framför sig -
+        # men den ersätter den inte tyst: bladets eget utfall står kvar i skälet, och ingen rad som vilar på en
+        # handskriven skala får heta bekräftad.
+        scale = scale_given_by_hand(given_scale, scale.reason)
     # the rule for connection pipes names short runs; how short is a length in metres, so the scale comes first
     _mpp = scale.meters_per_pt if scale.meters_per_pt else None
     declared_max_pt = (_R("pipes.ownership.DECLARED_RUN_MAX_M", DECLARED_RUN_MAX_M) / _mpp) if _mpp else None
@@ -1915,24 +1921,34 @@ def reading_coverage(pa: PageAnalysis) -> dict[str, Any]:
             st = states.get(pid)
             key = {"CONFIRMED": "confirmed_pt", "AMBIGUOUS": "ambiguous_pt"}.get(getattr(st, "state", ""), "unowned_pt")
             ink[key] += L
-    mpp = (pa.scale.meters_per_pt if pa.scale else None) or 0.0
+    # Utan skala finns inga meter att redovisa - och noll meter är inte svaret. Ett blad vars skala aldrig blev
+    # fastställd har ritat rör i punkter men ingen omräkning till meter, och att då skriva "0 m ritat rör" säger
+    # att bladet är tomt när sanningen är att frågan inte gick att besvara. Metertalen lämnas därför som None,
+    # punkterna redovisas som de är, och skalans tillstånd följer med så att den som läser får veta varför.
+    mpp = (pa.scale.meters_per_pt if pa.scale else None)
+    metres = (lambda pt: round(pt * mpp, 2)) if mpp else (lambda pt: None)
     out = {
         "pipe_names": len(named), "pipe_names_with_metres": len(got),
         "share": round(len(got) / len(named), 3) if named else None,
         "without_metres": sorted(named - got)[:40],
-        "drawn_m": round(ink["drawn_pt"] * mpp, 2), "confirmed_m": round(ink["confirmed_pt"] * mpp, 2),
-        "ambiguous_m": round(ink["ambiguous_pt"] * mpp, 2), "unowned_m": round(ink["unowned_pt"] * mpp, 2),
+        "drawn_m": metres(ink["drawn_pt"]), "confirmed_m": metres(ink["confirmed_pt"]),
+        "ambiguous_m": metres(ink["ambiguous_pt"]), "unowned_m": metres(ink["unowned_pt"]),
+        "drawn_pt": round(ink["drawn_pt"], 2), "confirmed_pt": round(ink["confirmed_pt"], 2),
+        "ambiguous_pt": round(ink["ambiguous_pt"], 2), "unowned_pt": round(ink["unowned_pt"], 2),
+        "scale_state": (pa.scale.state if pa.scale else "NONE"),
+        "scale_settled": bool(pa.scale and pa.scale.state in SETTLED_SCALE and pa.scale.meters_per_pt),
+        "scale_reason": (pa.scale.reason if pa.scale else None),
     }
     # Someone else's marks on the sheet, and how far they ran. A page that arrives already measured by hand
     # carries the answer drawn on top of the drawing; the reading takes that ink off before it reads, and says
     # here that it did, so nobody has to wonder whether a number came from the drawing or from the markup.
     mk = getattr(getattr(pa.page, "info", None), "markup_set_aside", None) if getattr(pa, "page", None) else None
     if mk:
-        out["markup_set_aside"] = {**mk, "ink_m": round((mk.get("ink_pt") or 0.0) * mpp, 2)}
+        out["markup_set_aside"] = {**mk, "ink_m": metres(mk.get("ink_pt") or 0.0)}
     if pa.frontiers:
         from .pipes.frontier import Frontier as _F
         fs = [_F(d["pipe"], d["family"], d["node"], d["x"], d["y"], d["reason"], d["detail"]) for d in pa.frontiers]
-        out["frontiers"] = frontier_summary(fs, pa.ownership.pipes if pa.ownership else [], mpp)
+        out["frontiers"] = frontier_summary(fs, pa.ownership.pipes if pa.ownership else [], mpp or 0.0)
     return out
 
 

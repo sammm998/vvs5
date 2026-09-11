@@ -60,6 +60,29 @@ def scale_from_the_set(known: float, why: str, pages: list[int] | None = None) -
     return ScaleResult(meters_per_pt=known, scope="document", state="FROM_THE_SET", evidence=ev, reason=why)
 
 
+def scale_given_by_hand(known: float, sheet_said: str, source: str = "angiven av användaren") -> ScaleResult:
+    """Skalan någon har skrivit in för hand, för ett blad vars egen stämpel inte räckte.
+
+    Ett blad utan fastställd skala är inte omätbart - det är omätt. Rören är lästa och deras längd i punkter är
+    känd; det som saknas är hur många meter en punkt är, och det vet den som har ritningen framför sig. Att låta
+    den uppgiften komma in är skillnaden mellan en mängdning och en tom tabell.
+
+    Den är ett besked från en person, inte från bladet, och heter så: tillståndet är GIVEN_BY_HAND, och bladets
+    eget utfall skrivs in i skälet så att den som granskar ser vad som ersattes. Ingen rad som vilar på den får
+    heta bekräftad.
+    """
+    ev = [ScaleEvidence(kind="scale_given_by_hand", text=source, bbox=[], value=known,
+                        detail={"by_hand": True, "sheet_said": sheet_said})]
+    return ScaleResult(meters_per_pt=known, scope="page", state="GIVEN_BY_HAND", evidence=ev,
+                       reason=f"{source}; bladets eget besked: {sheet_said}")
+
+
+def ratio_to_meters_per_pt(ratio: float) -> float:
+    """1:50 blir meter per PDF-punkt. En punkt är 25,4/72 mm på papperet, och skalan säger hur många gånger
+    verkligheten är större."""
+    return ratio * MM_PER_PT / 1000.0
+
+
 def discover_scale(page: RawPage, lines: list[TextRow]) -> ScaleResult:
     ev: list[ScaleEvidence] = []
     # 1. scale text

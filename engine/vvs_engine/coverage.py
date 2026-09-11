@@ -41,10 +41,12 @@ def coverage_validity(cov: dict[str, Any], anchors: list, reconciliation: dict |
     verified = sum(1 for a in anchors if getattr(a, "state", "") == "VERIFIED_PIPE_ATTACHMENT")
     names = cov.get("pipe_names") or 0
     got = cov.get("pipe_names_with_metres") or 0
-    drawn = float(cov.get("drawn_m") or 0.0)
-    conf = float(cov.get("confirmed_m") or 0.0)
-    amb = float(cov.get("ambiguous_m") or 0.0)
-    un = float(cov.get("unowned_m") or 0.0)
+    # Andelarna räknas på bläcket, inte på metrarna: ett blad utan fastställd skala har inga meter alls, och
+    # då blev varje andel None fast den var fullt räknelig. Punkterna finns oavsett vad skalan säger.
+    drawn = float(cov.get("drawn_pt") if cov.get("drawn_pt") is not None else (cov.get("drawn_m") or 0.0))
+    conf = float(cov.get("confirmed_pt") if cov.get("confirmed_pt") is not None else (cov.get("confirmed_m") or 0.0))
+    amb = float(cov.get("ambiguous_pt") if cov.get("ambiguous_pt") is not None else (cov.get("ambiguous_m") or 0.0))
+    un = float(cov.get("unowned_pt") if cov.get("unowned_pt") is not None else (cov.get("unowned_m") or 0.0))
     fr = cov.get("frontiers") or {}
     n_fr = fr.get("frontiers") or 0
     lossy = fr.get("lossy_boundaries") or 0
