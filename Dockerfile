@@ -14,8 +14,13 @@ WORKDIR /app
 # imported on first use, the miss surfaced as "the check could not be run" on every sheet instead of as a
 # missing dependency at build time. tests/test_image_dependencies.py reads this line against what the installed
 # packages actually ask the loader for, so the two cannot drift apart.
+#
+# fonts-liberation is what the tender is set in. A slim Python image carries no fonts at all, so the font file
+# the tender asked for was not there and every tender request answered with an error - the page said only
+# "Hämtning misslyckades". The code now falls back to a built-in font rather than failing, and the package is
+# installed so the fallback is never the one that is used.
 RUN apt-get update \
- && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 \
+ && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 fonts-liberation \
  && rm -rf /var/lib/apt/lists/*
 COPY backend/requirements.txt /app/backend/requirements.txt
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt

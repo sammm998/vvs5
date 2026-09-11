@@ -34,6 +34,7 @@ export default function CalcPage() {
   const [pages, setPages] = useState<string[] | null>(null);
   const [loadingPages, setLoadingPages] = useState(false);
   const urls = useRef<string[]>([]);
+  const anbudRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     api.job(jobId).then(setJob).catch((e) => setErr(e.message));
@@ -60,12 +61,20 @@ export default function CalcPage() {
   };
 
   const openPdf = async () => {
+    setErr("");
     try {
       const blob = await api.fetchBlob(api.anbudPdfUrl(jobId));
-      window.open(URL.createObjectURL(blob), "_blank");
+      const u = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = u;
+      a.download = `Anbud ${drawingName || jobId.slice(0, 8)}.pdf`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(u), 10000);
     } catch (e: any) { setErr(e.message); }
   };
 
+  /* Anbudet visas innan det lämnas. Sidorna är det dokument som skickas, renderade av servern, inte en
+     efterlikning byggd av samma tal en gång till - så det som står på skärmen är det som står i filen. */
   const preview = async () => {
     setLoadingPages(true); setErr("");
     try {
@@ -78,7 +87,13 @@ export default function CalcPage() {
       }
       urls.current = out;
       setPages(out);
-    } catch (e: any) { setErr(e.message); } finally { setLoadingPages(false); }
+      return out;
+    } catch (e: any) { setErr(e.message); return null; } finally { setLoadingPages(false); }
+  };
+
+  const showAnbud = async () => {
+    anbudRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!pages && !loadingPages) await preview();
   };
 
   const set = (k: string, v: any) => { setA({ ...A, [k]: v }); setDirty(true); };
@@ -119,7 +134,7 @@ export default function CalcPage() {
         <div className="row calc-actions">
           <button onClick={() => run(false)} disabled={busy}>{busy ? "Räknar…" : calc ? "Räkna om" : "Kalkylera"}</button>
           {calc && <button className="secondary" onClick={() => run(true)} disabled={busy}>Spara kalkyl</button>}
-          {saved && !dirty && <button className="secondary" onClick={openPdf}>Anbud som PDF</button>}
+          {saved && !dirty && <button className="secondary" onClick={showAnbud}>Visa anbudet</button>}
         </div>
       </div>
       <div className="rule" style={{ marginBottom: 22 }} />
@@ -255,23 +270,33 @@ export default function CalcPage() {
           )}
 
           {saved && (
-            <div className="card calc-anbud">
+            <div className="card calc-anbud" ref={anbudRef}>
               <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 10 }}>
                 <div>
                   <h3 style={{ margin: 0 }}>Anbudet</h3>
                   <p className="muted small" style={{ margin: "4px 0 0" }}>
-                    Skrivs ur den sparade kalkylen. {dirty ? "Du har osparade ändringar - spara först så följer de med." : "Förhandsgranskningen visar sidorna precis som de skickas."}
+                    Skrivs ur den sparade kalkylen. {dirty
+                      ? "Du har osparade ändringar - spara först så följer de med."
+                      : "Läs igenom sidorna här. Det som står på skärmen är det som ligger i filen."}
                   </p>
                 </div>
                 <div className="row">
-                  <button className="secondary small" onClick={preview} disabled={loadingPages || dirty}>{loadingPages ? "Hämtar…" : "Förhandsgranska"}</button>
-                  <button className="small" onClick={openPdf} disabled={dirty}>Ladda ner PDF</button>
+                  <button className="secondary small" onClick={() => { void preview(); }} disabled={loadingPages || dirty}>
+                    {loadingPages ? "Hämtar…" : pages ? "Uppdatera" : "Visa anbudet"}
+                  </button>
                 </div>
               </div>
+              {loadingPages && !pages && <p className="muted small" style={{ marginBottom: 0 }}>Sätter anbudet…</p>}
               {pages && (
-                <div className="anbud-pages">
-                  {pages.map((u, i) => <img key={u} src={u} alt={`Anbud, sida ${i + 1}`} className="anbud-page" />)}
-                </div>
+                <>
+                  <div className="anbud-pages">
+                    {pages.map((u, i) => <img key={u} src={u} alt={`Anbud, sida ${i + 1}`} className="anbud-page" />)}
+                  </div>
+                  {/* nedladdningen står under sidorna: filen hämtas av den som har läst den */}
+                  <div className="row" style={{ justifyContent: "flex-end", marginTop: 12 }}>
+                    <button className="small" onClick={openPdf} disabled={dirty}>Ladda ner som PDF</button>
+                  </div>
+                </>
               )}
             </div>
           )}

@@ -15,6 +15,22 @@ export function currentEmail(): string | null {
   }
 }
 
+/** Vad servern sa om varför den sa nej. Delas av req och fetchBlob: ett fel utan innehåll ("Hämtning
+ *  misslyckades") döljer sin egen orsak, och det var precis det anbudssidan visade i en vecka. */
+async function failure(res: Response): Promise<Error> {
+  let msg = res.statusText || `Fel ${res.status}`;
+  try {
+    const j = await res.json();
+    const d = j.detail;
+    // FastAPI answers a rejected body with a list of problems rather than a sentence, and rendering that
+    // straight gave the reader "[object Object]" - which says less than the status line it replaced
+    msg = typeof d === "string" ? d
+      : Array.isArray(d) ? d.map((x: any) => x?.msg ? `${x.msg}${x.loc ? ` (${x.loc.slice(-1)})` : ""}` : JSON.stringify(x)).join("; ")
+      : d ? JSON.stringify(d) : msg;
+  } catch { /* a body that is not JSON leaves the status line, which is still a sentence */ }
+  return new Error(`${msg} (${res.status})`);
+}
+
 async function req(path: string, init: RequestInit = {}): Promise<any> {
   const headers: Record<string, string> = { ...(init.headers as any) };
   const tok = getToken();
@@ -22,17 +38,7 @@ async function req(path: string, init: RequestInit = {}): Promise<any> {
   const res = await fetch(path, { ...init, headers });
   if (res.status === 401) { setToken(null); window.location.href = "/login"; throw new Error("Ej inloggad"); }
   if (!res.ok) {
-    let msg = res.statusText;
-    try {
-      const j = await res.json();
-      const d = j.detail;
-      // FastAPI answers a rejected body with a list of problems rather than a sentence, and rendering that
-      // straight gave the reader "[object Object]" - which says less than the status line it replaced
-      msg = typeof d === "string" ? d
-        : Array.isArray(d) ? d.map((x: any) => x?.msg ? `${x.msg}${x.loc ? ` (${x.loc.slice(-1)})` : ""}` : JSON.stringify(x)).join("; ")
-        : d ? JSON.stringify(d) : msg;
-    } catch { /* a body that is not JSON leaves the status line, which is still a sentence */ }
-    throw new Error(msg);
+    throw await failure(res);
   }
   const ct = res.headers.get("content-type") || "";
   return ct.includes("application/json") ? res.json() : res;
@@ -92,7 +98,12 @@ export const api = {
   materials: (qs: string) => req(`/api/materials?${qs}`),
   setRule: (id: string, body: any) =>
     req(`/api/rules/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
-  fetchBlob: async (path: string) => { const res = await fetch(path, { headers: { Authorization: `Bearer ${getToken()}` } }); if (!res.ok) throw new Error("Hämtning misslyckades"); return res.blob(); },
+  fetchBlob: async (path: string) => {
+    const res = await fetch(path, { headers: { Authorization: `Bearer ${getToken()}` } });
+    if (res.status === 401) { setToken(null); window.location.href = "/login"; throw new Error("Ej inloggad"); }
+    if (!res.ok) throw await failure(res);
+    return res.blob();
+  },
 
   // ---- att driva tjänsten -------------------------------------------------------------------------------
   myRole: () => req("/api/me/role"),

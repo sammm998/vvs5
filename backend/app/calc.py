@@ -431,9 +431,38 @@ def _num(v: float | None, d: int = 2) -> str:
     return "–" if v is None else f"{v:,.{d}f}".replace(",", " ").replace(".", ",")
 
 
-FONT_DIR = "/usr/share/fonts/truetype/liberation"
+# Anbudet är satt i Liberation Sans. Typsnittet installeras i bilden (fonts-liberation i Dockerfile), men om
+# det ändå saknas ska anbudet skrivas i läsarens eget Helvetica i stället för att inte skrivas alls: ett anbud
+# som ser en aning annorlunda ut går att lämna, ett anbud som inte går att hämta gör det inte. Det var precis
+# det som hände - bilden bar inga typsnitt alls, och varje anbudsanrop svarade med fel.
+FONT_DIRS = ("/usr/share/fonts/truetype/liberation", "/usr/share/fonts/truetype/liberation2",
+             "/usr/share/fonts/liberation", "/usr/share/fonts/liberation-sans")
+FONT_DIR = FONT_DIRS[0]
 FONT_REGULAR = os.path.join(FONT_DIR, "LiberationSans-Regular.ttf")
 FONT_BOLD = os.path.join(FONT_DIR, "LiberationSans-Bold.ttf")
+
+
+def font_dir() -> str | None:
+    """Katalogen där båda snitten ligger, eller None: då sätts anbudet i ett inbyggt snitt."""
+    for d in FONT_DIRS:
+        if all(os.path.isfile(os.path.join(d, f"LiberationSans-{w}.ttf")) for w in ("Regular", "Bold")):
+            return d
+    return None
+
+
+def _font_file(bold: bool) -> str | None:
+    d = font_dir()
+    return None if d is None else os.path.join(d, f"LiberationSans-{'Bold' if bold else 'Regular'}.ttf")
+
+
+def _css(base: str = "") -> str:
+    """Anbudets CSS. Utan typsnittsfiler faller den tillbaka på ett snitt läsaren alltid har."""
+    css = base or TENDER_CSS
+    if font_dir() is not None:
+        return css
+    return (css.replace("@font-face { font-family: Lib; src: url(LiberationSans-Regular.ttf); }", "")
+               .replace("@font-face { font-family: Lib; font-weight: bold; src: url(LiberationSans-Bold.ttf); }", "")
+               .replace("font-family: Lib", "font-family: sans-serif"))
 INK = (0.09, 0.12, 0.15)          # #171f27
 NAVY = (0.06, 0.16, 0.23)         # #0f2a3a
 TEAL = (0.07, 0.62, 0.69)         # #129eb0
@@ -544,7 +573,9 @@ FOOT = 44.0
 def _body_pdf(html_doc: str) -> bytes:
     """Kroppen som flödande sidor, med plats reserverad för huvud och fot."""
     import pymupdf
-    story = pymupdf.Story(html=html_doc, user_css=TENDER_CSS, archive=pymupdf.Archive(FONT_DIR))
+    d = font_dir()
+    story = (pymupdf.Story(html=html_doc, user_css=_css(), archive=pymupdf.Archive(d)) if d
+             else pymupdf.Story(html=html_doc, user_css=_css()))
     buf = io.BytesIO()
     writer = pymupdf.DocumentWriter(buf)
     rect = pymupdf.Rect(0, 0, PAGE_W, PAGE_H)
@@ -566,9 +597,15 @@ def _text(page, x, y, s, size=9, bold=False, color=INK, align="left", width=None
     """En textrad med det typsnitt anbudet är satt i, vänster- eller högerställd mot x. Med `width` kortas
     raden med en ellips tills den ryms - ett huvud som skriver över sig självt är värre än ett kortat namn."""
     import pymupdf
-    font = pymupdf.Font(fontfile=FONT_BOLD if bold else FONT_REGULAR)
-    fname = "LibB" if bold else "LibR"
-    page.insert_font(fontname=fname, fontfile=FONT_BOLD if bold else FONT_REGULAR)
+    file = _font_file(bold)
+    if file is not None:
+        font = pymupdf.Font(fontfile=file)
+        fname = "LibB" if bold else "LibR"
+        page.insert_font(fontname=fname, fontfile=file)
+    else:
+        # base-14: snittet finns i varje PDF-läsare och behöver ingen fil i bilden
+        fname = "hebo" if bold else "helv"
+        font = pymupdf.Font(fontname=fname)
     if width is not None:
         while len(s) > 1 and font.text_length(s, fontsize=size) > width:
             s = s[:-2].rstrip() + "…"
@@ -686,6 +723,7 @@ def anbud_html(job_id: str, user: User = Depends(current_user), db: Session = De
             f"beställare {e(M['customer'])} · referens {e(M['reference'])}</div></div>"
             f"<div class='sum'><div><span>Anbudssumma exkl. moms</span><b>{_kr(T['netto_kr'])}</b></div>"
             f"<div><span>Moms</span><b>{_kr(T['moms_kr'])}</b></div><div><span>Att betala inkl. moms</span><b>{_kr(T['brutto_kr'])}</b></div></div>")
+    # i webbläsaren finns ingen arkivfil att peka på: snittet namnges och läsaren väljer det den har
     css = (TENDER_CSS.replace("@font-face { font-family: Lib; src: url(LiberationSans-Regular.ttf); }", "")
            .replace("@font-face { font-family: Lib; font-weight: bold; src: url(LiberationSans-Bold.ttf); }", "")
            .replace("font-family: Lib", "font-family: 'Liberation Sans', Arial, Helvetica, sans-serif"))
