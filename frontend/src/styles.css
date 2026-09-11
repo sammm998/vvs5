@@ -2546,3 +2546,9 @@ button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 
 .tk-grid.tk-listan .tk-side { position: static; max-height: none; }
 .tk-grid.tk-listan .tk-listcard .mk-filters { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 .tk-grid.tk-listan .tk-listcard .mk-scroll { max-height: 46vh; }
+
+/* var röret slutar: en rad per kant i varför-panelen */
+.frontiers ul { list-style: none; padding: 0; margin: 4px 0 10px; }
+.frontiers li { display: flex; gap: 6px; align-items: baseline; font-size: 12.5px; margin: 2px 0; }
+.frontiers .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; transform: translateY(1px); }
+.frontiers button.link { background: none; border: 0; padding: 0; color: var(--accent, #0b63ce); cursor: pointer; font: inherit; text-decoration: underline; }

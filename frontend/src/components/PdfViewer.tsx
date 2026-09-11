@@ -6,9 +6,10 @@ import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 (pdfjsLib as any).GlobalWorkerOptions.workerSrc = workerUrl;
 
 import { type Pt, type Snap, type SnapSettings, constrain, defaultSnaps, snapPoint } from "../cad/model";
+import { frontierColor, frontierText } from "../frontier";
 import { InkIndex } from "../cad/pagesnap";
 
-export type Layer = "pipes" | "ambiguous" | "claimed" | "unowned" | "declined" | "designations" | "legend" | "leaders" | "anchors" | "inWall";
+export type Layer = "pipes" | "ambiguous" | "claimed" | "unowned" | "declined" | "designations" | "legend" | "leaders" | "anchors" | "inWall" | "frontiers";
 export type EditKind = "extend" | "draw" | "erase" | null;
 
 /** What a finished edit gesture produced: the line drawn, and what it does to the measurement. */
@@ -793,6 +794,19 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                   </g>
                 );
               });
+            })}
+            {/* Var varje rör slutar, och varför: grönt en riktig gräns, rött där meter sannolikt tappas, orange
+                där läsningen lämnat något öppet. Alltid för det valda röret, för alla rör när lagret är på. */}
+            {props.pipes.map((p) => {
+              const sel = props.selectedPipe === p.physical_pipe_id;
+              if (!props.layers.frontiers && !sel) return null;
+              return (p.frontiers ?? []).map((f: any, k: number) => (
+                <g key={`${p.physical_pipe_id}-fr${k}`} style={{ pointerEvents: "none" }}>
+                  <circle cx={f.x} cy={f.y} r={sw(sel ? 5 : 3.6)} fill="none" stroke={frontierColor(f.reason)}
+                    strokeWidth={sw(sel ? 2.2 : 1.4)} strokeOpacity={0.95} />
+                  <title>{frontierText(f)}</title>
+                </g>
+              ));
             })}
             {/* The part of a run that lies inside a wall is drawn length that the horizontal quantity already
                 leaves out, so it may not wear the run's colour: painted over in the colour of what is not
