@@ -570,6 +570,7 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
                                             "edges": [{"prim": pid, "a": ab[0], "b": ab[1]} for pid, ab in g.prim_nodes.items()], "bridges": g.bridges, "junctions": g.junctions, "gap_mode": g.gap_mode}
                                            for fk, g in pa.graphs.items()]})
     W("physical-pipes.json", {"physical_pipes": [physical_pipe_dict(m) for m in pa.measures]})
+    W("pipe-extent-frontiers.json", extent_frontiers(pa))
     W("quantities.json", {"scale": pa.scale.as_dict(), "rows": pa.quantities,
                           "totals": {"physical_pipes": len(pa.measures),
                                      "confirmed_horizontal_m": round(sum(q["confirmed_horizontal_m"] for q in pa.quantities), 3),
@@ -608,6 +609,25 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     return files
 
 
+def extent_frontiers(pa) -> dict[str, Any]:
+    """Var varje rör slutar och varför (uppdragets pipe_extent_frontiers): skälen, varje front, och summan.
+
+    `silent_pipes` ska vara tom. Är den inte det har ett rör lämnat läsningen utan kant, och det är ett fel i
+    läsningen - inte i ritningen."""
+    from ..pipes.frontier import Frontier, REASONS, REAL, LOSSY, OPEN, summary
+    fs = [Frontier(d["pipe"], d["family"], d["node"], d["x"], d["y"], d["reason"], d["detail"]) for d in pa.frontiers]
+    mpp = pa.scale.meters_per_pt if pa.scale and pa.scale.meters_per_pt else None
+    sm = summary(fs, pa.ownership.pipes if pa.ownership else [], mpp)
+    ident = {p.physical_pipe_id: p.identity for p in (pa.ownership.pipes if pa.ownership else [])}
+    rows = []
+    for d in pa.frontiers:
+        ide = ident.get(d["pipe"])
+        rows.append({**d, "designation": ide.display if ide else None, "identity": ide.key if ide else None,
+                     "class": "REAL" if d["reason"] in REAL else "LOSSY" if d["reason"] in LOSSY else "OPEN"})
+    return {"page": pa.page.info.index, "reasons": REASONS, "classes": {"REAL": list(REAL), "LOSSY": list(LOSSY), "OPEN": list(OPEN)},
+            "summary": sm, "frontiers": rows}
+
+
 def physical_pipe_dict(m) -> dict[str, Any]:
     p = m.pipe
     return {"physical_pipe_id": p.physical_pipe_id, "page": p.page, "system": p.identity.system, "designation": p.identity.display,
@@ -619,7 +639,8 @@ def physical_pipe_dict(m) -> dict[str, Any]:
             "vertical_m": "UNKNOWN" if m.vertical_m is None else round(m.vertical_m, 3), "vertical_evidence": m.vertical_evidence,
             "total_m": None if m.total_m is None else round(m.total_m, 3), "evidence_state": m.state, "evidence": p.evidence,
             "in_hatched_area_m": None if m.hatched_m is None else round(m.hatched_m, 3),
-            "ambiguity_reason": None, "reasons": m.reasons}
+            "ambiguity_reason": None, "reasons": m.reasons,
+            "frontier_reasons": list(p.frontier_reasons), "frontiers": list(getattr(p, "frontiers", []) or [])}
 
 
 def performance_report(pa, timings: dict) -> dict[str, Any]:

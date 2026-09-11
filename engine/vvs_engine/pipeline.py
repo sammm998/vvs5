@@ -37,6 +37,7 @@ from .text.vector_text import VectorTextResult, vector_text_rows
 from .measure.scale import ScaleResult, discover_scale, scale_from_the_set
 from .measure.measure import PipeMeasure, aggregate, measure_pipes
 from .pipes.ownership import (Identity, OwnershipResult, complete_identities, identity_of, propagate, DECLARED_RUN_MAX_M)
+from .pipes.frontier import frontiers_of, summary as frontier_summary
 from .film import Film
 from .routes import apply_routes, cross_check, review, run_routes
 
@@ -105,6 +106,7 @@ class PageAnalysis:
     declarations: Declarations = field(default_factory=Declarations)   # the sheet's written rules for unlabelled pipes
     second_reader: dict | None = None       # bounded cases put to a second reader, and what it did with them
     vision: dict | None = None              # what a look at the rendered page said the reading may have missed
+    frontiers: list[dict] = field(default_factory=list)   # var varje rör slutar och varför (pipes/frontier.py)
 
 
 # A label over a bundle has found its pipes - the leader landed on as many drawn parallel lines as the block has
@@ -1397,6 +1399,14 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     measures = measure_pipes(ownership, scale, elevations, hatched_pt)
     risers = _riser_symbols(page, ann_layers, glyph_pids, graphs, ownership, anchors, identities)
     label_risers = _risers_from_dn_rows(designations, anchors, leaders, identities)
+    # var varje rör slutar, och varför: inget rör lämnar läsningen utan en kant med skäl
+    frontiers = frontiers_of(page, graphs, ownership, risers)
+    _by_pipe: dict[str, list[dict]] = defaultdict(list)
+    for f in frontiers:
+        _by_pipe[f.pipe_id].append(f.as_dict())
+    for pp in ownership.pipes:
+        pp.frontiers = _by_pipe.get(pp.physical_pipe_id, [])
+        pp.frontier_reasons = sorted({f["reason"] for f in pp.frontiers})
     amb_pt: Counter = Counter()
     for fk, g in graphs.items():
         for pid, st in ownership.prim_states[fk].items():
@@ -1417,7 +1427,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,
                         timings=timings, hatch_families=hatch, risers=risers, ocr_assist=ocr_report,
-                        crosscheck=crosscheck, review_findings=review_findings)
+                        crosscheck=crosscheck, review_findings=review_findings,
+                        frontiers=[f.as_dict() for f in frontiers])
 
 
 SAME_RISER = 15.0        # pt: a label's leader ends at the riser symbol it names, not exactly on its centre
@@ -1916,6 +1927,10 @@ def reading_coverage(pa: PageAnalysis) -> dict[str, Any]:
     mk = getattr(getattr(pa.page, "info", None), "markup_set_aside", None) if getattr(pa, "page", None) else None
     if mk:
         out["markup_set_aside"] = {**mk, "ink_m": round((mk.get("ink_pt") or 0.0) * mpp, 2)}
+    if pa.frontiers:
+        from .pipes.frontier import Frontier as _F
+        fs = [_F(d["pipe"], d["family"], d["node"], d["x"], d["y"], d["reason"], d["detail"]) for d in pa.frontiers]
+        out["frontiers"] = frontier_summary(fs, pa.ownership.pipes if pa.ownership else [], mpp)
     return out
 
 

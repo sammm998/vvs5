@@ -37,6 +37,7 @@ SPECS = {
     "topology-overlay.pdf": lambda: _draw_topology,
     "ambiguous-overlay.pdf": lambda: _draw_ambiguous,
     "unsupported-style-overlay.pdf": lambda: _draw_unsupported,
+    "frontier-overlay.pdf": lambda: _draw_frontiers,
 }
 
 
@@ -209,3 +210,27 @@ def _draw_unsupported(page, shape, pa):
     for a in pa.anchors:
         if a.state == "NO_PIPE_ATTACHMENT":
             shape.draw_circle(_pt(page, a.endpoint[0], a.endpoint[1]), 2.0); shape.finish(color=COLORS["unsupported"], width=0.6)
+
+
+# var rören slutar: gröna riktiga gränser, röda där meter sannolikt tappas, orange där något lämnats öppet
+FRONTIER_COLORS = {"REAL": (0.0, 0.55, 0.0), "LOSSY": (0.85, 0.1, 0.1), "OPEN": (1.0, 0.55, 0.0)}
+FRONTIER_SHORT = {"REAL_DN_BOUNDARY": "DN", "REAL_SYSTEM_BOUNDARY": "SYS", "REAL_DESIGNATION_BOUNDARY": "NAMN",
+                  "DECLARED_BOUNDARY": "DEKL", "AMBIGUOUS_JUNCTION": "TVET", "FLOW_BUDGET": "FLOD",
+                  "UNOWNED_CONTINUATION": "OAGD", "REPRESENTATION_CHANGE": "PENNA", "BROKEN_CONTINUITY": "GAP",
+                  "VERTICAL": "STIG", "SYMBOL": "SYMB", "SHEET_EDGE": "KANT", "FREE_END": "SLUT",
+                  "CLOSED_LOOP": "LOOP", "UNSUPPORTED_STRUCTURE": "?"}
+
+
+def _draw_frontiers(page, shape, pa):
+    from ..pipes.frontier import REAL, LOSSY
+    _draw_polylines(page, shape, [pl for m in pa.measures for pl in m.pipe.points], (0.75, 0.75, 0.75), 1.0)
+    for f in pa.frontiers:
+        cls = "REAL" if f["reason"] in REAL else "LOSSY" if f["reason"] in LOSSY else "OPEN"
+        col = FRONTIER_COLORS[cls]
+        c = _pt(page, f["x"], f["y"])
+        shape.draw_circle(c, 2.6); shape.finish(color=col, width=0.9)
+        try:
+            shape.insert_text(pymupdf.Point(c.x + 3.2, c.y - 1.5), FRONTIER_SHORT.get(f["reason"], "?"),
+                              fontsize=4.0, color=col)
+        except Exception:
+            pass

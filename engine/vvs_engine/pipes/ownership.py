@@ -87,6 +87,7 @@ class PhysicalPipe:
     frontier_reasons: list[str]
     evidence: list[str]
     state: str = "CONFIRMED"
+    frontiers: list[dict] = field(default_factory=list)     # var röret slutar och varför (pipes/frontier.py)
 
     @property
     def length_pt(self) -> float:

@@ -704,7 +704,8 @@ def _result_dir(j: AnalysisJob) -> str:
 ARTIFACTS = ["drawing-profile.json", "drawing-profile-report.md", "raw-vector-inventory.json", "cad-layer-map.json", "vector-designations.json",
              "designation-overlay.pdf", "leader-forensics.json", "leader-family-report.json", "pipe-code-anchors.json",
              "endpoint-pipe-attachment-overlay.pdf", "pipe-representation-families.json", "pipe-geometry-inventory.json", "declined-geometry.json", "pipe-topology.json",
-             "physical-pipes.json", "quantities.json", "unresolved-issues.json", "evidence-graph.json", "reconciliation.json",
+             "physical-pipes.json", "pipe-extent-frontiers.json", "frontier-overlay.pdf",
+             "quantities.json", "unresolved-issues.json", "evidence-graph.json", "reconciliation.json",
              "route-crosscheck.json", "reading-review.json", "determinism.json",
              "contamination-report.json", "performance-report.json", "production-overlay.pdf", "topology-overlay.pdf", "ambiguous-overlay.pdf",
              "unsupported-style-overlay.pdf", "analysis-report.md", "freeze-manifest.json", "summary.json"]
