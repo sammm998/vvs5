@@ -60,6 +60,27 @@ export function measureText(m: any): string {
   return bits.join(" · ");
 }
 
+/** Summan av raderna, uppdelad på vad verktygen faktiskt mäter.
+ *
+ * Meter, kvadratmeter, kubikmeter och stycken läggs aldrig ihop till ett tal. En yta har en omkrets och en
+ * längd har ingen area; ett enda tal för alltihop är inte en summa utan en sammanblandning. */
+export function sumText(rows: MarkupRow[]): string {
+  const LEN = ["langd", "polylinje", "frihand"], AREA = ["area", "rektangel", "moln", "volym"];
+  let m = 0, kvm = 0, m3 = 0, antal = 0;
+  for (const r of rows) {
+    const q = r.measure ?? {};
+    if (LEN.includes(r.tool)) m += Number(q.m ?? 0);
+    if (AREA.includes(r.tool)) { kvm += Number(q.kvm ?? 0); m3 += Number(q.m3 ?? 0); }
+    if (r.tool === "antal") antal += Number(q.antal ?? 0);
+  }
+  const bits: string[] = [];
+  if (m) bits.push(`${n2(m)} m`);
+  if (kvm) bits.push(`${n2(kvm)} m²`);
+  if (m3) bits.push(`${n2(m3, 3)} m³`);
+  if (antal) bits.push(`${antal} st`);
+  return bits.join(" · ") || "–";
+}
+
 /** Måttet som ett tal, för sorteringen: en yta jämförs med en yta, en längd med en längd. */
 function measureValue(m: any): number {
   if (!m) return 0;
@@ -218,6 +239,18 @@ export default function MarkupsList({ rows, selected, onSelect, onPatch, onPatch
               </td></tr>
             )}
           </tbody>
+          {/* Summan av det man ser, inte av allt som finns.
+              Filtrerar man fram ett lager är det lagrets mängd man vill läsa av; en summa som ändå räknade
+              hela handlingen svarar på en fråga ingen ställt, och den skillnaden syns inte i talet. */}
+          {shown.length > 0 && (
+            <tfoot>
+              <tr>
+                <th colSpan={5}>Summa av de {shown.length} raderna</th>
+                <th className="num">{sumText(shown)}</th>
+                <th colSpan={2} />
+              </tr>
+            </tfoot>
+          )}
         </table>
       </div>
     </div>

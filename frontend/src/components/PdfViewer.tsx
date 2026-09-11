@@ -5,6 +5,9 @@ import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 (pdfjsLib as any).GlobalWorkerOptions.workerSrc = workerUrl;
 
+import { type Pt, type Snap, type SnapSettings, constrain, defaultSnaps, snapPoint } from "../cad/model";
+import { InkIndex } from "../cad/pagesnap";
+
 export type Layer = "pipes" | "ambiguous" | "claimed" | "unowned" | "declined" | "designations" | "legend" | "leaders" | "anchors" | "inWall";
 export type EditKind = "extend" | "draw" | "erase" | null;
 
@@ -77,11 +80,21 @@ export interface ViewerProps {
   corrections?: { id: string; kind: string; designation: string | null; payload: any }[];
   /** What the reader drew in by hand: measured, marked or noted. Beside the reading, never in it. */
   markups?: { id: string; tool: string; points: number[][]; layer?: string; text?: string; measure?: any;
-              status?: string; subject?: string }[];
+              status?: string; subject?: string; props?: any }[];
   /** Vilken markering som är utpekad i listan; den ritas framhävd på bladet. */
   selectedMarkup?: string | null;
   /** Någon pekade på en markering på bladet - listan ska följa med dit. */
   onMarkupClick?: (id: string) => void;
+  /* Fångst mot ritningens eget bläck, och låsta vinklar.
+   *
+   * En sträcka mängdad på frihand går bredvid röret i stället för på det, och felet syns inte i något tal.
+   * Fångas ritningens egen linje mäts röret. `ink` är bladets streck, lästa en gång per sida; `snap` säger
+   * vilka sorters fångst som gäller och `ortho` låser vinkeln (0 av, 45 polär, 90 ortho). */
+  pageInk?: InkIndex | null;
+  snap?: SnapSettings;
+  ortho?: number;
+  /** Vad markören fick tag i just nu, så att rummet kan säga det i statusraden. */
+  onSnapped?: (s: Snap | null) => void;
 }
 
 /* Ett granskningsmoln ritas som ett moln.
@@ -522,9 +535,42 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
   }, [kind, stroke, props.pipes, props.editPipe, props.hatched, scale, mpp]);
 
   // --- pointer plumbing ---------------------------------------------------
-  const at = (e: React.MouseEvent): number[] => {
+  const raw = (e: React.MouseEvent): number[] => {
     const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
     return [Number(((e.clientX - r.left) / scale).toFixed(2)), Number(((e.clientY - r.top) / scale).toFixed(2))];
+  };
+
+  /* Punkten pekaren egentligen menar.
+   *
+   * Först ritningens eget bläck - ändpunkt, mittpunkt, skärning, linjen själv - inom några bildpunkter från
+   * markören. Fångas ingenting och en vinkel är låst faller punkten på närmaste tillåtna riktning från förra
+   * punkten. Utan båda delarna mäts handens darr i stället för röret.
+   */
+  const [snapped, setSnapped] = useState<Snap | null>(null);
+  const snapSet = props.snap ?? { ...defaultSnaps, on: false };
+  const snapAt = useCallback((pt: number[], from?: number[] | null): { p: number[]; snap: Snap | null } => {
+    const tol = sw(9);
+    if (snapSet.on && props.pageInk) {
+      const segs = props.pageInk.near(pt as Pt, tol);
+      if (segs.length) {
+        const ents = segs.map((q, i) => ({ id: `i${i}`, type: "line" as const, layer: "ink", p: [q[0], q[1]] }));
+        const lay = [{ id: "ink", name: "ink", color: "#000", visible: true, locked: false, width: 0.2 }];
+        const hit = snapPoint(pt as Pt, ents, lay, { ...snapSet, grid: 0 }, tol, (from as Pt) ?? null);
+        if (hit.kind !== "fri") return { p: hit.p, snap: hit };
+      }
+    }
+    if (from && props.ortho) return { p: constrain(from as Pt, pt as Pt, props.ortho), snap: null };
+    return { p: pt, snap: null };
+  }, [snapSet, props.pageInk, props.ortho, scale]);
+
+  /** Punkten som ska användas: fångad eller låst, och markören uppdaterad så att den syns på bladet. */
+  const at = (e: React.MouseEvent, from?: number[] | null): number[] => {
+    const { p, snap } = snapAt(raw(e), from);
+    if ((snap?.kind ?? null) !== (snapped?.kind ?? null) || (snap && snapped && (snap.p[0] !== snapped.p[0] || snap.p[1] !== snapped.p[1]))) {
+      setSnapped(snap);
+      props.onSnapped?.(snap);
+    }
+    return p;
   };
 
   const down = (e: React.MouseEvent) => {
@@ -541,7 +587,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
 
   const move = (e: React.MouseEvent) => {
     if (!kind || !vp) return;
-    const pt = at(e);
+    const pt = at(e, pending.length ? pending[pending.length - 1] : null);
     setCursor(pt);
     if (kind === "erase" && stroke) {
       // one point every few screen pixels: enough to follow the hand, few enough to test cheaply
@@ -653,7 +699,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     // round to it, which is after the event has been handed back - and then currentTarget is null and reading
     // the sheet's rectangle off it throws, taking the whole page with it. An event is only an event during its
     // own handler.
-    const pt = at(e);
+    const pt = at(e, pending.length ? pending[pending.length - 1] : null);
     setPending((q) => [...q, pt]);
   };
   const finish = () => {
@@ -836,14 +882,29 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                   </g>
                 ) : null;
               }
-              const closed = m.tool === "area" || m.tool === "rektangel" || m.tool === "moln";
+              const closed = m.tool === "area" || m.tool === "rektangel" || m.tool === "moln" || m.tool === "volym";
+              /* Avdragen ritas som hål i ytan, inte som ytterligare rutor ovanpå den.
+               *
+               * Ett schakt mitt i ett golv är inte golv, och kvadratmetrarna räknas redan utan det. Ritades
+               * hålet som en ruta ovanpå skulle bladet säga att ytan är hel och tabellen att den har hål, och
+               * ingen kan se vilken som gäller. Med evenodd är hålet ett hål: ytan slutar där. */
+              const cuts: number[][][] = Array.isArray(m.props?.avdrag) ? m.props.avdrag : [];
+              const ring = (q: number[][]) => `M ${q.map((v) => v.join(" ")).join(" L ")} Z`;
+              const holed = [pts, ...cuts].map(ring).join(" ");
               return pts.length >= 2 ? (
                 <g key={m.id} style={pick} onClick={hit}>
                   {m.tool === "moln"
                     ? <path d={cloudPath(pts, Math.max(6, cloudRadius(pts)))} fill={c} fillOpacity={sel ? 0.12 : 0.06}
                         stroke={c} strokeWidth={sw(sel ? 3.5 : 2.4)} strokeLinejoin="round" strokeLinecap="round" />
                     : closed
-                    ? <polygon points={pts.map((q) => q.join(",")).join(" ")} fill={c} fillOpacity={sel ? 0.2 : 0.12} stroke={c} strokeWidth={sw(sel ? 4 : 2.5)} strokeLinejoin="round" />
+                    ? <>
+                        <path d={holed} fillRule="evenodd" fill={c} fillOpacity={sel ? 0.2 : 0.12}
+                              stroke={c} strokeWidth={sw(sel ? 4 : 2.5)} strokeLinejoin="round" />
+                        {cuts.map((q, i) => (
+                          <polygon key={`cut${i}`} points={q.map((v) => v.join(",")).join(" ")} fill="none"
+                                   stroke={c} strokeWidth={sw(1.8)} strokeDasharray={`${sw(7)} ${sw(5)}`} />
+                        ))}
+                      </>
                     : <polyline points={pts.map((q) => q.join(",")).join(" ")} fill="none" stroke={c} strokeWidth={sw(sel ? 5.5 : 3.5)} strokeOpacity={0.9} strokeLinecap="round" strokeLinejoin="round" />}
                   {anchor && <text x={anchor[0] + sw(6)} y={anchor[1] - sw(6)} fontSize={sw(11)} fill={c} fontFamily="ui-monospace, monospace">{label}</text>}
                 </g>
@@ -879,6 +940,20 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
             {pending.map((q, i) => (
               <circle key={`pp${i}`} cx={q[0]} cy={q[1]} r={sw(3)} fill="#0d0d0d" />
             ))}
+
+            {/* Fångstmarkören: den som mäter ska se vad hon fick tag i, inte gissa att linjen träffades. */}
+            {snapped && cursor && (
+              <g stroke="#e8590c" strokeWidth={sw(1.8)} fill="none">
+                {snapped.kind === "andpunkt"
+                  ? <rect x={snapped.p[0] - sw(5)} y={snapped.p[1] - sw(5)} width={sw(10)} height={sw(10)} />
+                  : snapped.kind === "mittpunkt"
+                  ? <polygon points={`${snapped.p[0] - sw(6)},${snapped.p[1] + sw(4)} ${snapped.p[0]},${snapped.p[1] - sw(6)} ${snapped.p[0] + sw(6)},${snapped.p[1] + sw(4)}`} />
+                  : snapped.kind === "skarning"
+                  ? <g><line x1={snapped.p[0] - sw(6)} y1={snapped.p[1] - sw(6)} x2={snapped.p[0] + sw(6)} y2={snapped.p[1] + sw(6)} />
+                       <line x1={snapped.p[0] + sw(6)} y1={snapped.p[1] - sw(6)} x2={snapped.p[0] - sw(6)} y2={snapped.p[1] + sw(6)} /></g>
+                  : <circle cx={snapped.p[0]} cy={snapped.p[1]} r={sw(4.5)} />}
+              </g>
+            )}
 
             {/* the running length, at the hand, so the metre is visible before it is saved */}
             {cursor && mpp > 0 && (band || (kind === "erase" && erased.meters > 0)) && (
