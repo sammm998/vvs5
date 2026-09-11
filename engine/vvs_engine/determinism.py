@@ -21,8 +21,11 @@ def semantic_signature(pa) -> dict[str, Any]:
     quant = sorted((q["designation"], -1 if q["dn"] is None else q["dn"], q["physical_pipe_count"], round(q["confirmed_horizontal_m"], 2), round(q["ambiguous_m"], 2), q["state"]) for q in pa.quantities)
     topo = sorted((fk, len(g.nodes), len(g.prims), len(g.bridges), len(g.junctions)) for fk, g in pa.graphs.items())
     glyph_fams = sorted((f.char, f.n_members) for f in pa.vtext.families.values())
+    # var varje rör slutar och varför: en front som byter skäl med objektens ordning är en front som gissar
+    fronts = sorted((f["reason"], round(f["x"], 1), round(f["y"], 1)) for f in (getattr(pa, "frontiers", None) or []))
     sig = {"designations": des, "leaders": leaders, "anchors": anchors, "pipe_families": fams, "physical_pipes": pipes,
-           "quantities": quant, "topology": topo, "glyph_families": glyph_fams, "scale": pa.scale.meters_per_pt}
+           "quantities": quant, "topology": topo, "glyph_families": glyph_fams, "scale": pa.scale.meters_per_pt,
+           "frontiers": fronts}
     return sig
 
 
