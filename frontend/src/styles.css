@@ -2539,3 +2539,10 @@ button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 
    innehåll är högre än sin krympta höjd lägger sig över nästa - fälten hamnar bakom kortet under. Korten
    behåller sin egen höjd och panelen rullar i stället. */
 .tk-side > *, .cad-side > * { flex: 0 0 auto; }
+
+/* Markeringslistan i hela bredden under bladet, som listan i ett mängdningsverktyg ligger. */
+.tk-grid.tk-listan { grid-template-columns: 1fr; }
+.tk-grid.tk-listan .tk-sheet { height: 56vh; min-height: 360px; }
+.tk-grid.tk-listan .tk-side { position: static; max-height: none; }
+.tk-grid.tk-listan .tk-listcard .mk-filters { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.tk-grid.tk-listan .tk-listcard .mk-scroll { max-height: 46vh; }

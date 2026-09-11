@@ -261,7 +261,10 @@ export default function TakeoffPage() {
       <div className="rule" style={{ marginBottom: 18 }} />
       {err && <p className="error">{err}</p>}
 
-      <div className="tk-grid">
+      {/* Markeringslistan är ett arbetsbord, inte en fotnot: den lägger sig under bladet i hela bredden, så
+          att kolumnerna får plats och måtten går att läsa av. Mängdningen har bladet stort och verktygen vid
+          sidan, för där är handen på ritningen. */}
+      <div className={`tk-grid${tab === "lista" ? " tk-listan" : ""}`}>
         <div className="tk-sheet">
           <div className="toolbar">
             <button className="secondary small" onClick={() => viewer.current?.zoomOut()}>−</button>
