@@ -38,6 +38,10 @@ jobs:
       # the suite runs under pytest, which is not a dependency of the service and so is not in its requirements
       - run: pip install pytest
       - run: python -m pytest -q engine/tests
+      # hela produkten som en person använder den - konto, projekt, uppladdning, analys, resultat, varför,
+      # olösta fall, varje export - på provsvitens eget blad, utan webbläsare och utan verkliga ritningar
+      - name: the whole product end to end on the synthetic sheet
+        run: python engine/tools/e2e.py --synthetic
       - name: the reading may not carry anything from a drawing it was tuned on
         run: |
           python - <<'PY'

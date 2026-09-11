@@ -189,14 +189,17 @@ add("frontend", "CAD-rummet och Mängda", ["frontend/src/pages/CadSheet.tsx", "f
 add("frontend", "Landning, dokumentation, akademi, admin", ["frontend/src/pages/Landing.tsx", "frontend/src/pages/Docs.tsx", "frontend/src/components/Learn*.tsx", "frontend/src/pages/Admin.tsx"], "GOOD_BUT_FRAGILE",
     "Byggs och typkontrolleras; innehåll ej granskat mot motorn i denna revision.")
 # ------------------------------------------------------------------ prov, verktyg, data
-add("prov", "Enhets- och integrationsprov, CI", ["engine/tests/ (52 filer, 400 prov)", ".github/workflows/checks.yml"], "GOOD_BUT_FRAGILE",
-    "Motor + API (TestClient) + kontamination i CI; frontend-bygge i CI.",
-    "Ingen fullstack-e2e i CI (engine/tools/e2e.py och frontend/smoke körs för hand); de 22 namngivna "
-    "regressionerna finns inte som svit.")
-add("prov", "Facitmått och grindkörning", ["engine/tools/ (saknas)", "scratchpad gate_run.py / rescore.py"], "PARTIAL",
-    "Blind körning + poängsättning finns som skript utanför repot; täckning/falskhet/beteckningar per blad.",
-    "Måtten DESIGNATION_RECALL/PRECISION, LEADER_ATTACHMENT, FULL/PARTIAL/OVER/WRONG/MISSED_PIPE och felkatalogen "
-    "finns inte i repot; 37 W-blad har aldrig poängsatts (facit bara på Drive).")
+add("prov", "Enhets- och integrationsprov, e2e, CI", ["engine/tests/ (58 filer, 427 prov)", "engine/tools/e2e.py", ".github/workflows/checks.yml", "docs/REGRESSIONER.md"], "GOOD_BUT_FRAGILE",
+    "Motor + API (TestClient) + kontamination + hela produkten end-to-end på det syntetiska bladet i CI; "
+    "frontend-bygge (eslint 0 varningar, typkontroll) i CI; regressionsregistret pekar från varje namngivet "
+    "ämne till sitt prov; webbläsarklickning (frontend/smoke/ui_smoke.py) körd för hand utan konsolfel.",
+    "Webbläsarklickningen är inte i CI (kräver Playwright-chromium i bilden).")
+add("prov", "Facitmått, felkatalog och grindkörning", ["engine/tools/gate_run.py", "engine/tools/facit_metrics.py", "engine/tools/freeze.py"], "GOOD_BUT_FRAGILE",
+    "Blind körning (lästa namn, namn med meter, ankartillstånd, fronter, indatahash), frysmanifest, och "
+    "poängsättning efteråt: COVERAGE, FALSE_OWNERSHIP, DESIGNATION_RECALL/PRECISION, LEADER_ATTACHMENT, "
+    "FULL/PARTIAL/OVER/MISSED/WRONG per beteckning, felkatalog per stil (gate52/gate53 i results/).",
+    "37 W-blad har aldrig poängsatts (facit bara på Drive); felkatalogen skiljer 'inte läst' från 'läst utan "
+    "meter' men inte varför anknytningen brast.")
 add("data", "Korpus: manifest, parning, innehållskontroll, exponering", ["engine/tools/corpus_manifest.py", "engine/tools/corpus_verify.py", "engine/tools/corpus_inventory.py", "results/2026-09-11-topologi/"], "GOOD",
     "1 520 filer, 500 blad, 71 par; parning bekräftad ur innehåll där lokal kopia finns; exponering per blad.",
     "Drive-API:et ger ingen kontrollsumma: 823 filer utan lokal kopia är matchade på namn+storlek.")

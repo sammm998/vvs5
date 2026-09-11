@@ -7,8 +7,8 @@
  },
  "verdict_counts": {
   "GOOD": 21,
-  "GOOD_BUT_FRAGILE": 18,
-  "PARTIAL": 5,
+  "GOOD_BUT_FRAGILE": 19,
+  "PARTIAL": 4,
   "MISSING": 1
  },
  "subsystems": [
@@ -441,25 +441,28 @@
   },
   {
    "area": "prov",
-   "subsystem": "Enhets- och integrationsprov, CI",
+   "subsystem": "Enhets- och integrationsprov, e2e, CI",
    "files": [
-    "engine/tests/ (52 filer, 400 prov)",
-    ".github/workflows/checks.yml"
+    "engine/tests/ (58 filer, 427 prov)",
+    "engine/tools/e2e.py",
+    ".github/workflows/checks.yml",
+    "docs/REGRESSIONER.md"
    ],
    "verdict": "GOOD_BUT_FRAGILE",
-   "evidence": "Motor + API (TestClient) + kontamination i CI; frontend-bygge i CI.",
-   "gap": "Ingen fullstack-e2e i CI (engine/tools/e2e.py och frontend/smoke körs för hand); de 22 namngivna regressionerna finns inte som svit."
+   "evidence": "Motor + API (TestClient) + kontamination + hela produkten end-to-end på det syntetiska bladet i CI; frontend-bygge (eslint 0 varningar, typkontroll) i CI; regressionsregistret pekar från varje namngivet ämne till sitt prov; webbläsarklickning (frontend/smoke/ui_smoke.py) körd för hand utan konsolfel.",
+   "gap": "Webbläsarklickningen är inte i CI (kräver Playwright-chromium i bilden)."
   },
   {
    "area": "prov",
-   "subsystem": "Facitmått och grindkörning",
+   "subsystem": "Facitmått, felkatalog och grindkörning",
    "files": [
-    "engine/tools/ (saknas)",
-    "scratchpad gate_run.py / rescore.py"
+    "engine/tools/gate_run.py",
+    "engine/tools/facit_metrics.py",
+    "engine/tools/freeze.py"
    ],
-   "verdict": "PARTIAL",
-   "evidence": "Blind körning + poängsättning finns som skript utanför repot; täckning/falskhet/beteckningar per blad.",
-   "gap": "Måtten DESIGNATION_RECALL/PRECISION, LEADER_ATTACHMENT, FULL/PARTIAL/OVER/WRONG/MISSED_PIPE och felkatalogen finns inte i repot; 37 W-blad har aldrig poängsatts (facit bara på Drive)."
+   "verdict": "GOOD_BUT_FRAGILE",
+   "evidence": "Blind körning (lästa namn, namn med meter, ankartillstånd, fronter, indatahash), frysmanifest, och poängsättning efteråt: COVERAGE, FALSE_OWNERSHIP, DESIGNATION_RECALL/PRECISION, LEADER_ATTACHMENT, FULL/PARTIAL/OVER/MISSED/WRONG per beteckning, felkatalog per stil (gate52/gate53 i results/).",
+   "gap": "37 W-blad har aldrig poängsatts (facit bara på Drive); felkatalogen skiljer 'inte läst' från 'läst utan meter' men inte varför anknytningen brast."
   },
   {
    "area": "data",

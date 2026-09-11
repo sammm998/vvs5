@@ -127,5 +127,18 @@ def main(pdf: str) -> int:
     return 1 if FAILS else 0
 
 
+def synthetic_sheet() -> str:
+    """Provsviten's eget blad - två etiketterade ledningar, en konturglyfsetikett, skala och skalstock - så att
+    hela produkten kan köras där inga verkliga ritningar finns (CI)."""
+    sys.path.insert(0, os.path.join(ROOT, "engine"))
+    from tests.conftest import synthetic_pdf
+    d = tempfile.mkdtemp(prefix="e2e-blad-")
+    return synthetic_pdf.__wrapped__(d)
+
+
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/data/validation_C/clean.pdf"))
+    arg = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/data/validation_C/clean.pdf"
+    if arg == "--synthetic" or not os.path.isfile(arg):
+        print("kör på provsvitens syntetiska blad" + ("" if arg == "--synthetic" else f" ({arg} finns inte)"))
+        arg = synthetic_sheet()
+    raise SystemExit(main(arg))
