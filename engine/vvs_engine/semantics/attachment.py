@@ -13,6 +13,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from typing import Any
 
+from ..pipes.ink import is_stroked
 from ..geometry.core import GridIndex, Seg, dist, point_seg_distance, stable_id
 from ..pdf.extract import RawPage, RawPath
 from ..pipes.representation import stroke_family
@@ -180,10 +181,12 @@ class GeometryIndex:
         self.symbols: list[RawPath] = []
         self.symbol_idx = GridIndex(cell=12.0)
         for p in sorted(page.paths, key=lambda p: p.pid):
-            if p.kind == "s" and _is_closed_symbol(p):
+            if is_stroked(p) and _is_closed_symbol(p):
                 self.symbols.append(p)
                 self.symbol_idx.insert(len(self.symbols) - 1, p.bbox)
-            if p.kind == "f" or family_of(p) in exclude_families or p.pid in exclude_pids:
+            # Samma kontrakt som topologin (pipes/ink.py): en fylld form utan penna är en gräns, inte ett
+            # streck, och en hänvisningslinje som slutar på en fylld bokstav är inte anknuten till ett rör.
+            if not is_stroked(p) or family_of(p) in exclude_families or p.pid in exclude_pids:
                 continue
             for k, s in enumerate(p.segs):
                 self.items.append((p, k, s))
@@ -576,7 +579,7 @@ def _marker_cluster(seeds: list[RawPath], gidx: GeometryIndex, pipe_families: se
         size = max(p.bbox[2] - p.bbox[0], p.bbox[3] - p.bbox[1])
         neighbours = [q for q, _, _ in gidx.hits(mx, my, tol=2.5 + size, skip_pids=skip)] + gidx.symbols_near(mx, my, 2.5 + size)
         for q in sorted(neighbours, key=lambda q: q.pid):
-            if q.pid in cluster or q.pid in skip or (pipe_families and family_of(q) in pipe_families) or q.kind == "f":
+            if q.pid in cluster or q.pid in skip or (pipe_families and family_of(q) in pipe_families) or not is_stroked(q):
                 continue
             qsize = max(q.bbox[2] - q.bbox[0], q.bbox[3] - q.bbox[1])
             if qsize > _R("semantics.attachment.MARKER_MAX", MARKER_MAX):

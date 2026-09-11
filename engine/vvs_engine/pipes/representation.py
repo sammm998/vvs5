@@ -17,6 +17,7 @@ from ..geometry.core import EXPORT_EPS, GridIndex, Seg, angle_diff, collinear, d
 from ..pdf.extract import RawPage, RawPath
 
 from .. import rules as _rules
+from .ink import is_stroked
 
 
 def _R(rule_id, default):
@@ -331,7 +332,9 @@ def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | No
     out: dict[str, list[Prim]] = defaultdict(list)
     seen: dict[str, set[tuple]] = defaultdict(set)
     for p in sorted(page.paths, key=lambda p: p.pid):
-        if p.kind != "s":
+        # Bara ritat bläck blir rör: en penna med bredd. Kontraktet står på ett ställe (pipes/ink.py) och
+        # anknytningen läser samma - annars kan en etikett peka på bläck ingen mätning känner till.
+        if not is_stroked(p):
             continue
         if exclude_pids and p.pid in exclude_pids:
             continue

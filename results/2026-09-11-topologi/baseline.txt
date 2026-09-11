@@ -1,0 +1,8 @@
+# Baseline före topologiarbetet
+
+commit: 57eb537bdec991c099d9709bf405d5a9e9722a9c
+gren:   claude/vvs-pipe-takeoff-system-0wt5p4
+tid:    2026-09-11T01:00:41Z
+python: Python 3.11.15
+pymupdf: PyMuPDF 1.28.2: Python bindings for the MuPDF 1.28.2 library.
+?? results/2026-09-11-topologi/
