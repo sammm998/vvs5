@@ -589,7 +589,13 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
         W("ocr-assisted-characters.json", pa.ocr_assist)
     W("evidence-graph.json", evidence_graph(pa))
     from ..reconcile import reconcile
-    W("reconciliation.json", reconcile(pa))
+    rec = reconcile(pa)
+    W("reconciliation.json", rec)
+    # giltigheten är en annan fråga än konserveringen: nådde läsningen bladet?
+    from ..coverage import coverage_validity
+    from ..pipeline import reading_coverage as _rc
+    W("coverage-validity.json", coverage_validity(_rc(pa), pa.anchors, rec, pa.scale.state if pa.scale else None,
+                                                  len(pa.measures)))
     W("route-crosscheck.json", pa.crosscheck)
     W("reading-review.json", pa.review_findings)
     if determinism is not None:

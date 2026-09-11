@@ -6,9 +6,9 @@ Domarna är satta efter implementationen (filerna i varje rad), efter körda pro
 
 | Dom | Antal |
 |---|---:|
-| GOOD | 21 |
+| GOOD | 22 |
 | GOOD_BUT_FRAGILE | 19 |
-| PARTIAL | 4 |
+| PARTIAL | 3 |
 | BROKEN | 0 |
 | UNSAFE | 0 |
 | MISSING | 1 |
@@ -60,7 +60,7 @@ Det som är MISSING är uppdragets kärna, och det står överst i arbetsordning
 |---|---|---|---|
 | **Skala per blad: text + skalstock, hela handlingen**<br>`engine/vvs_engine/measure/scale.py`, `engine/vvs_engine/handling.py` | GOOD_BUT_FRAGILE | VERIFIED/TEXT_ONLY/BAR_ONLY/CONFLICT; enhetsmedveten skalstock (mm/cm/m); lånad skala från handlingen ger SCALE_FROM_THE_SET med källblad; en osäker skala blir aldrig CONFIRMED-meter (10 prov). | Ingen skala per region (vyportar i olika skala på samma blad); D-bladet står i CONFLICT (text 1:S0 vs stock). |
 | **Mätning och mängdrader, vertikalt UNKNOWN**<br>`engine/vvs_engine/measure/measure.py` | GOOD | Meter bara med satt skala; vertikalt bara med nivåbevis, annars 'UNKNOWN' i raden; radstatus CONFIRMED/AMBIGUOUS/SCALE_UNSETTLED/SCALE_FROM_THE_SET/UNSUPPORTED_STYLE. | - |
-| **Geometrikonservering och läsningens täckning**<br>`engine/vvs_engine/reconcile.py`, `engine/vvs_engine/pipeline.py` | PARTIAL | reconcile: VALID/INVALID med residual och dubbelräkning; reading_coverage: beteckningar, med DN, leaders, anknytningar (verifierade/tvetydiga/inga), drawn/confirmed/ambiguous/unowned m, namn utan meter, påskrift. | CoverageValidity som eget begrepp (åtta mått) saknas; GEOMETRY_CONSERVATION och täckning blandas i reading-coverage.json. |
+| **Geometrikonservering och läsningens giltighet (två frågor)**<br>`engine/vvs_engine/reconcile.py`, `engine/vvs_engine/coverage.py`, `engine/vvs_engine/pipeline.py` | GOOD | reconcile: VALID/INVALID med residual och dubbelräkning; coverage-validity.json: åtta mått (lästa beteckningar, andel med DN, verifierade anknytningar, namn med meter, ägt/tvetydigt/oägt bläck, förlustfronter) och omdömet VALID/DEGRADED/INVALID med skäl - en läsning som konserverar ingenting är INVALID, inte perfekt; fem prov. | Trösklarna för DEGRADED (50 % namn med meter, 30 % ägt bläck, 35 % förlustfronter) är satta, inte härledda. |
 
 ## motor/kontroll
 

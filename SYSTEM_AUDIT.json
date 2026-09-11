@@ -6,9 +6,9 @@
   "gate": "gate52: 33 blad, täckning 79,31 %, falska 27,26 %, 267/365 beteckningar rätt, 76 påhittade"
  },
  "verdict_counts": {
-  "GOOD": 21,
+  "GOOD": 22,
   "GOOD_BUT_FRAGILE": 19,
-  "PARTIAL": 4,
+  "PARTIAL": 3,
   "MISSING": 1
  },
  "subsystems": [
@@ -187,14 +187,15 @@
   },
   {
    "area": "motor/mått",
-   "subsystem": "Geometrikonservering och läsningens täckning",
+   "subsystem": "Geometrikonservering och läsningens giltighet (två frågor)",
    "files": [
     "engine/vvs_engine/reconcile.py",
+    "engine/vvs_engine/coverage.py",
     "engine/vvs_engine/pipeline.py"
    ],
-   "verdict": "PARTIAL",
-   "evidence": "reconcile: VALID/INVALID med residual och dubbelräkning; reading_coverage: beteckningar, med DN, leaders, anknytningar (verifierade/tvetydiga/inga), drawn/confirmed/ambiguous/unowned m, namn utan meter, påskrift.",
-   "gap": "CoverageValidity som eget begrepp (åtta mått) saknas; GEOMETRY_CONSERVATION och täckning blandas i reading-coverage.json."
+   "verdict": "GOOD",
+   "evidence": "reconcile: VALID/INVALID med residual och dubbelräkning; coverage-validity.json: åtta mått (lästa beteckningar, andel med DN, verifierade anknytningar, namn med meter, ägt/tvetydigt/oägt bläck, förlustfronter) och omdömet VALID/DEGRADED/INVALID med skäl - en läsning som konserverar ingenting är INVALID, inte perfekt; fem prov.",
+   "gap": "Trösklarna för DEGRADED (50 % namn med meter, 30 % ägt bläck, 35 % förlustfronter) är satta, inte härledda."
   },
   {
    "area": "motor/kontroll",

@@ -113,11 +113,12 @@ add("motor/mått", "Skala per blad: text + skalstock, hela handlingen", ["engine
 add("motor/mått", "Mätning och mängdrader, vertikalt UNKNOWN", ["engine/vvs_engine/measure/measure.py"], "GOOD",
     "Meter bara med satt skala; vertikalt bara med nivåbevis, annars 'UNKNOWN' i raden; radstatus CONFIRMED/"
     "AMBIGUOUS/SCALE_UNSETTLED/SCALE_FROM_THE_SET/UNSUPPORTED_STYLE.")
-add("motor/mått", "Geometrikonservering och läsningens täckning", ["engine/vvs_engine/reconcile.py", "engine/vvs_engine/pipeline.py"], "PARTIAL",
-    "reconcile: VALID/INVALID med residual och dubbelräkning; reading_coverage: beteckningar, med DN, leaders, "
-    "anknytningar (verifierade/tvetydiga/inga), drawn/confirmed/ambiguous/unowned m, namn utan meter, påskrift.",
-    "CoverageValidity som eget begrepp (åtta mått) saknas; GEOMETRY_CONSERVATION och täckning blandas i "
-    "reading-coverage.json.")
+add("motor/mått", "Geometrikonservering och läsningens giltighet (två frågor)", ["engine/vvs_engine/reconcile.py", "engine/vvs_engine/coverage.py", "engine/vvs_engine/pipeline.py"], "GOOD",
+    "reconcile: VALID/INVALID med residual och dubbelräkning; coverage-validity.json: åtta mått (lästa "
+    "beteckningar, andel med DN, verifierade anknytningar, namn med meter, ägt/tvetydigt/oägt bläck, förlustfronter) "
+    "och omdömet VALID/DEGRADED/INVALID med skäl - en läsning som konserverar ingenting är INVALID, inte perfekt; "
+    "fem prov.",
+    "Trösklarna för DEGRADED (50 % namn med meter, 30 % ägt bläck, 35 % förlustfronter) är satta, inte härledda.")
 # ------------------------------------------------------------------ motor: kontroll
 add("motor/kontroll", "Determinism: original / omvänd / slumpad ordning", ["engine/vvs_engine/determinism.py"], "GOOD_BUT_FRAGILE",
     "Semantisk signatur (beteckningar, leaders, ankare, rör, mängder, topologi, glyffamiljer) hashas för original, "
