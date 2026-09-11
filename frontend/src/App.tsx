@@ -16,7 +16,7 @@ import ProjectAnalysisPage from "./pages/ProjectAnalysis";
 import CalcPage from "./pages/CalcPage";
 import TakeoffPage from "./pages/Takeoff";
 import TakeoffPickPage from "./pages/TakeoffPick";
-import CadPage from "./pages/Cad";
+import CadSheetPage from "./pages/CadSheet";
 import CadPickPage from "./pages/CadPick";
 
 function Guard({ children }: { children: JSX.Element }) {
@@ -81,7 +81,7 @@ function IconRuler() {
 /** Rummet hette Granska innan det blev CAD. En sparad länk ska öppna samma blad, inte en tom sida. */
 function GranskaRedirect() {
   const { id } = useParams();
-  return <Navigate to={id ? `/cad/${id}` : "/cad"} replace />;
+  return <Navigate to={id ? `/mangda/${id}` : "/mangda"} replace />;
 }
 
 function IconCad() {
@@ -128,9 +128,10 @@ const ROUTES = (
     <Route path="/mangda" element={<Guard><TakeoffPickPage /></Guard>} />
     <Route path="/mangda/:id" element={<Guard><TakeoffPage /></Guard>} />
     <Route path="/cad" element={<Guard><CadPickPage /></Guard>} />
-    <Route path="/cad/:id" element={<Guard><CadPage /></Guard>} />
-    {/* rummet hette Granska innan det blev CAD; gamla länkar ska inte gå i kras */}
-    <Route path="/granska" element={<Navigate to="/cad" replace />} />
+    <Route path="/cad/:id" element={<Guard><CadSheetPage /></Guard>} />
+    {/* Granskningen av någon annans ritning bor i Mängda - CAD är ritbordet. Gamla länkar till båda rummen
+        pekar dit markeringarna faktiskt ligger. */}
+    <Route path="/granska" element={<Navigate to="/mangda" replace />} />
     <Route path="/granska/:id" element={<GranskaRedirect />} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />

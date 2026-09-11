@@ -170,6 +170,18 @@ export const api = {
     req(`/api/drawings/${drawingId}/markups/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   deleteMarkup: (drawingId: string, id: string) =>
     req(`/api/drawings/${drawingId}/markups/${id}`, { method: "DELETE" }),
+
+  // ---- ritbordet: blad man ritar själv -------------------------------------------------------------------
+  cadSheets: (projectId?: string) => req(`/api/cad/sheets${projectId ? `?project_id=${projectId}` : ""}`),
+  cadCreate: (body: any) =>
+    req("/api/cad/sheets", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  cadSheet: (id: string) => req(`/api/cad/sheets/${id}`),
+  cadSave: (id: string, body: any) =>
+    req(`/api/cad/sheets/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  cadDelete: (id: string) => req(`/api/cad/sheets/${id}`, { method: "DELETE" }),
+  cadPrint: (id: string) => req(`/api/cad/sheets/${id}/tryck`, { method: "POST" }),
+  cadPdfUrl: (id: string) => `/api/cad/sheets/${id}/pdf`,
+  cadDxfUrl: (id: string) => `/api/cad/sheets/${id}/dxf`,
 };
 
 /* Vad besökaren gjorde, samlat ihop och skickat sällan.

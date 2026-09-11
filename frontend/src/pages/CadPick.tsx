@@ -1,31 +1,53 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
-import DrawingUpload from "../components/DrawingUpload";
 
-/* Vilken handling ska öppnas i CAD-rummet? Ritningarna med hur många frågor som står öppna på var och en -
- * och en väg att lägga upp en ny, för den som står här och har filen framför sig. */
+/* Ritbordet: bladen man ritat själv, och vägen till ett nytt.
+ *
+ * Här laddas ingenting upp. Vill man mäta någon annans ritning är det mängdningens rum; det här rummet är för
+ * det man ritar själv - ett stamschema, en ändring, ett förslag. Ett blad börjar som ett pappersformat och en
+ * skala, och blir en ritning genom att någon ritar den.
+ */
+
+const PAPERS: [string, string][] = [
+  ["A0", "1189 × 841 mm"], ["A1", "841 × 594 mm"], ["A2", "594 × 420 mm"],
+  ["A3", "420 × 297 mm"], ["A4", "297 × 210 mm"],
+];
+const RATIOS = [20, 25, 50, 100, 200, 500];
+
 export default function CadPickPage() {
-  const [rows, setRows] = useState<any[] | null>(null);
-  const [err, setErr] = useState("");
   const nav = useNavigate();
-  const [tick, setTick] = useState(0);
-  useEffect(() => {
-    let alive = true;
-    api.projects().then(async (ps: any[]) => {
-      const out: any[] = [];
-      for (const p of ps) {
-        const full = await api.project(p.id).catch(() => null);
-        for (const d of full?.drawings ?? []) {
-          // hur långt granskningen kommit är det som avgör vilket blad man öppnar härnäst, så det står i listan
-          const marks = await api.allMarkups(d.id).catch(() => null);
-          out.push({ ...d, project: p.name, counts: marks?.status_counts ?? {}, total: marks?.rows?.length ?? 0 });
-        }
-      }
-      if (alive) setRows(out);
-    }).catch((e) => alive && setErr(e.message));
-    return () => { alive = false; };
-  }, [tick]);
+  const [rows, setRows] = useState<any[] | null>(null);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [name, setName] = useState("Nytt blad");
+  const [paper, setPaper] = useState("A3");
+  const [ratio, setRatio] = useState(50);
+  const [project, setProject] = useState("");
+
+  const load = () => {
+    api.cadSheets().then((d) => setRows(d.rows)).catch((e) => setErr(e.message));
+    api.projects().then((ps: any[]) => {
+      setProjects(ps);
+      setProject((p) => p || ps[0]?.id || "");
+    }).catch((e) => setErr(e.message));
+  };
+  useEffect(load, []);
+
+  const create = async () => {
+    if (!project) { setErr("Bladet hör hemma i ett projekt. Skapa ett projekt först."); return; }
+    setBusy(true); setErr("");
+    try {
+      const s = await api.cadCreate({ project_id: project, name: name.trim() || "Nytt blad", paper, scale_ratio: ratio });
+      nav(`/cad/${s.id}`);
+    } catch (e: any) { setErr(e.message); } finally { setBusy(false); }
+  };
+
+  const remove = async (id: string) => {
+    try { await api.cadDelete(id); load(); } catch (e: any) { setErr(e.message); }
+  };
+
   return (
     <main>
       <p className="crumb">CAD</p>
@@ -33,33 +55,60 @@ export default function CadPickPage() {
         <div>
           <h1>CAD</h1>
           <p className="lead">
-            Rita, mät och anteckna direkt på bladet, och arbeta i markeringslistan tills varje sak har ett svar.
-            Det som ritas här ligger vid sidan av läsningen och rör den aldrig.
+            Ritbordet. Här ritas ett blad från grunden - linjer, rör, text och mått i byggets egna millimeter,
+            med objektfångst och låsta vinklar så att det som möts verkligen möts. Ett färdigt blad trycks ut
+            som en ritning och kan då mängdas precis som en inlämnad handling.
           </p>
         </div>
       </div>
       <div className="rule" style={{ marginBottom: 20 }} />
-      <DrawingUpload verb="Öppna" onDone={(made) => {
-        if (made.length === 1) nav(`/cad/${made[0].id}`);
-        else { setRows(null); setTick((n) => n + 1); }
-      }} />
+
+      <div className="card cad-new">
+        <h3 style={{ marginTop: 0 }}>Nytt blad</h3>
+        <div className="row" style={{ gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
+          <label className="small" style={{ minWidth: 200 }}>Namn
+            <input value={name} onChange={(e) => setName(e.target.value)} style={{ width: "100%" }} />
+          </label>
+          <label className="small">Projekt
+            <select value={project} onChange={(e) => setProject(e.target.value)}>
+              {projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+            </select>
+          </label>
+          <label className="small">Format
+            <select value={paper} onChange={(e) => setPaper(e.target.value)}>
+              {PAPERS.map(([p, mm]) => <option key={p} value={p}>{p} · {mm}</option>)}
+            </select>
+          </label>
+          <label className="small">Skala 1:
+            <select value={ratio} onChange={(e) => setRatio(Number(e.target.value))}>
+              {RATIOS.map((r) => <option key={r}>{r}</option>)}
+            </select>
+          </label>
+          <button onClick={create} disabled={busy}>{busy ? "Skapar…" : "Börja rita"}</button>
+        </div>
+        {!projects.length && <p className="muted small" style={{ marginBottom: 0 }}>
+          Du har inget projekt ännu. <Link to="/projekt">Skapa ett</Link> så hamnar bladet där.
+        </p>}
+      </div>
+
       {err && <p className="error">{err}</p>}
       {!rows && <p className="muted">Laddar…</p>}
-      {rows && !rows.length && <p className="muted">Ingen ritning uppladdad ännu. Lägg upp en här ovanför.</p>}
+      {rows && !rows.length && <p className="muted">Inga egna blad ännu. Börja med ett tomt här ovanför.</p>}
       <div className="list">
-        {(rows ?? []).map((d) => (
-          <article className="item" key={d.id}>
+        {(rows ?? []).map((s) => (
+          <article className="item" key={s.id}>
             <div className="no" />
             <div>
-              <Link className="ttl" to={`/cad/${d.id}`} style={{ fontSize: 18 }}>{d.filename.replace(/\.pdf$/i, "")}</Link>
+              <Link className="ttl" to={`/cad/${s.id}`} style={{ fontSize: 18 }}>{s.name}</Link>
               <div className="sub">
-                {d.project} · {d.n_pages} {d.n_pages === 1 ? "sida" : "sidor"}
-                {d.total > 0 && <> · {d.total} markeringar
-                  {d.counts.oppen ? ` · ${d.counts.oppen} öppna` : ""}
-                  {d.counts.godkand ? ` · ${d.counts.godkand} godkända` : ""}</>}
+                {s.paper} · 1:{s.scale_ratio} · {s.entities} objekt
+                {s.drawing_id && <> · <Link to={`/mangda/${s.drawing_id}`}>utskriven ritning</Link></>}
               </div>
             </div>
-            <div className="meta"><Link className="when" to={`/cad/${d.id}`}>Öppna →</Link></div>
+            <div className="meta">
+              <Link className="when" to={`/cad/${s.id}`}>Öppna →</Link>
+              <button className="ghost small" onClick={() => remove(s.id)}>Ta bort</button>
+            </div>
           </article>
         ))}
       </div>

@@ -377,6 +377,31 @@ class DrawingViewport(Base):
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
 
+class CadSheet(Base):
+    """Ett blad någon ritar själv.
+
+    CAD-rummet är inte en granskning av någon annans ritning - det är ritbordet. Bladet är ett pappersformat,
+    en skala och det som ritats på det, och det senare ligger som ritobjekt i världens millimeter: en vägg är
+    3 000 mm lång oavsett vilken skala bladet råkar skrivas ut i. Skalan hör till pappret, inte till väggen.
+
+    Innehållet sparas som det ritprogrammet arbetar med, så att ett blad kan öppnas igen och ritas vidare på.
+    Vill man mängda det trycks det först ut till en PDF, och då blir det en handling som alla andra.
+    """
+    __tablename__ = "cad_sheets"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    project_id: Mapped[str] = mapped_column(ForeignKey("projects.id"), index=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    name: Mapped[str] = mapped_column(String(255), default="Nytt blad")
+    paper: Mapped[str] = mapped_column(String(16), default="A3")           # A0..A4 | eget
+    width_mm: Mapped[float] = mapped_column(Float, default=420.0)
+    height_mm: Mapped[float] = mapped_column(Float, default=297.0)
+    scale_ratio: Mapped[int] = mapped_column(Integer, default=50)          # 1:50
+    content: Mapped[dict] = mapped_column(JSON, default=dict)              # lager och ritobjekt
+    drawing_id: Mapped[str | None] = mapped_column(ForeignKey("drawings.id"), nullable=True)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)
+
+
 class Space(Base):
     """Ett ställe i bygget: hus, plan, rum, lägenhet - ritat som ett område på ett blad.
 
