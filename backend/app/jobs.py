@@ -237,6 +237,8 @@ def run_job(job_id: str) -> None:
         # vad den här tjänsten kör, läst medan sessionen finns kvar - OCR-passen kostar tid och är valbara
         from .main import RUN_KEYS, run_setting
         run_ocr = {k: run_setting(db, k) for k in RUN_KEYS}
+        # att jobbet kördes om efter en omstart är en del av dess historia och följer med in i det färdiga svaret
+        carried = {k: v for k, v in (job.summary or {}).items() if k == "resubmitted_after_restart"}
         job.status = "RUNNING"; job.started_at = dt.datetime.now(dt.timezone.utc); job.result_key = result_key
         db.commit()
     out_dir = storage.path(result_key)
@@ -256,7 +258,7 @@ def run_job(job_id: str) -> None:
             sr.update({"enabled": on, "why": why,
                      "model": os.environ.get("VVS_SECOND_READER_MODEL", "gpt-6-astra") if on else None})
             _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
-               summary={"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr})
+               summary={"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr, **carried})
     except UnsupportedInputError as e:
         # not a defect: the PDF carries no vector drawing, so there is nothing to read
         _set(job_id, status="FAILED", stage="FAILED", finished_at=dt.datetime.now(dt.timezone.utc),
@@ -275,3 +277,26 @@ def run_job(job_id: str) -> None:
 
 def submit(job_id: str) -> None:
     _executor.submit(run_job, job_id)
+
+
+def resubmit_unfinished() -> int:
+    """Jobb som var på väg när tjänsten senast stängde: kör dem igen, från början.
+
+    Ett jobb körs i en tråd i processen. Startar processen om - en utrullning, en krasch, en maskin som
+    byts - står jobbet kvar som RUNNING i databasen och ingen kör det; den som laddade upp ritningen ser en
+    mätare som aldrig rör sig. Läsningen är deterministisk och skriver sitt resultat under jobbets egen nyckel,
+    så att köra den igen är säkert: samma svar, samma plats. Det som inte får hända är att den försvinner.
+    """
+    with SessionLocal() as db:
+        stale = db.query(AnalysisJob).filter(AnalysisJob.status.in_(("QUEUED", "RUNNING"))).all()
+        ids = []
+        for job in stale:
+            job.status, job.stage, job.progress, job.error = "QUEUED", "QUEUED", 0.0, None
+            job.started_at, job.finished_at = None, None
+            job.summary = {**(job.summary or {}), "resubmitted_after_restart": (job.summary or {}).get("resubmitted_after_restart", 0) + 1}
+            ids.append(job.id)
+        db.commit()
+    for jid in ids:
+        log.warning("Jobb %s var oavslutat när tjänsten startade om: körs igen", jid)
+        submit(jid)
+    return len(ids)

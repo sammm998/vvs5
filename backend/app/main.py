@@ -32,6 +32,10 @@ async def _lifespan(_app: FastAPI):
     # gå upp alls. Ett varningsmeddelande i en logg ingen läser är samma sak som ingenting.
     demand_a_real_secret()
     init_db()
+    # jobb som var på väg när tjänsten senast stängde körs igen; ett RUNNING som ingen kör är en lögn på skärmen
+    if os.environ.get("PYTEST_CURRENT_TEST") is None or os.environ.get("VVS_RESUBMIT_ON_START") == "1":
+        from . import jobs as _jobs
+        _jobs.resubmit_unfinished()
     yield
 
 
