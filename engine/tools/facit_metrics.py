@@ -67,10 +67,32 @@ def read_workbook(path: str) -> dict[str, float]:
     return dict(out)
 
 
+def read_csv_facit(path: str) -> dict[str, float]:
+    """Samma svar som read_workbook, ur den CSV som drive_facit.py skriver (Ämne;Längd;unit)."""
+    import csv
+    out: dict[str, float] = defaultdict(float)
+    with open(path, encoding="utf-8", newline="") as fh:
+        for row in csv.DictReader(fh, delimiter=";"):
+            name = (row.get("Ämne") or "").strip()
+            length = _num(row.get("Längd"))
+            if not name or length is None:
+                continue
+            unit = (row.get("unit") or "m").strip().lower()
+            if unit == "mm":
+                length /= 1000.0
+            elif unit == "cm":
+                length /= 100.0
+            out[name] += length
+    return dict(out)
+
+
 def facit_for(tag: str) -> dict[str, float] | None:
     for cand in (f"{DATA}/validation_{tag}/facit.xlsx", f"{DATA}/validation_set3/{tag}/facit.xlsx"):
         if os.path.isfile(cand):
             return read_workbook(cand)
+    cand = f"{DATA}/validation_W/{tag}/facit.csv"
+    if os.path.isfile(cand):
+        return read_csv_facit(cand)
     return None
 
 

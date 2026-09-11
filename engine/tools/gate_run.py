@@ -44,6 +44,15 @@ def sheets(unmarked: bool) -> list[tuple[str, str]]:
             if os.path.isfile(c):
                 out.append((name, c))
                 break
+    # W-bladen vars referens bara finns på Drive: ren PDF (CVAT-kopian, 0 anteckningar) + facit.csv per blad
+    wdir = f"{ROOT}/validation_W"
+    seen = {t for t, _ in out}
+    if os.path.isdir(wdir):
+        for name in sorted(os.listdir(wdir)):
+            p = f"{wdir}/{name}/clean.pdf"
+            if name.startswith("_") or name in seen or not os.path.isfile(p):
+                continue
+            out.append((name, p))
     return out
 
 
