@@ -6,6 +6,7 @@ it never participates in any semantic decision.
 """
 from __future__ import annotations
 
+import hashlib
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass, field
@@ -118,10 +119,15 @@ class LazyPages(Sequence):
     It is a list to everything that uses it - length, indexing, iteration - and the one thing it adds is
     `release`, which hands a page back once the reading is finished with it. A reading that walks a set from
     front to back then holds one page at a time instead of all of them.
+
+    The marks a page carried were inventoried and set aside when the document was classified, before any page
+    was read; they are remembered here so that a page read twice - or read after being released - reports the
+    same marks as the first time, although the ink is already off the shared document.
     """
 
-    def __init__(self, doc, indexes: list[int], pdf_path: str):
+    def __init__(self, doc, indexes: list[int], pdf_path: str, known: dict[int, tuple] | None = None):
         self._doc, self._idx, self._path = doc, list(indexes), pdf_path
+        self._known = known or {}
         self._held: dict[int, RawPage] = {}
 
     def __len__(self) -> int:
@@ -133,9 +139,16 @@ class LazyPages(Sequence):
         if i < 0:
             i += len(self._idx)
         if i not in self._held:
-            got = _read_page(self._doc, self._idx[i], self._path)
+            pno = self._idx[i]
+            annots, markup, only_markup = self._known.get(pno, (None, None, False))
+            if only_markup:
+                # bladet har ingen egen ritning under märkena: läs det igen ur filen med märkena kvar
+                with pymupdf.open(self._path) as again:
+                    got = _read_page(again, pno, self._path, keep_markup=True)
+            else:
+                got = _read_page(self._doc, pno, self._path, known=(annots, markup) if annots is not None else None)
             if isinstance(got, dict):                       # classified readable, and then was not: not ours to hide
-                raise UnsupportedInputError(f"page {self._idx[i] + 1} carries no vector drawing", [got])
+                raise UnsupportedInputError(f"page {pno + 1} carries no vector drawing", [got])
             self._held[i] = got
         return self._held[i]
 
@@ -163,7 +176,8 @@ class RawDocument:
 
     def inventory(self) -> dict[str, Any]:
         out = {"source": self.path, "n_pages": self.n_pages, "metadata": self.metadata,
-               "ocgs": [{"xref": k, **v} for k, v in sorted(self.ocgs.items())], "pages": []}
+               "ocgs": [{"xref": k, **v} for k, v in sorted(self.ocgs.items())], "pages": [],
+               "skipped_pages": self.skipped_pages}
         for pg in self.pages:
             kinds: dict[str, int] = {}
             layers: dict[str, int] = {}
@@ -184,6 +198,7 @@ class RawDocument:
                 "n_text_spans": len(pg.spans), "n_text_chars": sum(len(s.chars) for s in pg.spans),
                 "n_images": pg.info.n_images, "n_annotations": pg.info.n_annots, "n_xobjects": pg.info.n_xobjects,
                 "xobjects": pg.info.xobjects, "fonts": pg.info.fonts, "annotations": pg.info.annots,
+                "markup_set_aside": pg.info.markup_set_aside, "input_class": pg.input_class,
                 "path_kinds": kinds, "layers": dict(sorted(layers.items())), "stroke_widths": dict(sorted(widths.items())),
             })
         return out
@@ -292,8 +307,82 @@ def _annot_length(a) -> float:
     return tot
 
 
-def _read_annotations(page, keep: bool = False) -> tuple[list[dict], dict | None]:
-    """Read the page's annotations, and take their ink off the page before the drawing is read.
+def _annot_fingerprint(kind: str, rect: list, vertices, content: str, subject: str) -> str:
+    """Ett märke känns igen på vad det är och var det sitter - inte på sitt xref, som byter värde när filen
+    sparas om. Samma märke inventerat två gånger får samma avtryck."""
+    h = hashlib.sha1()
+    h.update(kind.encode()); h.update(repr(rect).encode())
+    try:
+        flat = []
+        for v in (vertices or []):
+            if isinstance(v, (tuple, list)) and v and isinstance(v[0], (tuple, list)):
+                flat.extend((round(float(p[0]), 1), round(float(p[1]), 1)) for p in v)
+            elif isinstance(v, (tuple, list)):
+                flat.append((round(float(v[0]), 1), round(float(v[1]), 1)))
+        h.update(repr(flat).encode())
+    except Exception:
+        pass
+    h.update((content or "").encode("utf-8", "replace")); h.update((subject or "").encode("utf-8", "replace"))
+    return h.hexdigest()[:16]
+
+
+def _inventory_annotations(page) -> list[dict]:
+    """Every mark on the page, recorded before the page is classified or read.
+
+    Kind, position, xref, appearance stream, author, text, how far it runs, and a fingerprint of its geometry:
+    enough to point at the mark afterwards, and enough for a page inventoried twice to say the same thing.
+    A mark that cannot be read is still counted - as a mark of unknown kind - because an inventory that drops
+    what it could not parse is not an inventory.
+    """
+    out: list[dict] = []
+    try:
+        a = page.first_annot
+    except Exception:
+        return out
+    doc = page.parent
+    while a:
+        xref = 0
+        try:
+            xref = int(a.xref or 0)
+        except Exception:
+            pass
+        try:
+            kind = a.type[1]
+            info = a.info or {}
+            try:
+                verts = a.vertices or []
+            except Exception:
+                verts = []
+            ap = ""
+            try:
+                if xref:
+                    k, v = doc.xref_get_key(xref, "AP/N")
+                    ap = v if k == "xref" else (k if k != "null" else "")
+            except Exception:
+                ap = ""
+            rect = [round(float(v), 2) for v in a.rect]
+            content = (info.get("content") or "")[:80]
+            subject = (info.get("subject") or "")[:80]
+            n_pts = 0
+            if verts and isinstance(verts[0], (tuple, list)):
+                n_pts = sum(len(v) for v in verts) if isinstance(verts[0][0], (tuple, list)) else len(verts)
+            out.append({"type": kind, "rect": rect, "content": content, "subject": subject,
+                        "author": (info.get("title") or "")[:60], "xref": xref, "appearance": ap,
+                        "n_vertices": n_pts, "ink_pt": round(_annot_length(a), 1),
+                        "fingerprint": _annot_fingerprint(kind, rect, verts, content, subject)})
+        except Exception as e:
+            out.append({"type": "?", "rect": [], "content": "", "subject": "", "author": "", "xref": xref,
+                        "appearance": "", "n_vertices": 0, "ink_pt": 0.0, "fingerprint": "",
+                        "error": f"{type(e).__name__}: {e}"[:120]})
+        try:
+            a = a.next
+        except Exception:
+            break
+    return out
+
+
+def _set_markup_aside(page, annots: list[dict], keep: bool = False) -> dict | None:
+    """Take the marks' ink off the page before the drawing is read, and prove that it went.
 
     An annotation is not what the engineer drew. It is what somebody wrote afterwards on top of it: a cloud
     round a change, a note to the contractor, or - the one that matters here - a takeoff someone has already
@@ -302,79 +391,93 @@ def _read_annotations(page, keep: bool = False) -> tuple[list[dict], dict | None
     apart: they carry a stroke width and a colour like any other line. A reading that keeps them measures one
     person's opinion of the drawing and reports it as the drawing.
 
-    So the ink goes, and the record of it stays: how many marks, of what kind, whose, and how far they ran. A
-    page whose only content is annotations is a different case - there the annotations are the drawing, and
-    taking them away would leave nothing to read - so that page keeps them.
+    So the ink goes, and the record of it stays: how many marks, of what kind, whose, how far they ran - and the
+    evidence: how many drawings the page had before and after, and how many marks were left. A removal that
+    stopped halfway is reported as such, not as done; the page is then not safe to read, because the ink still
+    on it has no known origin. A page whose only content is annotations is a different case - there the marks
+    are the page - and it is asked for with `keep`.
     """
-    annots: list[dict] = []
+    if not annots:
+        return None
     kinds: dict[str, int] = {}
     who: dict[str, int] = {}
     ink = 0.0
-    try:
-        a = page.first_annot
-    except Exception:
-        return annots, None
-    while a:
-        try:
-            kind = a.type[1]
-            info = a.info or {}
-            rec = {"type": kind, "rect": [round(v, 2) for v in a.rect],
-                   "content": (info.get("content") or "")[:80], "subject": (info.get("subject") or "")[:80],
-                   "author": (info.get("title") or "")[:60]}
-            annots.append(rec)
-            kinds[kind] = kinds.get(kind, 0) + 1
-            if rec["author"]:
-                who[rec["author"]] = who.get(rec["author"], 0) + 1
-            ink += _annot_length(a)
-        except Exception:
-            pass
-        try:
-            a = a.next
-        except Exception:
-            break
-    if not annots:
-        return annots, None
+    for rec in annots:
+        kinds[rec["type"]] = kinds.get(rec["type"], 0) + 1
+        if rec.get("author"):
+            who[rec["author"]] = who.get(rec["author"], 0) + 1
+        ink += rec.get("ink_pt") or 0.0
+    base = {"n": len(annots), "kinds": kinds, "authors": who, "ink_pt": round(ink, 1),
+            "fingerprints": [r["fingerprint"] for r in annots]}
     if not _R("pdf.extract.ANNOTATION_INK_IS_REVIEW", ANNOTATION_INK_IS_REVIEW):
-        return annots, {"n": len(annots), "kinds": kinds, "authors": who, "ink_pt": round(ink, 1), "removed": False,
-                        "why": "regeln som lägger påskrift åt sidan är avstängd"}
+        return {**base, "removed": False, "why": "regeln som lägger påskrift åt sidan är avstängd"}
     if keep:                              # asked for again by a page that had nothing else on it
-        return annots, {"n": len(annots), "kinds": kinds, "authors": who, "ink_pt": round(ink, 1), "removed": False,
-                        "why": "bladet har ingen egen ritning under påskriften"}
+        return {**base, "removed": False, "why": "bladet har ingen egen ritning under påskriften"}
+    try:
+        before = len(page.get_drawings())
+    except Exception:
+        before = -1
+    error = ""
     try:
         a = page.first_annot
         while a:
             a = page.delete_annot(a)
+    except Exception as e:
+        error = f"{type(e).__name__}: {e}"[:120]
+    try:
+        left = sum(1 for _ in page.annots())
     except Exception:
-        return annots, {"n": len(annots), "kinds": kinds, "authors": who, "ink_pt": round(ink, 1), "removed": False,
-                        "why": "påskriften gick inte att lyfta av bladet"}
-    return annots, {"n": len(annots), "kinds": kinds, "authors": who, "ink_pt": round(ink, 1), "removed": True,
-                    "why": "en annotation är någons påskrift på ritningen, inte det ritaren ritade"}
+        left = -1
+    try:
+        after = len(page.get_drawings())
+    except Exception:
+        after = -1
+    evidence = {"drawings_before": before, "drawings_after": after, "annotations_left": left, "error": error}
+    if left != 0:
+        return {**base, "removed": False, "partial": True, "evidence": evidence,
+                "why": f"påskriften gick bara delvis att lyfta av bladet ({left} av {len(annots)} märken kvar): "
+                       "bläcket som är kvar har okänt ursprung och bladet läses inte"}
+    return {**base, "removed": True, "evidence": evidence,
+            "why": "en annotation är någons påskrift på ritningen, inte det ritaren ritade"}
 
 
-def _read_page(doc, pno: int, pdf_path: str, keep_markup: bool = False) -> RawPage | dict:
+def _read_page(doc, pno: int, pdf_path: str, keep_markup: bool = False, known: tuple | None = None) -> RawPage | dict:
     """One page's vector content, or the reason it was not read.
+
+    The order is the contract: the marks are inventoried first, then taken off, and only then is the page
+    classified. Classifying first would count a takeoff's polylines as vector content and call a scanned sheet
+    with somebody's markup on it a vector drawing - and then read the markup as the drawing.
 
     Layer ids are numbered within the page, from its own layer names sorted. They used to be handed out in the
     order the document happened to introduce them, which made a page's own artifact depend on which pages had
     been read before it - and once pages are read on demand, that is not even a fixed order.
     """
     page = doc[pno]
+    if known is not None:
+        annots, markup = known
+        if annots and not keep_markup and any(True for _ in page.annots()):
+            markup = _set_markup_aside(page, annots, keep=False)      # a fresh opening still carries the marks
+    else:
+        annots = _inventory_annotations(page)
+        markup = _set_markup_aside(page, annots, keep=keep_markup)
+    if markup and markup.get("partial"):
+        return {"page": pno, "mode": "unsafe_markup", "n_paths": 0, "n_chars": 0, "n_images": 0,
+                "image_coverage": 0.0, "reasons": [markup["why"]], "markup_set_aside": markup, "annotations": annots}
     from .classify import classify_page
     klass = classify_page(page)
     if klass.mode in ("raster", "empty"):
-        return {"page": pno, **klass.as_dict()}
+        if klass.mode == "empty" and markup and markup.get("removed"):
+            # Nothing was drawn under the marks: on this page they are not somebody's comment on a drawing, they
+            # are the drawing. The file itself was never touched, so the page is simply read again from it.
+            with pymupdf.open(pdf_path) as again:
+                return _read_page(again, pno, pdf_path, keep_markup=True)
+        return {"page": pno, **klass.as_dict(), "markup_set_aside": markup, "annotations": annots}
     rot = page.rotation
     # Work in the displayed (rotated) page space: PyMuPDF get_drawings/get_text return unrotated
     # coordinates; map them with rotation_matrix so all downstream geometry matches the rendered page.
     M = page.rotation_matrix if rot else None
     rect = page.rect
-    annots, markup = _read_annotations(page, keep=keep_markup)
     drawings = page.get_drawings()
-    if markup and markup.get("removed") and not drawings:
-        # Nothing was drawn under the marks: on this page they are not somebody's comment on a drawing, they
-        # are the drawing. The file itself was never touched, so the page is simply read again from it.
-        with pymupdf.open(pdf_path) as again:
-            return _read_page(again, pno, pdf_path, keep_markup=True)
     layer_ids = {name: i for i, name in enumerate(sorted({d.get("layer") or "" for d in drawings}))}
     paths: list[RawPath] = []
     for seq, d in enumerate(drawings):
@@ -415,7 +518,15 @@ def _read_page(doc, pno: int, pdf_path: str, keep_markup: bool = False) -> RawPa
                     n_images=len(page.get_images()), n_annots=len(annots), n_xobjects=len(xobjs), xobjects=xobjs,
                     fonts=fonts, annots=annots, markup_set_aside=markup)
     rp = RawPage(info=info, paths=paths, spans=spans)
-    rp.input_class = klass.as_dict()
+    klass_d = klass.as_dict()
+    if keep_markup and annots:
+        klass_d["markup_only"] = True
+        klass_d["reasons"] = list(klass_d["reasons"]) + [
+            f"MARKUP_ONLY: bladet har ingen egen ritning; det som läses är {len(annots)} märken av "
+            + ", ".join(f"{k} ({n})" for k, n in sorted(markup["kinds"].items()))]
+    else:
+        klass_d["markup_only"] = False
+    rp.input_class = klass_d
     rp.source_path = pdf_path
     rp.embedded_fonts = _embedded_fonts(doc, page)
     return rp
@@ -451,13 +562,26 @@ def extract_document(pdf_path: str, pages: list[int] | None = None, progress=Non
     else:
         from .classify import classify_page
         keep = []
+        known: dict[int, tuple] = {}
         for pno in wanted:
-            klass = classify_page(doc[pno])
-            if klass.mode in ("raster", "empty"):
-                rd.skipped_pages.append({"page": pno, **klass.as_dict()})
-            else:
+            page = doc[pno]
+            annots = _inventory_annotations(page)
+            markup = _set_markup_aside(page, annots, keep=False)
+            if markup and markup.get("partial"):
+                rd.skipped_pages.append({"page": pno, "mode": "unsafe_markup", "n_paths": 0, "n_chars": 0,
+                                         "n_images": 0, "image_coverage": 0.0, "reasons": [markup["why"]],
+                                         "markup_set_aside": markup, "annotations": annots})
+                continue
+            klass = classify_page(page)
+            if klass.mode == "empty" and markup and markup.get("removed"):
+                known[pno] = (annots, markup, True)          # bara märken: läses igen med märkena kvar
                 keep.append(pno)
-        rd.pages = LazyPages(doc, keep, pdf_path)
+            elif klass.mode in ("raster", "empty"):
+                rd.skipped_pages.append({"page": pno, **klass.as_dict(), "markup_set_aside": markup, "annotations": annots})
+            else:
+                known[pno] = (annots, markup, False)
+                keep.append(pno)
+        rd.pages = LazyPages(doc, keep, pdf_path, known)
     if not len(rd.pages):
         which = ", ".join(f"page {c['page'] + 1}: {'; '.join(c['reasons'])}" for c in rd.skipped_pages) or "no pages"
         raise UnsupportedInputError(
