@@ -64,23 +64,24 @@ SET_SCALE_MIN = 2           # sheets that must agree before the set is taken to 
 SET_SCALE_TOL = 0.02        # ...and how far apart two of them may be and still be the same scale
 
 
-def scale_of_the_set(sheets: list[dict]) -> float | None:
+def scale_of_the_set(sheets: list[dict]) -> tuple[float, list[int]] | None:
     """The scale the set is drawn in, where its sheets agree about it.
 
     A set of plan sheets is drawn in one scale and every stamp says so. Two sheets that settled the same figure
     are that statement; one sheet is a sheet, and a set whose sheets disagree has details among its plans and is
     not saying anything about the sheet that failed. Where nothing is agreed, nothing is lent.
     """
-    settled = [(sh.get("scale") or {}).get("meters_per_pt") for sh in sheets
+    settled = [(sh.get("page"), (sh.get("scale") or {}).get("meters_per_pt")) for sh in sheets
                if (sh.get("scale") or {}).get("state") in ("VERIFIED", "TEXT_ONLY", "BAR_ONLY")]
-    got = [v for v in settled if v]
+    got = [(pg, v) for pg, v in settled if v]
     if len(got) < _R("cli.SET_SCALE_MIN", SET_SCALE_MIN):
         return None
-    got.sort()
-    mid = got[len(got) // 2]
-    if any(abs(v - mid) > _R("cli.SET_SCALE_TOL", SET_SCALE_TOL) * mid for v in got):
+    got.sort(key=lambda t: t[1])
+    mid = got[len(got) // 2][1]
+    if any(abs(v - mid) > _R("cli.SET_SCALE_TOL", SET_SCALE_TOL) * mid for _, v in got):
         return None                 # plans and details in one file: the set has no single scale to lend
-    return mid
+    # the sheets that said it travel with the figure: a borrowed scale has to be able to name its source
+    return mid, sorted(pg for pg, _ in got if pg is not None)
 
 
 def sheet_record(pa) -> dict:
@@ -177,7 +178,8 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     # A sheet whose own stamp settled nothing is not unmeasurable when its siblings all say the same thing about
     # how big the drawing is. Those sheets - and only those - are read again with the set's scale, which is a
     # bounded amount of work: on a set where one stamp is unclear, it is one sheet.
-    set_scale = scale_of_the_set(sheets)
+    lent = scale_of_the_set(sheets)
+    set_scale, set_scale_pages = lent if lent is not None else (None, [])
     rescaled = 0
     if set_scale is not None:
         for i, sh in enumerate(sheets):
@@ -186,7 +188,8 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
             check_budget()
             pa = analyze_page(doc.pages[i], progress, ocr_assist=ocr_assist,
                               film_sink=film_sink if i == 0 else None, second_reader=second_reader,
-                              known_families=known_families, known_legend=vocab, known_scale=set_scale)
+                              known_families=known_families, known_legend=vocab, known_scale=set_scale,
+                              known_scale_pages=[p for p in set_scale_pages if p != i])
             learn_roles(vocab, pa.legend)
             overlay.replace(pa)
             sheets[i] = sheet_record(pa)

@@ -41,15 +41,23 @@ class ScaleResult:
                 "evidence": [{"kind": e.kind, "text": e.text, "bbox": e.bbox, "meters_per_pt": e.value, "detail": e.detail} for e in self.evidence]}
 
 
-def scale_from_the_set(known: float, why: str) -> ScaleResult:
+def scale_from_the_set(known: float, why: str, pages: list[int] | None = None) -> ScaleResult:
     """The scale the rest of the drawing set settled, for a sheet that could not settle its own.
 
     A set is drawn in one scale and its sheets say so in the same stamp. Where one sheet's stamp is unclear -
     the printed ratio missing, or it and the scale bar disagreeing - the sheet is not unmeasurable; it is a
     sheet whose siblings all say the same thing about how big it is. That is evidence about this sheet, and
     it is written down as such: the state says the scale came from the set, not from this page.
+
+    It is a proposal, not this sheet's own word, so it names its source. The pages that settled the figure are
+    written into the evidence, and a reader who doubts it can open them and look: without them the sheet would
+    carry a number from nowhere, which is the one thing a borrowed scale must never be.
     """
-    return ScaleResult(meters_per_pt=known, scope="document", state="FROM_THE_SET", evidence=[], reason=why)
+    src = sorted(set(pages or []))
+    ev = [ScaleEvidence(kind="scale_from_the_set", text="; ".join(f"blad {p + 1}" for p in src) or "handlingen",
+                        bbox=[], value=known, detail={"source_pages": src, "n_sheets": len(src),
+                                                      "proposal": True})]
+    return ScaleResult(meters_per_pt=known, scope="document", state="FROM_THE_SET", evidence=ev, reason=why)
 
 
 def discover_scale(page: RawPage, lines: list[TextRow]) -> ScaleResult:

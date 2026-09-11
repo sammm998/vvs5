@@ -776,6 +776,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                  known_families: dict[str, str] | None = None,
                  known_legend: DrawingLegend | None = None,
                  known_scale: float | None = None,
+                 known_scale_pages: list[int] | None = None,
                  prepared: "PreparedPage | None" = None) -> PageAnalysis:
     """second_reader: an optional transport for putting the reading's own open cases to a language model.
 
@@ -1338,7 +1339,8 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     scale = discover_scale(page, lines)
     if known_scale is not None and scale.state in ("NONE", "CONFLICT"):
         # the rest of the set agreed about how big it is, and this sheet's own stamp did not settle it
-        scale = scale_from_the_set(known_scale, f"ritningsomgången är enig; bladets eget besked: {scale.reason}")
+        scale = scale_from_the_set(known_scale, f"ritningsomgången är enig; bladets eget besked: {scale.reason}",
+                                   known_scale_pages)
     # the rule for connection pipes names short runs; how short is a length in metres, so the scale comes first
     _mpp = scale.meters_per_pt if scale.meters_per_pt else None
     declared_max_pt = (_R("pipes.ownership.DECLARED_RUN_MAX_M", DECLARED_RUN_MAX_M) / _mpp) if _mpp else None

@@ -175,6 +175,20 @@ class PipeMeasure:
     twin_pdf_units: float = 0.0
 
 
+# Vad bladet självt har avgjort om sin storlek. En meter mätt under något annat är ett förslag: den redovisas
+# med sitt tal, för den som granskar behöver se vad stocken gav, men den får inte heta bekräftad. Skillnaden
+# mellan de två är hela skillnaden mellan ett mått och en gissning på tusen gånger fel.
+SETTLED_SCALE = ("VERIFIED", "TEXT_ONLY", "BAR_ONLY")
+UNSETTLED_ROW_STATE = {"CONFLICT": "SCALE_UNSETTLED", "FROM_THE_SET": "SCALE_FROM_THE_SET"}
+
+
+def scale_standing(scale: ScaleResult) -> str | None:
+    """Radens tillstånd när skalan inte är bladets eget besked - annars None, och raden får heta bekräftad."""
+    if scale.state in SETTLED_SCALE or scale.meters_per_pt is None:
+        return None
+    return UNSETTLED_ROW_STATE.get(scale.state)
+
+
 def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str, list[dict]],
                   hatched_pt: dict[str, float] | None = None) -> list[PipeMeasure]:
     """elevations: anchor_id -> list of {tag, value} elevation annotations attached to the anchor's label unit.
@@ -187,6 +201,7 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
     # single run can be read as confidently measured when the sheet's own scale is unsettled.
     scale_note = (f"scale_{scale.state.lower()}:{scale.reason}"
                   if scale.state not in ("VERIFIED",) and mpp is not None else None)
+    standing = scale_standing(scale)
     twins = twin_overlap_pt(own.pipes, mpp)
     for p in own.pipes:
         # hatched length is measured on drawn primitives; scale it by the bridged-gap share of the run
@@ -211,7 +226,7 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
             reasons.append(scale_note)
         vert, vev = _vertical(p, elevations)
         total = (hm + (vert or 0.0)) if hm is not None else None
-        state = "CONFIRMED" if hm is not None else "UNSUPPORTED_STYLE"
+        state = ("UNSUPPORTED_STYLE" if hm is None else standing or "CONFIRMED")
         if p.frontier_reasons:
             reasons.extend(p.frontier_reasons)
         out.append(PipeMeasure(pipe=p, horizontal_pdf_units=hpu, horizontal_m=hm, vertical_m=vert, vertical_evidence=vev,
@@ -278,6 +293,8 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
             r["confirmed_horizontal_m"] += m.horizontal_m
             r["confirmed_total_m"] += m.horizontal_m
             r["in_hatched_area_m"] += m.hatched_m or 0.0      # excluded from the horizontal quantity
+            if m.state in UNSETTLED_ROW_STATE.values() and r["state"] == "CONFIRMED":
+                r["state"] = m.state          # mätt under en skala bladet inte avgjort: ett förslag, inte ett besked
         else:
             r["state"] = "UNSUPPORTED_STYLE"
         if m.vertical_m is not None:

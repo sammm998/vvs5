@@ -13,6 +13,7 @@ from typing import Any
 from .. import __version__
 from ..profile.layers import layer_tokens
 from ..pipeline import reading_coverage
+from ..measure.measure import SETTLED_SCALE
 from ..semantics.leaders import leader_family_report
 
 
@@ -430,15 +431,20 @@ def document_quantities(sheets: list[dict]) -> dict[str, Any]:
     rows, so a designation can be followed from sheet to sheet, and the same rows are added up per designation
     so there is a figure for the building.
 
-    Sheets are added up only where each says what its own scale is. A sheet whose scale the reading could not
-    settle carries no metres to add, and is listed as such rather than counted as nothing.
+    Every sheet's metres are added up, and the sheets that did not settle their own scale are named. A sheet
+    whose stamp and scale bar disagree, or that borrowed the set's scale, was still measured - dropping it would
+    answer a question nobody asked - but its metres are a proposal, so they are counted separately as well as in
+    the sum, and the sheet is listed by page. What the reader must be able to see is how much of the building's
+    total rests on a scale the drawing itself never settled.
     """
     rows: dict[tuple, dict] = {}
     unscaled = []
+    unsettled_m = 0.0
     for sh in sheets:
-        if (sh.get("scale") or {}).get("state") not in ("VERIFIED", "STATED"):
+        if (sh.get("scale") or {}).get("state") not in SETTLED_SCALE:
             unscaled.append({"page": sh.get("page"), "state": (sh.get("scale") or {}).get("state"),
                              "reason": (sh.get("scale") or {}).get("reason")})
+            unsettled_m += sum(float(q.get("confirmed_total_m") or 0.0) for q in sh.get("quantities") or [])
         for q in sh.get("quantities") or []:
             key = (q.get("designation"), q.get("dn"))
             r = rows.setdefault(key, {"designation": q.get("designation"), "base": q.get("base"), "dn": q.get("dn"),
@@ -462,7 +468,8 @@ def document_quantities(sheets: list[dict]) -> dict[str, Any]:
     totals = {k: round(sum(r[k] for r in out_rows), 2)
               for k in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
                         "in_hatched_area_m")}
-    totals.update({"designations": len(out_rows), "sheets": len(sheets),
+    totals.update({"m_under_an_unsettled_scale": round(unsettled_m, 2),
+                   "designations": len(out_rows), "sheets": len(sheets),
                    "physical_pipes": sum(r["physical_pipe_count"] for r in out_rows),
                    "riser_count": sum(r["riser_count"] for r in out_rows),
                    "riser_count_from_labels": sum(r["riser_count_from_labels"] for r in out_rows)})
