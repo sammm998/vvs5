@@ -15,7 +15,20 @@ MM_PER_PT = 25.4 / 72.0
 # The denominator has to end where the number ends. Without the boundary "1:10000" matches its first four
 # digits and reads as 1:1000, which is not a refusal to understand an unsupported scale - it is a tenfold
 # error stated as confidently as a correct reading.
-SCALE_RE = re.compile(r"1\s*[:;]\s*([0-9Oo]{1,4})(?![0-9Oo])")
+# Siffrorna i ett skalförhållande, så som en stämpel ritad med streck kan komma ut ur teckentydningen. En
+# ritning som skriver SKALA 1:50 med SHX-text ger "1:S0": femman och esset är samma form så när som på en
+# svans, och nollan och o:et är samma ring. Koden vek redan O till 0 men inte S till 5, och bladet blev
+# skalalöst - varje meter föll bort på en bokstav. I den här positionen har grammatiken redan avgjort att det
+# står ett tal: efter "1:" står ingen förkortning. Då är en bokstav som ser ut som en siffra en siffra.
+GLYPH_DIGITS = {"O": "0", "o": "0", "S": "5", "s": "5", "I": "1", "l": "1", "L": "1",
+                "B": "8", "Z": "2", "z": "2", "G": "6", "g": "9", "q": "9"}
+SCALE_RE = re.compile(r"1\s*[:;]\s*([0-9%s]{1,4})(?![0-9%s])"
+                      % ("".join(GLYPH_DIGITS), "".join(GLYPH_DIGITS)))
+
+
+def digits_from_glyphs(s: str) -> str:
+    """Bokstäverna tillbaka till de siffror de ritades som, där bara ett tal kan stå."""
+    return "".join(GLYPH_DIGITS.get(ch, ch) for ch in s)
 FORMAT_RE = re.compile(r"\bA([0-4])\b")
 
 
@@ -89,7 +102,7 @@ def discover_scale(page: RawPage, lines: list[TextRow]) -> ScaleResult:
     for ln in lines:
         t = ln.text.replace(" ", "")
         for m in SCALE_RE.finditer(t):
-            digits = m.group(1).replace("O", "0").replace("o", "0")
+            digits = digits_from_glyphs(m.group(1))
             if not digits.isdigit():
                 continue
             n = int(digits)
