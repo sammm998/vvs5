@@ -37,7 +37,7 @@ from .text.vector_text import VectorTextResult, vector_text_rows
 from .measure.scale import ScaleResult, discover_scale, scale_from_the_set
 from .measure.measure import PipeMeasure, aggregate, measure_pipes
 from .pipes.ownership import (Identity, OwnershipResult, complete_identities, identity_of, propagate, DECLARED_RUN_MAX_M)
-from .pipes.frontier import frontiers_of, summary as frontier_summary
+from .pipes.frontier import end_evidence, frontiers_of, summary as frontier_summary
 from .film import Film
 from .routes import apply_routes, cross_check, review, run_routes
 
@@ -1347,17 +1347,19 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     _mpp = scale.meters_per_pt if scale.meters_per_pt else None
     declared_max_pt = (_R("pipes.ownership.DECLARED_RUN_MAX_M", DECLARED_RUN_MAX_M) / _mpp) if _mpp else None
     identities = _identities_now()
+    # vad som sitter vid varje fri ände, läst innan ägandet: det bevis en onämnd gren behöver för ett namn
+    end_ev = end_evidence(page, graphs)
     ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
-                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt)
+                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt, end_evidence=end_ev)
     if _settle_bundles_by_elimination(anchors, ownership, graphs):
         identities = _identities_now()
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
-                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt)
+                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt, end_evidence=end_ev)
     # and what one bundle at a time cannot settle, the sheet taken as a whole sometimes can
     if settle_bundles_by_sheet_consistency(anchors, graphs, known_families):
         identities = _identities_now()
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
-                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt)
+                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt, end_evidence=end_ev)
     _close_labels_on_owned_runs(anchors, ownership, graphs)
     film.pipes(ownership.pipes)
     t0 = _t(timings, "physical_pipes_ms", t0)

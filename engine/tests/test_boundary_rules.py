@@ -218,21 +218,41 @@ def test_designation_clipped_by_a_drawing_boundary_is_completed_from_the_drawing
     assert sum(1 for d in pa.designations if d.text == "KV01-X7-40") == 5
 
 
-def test_unlabeled_branch_takes_the_only_junction_identity(tmp_path):
+def test_an_unlabeled_branch_takes_the_only_junction_identity_only_with_evidence_at_its_end(tmp_path):
     """A branch with no size label of its own, off a junction where every labelled arm carries the same identity,
-    has no competing candidate: a size change is always drawn with its own label. Two candidates stay ambiguous."""
-    def build(right_label):
-        path = os.path.join(tmp_path, f"br{right_label}.pdf")
+    has no competing candidate: a size change is always drawn with its own label. But a raw contact is not a
+    connection: a dimension line, a wall edge or a fixture outline on the same pen reaches the run exactly as a
+    branch does. So the branch takes the name only when its far end says it is a pipe - it ends in a component,
+    at the sheet edge, against another pen's ink - and a branch that ends in empty air stays ambiguous with the
+    junction's name as its one candidate: the metres are reported, as a question, not as an answer."""
+    def build(right_label, fixture=False):
+        path = os.path.join(tmp_path, f"br{right_label}{int(fixture)}.pdf")
         doc = pymupdf.open(); page = doc.new_page(width=842, height=595); shape = page.new_shape()
         make_dashed_line(shape, (100, 300), (700, 300))          # main run through the tee at x = 400
         make_dashed_line(shape, (400, 300), (400, 480))          # branch with no label of its own
+        if fixture:
+            # a small drawn component on another pen where the branch ends: the evidence that it is a pipe
+            shape.draw_rect(pymupdf.Rect(396, 480, 404, 488)); shape.finish(width=0.5, color=(0, 0, 1), closePath=True)
         _label(page, shape, 120, 200, "S3-R8-110", leader_to=(200, 300))
         _label(page, shape, 560, 200, right_label, leader_to=(640, 300))
         _scale(page)
         shape.commit(); doc.save(path); doc.close()
         return analyze_page(extract_document(path).pages[0])
 
+    # ends in empty air: the main run is whole and confirmed, the branch is a question with one candidate
     pa = build("S3-R8-110")
+    reasons = {st.reason for sts in pa.ownership.prim_states.values() for st in sts.values()}
+    assert "UNLABELLED_BRANCH_WITHOUT_END_EVIDENCE" in reasons and "unlabeled_branch_takes_the_only_junction_identity" not in reasons
+    q = {(r["base"], r["dn"]): r for r in pa.quantities}
+    assert abs(q[("S3-R8", 110)]["confirmed_horizontal_m"] - 600 / 56.69) < 0.4
+    # a dashed branch: the ambiguous metres are the drawn ink (144 pt of dashes), gaps are only bridged into a
+    # confirmed run
+    assert abs(sum(r["ambiguous_m"] for r in pa.quantities) - 144 / 56.69) < 0.4
+    assert len([p for p in pa.ownership.pipes if p.identity.dn == 110]) == 1, "the main run stays one pipe through the tee"
+    assert any(f["reason"] == "AMBIGUOUS_JUNCTION" and abs(f["x"] - 400) < 4 for f in pa.frontiers)   # noden sitter vid dashens ände, tre punkter från T:t
+
+    # ends in a component: the branch is a pipe, and it takes the only name the junction offers
+    pa = build("S3-R8-110", fixture=True)
     reasons = {st.reason for sts in pa.ownership.prim_states.values() for st in sts.values()}
     assert "unlabeled_branch_takes_the_only_junction_identity" in reasons
     q = {(r["base"], r["dn"]): r for r in pa.quantities}
@@ -241,7 +261,7 @@ def test_unlabeled_branch_takes_the_only_junction_identity(tmp_path):
 
     # with a second size on the run the DN boundary is drawn at its tick, past the tee, so the tee still sees one
     # identity and the branch is still 110: what the branch may never do is take a size nobody drew on it
-    pa = build("S3-R8-75")
+    pa = build("S3-R8-75", fixture=True)
     q = {(r["base"], r["dn"]): r for r in pa.quantities}
     assert abs(q[("S3-R8", 110)]["confirmed_horizontal_m"] - (600 - 60 + 180) / 56.69) < 0.25
     assert abs(q[("S3-R8", 75)]["confirmed_horizontal_m"] - 60 / 56.69) < 0.25

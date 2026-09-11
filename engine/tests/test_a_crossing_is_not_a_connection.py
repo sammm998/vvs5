@@ -39,7 +39,8 @@ def _sheet(path: str, crossing: bool) -> str:
         page.draw_line((400, 180), (400, 300), width=PEN, color=(0, 0, 0))  # kommer uppifrån...
         page.draw_line((400, 300), (400, 430), width=PEN, color=(0, 0, 0))  # ...och fortsätter nedåt
     else:
-        page.draw_line((400, 300), (400, 430), width=PEN, color=(0, 0, 0))  # grenar av nedåt och tar slut
+        page.draw_line((400, 300), (400, 430), width=PEN, color=(0, 0, 0))  # grenar av nedåt och tar slut...
+        _component(page, 400, 430)                                          # ...i en apparat: det som gör den till ett rör
 
     # tre etiketter längs ledningen, var och en med sitt streck och sin linje ner till den: en ensam etikett
     # räcker inte för att någon penna alls ska tas som rör, och det är inte vad det här provet handlar om
@@ -58,6 +59,13 @@ def _sheet(path: str, crossing: bool) -> str:
     return path
 
 
+def _component(page, x, y):
+    """En liten ritad apparat på en annan penna, där en gren slutar. En gren som slutar i tomma luften är
+    ingen anslutning man kan mäta på - den blir en fråga; en gren som slutar i något ritat är ett rör."""
+    page.draw_rect(pymupdf.Rect(x - 4, y, x + 4, y + 8), color=(0, 0, 1), width=0.5)
+    page.draw_line((x - 4, y), (x + 4, y + 8), width=0.5, color=(0, 0, 1))
+
+
 def _measured(path):
     pa = analyze_page(extract_document(path).pages[0])
     return sum(q["confirmed_horizontal_m"] for q in pa.quantities), pa
@@ -67,6 +75,9 @@ def test_a_line_that_passes_through_does_not_take_the_name(tmp_path):
     """Den korsande linjen fortsätter ut på andra sidan: den är inte en gren och blir inte ledningen."""
     crossing_m, pa = _measured(_sheet(str(tmp_path / "kors.pdf"), crossing=True))
     branch_m, _ = _measured(_sheet(str(tmp_path / "gren.pdf"), crossing=False))
+    assert not any(st.state == "CONFIRMED" and abs(pa.graphs[fk].prims[pid].seg.mid[0] - 400) < 0.5
+                   for fk, sts in pa.ownership.prim_states.items() for pid, st in sts.items()), \
+        "den korsande linjen får inte bli ledningen"
 
     # den vågräta ledningen är 600 pt lång; grenen och den korsande linjens nedre halva är lika långa
     assert branch_m > crossing_m + 1.0, (
@@ -104,6 +115,8 @@ def _splay(path: str) -> str:
     page.draw_line((100, 300), (700, 300), width=PEN, color=(0, 0, 0))      # den namngivna ledningen
     page.draw_line((400, 300), (400, 430), width=PEN, color=(0, 0, 0))      # gren rakt ned
     page.draw_line((400, 300), (406, 430), width=PEN, color=(0, 0, 0))      # gren ned, knappt tre grader ifrån
+    _component(page, 400, 430)                                              # var sin apparat där nere
+    _component(page, 406, 430)
 
     for x in (150.0, 300.0, 560.0):
         page.insert_text((x, 200), "KV01-X7-16", fontsize=10, fontname="helv")

@@ -38,7 +38,9 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ..geometry.core import GridIndex, dist
-from .representation import page_symbols
+from .representation import family_key, page_symbols
+from .ink import is_stroked
+from ..geometry.core import point_seg_distance
 
 REAL_DN_BOUNDARY = "REAL_DN_BOUNDARY"
 REAL_SYSTEM_BOUNDARY = "REAL_SYSTEM_BOUNDARY"
@@ -80,6 +82,11 @@ REAL = (REAL_DN_BOUNDARY, REAL_SYSTEM_BOUNDARY, REAL_DESIGNATION_BOUNDARY, DECLA
 LOSSY = (UNOWNED_CONTINUATION, BROKEN_CONTINUITY, REPRESENTATION_CHANGE)
 # lämnat öppet med flit
 OPEN = (AMBIGUOUS_JUNCTION, FLOW_BUDGET, UNSUPPORTED_STRUCTURE)
+
+ENDS_AT_OTHER_INK = "ENDS_AT_OTHER_INK"   # änden ligger an mot en annan pennas bläck: en fixtur, en apparat, en vägg
+# vad en onämnd gren får ta korsningens namn på: dess fria ände slutar i något ritat, inte i tomma luften
+BRANCH_END_EVIDENCE = (SYMBOL, SHEET_EDGE, REPRESENTATION_CHANGE, ENDS_AT_OTHER_INK)
+OTHER_INK_REACH = 3.0   # pt: så nära en annan pennas streck ligger en ände an mot det
 
 SHEET_MARGIN = 12.0     # pt: så nära bladets kant räknas en ände som utgående
 RISER_REACH = 6.0       # pt: en stigarsymbol vars centrum ligger så nära änden är den stigare röret slutar i
@@ -287,3 +294,71 @@ def summary(frontiers: list[Frontier], pipes, meters_per_pt: float | None) -> di
             "real_boundaries": real, "lossy_boundaries": lossy, "open_boundaries": open_,
             "unowned_beyond_pt": round(unowned_pt, 2),
             "unowned_beyond_m": (round(unowned_pt * meters_per_pt, 2) if meters_per_pt else None)}
+
+
+def end_evidence(page, graphs: dict) -> dict[str, dict[int, dict[str, Any]]]:
+    """Vad som finns vid varje fri ände i varje familj, läst innan någon äger något.
+
+    Det är det bevis en onämnd gren behöver för att få ta korsningens namn: att den slutar i en komponent, vid
+    bladets kant, i en annan pennas fortsättning eller an mot en annan pennas bläck - en fixtur, en apparat.
+    En gren som slutar i tomma luften har inget sådant bevis, och en råkontakt vid korsningen är inte ett.
+    Samma slag som fronterna använder efteråt, så att bevis och skäl talar samma språk.
+    """
+    node_idx: dict[str, GridIndex] = {}
+    for fk, g in graphs.items():
+        idx = GridIndex(cell=24.0)
+        for n in g.nodes.values():
+            idx.insert(n.nid, (n.x, n.y, n.x, n.y))
+        node_idx[fk] = idx
+    symbols = page_symbols(page)
+    ink = GridIndex(cell=24.0)
+    paths = []
+    for p in page.paths:
+        if not is_stroked(p):
+            continue
+        ink.insert(len(paths), p.bbox)
+        paths.append(p)
+    W = float(page.info.width or 0.0)
+    H = float(page.info.height or 0.0)
+    out: dict[str, dict[int, dict[str, Any]]] = {}
+    for fk, g in graphs.items():
+        ev: dict[int, dict[str, Any]] = {}
+        for n in g.nodes.values():
+            if n.degree != 1:
+                continue
+            x, y = n.x, n.y
+            margin = min(x, y, W - x, H - y) if W > 0 and H > 0 else float("inf")
+            if margin <= SHEET_MARGIN:
+                ev[n.nid] = {"kind": SHEET_EDGE, "margin_pt": round(margin, 2)}
+                continue
+            cov = symbols.covering(x, y, fk)
+            if cov:
+                ev[n.nid] = {"kind": SYMBOL, "symbol_paths": cov[:6]}
+                continue
+            best = None
+            for fk2, idx2 in node_idx.items():
+                if fk2 == fk:
+                    continue
+                for nid2 in idx2.query_point(x, y, JOIN_TOL):
+                    n2 = graphs[fk2].nodes[nid2]
+                    d = dist((x, y), (n2.x, n2.y))
+                    if d <= JOIN_TOL and (best is None or d < best[0]):
+                        best = (d, fk2, nid2)
+            if best is not None:
+                ev[n.nid] = {"kind": REPRESENTATION_CHANGE, "family": best[1], "node": best[2], "distance_pt": round(best[0], 2)}
+                continue
+            near = None
+            for i in ink.query((x - OTHER_INK_REACH, y - OTHER_INK_REACH, x + OTHER_INK_REACH, y + OTHER_INK_REACH)):
+                p = paths[i]
+                if family_key(p) == fk:
+                    continue
+                for sg in p.segs[:64]:
+                    d, _ = point_seg_distance(x, y, sg)
+                    if d <= OTHER_INK_REACH and (near is None or d < near[0]):
+                        near = (d, p.pid, family_key(p))
+            if near is not None:
+                ev[n.nid] = {"kind": ENDS_AT_OTHER_INK, "path": near[1], "family": near[2], "distance_pt": round(near[0], 2)}
+                continue
+            ev[n.nid] = {"kind": FREE_END}
+        out[fk] = ev
+    return out

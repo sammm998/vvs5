@@ -19,6 +19,7 @@ from typing import Any
 from ..geometry.core import GridIndex, angle_diff, dist, point_seg_distance, stable_id
 from ..semantics.attachment import PipeCodeAnchor, system_layer_match
 from .representation import PipeGraph, Prim, chains as graph_chains
+from .frontier import BRANCH_END_EVIDENCE
 
 from .. import rules as _rules
 
@@ -295,10 +296,13 @@ def _declare_unowned(graphs: dict[str, PipeGraph], states: dict[str, dict[int, "
 
 def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page: int,
               identities: dict[str, Identity], spelled_out: frozenset[str] = frozenset(),
-              declared=None, declared_max_pt: float | None = None) -> OwnershipResult:
+              declared=None, declared_max_pt: float | None = None,
+              end_evidence: dict[str, dict[int, dict]] | None = None) -> OwnershipResult:
     """identities: anchor_id -> Identity (only anchors that are verified AND belong to pipe-designation families).
     declared: the sheet's written rules for unlabelled pipes (semantics.declarations.DeclaredPipe), applied last
-    and only to geometry every other reading left unowned."""
+    and only to geometry every other reading left unowned.
+    end_evidence: what sits at every free end of every family (pipes.frontier.end_evidence) - the positive evidence
+    an unlabelled branch needs before it may take the junction's name."""
     identities = complete_identities(identities)
     states: dict[str, dict[int, PrimState]] = {fk: {pid: PrimState() for pid in g.prims} for fk, g in graphs.items()}
     seeds: dict[str, dict[int, list[tuple[Identity, str, str, tuple[float, float]]]]] = {fk: defaultdict(list) for fk in graphs}
@@ -311,7 +315,7 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
                 seeds[fk][pid].append((ident, a.anchor_id, kind, pt))
     ambiguous_runs: list[dict] = []
     for fk, g in graphs.items():
-        _resolve_family(g, states[fk], seeds[fk], ambiguous_runs, fk)
+        _resolve_family(g, states[fk], seeds[fk], ambiguous_runs, fk, end_evidence)
     for fk, g in graphs.items():
         _family_uniform_identity(fk, states[fk], anchors, identities, spelled_out, g)
     for fk, g in graphs.items():
@@ -346,37 +350,56 @@ def _bound_junction_flow(g: PipeGraph, st: dict[int, PrimState], fk: str, ambigu
     a tee, an unnamed branch off a labelled one. On a pipe network that adds a little to what the labels say. On
     a mesh of geometry that only looks like a network it adds without end, and every metre of it is a guess.
 
-    So the flow has to stay within reach of what the drawing itself states: where a family's flowed length runs
-    past twice the length its labels delimit, the flow is not a reading and the geometry it took is AMBIGUOUS.
+    So the flow has to stay within reach of what the drawing itself states - and the reach is the run's own,
+    not the family's. It used to be summed over the whole pen: one run that had wandered into a wall grid could
+    push the family past the limit and take the flowed metres off every other run on that pen, runs that had
+    flowed a few points past their last label and no further. Now each connected run of one identity is weighed
+    against its own labelled length: where its flowed length runs past twice what its labels delimit, that
+    run's flow is not a reading and its geometry is AMBIGUOUS, and the run next to it is left alone.
     """
-    labelled = flowed = 0.0
-    for pid, s in st.items():
-        if s.state != "CONFIRMED":
+    limit = _R("pipes.ownership.FLOW_LIMIT", FLOW_LIMIT)
+    seen: set[int] = set()
+    for start in sorted(st):
+        s0 = st[start]
+        if start in seen or s0.state != "CONFIRMED" or s0.identity is None:
             continue
-        if s.reason in FLOWED_REASONS:
-            flowed += g.prims[pid].seg.length
-        else:
-            labelled += g.prims[pid].seg.length
-    if flowed <= _R("pipes.ownership.FLOW_LIMIT", FLOW_LIMIT) * labelled:
-        return
-    caught: list[int] = []
-    for pid in sorted(st):
-        s = st[pid]
-        if s.state != "CONFIRMED" or s.reason not in FLOWED_REASONS:
+        comp = []
+        dq = deque([start])
+        seen.add(start)
+        while dq:
+            p = dq.popleft()
+            comp.append(p)
+            for node in g.prim_nodes[p]:
+                for q in g.nodes[node].prims:
+                    if q not in seen and st[q].state == "CONFIRMED" and st[q].identity == s0.identity:
+                        seen.add(q)
+                        dq.append(q)
+        labelled = flowed = 0.0
+        for pid in comp:
+            if st[pid].reason in FLOWED_REASONS:
+                flowed += g.prims[pid].seg.length
+            else:
+                labelled += g.prims[pid].seg.length
+        if flowed <= limit * labelled:
             continue
-        ident = s.identity
-        s.state, s.identity, s.reason = "AMBIGUOUS", None, "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS"
-        s.candidates = {ident} if ident is not None else set()
-        s.evidence.append("identity_flowed_far_past_what_the_labels_of_this_family_delimit")
-        caught.append(pid)
-    if caught:
-        # a real primitive, not a sentinel: every reader of an ambiguous run looks its geometry up to put the
-        # case on the drawing, and a placeholder id sends them looking for a primitive that does not exist
-        ambiguous_runs.append({"family": fk, "chain": -1, "from_prim": caught[0], "to_prim": caught[-1],
-                               "reason": "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS",
-                               "identities": sorted({c.key for s in st.values() for c in s.candidates}),
-                               "n_primitives": len(caught), "flowed_pt": round(flowed, 1),
-                               "labelled_pt": round(labelled, 1)})
+        ident_key = s0.identity.key                 # read before the demotion below may blank the start prim
+        caught: list[int] = []
+        for pid in sorted(comp):
+            s = st[pid]
+            if s.reason not in FLOWED_REASONS:
+                continue
+            ident = s.identity
+            s.state, s.identity, s.reason = "AMBIGUOUS", None, "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS"
+            s.candidates = {ident} if ident is not None else set()
+            s.evidence.append("identity_flowed_far_past_what_the_labels_of_this_run_delimit")
+            caught.append(pid)
+        if caught:
+            # a real primitive, not a sentinel: every reader of an ambiguous run looks its geometry up to put the
+            # case on the drawing, and a placeholder id sends them looking for a primitive that does not exist
+            ambiguous_runs.append({"family": fk, "chain": -1, "from_prim": caught[0], "to_prim": caught[-1],
+                                   "reason": "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS",
+                                   "identities": [ident_key], "n_primitives": len(caught),
+                                   "flowed_pt": round(flowed, 1), "labelled_pt": round(labelled, 1)})
 
 
 
@@ -754,7 +777,40 @@ def _outward_compatible(gs: list[_SeedGroup], i: int, side: int) -> bool:
     return _merge_identity([gs[i].merged] + [x for grp in others for x in grp.ids]) is not None
 
 
-def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_runs, fk: str) -> None:
+NO_END_EVIDENCE = "UNLABELLED_BRANCH_WITHOUT_END_EVIDENCE"
+
+
+def _branch_support(g: PipeGraph, st: dict[int, PrimState], ch, chain_nodes, ci: int, nid: int, ident: Identity,
+                    end_evidence) -> str:
+    """Det positiva bevis en onämnd gren behöver för att ta korsningens namn.
+
+    Att en linje rör vid en annan är ingen anslutning. En måttlinje, en väggkant, en fixturs kontur på samma
+    penna når fram till ledningen precis som en gren gör, och en läsning som ger varje sådan kontakt ett namn
+    mäter byggnaden som rör. Så grenen ska sluta i något: en komponent, bladets kant, en annan pennas
+    fortsättning, en annan pennas bläck - eller nå ett stråk som redan bär samma identitet. Slutar den i tomma
+    luften finns inget som säger att den är ett rör, och den blir tvetydig med korsningens namn som kandidat:
+    metrarna redovisas, men som en fråga, inte som ett svar.
+    """
+    chain_prims = set(ch[ci])
+    for far in (chain_nodes[ci][0], chain_nodes[ci][-1]):
+        if far == nid:
+            continue
+        fn = g.nodes[far]
+        if fn.degree >= 3:
+            for p in fn.prims:
+                if p in chain_prims:
+                    continue
+                sp = st[p]
+                if sp.state == "CONFIRMED" and sp.identity is not None and sp.identity.compatible(ident):
+                    return f"branch_reaches_a_run_of_the_same_identity_at_node_{far}"
+        elif fn.degree == 1:
+            ev = (end_evidence or {}).get(g.family, {}).get(far)
+            if ev and ev.get("kind") in BRANCH_END_EVIDENCE:
+                return f"branch_ends_at_{ev['kind']}_node_{far}"
+    return ""
+
+
+def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_runs, fk: str, end_evidence=None) -> None:
     ch = graph_chains(g)
     chain_of: dict[int, int] = {}
     for ci, c in enumerate(ch):
@@ -925,7 +981,8 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                 continue
             arms = sorted(n.prims)
             resolved = [p for p in arms if st[p].state == "CONFIRMED"]
-            unresolved = [p for p in arms if st[p].state == "UNOWNED"]
+            unresolved = [p for p in arms if st[p].state == "UNOWNED"
+                          or (st[p].state == "AMBIGUOUS" and st[p].reason == NO_END_EVIDENCE)]
             if not resolved or not unresolved:
                 continue
             for u in unresolved:
@@ -979,12 +1036,32 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                                      for q in unresolved)
                 only = next(iter(cands)) if len(cands) == 1 else None
                 if only is not None and only.dn is not None and not groups_of.get(ci) and not passes_through:
-                    for pid in ch[ci]:
+                    support = _branch_support(g, st, ch, chain_nodes, ci, nid, only, end_evidence)
+                    if support:
+                        for pid in ch[ci]:
+                            s = st[pid]
+                            if s.state == "UNOWNED" or (s.state == "AMBIGUOUS" and s.reason == NO_END_EVIDENCE):
+                                s.state, s.identity, s.reason = "CONFIRMED", only, "unlabeled_branch_takes_the_only_junction_identity"
+                                s.candidates = set()
+                                s.anchors |= aids
+                                s.evidence.append(f"single_candidate_at_node_{nid}")
+                                s.evidence.append(support)
+                        touched = True
+                        continue
+                    # ingen ände som säger att grenen är ett rör: namnet blir en kandidat, inte ett svar
+                    fresh = [pid for pid in ch[ci] if st[pid].state == "UNOWNED"]
+                    if not fresh:
+                        continue                     # redan tvetydig av samma skäl: inget nytt att säga
+                    for pid in fresh:
                         s = st[pid]
-                        if s.state == "UNOWNED":
-                            s.state, s.identity, s.reason = "CONFIRMED", only, "unlabeled_branch_takes_the_only_junction_identity"
-                            s.anchors |= aids
-                            s.evidence.append(f"single_candidate_at_node_{nid}")
+                        s.state, s.candidates, s.reason = "AMBIGUOUS", {only}, NO_END_EVIDENCE
+                        s.anchors |= aids
+                        s.evidence.append(f"single_candidate_at_node_{nid}")
+                        s.evidence.append("branch_end_has_no_evidence_of_a_pipe")
+                    ambiguous_runs.append({"family": fk, "chain": ci, "from_prim": ch[ci][0], "to_prim": ch[ci][-1],
+                                           "reason": NO_END_EVIDENCE, "identities": [only.key]})
+                    touched = True
+                    continue
                 else:
                     for pid in ch[ci]:
                         s = st[pid]

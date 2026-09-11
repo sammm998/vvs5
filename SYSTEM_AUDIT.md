@@ -6,12 +6,12 @@ Domarna är satta efter implementationen (filerna i varje rad), efter körda pro
 
 | Dom | Antal |
 |---|---:|
-| GOOD | 20 |
-| GOOD_BUT_FRAGILE | 16 |
+| GOOD | 21 |
+| GOOD_BUT_FRAGILE | 17 |
 | PARTIAL | 6 |
 | BROKEN | 0 |
 | UNSAFE | 0 |
-| MISSING | 3 |
+| MISSING | 1 |
 | MOCK | 0 |
 | DEAD_CODE | 0 |
 
@@ -49,10 +49,10 @@ Det som är MISSING är uppdragets kärna, och det står överst i arbetsordning
 
 | Delsystem | Dom | Bevis | Vad som saknas |
 |---|---|---|---|
-| **Representationsfamiljer, fragmentkedjor, dubbletter, sliver/parad vägg**<br>`engine/vvs_engine/pipes/representation.py` | PARTIAL | Familj = penna (lager, bredd, färg); dash/gap-mode rekonstrueras ur bladet; dubbletter tas bort på stämpel; figurer (radiatorer) läggs åt sidan (figure_pieces) och redovisas; sliver-par (två långsidor) degraderas (_demote_sliver_outlines, ownership.py). Bläck = struken penna med bredd (ink.py). | split_t_junctions gör varje råkontakt ändpunkt-på-inre (<=0,15 pt) till en bevisad T - råkontakt räknas som fysisk anslutning; figurer raderas tidigt i stället för att bli FIGURE_CANDIDATE; graph_tolerances() returnerar en global konstant, inte bladets egen; ingen ritningslokal underfamilj på en penna; Bézier plattas med fast n=8 (geometry/core.py:120), inte adaptivt. |
-| **Ägande: identitet via leaders, korsningar, DN-gränser**<br>`engine/vvs_engine/pipes/ownership.py` | PARTIAL | Identitet bara från anknutna etiketter; korsning löses iterativt (kollineär genomgång, tick-gränser, DN-komplettering); konflikter => AMBIGUOUS med kandidater. Konservering: RAW = CONFIRMED+AMBIGUOUS+UNOWNED (reconcile.py VALID på alla 33 blad). | Global flödesbudget FLOW_LIMIT=2,0 per familj (_bound_junction_flow) i stället för lokal traversering; frontier_reasons=[] sätts alltid tomt (ownership.py:1152): rör slutar tyst; gate52 mäter 20,7 % missade och 27,3 % falska meter - både under- och överpropagering finns, kvantifierade per blad i gate52-rescore.json. |
-| **PipeExtentFrontier + pipe_extent_frontiers.json + overlay**<br>- | MISSING | Ingen artefakt, ingen datatyp, ingen skälkod (REAL_DN_BOUNDARY … UNSUPPORTED_STRUCTURE). Fältet finns som tom lista på PhysicalPipe. | Uppdragets högsta prioritet. Byggs i pipes/frontier.py + artifacts + overlay. |
-| **TopologyCandidateEdge / PhysicalContinuityEdge / T_CANDIDATE-verifiering**<br>- | MISSING | Grafen byggs direkt av Prim->Node; ingen kandidatkant med bevis; inre-inre-kontakt splittas inte (bra) men ändpunkt-inre splittas alltid (dåligt). | Byggs i representation.py: kandidater med bevis, avvisade grenar kvar som AMBIGUOUS, huvudstråkets kontinuitet bevaras. |
+| **Representationsfamiljer, fragmentkedjor, dubbletter, sliver/parad vägg**<br>`engine/vvs_engine/pipes/representation.py` | PARTIAL | Familj = penna (lager, bredd, färg); dash/gap-mode rekonstrueras ur bladet; dubbletter tas bort på stämpel; figurer (radiatorer) läggs åt sidan (figure_pieces) och redovisas; sliver-par (två långsidor) degraderas (_demote_sliver_outlines, ownership.py). Bläck = struken penna med bredd (ink.py). | split_t_junctions gör varje råkontakt ändpunkt-på-inre (<=0,15 pt) till en nod (en gren tar dock namnet bara med bevis vid sin ände, se ägande); figurer läggs åt sidan i stället för att bli FIGURE_CANDIDATE; graph_tolerances() returnerar en global konstant, inte bladets egen; ingen ritningslokal underfamilj på en penna; Bézier plattas med fast n=8 (geometry/core.py:120), inte adaptivt. |
+| **Ägande: identitet via leaders, korsningar, DN-gränser**<br>`engine/vvs_engine/pipes/ownership.py` | PARTIAL | Identitet bara från anknutna etiketter; korsning löses iterativt (kollineär genomgång, tick-gränser, DN-komplettering); konflikter => AMBIGUOUS med kandidater. Konservering: RAW = CONFIRMED+AMBIGUOUS+UNOWNED (reconcile.py VALID på alla 33 blad). | Rättat 2026-09-11: en onämnd gren tar korsningens namn bara med bevis vid sin ände (komponent, bladkant, annan penna, annan pennas bläck, stråk med samma namn), annars AMBIGUOUS med kandidaten; flödesbudgeten vägs per sammanhängande stråk, inte per penna (gate53: falskt 27,3 -> 25,7 %, täckning 79,3 -> 77,9 %, 89 m flyttade till tvetydigt). Kvar: 22,1 % missade och 25,7 % falska meter; 98 av 365 beteckningar läses inte alls; 384 brutna fortsättningar (gate53-rescore.json, frontier-census.json). |
+| **PipeExtentFrontier + pipe-extent-frontiers.json + overlay**<br>`engine/vvs_engine/pipes/frontier.py`, `engine/vvs_engine/output/overlays.py`, `frontend/src/frontier.ts` | GOOD | Byggt 2026-09-11: femton skäl i tre klasser, en post per kant på varje rör, silent_pipes tom på 33/33 blad (3 908 fronter), overlay-PDF och lager i granskningsvyn; nio prov. | Skälen VERTICAL bygger på stigarsymboler som hittas efter ägandet; en gren som slutar i en stigare räknas ännu inte som bevis i ägandet (bara SYMBOL via symbolindexet). |
+| **T_CANDIDATE-verifiering: grenar med bevis, avvisad gren lämnar huvudstråket helt**<br>`engine/vvs_engine/pipes/ownership.py`, `engine/vvs_engine/pipes/frontier.py` | GOOD_BUT_FRAGILE | Byggt 2026-09-11 (end_evidence + _branch_support): bevis vid grenens ände eller ett stråk med samma namn; utan bevis AMBIGUOUS med kandidaten; sex prov + omskrivna grenprov. Blind grind: −97 m falskt, −89 m ägt. | Grafen har fortfarande inga typade kandidatkanter (TopologyCandidateEdge/PhysicalContinuityEdge); beviset ENDS_AT_OTHER_INK är brett (vilken annan penna som helst inom 3 pt) och kan ta en måttlinje som fixtur. |
 
 ## motor/mått
 
