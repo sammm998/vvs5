@@ -87,14 +87,15 @@ size = 0
 for b, _, fs in os.walk(out):
     for f in fs:
         size += os.path.getsize(os.path.join(b, f))
-sheet = ((s.get("summary") or {}).get("sheets") or [{}])[0] if s else {}
+summ = (s.get("summary") or {}) if s else {}
+cov = summ.get("coverage") or {}
 print("@@" + json.dumps({
     "wall_s": round(wall, 1), "cpu_s": round(ru.ru_utime + ru.ru_stime, 1), "max_rss_mb": round(ru.ru_maxrss / 1024, 0),
     "n_pages": len(pages), "pages": pages, "file_bytes": os.path.getsize(pdf), "output_bytes": size,
     "second_reader_questions": len(asked), "second_reader_prompt_chars": sum(a["prompt_chars"] for a in asked),
     "second_reader_kinds": sorted({a["kind"] for a in asked}),
-    "scale_state": ((s.get("summary") or {}).get("scale") or {}).get("state") if s else None,
-    "pipe_names": sheet.get("pipe_names"), "pipe_names_with_metres": sheet.get("pipe_names_with_metres"),
+    "scale_state": summ.get("scale") if isinstance(summ.get("scale"), str) else cov.get("scale_state"),
+    "pipe_names": cov.get("pipe_names"), "pipe_names_with_metres": cov.get("pipe_names_with_metres"),
     "error": err}))
 """
 

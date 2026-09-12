@@ -187,9 +187,16 @@ V-glyf (en bana, samma streck) får 0,004 som `V` i 0° och 0,154 som `?` i 10°
 som ett halvt N. Två tecken ger bara två mittpunkter, ett tiondels-H i baslinjeskakning blir tio grader, och
 bladet har äkta text i 10° (situationsplanen) att snäppa till, så snäppningen tog den.
 
-Regeln som fattas: ett kort kluster har för lite bevis för en egen vinkel. Är dess tecken jämna med bladets
-huvudriktning inom en bråkdel av H, är det huvudriktningen. Läggs in efter att gate55 avgjort
-schablonregeln, så att de två ändringarna mäts var för sig.
+Regeln som lades in (efter gate56): ett kort kluster - två eller tre tecken - har för lite bevis för en egen
+vinkel, och text står bredvid text som löper åt samma håll. Raden tar den *närmaste säkra radens* riktning
+(en rad med minst fyra höga tecken, inom tolv H, i en riktning bladet faktiskt skriver i), när den ligger
+inom tjugo grader av radens egen. Först prövades "närmaste säkra rad" utan kravet på att riktningen är en av
+bladets skrivriktningar: då lånade `VAT` och `REV` på blad E riktning av symbolrader i 14° och -8° som råkade
+stå närmast, och föll bort. Med kravet läser E och D rad för rad som förut.
+
+På det här bladet: `VS` läses nu som `VS` i 0°, och sju tvåteckensrader som stod i ±10° - `1?`, `7?` - blir
+`1S`, `7S`. Två rader gick åt andra hållet (`25` i -10° blev `2S` i 0°); vilket som är rätt avgör grinden
+(gate57), inte det här bladet.
 
 Spillvattnet - det grova streckade röret ledarna faktiskt pekar på - läses nu. Två saker att vara ärlig om:
 VV31:s 9,55 m försvann ur tabellen i samma vändning, och de tagna familjerna krympte från 481 m till 159 m.
