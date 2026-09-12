@@ -278,6 +278,29 @@ def cluster_rows(page: RawPage, comps: list[StrokeComponent], H: float) -> list[
     prefs = [a for a, w in order if w >= 0.02 * total and n_clusters[a] >= 2] or [a for a, _ in order]
     rows: list[RowCluster] = []
     for cs, ang, strength in clusters:
+        # A cluster that fits inside one glyph box is one glyph, and a glyph has no reading direction of its
+        # own. A stencil letter - drawn as three arcs with gaps, the way a plotter's SHX font draws an S - is
+        # three components stacked on top of each other, and their principal axis is vertical: read as a row it
+        # became a column of two unreadable half-letters, "??", and was thrown away as junk. Inside a word the
+        # same letter survives because its neighbours set the row's direction; alone it had none.
+        # But a box is not enough: two narrow glyphs side by side - "75", "D1", "1-" - fit the same box and are
+        # two characters, not one. Two things tell them apart. A row stands as tall as the text it is set in:
+        # across its reading direction it reaches the family's height, while the pieces of one letter stacked
+        # on each other reach only the letter's width. And in a row every glyph spans that height, while the
+        # pieces of one letter are fractions of it - a middle stroke is narrower than the bows. A glyph-sized
+        # cluster that is short across its stacking axis and has a piece that is only a fraction is one
+        # glyph, read across the axis its pieces stack along (snapped to a direction the drawing writes in),
+        # with every piece in it: the middle stroke is not a dot over an i.
+        # And a glyph is read along a direction the drawing writes in: pieces stacked along no such direction
+        # are marks, not a letter, and are left to the row reading that throws them out.
+        ub = bbox_union([c.bbox for c in cs])
+        if (len(cs) >= 2 and 0.5 * H <= max(ub[2] - ub[0], ub[3] - ub[1]) and ub[2] - ub[0] <= 1.3 * H
+                and ub[3] - ub[1] <= 1.3 * H and _pieces_are_fractions(cs, ang, H)):
+            read = (ang + 90.0) % 180.0
+            ways = prefs if prefs else [0.0, 90.0]
+            if _near_any(read, ways, 20.0):
+                rows.append(_one_glyph_row(page, cs, H, _snap_angle(read, ways, 20.0)))
+                continue
         # A drawing writes its text along a few directions, and its own long rows establish them. A cluster
         # whose axis is near none of those is not text at a new angle: it is two short rows standing above each
         # other read as one column - a legend's codes, a stack of dimensions - so it is read along the
@@ -288,6 +311,40 @@ def cluster_rows(page: RawPage, comps: list[StrokeComponent], H: float) -> list[
         rows.extend(_split_and_order(page, cs, H, ang))
     rows.sort(key=lambda r: r.rcid)
     return rows
+
+
+def _spans(cs: list[StrokeComponent], angle: float) -> list[tuple[float, float]]:
+    """Each component's extent projected on the axis at `angle`."""
+    a = math.radians(angle)
+    ux, uy = math.cos(a), math.sin(a)
+    out = []
+    for c in cs:
+        x0, y0, x1, y1 = c.bbox
+        ps = [x * ux + y * uy for x in (x0, x1) for y in (y0, y1)]
+        out.append((min(ps), max(ps)))
+    return out
+
+
+def _pieces_are_fractions(cs: list[StrokeComponent], spread: float, H: float) -> bool:
+    """Are the components fractions of one glyph, stacked along `spread`, rather than whole glyphs in a row?
+
+    Three things are true of a letter in pieces and false of a row. Across the stacking axis a row reaches
+    the text height H, the pieces together reach only the letter's width. In a row every glyph spans that
+    height, among the pieces some are fractions of it - the middle stroke is narrower than the bows. And the
+    pieces stand one after the other along the stacking axis with gaps between them, while a glyph that
+    merely broke - an E whose bar is its own piece - keeps the fragment inside the span of the glyph it
+    belongs to."""
+    across = _spans(cs, spread + 90.0)
+    union = max(b for _, b in across) - min(a0 for a0, _ in across)
+    if union <= 1e-6 or union >= 0.85 * H:
+        return False
+    if not any((b - a0) < 0.7 * union for a0, b in across):
+        return False
+    along = sorted(_spans(cs, spread))
+    for (a0, a1), (b0, b1) in zip(along, along[1:]):
+        if b0 < a1 - 0.1 * min(a1 - a0, b1 - b0, 1e9):
+            return False
+    return True
 
 
 def _angle_support(cs: list[StrokeComponent]) -> int:
@@ -330,6 +387,24 @@ def _principal_angle(cs: list[StrokeComponent]) -> float:
     if len(cs) == 2 and w[int(np.argmax(w))] < 1e-6:
         return 0.0
     return ang
+
+
+def _one_glyph_row(page: RawPage, cs: list[StrokeComponent], H: float, angle: float) -> RowCluster:
+    """A row of exactly one glyph, made of every component in the cluster, read along `angle`."""
+    comps = sorted(cs, key=lambda c: c.cid)
+    segs = [s for c in comps for s in c.segs]
+    bbox = bbox_union([c.bbox for c in comps])
+    gid = stable_id("vg", page.info.index, *(c.cid for c in comps))
+    g = GlyphCandidate(gid=gid, comps=comps, bbox=bbox, segs=segs, layer=comps[0].layer, style=comps[0].style,
+                       kind=comps[0].kind, n_diacritics=0)
+    read_ang = angle
+    if 90.0 < read_ang < 180.0:
+        read_ang -= 180.0
+    if abs(read_ang - 90.0) < 1e-6:
+        read_ang = -90.0
+    height = (bbox[3] - bbox[1]) if abs(read_ang) < 45 else (bbox[2] - bbox[0])
+    return RowCluster(rcid=stable_id("rc", page.info.index, gid), glyphs=[g], angle=read_ang,
+                      height=height, layer=g.layer, style=g.style, kind=g.kind)
 
 
 def _split_and_order(page: RawPage, cs: list[StrokeComponent], H: float, angle: float | None = None) -> list[RowCluster]:
