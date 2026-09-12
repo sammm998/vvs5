@@ -219,7 +219,12 @@ export default function Landing() {
           <a href="#agent" onClick={() => setMenu(false)}>Agenten</a>
           <a href="#ror" onClick={() => setMenu(false)}>Rörtyper</a>
           <a href="#belagg" onClick={() => setMenu(false)}>Beläggen</a>
+          <Link to="/hur-det-funkar" onClick={() => setMenu(false)}>Hur det funkar</Link>
+          <Link to="/priser" onClick={() => setMenu(false)}>Priser</Link>
+          <Link to="/utbildning" onClick={() => setMenu(false)}>Utbildning</Link>
+          <Link to="/om-oss" onClick={() => setMenu(false)}>Om oss</Link>
           <Link to="/dokumentation" onClick={() => setMenu(false)}>Dokumentation</Link>
+          <Link to="/kontakt" onClick={() => setMenu(false)}>Kontakta oss</Link>
           <Link to="/login" onClick={() => setMenu(false)}>Logga in</Link>
         </div>
       )}
@@ -353,9 +358,12 @@ export default function Landing() {
             VVS Mängdning
           </span>
           <span className="sp" />
-          <a href="#hur">Så fungerar det</a>
-          <a href="#ror">Rörtyper</a>
+          <Link to="/hur-det-funkar">Hur det funkar</Link>
+          <Link to="/priser">Priser</Link>
+          <Link to="/utbildning">Utbildning</Link>
+          <Link to="/om-oss">Om oss</Link>
           <Link to="/dokumentation">Dokumentation</Link>
+          <Link to="/kontakt">Kontakta oss</Link>
           <Link to="/login">Logga in</Link>
         </div>
       </footer>

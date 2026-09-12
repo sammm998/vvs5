@@ -240,7 +240,7 @@ def run_job(job_id: str) -> None:
         # att jobbet kördes om efter en omstart är en del av dess historia och följer med in i det färdiga svaret,
         # och likaså den skala någon skrev in för hand innan det kördes: en mängd ska bära hur den blev mätbar
         carried = {k: v for k, v in (job.summary or {}).items()
-                   if k in ("resubmitted_after_restart", "given_scale")}
+                   if k in ("resubmitted_after_restart", "given_scale", "credits")}
         gs = (job.summary or {}).get("given_scale") or None
         by_hand = {int(gs["page"]): float(gs["meters_per_pdf_point"])} if gs else None
         job.status = "RUNNING"; job.started_at = dt.datetime.now(dt.timezone.utc); job.result_key = result_key
@@ -280,8 +280,26 @@ def run_job(job_id: str) -> None:
              finished_at=dt.datetime.now(dt.timezone.utc))
 
 
+def _settle_credits(job_id: str) -> None:
+    """När läsningen är över: en läsning som inte gav något kostar ingenting."""
+    try:
+        from .credits import settle_after_reading
+        with SessionLocal() as db:
+            job = db.get(AnalysisJob, job_id)
+            if job is not None:
+                settle_after_reading(db, job)
+                db.commit()
+    except Exception:  # noqa: BLE001
+        log.exception("Kunde inte avräkna credits för jobb %s", job_id)
+
+
 def submit(job_id: str) -> None:
-    _executor.submit(run_job, job_id)
+    def _run():
+        try:
+            run_job(job_id)
+        finally:
+            _settle_credits(job_id)
+    _executor.submit(_run)
 
 
 def resubmit_unfinished() -> int:

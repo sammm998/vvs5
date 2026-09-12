@@ -505,6 +505,40 @@ class Markup(Base):
     updated_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now, onupdate=_now)
 
 
+class CreditEntry(Base):
+    """En rad i kreditreskontran: vad som kom in, vad som gick åt, och varför.
+
+    Saldot är summan av raderna och ingenting annat - det finns inget fält någonstans som säger "saldo" och som
+    kan komma i otakt med det som hänt. Beloppet står i hundradelar av en credit, som heltal, så att en läsning
+    som kostar 1,5 credits kan bokföras utan flyttal. Ägaren är kontot när användaren har ett, annars
+    användaren själv: en firma med fyra inloggningar delar en pott.
+    """
+    __tablename__ = "credit_entries"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    owner_key: Mapped[str] = mapped_column(String(40), index=True)          # "account:<id>" | "user:<id>"
+    user_id: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True, index=True)
+    delta_cc: Mapped[int] = mapped_column(Integer)                          # + in, - ut, i hundradels credits
+    kind: Mapped[str] = mapped_column(String(24))                           # prov | kop | lasning | syn | aterbetalning | tilldelning
+    ref: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)   # jobb-id, paket-id
+    note: Mapped[str] = mapped_column(Text, default="")
+    status: Mapped[str] = mapped_column(String(24), default="")             # för köp: fakturerad | betald | makulerad
+    amount_ore: Mapped[int] = mapped_column(Integer, default=0)             # för köp: priset i ören exkl. moms
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class ContactMessage(Base):
+    """Ett meddelande från kontaktsidan: vem som skrev, vad, och om någon svarat."""
+    __tablename__ = "contact_messages"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    name: Mapped[str] = mapped_column(String(255), default="")
+    email: Mapped[str] = mapped_column(String(255), default="")
+    company: Mapped[str] = mapped_column(String(255), default="")
+    subject: Mapped[str] = mapped_column(String(255), default="")
+    body: Mapped[str] = mapped_column(Text, default="")
+    status: Mapped[str] = mapped_column(String(24), default="ny")           # ny | besvarad | stangd
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
 # Kolumner som kom till efter att en databas redan var i drift. SQLAlchemys create_all skapar tabeller som
 # saknas men rör aldrig en tabell som finns, så en ny kolumn på en gammal tabell måste läggas till för hand.
 # Listan står här hellre än i ett migreringsverktyg därför att den är kort och läses en gång per uppstart.

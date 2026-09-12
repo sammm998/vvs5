@@ -11,6 +11,12 @@ import AnalysisPage from "./pages/Analysis";
 import Boundary from "./components/Boundary";
 import LearnPage from "./pages/LearnPage";
 import MaterialPage from "./pages/Material";
+import CreditsPage from "./pages/Credits";
+import PricingPage from "./pages/Pricing";
+import AboutPage from "./pages/About";
+import HowItWorksPage from "./pages/HowItWorks";
+import EducationPage from "./pages/Education";
+import ContactPage from "./pages/Contact";
 import AdminPage from "./pages/Admin";
 import ProjectAnalysisPage from "./pages/ProjectAnalysis";
 import CalcPage from "./pages/CalcPage";
@@ -49,6 +55,15 @@ function IconRail() {
   );
 }
 
+function IconCredits() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true">
+      <circle cx="11" cy="11" r="7.5" stroke="currentColor" strokeWidth="1.8" fill="none" />
+      <path d="M8.5 13.2c.6.9 1.5 1.3 2.6 1.3 1.6 0 2.6-.8 2.6-2 0-2.6-5-1.3-5-3.9 0-1.1.9-1.9 2.4-1.9 1 0 1.8.4 2.3 1.1" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <path d="M11 5.8v1.6M11 14.6v1.6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
 function IconMaterial() {
   return (
     <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -119,6 +134,11 @@ const ROUTES = (
     <Route path="/" element={<Landing />} />
     <Route path="/login" element={<Login />} />
     <Route path="/dokumentation" element={<Docs />} />
+    <Route path="/priser" element={<PricingPage />} />
+    <Route path="/om-oss" element={<AboutPage />} />
+    <Route path="/hur-det-funkar" element={<HowItWorksPage />} />
+    <Route path="/utbildning" element={<EducationPage />} />
+    <Route path="/kontakt" element={<ContactPage />} />
     <Route path="/projekt" element={<Guard><Projects /></Guard>} />
     <Route path="/projects/:id" element={<Guard><ProjectPage /></Guard>} />
     <Route path="/projects/:id/analys" element={<Guard><ProjectAnalysisPage /></Guard>} />
@@ -135,6 +155,7 @@ const ROUTES = (
     <Route path="/granska/:id" element={<GranskaRedirect />} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
+    <Route path="/credits" element={<Guard><CreditsPage /></Guard>} />
     <Route path="/installningar" element={<Navigate to="/admin" replace />} />
     <Route path="/admin" element={<Guard><AdminPage /></Guard>} />
   </Routes>
@@ -192,7 +213,8 @@ export default function App() {
   // the landing page and the login screen bring their own layout
   // a trailing slash is the same page: without this, /dokumentation/ fell through and got the app's sidebar
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
-  if (path === "" || path === "/" || path === "/login" || path === "/dokumentation") return ROUTES;
+  const PUBLIC = ["", "/", "/login", "/dokumentation", "/priser", "/om-oss", "/hur-det-funkar", "/utbildning", "/kontakt"];
+  if (PUBLIC.includes(path)) return ROUTES;
   const email = currentEmail();
   // On a reading, the drawing is the page. The sidebar carries one link and a sign-out; on a wide sheet those
   // 244 px are the difference between seeing the whole drawing and hunting across it, so this route opens with
@@ -224,6 +246,9 @@ export default function App() {
           </Link>
           <Link to="/material" className={path.startsWith("/material") ? "on" : ""}>
             <IconMaterial /> <span className="wide">Material</span>
+          </Link>
+          <Link to="/credits" className={path.startsWith("/credits") ? "on" : ""}>
+            <IconCredits /> <span className="wide">Credits</span>
           </Link>
           {(role === "admin" || role === "partner") && (
             <Link to="/admin" className={path.startsWith("/admin") ? "on" : ""}>

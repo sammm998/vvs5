@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { api, fileSize } from "../api";
 import { StatusBadge } from "../components/Status";
 import Tilted from "../components/Tilted";
+import { PriceTag } from "./Credits";
 
 const DATE = new Intl.DateTimeFormat("sv-SE", { day: "2-digit", month: "short", year: "numeric" });
 
@@ -69,7 +70,12 @@ export default function ProjectPage() {
             </div>
             <div className="meta">
               {d.latest_job ? <StatusBadge job={d.latest_job} /> : <span className="badge">Ej analyserad</span>}
-              <button className="secondary small" onClick={async () => { const j = await api.analyze(d.id); window.location.href = `/jobs/${j.id}`; }}>Analysera</button>
+              <PriceTag drawingId={d.id} />
+              <button className="secondary small" onClick={async () => {
+                setErr("");
+                try { const j = await api.analyze(d.id); window.location.href = `/jobs/${j.id}`; }
+                catch (ex: any) { setErr(/402/.test(ex.message) ? `${ex.message.replace(/\s*\(402\)$/, "")} Fyll på under Credits.` : ex.message); }
+              }}>Analysera</button>
             </div>
           </Tilted>
         ))}

@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { api, fileSize } from "../api";
 import { StatusBadge, stageText } from "../components/Status";
 import Tilted from "../components/Tilted";
+import { PriceTag } from "./Credits";
 
 /** Whether anything on the page is still moving. A list of finished readings does not change on its own. */
 function anythingRunning(jobs: any[]): boolean {
@@ -36,10 +37,16 @@ export default function DrawingPage() {
         </div>
         <div className="row">
           <button className="secondary" onClick={async () => { const b = await api.fetchBlob(api.fileUrl(d.id)); window.open(URL.createObjectURL(b)); }}>Öppna PDF</button>
-          <button onClick={async () => { await api.analyze(d.id); load(); }}>Ny analys</button>
+          <PriceTag drawingId={d.id} />
+          <button onClick={async () => {
+            setErr("");
+            try { await api.analyze(d.id); load(); }
+            catch (ex: any) { setErr(/402/.test(ex.message) ? `${ex.message.replace(/\s*\(402\)$/, "")} Fyll på under Credits.` : ex.message); }
+          }}>Ny analys</button>
         </div>
       </div>
 
+      {err && <p className="error" style={{ marginTop: 18 }}>{err}</p>}
       <div className="rule" />
       <div className="list">
         {d.jobs.map((j: any, i: number) => (

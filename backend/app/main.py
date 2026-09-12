@@ -16,7 +16,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
-from . import (academy as academy_api, admin as admin_api, cad as cad_api, calc as calc_api, exports,
+from . import (academy as academy_api, admin as admin_api, cad as cad_api, calc as calc_api, credits as credits_api, exports,
                jobs, markups as markups_api, projects_api, public as public_api)
 from vvs_engine.output.schema import upgrade
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
@@ -53,6 +53,7 @@ app.include_router(markups_api.router)
 app.include_router(markups_api.presets)
 app.include_router(calc_api.router)
 app.include_router(cad_api.router)
+app.include_router(credits_api.router)
 
 
 # ---------------------------------------------------------------- health / auth
@@ -127,7 +128,10 @@ def register(body: RegisterIn, db: Session = Depends(get_db)):
     first = (db.query(User).count() == 0)
     u = User(email=body.email.lower(), password_hash=hash_password(body.password),
              role="admin" if first else "member")
-    db.add(u); db.commit()
+    db.add(u); db.flush()
+    # ett nytt konto får något att prova med - bokfört i reskontran, så att det bara sker en gång
+    credits_api.grant_trial(db, u)
+    db.commit()
     return {"access_token": create_token(u), "token_type": "bearer", "email": u.email, "role": u.role}
 
 
@@ -322,7 +326,12 @@ def analyze(drawing_id: str, body: AnalyzeIn | None = None, user: User = Depends
                  "meters_per_pdf_point": ratio_to_meters_per_pt(body.scale_ratio)}
     j = AnalysisJob(drawing_id=d.id, status="QUEUED", stage="QUEUED", progress=0.0,
                     summary={"given_scale": given} if given else None)
-    db.add(j); db.commit()
+    db.add(j); db.flush()
+    # priset dras innan läsningen startar, och det som drogs står på jobbet; räcker inte saldot skapas inget jobb
+    charged = credits_api.charge_for_reading(db, user, d, j)
+    if charged:
+        j.summary = {**(j.summary or {}), "credits": charged}
+    db.commit()
     jobs.submit(j.id)
     return _job_out(j)
 
@@ -1037,6 +1046,7 @@ def vision_check(job_id: str, page: int = 0, user: User = Depends(current_user),
     j = _job(db, user, job_id)
     if j.status != "COMPLETED":
         raise HTTPException(409, "Analysen är inte klar")
+    credits_api.charge_vision(db, user, j, page)
     try:
         import pymupdf
         from vvs_engine.pdf.extract import extract_document

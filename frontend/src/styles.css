@@ -2552,3 +2552,17 @@ button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 
 .frontiers li { display: flex; gap: 6px; align-items: baseline; font-size: 12.5px; margin: 2px 0; }
 .frontiers .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; transform: translateY(1px); }
 .frontiers button.link { background: none; border: 0; padding: 0; color: var(--accent, #0b63ce); cursor: pointer; font: inherit; text-decoration: underline; }
+
+/* ---------- credits ---------- */
+.stat { display: flex; flex-direction: column; gap: 4px; padding: 12px 18px; border: 1px solid var(--line); border-radius: var(--r-m); background: #fff; }
+.stat .k { font-family: var(--mono); font-size: var(--label); letter-spacing: var(--track); text-transform: uppercase; color: var(--muted); }
+.stat .v { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+.stat .unit, .big .unit { font-size: 12px; font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-left: 4px; }
+.grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-top: 16px; }
+.grid4 .card { display: flex; flex-direction: column; gap: 6px; }
+.grid4 .card .ttl { font-family: var(--mono); font-size: var(--label); letter-spacing: var(--track); text-transform: uppercase; color: var(--muted); }
+.grid4 .card .big { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; }
+.grid4 .card .sub { color: var(--muted); font-size: 13px; }
+.grid4 .card button { align-self: flex-start; margin-top: auto; }
+.pricegrid td input { width: 104px; }
+.pricegrid td input[type=text], .pricegrid td input:not([type]) { width: 160px; }

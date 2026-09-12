@@ -37,3 +37,33 @@ referens vardera). Spannet i övrigt är 18-99 %. `W-50-1-A0011` och `A` är sam
 W-raden; det ska rättas i parningen.
 
 Den här baslinjen är den som nästa ändring i teckentydningen (schablontypsnittet, `FYND.md`) ska mätas mot.
+
+---
+
+# gate55: rutregeln för schablonbokstäver - REVERT
+
+**Ändring.** Första formen av regeln i `text/strokes.py`: ett kluster som ryms i en teckenruta (≤ 1,3 H) är ett
+tecken och byggs av alla sina bitar. Bakgrund i `FYND.md`.
+
+**Körning.** Blind, 59 blad, samma indata som gate54. Motorns källa hashad i `hashmanifest-gate55.json`
+(commit c7de2516153a + den ändrade `strokes.py`). Facit lästes först efter körningen.
+
+## Mot gate54, blad för blad (59 gemensamma)
+
+| | gate54 | gate55 |
+|---|---:|---:|
+| referens | 11399,2 m | 11399,2 m |
+| ägt | 7183,4 m | 6822,7 m |
+| falskt | 2053,5 m | 2083,6 m |
+| TÄCKNING | 63,02 % | 59,85 % |
+| FALSKHET | 18,01 % | 18,28 % |
+| blad som rörde sig | | **21** |
+
+Sju blad föll långt: `W-50-1-A0021` -98,6 pp, `E` -97,2, `W-50-1-A0024` -93,7, `W-50-1-A0033` -84,6,
+`W-50-1-A0032` -82,8, `D` -70,7, `C` -60,9 (och +60,9 pp falskhet). Rotorsaken hittades på E och D innan
+körningen var färdig: två smala tecken intill varandra - `75`, `D1`, `S1`, `IL` - ryms i samma ruta och
+slukades till ett oläsligt tecken. Rutan säger att klustret är litet, inte att det är *ett* tecken.
+
+**Beslut: REVERT** av den formen. Ersatt av regeln i commit ed14a8a (bitarna måste vara bitar: kortare än H
+tvärs stapelriktningen, någon en bråkdel, åtskilda med glapp, lästa i en riktning bladet skriver i), som läser
+E och D rad för rad som gate54 och mäts som gate56.

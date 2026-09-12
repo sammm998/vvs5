@@ -324,6 +324,32 @@ const SECTIONS: Sec[] = [
       </>
     ),
   },
+  {
+    id: "credits",
+    h: "Vad en läsning kostar",
+    body: (
+      <>
+        <p>
+          En läsning betalas i <b>credits</b>. Priset räknas ur bladet självt — pappersformatet och mängden bläck
+          (antal banor) — och står på ritningen innan du trycker på Analysera. Det som visas är det som dras; ingen
+          efterdebitering. Andra läsaren, projektanalysen, kalkylen, anbudet, mängdningsverktyget, CAD-rummet och
+          exporterna kostar inga credits. En andra blick med syn på en färdig läsning kostar en credit per sida, och
+          begärs bara när du ber om den.
+        </p>
+        <p className="pull">En läsning som inte kunde ge en enda meter kostar ingenting.</p>
+        <p>
+          Saknar bladet skala, eller går läsningen fel, betalas priset tillbaka av sig självt — med skälet i din
+          reskontra. Skriver du in skalan för hand och läser om, är det en ny läsning under den skalan och kostar
+          som en sådan. Credits hör till kontot, inte till inloggningen: ett kontor delar en pott. Köp faktureras;
+          credits finns på kontot i samma stund. Priserna står på <a href="/priser">prissidan</a> och är samma lista
+          som drar priset — den kan inte säga något annat än det som gäller.
+        </p>
+        <p className="note">
+          Ingenting i prislistan når läsningen. Ett pris kan aldrig flytta en meter.
+        </p>
+      </>
+    ),
+  },
 ];
 
 export default function Docs() {
