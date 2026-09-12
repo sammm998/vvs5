@@ -29,11 +29,11 @@ def main(a_path: str, b_path: str, fold: bool = True) -> None:
     def tot(src: dict, key: str) -> float:
         return sum((src[t]["metres"].get(key) or 0.0) for t in both)
 
-    for label, key in (("referens", "reference_m"), ("ägt", "owned_m"), ("falskt", "false_m")):
+    for label, key in (("referens", "reference"), ("ägt", "owned"), ("falskt", "false")):
         print(f"  {label:9s} {tot(a, key):9.1f} -> {tot(b, key):9.1f}")
-    ref = tot(a, "reference_m") or 1.0
-    print(f"  TÄCKNING  {tot(a,'owned_m')/ref:8.2%} -> {tot(b,'owned_m')/ref:8.2%}")
-    print(f"  FALSKHET  {tot(a,'false_m')/ref:8.2%} -> {tot(b,'false_m')/ref:8.2%}")
+    ref = tot(a, "reference") or 1.0
+    print(f"  TÄCKNING  {tot(a,'owned')/ref:8.2%} -> {tot(b,'owned')/ref:8.2%}")
+    print(f"  FALSKHET  {tot(a,'false')/ref:8.2%} -> {tot(b,'false')/ref:8.2%}")
     moved = []
     for t in both:
         da = a[t]["metres"]; db = b[t]["metres"]

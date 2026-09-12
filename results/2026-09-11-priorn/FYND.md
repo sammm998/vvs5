@@ -60,6 +60,40 @@ på x≈2110. Mätt rad för rad:
 Enstaka rader faller alltså bort ur läsningen helt - ett ensamt `S` i SHX-text blir ingen rad. Listan parar
 ihop det den får; den får bara inte allt.
 
+Mätt på legendens översta block, rad för rad som läsningen ser den:
+
+    x=2044,3 y= 73,7 w= 44,6  'LEDNINGAR'
+              y= 85,4         (ingen rad - här skulle 'S' stå)
+    x=2109,8 y= 85,4 w= 90,8  'SPILLVAT TENLEDNING'
+    x=2044,3 y=156,3 w=  9,9  'KV'
+    x=2044,3 y=168,2 w= 10,6  'VV'
+    x=2044,3 y=179,9 w= 15,7  'VVE'
+    x=2044,3 y=286,3 w=  9,7  'VP'      (ingen beskrivning till höger)
+    x=2044,3 y=298,0 w=  9,7  '?S'      (V:et blev ett frågetecken)
+
+Tvåbokstavskoderna är ~10 pt breda och läses. Den ensamma `S`:en blir ingen rad alls. Beskrivningarna till VP
+och VS saknas också; "SEKUNDÄR" dyker upp manglad på raden ovanför som `'I???I SEKU?DÄR'`.
+
+### Varför: typsnittet är ett schablontypsnitt
+
+Renderat och tittat på. Bokstäverna är ritade **i lösa bitar med glapp**, som en schablon - `S`:et är tre
+skilda bågar, `G` och `J` har avbrott, `LEDNINGAR` har hål i varje bokstav. Komponentbyggaren fogar ihop streck
+som rör vid varandra (tolerans 0,12), och en schablonbokstav rör aldrig vid sig själv.
+
+Mätt på den ensamma `S`:en mot `KV` på raden under:
+
+| | komponenter | höjder |
+|---|---|---|
+| ensamt `S` | 3 stycken | 2,55 · 1,08 · 2,73 pt |
+| `KV` | 4 stycken | upp till 6,48 pt |
+
+Bladets teckenstorlek är 6,25 pt. `S`:ets bitar når aldrig dit, hamnar utanför storleksfamiljen och bildar
+ingen rad. Inne i ett ord klarar sig samma bokstav - grannarna bär raden - och därför läses `SPILLVAT
+TENLEDNING` men inte koden `S` bredvid.
+
+Samma glapp förklarar formförväxlingarna: en schablonfemma utan sina fogar är ett `S`, ett `C` med glapp blir
+ett `E`. Det är ett fel, inte två.
+
 *Inte rättat.* Nästa steg.
 
 ## Vad läsningen tog i stället
@@ -98,9 +132,11 @@ redovisas ärligt - men läsningen av det är fortfarande dålig, och det är f�
 
 ## Att göra härnäst, i ordning
 
-1. **Teckentydningen på det här typsnittet.** Två fel i ett: former förväxlas (5/S, 0/O, C/E, J) och korta
-   rader faller bort helt (ett ensamt `S`). Det andra är det som kostar mest - utan koden S, VP och VS är tre av
-   bladets fyra ledningsslag inte rör. Skalan är lagad i sin egen position; resten sitter kvar.
+1. **Schablontypsnittet.** En bokstav ritad i lösa bitar fogas aldrig ihop, och en bokstav som står ensam
+   försvinner därför helt. Komponentbyggaren behöver få foga över ett glapp som är en andel av bladets egen
+   teckenstorlek - en härledd tolerans, inte ett tal för den här ritningen. Det är samma fel som ger 5/S och
+   C/E, och det är det som kostar mest: utan koderna S, VP och VS är tre av fyra ledningsslag inte rör. Skalan
+   är lagad i sin egen position; resten sitter kvar.
 2. **Förklaringslistan mot vad bladet ritar.** När koderna läses ska listan också kunna ta en kod vars
    beskrivning föll bort, och tvärtom - en halv rad är mer än ingen rad.
 3. **Undantaget för skrivpennor.** Undanta den anteckningsbläck som faktiskt hittats - understrykningen, ramen,
