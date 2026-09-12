@@ -2566,3 +2566,70 @@ button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 
 .grid4 .card button { align-self: flex-start; margin-top: auto; }
 .pricegrid td input { width: 104px; }
 .pricegrid td input[type=text], .pricegrid td input:not([type]) { width: 160px; }
+
+/* ---------- Bygg-CAD: hela byggnaden i 2D och 3D ---------- */
+.bcad { display: grid; grid-template-columns: 240px minmax(0, 1fr) 320px; grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "top top top" "browser stage props"; height: 100vh; background: var(--bg); color: var(--ink); }
+@media (max-width: 1100px) { .bcad { grid-template-columns: 200px minmax(0, 1fr); grid-template-areas: "top top" "browser stage" "props props"; grid-template-rows: auto minmax(0, 1fr) minmax(200px, 34vh); } }
+@media (max-width: 720px) { .bcad { grid-template-columns: 1fr; grid-template-areas: "top" "stage" "browser" "props"; grid-template-rows: auto minmax(0, 1fr) auto auto; } }
+.bcad-top { grid-area: top; display: flex; align-items: center; gap: 10px; padding: 6px 12px; border-bottom: 1px solid var(--line); background: var(--bg-2); flex-wrap: wrap; }
+.bcad-crumb { font-size: 13px; white-space: nowrap; }
+.bcad-crumb a { color: var(--muted); text-decoration: none; }
+.bcad-tools { display: flex; gap: 3px; flex-wrap: wrap; flex: 1; }
+.bcad-tool, .bcad-modes button, .bcad-tabs button, .bcad-3dbar button, .bcad-right button.ghost { color: var(--ink); text-transform: none; letter-spacing: 0; font-family: inherit; box-shadow: none; transform: none; }
+.bcad-tool { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; border: 1px solid var(--line-2); background: var(--bg); border-radius: 4px; font-size: 11px; cursor: pointer; }
+.bcad-tool kbd { font-family: var(--mono); font-size: 9px; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 0 3px; }
+.bcad-tool.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.bcad-tool.on kbd { color: var(--bg); border-color: rgba(255,255,255,0.4); }
+.bcad-right { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.bcad-right button.on, .bcad-3dbar button.on, .bcad-modes button.on, .bcad-tabs button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.bcad-modes { display: inline-flex; border: 1px solid var(--line-2); border-radius: 4px; overflow: hidden; }
+.bcad-modes button { border: 0; border-radius: 0; padding: 5px 9px; font-size: 11px; background: var(--bg); cursor: pointer; }
+.bcad-browser { grid-area: browser; overflow: auto; border-right: 1px solid var(--line); padding: 8px 10px; font-size: 12px; }
+.bcad-sec { padding: 6px 0 10px; border-bottom: 1px solid var(--line); }
+.bcad-sec:last-child { border-bottom: 0; }
+.bcad-h { display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.bcad-row { display: flex; align-items: center; gap: 6px; padding: 2px 4px; border-radius: 4px; }
+.bcad-row.on { background: var(--bg-2); box-shadow: inset 2px 0 0 var(--ink); }
+.bcad-row input[type="range"] { width: 60px; margin-left: auto; }
+.bcad-link { text-transform: none; letter-spacing: 0; background: none; border: 0; padding: 2px 0; font: inherit; color: inherit; cursor: pointer; text-align: left; }
+.bcad-link:hover { text-decoration: underline; }
+.bcad-num { width: 78px; padding: 2px 4px; font-family: var(--mono); font-size: 11px; border: 1px solid var(--line-2); border-radius: 3px; }
+.bcad-stage { grid-area: stage; display: flex; min-width: 0; min-height: 0; background: #f3f5f8; }
+.bcad-plan, .bcad-3d { position: relative; flex: 1; min-width: 0; min-height: 0; overflow: hidden; }
+.bcad-plan.half, .bcad-3d.half { flex: 1 1 50%; }
+.bcad-plan.half { border-right: 1px solid var(--line-2); }
+.bcad-plan canvas { width: 100%; height: 100%; }
+.bcad-3d canvas { display: block; width: 100%; height: 100%; }
+.bcad-planbar, .bcad-3dbar { position: absolute; left: 8px; bottom: 8px; display: flex; gap: 4px; align-items: center; background: rgba(255,255,255,0.92); border: 1px solid var(--line-2); border-radius: 4px; padding: 3px 6px; font-size: 11px; }
+.bcad-3dbar button { border: 1px solid var(--line-2); background: var(--bg); border-radius: 3px; padding: 3px 7px; font-size: 11px; cursor: pointer; }
+.bcad-props { grid-area: props; overflow: auto; border-left: 1px solid var(--line); padding: 8px 10px; font-size: 12px; }
+.bcad-tabs { display: flex; gap: 2px; margin-bottom: 8px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.bcad-tabs button { border: 0; background: none; padding: 5px 7px; font-size: 11px; cursor: pointer; border-radius: 4px 4px 0 0; }
+.bcad-list { display: flex; flex-direction: column; gap: 6px; }
+.bcad-list table.qty { width: 100%; border-collapse: collapse; font-size: 11px; }
+.bcad-list table.qty th, .bcad-list table.qty td { padding: 3px 4px; border-bottom: 1px solid var(--line); text-align: left; }
+.bcad-list table.qty td.num, .bcad-list table.qty th.num { text-align: right; font-family: var(--mono); }
+.bcad-kind { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.bcad-field { display: grid; grid-template-columns: 1fr 110px; align-items: center; gap: 6px; padding: 3px 0; border-bottom: 1px solid var(--line); }
+.bcad-field input, .bcad-field select { width: 100%; padding: 3px 4px; font-size: 11px; border: 1px solid var(--line-2); border-radius: 3px; font-family: var(--mono); }
+.bcad-clash { padding: 6px 8px; border: 1px solid var(--line-2); border-left-width: 4px; border-radius: 4px; cursor: pointer; }
+.bcad-clash.hög { border-left-color: #c62828; }
+.bcad-clash.medel { border-left-color: #ef6c00; }
+.bcad-clash.låg { border-left-color: #1565c0; }
+.bcad-proposal { padding: 6px 8px; background: var(--bg-2); border-radius: 4px; }
+.bcad-rev { padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; }
+.bcad-sec svg, .bcad-list svg { width: 100%; height: auto; background: #fff; border: 1px solid var(--line-2); }
+
+/* ---------- agenten som egen sida ---------- */
+.agentgrid { margin-top: 24px; display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 900px) { .agentgrid { grid-template-columns: 1fr; } }
+.agentpick { display: flex; flex-direction: column; gap: 4px; position: sticky; top: 16px; }
+.agentpick .field { margin-bottom: 8px; }
+.agentrow { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; text-align: left; padding: 9px 12px; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; box-shadow: none; text-transform: none; letter-spacing: 0; font-family: inherit; font-size: 13px; }
+.agentrow:hover { border-color: var(--ink); opacity: 1; transform: none; box-shadow: none; }
+.agentrow.on { border-color: var(--ink); box-shadow: inset 3px 0 0 var(--ink); }
+.agentrow:disabled { opacity: 0.5; }
+.agentroom { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; min-height: 60vh; display: flex; flex-direction: column; background: var(--bg); }
+.agentroom .agentchat { flex: 1; }
+.agentwho { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--line); }
+.agentwho a { color: var(--muted); }

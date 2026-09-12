@@ -203,6 +203,11 @@ export const api = {
   cadSave: (id: string, body: any) =>
     req(`/api/cad/sheets/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   cadDelete: (id: string) => req(`/api/cad/sheets/${id}`, { method: "DELETE" }),
+  cadRevisions: (id: string) => req(`/api/cad/sheets/${id}/revisions`),
+  cadRestore: (id: string, rev: number) => req(`/api/cad/sheets/${id}/revisions/${rev}/restore`, { method: "POST" }),
+  cadQuantities: (id: string) => req(`/api/cad/sheets/${id}/quantities`),
+  cadValidate: (content: any) =>
+    req("/api/cad/validate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content }) }),
   cadPrint: (id: string) => req(`/api/cad/sheets/${id}/tryck`, { method: "POST" }),
   cadPdfUrl: (id: string) => `/api/cad/sheets/${id}/pdf`,
   cadDxfUrl: (id: string) => `/api/cad/sheets/${id}/dxf`,

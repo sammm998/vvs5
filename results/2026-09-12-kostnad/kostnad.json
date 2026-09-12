@@ -1,0 +1,6674 @@
+{
+ "A": {
+  "wall_s": 62.4,
+  "cpu_s": 63.9,
+  "max_rss_mb": 280.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 25225,
+    "count_s": 0.5
+   }
+  ],
+  "file_bytes": 466665,
+  "output_bytes": 8445964,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 15,
+  "error": null,
+  "state": "OK",
+  "input": "validation_A/clean.pdf",
+  "input_sha256": "c2884f3007f3764a",
+  "total_s": 63.5
+ },
+ "C": {
+  "wall_s": 12.5,
+  "cpu_s": 13.9,
+  "max_rss_mb": 260.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 16287,
+    "count_s": 0.36
+   }
+  ],
+  "file_bytes": 328459,
+  "output_bytes": 4041144,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "validation_C/clean.pdf",
+  "input_sha256": "c6a4a7e8e2f5d78c",
+  "total_s": 13.4
+ },
+ "D": {
+  "wall_s": 23.3,
+  "cpu_s": 24.7,
+  "max_rss_mb": 281.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 20873,
+    "count_s": 0.44
+   }
+  ],
+  "file_bytes": 337276,
+  "output_bytes": 6081434,
+  "second_reader_questions": 1,
+  "second_reader_prompt_chars": 946,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 11,
+  "error": null,
+  "state": "OK",
+  "input": "validation_D/clean.pdf",
+  "input_sha256": "a5c6493c92fb2a2e",
+  "total_s": 24.2
+ },
+ "E": {
+  "wall_s": 16.8,
+  "cpu_s": 18.3,
+  "max_rss_mb": 270.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18878,
+    "count_s": 0.42
+   }
+  ],
+  "file_bytes": 312115,
+  "output_bytes": 5346622,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "validation_E/clean.pdf",
+  "input_sha256": "d0242e5f34c3be17",
+  "total_s": 17.9
+ },
+ "V-50-1-A0111": {
+  "wall_s": 11.6,
+  "cpu_s": 12.9,
+  "max_rss_mb": 229.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9621,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 529119,
+  "output_bytes": 7193937,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 14,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0111/clean.pdf",
+  "input_sha256": "1a4dbfd8ac3fac25",
+  "total_s": 12.4
+ },
+ "V-50-1-A0112": {
+  "wall_s": 21.8,
+  "cpu_s": 23.1,
+  "max_rss_mb": 242.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13277,
+    "count_s": 0.25
+   }
+  ],
+  "file_bytes": 771638,
+  "output_bytes": 12478672,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2760,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 30,
+  "pipe_names_with_metres": 30,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0112/clean.pdf",
+  "input_sha256": "57975e37c6062be2",
+  "total_s": 22.6
+ },
+ "V-50-1-A0121": {
+  "wall_s": 14.3,
+  "cpu_s": 15.4,
+  "max_rss_mb": 240.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13195,
+    "count_s": 0.3
+   }
+  ],
+  "file_bytes": 398009,
+  "output_bytes": 6401558,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 14,
+  "pipe_names_with_metres": 12,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0121/clean.pdf",
+  "input_sha256": "4ecc369de69487b7",
+  "total_s": 15.2
+ },
+ "V-50-1-A0122": {
+  "wall_s": 46.4,
+  "cpu_s": 47.7,
+  "max_rss_mb": 281.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 24389,
+    "count_s": 0.49
+   }
+  ],
+  "file_bytes": 770109,
+  "output_bytes": 14320136,
+  "second_reader_questions": 8,
+  "second_reader_prompt_chars": 7430,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 25,
+  "pipe_names_with_metres": 23,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0122/clean.pdf",
+  "input_sha256": "7a4d549c4841fda1",
+  "total_s": 47.5
+ },
+ "V-50-1-A0123": {
+  "wall_s": 20.8,
+  "cpu_s": 21.9,
+  "max_rss_mb": 244.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13636,
+    "count_s": 0.3
+   }
+  ],
+  "file_bytes": 731009,
+  "output_bytes": 12274479,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2809,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 30,
+  "pipe_names_with_metres": 25,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0123/clean.pdf",
+  "input_sha256": "f3af362ab82b6623",
+  "total_s": 21.7
+ },
+ "V-50-1-A0124": {
+  "wall_s": 22.3,
+  "cpu_s": 23.4,
+  "max_rss_mb": 238.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 11734,
+    "count_s": 0.25
+   }
+  ],
+  "file_bytes": 912292,
+  "output_bytes": 12732734,
+  "second_reader_questions": 10,
+  "second_reader_prompt_chars": 8995,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 24,
+  "pipe_names_with_metres": 19,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0124/clean.pdf",
+  "input_sha256": "b3b7b1df765bb650",
+  "total_s": 23.1
+ },
+ "V-50-1-A0211": {
+  "wall_s": 10.6,
+  "cpu_s": 11.6,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9774,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 369705,
+  "output_bytes": 5512129,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0211/clean.pdf",
+  "input_sha256": "e872025eacb08a62",
+  "total_s": 11.3
+ },
+ "V-50-1-A0212": {
+  "wall_s": 20.3,
+  "cpu_s": 21.4,
+  "max_rss_mb": 245.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 14907,
+    "count_s": 0.32
+   }
+  ],
+  "file_bytes": 780724,
+  "output_bytes": 12280794,
+  "second_reader_questions": 8,
+  "second_reader_prompt_chars": 6886,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 25,
+  "pipe_names_with_metres": 25,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0212/clean.pdf",
+  "input_sha256": "2a0caed528287327",
+  "total_s": 21.2
+ },
+ "V-50-1-A0221": {
+  "wall_s": 11.6,
+  "cpu_s": 12.6,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9800,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 331317,
+  "output_bytes": 5082701,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0221/clean.pdf",
+  "input_sha256": "916af1ba537580a1",
+  "total_s": 12.3
+ },
+ "V-50-1-A0222": {
+  "wall_s": 14.1,
+  "cpu_s": 15.2,
+  "max_rss_mb": 234.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10454,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 491219,
+  "output_bytes": 7456969,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 8,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0222/clean.pdf",
+  "input_sha256": "d233df39397aae36",
+  "total_s": 14.9
+ },
+ "V-50-1-A0223": {
+  "wall_s": 12.1,
+  "cpu_s": 12.9,
+  "max_rss_mb": 229.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9367,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 416047,
+  "output_bytes": 5706348,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0223/clean.pdf",
+  "input_sha256": "3c4342246e9008a1",
+  "total_s": 12.9
+ },
+ "V-50-1-A0311": {
+  "wall_s": 11.8,
+  "cpu_s": 12.8,
+  "max_rss_mb": 230.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10410,
+    "count_s": 0.24
+   }
+  ],
+  "file_bytes": 385175,
+  "output_bytes": 5864333,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 8,
+  "pipe_names_with_metres": 4,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0311/clean.pdf",
+  "input_sha256": "4c918dc42c8563f8",
+  "total_s": 12.7
+ },
+ "V-50-1-A0312": {
+  "wall_s": 17.1,
+  "cpu_s": 18.3,
+  "max_rss_mb": 242.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13938,
+    "count_s": 0.3
+   }
+  ],
+  "file_bytes": 610526,
+  "output_bytes": 9487714,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2597,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 16,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0312/clean.pdf",
+  "input_sha256": "3909a1620fd36293",
+  "total_s": 18.0
+ },
+ "V-50-1-A0321": {
+  "wall_s": 15.1,
+  "cpu_s": 16.1,
+  "max_rss_mb": 234.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10857,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 382834,
+  "output_bytes": 7760528,
+  "second_reader_questions": 1,
+  "second_reader_prompt_chars": 885,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 8,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0321/clean.pdf",
+  "input_sha256": "029185080e5de254",
+  "total_s": 15.8
+ },
+ "V-50-1-A0322": {
+  "wall_s": 17.4,
+  "cpu_s": 18.5,
+  "max_rss_mb": 240.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13219,
+    "count_s": 0.26
+   }
+  ],
+  "file_bytes": 625332,
+  "output_bytes": 10277909,
+  "second_reader_questions": 2,
+  "second_reader_prompt_chars": 1762,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 15,
+  "pipe_names_with_metres": 13,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0322/clean.pdf",
+  "input_sha256": "ea982c7f61efdcfa",
+  "total_s": 18.2
+ },
+ "V-50-1-A0323": {
+  "wall_s": 10.4,
+  "cpu_s": 11.4,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9241,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 386575,
+  "output_bytes": 5649943,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0323/clean.pdf",
+  "input_sha256": "4fe83ad595f20439",
+  "total_s": 11.2
+ },
+ "V-50-1-A0411": {
+  "wall_s": 12.8,
+  "cpu_s": 13.8,
+  "max_rss_mb": 231.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10689,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 466237,
+  "output_bytes": 7560158,
+  "second_reader_questions": 8,
+  "second_reader_prompt_chars": 6884,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 13,
+  "pipe_names_with_metres": 12,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0411/clean.pdf",
+  "input_sha256": "356e77c82ceb2ad3",
+  "total_s": 13.5
+ },
+ "V-50-1-A0412": {
+  "wall_s": 21.3,
+  "cpu_s": 22.4,
+  "max_rss_mb": 245.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 15013,
+    "count_s": 0.32
+   }
+  ],
+  "file_bytes": 744285,
+  "output_bytes": 13258668,
+  "second_reader_questions": 11,
+  "second_reader_prompt_chars": 9649,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 19,
+  "pipe_names_with_metres": 19,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0412/clean.pdf",
+  "input_sha256": "bdb60455ceac6754",
+  "total_s": 22.1
+ },
+ "V-50-1-A0421": {
+  "wall_s": 14.2,
+  "cpu_s": 15.3,
+  "max_rss_mb": 233.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10776,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 437757,
+  "output_bytes": 8704794,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2578,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 12,
+  "pipe_names_with_metres": 10,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0421/clean.pdf",
+  "input_sha256": "2e83cb9872fe92f7",
+  "total_s": 15.1
+ },
+ "V-50-1-A0422": {
+  "wall_s": 14.6,
+  "cpu_s": 15.7,
+  "max_rss_mb": 233.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10122,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 539693,
+  "output_bytes": 9251943,
+  "second_reader_questions": 2,
+  "second_reader_prompt_chars": 1768,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 14,
+  "pipe_names_with_metres": 13,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0422/clean.pdf",
+  "input_sha256": "4607b9fbe93b64e7",
+  "total_s": 15.4
+ },
+ "V-50-1-A0423": {
+  "wall_s": 10.4,
+  "cpu_s": 11.4,
+  "max_rss_mb": 224.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8081,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 382276,
+  "output_bytes": 5889236,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 7,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0423/clean.pdf",
+  "input_sha256": "9f9cf698b707e533",
+  "total_s": 11.2
+ },
+ "V-50-1-A0511": {
+  "wall_s": 10.1,
+  "cpu_s": 11.1,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9225,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 366321,
+  "output_bytes": 5457957,
+  "second_reader_questions": 2,
+  "second_reader_prompt_chars": 1740,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 8,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0511/clean.pdf",
+  "input_sha256": "12604a79e10db874",
+  "total_s": 10.9
+ },
+ "V-50-1-A0512": {
+  "wall_s": 18.9,
+  "cpu_s": 20.1,
+  "max_rss_mb": 245.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13875,
+    "count_s": 0.34
+   }
+  ],
+  "file_bytes": 798029,
+  "output_bytes": 12283979,
+  "second_reader_questions": 7,
+  "second_reader_prompt_chars": 6352,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 25,
+  "pipe_names_with_metres": 22,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0512/clean.pdf",
+  "input_sha256": "0753dd06811638da",
+  "total_s": 19.8
+ },
+ "V-50-1-A0521": {
+  "wall_s": 13.4,
+  "cpu_s": 14.5,
+  "max_rss_mb": 231.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9740,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 425392,
+  "output_bytes": 8306318,
+  "second_reader_questions": 15,
+  "second_reader_prompt_chars": 13202,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 12,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0521/clean.pdf",
+  "input_sha256": "9f56253c5986a0b2",
+  "total_s": 14.2
+ },
+ "V-50-1-A0522": {
+  "wall_s": 18.2,
+  "cpu_s": 19.3,
+  "max_rss_mb": 238.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 11914,
+    "count_s": 0.25
+   }
+  ],
+  "file_bytes": 655264,
+  "output_bytes": 11251719,
+  "second_reader_questions": 5,
+  "second_reader_prompt_chars": 4326,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 22,
+  "pipe_names_with_metres": 21,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0522/clean.pdf",
+  "input_sha256": "38f2c35a2b7334ae",
+  "total_s": 19.0
+ },
+ "V-50-1-A0523": {
+  "wall_s": 9.8,
+  "cpu_s": 10.8,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7708,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 409859,
+  "output_bytes": 6029349,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2659,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 9,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-A0523/clean.pdf",
+  "input_sha256": "fce9242066972b41",
+  "total_s": 10.5
+ },
+ "V-50-1-B0112": {
+  "wall_s": 8.6,
+  "cpu_s": 9.6,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8532,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 374721,
+  "output_bytes": 5094854,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 9,
+  "pipe_names_with_metres": 7,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-B0112/clean.pdf",
+  "input_sha256": "7ee67c1356bd83ba",
+  "total_s": 9.3
+ },
+ "V-50-1-B0114": {
+  "wall_s": 10.5,
+  "cpu_s": 11.6,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9816,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 402561,
+  "output_bytes": 6088440,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 12,
+  "pipe_names_with_metres": 10,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-B0114/clean.pdf",
+  "input_sha256": "77b0ac1f87e3053a",
+  "total_s": 11.3
+ },
+ "V-50-1-B0122": {
+  "wall_s": 24.0,
+  "cpu_s": 25.3,
+  "max_rss_mb": 251.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 14771,
+    "count_s": 0.31
+   }
+  ],
+  "file_bytes": 1069278,
+  "output_bytes": 17357016,
+  "second_reader_questions": 13,
+  "second_reader_prompt_chars": 12732,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 38,
+  "pipe_names_with_metres": 31,
+  "error": null,
+  "state": "OK",
+  "input": "validation_set3/V-50-1-B0122/clean.pdf",
+  "input_sha256": "07d1319d70aa000d",
+  "total_s": 24.9
+ },
+ "W-50-1-A0011": {
+  "wall_s": 60.7,
+  "cpu_s": 61.9,
+  "max_rss_mb": 280.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 25225,
+    "count_s": 0.46
+   }
+  ],
+  "file_bytes": 466665,
+  "output_bytes": 8446404,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 15,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0011/clean.pdf",
+  "input_sha256": "c2884f3007f3764a",
+  "total_s": 61.6
+ },
+ "W-50-1-A0021": {
+  "wall_s": 14.0,
+  "cpu_s": 15.4,
+  "max_rss_mb": 267.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18196,
+    "count_s": 0.4
+   }
+  ],
+  "file_bytes": 303499,
+  "output_bytes": 5066986,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 9,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0021/clean.pdf",
+  "input_sha256": "3f245a29bf30e845",
+  "total_s": 14.9
+ },
+ "W-50-1-A0022": {
+  "wall_s": 19.7,
+  "cpu_s": 21.1,
+  "max_rss_mb": 268.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17549,
+    "count_s": 0.4
+   }
+  ],
+  "file_bytes": 295865,
+  "output_bytes": 3988469,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 37,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0022/clean.pdf",
+  "input_sha256": "d938b6b23232e40e",
+  "total_s": 20.6
+ },
+ "W-50-1-A0023": {
+  "wall_s": 19.9,
+  "cpu_s": 21.2,
+  "max_rss_mb": 265.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17571,
+    "count_s": 0.39
+   }
+  ],
+  "file_bytes": 296636,
+  "output_bytes": 4083783,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 38,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0023/clean.pdf",
+  "input_sha256": "19a08f7c6753a5d2",
+  "total_s": 20.8
+ },
+ "W-50-1-A0024": {
+  "wall_s": 15.9,
+  "cpu_s": 17.3,
+  "max_rss_mb": 272.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 19043,
+    "count_s": 0.38
+   }
+  ],
+  "file_bytes": 310332,
+  "output_bytes": 5231809,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0024/clean.pdf",
+  "input_sha256": "f52aae17d88a11c8",
+  "total_s": 16.9
+ },
+ "W-50-1-A0031": {
+  "wall_s": 23.8,
+  "cpu_s": 25.2,
+  "max_rss_mb": 270.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18696,
+    "count_s": 0.41
+   }
+  ],
+  "file_bytes": 307125,
+  "output_bytes": 4248748,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 40,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0031/clean.pdf",
+  "input_sha256": "2e8196ba551e1e9d",
+  "total_s": 24.7
+ },
+ "W-50-1-A0032": {
+  "wall_s": 12.5,
+  "cpu_s": 13.9,
+  "max_rss_mb": 260.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17638,
+    "count_s": 0.36
+   }
+  ],
+  "file_bytes": 278267,
+  "output_bytes": 4529630,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0032/clean.pdf",
+  "input_sha256": "6a1bd88d64046512",
+  "total_s": 13.4
+ },
+ "W-50-1-A0033": {
+  "wall_s": 11.2,
+  "cpu_s": 12.5,
+  "max_rss_mb": 252.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 16233,
+    "count_s": 0.35
+   }
+  ],
+  "file_bytes": 263480,
+  "output_bytes": 4123764,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0033/clean.pdf",
+  "input_sha256": "6d3727568126772c",
+  "total_s": 12.1
+ },
+ "W-50-1-A0034": {
+  "wall_s": 19.9,
+  "cpu_s": 21.3,
+  "max_rss_mb": 263.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17290,
+    "count_s": 0.4
+   }
+  ],
+  "file_bytes": 297064,
+  "output_bytes": 4013197,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 37,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0034/clean.pdf",
+  "input_sha256": "d58e8dc68fc0605b",
+  "total_s": 20.9
+ },
+ "W-50-1-A0111": {
+  "wall_s": 123.9,
+  "cpu_s": 125.7,
+  "max_rss_mb": 346.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 45042,
+    "count_s": 0.76
+   }
+  ],
+  "file_bytes": 798712,
+  "output_bytes": 18425211,
+  "second_reader_questions": 7,
+  "second_reader_prompt_chars": 6791,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 45,
+  "pipe_names_with_metres": 34,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0111/clean.pdf",
+  "input_sha256": "9e825bc058e30454",
+  "total_s": 125.3
+ },
+ "W-50-1-A0112": {
+  "wall_s": 18.5,
+  "cpu_s": 20.0,
+  "max_rss_mb": 269.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 20663,
+    "count_s": 0.51
+   }
+  ],
+  "file_bytes": 423884,
+  "output_bytes": 7337013,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "CONFLICT",
+  "pipe_names": 23,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0112/clean.pdf",
+  "input_sha256": "d1f1ab42ab978562",
+  "total_s": 19.5
+ },
+ "W-50-1-A0113": {
+  "wall_s": 72.8,
+  "cpu_s": 74.5,
+  "max_rss_mb": 317.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 34968,
+    "count_s": 0.65
+   }
+  ],
+  "file_bytes": 780213,
+  "output_bytes": 15636754,
+  "second_reader_questions": 11,
+  "second_reader_prompt_chars": 10535,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 62,
+  "pipe_names_with_metres": 39,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0113/clean.pdf",
+  "input_sha256": "c52ff45a537a3a54",
+  "total_s": 74.0
+ },
+ "W-50-1-A0114": {
+  "wall_s": 48.7,
+  "cpu_s": 50.3,
+  "max_rss_mb": 308.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 32446,
+    "count_s": 0.61
+   }
+  ],
+  "file_bytes": 618886,
+  "output_bytes": 13638846,
+  "second_reader_questions": 8,
+  "second_reader_prompt_chars": 7567,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 48,
+  "pipe_names_with_metres": 25,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0114/clean.pdf",
+  "input_sha256": "61e5d07b2e3a7136",
+  "total_s": 49.8
+ },
+ "W-50-1-A0121": {
+  "wall_s": 30.9,
+  "cpu_s": 32.4,
+  "max_rss_mb": 292.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 28796,
+    "count_s": 0.51
+   }
+  ],
+  "file_bytes": 537005,
+  "output_bytes": 10692139,
+  "second_reader_questions": 5,
+  "second_reader_prompt_chars": 4726,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 35,
+  "pipe_names_with_metres": 24,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0121/clean.pdf",
+  "input_sha256": "f7c27df64d1eb788",
+  "total_s": 31.9
+ },
+ "W-50-1-A0122": {
+  "wall_s": 47.5,
+  "cpu_s": 49.1,
+  "max_rss_mb": 302.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 31439,
+    "count_s": 0.58
+   }
+  ],
+  "file_bytes": 592450,
+  "output_bytes": 15809314,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2815,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 33,
+  "pipe_names_with_metres": 24,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0122/clean.pdf",
+  "input_sha256": "7e34264b8725fd9f",
+  "total_s": 48.7
+ },
+ "W-50-1-A0123": {
+  "wall_s": 30.5,
+  "cpu_s": 32.0,
+  "max_rss_mb": 292.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 28742,
+    "count_s": 0.55
+   }
+  ],
+  "file_bytes": 543289,
+  "output_bytes": 10940415,
+  "second_reader_questions": 6,
+  "second_reader_prompt_chars": 5838,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 34,
+  "pipe_names_with_metres": 23,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0123/clean.pdf",
+  "input_sha256": "ae64e35d1490cdc1",
+  "total_s": 31.6
+ },
+ "W-50-1-A0124": {
+  "wall_s": 42.1,
+  "cpu_s": 43.7,
+  "max_rss_mb": 307.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 33366,
+    "count_s": 0.6
+   }
+  ],
+  "file_bytes": 599067,
+  "output_bytes": 13185951,
+  "second_reader_questions": 8,
+  "second_reader_prompt_chars": 7458,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 45,
+  "pipe_names_with_metres": 19,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0124/clean.pdf",
+  "input_sha256": "799af38a8835ae86",
+  "total_s": 43.2
+ },
+ "W-50-1-A0131": {
+  "wall_s": 52.0,
+  "cpu_s": 53.6,
+  "max_rss_mb": 310.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 36718,
+    "count_s": 0.6
+   }
+  ],
+  "file_bytes": 608976,
+  "output_bytes": 13263589,
+  "second_reader_questions": 10,
+  "second_reader_prompt_chars": 9361,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 42,
+  "pipe_names_with_metres": 16,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0131/clean.pdf",
+  "input_sha256": "2a0ec2a4e5e53f65",
+  "total_s": 53.2
+ },
+ "W-50-1-A0132": {
+  "wall_s": 66.4,
+  "cpu_s": 68.1,
+  "max_rss_mb": 313.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 33091,
+    "count_s": 0.69
+   }
+  ],
+  "file_bytes": 649855,
+  "output_bytes": 15192572,
+  "second_reader_questions": 5,
+  "second_reader_prompt_chars": 4620,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 36,
+  "pipe_names_with_metres": 25,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0132/clean.pdf",
+  "input_sha256": "f0e1619a4557c6c0",
+  "total_s": 67.6
+ },
+ "W-50-1-A0133": {
+  "wall_s": 22.5,
+  "cpu_s": 23.8,
+  "max_rss_mb": 288.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 25980,
+    "count_s": 0.5
+   }
+  ],
+  "file_bytes": 520611,
+  "output_bytes": 10782428,
+  "second_reader_questions": 2,
+  "second_reader_prompt_chars": 1878,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 39,
+  "pipe_names_with_metres": 33,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0133/clean.pdf",
+  "input_sha256": "aae9ab15830c08ab",
+  "total_s": 23.5
+ },
+ "W-50-1-A0134": {
+  "wall_s": 28.9,
+  "cpu_s": 30.3,
+  "max_rss_mb": 302.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 30441,
+    "count_s": 0.63
+   }
+  ],
+  "file_bytes": 587133,
+  "output_bytes": 12641895,
+  "second_reader_questions": 8,
+  "second_reader_prompt_chars": 7503,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 32,
+  "pipe_names_with_metres": 22,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0134/clean.pdf",
+  "input_sha256": "9b68e885ca816fd1",
+  "total_s": 30.0
+ },
+ "W-50-1-A0211": {
+  "wall_s": 24.1,
+  "cpu_s": 25.3,
+  "max_rss_mb": 279.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 22365,
+    "count_s": 0.43
+   }
+  ],
+  "file_bytes": 434592,
+  "output_bytes": 16570198,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 13,
+  "pipe_names_with_metres": 9,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0211/clean.pdf",
+  "input_sha256": "c990d3489422a9ad",
+  "total_s": 25.0
+ },
+ "W-50-1-A0213": {
+  "wall_s": 25.5,
+  "cpu_s": 26.8,
+  "max_rss_mb": 286.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 25774,
+    "count_s": 0.5
+   }
+  ],
+  "file_bytes": 513872,
+  "output_bytes": 12551366,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 22,
+  "pipe_names_with_metres": 15,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0213/clean.pdf",
+  "input_sha256": "c5f7db233d2ab642",
+  "total_s": 26.5
+ },
+ "W-50-1-A0214": {
+  "wall_s": 34.4,
+  "cpu_s": 35.6,
+  "max_rss_mb": 285.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 26483,
+    "count_s": 0.5
+   }
+  ],
+  "file_bytes": 515627,
+  "output_bytes": 8962847,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 7,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0214/clean.pdf",
+  "input_sha256": "d0a69e2560cc6b0a",
+  "total_s": 35.5
+ },
+ "W-50-1-A0221": {
+  "wall_s": 31.1,
+  "cpu_s": 32.3,
+  "max_rss_mb": 290.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 27105,
+    "count_s": 0.55
+   }
+  ],
+  "file_bytes": 507764,
+  "output_bytes": 8780042,
+  "second_reader_questions": 1,
+  "second_reader_prompt_chars": 947,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 10,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0221/clean.pdf",
+  "input_sha256": "efc2337d63677305",
+  "total_s": 32.2
+ },
+ "W-50-1-A0222": {
+  "wall_s": 23.7,
+  "cpu_s": 24.9,
+  "max_rss_mb": 291.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 27157,
+    "count_s": 0.56
+   }
+  ],
+  "file_bytes": 512580,
+  "output_bytes": 9363450,
+  "second_reader_questions": 2,
+  "second_reader_prompt_chars": 1833,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 25,
+  "pipe_names_with_metres": 20,
+  "error": null,
+  "state": "OK",
+  "input": "validation_W/W-50-1-A0222/clean.pdf",
+  "input_sha256": "01b00dc107315d85",
+  "total_s": 24.8
+ },
+ "S1_plan10_del44.pdf": {
+  "wall_s": 6.0,
+  "cpu_s": 6.9,
+  "max_rss_mb": 190.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 6636,
+    "count_s": 0.07
+   }
+  ],
+  "file_bytes": 172381,
+  "output_bytes": 3034360,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 3,
+  "pipe_names_with_metres": 1,
+  "error": null,
+  "state": "OK",
+  "input": "styles/S1_plan10_del44.pdf",
+  "input_sha256": "d5aa4b95c723f6a2",
+  "total_s": 6.6
+ },
+ "S2_plan09_del42.pdf": {
+  "wall_s": 12.6,
+  "cpu_s": 13.5,
+  "max_rss_mb": 208.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10570,
+    "count_s": 0.1
+   }
+  ],
+  "file_bytes": 195680,
+  "output_bytes": 9630692,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 8,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "styles/S2_plan09_del42.pdf",
+  "input_sha256": "26003c760b68fb2f",
+  "total_s": 13.2
+ },
+ "S3_25.pdf": {
+  "wall_s": 12.1,
+  "cpu_s": 12.9,
+  "max_rss_mb": 224.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 11549,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 236158,
+  "output_bytes": 5097127,
+  "second_reader_questions": 2,
+  "second_reader_prompt_chars": 1634,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/S3_25.pdf",
+  "input_sha256": "4a72851ace322038",
+  "total_s": 12.8
+ },
+ "Rundstickan|V-50-1-A0611.pdf": {
+  "wall_s": 6.8,
+  "cpu_s": 7.7,
+  "max_rss_mb": 215.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 6858,
+    "count_s": 0.16
+   }
+  ],
+  "file_bytes": 246759,
+  "output_bytes": 3150143,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 3,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-A0611.pdf",
+  "input_sha256": "3482a10d20ee969f",
+  "total_s": 7.6
+ },
+ "Rundstickan|V-50-1-A0612.pdf": {
+  "wall_s": 7.3,
+  "cpu_s": 8.2,
+  "max_rss_mb": 221.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8398,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 260807,
+  "output_bytes": 3428131,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 3,
+  "pipe_names_with_metres": 1,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-A0612.pdf",
+  "input_sha256": "1e6b5da20ad490f4",
+  "total_s": 8.1
+ },
+ "Rundstickan|V-50-1-A0622.pdf": {
+  "wall_s": 8.9,
+  "cpu_s": 9.8,
+  "max_rss_mb": 225.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9019,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 278860,
+  "output_bytes": 3433049,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 3,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-A0622.pdf",
+  "input_sha256": "48b013699e1aeb1d",
+  "total_s": 9.7
+ },
+ "Rundstickan|V-50-1-A0623.pdf": {
+  "wall_s": 7.4,
+  "cpu_s": 8.2,
+  "max_rss_mb": 218.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7722,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 253789,
+  "output_bytes": 3198772,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 2,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-A0623.pdf",
+  "input_sha256": "b3a883aa07485f98",
+  "total_s": 8.1
+ },
+ "Rundstickan|V-50-1-A5512.pdf": {
+  "wall_s": 8.5,
+  "cpu_s": 9.4,
+  "max_rss_mb": 223.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9272,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 270387,
+  "output_bytes": 3465211,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-A5512.pdf",
+  "input_sha256": "0366ca0111f103d5",
+  "total_s": 9.3
+ },
+ "Rundstickan|V-50-1-A5522.pdf": {
+  "wall_s": 10.4,
+  "cpu_s": 11.2,
+  "max_rss_mb": 231.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10772,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 295223,
+  "output_bytes": 3660305,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-A5522.pdf",
+  "input_sha256": "2e24762796b8bdde",
+  "total_s": 11.1
+ },
+ "Rundstickan|V-50-1-B0111.pdf": {
+  "wall_s": 6.5,
+  "cpu_s": 7.3,
+  "max_rss_mb": 214.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 6770,
+    "count_s": 0.16
+   }
+  ],
+  "file_bytes": 224430,
+  "output_bytes": 3040820,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 3,
+  "pipe_names_with_metres": 1,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0111.pdf",
+  "input_sha256": "34487b4fd3ae7cf2",
+  "total_s": 7.2
+ },
+ "Rundstickan|V-50-1-B0113.pdf": {
+  "wall_s": 7.3,
+  "cpu_s": 8.2,
+  "max_rss_mb": 216.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 6989,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 226187,
+  "output_bytes": 3925415,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0113.pdf",
+  "input_sha256": "265e8b77384c9248",
+  "total_s": 8.0
+ },
+ "Rundstickan|V-50-1-B0121.pdf": {
+  "wall_s": 6.4,
+  "cpu_s": 7.1,
+  "max_rss_mb": 214.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 6246,
+    "count_s": 0.15
+   }
+  ],
+  "file_bytes": 219338,
+  "output_bytes": 3217534,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 3,
+  "pipe_names_with_metres": 1,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0121.pdf",
+  "input_sha256": "943a9ba396422fc2",
+  "total_s": 7.0
+ },
+ "Rundstickan|V-50-1-B0123.pdf": {
+  "wall_s": 10.7,
+  "cpu_s": 11.6,
+  "max_rss_mb": 224.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8585,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 269080,
+  "output_bytes": 5468574,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 3341,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 19,
+  "pipe_names_with_metres": 15,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0123.pdf",
+  "input_sha256": "38b3ecae1aef04c7",
+  "total_s": 11.5
+ },
+ "Rundstickan|V-50-1-B0212.pdf": {
+  "wall_s": 9.2,
+  "cpu_s": 10.2,
+  "max_rss_mb": 220.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8436,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 256844,
+  "output_bytes": 3505068,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0212.pdf",
+  "input_sha256": "8614f5ff6f3f723d",
+  "total_s": 9.9
+ },
+ "Rundstickan|V-50-1-B0214.pdf": {
+  "wall_s": 12.9,
+  "cpu_s": 13.9,
+  "max_rss_mb": 228.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10379,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 291121,
+  "output_bytes": 6663522,
+  "second_reader_questions": 9,
+  "second_reader_prompt_chars": 8796,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 15,
+  "pipe_names_with_metres": 13,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0214.pdf",
+  "input_sha256": "a6880886af8c9770",
+  "total_s": 13.6
+ },
+ "Rundstickan|V-50-1-B0222.pdf": {
+  "wall_s": 38.2,
+  "cpu_s": 39.2,
+  "max_rss_mb": 233.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10901,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 315235,
+  "output_bytes": 9003401,
+  "second_reader_questions": 15,
+  "second_reader_prompt_chars": 14086,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 20,
+  "pipe_names_with_metres": 15,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0222.pdf",
+  "input_sha256": "4f6b06142caee333",
+  "total_s": 39.0
+ },
+ "Rundstickan|V-50-1-B0223.pdf": {
+  "wall_s": 10.5,
+  "cpu_s": 11.5,
+  "max_rss_mb": 219.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7564,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 243380,
+  "output_bytes": 3640894,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 10,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0223.pdf",
+  "input_sha256": "cf25e796e611d87c",
+  "total_s": 11.3
+ },
+ "Rundstickan|V-50-1-B0312.pdf": {
+  "wall_s": 8.2,
+  "cpu_s": 9.3,
+  "max_rss_mb": 223.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10244,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 256851,
+  "output_bytes": 3234201,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0312.pdf",
+  "input_sha256": "e5485f1a980d1ce0",
+  "total_s": 9.0
+ },
+ "Rundstickan|V-50-1-B0314.pdf": {
+  "wall_s": 8.1,
+  "cpu_s": 9.1,
+  "max_rss_mb": 216.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7091,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 237314,
+  "output_bytes": 3229829,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 1,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0314.pdf",
+  "input_sha256": "3aec1039b22ce5c7",
+  "total_s": 8.8
+ },
+ "Rundstickan|V-50-1-B0322.pdf": {
+  "wall_s": 13.5,
+  "cpu_s": 14.5,
+  "max_rss_mb": 232.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10416,
+    "count_s": 0.24
+   }
+  ],
+  "file_bytes": 305121,
+  "output_bytes": 8121895,
+  "second_reader_questions": 14,
+  "second_reader_prompt_chars": 12691,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 14,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0322.pdf",
+  "input_sha256": "cd11468de919f1bd",
+  "total_s": 14.3
+ },
+ "Rundstickan|V-50-1-B0323.pdf": {
+  "wall_s": 8.9,
+  "cpu_s": 9.7,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9157,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 253992,
+  "output_bytes": 4615043,
+  "second_reader_questions": 4,
+  "second_reader_prompt_chars": 3746,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 10,
+  "pipe_names_with_metres": 1,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0323.pdf",
+  "input_sha256": "e478539fc074cb0d",
+  "total_s": 9.6
+ },
+ "Rundstickan|V-50-1-B0412.pdf": {
+  "wall_s": 8.4,
+  "cpu_s": 9.3,
+  "max_rss_mb": 229.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13783,
+    "count_s": 0.23
+   }
+  ],
+  "file_bytes": 288880,
+  "output_bytes": 3869516,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 8,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0412.pdf",
+  "input_sha256": "cd982748207f154b",
+  "total_s": 9.2
+ },
+ "Rundstickan|V-50-1-B0414.pdf": {
+  "wall_s": 9.9,
+  "cpu_s": 10.8,
+  "max_rss_mb": 239.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17061,
+    "count_s": 0.26
+   }
+  ],
+  "file_bytes": 314865,
+  "output_bytes": 4807542,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 9,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0414.pdf",
+  "input_sha256": "f9fc5394d3efc01e",
+  "total_s": 10.7
+ },
+ "Rundstickan|V-50-1-B0422.pdf": {
+  "wall_s": 10.6,
+  "cpu_s": 11.5,
+  "max_rss_mb": 239.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17363,
+    "count_s": 0.25
+   }
+  ],
+  "file_bytes": 314354,
+  "output_bytes": 4704676,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 12,
+  "pipe_names_with_metres": 10,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0422.pdf",
+  "input_sha256": "2376f25e364f71de",
+  "total_s": 11.4
+ },
+ "Rundstickan|V-50-1-B0423.pdf": {
+  "wall_s": 7.3,
+  "cpu_s": 8.3,
+  "max_rss_mb": 218.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8306,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 240299,
+  "output_bytes": 3237500,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0423.pdf",
+  "input_sha256": "02c6951d3113b559",
+  "total_s": 8.2
+ },
+ "Rundstickan|V-50-1-B0512.pdf": {
+  "wall_s": 7.6,
+  "cpu_s": 8.5,
+  "max_rss_mb": 220.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8596,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 255300,
+  "output_bytes": 3154997,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 3,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0512.pdf",
+  "input_sha256": "40b64bd8a7f5da21",
+  "total_s": 8.4
+ },
+ "Rundstickan|V-50-1-B0514.pdf": {
+  "wall_s": 7.6,
+  "cpu_s": 8.5,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9471,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 258533,
+  "output_bytes": 3180656,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 3,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0514.pdf",
+  "input_sha256": "144b3ca61b3ba73d",
+  "total_s": 8.4
+ },
+ "Rundstickan|V-50-1-B0522.pdf": {
+  "wall_s": 7.9,
+  "cpu_s": 8.7,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9556,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 260354,
+  "output_bytes": 3208928,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 3,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-1-B0522.pdf",
+  "input_sha256": "a0431c9eeaedcee3",
+  "total_s": 8.6
+ },
+ "Rundstickan|V-50-6-B0112.pdf": {
+  "wall_s": 8.2,
+  "cpu_s": 9.0,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9471,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 272837,
+  "output_bytes": 3369578,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 12,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0112.pdf",
+  "input_sha256": "f87686b679d30691",
+  "total_s": 8.9
+ },
+ "Rundstickan|V-50-6-B0114.pdf": {
+  "wall_s": 7.8,
+  "cpu_s": 8.6,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9880,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 274801,
+  "output_bytes": 3356791,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 15,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0114.pdf",
+  "input_sha256": "1ed930b649731bcf",
+  "total_s": 8.6
+ },
+ "Rundstickan|V-50-6-B0122.pdf": {
+  "wall_s": 8.5,
+  "cpu_s": 9.3,
+  "max_rss_mb": 227.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10610,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 291000,
+  "output_bytes": 3774894,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 19,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0122.pdf",
+  "input_sha256": "4577c0dfe6ba12ed",
+  "total_s": 9.3
+ },
+ "Rundstickan|V-50-6-B0123.pdf": {
+  "wall_s": 8.8,
+  "cpu_s": 9.9,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9172,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 276303,
+  "output_bytes": 4531270,
+  "second_reader_questions": 1,
+  "second_reader_prompt_chars": 930,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 13,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0123.pdf",
+  "input_sha256": "c4663593340c1b01",
+  "total_s": 9.6
+ },
+ "Rundstickan|V-50-6-B0212.pdf": {
+  "wall_s": 8.2,
+  "cpu_s": 9.2,
+  "max_rss_mb": 219.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9107,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 268129,
+  "output_bytes": 3246177,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 9,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0212.pdf",
+  "input_sha256": "c35f82abe025f782",
+  "total_s": 9.0
+ },
+ "Rundstickan|V-50-6-B0214.pdf": {
+  "wall_s": 8.4,
+  "cpu_s": 9.2,
+  "max_rss_mb": 224.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10035,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 280452,
+  "output_bytes": 3478556,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 19,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0214.pdf",
+  "input_sha256": "0565eac92c31cfb2",
+  "total_s": 9.2
+ },
+ "Rundstickan|V-50-6-B0222.pdf": {
+  "wall_s": 23.8,
+  "cpu_s": 24.6,
+  "max_rss_mb": 225.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9863,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 284518,
+  "output_bytes": 3665864,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 20,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0222.pdf",
+  "input_sha256": "2b54b431d6b84a77",
+  "total_s": 24.5
+ },
+ "Rundstickan|V-50-6-B0223.pdf": {
+  "wall_s": 7.6,
+  "cpu_s": 8.4,
+  "max_rss_mb": 218.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8569,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 261972,
+  "output_bytes": 3216078,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 9,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0223.pdf",
+  "input_sha256": "53d02eaf2d609ddb",
+  "total_s": 8.3
+ },
+ "Rundstickan|V-50-6-B0312.pdf": {
+  "wall_s": 7.9,
+  "cpu_s": 8.7,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 11352,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 274505,
+  "output_bytes": 3212292,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0312.pdf",
+  "input_sha256": "8b2a14ee5d933920",
+  "total_s": 8.7
+ },
+ "Rundstickan|V-50-6-B0314.pdf": {
+  "wall_s": 7.5,
+  "cpu_s": 8.3,
+  "max_rss_mb": 217.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8270,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 257197,
+  "output_bytes": 3140618,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 10,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0314.pdf",
+  "input_sha256": "174a1408a92b70ed",
+  "total_s": 8.4
+ },
+ "Rundstickan|V-50-6-B0322.pdf": {
+  "wall_s": 8.9,
+  "cpu_s": 9.8,
+  "max_rss_mb": 225.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10287,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 287729,
+  "output_bytes": 3841838,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0322.pdf",
+  "input_sha256": "830b89017635611c",
+  "total_s": 9.7
+ },
+ "Rundstickan|V-50-6-B0412.pdf": {
+  "wall_s": 7.9,
+  "cpu_s": 8.8,
+  "max_rss_mb": 229.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 14131,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 297577,
+  "output_bytes": 3380047,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0412.pdf",
+  "input_sha256": "6923242bebb46f5d",
+  "total_s": 8.7
+ },
+ "Rundstickan|V-50-6-B0414.pdf": {
+  "wall_s": 8.2,
+  "cpu_s": 9.1,
+  "max_rss_mb": 237.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 16567,
+    "count_s": 0.3
+   }
+  ],
+  "file_bytes": 321252,
+  "output_bytes": 3632942,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0414.pdf",
+  "input_sha256": "a056a076962f5955",
+  "total_s": 9.0
+ },
+ "Rundstickan|V-50-6-B0422.pdf": {
+  "wall_s": 8.1,
+  "cpu_s": 9.0,
+  "max_rss_mb": 234.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 15806,
+    "count_s": 0.24
+   }
+  ],
+  "file_bytes": 310762,
+  "output_bytes": 3466537,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-6-B0422.pdf",
+  "input_sha256": "3f09f103ceabd865",
+  "total_s": 8.9
+ },
+ "Rundstickan|V-50-8-A0001.pdf": {
+  "wall_s": 11.1,
+  "cpu_s": 12.0,
+  "max_rss_mb": 230.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10007,
+    "count_s": 0.23
+   }
+  ],
+  "file_bytes": 337584,
+  "output_bytes": 4258251,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "NONE",
+  "pipe_names": 78,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-8-A0001.pdf",
+  "input_sha256": "5f188120e930bffa",
+  "total_s": 11.9
+ },
+ "Rundstickan|V-50-8-B0001.pdf": {
+  "wall_s": 9.1,
+  "cpu_s": 10.0,
+  "max_rss_mb": 224.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8587,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 309366,
+  "output_bytes": 3835191,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "NONE",
+  "pipe_names": 55,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-50-8-B0001.pdf",
+  "input_sha256": "12616aa940dc8082",
+  "total_s": 9.9
+ },
+ "Rundstickan|V-52-1-A0122.pdf": {
+  "wall_s": 21.7,
+  "cpu_s": 22.7,
+  "max_rss_mb": 265.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 20177,
+    "count_s": 0.4
+   }
+  ],
+  "file_bytes": 423951,
+  "output_bytes": 8091979,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2520,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 9,
+  "pipe_names_with_metres": 9,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-52-1-A0122.pdf",
+  "input_sha256": "894135c9e623ef86",
+  "total_s": 22.7
+ },
+ "Rundstickan|V-52-1-A0123.pdf": {
+  "wall_s": 9.4,
+  "cpu_s": 10.3,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9239,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 277066,
+  "output_bytes": 4567845,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 4,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-52-1-A0123.pdf",
+  "input_sha256": "2c92aef6aab4a4e4",
+  "total_s": 10.2
+ },
+ "Rundstickan|V-53-1-A0111.pdf": {
+  "wall_s": 8.5,
+  "cpu_s": 9.3,
+  "max_rss_mb": 219.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7532,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 239194,
+  "output_bytes": 3506662,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-53-1-A0111.pdf",
+  "input_sha256": "d4a2091ce96c1321",
+  "total_s": 9.2
+ },
+ "Rundstickan|V-53-1-A0112.pdf": {
+  "wall_s": 9.5,
+  "cpu_s": 10.4,
+  "max_rss_mb": 225.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9242,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 262433,
+  "output_bytes": 0,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": null,
+  "pipe_names": null,
+  "pipe_names_with_metres": null,
+  "error": "IndexError: list index out of range",
+  "state": "ERROR",
+  "input": "styles/Rundstickan/V-53-1-A0112.pdf",
+  "input_sha256": "e2ac8fb158aeb2d6",
+  "total_s": 10.3
+ },
+ "Rundstickan|V-53-1-A0122.pdf": {
+  "wall_s": 28.8,
+  "cpu_s": 29.7,
+  "max_rss_mb": 262.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 19855,
+    "count_s": 0.37
+   }
+  ],
+  "file_bytes": 419272,
+  "output_bytes": 0,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": null,
+  "pipe_names": null,
+  "pipe_names_with_metres": null,
+  "error": "IndexError: list index out of range",
+  "state": "ERROR",
+  "input": "styles/Rundstickan/V-53-1-A0122.pdf",
+  "input_sha256": "39236f8b55b2543c",
+  "total_s": 29.8
+ },
+ "Rundstickan|V-53-1-A0123.pdf": {
+  "wall_s": 10.4,
+  "cpu_s": 11.2,
+  "max_rss_mb": 228.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9143,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 275497,
+  "output_bytes": 4045020,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 4,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-53-1-A0123.pdf",
+  "input_sha256": "647824a730d930ed",
+  "total_s": 11.3
+ },
+ "Rundstickan|V-53-1-A0124.pdf": {
+  "wall_s": 11.5,
+  "cpu_s": 12.1,
+  "max_rss_mb": 221.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7831,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 260576,
+  "output_bytes": 3785117,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 4,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Rundstickan/V-53-1-A0124.pdf",
+  "input_sha256": "ddf2753b6009c520",
+  "total_s": 12.4
+ },
+ "Rundstickan|V-53-1-B0114.pdf": {
+  "wall_s": 7.3,
+  "cpu_s": 8.0,
+  "max_rss_mb": 219.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8050,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 243672,
+  "output_bytes": 0,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": null,
+  "pipe_names": null,
+  "pipe_names_with_metres": null,
+  "error": "IndexError: list index out of range",
+  "state": "ERROR",
+  "input": "styles/Rundstickan/V-53-1-B0114.pdf",
+  "input_sha256": "e09704ba9f738161",
+  "total_s": 8.1
+ },
+ "Rundstickan|V-53-1-B0122.pdf": {
+  "wall_s": 9.3,
+  "cpu_s": 9.8,
+  "max_rss_mb": 221.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7869,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 256957,
+  "output_bytes": 0,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": null,
+  "pipe_names": null,
+  "pipe_names_with_metres": null,
+  "error": "IndexError: list index out of range",
+  "state": "ERROR",
+  "input": "styles/Rundstickan/V-53-1-B0122.pdf",
+  "input_sha256": "a1453e16bce46130",
+  "total_s": 10.1
+ },
+ "Rundstickan|V-53-1-B0123.pdf": {
+  "wall_s": 7.5,
+  "cpu_s": 8.1,
+  "max_rss_mb": 219.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7473,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 246814,
+  "output_bytes": 0,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": null,
+  "pipe_names": null,
+  "pipe_names_with_metres": null,
+  "error": "IndexError: list index out of range",
+  "state": "ERROR",
+  "input": "styles/Rundstickan/V-53-1-B0123.pdf",
+  "input_sha256": "5ded49707ba74af2",
+  "total_s": 8.4
+ },
+ "Priorn|V-50-1-A0001.pdf": {
+  "wall_s": 42.5,
+  "cpu_s": 42.3,
+  "max_rss_mb": 260.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18995,
+    "count_s": 0.34
+   }
+  ],
+  "file_bytes": 406596,
+  "output_bytes": 6950719,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2618,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-50-1-A0001.pdf",
+  "input_sha256": "0f85ea113062bf33",
+  "total_s": 43.5
+ },
+ "Priorn|V-50-1-A0002.pdf": {
+  "wall_s": 11.0,
+  "cpu_s": 11.9,
+  "max_rss_mb": 230.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10507,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 276069,
+  "output_bytes": 3503031,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "CONFLICT",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-50-1-A0002.pdf",
+  "input_sha256": "dc6f993cb7077edc",
+  "total_s": 11.9
+ },
+ "Priorn|V-50-1-A0102.pdf": {
+  "wall_s": 59.5,
+  "cpu_s": 53.8,
+  "max_rss_mb": 261.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18766,
+    "count_s": 0.33
+   }
+  ],
+  "file_bytes": 405684,
+  "output_bytes": 10005060,
+  "second_reader_questions": 9,
+  "second_reader_prompt_chars": 8403,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 4,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-50-1-A0102.pdf",
+  "input_sha256": "53d541f1d17e592d",
+  "total_s": 60.5
+ },
+ "Priorn|V-50-1-A0201.pdf": {
+  "wall_s": 56.4,
+  "cpu_s": 57.2,
+  "max_rss_mb": 260.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18442,
+    "count_s": 0.32
+   }
+  ],
+  "file_bytes": 407149,
+  "output_bytes": 7095981,
+  "second_reader_questions": 7,
+  "second_reader_prompt_chars": 6152,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 13,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-50-1-A0201.pdf",
+  "input_sha256": "cbb4f5082365a2a3",
+  "total_s": 57.4
+ },
+ "Priorn|V-50-1-A0202.pdf": {
+  "wall_s": 47.6,
+  "cpu_s": 47.7,
+  "max_rss_mb": 256.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17543,
+    "count_s": 0.31
+   }
+  ],
+  "file_bytes": 386016,
+  "output_bytes": 6370662,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2621,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-50-1-A0202.pdf",
+  "input_sha256": "9e7bf7fe63b29dc6",
+  "total_s": 48.5
+ },
+ "Priorn|V-50-1-A0301.pdf": {
+  "wall_s": 97.2,
+  "cpu_s": 92.7,
+  "max_rss_mb": 286.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 26006,
+    "count_s": 0.4
+   }
+  ],
+  "file_bytes": 506627,
+  "output_bytes": 9307798,
+  "second_reader_questions": 9,
+  "second_reader_prompt_chars": 7877,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 19,
+  "pipe_names_with_metres": 1,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-50-1-A0301.pdf",
+  "input_sha256": "9baa254d13888c84",
+  "total_s": 98.4
+ },
+ "Priorn|V-50-1-A0302.pdf": {
+  "wall_s": 52.4,
+  "cpu_s": 53.0,
+  "max_rss_mb": 258.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17092,
+    "count_s": 0.31
+   }
+  ],
+  "file_bytes": 403464,
+  "output_bytes": 8120323,
+  "second_reader_questions": 4,
+  "second_reader_prompt_chars": 3463,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 8,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-50-1-A0302.pdf",
+  "input_sha256": "7e5b1720855cf932",
+  "total_s": 53.4
+ },
+ "Priorn|V-50-1-A0401.pdf": {
+  "wall_s": 21.3,
+  "cpu_s": 22.1,
+  "max_rss_mb": 233.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 11303,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 302224,
+  "output_bytes": 4360906,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-50-1-A0401.pdf",
+  "input_sha256": "8fe7fe5d278a66ff",
+  "total_s": 22.2
+ },
+ "Priorn|V-50-1-A0402.pdf": {
+  "wall_s": 20.6,
+  "cpu_s": 21.4,
+  "max_rss_mb": 230.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10874,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 295809,
+  "output_bytes": 3864544,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-50-1-A0402.pdf",
+  "input_sha256": "c610b51a9707bb05",
+  "total_s": 21.4
+ },
+ "Priorn|V-53-1-A0001.pdf": {
+  "wall_s": 21.6,
+  "cpu_s": 22.5,
+  "max_rss_mb": 241.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13968,
+    "count_s": 0.23
+   }
+  ],
+  "file_bytes": 315285,
+  "output_bytes": 4101403,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 27,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-53-1-A0001.pdf",
+  "input_sha256": "d16a52f528e09522",
+  "total_s": 22.5
+ },
+ "Priorn|V-53-1-A0101.pdf": {
+  "wall_s": 38.1,
+  "cpu_s": 39.0,
+  "max_rss_mb": 248.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 15337,
+    "count_s": 0.25
+   }
+  ],
+  "file_bytes": 350170,
+  "output_bytes": 4970101,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 38,
+  "pipe_names_with_metres": 4,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-53-1-A0101.pdf",
+  "input_sha256": "406b654da3fc2e8c",
+  "total_s": 38.9
+ },
+ "Priorn|V-53-1-A0102.pdf": {
+  "wall_s": 32.9,
+  "cpu_s": 33.8,
+  "max_rss_mb": 245.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 15523,
+    "count_s": 0.26
+   }
+  ],
+  "file_bytes": 340885,
+  "output_bytes": 4805061,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 35,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-53-1-A0102.pdf",
+  "input_sha256": "96da4f48f5e55b91",
+  "total_s": 33.7
+ },
+ "Priorn|V-56-1-A0101.pdf": {
+  "wall_s": 31.2,
+  "cpu_s": 32.1,
+  "max_rss_mb": 239.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10339,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 372238,
+  "output_bytes": 4677832,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 29,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-56-1-A0101.pdf",
+  "input_sha256": "9510f39d0f23d2b2",
+  "total_s": 31.9
+ },
+ "Priorn|V-56-1-A0102.pdf": {
+  "wall_s": 41.7,
+  "cpu_s": 42.5,
+  "max_rss_mb": 238.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10223,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 370400,
+  "output_bytes": 4548673,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "CONFLICT",
+  "pipe_names": 26,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Priorn/V-56-1-A0102.pdf",
+  "input_sha256": "88d1d4c7c850ef12",
+  "total_s": 42.5
+ },
+ "src|01 - AutoCAD - pdfplot14-16 - Ghostscript 9.21|10.pdf": {
+  "wall_s": 17.6,
+  "cpu_s": 18.1,
+  "max_rss_mb": 216.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13392,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 261771,
+  "output_bytes": 6684648,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 28,
+  "pipe_names_with_metres": 16,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/01 - AutoCAD - pdfplot14-16 - Ghostscript 9.21/10.pdf",
+  "input_sha256": "68f600bdf85799f9",
+  "total_s": 18.5
+ },
+ "src|01 - AutoCAD - pdfplot14-16 - Ghostscript 9.21|V-50-1-A0101.pdf": {
+  "wall_s": 60.9,
+  "cpu_s": 61.9,
+  "max_rss_mb": 267.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 19894,
+    "count_s": 0.35
+   }
+  ],
+  "file_bytes": 440269,
+  "output_bytes": 8632741,
+  "second_reader_questions": 6,
+  "second_reader_prompt_chars": 5445,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 16,
+  "pipe_names_with_metres": 8,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/01 - AutoCAD - pdfplot14-16 - Ghostscript 9.21/V-50-1-A0101.pdf",
+  "input_sha256": "ad71f5dcfd7a5058",
+  "total_s": 61.9
+ },
+ "src|04 - VVS Konsulterna - Revit - Bluebeam Brewery 5.0|V50-1-0842 - Plan B2, De": {
+  "wall_s": 26.8,
+  "cpu_s": 27.6,
+  "max_rss_mb": 223.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 15369,
+    "count_s": 0.16
+   }
+  ],
+  "file_bytes": 277531,
+  "output_bytes": 12063954,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 22,
+  "pipe_names_with_metres": 14,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/04 - VVS Konsulterna - Revit - Bluebeam Brewery 5.0/V50-1-0842 - Plan B2, Del 42, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "ef53f8474ca0a36e",
+  "total_s": 27.5
+ },
+ "src|07 - Arildssons Rör - Ghostscript 9.21|Bläckhornet.pdf": {
+  "wall_s": 182.0,
+  "cpu_s": 183.5,
+  "max_rss_mb": 481.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 7151.8,
+    "h_pt": 3370.6,
+    "area_m2": 3.0,
+    "paths": 75164,
+    "count_s": 1.0
+   }
+  ],
+  "file_bytes": 2622812,
+  "output_bytes": 42080806,
+  "second_reader_questions": 15,
+  "second_reader_prompt_chars": 12498,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 59,
+  "pipe_names_with_metres": 35,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/07 - Arildssons Rör - Ghostscript 9.21/Bläckhornet.pdf",
+  "input_sha256": "d7ec89dd229a1b44",
+  "total_s": 183.6
+ },
+ "src|12 - video drawings|1760318_1.pdf": {
+  "wall_s": 18.9,
+  "cpu_s": 19.9,
+  "max_rss_mb": 202.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8924,
+    "count_s": 0.11
+   }
+  ],
+  "file_bytes": 193374,
+  "output_bytes": 7758543,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 4,
+  "pipe_names_with_metres": 1,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/12 - video drawings/1760318_1.pdf",
+  "input_sha256": "dcedac375d5a19ab",
+  "total_s": 19.6
+ },
+ "src|06 - PO Andersson - Ghostscript 9.21|Badskon 1.pdf": {
+  "wall_s": 28.1,
+  "cpu_s": 29.2,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 13783,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 270469,
+  "output_bytes": 8030493,
+  "second_reader_questions": 5,
+  "second_reader_prompt_chars": 3989,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 62,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/06 - PO Andersson - Ghostscript 9.21/Badskon 1.pdf",
+  "input_sha256": "26700259cef8676d",
+  "total_s": 28.9
+ },
+ "src|00 - skalstockar|R9UHA10-CLB001-004.pdf": {
+  "wall_s": 34.2,
+  "cpu_s": 35.3,
+  "max_rss_mb": 238.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18186,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 334627,
+  "output_bytes": 4465327,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 43,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/00 - skalstockar/R9UHA10-CLB001-004.pdf",
+  "input_sha256": "07b1d5f29d9124da",
+  "total_s": 35.0
+ },
+ "src|00 - skalstockar|V-50-1-A0001.pdf": {
+  "wall_s": 43.0,
+  "cpu_s": 44.1,
+  "max_rss_mb": 261.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18995,
+    "count_s": 0.33
+   }
+  ],
+  "file_bytes": 473699,
+  "output_bytes": 6994027,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2618,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/00 - skalstockar/V-50-1-A0001.pdf",
+  "input_sha256": "3d8fc03a0aff9600",
+  "total_s": 43.9
+ },
+ "src|05 - Bengt Dahlgren - Ghostscript 9.21|Löpöglan 2.pdf": {
+  "wall_s": 65.2,
+  "cpu_s": 66.5,
+  "max_rss_mb": 277.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 27366,
+    "count_s": 0.47
+   }
+  ],
+  "file_bytes": 898856,
+  "output_bytes": 13512710,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 9,
+  "pipe_names_with_metres": 9,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/05 - Bengt Dahlgren - Ghostscript 9.21/Löpöglan 2.pdf",
+  "input_sha256": "4d043ad94bf7cd85",
+  "total_s": 66.2
+ },
+ "src|03 - Sweco - AutoCAD 2023 - pdfplot16 - Hairline|R9UHA10-CLB001-002.pdf": {
+  "wall_s": 28.2,
+  "cpu_s": 29.2,
+  "max_rss_mb": 239.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18901,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 327634,
+  "output_bytes": 4224314,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 46,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/src/03 - Sweco - AutoCAD 2023 - pdfplot16 - Hairline/R9UHA10-CLB001-002.pdf",
+  "input_sha256": "3d1ea6884cc22c96",
+  "total_s": 28.9
+ },
+ "test|V-50-1-A0111.pdf": {
+  "wall_s": 11.7,
+  "cpu_s": 12.8,
+  "max_rss_mb": 228.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9321,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 318941,
+  "output_bytes": 5751587,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 14,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0111.pdf",
+  "input_sha256": "7c3f783772bf0393",
+  "total_s": 12.5
+ },
+ "test|V-50-1-A0112.pdf": {
+  "wall_s": 20.5,
+  "cpu_s": 21.6,
+  "max_rss_mb": 239.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 12686,
+    "count_s": 0.29
+   }
+  ],
+  "file_bytes": 374635,
+  "output_bytes": 9871403,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2760,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 30,
+  "pipe_names_with_metres": 30,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0112.pdf",
+  "input_sha256": "dceec0dff11fef2f",
+  "total_s": 21.4
+ },
+ "test|V-50-1-A0121.pdf": {
+  "wall_s": 14.0,
+  "cpu_s": 15.1,
+  "max_rss_mb": 240.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13099,
+    "count_s": 0.24
+   }
+  ],
+  "file_bytes": 330739,
+  "output_bytes": 5959148,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 14,
+  "pipe_names_with_metres": 12,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0121.pdf",
+  "input_sha256": "a5e0f57b29311ddf",
+  "total_s": 14.8
+ },
+ "test|V-50-1-A0124.pdf": {
+  "wall_s": 21.5,
+  "cpu_s": 22.6,
+  "max_rss_mb": 236.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 11010,
+    "count_s": 0.23
+   }
+  ],
+  "file_bytes": 366006,
+  "output_bytes": 9146810,
+  "second_reader_questions": 10,
+  "second_reader_prompt_chars": 8995,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 24,
+  "pipe_names_with_metres": 19,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0124.pdf",
+  "input_sha256": "51310e56454f8878",
+  "total_s": 22.3
+ },
+ "test|V-50-1-A0211.pdf": {
+  "wall_s": 10.5,
+  "cpu_s": 11.6,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9684,
+    "count_s": 0.23
+   }
+  ],
+  "file_bytes": 293512,
+  "output_bytes": 4952994,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0211.pdf",
+  "input_sha256": "a0b05e818408cff1",
+  "total_s": 11.3
+ },
+ "test|V-50-1-A0212.pdf": {
+  "wall_s": 18.3,
+  "cpu_s": 19.4,
+  "max_rss_mb": 244.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 14316,
+    "count_s": 0.28
+   }
+  ],
+  "file_bytes": 376322,
+  "output_bytes": 9672898,
+  "second_reader_questions": 8,
+  "second_reader_prompt_chars": 6886,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 25,
+  "pipe_names_with_metres": 25,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0212.pdf",
+  "input_sha256": "1f749b3ee895c106",
+  "total_s": 19.1
+ },
+ "test|V-50-1-A0221.pdf": {
+  "wall_s": 11.0,
+  "cpu_s": 12.0,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9758,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 289842,
+  "output_bytes": 4782969,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0221.pdf",
+  "input_sha256": "6b2fae8c0f76eae6",
+  "total_s": 11.7
+ },
+ "test|V-50-1-A0222.pdf": {
+  "wall_s": 14.1,
+  "cpu_s": 15.1,
+  "max_rss_mb": 234.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10265,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 348660,
+  "output_bytes": 6477359,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 8,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0222.pdf",
+  "input_sha256": "7dd11ad5bcd48d00",
+  "total_s": 14.9
+ },
+ "test|V-50-1-A0223.pdf": {
+  "wall_s": 11.3,
+  "cpu_s": 12.3,
+  "max_rss_mb": 227.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9223,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 303306,
+  "output_bytes": 4930069,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0223.pdf",
+  "input_sha256": "13d7bf78d94e7175",
+  "total_s": 12.0
+ },
+ "test|V-50-1-A0311.pdf": {
+  "wall_s": 11.1,
+  "cpu_s": 12.1,
+  "max_rss_mb": 230.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10302,
+    "count_s": 0.22
+   }
+  ],
+  "file_bytes": 297007,
+  "output_bytes": 5233778,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 8,
+  "pipe_names_with_metres": 4,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0311.pdf",
+  "input_sha256": "82bcf9400ce6b2cf",
+  "total_s": 11.8
+ },
+ "test|V-50-1-A0312.pdf": {
+  "wall_s": 15.4,
+  "cpu_s": 16.5,
+  "max_rss_mb": 241.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13518,
+    "count_s": 0.27
+   }
+  ],
+  "file_bytes": 324905,
+  "output_bytes": 7671361,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2597,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 16,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0312.pdf",
+  "input_sha256": "341c1e3eb5e0a5ea",
+  "total_s": 16.3
+ },
+ "test|V-50-1-A0321.pdf": {
+  "wall_s": 14.3,
+  "cpu_s": 15.3,
+  "max_rss_mb": 232.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10791,
+    "count_s": 0.23
+   }
+  ],
+  "file_bytes": 323899,
+  "output_bytes": 7355355,
+  "second_reader_questions": 1,
+  "second_reader_prompt_chars": 885,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 8,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0321.pdf",
+  "input_sha256": "b8e6231dc8d5d8b7",
+  "total_s": 15.0
+ },
+ "test|V-50-1-A0322.pdf": {
+  "wall_s": 15.8,
+  "cpu_s": 17.0,
+  "max_rss_mb": 238.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 12838,
+    "count_s": 0.27
+   }
+  ],
+  "file_bytes": 358862,
+  "output_bytes": 8559703,
+  "second_reader_questions": 2,
+  "second_reader_prompt_chars": 1762,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 15,
+  "pipe_names_with_metres": 13,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0322.pdf",
+  "input_sha256": "4cce1f5bce3ee02f",
+  "total_s": 16.7
+ },
+ "test|V-50-1-A0323.pdf": {
+  "wall_s": 9.9,
+  "cpu_s": 10.9,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9127,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 291644,
+  "output_bytes": 5007601,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 6,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0323.pdf",
+  "input_sha256": "2651fa275dfadf6e",
+  "total_s": 10.6
+ },
+ "test|V-50-1-A0411.pdf": {
+  "wall_s": 12.1,
+  "cpu_s": 13.2,
+  "max_rss_mb": 230.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10452,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 300550,
+  "output_bytes": 6445672,
+  "second_reader_questions": 8,
+  "second_reader_prompt_chars": 6884,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 13,
+  "pipe_names_with_metres": 12,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0411.pdf",
+  "input_sha256": "635507b89c589e05",
+  "total_s": 12.9
+ },
+ "test|V-50-1-A0421.pdf": {
+  "wall_s": 14.2,
+  "cpu_s": 15.1,
+  "max_rss_mb": 233.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10674,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 356254,
+  "output_bytes": 8100917,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2578,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 12,
+  "pipe_names_with_metres": 10,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0421.pdf",
+  "input_sha256": "e5303b8448ef47f0",
+  "total_s": 14.9
+ },
+ "test|V-50-1-A0422.pdf": {
+  "wall_s": 14.4,
+  "cpu_s": 15.5,
+  "max_rss_mb": 231.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9837,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 340103,
+  "output_bytes": 7940585,
+  "second_reader_questions": 2,
+  "second_reader_prompt_chars": 1768,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 14,
+  "pipe_names_with_metres": 13,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0422.pdf",
+  "input_sha256": "0ba07b4d366355d2",
+  "total_s": 15.2
+ },
+ "test|V-50-1-A0423.pdf": {
+  "wall_s": 9.8,
+  "cpu_s": 10.9,
+  "max_rss_mb": 224.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7940,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 277615,
+  "output_bytes": 5202824,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 7,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0423.pdf",
+  "input_sha256": "cf17cd838402ecfe",
+  "total_s": 10.6
+ },
+ "test|V-50-1-A0511.pdf": {
+  "wall_s": 10.2,
+  "cpu_s": 11.2,
+  "max_rss_mb": 226.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9129,
+    "count_s": 0.21
+   }
+  ],
+  "file_bytes": 290278,
+  "output_bytes": 4881498,
+  "second_reader_questions": 2,
+  "second_reader_prompt_chars": 1740,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 8,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0511.pdf",
+  "input_sha256": "d1af45abc15482c0",
+  "total_s": 10.9
+ },
+ "test|V-50-1-A0512.pdf": {
+  "wall_s": 18.5,
+  "cpu_s": 19.6,
+  "max_rss_mb": 244.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13212,
+    "count_s": 0.33
+   }
+  ],
+  "file_bytes": 345605,
+  "output_bytes": 9447496,
+  "second_reader_questions": 7,
+  "second_reader_prompt_chars": 6352,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 25,
+  "pipe_names_with_metres": 22,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0512.pdf",
+  "input_sha256": "74f5e82220637f14",
+  "total_s": 19.3
+ },
+ "test|V-50-1-A0521.pdf": {
+  "wall_s": 13.4,
+  "cpu_s": 14.4,
+  "max_rss_mb": 229.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9611,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 324595,
+  "output_bytes": 7625221,
+  "second_reader_questions": 15,
+  "second_reader_prompt_chars": 13202,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 12,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0521.pdf",
+  "input_sha256": "29db8004cf0fbf58",
+  "total_s": 14.1
+ },
+ "test|V-50-1-A0522.pdf": {
+  "wall_s": 17.8,
+  "cpu_s": 18.8,
+  "max_rss_mb": 238.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 11512,
+    "count_s": 0.26
+   }
+  ],
+  "file_bytes": 369776,
+  "output_bytes": 9393556,
+  "second_reader_questions": 5,
+  "second_reader_prompt_chars": 4326,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 22,
+  "pipe_names_with_metres": 21,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0522.pdf",
+  "input_sha256": "3d23fde7f00e60aa",
+  "total_s": 18.5
+ },
+ "test|V-50-1-A0523.pdf": {
+  "wall_s": 9.8,
+  "cpu_s": 10.8,
+  "max_rss_mb": 222.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7549,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 290055,
+  "output_bytes": 5211885,
+  "second_reader_questions": 3,
+  "second_reader_prompt_chars": 2659,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 11,
+  "pipe_names_with_metres": 9,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-A0523.pdf",
+  "input_sha256": "862611af56e0d725",
+  "total_s": 10.5
+ },
+ "test|V-50-1-B0112.pdf": {
+  "wall_s": 8.5,
+  "cpu_s": 9.5,
+  "max_rss_mb": 221.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8403,
+    "count_s": 0.18
+   }
+  ],
+  "file_bytes": 270004,
+  "output_bytes": 4372924,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 9,
+  "pipe_names_with_metres": 7,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-B0112.pdf",
+  "input_sha256": "52d415b77dd91c4f",
+  "total_s": 9.2
+ },
+ "test|V-50-1-B0114.pdf": {
+  "wall_s": 9.9,
+  "cpu_s": 10.8,
+  "max_rss_mb": 224.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9642,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 273970,
+  "output_bytes": 5243085,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 12,
+  "pipe_names_with_metres": 10,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-B0114.pdf",
+  "input_sha256": "63e5e6827caaed18",
+  "total_s": 10.7
+ },
+ "test|V-50-1-B0122.pdf": {
+  "wall_s": 23.8,
+  "cpu_s": 24.8,
+  "max_rss_mb": 245.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 13826,
+    "count_s": 0.28
+   }
+  ],
+  "file_bytes": 406109,
+  "output_bytes": 13225514,
+  "second_reader_questions": 13,
+  "second_reader_prompt_chars": 12732,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 38,
+  "pipe_names_with_metres": 31,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/V-50-1-B0122.pdf",
+  "input_sha256": "d62dc0236b89c543",
+  "total_s": 24.6
+ },
+ "test|W-50-1-A-0022.pdf": {
+  "wall_s": 19.7,
+  "cpu_s": 20.9,
+  "max_rss_mb": 266.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17549,
+    "count_s": 0.4
+   }
+  ],
+  "file_bytes": 302352,
+  "output_bytes": 4051646,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 37,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/W-50-1-A-0022.pdf",
+  "input_sha256": "9c14aa6e039b8000",
+  "total_s": 20.6
+ },
+ "test|W-50-1-AAA-0011.pdf": {
+  "wall_s": 37.3,
+  "cpu_s": 38.6,
+  "max_rss_mb": 280.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 25231,
+    "count_s": 0.49
+   }
+  ],
+  "file_bytes": 655190,
+  "output_bytes": 9149204,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 13,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/W-50-1-AAA-0011.pdf",
+  "input_sha256": "3badf92ec89791b0",
+  "total_s": 38.3
+ },
+ "test|W-50-1-AAA-0013.pdf": {
+  "wall_s": 23.8,
+  "cpu_s": 25.1,
+  "max_rss_mb": 280.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 20873,
+    "count_s": 0.43
+   }
+  ],
+  "file_bytes": 343744,
+  "output_bytes": 6147356,
+  "second_reader_questions": 1,
+  "second_reader_prompt_chars": 946,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 11,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/W-50-1-AAA-0013.pdf",
+  "input_sha256": "6172311b12cdbbb4",
+  "total_s": 24.8
+ },
+ "test|W-50-1-ADD-0024.pdf": {
+  "wall_s": 16.7,
+  "cpu_s": 17.9,
+  "max_rss_mb": 270.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 19043,
+    "count_s": 0.41
+   }
+  ],
+  "file_bytes": 316689,
+  "output_bytes": 5294162,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 5,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/W-50-1-ADD-0024.pdf",
+  "input_sha256": "48b3b912e13f6b8e",
+  "total_s": 17.6
+ },
+ "test|W-50-1-AEE-0021.pdf": {
+  "wall_s": 14.6,
+  "cpu_s": 15.8,
+  "max_rss_mb": 268.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 18196,
+    "count_s": 0.4
+   }
+  ],
+  "file_bytes": 309839,
+  "output_bytes": 5129531,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 9,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/W-50-1-AEE-0021.pdf",
+  "input_sha256": "3f07b64bb5ae406a",
+  "total_s": 15.5
+ },
+ "test|W-50-1-ASD-0033.pdf": {
+  "wall_s": 12.6,
+  "cpu_s": 13.8,
+  "max_rss_mb": 254.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 16233,
+    "count_s": 0.36
+   }
+  ],
+  "file_bytes": 269582,
+  "output_bytes": 4183630,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "BAR_ONLY",
+  "pipe_names": 7,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/W-50-1-ASD-0033.pdf",
+  "input_sha256": "a76f4b0a1d458a9d",
+  "total_s": 13.6
+ },
+ "test|duzo-blisko.pdf": {
+  "wall_s": 30.2,
+  "cpu_s": 31.7,
+  "max_rss_mb": 301.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 30441,
+    "count_s": 0.61
+   }
+  ],
+  "file_bytes": 571298,
+  "output_bytes": 12732173,
+  "second_reader_questions": 8,
+  "second_reader_prompt_chars": 7503,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 32,
+  "pipe_names_with_metres": 22,
+  "error": null,
+  "state": "OK",
+  "input": "styles/test/duzo-blisko.pdf",
+  "input_sha256": "650757eb833465a1",
+  "total_s": 31.4
+ },
+ "TOFTASKOLAN HUS B|11.4 Teknisk beskrivning VVS.pdf": {
+  "wall_s": 71.6,
+  "cpu_s": 73.3,
+  "max_rss_mb": 535.0,
+  "n_pages": 96,
+  "pages": [
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 27,
+    "count_s": 0.01
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.01
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 14,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 16,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 15,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 15,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 15,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 15,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 16,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 19,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 14,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 17,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 17,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 16,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 15,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 13,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 121,
+    "count_s": 0.01
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 396,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 11,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 152,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 71,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 9,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 11,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 133,
+    "count_s": 0.01
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 60,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 118,
+    "count_s": 0.01
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 157,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 163,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 841.9,
+    "h_pt": 595.0,
+    "area_m2": 0.0623,
+    "paths": 1890,
+    "count_s": 0.05
+   },
+   {
+    "w_pt": 841.9,
+    "h_pt": 595.0,
+    "area_m2": 0.0623,
+    "paths": 35,
+    "count_s": 0.01
+   },
+   {
+    "w_pt": 595.0,
+    "h_pt": 841.9,
+    "area_m2": 0.0623,
+    "paths": 108,
+    "count_s": 0.01
+   },
+   {
+    "w_pt": 841.9,
+    "h_pt": 595.0,
+    "area_m2": 0.0623,
+    "paths": 36,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 841.9,
+    "h_pt": 595.0,
+    "area_m2": 0.0623,
+    "paths": 35,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 841.9,
+    "h_pt": 595.0,
+    "area_m2": 0.0623,
+    "paths": 33,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 842.0,
+    "h_pt": 595.0,
+    "area_m2": 0.0623,
+    "paths": 2124,
+    "count_s": 0.09
+   },
+   {
+    "w_pt": 842.0,
+    "h_pt": 595.2,
+    "area_m2": 0.0624,
+    "paths": 2041,
+    "count_s": 0.09
+   },
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 3229,
+    "count_s": 0.1
+   },
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 2462,
+    "count_s": 0.1
+   },
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 2113,
+    "count_s": 0.09
+   },
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 2498,
+    "count_s": 0.08
+   },
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 2188,
+    "count_s": 0.1
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 0,
+    "count_s": 0.01
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 0,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 0,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 0,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 0,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 0,
+    "count_s": 0.0
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 0,
+    "count_s": 0.0
+   }
+  ],
+  "file_bytes": 6909000,
+  "output_bytes": 60524477,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "FROM_THE_SET",
+  "pipe_names": 0,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/11.4 Teknisk beskrivning VVS.pdf",
+  "input_sha256": "2173df36a7338cbf",
+  "total_s": 73.1
+ },
+ "TOFTASKOLAN HUS B|12.4 Ritningsförteckning VVS.pdf": {
+  "wall_s": 0.4,
+  "cpu_s": 1.5,
+  "max_rss_mb": 121.0,
+  "n_pages": 2,
+  "pages": [
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 180,
+    "count_s": 0.02
+   },
+   {
+    "w_pt": 595.3,
+    "h_pt": 841.9,
+    "area_m2": 0.0624,
+    "paths": 51,
+    "count_s": 0.0
+   }
+  ],
+  "file_bytes": 610660,
+  "output_bytes": 5250546,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 15,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/12.4 Ritningsförteckning VVS.pdf",
+  "input_sha256": "ca4ce610d54f2424",
+  "total_s": 1.0
+ },
+ "TOFTASKOLAN HUS B|V-50-1-00 RIVNING.pdf": {
+  "wall_s": 0.1,
+  "cpu_s": 1.1,
+  "max_rss_mb": 106.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 3521.3,
+    "h_pt": 1683.8,
+    "area_m2": 0.7379,
+    "paths": 123,
+    "count_s": 0.01
+   }
+  ],
+  "file_bytes": 1778776,
+  "output_bytes": 0,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": null,
+  "pipe_names": null,
+  "pipe_names_with_metres": null,
+  "error": "UnsupportedInputError: The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never guesses at pixels, so a scanned or image-only PDF cannot be measured (page 1: image page (48% coverage) with 3 vector paths).",
+  "state": "ERROR",
+  "input": "styles/TOFTASKOLAN HUS B/V-50-1-00 RIVNING.pdf",
+  "input_sha256": "da27ad7ec6be31d6",
+  "total_s": 0.6
+ },
+ "TOFTASKOLAN HUS B|V-50-1-01 RIVNING.pdf": {
+  "wall_s": 3.6,
+  "cpu_s": 4.7,
+  "max_rss_mb": 184.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 399,
+    "count_s": 0.08
+   }
+  ],
+  "file_bytes": 306289,
+  "output_bytes": 3050027,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "NONE",
+  "pipe_names": 0,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-50-1-01 RIVNING.pdf",
+  "input_sha256": "fd1ee9ee2b7fab0f",
+  "total_s": 4.2
+ },
+ "TOFTASKOLAN HUS B|V-50-1-010 HT.pdf": {
+  "wall_s": 13.7,
+  "cpu_s": 14.9,
+  "max_rss_mb": 216.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8706,
+    "count_s": 0.11
+   }
+  ],
+  "file_bytes": 248030,
+  "output_bytes": 3644924,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 2,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-50-1-010 HT.pdf",
+  "input_sha256": "aedc02f399e95eeb",
+  "total_s": 14.4
+ },
+ "TOFTASKOLAN HUS B|V-50-1-010.pdf": {
+  "wall_s": 19.9,
+  "cpu_s": 21.0,
+  "max_rss_mb": 213.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7164,
+    "count_s": 0.1
+   }
+  ],
+  "file_bytes": 269400,
+  "output_bytes": 8302116,
+  "second_reader_questions": 36,
+  "second_reader_prompt_chars": 37164,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 32,
+  "pipe_names_with_metres": 7,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-50-1-010.pdf",
+  "input_sha256": "5c871fed25ed6b8d",
+  "total_s": 20.6
+ },
+ "TOFTASKOLAN HUS B|V-50-1-02 RIVNING.pdf": {
+  "wall_s": 0.0,
+  "cpu_s": 1.1,
+  "max_rss_mb": 105.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2524.3,
+    "h_pt": 1687.9,
+    "area_m2": 0.5303,
+    "paths": 84,
+    "count_s": 0.0
+   }
+  ],
+  "file_bytes": 1555542,
+  "output_bytes": 0,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": null,
+  "pipe_names": null,
+  "pipe_names_with_metres": null,
+  "error": "UnsupportedInputError: The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never guesses at pixels, so a scanned or image-only PDF cannot be measured (page 1: embedded image covers 100% of the page, only 0 vector paths and 0 text characters).",
+  "state": "ERROR",
+  "input": "styles/TOFTASKOLAN HUS B/V-50-1-02 RIVNING.pdf",
+  "input_sha256": "cbe4c56a1a3ea729",
+  "total_s": 0.7
+ },
+ "TOFTASKOLAN HUS B|V-50-1-020 HT.pdf": {
+  "wall_s": 17.9,
+  "cpu_s": 19.1,
+  "max_rss_mb": 214.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9157,
+    "count_s": 0.13
+   }
+  ],
+  "file_bytes": 252619,
+  "output_bytes": 3787280,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 0,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-50-1-020 HT.pdf",
+  "input_sha256": "155c8156e229f031",
+  "total_s": 18.6
+ },
+ "TOFTASKOLAN HUS B|V-50-1-020.pdf": {
+  "wall_s": 62.6,
+  "cpu_s": 63.8,
+  "max_rss_mb": 243.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 14159,
+    "count_s": 0.2
+   }
+  ],
+  "file_bytes": 396529,
+  "output_bytes": 8284609,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 19,
+  "pipe_names_with_metres": 3,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-50-1-020.pdf",
+  "input_sha256": "dc48da56c42fe928",
+  "total_s": 63.4
+ },
+ "TOFTASKOLAN HUS B|V-50-8-001.pdf": {
+  "wall_s": 8.9,
+  "cpu_s": 10.0,
+  "max_rss_mb": 200.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 2670,
+    "count_s": 0.05
+   }
+  ],
+  "file_bytes": 187026,
+  "output_bytes": 2977079,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 21,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-50-8-001.pdf",
+  "input_sha256": "09ec5f36ea3e47c8",
+  "total_s": 9.5
+ },
+ "TOFTASKOLAN HUS B|V-53-1-00 RIVNING.pdf": {
+  "wall_s": 0.0,
+  "cpu_s": 1.0,
+  "max_rss_mb": 106.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 3538.1,
+    "h_pt": 1683.8,
+    "area_m2": 0.7414,
+    "paths": 12,
+    "count_s": 0.01
+   }
+  ],
+  "file_bytes": 2892646,
+  "output_bytes": 0,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": null,
+  "pipe_names": null,
+  "pipe_names_with_metres": null,
+  "error": "UnsupportedInputError: The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never guesses at pixels, so a scanned or image-only PDF cannot be measured (page 1: image page (48% coverage) with 7 vector paths).",
+  "state": "ERROR",
+  "input": "styles/TOFTASKOLAN HUS B/V-53-1-00 RIVNING.pdf",
+  "input_sha256": "056367713b0d1a6d",
+  "total_s": 0.6
+ },
+ "TOFTASKOLAN HUS B|V-53-1-010 HT.pdf": {
+  "wall_s": 4.3,
+  "cpu_s": 5.3,
+  "max_rss_mb": 190.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 1635,
+    "count_s": 0.04
+   }
+  ],
+  "file_bytes": 156754,
+  "output_bytes": 1850258,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 1,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-53-1-010 HT.pdf",
+  "input_sha256": "bf120c64ad569183",
+  "total_s": 4.9
+ },
+ "TOFTASKOLAN HUS B|V-53-1-010.pdf": {
+  "wall_s": 4.6,
+  "cpu_s": 5.7,
+  "max_rss_mb": 191.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 1827,
+    "count_s": 0.04
+   }
+  ],
+  "file_bytes": 163468,
+  "output_bytes": 2502423,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 1,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-53-1-010.pdf",
+  "input_sha256": "669fb390210ddf4e",
+  "total_s": 5.2
+ },
+ "TOFTASKOLAN HUS B|V-53-1-020.pdf": {
+  "wall_s": 21.7,
+  "cpu_s": 22.9,
+  "max_rss_mb": 235.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 11934,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 346667,
+  "output_bytes": 6700307,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 1,
+  "pipe_names_with_metres": 1,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-53-1-020.pdf",
+  "input_sha256": "673f8b8cfa2a1331",
+  "total_s": 22.4
+ },
+ "TOFTASKOLAN HUS B|V-57.1-01-BÖP.pdf": {
+  "wall_s": 5.2,
+  "cpu_s": 6.4,
+  "max_rss_mb": 203.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 4317,
+    "count_s": 0.09
+   }
+  ],
+  "file_bytes": 199748,
+  "output_bytes": 2741887,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-01-BÖP.pdf",
+  "input_sha256": "b861b0c4f39c9a17",
+  "total_s": 5.9
+ },
+ "TOFTASKOLAN HUS B|V-57.1-01-DEM.pdf": {
+  "wall_s": 0.6,
+  "cpu_s": 2.3,
+  "max_rss_mb": 120.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 3396.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.7117,
+    "paths": 95,
+    "count_s": 0.61
+   }
+  ],
+  "file_bytes": 254803,
+  "output_bytes": 0,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": null,
+  "pipe_names": null,
+  "pipe_names_with_metres": null,
+  "error": "UnsupportedInputError: The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never guesses at pixels, so a scanned or image-only PDF cannot be measured (page 1: embedded image covers 100% of the page, only 0 vector paths and 0 text characters).",
+  "state": "ERROR",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-01-DEM.pdf",
+  "input_sha256": "efcf7e8058641afa",
+  "total_s": 1.8
+ },
+ "TOFTASKOLAN HUS B|V-57.1-01-HT.pdf": {
+  "wall_s": 5.6,
+  "cpu_s": 6.7,
+  "max_rss_mb": 205.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 4886,
+    "count_s": 0.1
+   }
+  ],
+  "file_bytes": 206724,
+  "output_bytes": 2839751,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-01-HT.pdf",
+  "input_sha256": "d1cc2c0d62d146fa",
+  "total_s": 6.2
+ },
+ "TOFTASKOLAN HUS B|V-57.1-01.pdf": {
+  "wall_s": 143.1,
+  "cpu_s": 144.4,
+  "max_rss_mb": 270.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 26135,
+    "count_s": 0.36
+   }
+  ],
+  "file_bytes": 351784,
+  "output_bytes": 9489235,
+  "second_reader_questions": 24,
+  "second_reader_prompt_chars": 23210,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 29,
+  "pipe_names_with_metres": 25,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-01.pdf",
+  "input_sha256": "ce5ec7e1676ec248",
+  "total_s": 144.0
+ },
+ "TOFTASKOLAN HUS B|V-57.1-02-BÖP.pdf": {
+  "wall_s": 6.3,
+  "cpu_s": 7.4,
+  "max_rss_mb": 209.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 6939,
+    "count_s": 0.11
+   }
+  ],
+  "file_bytes": 234337,
+  "output_bytes": 3160997,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 20,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-02-BÖP.pdf",
+  "input_sha256": "d3887f430a489164",
+  "total_s": 6.9
+ },
+ "TOFTASKOLAN HUS B|V-57.1-02-DEM.pdf": {
+  "wall_s": 13.0,
+  "cpu_s": 14.1,
+  "max_rss_mb": 197.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 3082,
+    "count_s": 0.07
+   }
+  ],
+  "file_bytes": 155879,
+  "output_bytes": 7610478,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "NONE",
+  "pipe_names": 22,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-02-DEM.pdf",
+  "input_sha256": "ebb39707676ec058",
+  "total_s": 13.7
+ },
+ "TOFTASKOLAN HUS B|V-57.1-02-HT.pdf": {
+  "wall_s": 6.6,
+  "cpu_s": 7.7,
+  "max_rss_mb": 209.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7156,
+    "count_s": 0.12
+   }
+  ],
+  "file_bytes": 229369,
+  "output_bytes": 3158134,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 20,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-02-HT.pdf",
+  "input_sha256": "3ed6148bd8cc2640",
+  "total_s": 7.3
+ },
+ "TOFTASKOLAN HUS B|V-57.1-02.pdf": {
+  "wall_s": 74.1,
+  "cpu_s": 75.4,
+  "max_rss_mb": 262.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 22978,
+    "count_s": 0.37
+   }
+  ],
+  "file_bytes": 448511,
+  "output_bytes": 14288600,
+  "second_reader_questions": 12,
+  "second_reader_prompt_chars": 11754,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 12,
+  "pipe_names_with_metres": 8,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-02.pdf",
+  "input_sha256": "f50e31f45cb7898b",
+  "total_s": 75.0
+ },
+ "TOFTASKOLAN HUS B|V-57.1-03-DEM.pdf": {
+  "wall_s": 6.5,
+  "cpu_s": 7.6,
+  "max_rss_mb": 181.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 1535,
+    "count_s": 0.05
+   }
+  ],
+  "file_bytes": 84251,
+  "output_bytes": 2913899,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "NONE",
+  "pipe_names": 22,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-03-DEM.pdf",
+  "input_sha256": "be9a4e99aedf5dd4",
+  "total_s": 7.1
+ },
+ "TOFTASKOLAN HUS B|V-57.1-03.pdf": {
+  "wall_s": 10.8,
+  "cpu_s": 12.0,
+  "max_rss_mb": 212.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8023,
+    "count_s": 0.15
+   }
+  ],
+  "file_bytes": 227190,
+  "output_bytes": 6420229,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 13,
+  "pipe_names_with_metres": 10,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.1-03.pdf",
+  "input_sha256": "e6c2732e026dc822",
+  "total_s": 11.6
+ },
+ "TOFTASKOLAN HUS B|V-57.2-001.pdf": {
+  "wall_s": 23.7,
+  "cpu_s": 24.8,
+  "max_rss_mb": 211.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8750,
+    "count_s": 0.15
+   }
+  ],
+  "file_bytes": 212240,
+  "output_bytes": 6769537,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "TEXT_ONLY",
+  "pipe_names": 14,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.2-001.pdf",
+  "input_sha256": "e785f5d5c7f0d28f",
+  "total_s": 24.4
+ },
+ "TOFTASKOLAN HUS B|V-57.8-001.pdf": {
+  "wall_s": 7.5,
+  "cpu_s": 8.5,
+  "max_rss_mb": 219.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 14736,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 205538,
+  "output_bytes": 2599366,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "NONE",
+  "pipe_names": 35,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/TOFTASKOLAN HUS B/V-57.8-001.pdf",
+  "input_sha256": "b77e727a5af0e410",
+  "total_s": 8.4
+ },
+ "Ritningar|R9UHA10-CLB001-001.pdf": {
+  "wall_s": 35.3,
+  "cpu_s": 36.6,
+  "max_rss_mb": 262.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 25752,
+    "count_s": 0.32
+   }
+  ],
+  "file_bytes": 401476,
+  "output_bytes": 8479396,
+  "second_reader_questions": 1,
+  "second_reader_prompt_chars": 924,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 2,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/R9UHA10-CLB001-001.pdf",
+  "input_sha256": "24e15c29471858b0",
+  "total_s": 36.2
+ },
+ "Ritningar|R9UHA10-CLB001-003.pdf": {
+  "wall_s": 19.8,
+  "cpu_s": 21.0,
+  "max_rss_mb": 244.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 19116,
+    "count_s": 0.23
+   }
+  ],
+  "file_bytes": 345047,
+  "output_bytes": 7675357,
+  "second_reader_questions": 7,
+  "second_reader_prompt_chars": 6510,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "CONFLICT",
+  "pipe_names": 2,
+  "pipe_names_with_metres": 2,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/R9UHA10-CLB001-003.pdf",
+  "input_sha256": "8280f63e7d643537",
+  "total_s": 20.6
+ },
+ "Ritningar|V50-1-0821 - Plan B2, Del 21, Värme & Sanitäranlägg-.pdf": {
+  "wall_s": 10.9,
+  "cpu_s": 12.0,
+  "max_rss_mb": 200.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9004,
+    "count_s": 0.09
+   }
+  ],
+  "file_bytes": 190749,
+  "output_bytes": 7579405,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 27,
+  "pipe_names_with_metres": 16,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/V50-1-0821 - Plan B2, Del 21, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "29b26204db0a0ae5",
+  "total_s": 11.5
+ },
+ "Ritningar|V50-1-0822 - Plan B2, Del 22, Värme & Sanitäranlägg-.pdf": {
+  "wall_s": 10.9,
+  "cpu_s": 12.0,
+  "max_rss_mb": 196.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7336,
+    "count_s": 0.08
+   }
+  ],
+  "file_bytes": 180927,
+  "output_bytes": 7411640,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 18,
+  "pipe_names_with_metres": 17,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/V50-1-0822 - Plan B2, Del 22, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "62fba9edd7e23495",
+  "total_s": 11.6
+ },
+ "Ritningar|V50-1-0823 - Plan B2, Del 23, Värme & Sanitäranlägg-.pdf": {
+  "wall_s": 9.7,
+  "cpu_s": 10.8,
+  "max_rss_mb": 196.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 9214,
+    "count_s": 0.09
+   }
+  ],
+  "file_bytes": 194620,
+  "output_bytes": 4714507,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 13,
+  "pipe_names_with_metres": 8,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/V50-1-0823 - Plan B2, Del 23, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "41338fec7a6f4426",
+  "total_s": 10.4
+ },
+ "Ritningar|V50-1-0824 - Plan B2, Del 24, Värme & Sanitäranlägg-.pdf": {
+  "wall_s": 14.8,
+  "cpu_s": 16.0,
+  "max_rss_mb": 202.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 8966,
+    "count_s": 0.09
+   }
+  ],
+  "file_bytes": 207662,
+  "output_bytes": 9238152,
+  "second_reader_questions": 13,
+  "second_reader_prompt_chars": 10556,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 14,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/V50-1-0824 - Plan B2, Del 24, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "20cbb1f285ba0d21",
+  "total_s": 15.5
+ },
+ "Ritningar|V50-1-0832 - Plan B2, Del 32, Värme & Sanitäranlägg-.pdf": {
+  "wall_s": 10.4,
+  "cpu_s": 11.6,
+  "max_rss_mb": 202.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 12151,
+    "count_s": 0.12
+   }
+  ],
+  "file_bytes": 214528,
+  "output_bytes": 5304673,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 7,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/V50-1-0832 - Plan B2, Del 32, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "0f47672b0ab3b5af",
+  "total_s": 11.1
+ },
+ "Ritningar|V50-1-0834 - Plan B2, Del 34, Värme & Sanitäranlägg-.pdf": {
+  "wall_s": 5.9,
+  "cpu_s": 7.0,
+  "max_rss_mb": 184.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 4416,
+    "count_s": 0.05
+   }
+  ],
+  "file_bytes": 153054,
+  "output_bytes": 4063055,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 17,
+  "pipe_names_with_metres": 9,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/V50-1-0834 - Plan B2, Del 34, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "d2215d48655e5580",
+  "total_s": 6.5
+ },
+ "Ritningar|V50-1-0841 - Plan B2, Del 41, Värme & Sanitäranlägg-.pdf": {
+  "wall_s": 12.4,
+  "cpu_s": 13.6,
+  "max_rss_mb": 216.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 17879,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 249211,
+  "output_bytes": 6075516,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 15,
+  "pipe_names_with_metres": 11,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/V50-1-0841 - Plan B2, Del 41, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "79699fa23d3d75d8",
+  "total_s": 13.1
+ },
+ "Ritningar|V50-1-0843 - Plan B2, Del 43, Värme & Sanitäranlägg-.pdf": {
+  "wall_s": 8.9,
+  "cpu_s": 10.0,
+  "max_rss_mb": 191.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 7662,
+    "count_s": 0.08
+   }
+  ],
+  "file_bytes": 172419,
+  "output_bytes": 5150978,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 16,
+  "pipe_names_with_metres": 10,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/V50-1-0843 - Plan B2, Del 43, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "17494842833ada89",
+  "total_s": 9.6
+ },
+ "Ritningar|V50-1-0844 - Plan B2, Del 44, Värme & Sanitäranlägg-.pdf": {
+  "wall_s": 6.4,
+  "cpu_s": 7.6,
+  "max_rss_mb": 197.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 2384.0,
+    "h_pt": 1684.0,
+    "area_m2": 0.4996,
+    "paths": 10383,
+    "count_s": 0.1
+   }
+  ],
+  "file_bytes": 175371,
+  "output_bytes": 3689798,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 8,
+  "pipe_names_with_metres": 6,
+  "error": null,
+  "state": "OK",
+  "input": "styles/Ritningar/V50-1-0844 - Plan B2, Del 44, Värme & Sanitäranlägg-.pdf",
+  "input_sha256": "f7bdd88e16df0317",
+  "total_s": 7.1
+ },
+ "z|3|10.pdf": {
+  "wall_s": 21.9,
+  "cpu_s": 22.8,
+  "max_rss_mb": 212.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 12272,
+    "count_s": 0.17
+   }
+  ],
+  "file_bytes": 150715,
+  "output_bytes": 4705655,
+  "second_reader_questions": 0,
+  "second_reader_prompt_chars": 0,
+  "second_reader_kinds": [],
+  "scale_state": "VERIFIED",
+  "pipe_names": 23,
+  "pipe_names_with_metres": 0,
+  "error": null,
+  "state": "OK",
+  "input": "styles/z/3/10.pdf",
+  "input_sha256": "251d29722ba32c50",
+  "total_s": 22.6
+ },
+ "z|3|3.pdf": {
+  "wall_s": 31.7,
+  "cpu_s": 32.6,
+  "max_rss_mb": 221.0,
+  "n_pages": 1,
+  "pages": [
+   {
+    "w_pt": 1191.0,
+    "h_pt": 842.0,
+    "area_m2": 0.1248,
+    "paths": 13758,
+    "count_s": 0.19
+   }
+  ],
+  "file_bytes": 171729,
+  "output_bytes": 7334937,
+  "second_reader_questions": 5,
+  "second_reader_prompt_chars": 3989,
+  "second_reader_kinds": [
+   "attachment"
+  ],
+  "scale_state": "VERIFIED",
+  "pipe_names": 62,
+  "pipe_names_with_metres": 5,
+  "error": null,
+  "state": "OK",
+  "input": "styles/z/3/3.pdf",
+  "input_sha256": "2d0718da9f92395f",
+  "total_s": 32.5
+ }
+}

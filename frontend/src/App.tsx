@@ -22,7 +22,8 @@ import ProjectAnalysisPage from "./pages/ProjectAnalysis";
 import CalcPage from "./pages/CalcPage";
 import TakeoffPage from "./pages/Takeoff";
 import TakeoffPickPage from "./pages/TakeoffPick";
-import CadSheetPage from "./pages/CadSheet";
+import BuildingCadPage from "./pages/BuildingCad";
+import AgentPage from "./pages/Agent";
 import CadPickPage from "./pages/CadPick";
 
 function Guard({ children }: { children: JSX.Element }) {
@@ -110,6 +111,14 @@ function IconCad() {
   );
 }
 
+function IconAgent() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M3 4.5h12v8H8l-3.5 3v-3H3z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+      <circle cx="6.5" cy="8.5" r="0.9" fill="currentColor" /><circle cx="9" cy="8.5" r="0.9" fill="currentColor" /><circle cx="11.5" cy="8.5" r="0.9" fill="currentColor" />
+    </svg>
+  );
+}
 function IconAdmin() {
   return (
     <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -148,12 +157,13 @@ const ROUTES = (
     <Route path="/mangda" element={<Guard><TakeoffPickPage /></Guard>} />
     <Route path="/mangda/:id" element={<Guard><TakeoffPage /></Guard>} />
     <Route path="/cad" element={<Guard><CadPickPage /></Guard>} />
-    <Route path="/cad/:id" element={<Guard><CadSheetPage /></Guard>} />
+    <Route path="/cad/:id" element={<Guard><BuildingCadPage /></Guard>} />
     {/* Granskningen av någon annans ritning bor i Mängda - CAD är ritbordet. Gamla länkar till båda rummen
         pekar dit markeringarna faktiskt ligger. */}
     <Route path="/granska" element={<Navigate to="/mangda" replace />} />
     <Route path="/granska/:id" element={<GranskaRedirect />} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
+    <Route path="/agent" element={<Guard><AgentPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
     <Route path="/credits" element={<Guard><CreditsPage /></Guard>} />
     <Route path="/installningar" element={<Navigate to="/admin" replace />} />
@@ -220,7 +230,7 @@ export default function App() {
   // 244 px are the difference between seeing the whole drawing and hunting across it, so this route opens with
   // the sidebar folded to its rail. It is still one click away, and a reader who unfolds it keeps it unfolded.
   const chosen = (() => { try { return localStorage.getItem("vvs.rail") !== null; } catch { return false; } })();
-  const railed = rail || (!chosen && path.startsWith("/jobs/"));
+  const railed = rail || (!chosen && (path.startsWith("/jobs/") || (path.startsWith("/cad/") && path !== "/cad")));
   return (
     <div className={`app${railed ? " railed" : ""}`}>
       <aside className="side">
@@ -243,6 +253,9 @@ export default function App() {
           </Link>
           <Link to="/cad" className={path.startsWith("/cad") || path.startsWith("/granska") ? "on" : ""}>
             <IconCad /> <span className="wide">CAD</span>
+          </Link>
+          <Link to="/agent" className={path.startsWith("/agent") ? "on" : ""}>
+            <IconAgent /> <span className="wide">Agent</span>
           </Link>
           <Link to="/material" className={path.startsWith("/material") ? "on" : ""}>
             <IconMaterial /> <span className="wide">Material</span>
