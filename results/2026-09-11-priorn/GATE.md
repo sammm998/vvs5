@@ -67,3 +67,32 @@ slukades till ett oläsligt tecken. Rutan säger att klustret är litet, inte at
 **Beslut: REVERT** av den formen. Ersatt av regeln i commit ed14a8a (bitarna måste vara bitar: kortare än H
 tvärs stapelriktningen, någon en bråkdel, åtskilda med glapp, lästa i en riktning bladet skriver i), som läser
 E och D rad för rad som gate54 och mäts som gate56.
+
+---
+
+# gate56: schablonbokstäver, slutlig form - ACCEPT
+
+**Ändring.** Regeln i `text/strokes.py` (commit ed14a8a): ett kluster som ryms i en teckenruta är ett tecken
+när dess bitar är bitar och inte tecken i en rad - kortare än H tvärs stapelriktningen, någon en bråkdel,
+åtskilda med glapp längs stapelriktningen - och läses tvärs den axeln i en riktning bladet skriver i.
+Bakgrund i `FYND.md`; den första formen backades som gate55.
+
+**Körning.** Blind, 59 blad, samma indata som gate54/55. Motorns källa hashad i `hashmanifest-gate56.json`
+(commit 0c37d4b, 0 ändrade filer). Facit lästes först efter körningen.
+
+## Mot gate54, blad för blad (59 gemensamma)
+
+| | gate54 | gate56 |
+|---|---:|---:|
+| referens | 11399,2 m | 11399,2 m |
+| ägt | 7183,4 m | 7195,4 m |
+| falskt | 2053,5 m | 2053,5 m |
+| TÄCKNING | 63,02 % | **63,12 %** |
+| FALSKHET | 18,01 % | 18,01 % |
+| utsträckning FULL / PARTIAL | 96 / 213 | **98** / 211 |
+| blad som rörde sig | | **2** (A +2,8 pp, W-50-1-A0011 +2,8 pp - samma blad) |
+
+Inget blad föll. Det bladet regeln skrevs för (V-50-1-A0001, Priorn) har ingen referens och räknas inte här;
+där läses nu koden `S` i förklaringslistan och spillvattnet får meter (`FYND.md`).
+
+**Beslut: ACCEPT.** Ny baslinje för nästa ändring: gate56.
