@@ -105,6 +105,8 @@ class Prim:
     family: str
     layer: str
     width: float
+    src_len: float = 0.0            # källsegmentets längd före varje delning - det som säger vad ritaren drog
+    solid_long: bool = False        # en lång heldragen linje i en streckad familj: ett annat ritsätt, inte ett streck
 
     @property
     def a(self):
@@ -136,6 +138,7 @@ class PipeGraph:
     bridges: list[dict]                               # micro-gap bridges (evidence)
     gap_mode: float | None
     junctions: list[dict] = field(default_factory=list)
+    solid_long_pt: float | None = None                # över den här längden är ett heldraget streck ett annat ritsätt
 
     def neighbours(self, prim_id: int, node_id: int) -> list[int]:
         return [p for p in self.nodes[node_id].prims if p != prim_id]
@@ -350,7 +353,7 @@ def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | No
                 # the same line drawn a second time on the same pen: one pipe, not two
                 continue
             seen[fk].add(_stamp(s))
-            out[fk].append(Prim(prim_id=0, pid=p.pid, seg_index=k, seg=s, family=fk, layer=p.layer, width=p.width))
+            out[fk].append(Prim(prim_id=0, pid=p.pid, seg_index=k, seg=s, family=fk, layer=p.layer, width=p.width, src_len=s.length))
     # a pen's figures are not its runs: set them aside before anyone builds a graph on them
     for fk in list(out):
         runs, figures = figure_pieces(out[fk])
@@ -429,7 +432,8 @@ def _apply_cuts(prims: list[Prim], cuts: dict[int, list[float]]) -> list[Prim]:
             nid = q.prim_id if k == 0 else next_id
             if k > 0:
                 next_id += 1
-            out.append(Prim(prim_id=nid, pid=q.pid, seg_index=q.seg_index, seg=Seg(a[0], a[1], b[0], b[1]), family=q.family, layer=q.layer, width=q.width))
+            out.append(Prim(prim_id=nid, pid=q.pid, seg_index=q.seg_index, seg=Seg(a[0], a[1], b[0], b[1]), family=q.family, layer=q.layer, width=q.width,
+                            src_len=q.src_len or q.seg.length, solid_long=q.solid_long))
     return out
 
 
@@ -704,7 +708,41 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
     # remove emptied nodes
     nodes = {k: v for k, v in nodes.items() if v.prims}
     pn = {k: (v[0], v[1]) for k, v in prim_nodes.items()}
-    return PipeGraph(family=family, prims=pmap, nodes=nodes, prim_nodes=pn, bridges=bridges, gap_mode=gap_mode, junctions=junctions)
+    g = PipeGraph(family=family, prims=pmap, nodes=nodes, prim_nodes=pn, bridges=bridges, gap_mode=gap_mode, junctions=junctions)
+    mark_solid_long(g)
+    return g
+
+
+def solid_long_threshold(dash_mode: float | None, gap_mode: float | None) -> float | None:
+    """Över den här längden är ett heldraget streck i en streckad familj inte ett streck av den.
+
+    Måttet kommer ur familjen själv: strecken har en längd (dash_mode) och glappen en (gap_mode), och en böj
+    eller en armatur ritad heldragen mitt i en streckad ledning är några tiotal punkter - några streck lång.
+    En linje som är åtta streck lång, eller fyra streck-och-glapp, är inte en del av strecknings-rytmen; den
+    är något annat ritaren drog med samma penna: en pålbalk, en vägg, ett rutnät, en kant."""
+    if dash_mode is None or dash_mode <= 0:
+        return None
+    return max(8.0 * dash_mode, 4.0 * (dash_mode + (gap_mode or 0.0)))
+
+
+def mark_solid_long(g: PipeGraph) -> None:
+    """Märk de primitiver i en streckad familj vars källsegment är för långa för att vara streck.
+
+    Bara familjer som faktiskt är streckade (bryggade glapp) delas så: i en heldragen familj är en lång linje
+    precis vad ledningen är. Längden mäts på källsegmentet, före T-delningarna, för en pålbalk som korsas av
+    tio ledningar är tio korta bitar i grafen och fortfarande en lång linje på pappret."""
+    if g.gap_mode is None or not g.bridges:
+        return
+    hist = Counter(round(q.src_len or q.seg.length) for q in g.prims.values() if (q.src_len or q.seg.length) > 2)
+    if not hist:
+        return
+    dash_mode = float(hist.most_common(1)[0][0])
+    thr = solid_long_threshold(dash_mode, g.gap_mode)
+    g.solid_long_pt = thr
+    if thr is None:
+        return
+    for q in g.prims.values():
+        q.solid_long = (q.src_len or q.seg.length) > thr
 
 
 def chains(graph: PipeGraph) -> list[list[int]]:

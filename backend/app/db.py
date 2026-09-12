@@ -526,6 +526,24 @@ class CreditEntry(Base):
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
 
+class CadRevision(Base):
+    """En sparning som ändrade något: vad bladet var då, vem som sparade och vad som rördes.
+
+    Revisionerna är historien bakom ett blad - "Flyttade vägg och tre dörrar" - och det som gör att en
+    felsparning går att gå tillbaka från. Hela dokumentet sparas per revision hellre än en skillnad, för en
+    skillnad man inte kan tillämpa är ingen historia, och skivan är billigare än en förlorad ritning.
+    """
+    __tablename__ = "cad_revisions"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_uuid)
+    sheet_id: Mapped[str] = mapped_column(ForeignKey("cad_sheets.id"), index=True)
+    revision: Mapped[int] = mapped_column(Integer, default=0)
+    label: Mapped[str] = mapped_column(String(255), default="")
+    user_id: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    touched: Mapped[list] = mapped_column(JSON, default=list)              # objekt-id som ändrades
+    content: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
 class ContactMessage(Base):
     """Ett meddelande från kontaktsidan: vem som skrev, vad, och om någon svarat."""
     __tablename__ = "contact_messages"

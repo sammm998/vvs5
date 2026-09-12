@@ -276,6 +276,11 @@ def cluster_rows(page: RawPage, comps: list[StrokeComponent], H: float) -> list[
     total = sum(robust.values()) or 1
     order = sorted(robust.items(), key=lambda kv: (-kv[1], kv[0]))
     prefs = [a for a, w in order if w >= 0.02 * total and n_clusters[a] >= 2] or [a for a, _ in order]
+    # where each robust row stands and which way it runs: a short row borrows its direction from its neighbours.
+    # Only rows that run one of the drawing's own text directions can lend one: a robust cluster at an angle
+    # the drawing writes nothing else in is a symbol row or a dimension along a diagonal, not text to follow.
+    anchors = [(_centre(cs), round(a) % 180) for cs, a, strength in clusters
+               if strength >= 4 and (round(a) % 180) in set(prefs)]
     rows: list[RowCluster] = []
     for cs, ang, strength in clusters:
         # A cluster that fits inside one glyph box is one glyph, and a glyph has no reading direction of its
@@ -305,12 +310,37 @@ def cluster_rows(page: RawPage, comps: list[StrokeComponent], H: float) -> list[
         # whose axis is near none of those is not text at a new angle: it is two short rows standing above each
         # other read as one column - a legend's codes, a stack of dimensions - so it is read along the
         # direction the drawing writes in, which splits it back into the rows it was.
-        ang = _snap_angle(ang, prefs if prefs else [0.0, 90.0], 20.0)
-        if prefs and not _near_any(ang, prefs, 20.0):
-            ang = prefs[0]
+        # A short row - two or three glyphs - has too little in it to know its own angle: two centres lie on
+        # a line at whatever angle a tenth of H of baseline jitter gives them, and on a sheet that also writes
+        # text at ten degrees (a site plan) that jitter snapped a legend's "VS" to ten degrees, where a V looks
+        # like half an N and was read as "?". Text stands beside text that runs the same way: the legend's
+        # codes run like the legend's rows above them, a site plan's labels like the site plan's. So a short
+        # row takes the direction of the nearest robust row when that direction is within reach of its own,
+        # and only a row with no such neighbour falls back to the drawing's preferred directions.
+        near = _nearest_anchor_angle(_centre(cs), anchors, 12.0 * H)
+        if strength < 4 and near is not None and _near_any(ang, [near], 20.0):
+            ang = float(near)
+        else:
+            ang = _snap_angle(ang, prefs if prefs else [0.0, 90.0], 20.0)
+            if prefs and not _near_any(ang, prefs, 20.0):
+                ang = prefs[0]
         rows.extend(_split_and_order(page, cs, H, ang))
     rows.sort(key=lambda r: r.rcid)
     return rows
+
+
+def _centre(cs: list[StrokeComponent]) -> tuple[float, float]:
+    return (sum(c.cx for c in cs) / len(cs), sum(c.cy for c in cs) / len(cs))
+
+
+def _nearest_anchor_angle(pt: tuple[float, float], anchors: list[tuple[tuple[float, float], int]], reach: float) -> int | None:
+    """The direction of the closest robust row within `reach`, or None when no row stands that close."""
+    best = None
+    for (x, y), a in anchors:
+        d = math.hypot(x - pt[0], y - pt[1])
+        if d <= reach and (best is None or d < best[0]):
+            best = (d, a)
+    return best[1] if best else None
 
 
 def _spans(cs: list[StrokeComponent], angle: float) -> list[tuple[float, float]]:

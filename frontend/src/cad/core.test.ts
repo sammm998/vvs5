@@ -8,6 +8,7 @@ import { wallSolids, sectionOfDocument, elevationPlane, elevationOfDocument, roo
 import { quantities, materialQuantities, quantityOf } from "./quantities";
 import { findClashes, proposeOpenings } from "./clash";
 
+declare const process: any;
 let failures = 0;
 function check(name: string, ok: boolean, detail?: unknown) {
   if (ok) console.log(`  ok  ${name}`);

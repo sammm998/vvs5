@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import time
 from collections import Counter, defaultdict
@@ -354,6 +355,31 @@ def _components(graph) -> dict[int, int]:
             comp[cur] = n
             stack.extend(x for x in adj[cur] if x not in comp)
     return comp
+
+
+def _style_colour(style: str):
+    """Färgen ur en stilnyckel `w0.72|c(0.73, 0.73, 0.73)`; None när ingen färg står där."""
+    m = re.search(r"c\(([^)]*)\)", style or "")
+    if not m:
+        return None
+    try:
+        return tuple(float(x) for x in m.group(1).split(","))
+    except ValueError:
+        return None
+
+
+def _ink_weight(width: float, color) -> float:
+    """Hur mycket en penna syns på pappret: bredd gånger mörkhet. Svart 0,48 väger 0,48; grå (0,73) 0,72 väger 0,19."""
+    try:
+        if color and len(color) >= 3:
+            lightness = (0.299 * float(color[0]) + 0.587 * float(color[1]) + 0.114 * float(color[2]))
+        elif color and len(color) == 1:
+            lightness = float(color[0])
+        else:
+            lightness = 0.0
+    except (TypeError, ValueError):
+        lightness = 0.0
+    return float(width or 0.0) * max(0.0, 1.0 - min(1.0, lightness))
 
 
 def pen_key(family: str) -> str:
@@ -919,6 +945,9 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                        and not (admit_leader_pens and lead_ink[f] < _R("pipeline.LEADER_INK_SHARE", LEADER_INK_SHARE) * fam_ink.get(f, 0.0))} \
             | (set(ann_layers) if ann_layers else set())
         if os.environ.get("VVS_DEBUG_INK"):
+            for f, v in votes.most_common():
+                if f not in lead_count:
+                    print(f"[ink] n=   0 andel=  0.000 röster={v:7.1f} ticks={tick_votes.get(f,0):4d} ledarfamilj=False  {f}", file=sys.stderr)
             for f, c in lead_count.most_common():
                 fi = fam_ink.get(f, 0.0) or 1.0
                 print(f"[ink] n={c:4d} andel={lead_ink[f]/fi:7.3f} röster={votes.get(f,0):7.1f} ticks={tick_votes.get(f,0):4d} "
@@ -955,9 +984,15 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         # the weight this sheet annotates with: the pen most of its leaders are drawn with. Where it draws no
         # leaders at all there is nothing to compare against, and the rule stands down rather than guessing.
         lead_widths: Counter = Counter()
+        lead_weights: Counter = Counter()
         for ld in leaders:
             lead_widths[round(ld.width, 2)] += 1
+            lead_weights[round(_ink_weight(ld.width, ld.color), 2)] += 1
         annotation_width = lead_widths.most_common(1)[0][0] if lead_widths else 0.0
+        # the weight the sheet annotates with, as ink on paper: width times darkness. A grey line is fainter than
+        # a black one of the same width, and on a sheet without layers that faintness is the only thing that says
+        # the grey dashed lines behind the pipes are the building - hidden beams, grids - and not more pipe.
+        annotation_weight = lead_weights.most_common(1)[0][0] if lead_weights else 0.0
         pipe_families: dict[str, RepresentationFamily] = {}
         graphs: dict[str, Any] = {}
         # the strongest evidence any single drawn family carries, which is what the others are compared with
@@ -979,6 +1014,12 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             # the histogram rounds to two places while the family carries the raw float: 0.35999998 < 0.36. Five
             # drawings of one office, ninety labels each, measured nothing at all.
             if not layer and desc[f][0].width < annotation_width - 1e-6:
+                continue
+            # ...and not fainter either. Measured on a layer-less export of a sheet whose layered twin puts its
+            # pipes in black 1.44 and 2.04 pt and its hidden beams in grey 0.72 pt: the grey pen carried fourteen
+            # label ticks - pipes laid on those beams - and was taken as a pipe family, and one designation
+            # measured six times its reference. The beams are wider than the leaders and lighter than them.
+            if not layer and annotation_weight > 0 and _ink_weight(desc[f][0].width, _style_colour(style)) < annotation_weight - 1e-6:
                 continue
             similar = any(_layer_template_similar(layer, tl) for tl in token_layers)
             accept = (token_votes[f] >= 1) or (tick_votes[f] >= 2 and similar) \

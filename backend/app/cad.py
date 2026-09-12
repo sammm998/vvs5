@@ -26,8 +26,9 @@ from sqlalchemy.orm import Session
 
 from vvs_engine.takeoff import Scale, measure as engine_measure
 
+from . import cad_model
 from .auth import current_user
-from .db import CadSheet, Drawing, Project, User, get_db
+from .db import CadRevision, CadSheet, Drawing, Project, User, get_db
 from .storage import storage
 
 router = APIRouter(prefix="/api/cad", tags=["cad"])
@@ -64,8 +65,17 @@ def _clean(content: dict | None) -> dict:
 
     Ett blad är användarens eget innehåll och ska inte kunna växa fritt eller bära nycklar ingen läser. Det som
     inte går att förstå kastas hellre än gissas: ett ritobjekt utan punkter är inget ritobjekt.
+
+    En byggmodell (version 2) går en annan väg: den valideras i sin helhet och avvisas med besked om något är
+    fel, för ett dokument med en dörr utan vägg är inte ett dokument man kan rätta genom att kasta dörren.
     """
     c = content or {}
+    if cad_model.is_v2(c):
+        doc = cad_model.clean(c)
+        problems = cad_model.validate(doc)
+        if problems:
+            raise HTTPException(422, {"message": "Modellen kan inte sparas som den är", "problems": problems[:50]})
+        return doc
     layers = []
     for l in (c.get("layers") or [])[:200]:
         if not isinstance(l, dict) or not l.get("id"):
@@ -129,6 +139,12 @@ def _summary(content: dict) -> dict:
     samma kod som mängdningen mäter med. Ett blad som räknade själv skulle kunna komma till ett annat tal än
     mängden av samma sträcka, och då vore ritbordet inte värt något.
     """
+    if cad_model.is_v2(content):
+        q = cad_model.quantities(content)
+        return {"rows": [{"key": g["name"], "n": g["count"], "m": round(g["length_m"], 3), "unit": g["unit"],
+                          "area_m2": round(g["area_m2"], 3), "volume_m3": round(g["volume_m3"], 4), "mass_kg": g["mass_kg"]}
+                         for g in q["groups"]],
+                "entities": q["entities"], "total_m": q["total_length_m"], "version": 2}
     mm = Scale(meters_per_point=0.001, source="ANGIVEN", label="ritobjektens millimeter")
     rows: dict[str, dict] = {}
     for e in content.get("entities") or []:
@@ -166,6 +182,8 @@ class SheetSave(BaseModel):
     height_mm: float | None = None
     scale_ratio: int | None = None
     content: dict | None = None
+    label: str | None = Field(default=None, max_length=255)      # vad sparningen gjorde: "Flyttade vägg och tre dörrar"
+    base_revision: int | None = None                             # den revision klienten utgick från - krock om en annan hunnit före
 
 
 def _row(s: CadSheet, full: bool = False) -> dict:
@@ -222,9 +240,85 @@ def save_sheet(sheet_id: str, body: SheetSave, user: User = Depends(current_user
     if body.scale_ratio and 1 <= body.scale_ratio <= 5000:
         s.scale_ratio = body.scale_ratio
     if body.content is not None:
-        s.content = _clean(body.content)
+        new = _clean(body.content)
+        old = s.content or {}
+        if cad_model.is_v2(new):
+            # samtidighet: den som sparar säger vilken revision hon utgick från. Är bladet redan längre fram
+            # har någon annan sparat emellan, och det svaret är ett besked, inte en tyst överskrivning.
+            current = int(old.get("revision") or 0) if isinstance(old, dict) else 0
+            if body.base_revision is not None and body.base_revision != current:
+                raise HTTPException(409, {"message": "Bladet har sparats av någon annan sedan du öppnade det",
+                                          "current_revision": current, "your_revision": body.base_revision})
+            touched = cad_model.touched_between(old if cad_model.is_v2(old) else {}, new)
+            if touched or not cad_model.is_v2(old):
+                new["revision"] = current + 1
+                db.add(CadRevision(sheet_id=s.id, revision=new["revision"], label=(body.label or "").strip()[:255] or _auto_label(touched),
+                                   user_id=user.id, touched=touched[:500], content=new))
+        s.content = new
     db.commit(); db.refresh(s)
     return _row(s, full=True)
+
+
+def _auto_label(touched: list[str]) -> str:
+    n = len([t for t in touched if t not in ("levels", "grids", "layers", "views", "sheets", "materials")])
+    parts = []
+    if n:
+        parts.append(f"{n} objekt ändrade")
+    for coll, name in (("levels", "nivåer"), ("grids", "rutnät"), ("layers", "lager"), ("views", "vyer"), ("sheets", "blad"), ("materials", "material")):
+        if coll in touched:
+            parts.append(name)
+    return ", ".join(parts) or "sparat"
+
+
+@router.get("/sheets/{sheet_id}/revisions")
+def list_revisions(sheet_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    s = _sheet(db, user, sheet_id)
+    rows = db.query(CadRevision).filter(CadRevision.sheet_id == s.id).order_by(CadRevision.revision.desc()).limit(500).all()
+    return {"rows": [{"id": r.id, "revision": r.revision, "label": r.label, "user_id": r.user_id, "touched": r.touched,
+                      "created_at": r.created_at.isoformat() if r.created_at else None} for r in rows],
+            "current": int((s.content or {}).get("revision") or 0)}
+
+
+@router.post("/sheets/{sheet_id}/revisions/{revision}/restore")
+def restore_revision(sheet_id: str, revision: int, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Gå tillbaka till en revision. Det blir en ny revision - historien skrivs aldrig om."""
+    s = _sheet(db, user, sheet_id)
+    r = db.query(CadRevision).filter(CadRevision.sheet_id == s.id, CadRevision.revision == revision).first()
+    if r is None:
+        raise HTTPException(404, "Revisionen finns inte")
+    current = int((s.content or {}).get("revision") or 0)
+    doc = dict(r.content)
+    doc["revision"] = current + 1
+    touched = cad_model.touched_between(s.content or {}, doc)
+    db.add(CadRevision(sheet_id=s.id, revision=doc["revision"], label=f"Återställd till revision {revision}", user_id=user.id,
+                       touched=touched[:500], content=doc))
+    s.content = doc
+    db.commit(); db.refresh(s)
+    return _row(s, full=True)
+
+
+@router.get("/sheets/{sheet_id}/quantities")
+def sheet_quantities(sheet_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Mängderna ur modellen, räknade på servern: det exporterna och kalkylen tar."""
+    s = _sheet(db, user, sheet_id)
+    c = s.content or {}
+    if not cad_model.is_v2(c):
+        return {"version": 1, "summary": _summary(_clean(c))}
+    q = cad_model.quantities(c)
+    return {"version": 2, "rows": q["rows"], "groups": q["groups"], "materials": cad_model.material_quantities(c),
+            "entities": q["entities"], "total_length_m": q["total_length_m"]}
+
+
+class ValidateIn(BaseModel):
+    content: dict
+
+
+@router.post("/validate")
+def validate_document(body: ValidateIn, user: User = Depends(current_user)):
+    """Vad som skulle avvisas om det sparades - så att ritbordet kan säga det innan."""
+    if not cad_model.is_v2(body.content):
+        return {"problems": [{"message": "Inte en byggmodell (version 2)"}]}
+    return {"problems": cad_model.validate(cad_model.clean(body.content))}
 
 
 @router.delete("/sheets/{sheet_id}")

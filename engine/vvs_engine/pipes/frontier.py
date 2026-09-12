@@ -15,6 +15,7 @@ Skälen, i den ordning en granskare frågar efter dem:
   FLOW_BUDGET               fortsättningen togs tillbaka av flödesbudgeten: identiteten hade runnit för långt
   UNOWNED_CONTINUATION      geometrin fortsätter på samma penna och ingen etikett når den - meter ingen äger
   REPRESENTATION_CHANGE     ledningen fortsätter på en annan penna (annat lager, annan bredd, annan färg)
+  REPRESENTATION_TRANSITION samma penna fortsätter som en lång heldragen linje i en streckad familj: ett annat ritsätt
   BROKEN_CONTINUITY         samma penna fortsätter i samma riktning efter ett gap bryggningen inte slöt
   VERTICAL                  röret slutar i en stigarsymbol: det går upp eller ner
   SYMBOL                    röret slutar i en ritad komponent (ventil, pump, apparat)
@@ -50,6 +51,7 @@ AMBIGUOUS_JUNCTION = "AMBIGUOUS_JUNCTION"
 FLOW_BUDGET = "FLOW_BUDGET"
 UNOWNED_CONTINUATION = "UNOWNED_CONTINUATION"
 REPRESENTATION_CHANGE = "REPRESENTATION_CHANGE"
+REPRESENTATION_TRANSITION = "REPRESENTATION_TRANSITION"
 BROKEN_CONTINUITY = "BROKEN_CONTINUITY"
 VERTICAL = "VERTICAL"
 SYMBOL = "SYMBOL"
@@ -67,6 +69,7 @@ REASONS: dict[str, str] = {
     FLOW_BUDGET: "identiteten hade runnit för långt förbi etiketterna och togs tillbaka",
     UNOWNED_CONTINUATION: "samma penna fortsätter och ingen etikett når den",
     REPRESENTATION_CHANGE: "ledningen fortsätter på en annan penna",
+    REPRESENTATION_TRANSITION: "samma penna fortsätter som en lång heldragen linje: ett annat ritsätt, och ingen etikett säger att det är röret",
     BROKEN_CONTINUITY: "samma penna fortsätter i samma riktning efter ett gap bryggningen inte slöt",
     VERTICAL: "röret slutar i en stigarsymbol",
     SYMBOL: "röret slutar i en ritad komponent",
@@ -81,7 +84,7 @@ REAL = (REAL_DN_BOUNDARY, REAL_SYSTEM_BOUNDARY, REAL_DESIGNATION_BOUNDARY, DECLA
 # där läsningen sannolikt tappar meter
 LOSSY = (UNOWNED_CONTINUATION, BROKEN_CONTINUITY, REPRESENTATION_CHANGE)
 # lämnat öppet med flit
-OPEN = (AMBIGUOUS_JUNCTION, FLOW_BUDGET, UNSUPPORTED_STRUCTURE)
+OPEN = (AMBIGUOUS_JUNCTION, FLOW_BUDGET, UNSUPPORTED_STRUCTURE, REPRESENTATION_TRANSITION)
 
 ENDS_AT_OTHER_INK = "ENDS_AT_OTHER_INK"   # änden ligger an mot en annan pennas bläck: en fixtur, en apparat, en vägg
 # vad en onämnd gren får ta korsningens namn på: dess fria ände slutar i något ritat, inte i tomma luften
@@ -148,6 +151,9 @@ def _beyond(pipe, g, st, q: int, declared_reason: str) -> tuple[str, dict[str, A
         if s.reason == "AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS":
             return FLOW_BUDGET, {"candidates": cands, "beyond_reason": s.reason}
         return AMBIGUOUS_JUNCTION, {"candidates": cands, "beyond_reason": s.reason}
+    if getattr(g.prims[q], "solid_long", False):
+        return REPRESENTATION_TRANSITION, {"solid_pt": round(g.prims[q].src_len or g.prims[q].seg.length, 1),
+                                           "threshold_pt": round(g.solid_long_pt or 0.0, 1)}
     reach, n = _unowned_reach(g, st, q)
     return UNOWNED_CONTINUATION, {"unowned_pt": round(reach, 2), "unowned_prims": n}
 

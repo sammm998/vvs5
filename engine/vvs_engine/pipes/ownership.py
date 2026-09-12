@@ -339,6 +339,27 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
 
 # the two rules that carry an identity into geometry no label touched and no drawn boundary delimits
 FLOWED_REASONS = ("collinear_through_junction", "unlabeled_branch_takes_the_only_junction_identity")
+
+TRANSITION_EVIDENCE = "representation_transition_needs_its_own_evidence"
+
+
+def _up_to_transition(g: PipeGraph, pids: list[int], from_end: bool, seeded_solid: bool = False) -> list[int]:
+    """Så långt ett namn får rinna längs en kedja: fram till den första långa heldragna linjen.
+
+    På ett blad utan lager delar pålbalkarna penna med de streckade ledningarna, och där en ledning slutade
+    intill en balk rann namnet vidare längs balken - runt hela huset. Ett streckat rör som fortsätter som en
+    lång heldragen linje har bytt ritsätt, och ett byte av ritsätt är inte ett bevis på att röret fortsätter.
+    Det som får bevisa det är en etikett på den heldragna delen; utan den stannar namnet vid övergången, och
+    fronten säger varför. `from_end` säger från vilken ände av listan namnet kommer."""
+    order = list(reversed(pids)) if from_end else list(pids)
+    out: list[int] = []
+    for pid in order:
+        # övergången är relativ det etiketten sitter på: från streck in i en lång heldragen linje, eller från
+        # en etiketterad heldragen linje in i streck. Korta heldragna bitar - böjar, armaturer - är ingetdera.
+        if g.prims[pid].solid_long != seeded_solid and (g.prims[pid].solid_long or seeded_solid):
+            break
+        out.append(pid)
+    return list(reversed(out)) if from_end else out
 # how far past the labelled runs the flow may reach before it stops being a reading of the drawing. Measured over
 # the style library: every reading confirmed by overlay sits at or under 1.7, every reading of walls at or over
 # 2.7, so the flow may at most double what the labels themselves delimit.
@@ -858,7 +879,19 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
         anchors_all = set().union(*(grp.anchors for grp in gs))
         whole = _merge_identity(all_ids)
         if whole is not None:
-            confirm(c, whole, "chain_with_agreeing_anchors" if len(gs) > 1 else "chain_from_anchor", anchors_all)
+            # Mellan etiketterna är kedjan röret, vad den än är ritad med: två etiketter som är överens om en
+            # sträcka är beviset för att den fortsätter där ritsättet byter. Utanför den yttersta etiketten
+            # finns inget sådant bevis, och där stannar namnet vid den första långa heldragna linjen.
+            # en grupp kan stå på en nod i kedjans ände: läget klipps till kedjans egna primitiver
+            pos = [min(len(c) - 1, max(0, int(grp.pos))) for grp in gs]
+            lo, hi = min(pos), max(pos)
+            head, middle, tail = c[:lo], c[lo:hi + 1], c[hi + 1:]
+            kept = (_up_to_transition(g, head, from_end=True, seeded_solid=g.prims[c[lo]].solid_long) + middle
+                    + _up_to_transition(g, tail, from_end=False, seeded_solid=g.prims[c[hi]].solid_long))
+            confirm(kept, whole, "chain_with_agreeing_anchors" if len(gs) > 1 else "chain_from_anchor", anchors_all)
+            for pid in c:
+                if pid not in kept:
+                    st[pid].evidence.append(TRANSITION_EVIDENCE)
             continue
 
         def prims_between(lo: float, hi: float) -> list[int]:
@@ -891,9 +924,17 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                                            "identities": sorted({i.key for i in first.ids + last.ids})})
         else:
             if first.merged is not None:
-                confirm(prims_between(-1.0, first.pos), first.merged, "chain_before_first_anchor", first.anchors)
+                before = prims_between(-1.0, first.pos)
+                kept = _up_to_transition(g, before, from_end=True, seeded_solid=g.prims[c[min(len(c) - 1, max(0, int(first.pos)))]].solid_long)
+                confirm(kept, first.merged, "chain_before_first_anchor", first.anchors)
+                for pid in before[:len(before) - len(kept)]:
+                    st[pid].evidence.append(TRANSITION_EVIDENCE)
             if last.merged is not None:
-                confirm(prims_between(last.pos, len(c) + 1.0), last.merged, "chain_after_last_anchor", last.anchors)
+                after = prims_between(last.pos, len(c) + 1.0)
+                kept = _up_to_transition(g, after, from_end=False, seeded_solid=g.prims[c[min(len(c) - 1, max(0, int(last.pos)))]].solid_long)
+                confirm(kept, last.merged, "chain_after_last_anchor", last.anchors)
+                for pid in after[len(kept):]:
+                    st[pid].evidence.append(TRANSITION_EVIDENCE)
         for gi in range(len(gs) - 1):
             A, B = gs[gi], gs[gi + 1]
             pids = prims_between(A.pos, B.pos)
@@ -996,9 +1037,16 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                 idents = {st[p].identity for p in partners}
                 if len(idents) == 1:
                     ident = next(iter(idents))
-                    # extend along u's chain until a junction/terminal
+                    # extend along u's chain until a junction/terminal - or until the line stops being drawn
+                    # the way the pipe is: a long solid line in a dashed family is not this pipe going on
+                    reach = _up_to_transition(g, ch[ci], from_end=(ch[ci] and ch[ci][-1] == u),
+                                              seeded_solid=all(g.prims[p].solid_long for p in partners))
                     for pid in ch[ci]:
                         s = st[pid]
+                        if pid not in reach:
+                            if s.state == "UNOWNED":
+                                s.evidence.append(TRANSITION_EVIDENCE)
+                            continue
                         if s.state == "UNOWNED":
                             s.state, s.identity, s.reason = "CONFIRMED", ident, "collinear_through_junction"
                             s.anchors |= set().union(*(st[p].anchors for p in partners))
@@ -1038,8 +1086,13 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                 if only is not None and only.dn is not None and not groups_of.get(ci) and not passes_through:
                     support = _branch_support(g, st, ch, chain_nodes, ci, nid, only, end_evidence)
                     if support:
+                        reach = set(_up_to_transition(g, ch[ci], from_end=(ch[ci] and ch[ci][-1] == u)))
                         for pid in ch[ci]:
                             s = st[pid]
+                            if pid not in reach:
+                                if s.state == "UNOWNED":
+                                    s.evidence.append(TRANSITION_EVIDENCE)
+                                continue
                             if s.state == "UNOWNED" or (s.state == "AMBIGUOUS" and s.reason == NO_END_EVIDENCE):
                                 s.state, s.identity, s.reason = "CONFIRMED", only, "unlabeled_branch_takes_the_only_junction_identity"
                                 s.candidates = set()
