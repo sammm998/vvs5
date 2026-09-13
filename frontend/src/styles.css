@@ -2633,3 +2633,15 @@ button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 
 .agentroom .agentchat { flex: 1; }
 .agentwho { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--line); }
 .agentwho a { color: var(--muted); }
+
+.bcad-file { position: relative; }
+.bcad-menu { position: absolute; right: 0; top: 30px; z-index: 30; width: 340px; background: var(--bg); border: 1px solid var(--line-2); border-radius: 8px; padding: 10px 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 12px; }
+.bcad-menu .bcad-h { margin-top: 8px; }
+.bcad-menu-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: 4px 0; }
+.bcad-menu-row select { max-width: 200px; font-size: 11px; }
+.bcad-agent { min-height: 50vh; }
+.bcad-msgs { display: flex; flex-direction: column; gap: 6px; max-height: 40vh; overflow: auto; }
+.bcad-msg { padding: 6px 8px; border-radius: 6px; background: var(--bg-2); }
+.bcad-msg.user { background: #eef3ff; }
+.bcad-msg pre { margin: 0; white-space: pre-wrap; font-family: inherit; font-size: 12px; }
+.bcad-proposal ul { margin: 4px 0 6px 16px; padding: 0; }

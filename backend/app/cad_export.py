@@ -66,8 +66,10 @@ def _visible(doc: dict, view: dict | None, e: dict) -> bool:
 
 
 def plan_primitives(doc: dict, view: dict | None = None) -> list[dict]:
-    """Det som ritas i planen: polylinjer, texter och bågar med lager och färg, i byggets millimeter."""
+    """Det som ritas i planen: polylinjer, texter och bågar med lager och färg, i byggets millimeter.
+    En texts höjd är pappersmillimeter i modellen; här blir den byggets millimeter genom vyns skala."""
     out: list[dict] = []
+    ratio = float((view or {}).get("scale_ratio") or 100)
     for e in doc.get("entities") or []:
         if not _visible(doc, view, e):
             continue
@@ -96,7 +98,7 @@ def plan_primitives(doc: dict, view: dict | None = None) -> list[dict]:
                 out.append(dict(base, kind="polyline", pts=sw[0], width=0.25))
                 out.append(dict(base, kind="polyline", pts=sw[1], width=0.18))
         if t in ("text", "mtext"):
-            out.append(dict(base, kind="text", at=list(e["p"][0]), text=str(e.get("text") or ""), h=float(e.get("h") or 250), rot=float(e.get("rot") or 0)))
+            out.append(dict(base, kind="text", at=list(e["p"][0]), text=str(e.get("text") or ""), h=float(e.get("h") or 2.5) * ratio, rot=float(e.get("rot") or 0)))
         if t == "room":
             c = G.polygon_centroid(e["p"])
             area = G.polygon_area(e["p"]) / 1e6
@@ -109,7 +111,7 @@ def plan_primitives(doc: dict, view: dict | None = None) -> list[dict]:
             out.append(dict(base, kind="text", at=[(a[0] + b[0]) / 2, (a[1] + b[1]) / 2 - 120], text=f"{mm:.0f}", h=200,
                             rot=math.degrees(math.atan2(b[1] - a[1], b[0] - a[0]))))
         if t == "leader" and e.get("text"):
-            out.append(dict(base, kind="text", at=list(e["p"][-1]), text=str(e["text"]), h=float(e.get("h") or 250), rot=0))
+            out.append(dict(base, kind="text", at=list(e["p"][-1]), text=str(e["text"]), h=float(e.get("h") or 2.5) * ratio, rot=0))
         if t in ("pipe", "duct") and e.get("system"):
             path = e.get("path") or []
             if len(path) >= 2:

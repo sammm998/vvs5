@@ -44,6 +44,8 @@ async function req(path: string, init: RequestInit = {}): Promise<any> {
   return ct.includes("application/json") ? res.json() : res;
 }
 
+const assetUrls = new Map<string, string>();
+
 export const api = {
   login: async (email: string, password: string) => {
     const body = new URLSearchParams({ username: email, password });
@@ -206,6 +208,27 @@ export const api = {
   cadRevisions: (id: string) => req(`/api/cad/sheets/${id}/revisions`),
   cadRestore: (id: string, rev: number) => req(`/api/cad/sheets/${id}/revisions/${rev}/restore`, { method: "POST" }),
   cadQuantities: (id: string) => req(`/api/cad/sheets/${id}/quantities`),
+  cadExportUrl: (id: string, fmt: "ifc" | "glb" | "svg" | "dxf" | "pdf", q: Record<string, string | number | undefined> = {}) =>
+    `/api/cad/sheets/${id}/export.${fmt}${Object.keys(q).some((k) => q[k] != null) ? "?" + new URLSearchParams(Object.fromEntries(Object.entries(q).filter(([, v]) => v != null).map(([k, v]) => [k, String(v)]))).toString() : ""}`,
+  cadSheetPdfUrl: (id: string, sheet: string) => `/api/cad/sheets/${id}/sheets/${sheet}.pdf`,
+  cadImport: (id: string, file: File, level?: string, scaleRatio?: number) => { const fd = new FormData(); fd.append("file", file); if (level) fd.append("level", level); if (scaleRatio) fd.append("scale_ratio", String(scaleRatio)); return req(`/api/cad/sheets/${id}/import`, { method: "POST", body: fd }); },
+  cadUnderlay: (id: string, src: { file?: File; drawing_id?: string; page?: number }) => {
+    const fd = new FormData();
+    if (src.file) fd.append("file", src.file);
+    if (src.drawing_id) fd.append("drawing_id", src.drawing_id);
+    fd.append("page", String(src.page ?? 0));
+    return req(`/api/cad/sheets/${id}/underlay`, { method: "POST", body: fd });
+  },
+  cadAgent: (id: string, body: any) => req(`/api/cad/sheets/${id}/agent`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  cadAgentTool: (id: string, name: string, args: any = {}) =>
+    req(`/api/cad/sheets/${id}/agent/tool`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, arguments: args }) }),
+  /** En tillgång (underlag, nät) som en blob-URL med inloggningen gjord: bilder och laddare kan inte skicka en token själva. */
+  cadAssetUrl: async (key: string): Promise<string> => {
+    const cached = assetUrls.get(key); if (cached) return cached;
+    const m = /^cad\/([^/]+)\/assets\/([^/]+)$/.exec(key); if (!m) throw new Error("Okänd tillgång");
+    const b: Blob = await (api as any).fetchBlob(`/api/cad/assets/${m[1]}/${m[2]}`);
+    const u = URL.createObjectURL(b); assetUrls.set(key, u); return u;
+  },
   cadValidate: (content: any) =>
     req("/api/cad/validate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content }) }),
   cadPrint: (id: string) => req(`/api/cad/sheets/${id}/tryck`, { method: "POST" }),

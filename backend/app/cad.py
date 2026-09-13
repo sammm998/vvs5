@@ -592,7 +592,7 @@ def _asset_key(sheet_id: str, ext: str) -> str:
 
 
 @router.post("/sheets/{sheet_id}/import")
-async def import_file(sheet_id: str, file: UploadFile = File(...), level: str | None = Form(default=None),
+async def import_file(sheet_id: str, file: UploadFile = File(...), level: str | None = Form(default=None), scale_ratio: float = Form(default=100.0),
                       user: User = Depends(current_user), db: Session = Depends(get_db)):
     """En fil blir objekt (DXF, SVG, IFC) eller en referens (GLB/GLTF/OBJ/STL). Ingenting skrivs i bladet:
     svaret är ett förslag som ritbordet lägger in som en transaktion, så att det går att ångra."""
@@ -601,10 +601,10 @@ async def import_file(sheet_id: str, file: UploadFile = File(...), level: str | 
     ext = name.rsplit(".", 1)[-1] if "." in name else ""
     data = await _read_upload(file)
     if ext == "dxf":
-        r = cad_import.from_dxf(data.decode("utf-8", "ignore"), level=level)
+        r = cad_import.from_dxf(data.decode("utf-8", "ignore"), level=level, text_ratio=max(1.0, scale_ratio))
     elif ext == "svg":
         try:
-            r = cad_import.from_svg(data.decode("utf-8", "ignore"), level=level)
+            r = cad_import.from_svg(data.decode("utf-8", "ignore"), level=level, text_ratio=max(1.0, scale_ratio))
         except Exception as e:  # noqa: BLE001 - trasig XML är ett svar, inte en krasch
             raise HTTPException(400, f"SVG gick inte att läsa: {type(e).__name__}") from e
     elif ext == "ifc":

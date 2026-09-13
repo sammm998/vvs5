@@ -48,9 +48,10 @@ def _dxf_pairs(text: str):
             continue
 
 
-def from_dxf(text: str, layer_prefix: str = "", level: str | None = None) -> dict:
+def from_dxf(text: str, layer_prefix: str = "", level: str | None = None, text_ratio: float = 100.0) -> dict:
     """LINE, LWPOLYLINE, POLYLINE/VERTEX, CIRCLE, ARC, TEXT/MTEXT, INSERT (som punkt) → allmän geometri.
-    y vänds (DXF har y uppåt, planen nedåt)."""
+    y vänds (DXF har y uppåt, planen nedåt). Texthöjder är i byggets mm i filen men i pappersmillimeter i
+    modellen: de delas med vyns skala (`text_ratio`, 1:100 om inget annat sägs)."""
     ents: list[dict] = []
     layers: dict[str, dict] = {}
     unit = None
@@ -156,10 +157,10 @@ def from_dxf(text: str, layer_prefix: str = "", level: str | None = None) -> dic
                 c = P(gd[10][:1], gd[20][:1])[0]
                 txt = re.sub(r"\\[A-Za-z][^;]*;|[{}]", "", " ".join(gd.get(1, [""])))
                 if txt.strip():
-                    out.append(dict(_base(lay, "IMPORTED_DXF", level), type="text", p=[c], text=txt.strip()[:500], h=float(gd.get(40, ["250"])[0]) * k, rot=-float(gd.get(50, ["0"])[0])))
+                    out.append(dict(_base(lay, "IMPORTED_DXF", level), type="text", p=[c], text=txt.strip()[:500], h=max(0.5, float(gd.get(40, ["250"])[0]) * k / text_ratio), rot=-float(gd.get(50, ["0"])[0])))
             elif t == "INSERT":
                 c = P(gd[10][:1], gd[20][:1])[0]
-                out.append(dict(_base(lay, "IMPORTED_DXF", level), type="text", p=[c], text=f"[{' '.join(gd.get(2, ['block']))}]", h=200 * k))
+                out.append(dict(_base(lay, "IMPORTED_DXF", level), type="text", p=[c], text=f"[{' '.join(gd.get(2, ['block']))}]", h=max(0.5, 200 * k / text_ratio)))
         except (KeyError, IndexError, ValueError):
             continue
     assumptions = [] if unit else ["DXF utan $INSUNITS: millimeter antaget"]
@@ -270,7 +271,7 @@ def _path_points(d: str) -> list[list]:
     return polys
 
 
-def from_svg(text: str, mm_per_unit: float = 1.0, level: str | None = None) -> dict:
+def from_svg(text: str, mm_per_unit: float = 1.0, level: str | None = None, text_ratio: float = 100.0) -> dict:
     """line, polyline, polygon, rect, circle, ellipse, path (räta stycken), text. Grupper med id blir lager."""
     root = ET.fromstring(text)
     out: list[dict] = []
@@ -326,7 +327,7 @@ def from_svg(text: str, mm_per_unit: float = 1.0, level: str | None = None) -> d
                 txt = "".join(el.itertext()).strip()
                 if txt:
                     fs = _svg_len(el.get("font-size") or "10")
-                    out.append(dict(_base(lay, "IMPORTED_DXF", level), type="text", p=[A(_svg_len(el.get("x")), _svg_len(el.get("y")))], text=txt[:500], h=fs * k * abs(mm[3])))
+                    out.append(dict(_base(lay, "IMPORTED_DXF", level), type="text", p=[A(_svg_len(el.get("x")), _svg_len(el.get("y")))], text=txt[:500], h=max(0.5, fs * k * abs(mm[3]) / text_ratio)))
         except (ValueError, IndexError):
             pass
         for ch in el:

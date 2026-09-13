@@ -1,10 +1,24 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 import { type CadDocument, type Entity, type View, type Discipline, visibleIn } from "../cad/building";
 import { solidsOf, pathTube, type Prism, type RoofPlane } from "../cad/solids";
 import { colourOf } from "../cad/plan";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
+import { api } from "../api";
+
+/** Referensnäten laddas en gång per fil och delas mellan scenerna; ett nät som inte laddats än är en tom plats, inte ett fel. */
+const meshCache = new Map<string, THREE.Object3D | "loading" | "failed">();
+async function loadMesh(asset: string, format: string): Promise<THREE.Object3D | null> {
+  const url = await api.cadAssetUrl(asset);
+  if (format === "glb" || format === "gltf") return (await new GLTFLoader().loadAsync(url)).scene;
+  if (format === "obj") return await new OBJLoader().loadAsync(url);
+  if (format === "stl") { const geo = await new STLLoader().loadAsync(url); return new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: "#9aa4b1", roughness: 0.8 })); }
+  return null;
+}
 
 /* Modellen i 3D: samma objekt som planen, byggda till kroppar och ritade med WebGL.
  *
@@ -83,6 +97,7 @@ function tubeGeometry(t: ReturnType<typeof pathTube>, o: [number, number]): THRE
 const KIND_COLOUR: Record<string, string> = { wall: "#d9dde3", curtain_wall: "#9fd3e8", door: "#c8a165", window: "#9fd3e8", opening: "#e8e8e8", floor: "#c4c8ce", ceiling: "#efece4", roof: "#a5533a", column: "#8b8f97", beam: "#7f8590", foundation: "#7a7d83", stair: "#cfc6b8", equipment: "#5c7080" };
 
 export default function BuildingView3D({ doc, view, selected, onSelect, onMove, transparency, sectionBox, standardView, ortho, wire }: Props) {
+  const [, setLoaded] = useState(0);        // räknas upp när ett referensnät laddats, så att scenen byggs om
   const host = useRef<HTMLDivElement>(null);
   const state = useRef<{ scene: THREE.Scene; renderer: THREE.WebGLRenderer; persp: THREE.PerspectiveCamera; orthoCam: THREE.OrthographicCamera; controls: OrbitControls; gizmo: TransformControls; group: THREE.Group; raf: number; span: number; origin: [number, number]; picks: Map<THREE.Object3D, string>; dispose: () => void } | null>(null);
   const cbs = useRef({ onSelect, onMove });
@@ -177,7 +192,21 @@ export default function BuildingView3D({ doc, view, selected, onSelect, onMove, 
     };
     for (const e of ents) {
       const holder = new THREE.Group(); holder.name = e.id; picks.set(holder, e.id);
-      if (e.type === "pipe" || e.type === "duct" || e.type === "cable_tray" || e.type === "conduit") {
+      if (e.type === "mesh") {
+        const c = meshCache.get(e.asset);
+        if (c === undefined) {
+          meshCache.set(e.asset, "loading");
+          loadMesh(e.asset, e.format).then((obj) => { meshCache.set(e.asset, obj ?? "failed"); setLoaded((n) => n + 1); }).catch(() => { meshCache.set(e.asset, "failed"); setLoaded((n) => n + 1); });
+        } else if (typeof c !== "string") {
+          const inst = c.clone(true);
+          const k = e.scale * MM;
+          inst.scale.set(k, k, k);
+          inst.position.set((e.p[0][0] - o[0]) * MM, (e.p[0][2] ?? 0) * MM, -(e.p[0][1] - o[1]) * MM);
+          inst.rotation.y = -((e.rot ?? 0) * Math.PI) / 180;
+          inst.traverse((m: any) => { if (m.isMesh) { picks.set(m, e.id); if (sel.has(e.id)) m.material = new THREE.MeshStandardMaterial({ color: "#1f6feb" }); } });
+          holder.add(inst);
+        }
+      } else if (e.type === "pipe" || e.type === "duct" || e.type === "cable_tray" || e.type === "conduit") {
         for (const g of tubeGeometry(pathTube(doc, e), o)) { const m = new THREE.Mesh(g, matFor(e, e.type)); m.castShadow = true; picks.set(m, e.id); holder.add(m); }
       } else {
         for (const s of solidsOf(doc, e)) { const m = new THREE.Mesh(prismGeometry(s, o), matFor(e, s.kind)); m.castShadow = true; m.receiveShadow = true; picks.set(m, e.id); holder.add(m); }

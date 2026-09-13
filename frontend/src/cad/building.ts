@@ -62,7 +62,9 @@ export type Circle = Common & { type: "circle"; p: [Pt]; r: number };
 export type Arc = Common & { type: "arc"; p: [Pt]; r: number; a0: number; a1: number };
 export type Ellipse = Common & { type: "ellipse"; p: [Pt]; rx: number; ry: number; rot?: number };
 export type Spline = Common & { type: "spline"; p: Pt[]; closed?: boolean };          // Catmull-Rom genom punkterna
-export type Text = Common & { type: "text"; p: [Pt]; text: string; h: number; rot?: number };
+export type TagField = "name" | "number" | "area" | "length" | "system" | "dn" | "level" | "id";
+/** En text kan hänga på ett objekt: då visar den objektets fält och följer det när det ändras. */
+export type Text = Common & { type: "text"; p: [Pt]; text: string; h: number; rot?: number; ref?: { id: string; field: TagField } | null };
 export type MText = Common & { type: "mtext"; p: [Pt]; text: string; h: number; w: number; rot?: number };
 export type DimKind = "linear" | "aligned" | "angular" | "radius" | "diameter";
 export type Dimension = Common & {
@@ -125,6 +127,16 @@ export type Device = Common & { type: "device"; kind: "light" | "outlet" | "swit
 // ---------------------------------------------------------------- mark
 
 export type Terrain = Common & { type: "terrain"; points: Pt3[] };
+
+// ---------------------------------------------------------------- underlag och referenser: bilder att rita mot, aldrig modell
+
+/** En PDF-sida eller bild bakom planen. Skalan är verifierad (ur en läst handling), uppmätt, eller saknas - och då är underlaget en bild man tittar på, inte något man fångar mått i. */
+export type Underlay = Common & {
+  type: "underlay"; p: [Pt]; asset: string; px: [number, number]; mm_per_px: number | null; rot?: number; opacity?: number;
+  scale_state: "VERIFIED" | "CALIBRATED" | "UNCALIBRATED"; source?: Record<string, any> | null;
+};
+/** Ett 3D-nät från en fil (GLB/GLTF/OBJ/STL) som referens i modellen: placeras, skalas, syns - men mängdas inte. */
+export type MeshRef = Common & { type: "mesh"; p: [Pt3]; asset: string; format: "glb" | "gltf" | "obj" | "stl"; scale: number; rot?: number; bounds?: { min: Pt3; max: Pt3 } | null; filename?: string };
 export type SiteObject = Common & { type: "site"; kind: "site_boundary" | "property_boundary" | "road" | "path" | "footprint" | "spot" | "other"; p: Pt[]; z?: number | null; closed?: boolean };
 
 export type Entity =
@@ -132,12 +144,13 @@ export type Entity =
   | Wall | CurtainWall | Door | Window | Opening | Floor | Roof | Ceiling | Room | Stair | Railing
   | Column | Beam | Foundation | Truss
   | Pipe | Duct | CableTray | Conduit | Fitting | Equipment | Device
-  | Terrain | SiteObject;
+  | Terrain | SiteObject
+  | Underlay | MeshRef;
 export type EntityType = Entity["type"];
 
 export const BUILDING_TYPES: EntityType[] = ["wall", "curtain_wall", "door", "window", "opening", "floor", "roof", "ceiling", "room", "stair", "railing",
   "column", "beam", "foundation", "truss", "pipe", "duct", "cable_tray", "conduit", "fitting", "equipment", "device", "terrain", "site"];
-export const GENERIC_TYPES: EntityType[] = ["line", "polyline", "rect", "circle", "arc", "ellipse", "spline", "text", "mtext", "dim", "leader", "hatch", "block"];
+export const GENERIC_TYPES: EntityType[] = ["line", "polyline", "rect", "circle", "arc", "ellipse", "spline", "text", "mtext", "dim", "leader", "hatch", "block", "underlay", "mesh"];
 export const MEP_PATH_TYPES: EntityType[] = ["pipe", "duct", "cable_tray", "conduit"];
 
 // ---------------------------------------------------------------- vyer och blad
@@ -396,6 +409,14 @@ export function validate(doc: CadDocument): Problem[] {
         break;
       case "line": case "rect":
         if (pts.length < 2) out.push({ id: e.id, field: "p", message: "Två punkter behövs" });
+        break;
+      case "underlay":
+        if (!e.asset || !(e.px?.[0] > 0 && e.px?.[1] > 0)) out.push({ id: e.id, field: "asset", message: "Underlaget saknar bild eller bildmått" });
+        if (e.mm_per_px != null && !(e.mm_per_px > 0)) out.push({ id: e.id, field: "mm_per_px", message: "Underlagets skala måste vara större än noll" });
+        break;
+      case "mesh":
+        if (!e.asset || !["glb", "gltf", "obj", "stl"].includes(e.format)) out.push({ id: e.id, field: "asset", message: "Referensnätet saknar fil eller format" });
+        if (!(e.scale > 0)) out.push({ id: e.id, field: "scale", message: "Referensnätet behöver en skala (mm per enhet)" });
         break;
       case "block":
         if (!doc.blocks.some((b) => b.id === e.def)) out.push({ id: e.id, field: "def", message: "Blockdefinitionen finns inte" });

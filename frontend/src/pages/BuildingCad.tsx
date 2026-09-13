@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import {
-  type CadDocument, type Entity, type Level, type Pt, type View, type Discipline, type Wall, DISCIPLINES, migrate, newDocument, uid, validate, levelOf, visibleIn,
+  type CadDocument, type Entity, type Level, type Pt, type View, type Discipline, type Wall, type TagField, DISCIPLINES, migrate, newDocument, uid, validate, levelOf, visibleIn,
 } from "../cad/building";
 import { Tx, commit, emptyHistory, undo as undoTx, redo as redoTx, type History } from "../cad/commands";
 import { type Cam, type Snap, type SnapSettings, defaultSnaps, drawPlan, hits, gripsOf, gripped, moved, snapPoint, constrain, toWorld, toScreen, bboxOf, colourOf, wallAt } from "../cad/plan";
@@ -11,6 +11,7 @@ import { quantities, materialQuantities, label as qLabel } from "../cad/quantiti
 import { findClashes, proposeOpenings, type Clash } from "../cad/clash";
 import { sectionOfDocument, elevationPlane, elevationOfDocument, type SectionShape } from "../cad/solids";
 import BuildingView3D, { type ViewName } from "../components/BuildingView3D";
+import { FileMenu, SheetsPanel, AgentPanel, ghostsOf, txOf, type Proposal } from "./BuildingCadPanels";
 
 /* Bygg-CAD: ett rum där en hel byggnad ritas - från ett tomt blad till en modell med nivåer, väggar, dörrar,
  * bjälklag, tak, stomme och installationer - i 2D och 3D på en gång.
@@ -46,7 +47,7 @@ export default function BuildingCadPage() {
   const [typed, setTyped] = useState("");
   const [typedAngle, setTypedAngle] = useState<string | null>(null);
   const [defaults, setDefaults] = useState<ToolDefaults>(DEFAULTS);
-  const [panel, setPanel] = useState<"egenskaper" | "mangder" | "kollisioner" | "revisioner" | "snitt">("egenskaper");
+  const [panel, setPanel] = useState<"egenskaper" | "mangder" | "kollisioner" | "revisioner" | "snitt" | "agent" | "blad">("egenskaper");
   const [saving, setSaving] = useState<"" | "sparar" | "sparat" | "krock">("");
   const [err, setErr] = useState("");
   const [clashes, setClashes] = useState<Clash[] | null>(null);
@@ -58,6 +59,10 @@ export default function BuildingCadPage() {
   const [transp, setTransp] = useState<Partial<Record<Discipline, number>>>({});
   const [sectionLine, setSectionLine] = useState<[Pt, Pt] | null>(null);
   const [elevDir, setElevDir] = useState<"N" | "S" | "E" | "W">("S");
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [calib, setCalib] = useState<{ id: string; pts: Pt[] } | null>(null);
+  const images = useRef(new Map<string, HTMLImageElement | null>());
+  const [imgTick, setImgTick] = useState(0);
   const drag = useRef<{ kind: "pan" | "move" | "grip" | "box"; from: Pt; screen: [number, number]; ids?: string[]; grip?: { id: string; i: number }; box?: [Pt, Pt]; before?: Entity[] } | null>(null);
   const dirty = useRef(false);
   const savedRevision = useRef(0);
@@ -82,9 +87,25 @@ export default function BuildingCadPage() {
 
   const apply = useCallback((tx: Tx) => {
     if (tx.empty) return;
+    // associativa mått: ett mått som hänger på ett objekt följer med när objektet rör sig, i samma transaktion
+    const preview = commit(doc, emptyHistory(), tx.build()).doc;
+    for (const d of preview.entities) {
+      if (d.type !== "dim" || !d.refs?.length) continue;
+      const pts = d.p.map((q, i) => { const r = d.refs![i]; if (!r) return q; const t = preview.entities.find((e) => e.id === r.id); const gp = t ? gripsOf(t)[r.grip ?? 0] : undefined; return gp ?? q; });
+      if (pts.some((q, i) => q[0] !== d.p[i][0] || q[1] !== d.p[i][1])) { const cur = doc.entities.find((e) => e.id === d.id); if (cur) tx.update("entities", cur, { ...d, p: pts }); }
+    }
     const r = commit(doc, hist, tx.build());
     setDoc(r.doc); setHist(r.hist); dirty.current = true;
   }, [doc, hist]);
+
+  // underlagens bilder: hämtas en gång per fil, med inloggningen gjord
+  useEffect(() => {
+    for (const e of doc.entities) {
+      if (e.type !== "underlay" || images.current.has(e.asset)) continue;
+      images.current.set(e.asset, null);
+      api.cadAssetUrl(e.asset).then((u) => { const im = new Image(); im.onload = () => { images.current.set(e.asset, im); setImgTick((n) => n + 1); }; im.src = u; }).catch(() => undefined);
+    }
+  }, [doc.entities]);
 
   const undo = useCallback(() => { const r = undoTx(doc, hist); if (r.tx) { setDoc(r.doc); setHist(r.hist); dirty.current = true; setDraft([]); } }, [doc, hist]);
   const redo = useCallback(() => { const r = redoTx(doc, hist); if (r.tx) { setDoc(r.doc); setHist(r.hist); dirty.current = true; setDraft([]); } }, [doc, hist]);
@@ -137,14 +158,17 @@ export default function BuildingCadPage() {
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     const pts = hover && draft.length ? [...draft, hover.p] : draft;
     const ghost = draft.length ? ghostOf(tool, pts, ctx) : null;
-    drawPlan(g, doc, view, { colour: (e) => colourOf(doc, e), selected, hover, ghost, cam, scale_ratio: view.scale_ratio ?? 100, showGrid: snaps.grid }, [r.width, r.height]);
+    drawPlan(g, doc, view, { colour: (e) => colourOf(doc, e), selected, hover, ghost, cam, scale_ratio: view.scale_ratio ?? 100, showGrid: snaps.grid, ghosts: ghostsOf(proposals), images: images.current }, [r.width, r.height]);
+    void imgTick;
+    // kalibreringens punkter
+    if (calib) { g.fillStyle = "#e8590c"; for (const q of calib.pts) { const P = toScreen(cam, q); g.beginPath(); g.arc(P[0], P[1], 5, 0, Math.PI * 2); g.fill(); } g.font = "12px system-ui, sans-serif"; g.fillText(calib.pts.length ? "klicka den andra punkten" : "kalibrera: klicka en punkt med känt avstånd till en annan", 12, 20); }
     // snittlinjen
     if (sectionLine) { const A = toScreen(cam, sectionLine[0]), B = toScreen(cam, sectionLine[1]); g.strokeStyle = "#e8590c"; g.setLineDash([10, 5]); g.lineWidth = 2; g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.stroke(); g.setLineDash([]); g.font = "12px ui-monospace"; g.fillStyle = "#e8590c"; g.fillText("A", A[0] - 14, A[1] - 6); g.fillText("A", B[0] + 6, B[1] - 6); }
     // markeringsrutan och måttet som ritas
     const d = drag.current;
     if (d?.kind === "box" && d.box) { const A = toScreen(cam, d.box[0]), B = toScreen(cam, d.box[1]); g.strokeStyle = "#1f6feb"; g.setLineDash([4, 3]); g.lineWidth = 1; g.strokeRect(Math.min(A[0], B[0]), Math.min(A[1], B[1]), Math.abs(B[0] - A[0]), Math.abs(B[1] - A[1])); g.fillStyle = "rgba(31,111,235,0.07)"; g.fillRect(Math.min(A[0], B[0]), Math.min(A[1], B[1]), Math.abs(B[0] - A[0]), Math.abs(B[1] - A[1])); g.setLineDash([]); }
     if (pts.length >= 2) { const a = pts[pts.length - 2], b = pts[pts.length - 1]; const B = toScreen(cam, b); const L = Math.hypot(b[0] - a[0], b[1] - a[1]); const ang = ((Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI + 360) % 360; g.fillStyle = "#0b7285"; g.font = "12px ui-monospace, monospace"; g.fillText(`${typed ? typed + " mm" : fmtMm(L)}  ${typedAngle !== null ? typedAngle + "°" : ang.toFixed(1) + "°"}`, B[0] + 12, B[1] - 10); }
-  }, [doc, view, selected, hover, draft, tool, ctx, cam, snaps.grid, sectionLine, typed, typedAngle]);
+  }, [doc, view, selected, hover, draft, tool, ctx, cam, snaps.grid, sectionLine, typed, typedAngle, proposals, calib, imgTick]);
   useEffect(() => { paint(); }, [paint]);
   useEffect(() => { const on = () => paint(); window.addEventListener("resize", on); return () => window.removeEventListener("resize", on); }, [paint]);
 
@@ -178,6 +202,22 @@ export default function BuildingCadPage() {
     (ev.target as Element).setPointerCapture?.(ev.pointerId);
     if (ev.button === 1 || ev.altKey) { drag.current = { kind: "pan", from: toWorld(cam, x, y), screen: [x, y] }; return; }
     if (ev.button !== 0) return;
+    if (calib) {
+      // två punkter i underlaget och ett känt avstånd: skalan följer, och underlaget är uppmätt
+      const q = toWorld(cam, x, y);
+      const pts = [...calib.pts, q];
+      if (pts.length < 2) { setCalib({ ...calib, pts }); return; }
+      const u = doc.entities.find((e) => e.id === calib.id);
+      const raw = window.prompt("Avståndet mellan punkterna i millimeter", "");
+      setCalib(null);
+      const known = Number((raw ?? "").replace(",", "."));
+      if (!u || u.type !== "underlay" || !isFinite(known) || known <= 0) return;
+      const measured = Math.hypot(pts[1][0] - pts[0][0], pts[1][1] - pts[0][1]);
+      if (measured <= 0) return;
+      const k = (u.mm_per_px ?? 1) * (known / measured);
+      apply(new Tx("Kalibrera underlag").update("entities", u, { ...u, mm_per_px: k, scale_state: "CALIBRATED", version: u.version + 1 }));
+      return;
+    }
     const s = snapAt(x, y);
     if (tool === "valj") {
       const grip = sel.flatMap((eid) => { const e = doc.entities.find((q) => q.id === eid); return e ? gripsOf(e).map((gp, i) => ({ id: eid, i, d: Math.hypot(gp[0] - s.p[0], gp[1] - s.p[1]) })) : []; }).sort((a, b) => a.d - b.d)[0];
@@ -285,6 +325,7 @@ export default function BuildingCadPage() {
     if (dz && (after.type === "pipe" || after.type === "duct" || after.type === "cable_tray" || after.type === "conduit")) after = { ...after, elevation: (after.elevation ?? 0) + dz } as Entity;
     if (dz && (after.type === "wall" || after.type === "column")) after = { ...after, base_offset: (after.base_offset ?? 0) + dz, top_offset: (after.top_offset ?? 0) + dz } as Entity;
     if (dz && (after.type === "floor" || after.type === "roof")) after = { ...after, offset: (after.offset ?? 0) + dz } as Entity;
+    if (dz && after.type === "mesh") after = { ...after, p: [[after.p[0][0], after.p[0][1], after.p[0][2] + dz]] } as Entity;
     apply(new Tx("Flytta i 3D").update("entities", e, after));
   }, [doc, apply]);
 
@@ -352,6 +393,7 @@ export default function BuildingCadPage() {
           {tools.map((t) => <button key={t.id} className={`bcad-tool${tool === t.id ? " on" : ""}`} title={`${t.hint} (${t.key})`} onClick={() => { setTool(t.id); setDraft([]); }}>{t.label}<kbd>{t.key}</kbd></button>)}
         </div>
         <div className="bcad-right">
+          <FileMenu sheetId={sheetId} name={meta.name} doc={doc} viewId={view.id} scaleRatio={view.scale_ratio ?? 100} level={level} centre={() => { const r = wrap.current?.getBoundingClientRect(); return r ? toWorld(cam, r.width / 2, r.height / 2) : [0, 0]; }} apply={apply} onError={setErr} onUnderlayAdded={(uid_, cal) => { setSel([uid_]); if (cal) setCalib({ id: uid_, pts: [] }); }} />
           <button className="ghost small" onClick={undo} disabled={!hist.past.length} title="Ångra (Ctrl+Z)">↶</button>
           <button className="ghost small" onClick={redo} disabled={!hist.future.length} title="Gör om (Ctrl+Y)">↷</button>
           <button className={`ghost small${snaps.on ? " on" : ""}`} onClick={() => setSnaps((s) => ({ ...s, on: !s.on }))} title="Fångst (F3)">Fångst</button>
@@ -421,10 +463,12 @@ export default function BuildingCadPage() {
 
       <aside className="bcad-props">
         <div className="bcad-tabs">
-          {(["egenskaper", "mangder", "kollisioner", "revisioner", "snitt"] as const).map((p) => <button key={p} className={panel === p ? "on" : ""} onClick={() => { setPanel(p); if (p === "kollisioner" && !clashes) setClashes(findClashes(doc)); }}>{{ egenskaper: "Egenskaper", mangder: "Mängder", kollisioner: "Kollisioner", revisioner: "Revisioner", snitt: "Snitt" }[p]}</button>)}
+          {(["egenskaper", "mangder", "kollisioner", "revisioner", "snitt", "blad", "agent"] as const).map((p) => <button key={p} className={panel === p ? "on" : ""} onClick={() => { setPanel(p); if (p === "kollisioner" && !clashes) setClashes(findClashes(doc)); }}>{{ egenskaper: "Egenskaper", mangder: "Mängder", kollisioner: "Kollisioner", revisioner: "Revisioner", snitt: "Snitt", blad: "Blad", agent: "Agent" }[p]}</button>)}
         </div>
         {err && <p className="error small">{err}</p>}
-        {panel === "egenskaper" && (one ? <Properties doc={doc} e={one} onChange={(patch, label) => updateEntity(one, patch, label)} /> : selEntities.length > 1 ? <p className="muted">{selEntities.length} objekt valda. Delete tar bort dem.</p> : <ToolDefaultsPanel tool={tool} defaults={defaults} setDefaults={setDefaults} materials={doc.materials} />)}
+        {panel === "egenskaper" && (one ? <Properties doc={doc} e={one} onChange={(patch, label) => updateEntity(one, patch, label)} onCalibrate={() => { setCalib({ id: one.id, pts: [] }); setTool("valj"); }} /> : selEntities.length > 1 ? <p className="muted">{selEntities.length} objekt valda. Delete tar bort dem.</p> : <ToolDefaultsPanel tool={tool} defaults={defaults} setDefaults={setDefaults} materials={doc.materials} />)}
+        {panel === "blad" && <SheetsPanel sheetId={sheetId} doc={doc} apply={apply} onError={setErr} />}
+        {panel === "agent" && <AgentPanel sheetId={sheetId} selection={sel} proposals={proposals} setProposals={setProposals} onDirtyWarning={dirty.current} onApprove={(ps) => { apply(txOf(doc, ps)); }} />}
         {panel === "mangder" && q && (
           <div className="bcad-list">
             <table className="qty"><thead><tr><th>Objekt</th><th>Antal</th><th>m</th><th>m²</th><th>m³</th><th>kg</th></tr></thead>
@@ -487,7 +531,7 @@ function Num({ v, onChange, step = 10, min }: { v: number | null | undefined; on
   return <input className="bcad-num" type="number" step={step} min={min} value={s} onChange={(e) => setS(e.target.value)} onBlur={() => { const n = Number(s.replace(",", ".")); if (isFinite(n) && n !== v) onChange(n); }} onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }} />;
 }
 
-function Properties({ doc, e, onChange }: { doc: CadDocument; e: Entity; onChange: (patch: any, label?: string) => void }) {
+function Properties({ doc, e, onChange, onCalibrate }: { doc: CadDocument; e: Entity; onChange: (patch: any, label?: string) => void; onCalibrate?: () => void }) {
   const levels = doc.levels;
   const mats = doc.materials;
   const F = (label: string, node: any) => <div className="bcad-field"><label>{label}</label>{node}</div>;
@@ -551,7 +595,10 @@ function Properties({ doc, e, onChange }: { doc: CadDocument; e: Entity; onChang
       specific = <>{F("Slag", <input value={e.kind} onChange={(ev) => onChange({ kind: ev.target.value }, "Slag")} />)}{F("System", <input value={e.system ?? ""} onChange={(ev) => onChange({ system: ev.target.value }, "System")} />)}{F("Höjd", <Num v={e.p[0][2]} step={100} onChange={(n) => onChange({ p: [[e.p[0][0], e.p[0][1], n]] }, "Höjd")} />)}</>;
       break;
     case "text": case "mtext":
-      specific = <>{F("Text", <input value={e.text} onChange={(ev) => onChange({ text: ev.target.value }, "Text")} />)}{F("Höjd (mm på papper)", <Num v={e.h} step={0.5} onChange={(n) => onChange({ h: n }, "Texthöjd")} />)}{F("Vridning °", <Num v={e.rot ?? 0} step={15} onChange={(n) => onChange({ rot: n }, "Vridning")} />)}</>;
+      specific = <>{<>{F("Text", <input value={e.text} onChange={(ev) => onChange({ text: ev.target.value }, "Text")} />)}{F("Höjd (mm på papper)", <Num v={e.h} step={0.5} onChange={(n) => onChange({ h: n }, "Texthöjd")} />)}{F("Vridning °", <Num v={e.rot ?? 0} step={15} onChange={(n) => onChange({ rot: n }, "Vridning")} />)}</>}{e.type === "text" && <>
+        {F("Hänger på", <select value={e.ref?.id ?? ""} onChange={(ev) => onChange({ ref: ev.target.value ? { id: ev.target.value, field: e.ref?.field ?? "name" } : null }, "Text hänger på")}><option value="">– fri text –</option>{doc.entities.filter((x) => x.id !== e.id && x.type !== "text" && x.type !== "underlay").map((x) => <option key={x.id} value={x.id}>{qLabel(x.type)} {x.name ?? x.id}</option>)}</select>)}
+        {e.ref && F("Visar", <select value={e.ref.field} onChange={(ev) => onChange({ ref: { ...e.ref, field: ev.target.value as TagField } }, "Text visar")}>{(["name", "number", "area", "length", "system", "dn", "level", "id"] as TagField[]).map((f) => <option key={f} value={f}>{{ name: "namn", number: "nummer", area: "area", length: "längd", system: "system", dn: "DN", level: "nivå", id: "id" }[f]}</option>)}</select>)}
+      </>}</>;
       break;
     case "dim":
       specific = <>{F("Avstånd", <Num v={e.off} onChange={(n) => onChange({ off: n }, "Måttavstånd")} />)}{F("Mått", <span className="muted">{e.p.length >= 2 ? fmtMm(Math.hypot(e.p[1][0] - e.p[0][0], e.p[1][1] - e.p[0][1])) : ""}</span>)}</>;
@@ -561,6 +608,25 @@ function Properties({ doc, e, onChange }: { doc: CadDocument; e: Entity; onChang
       break;
     case "site":
       specific = F("Slag", <select value={e.kind} onChange={(ev) => onChange({ kind: ev.target.value }, "Slag")}>{["site_boundary", "property_boundary", "road", "path", "footprint", "spot", "other"].map((k) => <option key={k} value={k}>{k}</option>)}</select>);
+      break;
+    case "underlay":
+      specific = <>
+        {F("Skala", <span className="muted">{e.scale_state === "VERIFIED" ? "verifierad (läst handling)" : e.scale_state === "CALIBRATED" ? "uppmätt" : "saknas"}</span>)}
+        {F("mm per pixel", <Num v={e.mm_per_px ?? null} step={0.01} onChange={(n) => onChange({ mm_per_px: n, scale_state: "CALIBRATED" }, "Underlagets skala")} />)}
+        {F("Genomskinlighet", <Num v={Math.round((e.opacity ?? 0.6) * 100)} step={5} min={0} onChange={(n) => onChange({ opacity: Math.max(0, Math.min(1, n / 100)) }, "Underlag")} />)}
+        {F("Vridning", <Num v={e.rot ?? 0} step={1} onChange={(n) => onChange({ rot: n }, "Underlag")} />)}
+        {F("Kalibrera", <button className="secondary small" onClick={onCalibrate}>Två punkter</button>)}
+        {e.source?.filename && F("Källa", <span className="muted small">{e.source.filename}{e.source.page != null ? ` s. ${e.source.page + 1}` : ""}</span>)}
+      </>;
+      break;
+    case "mesh":
+      specific = <>
+        {F("Fil", <span className="muted small">{e.filename ?? e.asset} ({e.format})</span>)}
+        {F("mm per enhet", <Num v={e.scale} step={1} onChange={(n) => onChange({ scale: n }, "Referensens skala")} />)}
+        {F("Höjd (z)", <Num v={e.p[0][2]} onChange={(n) => onChange({ p: [[e.p[0][0], e.p[0][1], n]] }, "Referensens höjd")} />)}
+        {F("Vridning", <Num v={e.rot ?? 0} step={1} onChange={(n) => onChange({ rot: n }, "Referens")} />)}
+        {e.bounds && F("Låda", <span className="muted small">{((e.bounds.max[0] - e.bounds.min[0]) * e.scale / 1000).toFixed(2)} × {((e.bounds.max[2] - e.bounds.min[2]) * e.scale / 1000).toFixed(2)} × {((e.bounds.max[1] - e.bounds.min[1]) * e.scale / 1000).toFixed(2)} m</span>)}
+      </>;
       break;
     default: break;
   }

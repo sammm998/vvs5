@@ -5,7 +5,7 @@
  * fångar är det man ser. */
 
 import {
-  type CadDocument, type Entity, type Pt, type View, type Wall, type Door, type Window, type Opening, type GridLine,
+  type CadDocument, type Entity, type Pt, type View, type Wall, type Door, type Window, type Opening, type GridLine, type Underlay, type MeshRef,
   alongWall, dist, entity, visibleIn, wallLength,
 } from "./building";
 import { wallFootprint, profilePolygon } from "./solids";
@@ -64,9 +64,29 @@ export function segmentsOf(doc: CadDocument, e: Entity): Seg[] {
     case "dim": case "leader": return polySegs(e.p, false);
     case "hatch": return polySegs(e.p, true);
     case "text": case "mtext": return [];
+    case "underlay": return polySegs(underlayCorners(e), true);
+    case "mesh": return polySegs(meshFootprint(e), true);
     case "block": { const def = doc.blocks.find((b) => b.id === e.def); if (!def) return []; return def.entities.flatMap((x) => segmentsOf(doc, x as Entity).map(([a, b]) => [[a[0] + e.p[0][0] - def.origin[0], a[1] + e.p[0][1] - def.origin[1]], [b[0] + e.p[0][0] - def.origin[0], b[1] + e.p[0][1] - def.origin[1]]] as Seg)); }
     default: return [];
   }
+}
+
+/** Underlagets fyra hörn i planen: bildens pixlar gånger dess skala (1 mm/px tills den är uppmätt), vridet kring övre vänstra hörnet. */
+export function underlayCorners(e: Underlay): Pt[] {
+  const k = e.mm_per_px ?? 1;
+  const w = e.px[0] * k, h = e.px[1] * k;
+  const R = ((e.rot ?? 0) * Math.PI) / 180, c = Math.cos(R), s = Math.sin(R);
+  const [x, y] = e.p[0];
+  const P = (u: number, v: number): Pt => [x + u * c - v * s, y + u * s + v * c];
+  return [P(0, 0), P(w, 0), P(w, h), P(0, h)];
+}
+/** Referensnätets låda i planen, ur filens egna mått gånger skalan; utan låda en halvmeters ruta så att det går att välja. */
+export function meshFootprint(e: MeshRef): Pt[] {
+  const [x, y] = e.p[0];
+  const b = e.bounds;
+  const w = b ? (b.max[0] - b.min[0]) * e.scale : 500, d = b ? (b.max[2] - b.min[2]) * e.scale : 500;   // glTF: y upp, z mot betraktaren ⇒ planens y är −z
+  const x0 = b ? x + b.min[0] * e.scale : x - w / 2, y0 = b ? y - b.max[2] * e.scale : y - d / 2;
+  return [[x0, y0], [x0 + w, y0], [x0 + w, y0 + d], [x0, y0 + d]];
 }
 
 export function bboxOf(doc: CadDocument, e: Entity): [number, number, number, number] {
@@ -109,7 +129,8 @@ export function gripsOf(e: Entity): Pt[] {
     case "wall": case "curtain_wall": case "beam": case "truss": case "stair": case "line": return [e.p[0], e.p[1]];
     case "floor": case "roof": case "ceiling": case "room": case "polyline": case "spline": case "railing": case "hatch": case "site": case "dim": case "leader": return e.p;
     case "foundation": return e.p;
-    case "column": case "text": case "mtext": case "block": case "circle": case "arc": case "ellipse": return [e.p[0]];
+    case "column": case "text": case "mtext": case "block": case "circle": case "arc": case "ellipse": case "underlay": return [e.p[0]];
+    case "mesh": return [[e.p[0][0], e.p[0][1]]];
     case "rect": { const [[x0, y0], [x1, y1]] = e.p; return [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]; }
     case "pipe": case "duct": case "cable_tray": case "conduit": return e.path.map((q) => [q[0], q[1]] as Pt);
     case "fitting": case "equipment": case "device": return [[e.p[0][0], e.p[0][1]]];
@@ -123,7 +144,7 @@ export function moved(e: Entity, dx: number, dy: number): Entity {
   switch (e.type) {
     case "door": case "window": case "opening": return e;
     case "pipe": case "duct": case "cable_tray": case "conduit": return { ...e, path: e.path.map((q) => [q[0] + dx, q[1] + dy, q[2]]) } as Entity;
-    case "fitting": case "equipment": case "device": return { ...e, p: [[e.p[0][0] + dx, e.p[0][1] + dy, e.p[0][2]]] } as Entity;
+    case "fitting": case "equipment": case "device": case "mesh": return { ...e, p: [[e.p[0][0] + dx, e.p[0][1] + dy, e.p[0][2]]] } as Entity;
     case "terrain": return { ...e, points: e.points.map((q) => [q[0] + dx, q[1] + dy, q[2]]) } as Entity;
     case "roof": return { ...e, p: e.p.map(mv), ridge: e.ridge ? [mv(e.ridge[0]), mv(e.ridge[1])] : e.ridge } as Entity;
     default: return { ...(e as any), p: (e as any).p.map(mv) } as Entity;
@@ -234,7 +255,11 @@ export function wallAt(doc: CadDocument, view: View, p: Pt, tol: number): { wall
 
 // ---------------------------------------------------------------- ritning
 
-export type PlanStyle = { colour: (e: Entity) => string; selected: Set<string>; hover?: Snap | null; ghost?: Entity | null; cam: Cam; scale_ratio: number; showGrid: number };
+export type PlanStyle = {
+  colour: (e: Entity) => string; selected: Set<string>; hover?: Snap | null; ghost?: Entity | null; cam: Cam; scale_ratio: number; showGrid: number;
+  ghosts?: Entity[];                                       // förslag som inte är godkända än
+  images?: Map<string, HTMLImageElement | null>;           // underlagens bilder, laddade av sidan
+};
 
 const DISC_COLOUR: Record<string, string> = { ARK: "#111111", KONSTR: "#7048e8", VVS: "#1f6feb", VENT: "#0b7285", EL: "#b58900", SPRINKLER: "#c0392b", BRAND: "#c0392b", MARK: "#2f9e44", UTRUSTNING: "#5c7080", ALLMAN: "#444444" };
 export function colourOf(doc: CadDocument, e: Entity): string {
@@ -267,10 +292,13 @@ export function drawPlan(g: CanvasRenderingContext2D, doc: CadDocument, view: Vi
     g.textAlign = "left"; g.textBaseline = "alphabetic";
   }
   const ents = doc.entities.filter((e) => visibleIn(doc, view, e));
+  // underlagen längst ner: bilder att rita mot
+  for (const e of ents) if (e.type === "underlay") drawUnderlay(g, e, st);
   // ytor först, sedan väggar, sedan MEP och text
   const order = (e: Entity) => (e.type === "floor" || e.type === "room" || e.type === "site" || e.type === "terrain" || e.type === "hatch" ? 0 : e.type === "roof" || e.type === "ceiling" ? 1 : e.type === "wall" || e.type === "curtain_wall" || e.type === "column" || e.type === "foundation" ? 2 : e.type === "door" || e.type === "window" || e.type === "opening" || e.type === "beam" || e.type === "stair" || e.type === "railing" ? 3 : e.type === "text" || e.type === "mtext" || e.type === "dim" || e.type === "leader" ? 5 : 4);
   for (const e of [...ents].sort((a, b) => order(a) - order(b))) drawEntity(g, doc, e, st, false);
   if (st.ghost) drawEntity(g, doc, st.ghost, st, true);
+  for (const e of st.ghosts ?? []) drawEntity(g, doc, e, st, true);
   // markering och grepp
   for (const e of ents) if (st.selected.has(e.id)) {
     const [x0, y0, x1, y1] = bboxOf(doc, e); const A = S([x0, y0]), B = S([x1, y1]);
@@ -287,6 +315,43 @@ export function drawPlan(g: CanvasRenderingContext2D, doc: CadDocument, view: Vi
     else if (h.kind === "skärning") { g.moveTo(P[0] - 6, P[1] - 6); g.lineTo(P[0] + 6, P[1] + 6); g.moveTo(P[0] + 6, P[1] - 6); g.lineTo(P[0] - 6, P[1] + 6); g.stroke(); }
     else if (h.kind === "vinkelrät") { g.strokeRect(P[0] - 5, P[1] - 5, 10, 10); g.moveTo(P[0] - 5, P[1] + 5); g.lineTo(P[0] + 5, P[1] + 5); g.stroke(); }
     else { g.arc(P[0], P[1], 3.5, 0, Math.PI * 2); g.stroke(); }
+  }
+}
+
+function drawUnderlay(g: CanvasRenderingContext2D, e: Underlay, st: PlanStyle) {
+  const { cam } = st;
+  const corners = underlayCorners(e);
+  const img = st.images?.get(e.asset);
+  const k = e.mm_per_px ?? 1;
+  const A = toScreen(cam, e.p[0]);
+  g.save();
+  g.translate(A[0], A[1]); g.rotate(((e.rot ?? 0) * Math.PI) / 180);
+  g.globalAlpha = e.opacity ?? 0.6;
+  if (img) g.drawImage(img, 0, 0, e.px[0] * k * cam.s, e.px[1] * k * cam.s);
+  else { g.fillStyle = "#e9e9e6"; g.fillRect(0, 0, e.px[0] * k * cam.s, e.px[1] * k * cam.s); }
+  g.restore();
+  g.globalAlpha = 1;
+  if (e.scale_state === "UNCALIBRATED") {
+    g.strokeStyle = "#e8590c"; g.setLineDash([6, 4]); g.lineWidth = 1; g.beginPath();
+    corners.forEach((p, i) => { const P = toScreen(cam, p); if (i) g.lineTo(P[0], P[1]); else g.moveTo(P[0], P[1]); }); g.closePath(); g.stroke(); g.setLineDash([]);
+    g.fillStyle = "#e8590c"; g.font = "11px ui-monospace, monospace"; g.fillText("underlag utan skala - kalibrera", A[0] + 6, A[1] + 14);
+  }
+}
+
+/** Vad en text visar: sin egen text, eller det fält på objektet den hänger på. Ett brutet band visar det. */
+export function tagText(doc: CadDocument, e: Extract<Entity, { type: "text" }>): string {
+  if (!e.ref) return e.text;
+  const t = entity(doc, e.ref.id);
+  if (!t) return `[${e.ref.id} saknas]`;
+  switch (e.ref.field) {
+    case "name": return (t as any).name ?? "";
+    case "number": return (t as any).number ?? "";
+    case "id": return t.id;
+    case "level": return doc.levels.find((l) => l.id === ((t as any).base_level ?? (t as any).level))?.name ?? "";
+    case "system": return (t as any).system ?? "";
+    case "dn": return (t as any).dn != null ? `DN${(t as any).dn}` : "";
+    case "area": { const p: Pt[] = (t as any).p ?? []; if (p.length < 3) return ""; let a = 0; for (let i = 0; i < p.length; i++) { const q = p[(i + 1) % p.length]; a += p[i][0] * q[1] - q[0] * p[i][1]; } return `${(Math.abs(a) / 2 / 1e6).toFixed(1)} m²`; }
+    case "length": { if ("path" in t) { const q = (t as any).path; let L = 0; for (let i = 0; i + 1 < q.length; i++) L += Math.hypot(q[i + 1][0] - q[i][0], q[i + 1][1] - q[i][1], (q[i + 1][2] ?? 0) - (q[i][2] ?? 0)); return `${(L / 1000).toFixed(2)} m`; } const p: Pt[] = (t as any).p ?? []; return p.length >= 2 ? `${Math.round(dist(p[0], p[1]))}` : ""; }
   }
 }
 
@@ -355,7 +420,7 @@ function drawEntity(g: CanvasRenderingContext2D, doc: CadDocument, e: Entity, st
     }
     case "fitting": case "device": { const P = S([e.p[0][0], e.p[0][1]]); g.beginPath(); g.arc(P[0], P[1], 5, 0, Math.PI * 2); g.stroke(); break; }
     case "equipment": { for (const [a, b] of segmentsOf(doc, e)) { const A = S(a), B = S(b); g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.stroke(); } const [c] = e.p; const P = S([c[0], c[1]]); g.font = "10px system-ui"; g.fillText(e.name || e.kind, P[0] + 4, P[1] + 4); break; }
-    case "text": case "mtext": { const P = S(e.p[0]); const px = Math.max(8, e.h * st.scale_ratio * cam.s); g.save(); g.translate(P[0], P[1]); g.rotate(-((e.rot ?? 0) * Math.PI) / 180); g.font = `${px}px ui-monospace, monospace`; g.fillText(e.text, 0, 0); g.restore(); break; }
+    case "text": case "mtext": { const P = S(e.p[0]); const px = Math.max(8, e.h * st.scale_ratio * cam.s); g.save(); g.translate(P[0], P[1]); g.rotate(-((e.rot ?? 0) * Math.PI) / 180); g.font = `${px}px ui-monospace, monospace`; g.fillText(e.type === "text" ? tagText(doc, e) : e.text, 0, 0); g.restore(); break; }
     case "dim": {
       if (e.p.length < 2) break;
       const [a, b] = e.p; const L = dist(a, b) || 1; const n: Pt = [-(b[1] - a[1]) / L * e.off, (b[0] - a[0]) / L * e.off];
@@ -367,6 +432,8 @@ function drawEntity(g: CanvasRenderingContext2D, doc: CadDocument, e: Entity, st
     }
     case "leader": { poly(e.p, false); g.stroke(); const P = S(e.p[e.p.length - 1]); g.font = "11px ui-monospace, monospace"; g.fillText(e.text, P[0] + 4, P[1] - 4); break; }
     case "hatch": { poly(e.p, true); g.fillStyle = "rgba(0,0,0,0.06)"; g.fill(); g.stroke(); break; }
+    case "underlay": { if (ghost || st.selected.has(e.id)) { poly(underlayCorners(e), true); g.stroke(); } break; }
+    case "mesh": { poly(meshFootprint(e), true); g.setLineDash([2, 3]); g.stroke(); g.setLineDash([]); const P = S([e.p[0][0], e.p[0][1]]); g.font = "10px ui-monospace, monospace"; g.fillText(e.filename ?? e.format, P[0] + 4, P[1] - 4); break; }
     default: { for (const [a, b] of segmentsOf(doc, e)) { const A = S(a), B = S(b); g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.stroke(); } }
   }
   g.setLineDash([]); g.lineWidth = 1; g.globalAlpha = 1;
