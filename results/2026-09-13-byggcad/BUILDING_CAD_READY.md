@@ -13,7 +13,7 @@ tio; ingen del av CAD:et är VVS-specifik.
 
 | Delsystem | Status | Belägg |
 |---|---|---|
-| Objektmodell: projekt, byggnad, nivåer, vyer, lager, material, entiteter (34 typer), relationer, ursprung | PASS | `core.test.ts` (46 kontroller), `cad_model.py` validerar samma dokument |
+| Objektmodell: projekt, byggnad, nivåer, vyer, lager, material, entiteter (36 typer), relationer, ursprung | PASS | `core.test.ts` (47 kontroller), `cad_model.py` validerar samma dokument |
 | Nivåer: användarens egna höjder, ingen påhittad våningshöjd; kopiera plan | PASS | `test_02_levels_are_what_the_user_says`; UI "Nivåer +", kopiera-knapp |
 | Rutnät med etiketter, pelare bundna till rutnätet | PASS | `test_03_the_grid`, relation ATTACHED_TO_GRID |
 | Kommandon: transaktioner, ångra/gör om, `touched`, revisionsräkning | PASS | `core.test.ts`: ångra tar bort dörr och fönster tillsammans; gör om lägger tillbaka |
@@ -35,7 +35,7 @@ tio; ingen del av CAD:et är VVS-specifik.
 | Underlag: PDF-sida eller bild; verifierad skala ur läst handling, uppmätt med två punkter, eller okalibrerad (märkt) | PASS | `test_an_underlay_without_a_scale_says_so`; Playwright-kalibrering |
 | Import: DXF (R12-entiteter, $INSUNITS), SVG (former, path med räta stycken), IFC (väggar, bjälklag, pelare, balkar, tak, rör, kanaler, dörrar/fönster genom öppningar, våningar), GLB/GLTF/OBJ/STL som referensnät | PASS | `test_what_was_exported_comes_back_as_the_same_house`; steg 29 |
 | Export: IFC 4 (våningar, öppningar, fyllnad, material, Pset), GLB, SVG, DXF, PDF med namnruta och skalstock | PASS | `test_every_export_opens`; IFC-guid stabila och giltiga |
-| Agent: typade verktyg (17), förslag med spöke och godkännande, aldrig ett påhittat mått, aldrig en skrivning i bladet | PASS | `test_the_drawing_board_agent_proposes_and_never_writes.py`; steg 28 |
+| Agent: typade verktyg (18), förslag med spöke och godkännande, aldrig ett påhittat mått, aldrig en skrivning i bladet | PASS | `test_the_drawing_board_agent_proposes_and_never_writes.py`; steg 28 |
 | Ursprung på varje objekt (USER_MODELLED, IMPORTED_IFC, IMPORTED_DXF, DETECTED_FROM_PDF, AGENT_CREATED_APPROVED, USER_CORRECTED) | PASS | validering avvisar okända; steg 29 kontrollerar mängden |
 | Validering: fel avvisas med besked (422 + lista), samma frågor i webbläsare och server | PASS | `test_a_broken_model_is_refused_with_the_reasons` |
 | Prestanda: 5 733 objekt - validering 32 ms, kroppar 348 ms, mängder 255 ms, sektion 253 ms, kollisioner 824 ms, ångra 136 ms | PASS | `perf.test.ts` |
@@ -76,8 +76,8 @@ CAD-provsviten: 42 prov i 6 filer, alla gröna (`test_the_building_model_holds_t
 
 ## 4. Provsviten i sin helhet
 
-Hela motorns provsvit (`engine/tests`, minus den 29-stegs E2E som körs för sig) kördes efter sista
-ändringen: se `fullsuite.txt` i den här mappen för utfallet. Kontaminationsskanningen av
+Hela motorns provsvit (`engine/tests`, minus den 29-stegs E2E som kördes för sig och är grön) kördes efter
+sista ändringen: **484 passed** på 127 s (`fullsuite.txt` i den här mappen). Kontaminationsskanningen av
 `engine/vvs_engine` är PASS (65 filer, 0 fynd, ingen beroende av valideringsdata).
 
 ## 5. Var saker ligger
