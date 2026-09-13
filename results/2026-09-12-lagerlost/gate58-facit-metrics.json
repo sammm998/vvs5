@@ -5,26 +5,26 @@
  "totals": {
   "sheets": 59,
   "reference_m": 11399.2,
-  "owned_m": 7190.7,
-  "false_m": 2051.5,
-  "COVERAGE": 0.6308,
-  "FALSE_OWNERSHIP": 0.18,
-  "DESIGNATION_RECALL": 0.7175,
-  "DESIGNATION_PRECISION": 0.7492,
+  "owned_m": 7390.1,
+  "false_m": 1852.1,
+  "COVERAGE": 0.6483,
+  "FALSE_OWNERSHIP": 0.1625,
+  "DESIGNATION_RECALL": 0.7701,
+  "DESIGNATION_PRECISION": 0.7774,
   "LEADER_ATTACHMENT": 2.9129,
   "extent_classes": {
-   "FULL": 97,
-   "PARTIAL": 212,
-   "MISSED": 246,
-   "OVER": 159,
-   "WRONG": 107
+   "FULL": 94,
+   "PARTIAL": 226,
+   "MISSED": 205,
+   "OVER": 160,
+   "WRONG": 90
   },
   "failures": {
-   "PARTIAL_EXTENT_UNDER_PROPAGATED": 212,
-   "OVER_EXTENT_OVER_PROPAGATED": 159,
-   "MISSED_LABEL_NOT_READ": 133,
+   "PARTIAL_EXTENT_UNDER_PROPAGATED": 226,
+   "OVER_EXTENT_OVER_PROPAGATED": 160,
    "MISSED_LABEL_READ_NO_METRES": 113,
-   "WRONG_NAME_NOT_IN_REFERENCE": 107
+   "MISSED_LABEL_NOT_READ": 92,
+   "WRONG_NAME_NOT_IN_REFERENCE": 90
   }
  },
  "by_style": {
@@ -56,26 +56,26 @@
   "W (konturglyfer)": {
    "sheets": 30,
    "reference_m": 5549.3,
-   "owned_m": 2578.8,
-   "false_m": 555.4,
-   "COVERAGE": 0.4647,
-   "FALSE_OWNERSHIP": 0.1001,
-   "DESIGNATION_RECALL": 0.6361,
-   "DESIGNATION_PRECISION": 0.7115,
+   "owned_m": 2778.3,
+   "false_m": 356.0,
+   "COVERAGE": 0.5006,
+   "FALSE_OWNERSHIP": 0.0641,
+   "DESIGNATION_RECALL": 0.7329,
+   "DESIGNATION_PRECISION": 0.7687,
    "LEADER_ATTACHMENT": 3.4188,
    "extent_classes": {
-    "FULL": 54,
-    "PARTIAL": 124,
-    "MISSED": 181,
-    "OVER": 37,
-    "WRONG": 43
+    "FULL": 51,
+    "PARTIAL": 138,
+    "MISSED": 140,
+    "OVER": 38,
+    "WRONG": 26
    },
    "failures": {
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 124,
-    "MISSED_LABEL_NOT_READ": 94,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 138,
     "MISSED_LABEL_READ_NO_METRES": 87,
-    "WRONG_NAME_NOT_IN_REFERENCE": 43,
-    "OVER_EXTENT_OVER_PROPAGATED": 37
+    "MISSED_LABEL_NOT_READ": 53,
+    "OVER_EXTENT_OVER_PROPAGATED": 38,
+    "WRONG_NAME_NOT_IN_REFERENCE": 26
    }
   }
  },
@@ -253,7 +253,7 @@
      "class": "FULL",
      "failure": "OK"
     },
-    "FJV1-S6-50/W": {
+    "FJV1-S6-50": {
      "reference_m": 4.0,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -2522,7 +2522,7 @@
    "metres": {
     "reference": 175.2,
     "owned": 131.85,
-    "false": 61.87,
+    "false": 61.88,
     "coverage": 0.7525,
     "false_ownership": 0.3532
    },
@@ -4228,31 +4228,31 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 34,
+    "reference": 31,
     "ours": 31,
-    "found": 17,
-    "recall": 0.5,
-    "precision": 0.5484
+    "found": 23,
+    "recall": 0.7419,
+    "precision": 0.7419
    },
    "leader_attachment": 3.0,
    "metres": {
     "reference": 519.5,
-    "owned": 206.15,
-    "false": 74.13,
-    "coverage": 0.3968,
-    "false_ownership": 0.1427
+    "owned": 222.32,
+    "false": 57.96,
+    "coverage": 0.428,
+    "false_ownership": 0.1116
    },
    "extent_classes": {
-    "WRONG": 12,
-    "MISSED": 20,
-    "PARTIAL": 12,
-    "OVER": 4
+    "OVER": 6,
+    "WRONG": 6,
+    "PARTIAL": 16,
+    "MISSED": 11
    },
    "failures": {
-    "WRONG_NAME_NOT_IN_REFERENCE": 12,
-    "MISSED_LABEL_NOT_READ": 17,
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 12,
-    "OVER_EXTENT_OVER_PROPAGATED": 4,
+    "OVER_EXTENT_OVER_PROPAGATED": 6,
+    "WRONG_NAME_NOT_IN_REFERENCE": 6,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 16,
+    "MISSED_LABEL_NOT_READ": 8,
     "MISSED_LABEL_READ_NO_METRES": 3
    },
    "outside_reference_systems": {
@@ -4261,16 +4261,10 @@
    },
    "extent": {
     "KV1-K5-12": {
-     "reference_m": 0.0,
-     "ours_m": 2.29,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "KV1-K5-12 WALLMOUNTED": {
      "reference_m": 0.8,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "ours_m": 2.29,
+     "class": "OVER",
+     "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "KV1-K5-15": {
      "reference_m": 0.0,
@@ -4279,28 +4273,16 @@
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
     "KV1-R1-12": {
-     "reference_m": 0.0,
-     "ours_m": 0.64,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "KV1-R1-12 WALLMOUNTED": {
      "reference_m": 2.8,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "ours_m": 0.64,
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "KV1-R1-15": {
-     "reference_m": 0.0,
-     "ours_m": 6.87,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "KV1-R1-15 WALLMOUNTED": {
      "reference_m": 5.6,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "ours_m": 6.87,
+     "class": "OVER",
+     "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "KV1-X31-16": {
      "reference_m": 11.5,
@@ -4308,19 +4290,19 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 36.2,
      "ours_m": 15.57,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 24.0,
      "ours_m": 6.6,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-25/W": {
+    "KV1-X7-25": {
      "reference_m": 13.6,
      "ours_m": 10.9,
      "class": "PARTIAL",
@@ -4332,23 +4314,17 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "KV2-R1-12 WALLMOUNTED": {
+    "KV2-R1-12": {
      "reference_m": 3.3,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
     "KV2-R1-15": {
-     "reference_m": 0.0,
-     "ours_m": 6.67,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "KV2-R1-15 WALLMOUNTED": {
      "reference_m": 1.9,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "ours_m": 6.67,
+     "class": "OVER",
+     "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "KV2-R1-18": {
      "reference_m": 0.0,
@@ -4362,19 +4338,19 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV2-X7-16/W": {
+    "KV2-X7-16": {
      "reference_m": 15.8,
      "ours_m": 12.93,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV2-X7-25/W": {
+    "KV2-X7-25": {
      "reference_m": 6.2,
      "ours_m": 12.13,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "KV2-X7-32/W": {
+    "KV2-X7-32": {
      "reference_m": 9.2,
      "ours_m": 6.92,
      "class": "PARTIAL",
@@ -4398,13 +4374,13 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VP1-S13-22/W": {
+    "VP1-S13-22": {
      "reference_m": 25.8,
      "ours_m": 39.67,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VP1-S13-54/W": {
+    "VP1-S13-54": {
      "reference_m": 26.1,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -4417,82 +4393,52 @@
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
     "VS1-R1-12": {
-     "reference_m": 0.6,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-R1-12 WALLMOUNTED": {
-     "reference_m": 3.8,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-R1-12/W": {
-     "reference_m": 1.0,
+     "reference_m": 5.4,
      "ours_m": 3.62,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 4.1,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 89.1,
+    "VS1-S13-12": {
+     "reference_m": 93.2,
      "ours_m": 47.47,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 39.3,
      "ours_m": 35.12,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 38.2,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VS1-S13-42/W": {
+    "VS1-S13-42": {
      "reference_m": 0.0,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-K5-15 WALLMOUNTED": {
+    "VV1-K5-15": {
      "reference_m": 0.6,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
     "VV1-R1-12": {
-     "reference_m": 0.0,
-     "ours_m": 0.47,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "VV1-R1-12 WALLMOUNTED": {
      "reference_m": 1.9,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "ours_m": 0.47,
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VV1-R1-15": {
-     "reference_m": 0.0,
-     "ours_m": 4.15,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "VV1-R1-15 WALLMOUNTED": {
      "reference_m": 7.9,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "ours_m": 4.15,
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VV1-R1-18": {
      "reference_m": 0.0,
@@ -4518,25 +4464,25 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 38.7,
      "ours_m": 13.35,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 24.1,
      "ours_m": 7.97,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-25/W": {
+    "VV1-X7-25": {
      "reference_m": 12.7,
      "ours_m": 19.21,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VV1-X7-32/W": {
+    "VV1-X7-32": {
      "reference_m": 3.9,
      "ours_m": 1.24,
      "class": "PARTIAL",
@@ -4555,11 +4501,11 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 6,
+    "reference": 5,
     "ours": 6,
-    "found": 4,
-    "recall": 0.6667,
-    "precision": 0.6667
+    "found": 5,
+    "recall": 1.0,
+    "precision": 0.8333
    },
    "leader_attachment": 1.0435,
    "metres": {
@@ -4570,13 +4516,12 @@
     "false_ownership": 0.0
    },
    "extent_classes": {
-    "MISSED": 4,
-    "FULL": 2,
-    "PARTIAL": 2
+    "PARTIAL": 3,
+    "FULL": 1,
+    "MISSED": 2
    },
    "failures": {
-    "MISSED_LABEL_NOT_READ": 2,
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 2,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 3,
     "MISSED_LABEL_READ_NO_METRES": 2
    },
    "outside_reference_systems": {
@@ -4584,37 +4529,31 @@
     "m": 0
    },
    "extent": {
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 10.0,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 24.2,
+    "VS1-S13-12": {
+     "reference_m": 34.2,
      "ours_m": 23.6,
-     "class": "FULL",
-     "failure": "OK"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 13.2,
      "ours_m": 11.99,
      "class": "FULL",
      "failure": "OK"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 49.7,
      "ours_m": 44.55,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-28/W": {
+    "VS1-S13-28": {
      "reference_m": 32.0,
      "ours_m": 28.31,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 0.0,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -4622,12 +4561,6 @@
     },
     "VS1-S13-42": {
      "reference_m": 1.0,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-42/W": {
-     "reference_m": 0.0,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
@@ -4639,33 +4572,31 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 40,
-    "ours": 39,
-    "found": 21,
-    "recall": 0.525,
-    "precision": 0.5385
+    "reference": 33,
+    "ours": 37,
+    "found": 26,
+    "recall": 0.7879,
+    "precision": 0.7027
    },
    "leader_attachment": 2.1774,
    "metres": {
     "reference": 516.0,
-    "owned": 129.9,
-    "false": 191.62,
-    "coverage": 0.2517,
-    "false_ownership": 0.3714
+    "owned": 253.11,
+    "false": 68.41,
+    "coverage": 0.4905,
+    "false_ownership": 0.1326
    },
    "extent_classes": {
-    "PARTIAL": 11,
-    "MISSED": 30,
+    "PARTIAL": 17,
+    "MISSED": 18,
     "OVER": 8,
-    "FULL": 2,
-    "WRONG": 7
+    "FULL": 1
    },
    "failures": {
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 11,
-    "MISSED_LABEL_READ_NO_METRES": 13,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 17,
+    "MISSED_LABEL_READ_NO_METRES": 11,
     "OVER_EXTENT_OVER_PROPAGATED": 8,
-    "MISSED_LABEL_NOT_READ": 17,
-    "WRONG_NAME_NOT_IN_REFERENCE": 7
+    "MISSED_LABEL_NOT_READ": 7
    },
    "outside_reference_systems": {
     "systems": [
@@ -4674,7 +4605,7 @@
     "m": 1.34
    },
    "extent": {
-    "FJV1-S6-50/WB": {
+    "FJV1-S6-50": {
      "reference_m": 11.7,
      "ours_m": 5.83,
      "class": "PARTIAL",
@@ -4710,55 +4641,43 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 17.5,
      "ours_m": 11.61,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 8.5,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-25/W": {
+    "KV1-X7-25": {
      "reference_m": 9.6,
      "ours_m": 12.23,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "KV1-X7-32/W": {
-     "reference_m": 1.8,
-     "ours_m": 17.14,
+    "KV1-X7-32": {
+     "reference_m": 13.9,
+     "ours_m": 28.27,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "KV1-X7-32/WB": {
-     "reference_m": 12.1,
-     "ours_m": 11.13,
-     "class": "FULL",
-     "failure": "OK"
-    },
-    "KV1-X7-40/WB": {
+    "KV1-X7-40": {
      "reference_m": 3.2,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-50/W": {
-     "reference_m": 9.7,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_READ_NO_METRES"
-    },
-    "KV1-X7-50/WB": {
-     "reference_m": 3.9,
+    "KV1-X7-50": {
+     "reference_m": 13.6,
      "ours_m": 4.55,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-63/WB": {
+    "KV1-X7-63": {
      "reference_m": 3.4,
      "ours_m": 0.79,
      "class": "PARTIAL",
@@ -4776,7 +4695,7 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "KV2-X7-32/W": {
+    "KV2-X7-32": {
      "reference_m": 0.0,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -4818,95 +4737,53 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VP1-S1-65/WB": {
+    "VP1-S1-65": {
      "reference_m": 18.4,
      "ours_m": 0.94,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VP1-S13-42/W": {
+    "VP1-S13-42": {
      "reference_m": 21.9,
      "ours_m": 27.7,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VP1-S13-54/W": {
+    "VP1-S13-54": {
      "reference_m": 19.6,
      "ours_m": 11.45,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VS1-S13-12": {
-     "reference_m": 81.2,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 7.1,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 0.0,
+     "reference_m": 88.3,
      "ours_m": 51.96,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VS1-S13-15": {
      "reference_m": 12.6,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-15/W": {
-     "reference_m": 0.0,
      "ours_m": 9.15,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VS1-S13-22": {
      "reference_m": 36.3,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-22/W": {
-     "reference_m": 0.0,
      "ours_m": 8.56,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VS1-S13-42": {
      "reference_m": 73.8,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-42/W": {
-     "reference_m": 0.0,
      "ours_m": 35.83,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VS1-S13-54": {
      "reference_m": 14.7,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-54/W": {
-     "reference_m": 0.0,
-     "ours_m": 23.8,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "VS1-S13-54/WB": {
-     "reference_m": 0.0,
-     "ours_m": 4.88,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "ours_m": 28.67,
+     "class": "OVER",
+     "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VV1-EM30": {
      "reference_m": 0.0,
@@ -4921,16 +4798,10 @@
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
     "VV1-K5-15": {
-     "reference_m": 0.0,
-     "ours_m": 0.77,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "VV1-K5-15 WALLMOUNTED": {
      "reference_m": 0.4,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "ours_m": 0.77,
+     "class": "OVER",
+     "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VV1-R1-15": {
      "reference_m": 0.0,
@@ -4950,37 +4821,31 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 17.3,
      "ours_m": 14.79,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 8.8,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-X7-32/W": {
+    "VV1-X7-32": {
      "reference_m": 10.5,
      "ours_m": 34.83,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VV1-X7-40/W": {
-     "reference_m": 2.9,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_READ_NO_METRES"
-    },
-    "VV1-X7-40/WB": {
-     "reference_m": 5.1,
+    "VV1-X7-40": {
+     "reference_m": 8.0,
      "ours_m": 6.09,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-50/W": {
+    "VV1-X7-50": {
      "reference_m": 9.6,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -4993,31 +4858,13 @@
      "failure": "MISSED_LABEL_NOT_READ"
     },
     "VVC1-X7-16": {
-     "reference_m": 9.1,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VVC1-X7-16/W": {
-     "reference_m": 5.5,
+     "reference_m": 14.6,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
     "VVC1-X7-32": {
-     "reference_m": 2.3,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VVC1-X7-32/W": {
-     "reference_m": 11.6,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VVC1-X7-32/WB": {
-     "reference_m": 5.1,
+     "reference_m": 19.0,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
@@ -5029,33 +4876,33 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 23,
+    "reference": 21,
     "ours": 24,
-    "found": 16,
-    "recall": 0.6957,
-    "precision": 0.6667
+    "found": 17,
+    "recall": 0.8095,
+    "precision": 0.7083
    },
    "leader_attachment": 2.2292,
    "metres": {
     "reference": 325.7,
-    "owned": 135.93,
-    "false": 37.95,
-    "coverage": 0.4174,
-    "false_ownership": 0.1165
+    "owned": 153.87,
+    "false": 20.02,
+    "coverage": 0.4724,
+    "false_ownership": 0.0615
    },
    "extent_classes": {
-    "MISSED": 15,
-    "PARTIAL": 8,
+    "MISSED": 12,
+    "PARTIAL": 9,
     "FULL": 4,
-    "OVER": 3,
+    "OVER": 2,
     "WRONG": 1
    },
    "failures": {
-    "MISSED_LABEL_READ_NO_METRES": 9,
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 8,
-    "OVER_EXTENT_OVER_PROPAGATED": 3,
+    "MISSED_LABEL_READ_NO_METRES": 10,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 9,
+    "OVER_EXTENT_OVER_PROPAGATED": 2,
     "WRONG_NAME_NOT_IN_REFERENCE": 1,
-    "MISSED_LABEL_NOT_READ": 6
+    "MISSED_LABEL_NOT_READ": 2
    },
    "outside_reference_systems": {
     "systems": [
@@ -5088,19 +4935,19 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 5.1,
      "ours_m": 4.71,
      "class": "FULL",
      "failure": "OK"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 5.4,
      "ours_m": 17.27,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "KV1-X7-40/W": {
+    "KV1-X7-40": {
      "reference_m": 24.3,
      "ours_m": 9.47,
      "class": "PARTIAL",
@@ -5124,7 +4971,7 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VP1-S13-42/W": {
+    "VP1-S13-42": {
      "reference_m": 13.0,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5136,55 +4983,43 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 2.1,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 64.6,
+    "VS1-S13-12": {
+     "reference_m": 66.7,
      "ours_m": 29.96,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 3.6,
      "ours_m": 0.93,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 1.5,
      "ours_m": 0.8,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-28/W": {
+    "VS1-S13-28": {
      "reference_m": 0.0,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 32.0,
      "ours_m": 31.24,
      "class": "FULL",
      "failure": "OK"
     },
     "VS1-S13-42": {
-     "reference_m": 23.7,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-42/W": {
-     "reference_m": 11.9,
+     "reference_m": 35.6,
      "ours_m": 29.84,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-54/W": {
+    "VS1-S13-54": {
      "reference_m": 4.2,
      "ours_m": 0.56,
      "class": "PARTIAL",
@@ -5196,23 +5031,17 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-K5-12 WALLMOUNTED": {
+    "VV1-K5-12": {
      "reference_m": 1.0,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VV1-K5-15": {
-     "reference_m": 0.0,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-K5-15 WALLMOUNTED": {
+    "VV1-K5-15": {
      "reference_m": 4.6,
      "ours_m": 0.0,
      "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "failure": "MISSED_LABEL_READ_NO_METRES"
     },
     "VV1-X31-16": {
      "reference_m": 15.2,
@@ -5220,19 +5049,19 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 11.1,
      "ours_m": 6.97,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 5.6,
      "ours_m": 9.59,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VV1-X7-40/W": {
+    "VV1-X7-40": {
      "reference_m": 24.2,
      "ours_m": 23.94,
      "class": "FULL",
@@ -5244,7 +5073,7 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VVC1-X7-32/W": {
+    "VVC1-X7-32": {
      "reference_m": 29.3,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5257,10 +5086,10 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 18,
+    "reference": 17,
     "ours": 15,
     "found": 14,
-    "recall": 0.7778,
+    "recall": 0.8235,
     "precision": 0.9333
    },
    "leader_attachment": 2.4286,
@@ -5274,7 +5103,7 @@
    "extent_classes": {
     "PARTIAL": 8,
     "OVER": 2,
-    "MISSED": 5,
+    "MISSED": 4,
     "FULL": 3,
     "WRONG": 1
    },
@@ -5283,7 +5112,7 @@
     "OVER_EXTENT_OVER_PROPAGATED": 2,
     "MISSED_LABEL_READ_NO_METRES": 3,
     "WRONG_NAME_NOT_IN_REFERENCE": 1,
-    "MISSED_LABEL_NOT_READ": 2
+    "MISSED_LABEL_NOT_READ": 1
    },
    "outside_reference_systems": {
     "systems": [],
@@ -5296,19 +5125,19 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 0.6,
      "ours_m": 3.13,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 4.1,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-40/W": {
+    "KV1-X7-40": {
      "reference_m": 6.9,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5332,7 +5161,7 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VP1-S13-42/W": {
+    "VP1-S13-42": {
      "reference_m": 32.0,
      "ours_m": 31.89,
      "class": "FULL",
@@ -5344,31 +5173,25 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 4.0,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 34.9,
+    "VS1-S13-12": {
+     "reference_m": 38.9,
      "ours_m": 27.92,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 11.5,
      "ours_m": 9.71,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-42/W": {
+    "VS1-S13-42": {
      "reference_m": 29.4,
      "ours_m": 14.23,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-54/W": {
+    "VS1-S13-54": {
      "reference_m": 4.5,
      "ours_m": 0.86,
      "class": "PARTIAL",
@@ -5380,25 +5203,25 @@
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 6.3,
      "ours_m": 4.79,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 3.6,
      "ours_m": 3.71,
      "class": "FULL",
      "failure": "OK"
     },
-    "VV1-X7-40/W": {
+    "VV1-X7-40": {
      "reference_m": 6.4,
      "ours_m": 5.86,
      "class": "FULL",
      "failure": "OK"
     },
-    "VVC1-X7-32/W": {
+    "VVC1-X7-32": {
      "reference_m": 5.9,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5411,33 +5234,33 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 19,
+    "reference": 18,
     "ours": 19,
     "found": 13,
-    "recall": 0.6842,
+    "recall": 0.7222,
     "precision": 0.6842
    },
    "leader_attachment": 3.3939,
    "metres": {
     "reference": 333.6,
-    "owned": 161.62,
-    "false": 25.53,
-    "coverage": 0.4845,
-    "false_ownership": 0.0765
+    "owned": 175.72,
+    "false": 11.43,
+    "coverage": 0.5268,
+    "false_ownership": 0.0343
    },
    "extent_classes": {
     "PARTIAL": 8,
-    "MISSED": 10,
+    "MISSED": 9,
     "WRONG": 2,
-    "FULL": 3,
-    "OVER": 2
+    "FULL": 4,
+    "OVER": 1
    },
    "failures": {
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 8,
-    "MISSED_LABEL_READ_NO_METRES": 6,
+    "MISSED_LABEL_READ_NO_METRES": 7,
     "WRONG_NAME_NOT_IN_REFERENCE": 2,
-    "MISSED_LABEL_NOT_READ": 4,
-    "OVER_EXTENT_OVER_PROPAGATED": 2
+    "MISSED_LABEL_NOT_READ": 2,
+    "OVER_EXTENT_OVER_PROPAGATED": 1
    },
    "outside_reference_systems": {
     "systems": [],
@@ -5456,19 +5279,19 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 4.3,
      "ours_m": 0.64,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 11.2,
      "ours_m": 0.61,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-40/W": {
+    "KV1-X7-40": {
      "reference_m": 34.5,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5522,31 +5345,25 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 14.1,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 54.7,
+    "VS1-S13-12": {
+     "reference_m": 68.8,
      "ours_m": 74.43,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "class": "FULL",
+     "failure": "OK"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 11.3,
      "ours_m": 5.6,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 2.3,
      "ours_m": 5.51,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 72.5,
      "ours_m": 36.15,
      "class": "PARTIAL",
@@ -5558,19 +5375,19 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 11.7,
      "ours_m": 4.38,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 10.7,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-X7-40/W": {
+    "VV1-X7-40": {
      "reference_m": 35.0,
      "ours_m": 35.08,
      "class": "FULL",
@@ -5586,9 +5403,9 @@
      "reference_m": 3.8,
      "ours_m": 0.0,
      "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VVC1-X7-32/W": {
+    "VVC1-X7-32": {
      "reference_m": 35.5,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5601,22 +5418,22 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 17,
+    "reference": 16,
     "ours": 15,
     "found": 13,
-    "recall": 0.7647,
+    "recall": 0.8125,
     "precision": 0.8667
    },
    "leader_attachment": 2.6471,
    "metres": {
     "reference": 294.1,
-    "owned": 191.18,
-    "false": 40.07,
-    "coverage": 0.6501,
-    "false_ownership": 0.1362
+    "owned": 198.18,
+    "false": 33.07,
+    "coverage": 0.6739,
+    "false_ownership": 0.1124
    },
    "extent_classes": {
-    "MISSED": 5,
+    "MISSED": 4,
     "PARTIAL": 7,
     "FULL": 2,
     "OVER": 4,
@@ -5626,8 +5443,8 @@
     "MISSED_LABEL_READ_NO_METRES": 3,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 7,
     "OVER_EXTENT_OVER_PROPAGATED": 4,
-    "MISSED_LABEL_NOT_READ": 2,
-    "WRONG_NAME_NOT_IN_REFERENCE": 1
+    "WRONG_NAME_NOT_IN_REFERENCE": 1,
+    "MISSED_LABEL_NOT_READ": 1
    },
    "outside_reference_systems": {
     "systems": [],
@@ -5646,19 +5463,19 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 3.6,
      "ours_m": 0.11,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 13.3,
      "ours_m": 7.42,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-32/W": {
+    "KV1-X7-32": {
      "reference_m": 19.5,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5682,31 +5499,25 @@
      "class": "FULL",
      "failure": "OK"
     },
-    "VP1-S13-42/W": {
+    "VP1-S13-42": {
      "reference_m": 64.3,
      "ours_m": 73.52,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 7.0,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 42.3,
+    "VS1-S13-12": {
+     "reference_m": 49.3,
      "ours_m": 69.68,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 0.2,
      "ours_m": 0.57,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 69.0,
      "ours_m": 38.2,
      "class": "PARTIAL",
@@ -5724,19 +5535,19 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 3.4,
      "ours_m": 0.56,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 26.9,
      "ours_m": 29.79,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VV1-X7-32/W": {
+    "VV1-X7-32": {
      "reference_m": 6.0,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5755,33 +5566,33 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 19,
-    "ours": 18,
+    "reference": 17,
+    "ours": 17,
     "found": 10,
-    "recall": 0.5263,
-    "precision": 0.5556
+    "recall": 0.5882,
+    "precision": 0.5882
    },
    "leader_attachment": 2.0667,
    "metres": {
     "reference": 246.7,
-    "owned": 47.64,
-    "false": 29.57,
-    "coverage": 0.1931,
-    "false_ownership": 0.1199
+    "owned": 49.67,
+    "false": 27.55,
+    "coverage": 0.2013,
+    "false_ownership": 0.1117
    },
    "extent_classes": {
-    "MISSED": 17,
-    "PARTIAL": 3,
-    "FULL": 2,
+    "MISSED": 15,
+    "PARTIAL": 4,
+    "FULL": 1,
     "OVER": 3,
-    "WRONG": 2
+    "WRONG": 1
    },
    "failures": {
-    "MISSED_LABEL_NOT_READ": 9,
+    "MISSED_LABEL_NOT_READ": 7,
     "MISSED_LABEL_READ_NO_METRES": 8,
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 3,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 4,
     "OVER_EXTENT_OVER_PROPAGATED": 3,
-    "WRONG_NAME_NOT_IN_REFERENCE": 2
+    "WRONG_NAME_NOT_IN_REFERENCE": 1
    },
    "outside_reference_systems": {
     "systems": [],
@@ -5794,19 +5605,19 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 0.0,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-25/W": {
+    "KV1-X7-25": {
      "reference_m": 3.1,
      "ours_m": 1.75,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-40/W": {
+    "KV1-X7-40": {
      "reference_m": 31.7,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5836,7 +5647,7 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VP1-S13-42/W": {
+    "VP1-S13-42": {
      "reference_m": 10.6,
      "ours_m": 5.15,
      "class": "PARTIAL",
@@ -5849,20 +5660,8 @@
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
     "VS1-S13-12": {
-     "reference_m": 0.0,
-     "ours_m": 1.25,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 2.0,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 6.3,
-     "ours_m": 14.04,
+     "reference_m": 8.3,
+     "ours_m": 15.28,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
@@ -5872,19 +5671,13 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VS1-S13-15 WALLMOUNTED": {
-     "reference_m": 0.7,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-15/W": {
-     "reference_m": 5.3,
+    "VS1-S13-15": {
+     "reference_m": 6.0,
      "ours_m": 5.32,
-     "class": "FULL",
-     "failure": "OK"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 30.6,
      "ours_m": 13.46,
      "class": "PARTIAL",
@@ -5914,37 +5707,37 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 0.2,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-X7-25/W": {
+    "VV1-X7-25": {
      "reference_m": 3.3,
      "ours_m": 19.98,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VV1-X7-40/W": {
+    "VV1-X7-40": {
      "reference_m": 31.9,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VVC1-X7-16/W": {
+    "VVC1-X7-16": {
      "reference_m": 3.7,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VVC1-X7-25/W": {
+    "VVC1-X7-25": {
      "reference_m": 12.1,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VVC1-X7-32/W": {
+    "VVC1-X7-32": {
      "reference_m": 19.0,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -5957,38 +5750,38 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 16,
-    "ours": 14,
+    "reference": 15,
+    "ours": 13,
     "found": 6,
-    "recall": 0.375,
-    "precision": 0.4286
+    "recall": 0.4,
+    "precision": 0.4615
    },
    "leader_attachment": 1.9286,
    "metres": {
     "reference": 201.0,
-    "owned": 54.35,
-    "false": 42.14,
-    "coverage": 0.2704,
-    "false_ownership": 0.2096
+    "owned": 59.56,
+    "false": 36.93,
+    "coverage": 0.2963,
+    "false_ownership": 0.1837
    },
    "extent_classes": {
-    "MISSED": 14,
+    "MISSED": 13,
     "PARTIAL": 5,
     "FULL": 1,
-    "WRONG": 4
+    "WRONG": 3
    },
    "failures": {
-    "MISSED_LABEL_NOT_READ": 5,
+    "MISSED_LABEL_NOT_READ": 4,
     "MISSED_LABEL_READ_NO_METRES": 9,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 5,
-    "WRONG_NAME_NOT_IN_REFERENCE": 4
+    "WRONG_NAME_NOT_IN_REFERENCE": 3
    },
    "outside_reference_systems": {
     "systems": [],
     "m": 0
    },
    "extent": {
-    "KV1-K5-15 WALLMOUNTED": {
+    "KV1-K5-15": {
      "reference_m": 0.6,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6000,19 +5793,19 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 0.8,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 0.0,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-40/W": {
+    "KV1-X7-40": {
      "reference_m": 7.7,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6042,7 +5835,7 @@
      "class": "FULL",
      "failure": "OK"
     },
-    "VP1-S13-42/W": {
+    "VP1-S13-42": {
      "reference_m": 39.2,
      "ours_m": 5.68,
      "class": "PARTIAL",
@@ -6055,20 +5848,8 @@
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
     "VS1-S13-12": {
-     "reference_m": 0.0,
-     "ours_m": 5.21,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 4.2,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 25.0,
-     "ours_m": 7.87,
+     "reference_m": 29.2,
+     "ours_m": 13.07,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
@@ -6078,7 +5859,7 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 63.9,
      "ours_m": 26.18,
      "class": "PARTIAL",
@@ -6096,7 +5877,7 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-K5-15 WALLMOUNTED": {
+    "VV1-K5-15": {
      "reference_m": 0.4,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6108,25 +5889,25 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 0.7,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 1.1,
      "ours_m": 0.9,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-40/W": {
+    "VV1-X7-40": {
      "reference_m": 8.0,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VVC1-X7-25/W": {
+    "VVC1-X7-25": {
      "reference_m": 7.1,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6139,33 +5920,31 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 22,
+    "reference": 21,
     "ours": 16,
-    "found": 15,
-    "recall": 0.6818,
-    "precision": 0.9375
+    "found": 16,
+    "recall": 0.7619,
+    "precision": 1.0
    },
    "leader_attachment": 3.9722,
    "metres": {
     "reference": 451.7,
-    "owned": 170.32,
-    "false": 9.55,
-    "coverage": 0.3771,
-    "false_ownership": 0.0212
+    "owned": 170.82,
+    "false": 9.05,
+    "coverage": 0.3782,
+    "false_ownership": 0.02
    },
    "extent_classes": {
-    "OVER": 2,
+    "OVER": 3,
     "PARTIAL": 10,
-    "MISSED": 9,
-    "FULL": 1,
-    "WRONG": 1
+    "MISSED": 7,
+    "FULL": 1
    },
    "failures": {
-    "OVER_EXTENT_OVER_PROPAGATED": 2,
+    "OVER_EXTENT_OVER_PROPAGATED": 3,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 10,
     "MISSED_LABEL_READ_NO_METRES": 5,
-    "MISSED_LABEL_NOT_READ": 4,
-    "WRONG_NAME_NOT_IN_REFERENCE": 1
+    "MISSED_LABEL_NOT_READ": 2
    },
    "outside_reference_systems": {
     "systems": [],
@@ -6184,25 +5963,25 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 17.5,
      "ours_m": 3.03,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 4.4,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-32/W": {
+    "KV1-X7-32": {
      "reference_m": 10.1,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-40/W": {
+    "KV1-X7-40": {
      "reference_m": 22.3,
      "ours_m": 1.66,
      "class": "PARTIAL",
@@ -6220,25 +5999,19 @@
      "class": "FULL",
      "failure": "OK"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 14.3,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 80.0,
+    "VS1-S13-12": {
+     "reference_m": 94.3,
      "ours_m": 54.19,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 15.3,
      "ours_m": 13.29,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 61.9,
      "ours_m": 20.09,
      "class": "PARTIAL",
@@ -6251,16 +6024,10 @@
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VV1-K5-12": {
-     "reference_m": 0.0,
-     "ours_m": 1.47,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "VV1-K5-12 WALLMOUNTED": {
      "reference_m": 0.5,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
+     "ours_m": 1.47,
+     "class": "OVER",
+     "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VV1-X31-16": {
      "reference_m": 31.6,
@@ -6268,43 +6035,43 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 16.5,
      "ours_m": 10.44,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 4.7,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-X7-32/W": {
+    "VV1-X7-32": {
      "reference_m": 10.4,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-X7-40/W": {
+    "VV1-X7-40": {
      "reference_m": 21.6,
      "ours_m": 1.12,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VVC1-X7-16/W": {
+    "VVC1-X7-16": {
      "reference_m": 7.1,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VVC1-X7-20/W": {
+    "VVC1-X7-20": {
      "reference_m": 0.4,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VVC1-X7-25/W": {
+    "VVC1-X7-25": {
      "reference_m": 21.1,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6317,10 +6084,10 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 20,
+    "reference": 19,
     "ours": 21,
     "found": 17,
-    "recall": 0.85,
+    "recall": 0.8947,
     "precision": 0.8095
    },
    "leader_attachment": 2.1538,
@@ -6332,18 +6099,18 @@
     "false_ownership": 0.0153
    },
    "extent_classes": {
-    "PARTIAL": 11,
-    "FULL": 3,
+    "PARTIAL": 12,
+    "FULL": 2,
     "OVER": 3,
     "WRONG": 3,
-    "MISSED": 4
+    "MISSED": 3
    },
    "failures": {
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 11,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 12,
     "OVER_EXTENT_OVER_PROPAGATED": 3,
     "WRONG_NAME_NOT_IN_REFERENCE": 3,
     "MISSED_LABEL_READ_NO_METRES": 2,
-    "MISSED_LABEL_NOT_READ": 2
+    "MISSED_LABEL_NOT_READ": 1
    },
    "outside_reference_systems": {
     "systems": [],
@@ -6356,25 +6123,25 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 16.8,
      "ours_m": 16.93,
      "class": "FULL",
      "failure": "OK"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 0.4,
      "ours_m": 0.44,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "KV1-X7-25/W": {
+    "KV1-X7-25": {
      "reference_m": 3.6,
      "ours_m": 1.12,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-32/W": {
+    "KV1-X7-32": {
      "reference_m": 2.7,
      "ours_m": 1.65,
      "class": "PARTIAL",
@@ -6422,37 +6189,31 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VP1-S13-42/W": {
+    "VP1-S13-42": {
      "reference_m": 13.2,
      "ours_m": 6.64,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 10.6,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 76.3,
+    "VS1-S13-12": {
+     "reference_m": 86.9,
      "ours_m": 73.62,
-     "class": "FULL",
-     "failure": "OK"
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 2.6,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 1.9,
      "ours_m": 1.57,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 70.4,
      "ours_m": 32.88,
      "class": "PARTIAL",
@@ -6470,25 +6231,25 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 16.5,
      "ours_m": 9.66,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 1.7,
      "ours_m": 4.87,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VV1-X7-25/W": {
+    "VV1-X7-25": {
      "reference_m": 5.6,
      "ours_m": 1.6,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VVC1-X7-16/W": {
+    "VVC1-X7-16": {
      "reference_m": 16.7,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6501,38 +6262,38 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 20,
-    "ours": 17,
+    "reference": 19,
+    "ours": 16,
     "found": 10,
-    "recall": 0.5,
-    "precision": 0.5882
+    "recall": 0.5263,
+    "precision": 0.625
    },
    "leader_attachment": 2.9062,
    "metres": {
     "reference": 350.0,
-    "owned": 63.33,
-    "false": 27.59,
-    "coverage": 0.1809,
-    "false_ownership": 0.0788
+    "owned": 76.59,
+    "false": 14.33,
+    "coverage": 0.2188,
+    "false_ownership": 0.0409
    },
    "extent_classes": {
-    "MISSED": 13,
+    "MISSED": 12,
     "PARTIAL": 9,
-    "WRONG": 4,
+    "WRONG": 3,
     "FULL": 1
    },
    "failures": {
-    "MISSED_LABEL_NOT_READ": 7,
+    "MISSED_LABEL_NOT_READ": 6,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 9,
     "MISSED_LABEL_READ_NO_METRES": 6,
-    "WRONG_NAME_NOT_IN_REFERENCE": 4
+    "WRONG_NAME_NOT_IN_REFERENCE": 3
    },
    "outside_reference_systems": {
     "systems": [],
     "m": 0
    },
    "extent": {
-    "KV1-K5-15 WALLMOUNTED": {
+    "KV1-K5-15": {
      "reference_m": 0.4,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6544,25 +6305,25 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 26.4,
      "ours_m": 0.11,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-25/W": {
+    "KV1-X7-25": {
      "reference_m": 17.4,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-32/W": {
+    "KV1-X7-32": {
      "reference_m": 4.2,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "KV1-X7-40/W": {
+    "KV1-X7-40": {
      "reference_m": 1.2,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6611,20 +6372,8 @@
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
     "VS1-S13-12": {
-     "reference_m": 0.0,
-     "ours_m": 13.26,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 8.4,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 93.4,
-     "ours_m": 38.97,
+     "reference_m": 101.8,
+     "ours_m": 52.22,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
@@ -6634,25 +6383,25 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 8.8,
      "ours_m": 1.99,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 0.0,
      "ours_m": 11.69,
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 81.2,
      "ours_m": 3.38,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-K5-15 WALLMOUNTED": {
+    "VV1-K5-15": {
      "reference_m": 0.2,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6664,31 +6413,31 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 26.7,
      "ours_m": 0.03,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-25/W": {
+    "VV1-X7-25": {
      "reference_m": 21.9,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VV1-X7-40/W": {
+    "VV1-X7-40": {
      "reference_m": 1.4,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VVC1-X7-16/W": {
+    "VVC1-X7-16": {
      "reference_m": 26.9,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VVC1-X7-25/W": {
+    "VVC1-X7-25": {
      "reference_m": 0.6,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6701,10 +6450,10 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 5,
+    "reference": 4,
     "ours": 4,
     "found": 3,
-    "recall": 0.6,
+    "recall": 0.75,
     "precision": 0.75
    },
    "leader_attachment": 3.1538,
@@ -6716,15 +6465,14 @@
     "false_ownership": 0.1993
    },
    "extent_classes": {
-    "MISSED": 2,
+    "MISSED": 1,
     "WRONG": 1,
     "PARTIAL": 3
    },
    "failures": {
     "MISSED_LABEL_READ_NO_METRES": 1,
     "WRONG_NAME_NOT_IN_REFERENCE": 1,
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 3,
-    "MISSED_LABEL_NOT_READ": 1
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 3
    },
    "outside_reference_systems": {
     "systems": [],
@@ -6743,25 +6491,19 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VP1-S13-54/W": {
+    "VP1-S13-54": {
      "reference_m": 2.5,
      "ours_m": 1.88,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 8.6,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 56.2,
+    "VS1-S13-12": {
+     "reference_m": 64.8,
      "ours_m": 19.32,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 21.5,
      "ours_m": 12.38,
      "class": "PARTIAL",
@@ -6774,10 +6516,10 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 12,
+    "reference": 11,
     "ours": 9,
     "found": 7,
-    "recall": 0.5833,
+    "recall": 0.6364,
     "precision": 0.7778
    },
    "leader_attachment": 3.1364,
@@ -6789,14 +6531,14 @@
     "false_ownership": 0.0467
    },
    "extent_classes": {
-    "MISSED": 6,
+    "MISSED": 5,
     "FULL": 2,
     "WRONG": 1,
     "PARTIAL": 4,
     "OVER": 1
    },
    "failures": {
-    "MISSED_LABEL_NOT_READ": 4,
+    "MISSED_LABEL_NOT_READ": 3,
     "MISSED_LABEL_READ_NO_METRES": 2,
     "WRONG_NAME_NOT_IN_REFERENCE": 1,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 4,
@@ -6813,7 +6555,7 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 1.4,
      "ours_m": 1.42,
      "class": "FULL",
@@ -6855,25 +6597,19 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 10.5,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 44.0,
+    "VS1-S13-12": {
+     "reference_m": 54.5,
      "ours_m": 36.64,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 21.2,
      "ours_m": 5.83,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 58.5,
      "ours_m": 13.44,
      "class": "PARTIAL",
@@ -6885,7 +6621,7 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "VV1-X7-20/W": {
+    "VV1-X7-20": {
      "reference_m": 1.2,
      "ours_m": 5.11,
      "class": "OVER",
@@ -6898,10 +6634,10 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 6,
+    "reference": 5,
     "ours": 6,
     "found": 3,
-    "recall": 0.5,
+    "recall": 0.6,
     "precision": 0.5
    },
    "leader_attachment": 2.2941,
@@ -6913,15 +6649,15 @@
     "false_ownership": 0.0223
    },
    "extent_classes": {
-    "MISSED": 5,
+    "MISSED": 4,
     "WRONG": 1,
     "PARTIAL": 3
    },
    "failures": {
     "MISSED_LABEL_READ_NO_METRES": 3,
     "WRONG_NAME_NOT_IN_REFERENCE": 1,
-    "MISSED_LABEL_NOT_READ": 2,
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 3
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 3,
+    "MISSED_LABEL_NOT_READ": 1
    },
    "outside_reference_systems": {
     "systems": [],
@@ -6946,37 +6682,31 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 5.2,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 16.6,
+    "VS1-S13-12": {
+     "reference_m": 21.8,
      "ours_m": 11.77,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 0.0,
      "ours_m": 0.0,
      "class": "MISSED",
      "failure": "MISSED_LABEL_READ_NO_METRES"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 52.0,
      "ours_m": 40.6,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 25.2,
      "ours_m": 9.15,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-42/W": {
+    "VS1-S13-42": {
      "reference_m": 0.3,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -6989,10 +6719,10 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 8,
+    "reference": 7,
     "ours": 6,
     "found": 6,
-    "recall": 0.75,
+    "recall": 0.8571,
     "precision": 1.0
    },
    "leader_attachment": 2.0,
@@ -7005,14 +6735,14 @@
    },
    "extent_classes": {
     "FULL": 2,
-    "MISSED": 2,
     "PARTIAL": 3,
-    "OVER": 1
+    "OVER": 1,
+    "MISSED": 1
    },
    "failures": {
-    "MISSED_LABEL_NOT_READ": 2,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 3,
-    "OVER_EXTENT_OVER_PROPAGATED": 1
+    "OVER_EXTENT_OVER_PROPAGATED": 1,
+    "MISSED_LABEL_NOT_READ": 1
    },
    "outside_reference_systems": {
     "systems": [
@@ -7027,37 +6757,31 @@
      "class": "FULL",
      "failure": "OK"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 4.9,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 9.1,
+    "VS1-S13-12": {
+     "reference_m": 14.0,
      "ours_m": 5.0,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 12.4,
      "ours_m": 15.23,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 21.7,
      "ours_m": 7.57,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-35/W": {
+    "VS1-S13-35": {
      "reference_m": 44.0,
      "ours_m": 36.4,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-42/W": {
+    "VS1-S13-42": {
      "reference_m": 0.3,
      "ours_m": 0.0,
      "class": "MISSED",
@@ -7076,10 +6800,10 @@
    "style": "W (konturglyfer)",
    "state": "OK",
    "designations": {
-    "reference": 13,
+    "reference": 12,
     "ours": 11,
     "found": 10,
-    "recall": 0.7692,
+    "recall": 0.8333,
     "precision": 0.9091
    },
    "leader_attachment": 2.4,
@@ -7092,14 +6816,14 @@
    },
    "extent_classes": {
     "PARTIAL": 10,
-    "MISSED": 3,
+    "MISSED": 2,
     "WRONG": 1
    },
    "failures": {
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 10,
     "MISSED_LABEL_READ_NO_METRES": 1,
     "WRONG_NAME_NOT_IN_REFERENCE": 1,
-    "MISSED_LABEL_NOT_READ": 2
+    "MISSED_LABEL_NOT_READ": 1
    },
    "outside_reference_systems": {
     "systems": [
@@ -7114,13 +6838,13 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-16/W": {
+    "KV1-X7-16": {
      "reference_m": 2.0,
      "ours_m": 0.26,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "KV1-X7-20/W": {
+    "KV1-X7-20": {
      "reference_m": 13.7,
      "ours_m": 10.18,
      "class": "PARTIAL",
@@ -7144,31 +6868,25 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-12 WALLMOUNTED": {
-     "reference_m": 5.7,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
-    },
-    "VS1-S13-12/W": {
-     "reference_m": 37.2,
+    "VS1-S13-12": {
+     "reference_m": 42.9,
      "ours_m": 20.16,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-15/W": {
+    "VS1-S13-15": {
      "reference_m": 5.8,
      "ours_m": 2.39,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-22/W": {
+    "VS1-S13-22": {
      "reference_m": 34.3,
      "ours_m": 16.32,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VS1-S13-28/W": {
+    "VS1-S13-28": {
      "reference_m": 38.1,
      "ours_m": 18.6,
      "class": "PARTIAL",
@@ -7180,13 +6898,13 @@
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VV1-X7-16/W": {
+    "VV1-X7-16": {
      "reference_m": 14.8,
      "ours_m": 1.62,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VVC1-X7-16/W": {
+    "VVC1-X7-16": {
      "reference_m": 11.2,
      "ours_m": 0.0,
      "class": "MISSED",

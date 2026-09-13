@@ -48,3 +48,18 @@ och den falska balkägandet på 130 m är borta. Nästa steg på det bladet är 
 antalsprefix (`2x`, `5x`), inte denna regel.
 
 **Beslut: ACCEPT.** Netto: −0,04 % täckning på lagrade blad, −130 m falskt på lagerlösa.
+
+# gate58, omräknad: måttstocken faller monteringssuffix - ingen motoränring
+
+`facit_metrics.canon()` faller nu `/W`, `/WB` och ` wallmounted` till basen (bakgrund i
+`results/2026-09-13-parade/FYND.md` §0: A0113:s facit skriver `VS1-S13-12` där ritningen skriver
+`VS1-S13-12/W`). Samma gate58-körning, ny måttstock:
+
+| | gammal måttstock | ny måttstock |
+|---|---:|---:|
+| TÄCKNING | 63,08 % | 64,83 % |
+| FALSKHET | 18,00 % | 16,25 % |
+| beteckningsrecall / precision | 71,8 / 74,9 % | 77,0 / 77,7 % |
+
+`gate58-facit-metrics.{json,md}` är den nya omräkningen; den gamla ligger kvar i git-historien (commit 54f0485).
+Från och med gate59 jämförs mot den nya.
