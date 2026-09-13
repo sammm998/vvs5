@@ -27,7 +27,7 @@ from sqlalchemy.orm import Session
 
 from vvs_engine.takeoff import Scale, measure as engine_measure
 
-from . import cad_export, cad_geom, cad_import, cad_model
+from . import cad_agent, cad_export, cad_geom, cad_import, cad_model
 from .auth import current_user
 from .db import CadRevision, CadSheet, Drawing, Project, User, get_db
 from .storage import storage
@@ -702,3 +702,59 @@ def get_asset(sheet_id: str, name: str, user: User = Depends(current_user), db: 
         raise HTTPException(404, "Okänd fil")
     ext = name.rsplit(".", 1)[-1].lower()
     return FileResponse(storage.path(key), media_type=ASSET_EXT.get(ext, "application/octet-stream"))
+
+
+# ---------------------------------------------------------------- agenten vid ritbordet
+
+class CadAsk(BaseModel):
+    question: str = Field(max_length=4000)
+    history: list[dict] | None = None
+    selection: list[str] | None = None        # markerade objekt-id
+
+
+class CadToolIn(BaseModel):
+    name: str
+    arguments: dict = {}
+
+
+def _agent_question(body: CadAsk) -> str:
+    q = f"{cad_agent.SYSTEM_NOTE}\n\n{body.question}"
+    if body.selection:
+        q += f"\n\n[Användarens markering] objekt: {', '.join(body.selection[:40])}"
+    return q
+
+
+@router.post("/sheets/{sheet_id}/agent")
+def sheet_agent(sheet_id: str, body: CadAsk, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """En fråga eller en instruktion till ritbordets agent. Svaret bär förslagen (`forslag`) som ritbordet visar
+    som spöken tills användaren godkänner dem; ingenting skrivs i bladet här."""
+    s = _sheet(db, user, sheet_id)
+    model = cad_agent.CadAgentModel(_v2(s))
+    from .agent import run_turn
+    try:
+        from tools.astra_transport import agent_transport
+    except Exception as e:                                      # noqa: BLE001
+        raise HTTPException(503, f"agenttransporten kunde inte laddas: {type(e).__name__}")
+    try:
+        out = run_turn(model, agent_transport(), _agent_question(body), history=body.history or [], tools=cad_agent)
+    except Exception as e:                                      # noqa: BLE001
+        raise HTTPException(502, f"Agenten kunde inte nås: {type(e).__name__}: {str(e)[:160]}")
+    out["forslag"] = model.proposals
+    return out
+
+
+@router.post("/sheets/{sheet_id}/agent/tool")
+def sheet_agent_tool(sheet_id: str, body: CadToolIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Ett verktyg rakt av, utan modell. Ett skrivande verktyg ger sitt förslag tillbaka - fortfarande bara ett förslag."""
+    s = _sheet(db, user, sheet_id)
+    if body.name not in cad_agent.TOOLS:
+        raise HTTPException(404, f"Okänt verktyg: {body.name}")
+    model = cad_agent.CadAgentModel(_v2(s))
+    r = cad_agent.run(body.name, model, body.arguments)
+    return {"svar": "", "verktyg": [{"namn": body.name, "argument": body.arguments, "resultat": r}], "forslag": model.proposals}
+
+
+@router.get("/sheets/{sheet_id}/agent/tools")
+def sheet_agent_tools(sheet_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    _sheet(db, user, sheet_id)
+    return {"tools": [{"name": t["name"], "description": t["description"], "writes": t["writes"], "parameters": t["parameters"]} for t in cad_agent.TOOLS.values()]}
