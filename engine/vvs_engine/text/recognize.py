@@ -445,6 +445,7 @@ def classify(img: np.ndarray, aspect: float, holes: int, allow_lower: bool = Tru
     c1 = np.minimum(dt_bins[:, gb, gpix], tau) ** 2                            # (n_ref, npix)
     t1 = c1.mean(axis=1)
     # term 2: ref pixels -> nearest glyph pixel of compatible orientation
+    ink_idx, ink_bin, ink_valid = masks
     g_raw = np.empty((NBINS, GRID * GRID), dtype=float)
     for b in range(NBINS):
         mb = (img > 0) & (omap == b)
@@ -452,12 +453,23 @@ def classify(img: np.ndarray, aspect: float, holes: int, allow_lower: bool = Tru
     g_rel = np.empty_like(g_raw)
     for b in range(NBINS):
         g_rel[b] = (g_raw + (_R("text.recognize.ORIENT_LAMBDA", ORIENT_LAMBDA) * bdm[b])[:, None]).min(axis=0)
-    ink_idx, ink_bin, ink_valid = masks
     c2 = np.minimum(g_rel[ink_bin, ink_idx], tau) ** 2                          # (n_ref, kmax)
     t2 = (c2 * ink_valid).sum(axis=1) / np.maximum(counts, 1)
     c = np.sqrt(0.5 * (t1 + t2)) / INNER
     pen = np.minimum(0.04 * np.abs(np.log(aspect / aspects)), 0.08)
     pen += 0.05 * np.abs(holes - rholes)
+    # Every stroke of the reference has to be found in the glyph, and every stroke of the glyph in the reference.
+    # The chamfer terms cap each pixel's distance so that a bent or shifted stroke costs little - and the cap
+    # makes a stroke that is missing altogether cost little too: an E's middle bar lies far from every pixel of
+    # a C, every one of its pixels pays the cap, and the cap is small enough that the E's straight stem and flat
+    # top and bottom, which a condensed C shares, still win. That read a whole sheet's C as E. So the share of
+    # ink on either side that has nothing of the other within a stroke's reach is paid for separately: a
+    # deformation is not a missing stroke.
+    reach = _R("text.recognize.COVER_REACH", COVER_REACH) * INNER
+    gdt = ndimage.distance_transform_edt(~(img > 0)).ravel()
+    uncovered_ref = ((gdt[ink_idx] > reach) * ink_valid).sum(axis=1) / np.maximum(counts, 1)
+    uncovered_glyph = (dts[:, gpix] > reach).mean(axis=1)
+    pen += _R("text.recognize.COVER_WEIGHT", COVER_WEIGHT) * (uncovered_ref + uncovered_glyph)
     score = c + pen
     if not allow_lower:
         score = np.where(lower & ~diacritic, 99.0, score)
@@ -478,6 +490,8 @@ def classify(img: np.ndarray, aspect: float, holes: int, allow_lower: bool = Tru
 
 
 UNKNOWN_THRESHOLD = 0.14
+COVER_REACH = 0.22      # of the inner box: how far a stroke may lie from the other shape and still be the same stroke
+COVER_WEIGHT = 0.10     # score per unit share of ink that has no counterpart within that reach
 
 
 def decide(char: str, score: float, alternatives: list[tuple[str, float]]) -> tuple[str, bool]:
