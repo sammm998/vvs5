@@ -106,7 +106,7 @@ def layer_system_tokens(page) -> frozenset[str]:
 
 
 # how exactly a layer token names a system: the name itself, a numbered pattern, the letters alone, a tail
-MATCH_EXACT, MATCH_PATTERN, MATCH_ALPHA, MATCH_CLASS, MATCH_CLASS_PREFIX, MATCH_TAIL = 0, 1, 2, 3, 4, 5
+MATCH_EXACT, MATCH_PATTERN, MATCH_ALPHA, MATCH_CLASS_AND_TAIL, MATCH_CLASS, MATCH_CLASS_PREFIX, MATCH_TAIL = 0, 1, 2, 3, 4, 5, 6
 
 # Lagerklasserna ur BSAB 96 / BH90 som svenska VVS-lager bär i namnet: "V-52BB-..." är tappkallvatten,
 # "V-52BC-..." tappvarmvatten, "V-52BD-..." varmvattencirkulation. Det är en nationell klassindelning, samma
@@ -162,6 +162,13 @@ def system_layer_rank(system_token: str, layer: str, spelled_out: frozenset[str]
             r = MATCH_TAIL
         if r is not None and (best is None or r < best[0]):
             best = (r, T)
+    # Two layers of one class, told apart by their tails: V-52BB-FE--V1- and V-52BB-FE--V2- are both cold water,
+    # and the class alone ranks them the same for KV1. The tail says which of the two is system 1. So a class
+    # match on a layer whose tail also agrees with the designation's digits outranks a class match alone - the
+    # class names the system's family, the tail its number, and a layer that says both says more.
+    if best is not None and best[0] == MATCH_CLASS and any(
+            len(S) > len(T.upper()) and S.endswith(T.upper()) and re.fullmatch(r"[A-ZÅÄÖ]+\d+", T.upper()) for T in toks):
+        best = (MATCH_CLASS_AND_TAIL, best[1])
     return best
 
 
