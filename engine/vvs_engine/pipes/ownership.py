@@ -345,7 +345,7 @@ FLOWED_REASONS = ("collinear_through_junction", "unlabeled_branch_takes_the_only
 # ---------------------------------------------------------------- parade ledningar: tillopp och retur i samma penna
 #
 # Ett värmesystem ritas som två parallella linjer - tillopp och retur - på ett fast avstånd, och etiketten
-# sätts på den ena. Facit räknar båda; läsningen ägde bara den etiketterade. Regeln här är bladets egen:
+# sätts på den ena. Mängdaren räknar båda; läsningen ägde bara den etiketterade. Regeln här är bladets egen:
 # först måste pennan visa att den ritar par - två ägda linjer med *samma* identitet, parallella och
 # överlappande, på ett avstånd som återkommer (fördelningens topp). Först då får en oägd ledning som löper
 # parallellt med en ägd på just det avståndet, längs större delen av sin längd och utan att någon annan
