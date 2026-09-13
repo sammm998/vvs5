@@ -59,12 +59,14 @@ PRICE_DEFAULTS: dict[str, Any] = {
 # Vad en läsning kostar tjänsten - utgångsläget är uppmätt på korpusen och står med sina antaganden i
 # results/*-kostnad/KOSTNAD.md. En administratör kan flytta talen; marginalen på adminsidan räknas ur dem.
 COST_DEFAULTS: dict[str, Any] = {
-    "cpu_kr_per_hour": 1.05,           # en använd kärntimme, inklusive tomgång (VM 1 200 kr/mån, 4 vCPU, 40 % nyttjande)
-    "cpu_s_per_1000_paths": 1.3,       # uppmätt: sekunder CPU per tusen banor (KOSTNAD.md)
-    "cpu_s_base": 4.0,                 # fast del per sida
-    "llm_kr_per_question": 0.12,       # andra läsaren: en avgränsad fråga (KOSTNAD.md)
-    "llm_questions_per_1000_paths": 0.4,
-    "storage_kr_per_sheet": 0.02,      # utdata i lagret i tolv månader
+    # Uppmätt 2026-09-12 på 296 blad (results/2026-09-12-kostnad/KOSTNAD.md): minsta kvadrat över bladen.
+    "cpu_kr_per_hour": 1.03,           # en använd kärntimme, inklusive tomgång (VM 1 200 kr/mån, 4 vCPU, 40 % nyttjande)
+    "cpu_s_per_1000_paths": 1.47,      # sekunder CPU per tusen banor
+    "cpu_s_base": 17.4,                # fast del per sida: öppna, läsa namnruta, skala, skriva utdata
+    "llm_kr_per_question": 0.052,      # andra läsaren: en avgränsad fråga, låg ansträngning, ~600 utmatade token
+    "llm_questions_base": 1.7,         # frågor per sida oavsett storlek ...
+    "llm_questions_per_1000_paths": 0.048,   # ... och per tusen banor
+    "storage_kr_per_sheet": 0.03,      # utdata (median 10 MB) i lagret i tolv månader
     "payment_fee_pct": 1.5,            # kortavgift eller fakturering
     "vision_kr_per_page": 0.9,         # en synfråga med sidbilder
 }
@@ -263,7 +265,7 @@ def cost_of_pages(pages: list[dict], cm: dict) -> dict:
     """Kronor för att läsa de här sidorna, ur kostnadsmodellen. Ingen kredit här - bara kostnad."""
     cpu_s = sum(float(cm["cpu_s_base"]) + float(cm["cpu_s_per_1000_paths"]) * p["paths"] / 1000.0 for p in pages)
     cpu_kr = cpu_s / 3600.0 * float(cm["cpu_kr_per_hour"])
-    questions = sum(float(cm["llm_questions_per_1000_paths"]) * p["paths"] / 1000.0 for p in pages)
+    questions = sum(float(cm.get("llm_questions_base") or 0.0) + float(cm["llm_questions_per_1000_paths"]) * p["paths"] / 1000.0 for p in pages)
     llm_kr = questions * float(cm["llm_kr_per_question"])
     storage_kr = float(cm["storage_kr_per_sheet"]) * len(pages)
     return {"cpu_s": round(cpu_s, 1), "cpu_kr": round(cpu_kr, 4), "llm_questions": round(questions, 1),
