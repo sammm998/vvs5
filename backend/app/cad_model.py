@@ -21,7 +21,7 @@ MAX_POINTS = 20000
 BUILDING_TYPES = {"wall", "curtain_wall", "door", "window", "opening", "floor", "roof", "ceiling", "room", "stair", "railing",
                   "column", "beam", "foundation", "truss", "pipe", "duct", "cable_tray", "conduit", "fitting", "equipment", "device",
                   "terrain", "site"}
-GENERIC_TYPES = {"line", "polyline", "rect", "circle", "arc", "ellipse", "spline", "text", "mtext", "dim", "leader", "hatch", "block"}
+GENERIC_TYPES = {"line", "polyline", "rect", "circle", "arc", "ellipse", "spline", "text", "mtext", "dim", "leader", "hatch", "block", "underlay", "mesh"}
 ALL_TYPES = BUILDING_TYPES | GENERIC_TYPES
 DISCIPLINES = ("ARK", "KONSTR", "VVS", "VENT", "EL", "SPRINKLER", "BRAND", "MARK", "UTRUSTNING", "ALLMAN")
 PROVENANCE = ("USER_MODELLED", "IMPORTED_IFC", "IMPORTED_DXF", "DETECTED_FROM_PDF", "AGENT_CREATED_APPROVED", "USER_CORRECTED")
@@ -134,6 +134,16 @@ def validate(doc: dict) -> list[dict]:
         elif t in ("line", "rect"):
             if len(pts) < 2:
                 out.append({"id": eid, "field": "p", "message": "Två punkter behövs"})
+        elif t == "underlay":
+            if not e.get("asset") or not (isinstance(e.get("px"), list) and len(e["px"]) == 2 and all(_num(v) and v > 0 for v in e["px"])):
+                out.append({"id": eid, "field": "asset", "message": "Underlaget saknar bild eller bildmått"})
+            if e.get("mm_per_px") is not None and not (_num(e["mm_per_px"]) and e["mm_per_px"] > 0):
+                out.append({"id": eid, "field": "mm_per_px", "message": "Underlagets skala måste vara större än noll"})
+        elif t == "mesh":
+            if not e.get("asset") or e.get("format") not in ("glb", "gltf", "obj", "stl"):
+                out.append({"id": eid, "field": "asset", "message": "Referensnätet saknar fil eller format"})
+            if not (_num(e.get("scale")) and e["scale"] > 0):
+                out.append({"id": eid, "field": "scale", "message": "Referensnätet behöver en skala (mm per enhet)"})
     return out
 
 

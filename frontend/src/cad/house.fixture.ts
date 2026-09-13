@@ -6,6 +6,7 @@
 
 import { type CadDocument, type Wall, type Door, type Window, type Floor, type Column, type Beam, type Pipe, type Roof, type Room, type Duct, newDocument } from "./building";
 import { quantities, materialQuantities } from "./quantities";
+import { solidsOf } from "./solids";
 
 export function buildHouse(): CadDocument {
   const doc = newDocument("Kv Eken");
@@ -31,5 +32,6 @@ declare const process: any;
 if (typeof process !== "undefined" && process.argv && process.argv[1] && /house\.fixture/.test(String(process.argv[1]))) {
   const doc = buildHouse();
   const q = quantities(doc);
-  console.log(JSON.stringify({ doc, quantities: q, materials: materialQuantities(doc) }));
+  const solids = Object.fromEntries(doc.entities.map((e) => [e.id, solidsOf(doc, e)]));
+  console.log(JSON.stringify({ doc, quantities: q, materials: materialQuantities(doc), solids }));
 }

@@ -20,13 +20,14 @@ import math
 import os
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from vvs_engine.takeoff import Scale, measure as engine_measure
 
-from . import cad_model
+from . import cad_export, cad_geom, cad_import, cad_model
 from .auth import current_user
 from .db import CadRevision, CadSheet, Drawing, Project, User, get_db
 from .storage import storage
@@ -496,3 +497,208 @@ def sheet_dxf(sheet_id: str, user: User = Depends(current_user), db: Session = D
     body = "\r\n".join(o) + "\r\n"
     return Response(body, media_type="application/dxf",
                     headers={"Content-Disposition": f'attachment; filename="{(s.name or "blad")[:60]}.dxf"'})
+
+
+# ---------------------------------------------------------------- byggmodellen ut och in: export, import, underlag, tillgångar
+
+ASSET_EXT = {"glb": "model/gltf-binary", "gltf": "model/gltf+json", "obj": "text/plain", "stl": "model/stl",
+             "png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg"}
+MAX_IMPORT_BYTES = 200 * 1024 * 1024
+
+
+def _v2(s: CadSheet) -> dict:
+    c = _clean(s.content)
+    if not cad_model.is_v2(c):
+        raise HTTPException(400, "Bladet är inte en byggmodell (version 2)")
+    return c
+
+
+def _view(doc: dict, view_id: str | None) -> dict:
+    if view_id:
+        v = next((v for v in doc.get("views") or [] if v.get("id") == view_id), None)
+        if v is None:
+            raise HTTPException(404, "Okänd vy")
+        return v
+    return next((v for v in doc.get("views") or [] if v.get("kind") == "plan"), None) or {"id": "plan", "kind": "plan", "name": "Plan", "scale_ratio": 100}
+
+
+def _fname(s: CadSheet, ext: str) -> str:
+    return f"{(s.name or 'byggmodell').strip().replace('/', '-')[:60]}.{ext}"
+
+
+@router.get("/sheets/{sheet_id}/export.{fmt}")
+def export_sheet(sheet_id: str, fmt: str, view: str | None = None, paper: str = "A1", ratio: float | None = None,
+                 user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Modellen som fil. ifc och glb är hela byggnaden; svg, dxf och pdf är en vy (planen om ingen anges)."""
+    s = _sheet(db, user, sheet_id)
+    doc = _v2(s)
+    fmt = fmt.lower()
+    if fmt == "ifc":
+        return Response(cad_export.to_ifc(doc, _fname(s, "ifc")), media_type="application/x-step",
+                        headers={"Content-Disposition": f'attachment; filename="{_fname(s, "ifc")}"'})
+    if fmt == "glb":
+        return Response(cad_export.to_glb(doc), media_type="model/gltf-binary",
+                        headers={"Content-Disposition": f'attachment; filename="{_fname(s, "glb")}"'})
+    v = _view(doc, view)
+    if fmt == "svg":
+        return Response(cad_export.to_svg(doc, v), media_type="image/svg+xml",
+                        headers={"Content-Disposition": f'attachment; filename="{_fname(s, "svg")}"'})
+    if fmt == "dxf":
+        return Response(cad_export.to_dxf(doc, v), media_type="application/dxf",
+                        headers={"Content-Disposition": f'attachment; filename="{_fname(s, "dxf")}"'})
+    if fmt == "pdf":
+        return Response(cad_export.view_pdf(doc, v, paper, ratio), media_type="application/pdf",
+                        headers={"Content-Disposition": f'inline; filename="{_fname(s, "pdf")}"'})
+    raise HTTPException(400, "Okänt format: ifc, glb, svg, dxf eller pdf")
+
+
+@router.get("/sheets/{sheet_id}/sheets/{drawing_sheet}.pdf")
+def export_drawing_sheet(sheet_id: str, drawing_sheet: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Ett ritningsblad i modellen (vyportar och namnruta) som PDF."""
+    s = _sheet(db, user, sheet_id)
+    doc = _v2(s)
+    sh = next((x for x in doc.get("sheets") or [] if x.get("id") == drawing_sheet), None)
+    if sh is None:
+        raise HTTPException(404, "Okänt ritningsblad")
+    return Response(cad_export.sheet_pdf(doc, sh), media_type="application/pdf",
+                    headers={"Content-Disposition": f'inline; filename="{(sh.get("name") or "blad")[:60]}.pdf"'})
+
+
+@router.get("/sheets/{sheet_id}/geometry")
+def sheet_geometry(sheet_id: str, view: str | None = None, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Serverns egna kroppar och streck för bladet - så att webbläsarens och serverns geometri kan jämföras."""
+    s = _sheet(db, user, sheet_id)
+    doc = _v2(s)
+    return {"solids": {e["id"]: cad_geom.solids_of(doc, e) for e in doc["entities"]},
+            "primitives": cad_export.view_primitives(doc, _view(doc, view)),
+            "bounds": cad_geom.model_bounds(doc)}
+
+
+async def _read_upload(file: UploadFile, limit: int = MAX_IMPORT_BYTES) -> bytes:
+    chunks, size = [], 0
+    while True:
+        chunk = await file.read(1024 * 1024)
+        if not chunk:
+            break
+        size += len(chunk)
+        if size > limit:
+            raise HTTPException(413, f"Filen är större än {limit // (1024 * 1024)} MB")
+        chunks.append(chunk)
+    return b"".join(chunks)
+
+
+def _asset_key(sheet_id: str, ext: str) -> str:
+    return f"cad/{sheet_id}/assets/{os.urandom(8).hex()}.{ext}"
+
+
+@router.post("/sheets/{sheet_id}/import")
+async def import_file(sheet_id: str, file: UploadFile = File(...), level: str | None = Form(default=None),
+                      user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """En fil blir objekt (DXF, SVG, IFC) eller en referens (GLB/GLTF/OBJ/STL). Ingenting skrivs i bladet:
+    svaret är ett förslag som ritbordet lägger in som en transaktion, så att det går att ångra."""
+    s = _sheet(db, user, sheet_id)
+    name = (file.filename or "").lower()
+    ext = name.rsplit(".", 1)[-1] if "." in name else ""
+    data = await _read_upload(file)
+    if ext == "dxf":
+        r = cad_import.from_dxf(data.decode("utf-8", "ignore"), level=level)
+    elif ext == "svg":
+        try:
+            r = cad_import.from_svg(data.decode("utf-8", "ignore"), level=level)
+        except Exception as e:  # noqa: BLE001 - trasig XML är ett svar, inte en krasch
+            raise HTTPException(400, f"SVG gick inte att läsa: {type(e).__name__}") from e
+    elif ext == "ifc":
+        r = cad_import.from_ifc(data.decode("utf-8", "ignore"))
+    elif ext in ("glb", "gltf", "obj", "stl"):
+        try:
+            bounds = cad_import.mesh_bounds(data, ext)
+        except Exception as e:  # noqa: BLE001
+            raise HTTPException(400, f"Nätet gick inte att läsa: {type(e).__name__}") from e
+        key = _asset_key(s.id, ext)
+        storage.put(key, io.BytesIO(data))
+        return {"kind": "mesh", "asset": key, "format": ext, "bounds": bounds, "filename": file.filename, "size_bytes": len(data),
+                "assumptions": ["Filens enhet är okänd: sätt skalan (mm per enhet) på referensen"]}
+    elif ext in ("dwg",):
+        raise HTTPException(400, "DWG är ett slutet format och stöds inte. Spara som DXF eller IFC från CAD-programmet.")
+    else:
+        raise HTTPException(400, "Format som stöds: dxf, svg, ifc, glb, gltf, obj, stl")
+    r["kind"] = "entities"
+    r["filename"] = file.filename
+    r["count"] = len(r["entities"])
+    return r
+
+
+def _store_image(sheet_id: str, data: bytes, filetype: str) -> tuple[str, int, int]:
+    import pymupdf
+    pix = pymupdf.Pixmap(data) if filetype != "pdf" else None
+    if pix is None:
+        raise HTTPException(400, "Bilden gick inte att läsa")
+    key = _asset_key(sheet_id, "png")
+    storage.put(key, io.BytesIO(pix.tobytes("png")))
+    return key, pix.width, pix.height
+
+
+@router.post("/sheets/{sheet_id}/underlay")
+async def add_underlay(sheet_id: str, file: UploadFile | None = File(default=None), page: int = Form(default=0),
+                       drawing_id: str | None = Form(default=None), user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Ett underlag: en PDF-sida eller en bild att rita ovanpå.
+
+    Skalan är verifierad när sidan kommer från en läst handling (motorns eller mängdarens skala för sidan),
+    annars okalibrerad tills någon mäter upp den. Ett underlag utan skala ritas, men det går inte att fånga
+    mått i det - det är en bild, inte en modell."""
+    s = _sheet(db, user, sheet_id)
+    import pymupdf
+    mpp: float | None = None
+    source = "INGEN"
+    src: dict = {"page": page}
+    if drawing_id:
+        d = db.get(Drawing, drawing_id)
+        if d is None or d.project.owner_id != user.id:
+            raise HTTPException(404, "Okänd handling")
+        with storage.open(d.storage_key) as fh:
+            data = fh.read()
+        filetype = "pdf"
+        from .markups import _mpp
+        mpp, source = _mpp(db, drawing_id, page)
+        src.update(drawing_id=drawing_id, filename=d.filename)
+    elif file is not None:
+        data = await _read_upload(file)
+        name = (file.filename or "").lower()
+        filetype = "pdf" if data.startswith(b"%PDF") else name.rsplit(".", 1)[-1] if "." in name else "png"
+        src.update(filename=file.filename)
+    else:
+        raise HTTPException(400, "Skicka en fil eller en handling")
+    if filetype == "pdf":
+        try:
+            pdf = pymupdf.open(stream=data, filetype="pdf")
+        except Exception as e:  # noqa: BLE001
+            raise HTTPException(400, f"PDF gick inte att öppna: {type(e).__name__}") from e
+        if page < 0 or page >= len(pdf):
+            raise HTTPException(400, f"Sidan finns inte (1-{len(pdf)})")
+        pg = pdf[page]
+        long_side = max(pg.rect.width, pg.rect.height)
+        zoom = max(1.0, min(6.0, 4000.0 / long_side))
+        pix = pg.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom), alpha=False)
+        key = _asset_key(s.id, "png")
+        storage.put(key, io.BytesIO(pix.tobytes("png")))
+        w, h = pix.width, pix.height
+        pdf.close()
+        mm_per_px = (mpp * 1000.0 / zoom) if mpp else None
+        state = {"UPPMÄTT": "CALIBRATED", "LÄSNINGEN": "VERIFIED"}.get(source, "UNCALIBRATED") if mm_per_px else "UNCALIBRATED"
+        src["px_per_pt"] = zoom
+    else:
+        key, w, h = _store_image(s.id, data, filetype)
+        mm_per_px, state = None, "UNCALIBRATED"
+    return {"asset": key, "px": [w, h], "mm_per_px": mm_per_px, "scale_state": state, "source": src}
+
+
+@router.get("/assets/{sheet_id}/{name}")
+def get_asset(sheet_id: str, name: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    _sheet(db, user, sheet_id)
+    if "/" in name or ".." in name:
+        raise HTTPException(404, "Okänd fil")
+    key = f"cad/{sheet_id}/assets/{name}"
+    if not storage.exists(key):
+        raise HTTPException(404, "Okänd fil")
+    ext = name.rsplit(".", 1)[-1].lower()
+    return FileResponse(storage.path(key), media_type=ASSET_EXT.get(ext, "application/octet-stream"))
