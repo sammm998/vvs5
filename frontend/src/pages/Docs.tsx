@@ -325,6 +325,39 @@ const SECTIONS: Sec[] = [
     ),
   },
   {
+    id: "byggcad",
+    h: "Ritbordet: hela byggnaden",
+    body: (
+      <>
+        <p>
+          Bredvid läsningen finns ett ritbord där en byggnad modelleras från grunden — inte bara rören. Modellen är
+          en enda i millimeter: nivåer med sina egna höjder, rutnät, väggar med dörrar och fönster i sig, bjälklag,
+          tak med nock, undertak, rum, trappor, pelare, balkar, grund, och installationerna — rör, kanaler,
+          kabelstegar, utrustning med anslutningar. Planen och 3D-vyn är samma objekt: det som flyttas i den ena
+          flyttar i den andra, och varje ändring är en transaktion som går att ångra.
+        </p>
+        <p className="pull">Ingen påhittad dimension. Det som inte står i modellen finns inte i filen.</p>
+        <p>
+          Mängderna räknas ur samma mått som ritar — en väggs yta är längd gånger höjd minus öppningarna, aldrig
+          summan av trianglar — och servern räknar samma tal som webbläsaren, grupp för grupp. Ett material utan
+          densitet ger ingen vikt. Kollisioner mellan discipliner listas med allvarlighet, och där ett rör går genom
+          en vägg föreslås ett hål — som förslag, tills någon godkänner det. Snitt och fasader ritas ur modellen,
+          ritningsblad får vyportar i egen skala och en namnruta, och mått som hängs på ett objekt följer det.
+        </p>
+        <p>
+          In och ut i öppna format: IFC 4, GLB, SVG, DXF och PDF ut; DXF, SVG, IFC och referensnät (GLB, OBJ, STL)
+          in, med ursprunget skrivet på varje objekt. Ett PDF-blad kan ligga som underlag — med den lästa
+          handlingens skala om det är en sådan, annars uppmätt med två punkter, annars märkt som utan skala. DWG
+          är ett slutet format och stöds inte; spara som DXF eller IFC.
+        </p>
+        <p className="note">
+          Agenten vid ritbordet föreslår — en vägg med sina mått, en dörr i den, ett rum — och skriver aldrig
+          själv. Saknas ett mått frågar den. Förslagen syns som spöken tills du godkänner dem.
+        </p>
+      </>
+    ),
+  },
+  {
     id: "credits",
     h: "Vad en läsning kostar",
     body: (
