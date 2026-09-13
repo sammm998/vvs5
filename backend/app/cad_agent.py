@@ -414,7 +414,8 @@ def run(name: str, model: CadAgentModel, args: dict[str, Any]) -> dict[str, Any]
     try:
         return t["fn"](model, **{k: v for k, v in (args or {}).items() if k != "self"})
     except TypeError as e:
-        return {"fel": f"fel argument till {name}: {e}"}
+        # ett mått som saknas är en fråga till användaren, inte ett antagande
+        return {"fel": f"fel argument till {name}: {e}", "fraga_anvandaren": True}
     except ValueError as e:
         return {"fel": str(e), "fraga_anvandaren": True}
     except Exception as e:                                      # noqa: BLE001

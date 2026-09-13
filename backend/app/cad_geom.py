@@ -237,8 +237,25 @@ def roof_solids(doc: dict, r: dict) -> list[dict]:
     dist_to = lambda p: abs((p[0] - ra[0]) * n[0] + (p[1] - ra[1]) * n[1])  # noqa: E731
     far = max(dist_to(p) for p in r["p"])
     tan = math.tan(math.radians(float(r["slope_deg"])))
-    top = [z + (far - dist_to(p)) * tan for p in r["p"]]
-    return [prism(r["id"], "roof", r["p"], z, z + far * tan + th, top=top)]
+    # ett takfall per sida om nocken (samma delning som solids.ts): plan överkant per kropp, nock i snittet
+    halves = [h for h in (_clip_half(r["p"], ra, n, 1.0), _clip_half(r["p"], ra, n, -1.0)) if len(h) >= 3 and polygon_area(h) > 1e-6]
+    return [prism(r["id"], "roof", h, z, z + far * tan + th, top=[z + (far - dist_to(p)) * tan for p in h]) for h in (halves or [r["p"]])]
+
+
+def _clip_half(poly: list, a, n, sign: float) -> list:
+    """Den del av polygonen som ligger på ena sidan om linjen genom a med normalen n."""
+    def side(p):
+        return sign * ((p[0] - a[0]) * n[0] + (p[1] - a[1]) * n[1])
+    out = []
+    for i in range(len(poly)):
+        p, q = poly[i], poly[(i + 1) % len(poly)]
+        sp, sq = side(p), side(q)
+        if sp >= 0:
+            out.append([float(p[0]), float(p[1])])
+        if (sp >= 0) != (sq >= 0):
+            t = sp / (sp - sq)
+            out.append([p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t])
+    return out
 
 
 def roof_height_at(doc: dict, r: dict, p) -> float:
@@ -474,10 +491,14 @@ def _clip_segment_to_polygon(a, b, poly: list) -> list:
             continue
         t = ((c[0] - a[0]) * s[1] - (c[1] - a[1]) * s[0]) / den
         u = ((c[0] - a[0]) * r[1] - (c[1] - a[1]) * r[0]) / den
-        if 0 <= u < 1:
+        if -1e-9 <= u <= 1 + 1e-9:
             ts.append(t)
     ts.sort()
-    return [[ts[i], ts[i + 1]] for i in range(0, len(ts) - 1, 2)]
+    uniq: list[float] = []
+    for t in ts:
+        if not uniq or abs(t - uniq[-1]) > 1e-9:
+            uniq.append(t)
+    return [[uniq[i], uniq[i + 1]] for i in range(0, len(uniq) - 1, 2)]
 
 
 def section_of_prism(pl: dict, p: dict) -> list[dict]:

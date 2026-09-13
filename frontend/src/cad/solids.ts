@@ -156,8 +156,21 @@ export function roofSolids(doc: CadDocument, r: Roof): RoofPlane[] {
   const distTo = (p: Pt) => Math.abs((p[0] - ra[0]) * n[0] + (p[1] - ra[1]) * n[1]);
   const far = Math.max(...r.p.map(distTo));
   const tan = Math.tan((r.slope_deg! * Math.PI) / 180);
-  const top = r.p.map((p) => z + (far - distTo(p)) * tan);
-  return [{ id: r.id, kind: "roof", poly: r.p, z0: z, z1: z + far * tan + r.thickness, top }];
+  // ett takfall per sida om nocken: då har varje kropp en plan överkant, och ett snitt tvärs taket får sin nock
+  const halves = [clipHalf(r.p, ra, n, 1), clipHalf(r.p, ra, n, -1)].filter((h) => h.length >= 3 && polygonArea(h) > 1e-6);
+  return (halves.length ? halves : [r.p]).map((h) => ({ id: r.id, kind: "roof", poly: h, z0: z, z1: z + far * tan + r.thickness, top: h.map((p) => z + (far - distTo(p)) * tan) }));
+}
+/** Den del av polygonen som ligger på ena sidan om linjen genom a med normalen n (Sutherland-Hodgman mot ett halvplan). */
+function clipHalf(poly: Pt[], a: Pt, n: Pt, sign: 1 | -1): Pt[] {
+  const side = (p: Pt) => sign * ((p[0] - a[0]) * n[0] + (p[1] - a[1]) * n[1]);
+  const out: Pt[] = [];
+  for (let i = 0; i < poly.length; i++) {
+    const p = poly[i], q = poly[(i + 1) % poly.length];
+    const sp = side(p), sq = side(q);
+    if (sp >= 0) out.push(p);
+    if ((sp >= 0) !== (sq >= 0)) { const t = sp / (sp - sq); out.push([p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t]); }
+  }
+  return out;
 }
 export function roofHeightAt(doc: CadDocument, r: Roof, p: Pt): number {
   const z = elevation(doc, r.level) + (r.offset ?? 0);
@@ -284,11 +297,15 @@ function clipSegmentToPolygon(a: Pt, b: Pt, poly: Pt[]): [number, number][] {
     if (Math.abs(den) < 1e-12) continue;
     const t = ((c[0] - a[0]) * s[1] - (c[1] - a[1]) * s[0]) / den;
     const u = ((c[0] - a[0]) * r[1] - (c[1] - a[1]) * r[0]) / den;
-    if (u >= 0 && u < 1) ts.push(t);
+    if (u >= -1e-9 && u <= 1 + 1e-9) ts.push(t);
   }
+  // ett hörn hör till två kanter och ger samma t två gånger; en linje längs en kant ger inget alls från den
+  // kanten men ett t från var och en av grannkanterna. Lika t räknas en gång, sedan paras de ihop.
   ts.sort((x, y) => x - y);
+  const uniq: number[] = [];
+  for (const t of ts) if (!uniq.length || Math.abs(t - uniq[uniq.length - 1]) > 1e-9) uniq.push(t);
   const out: [number, number][] = [];
-  for (let i = 0; i + 1 < ts.length; i += 2) out.push([ts[i], ts[i + 1]]);
+  for (let i = 0; i + 1 < uniq.length; i += 2) out.push([uniq[i], uniq[i + 1]]);
   return out;
 }
 
