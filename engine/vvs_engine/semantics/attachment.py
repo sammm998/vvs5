@@ -756,17 +756,29 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
         rk = {g: v[0] for g, v in rk.items() if v is not None}
         ranks[d.did] = rk
         match[d.did] = [g for g in gkeys if g in rk and rk[g] == min(rk.values())] if rk else []
-    # en grupp som två rader gör anspråk på tillhör den rad vars lager namnger den bäst: varmvattnets lager
-    # är varmvattnets rad, inte cirkulationens, när båda står i blocket
+    # En grupp som flera rader gör anspråk på: varmvattnets lager bär både varmvattnet och cirkulationen, och
+    # blocket namnger båda. Ritar lagret lika många parallella linjer där som raderna är, är det en bunt inom
+    # gruppen - raderna får sina linjer i väntan på att bladet avgör vilken som är vilken (elimineringen), som
+    # varje annan bunt. Är linjerna färre delar raderna en linje och ingen får den; är de fler tar den rad
+    # vars lager namnger den bäst gruppen, men bara om linjerna då räcker till en var - annars är det en fråga.
+    within_group: dict[str, list] = {}
     if len(rows) > 1:
         for g in gkeys:
             claims = {d.did: ranks[d.did][g] for d in rows if g in match[d.did]}
-            if len(claims) > 1:
-                best = min(claims.values())
-                if sum(1 for v in claims.values() if v == best) == 1:
-                    for did, v in claims.items():
-                        if v != best:
-                            match[did] = [x for x in match[did] if x != g]
+            if len(claims) <= 1:
+                continue
+            lines = len({(c.pid, c.seg_index) for c in groups[g]})
+            best = min(claims.values())
+            best_rows = [did for did, v in claims.items() if v == best]
+            if len(claims) == lines and paths is not None:
+                runs = parallel_runs(groups[g], paths)
+                if runs is not None and len(runs) == len(claims):
+                    within_group[g] = runs
+                    continue
+            if len(best_rows) == 1 and lines == 1:
+                for did, v in claims.items():
+                    if v != best:
+                        match[did] = [x for x in match[did] if x != g]
     if len(rows) == 1:
         d = rows[0]
         if len(gkeys) == 1:
@@ -835,6 +847,13 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
                     for i, d in enumerate(order)]
     for d in rows:
         ms = match[d.did]
+        if len(ms) == 1 and ms[0] in within_group:
+            runs = within_group[ms[0]]
+            order = sorted([r for r in rows if match[r.did] == [ms[0]]], key=lambda r: r.row_index)
+            i = order.index(d) if d in order else 0
+            anchors.append(mk(d, "AMBIGUOUS_PIPE_ATTACHMENT", "multi_row_bundle_awaiting_elimination", [c for r in runs for c in r],
+                              {"bundle": {"pos": i, "n": len(order), "runs": [[[c.pid, c.seg_index] for c in r] for r in runs], "within_layer": ms[0].split("|s|")[0]}}))
+            continue
         if len(ms) == 1 and len(owner[ms[0]]) == 1:
             anchors.append(mk(d, "VERIFIED_PIPE_ATTACHMENT", "multi_row_layer_token_bijection", groups[ms[0]], {"layer_token_match": ms[0]}))
         elif len(ms) == 0:
