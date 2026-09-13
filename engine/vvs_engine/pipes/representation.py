@@ -496,6 +496,30 @@ def _corner_bridges(nodes, pmap, prim_nodes, idx, gap_mode: float, gtol: float, 
     return out
 
 
+def _crossing_in_gap(n, along: float, ux: float, uy: float, pmap, prim_nodes, idx, own: int, far_node: int) -> str | None:
+    """Ett streck av samma penna som korsar glappet mellan två fria ändar - inte det egna, inte det som slutar
+    i andra änden - på tvären (mer än tjugo grader) och inne i glappet, inte vid dess ändar."""
+    x0, y0 = n.x, n.y
+    x1, y1 = n.x + ux * along, n.y + uy * along
+    box = (min(x0, x1) - 1.0, min(y0, y1) - 1.0, max(x0, x1) + 1.0, max(y0, y1) + 1.0)
+    for pid in sorted(idx.query(box)):
+        if pid == own or far_node in prim_nodes.get(pid, ()):
+            continue
+        r = pmap[pid]
+        if r.seg.length <= DOT_MAX or angle_diff(r.seg.angle, math.degrees(math.atan2(uy, ux)) % 180.0) < 20.0:
+            continue
+        # skärning mellan glappets sträcka och strecket, som parametrar längs var och en
+        dx, dy = r.seg.x1 - r.seg.x0, r.seg.y1 - r.seg.y0
+        den = ux * dy - uy * dx
+        if abs(den) < 1e-9:
+            continue
+        t = ((r.seg.x0 - x0) * dy - (r.seg.y0 - y0) * dx) / den
+        u = ((r.seg.x0 - x0) * uy - (r.seg.y0 - y0) * ux) / den
+        if 0.05 * along < t < 0.95 * along and -0.05 <= u <= 1.05:
+            return f"crossing:{r.pid}"
+    return None
+
+
 def _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols: SymbolIndex, family: str):
     """Two free ends of one run facing each other across a symbol of another pen: (node, node, gap, symbol).
 
@@ -539,9 +563,13 @@ def _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols: SymbolIndex, family: 
             continue
         along, tn = best
         sym = symbols.covering(n.x + ux * along / 2.0, n.y + uy * along / 2.0, family)
-        if not sym:
+        # ...eller ett streck av samma penna tvärs över glappet: en gren som ansluter, en korsande ledning.
+        # Ritaren bryter linjen där en annan går in i den, och de två fria ändarna vänder sig mot varandra
+        # över anslutningen precis som över en ventil. Utan något i glappet är två ändar bara två ändar.
+        evidence = sym[0] if sym else _crossing_in_gap(n, along, ux, uy, pmap, prim_nodes, idx, q.prim_id, tn)
+        if not evidence:
             continue
-        claim[n.nid] = (tn, along, sym[0])
+        claim[n.nid] = (tn, along, evidence)
     pairs: dict[tuple[int, int], tuple[int, int, float, str]] = {}
     for nid in sorted(claim):
         tn, g, sym = claim[nid]
@@ -700,10 +728,13 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
             bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": kind,
                             "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
     if symbols is not None:
-        # a valve in the line: the run goes on beyond it, whatever gap style the pen has
+        # a valve in the line, or another line of the same pen crossing it: the run goes on beyond it,
+        # whatever gap style the pen has
         for nid, tn, g, sym in _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols, family):
             _merge_nodes(nodes, prim_nodes, nid, tn)
-            bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": "symbol", "symbol": sym,
+            crossing = sym.startswith("crossing:")
+            bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2),
+                            "kind": "crossing" if crossing else "symbol", "symbol": sym,
                             "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
     # remove emptied nodes
     nodes = {k: v for k, v in nodes.items() if v.prims}

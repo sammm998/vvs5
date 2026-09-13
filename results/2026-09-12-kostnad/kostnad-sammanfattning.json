@@ -1,0 +1,43 @@
+{
+ "sheets": 296,
+ "cpu_fit": {
+  "base_s": 17.43057111654048,
+  "s_per_1000_paths": 1.4735044608311663
+ },
+ "questions_fit": {
+  "base": 1.6849907700805862,
+  "per_1000_paths": 0.04830138289692899
+ },
+ "cpu_kr_per_hour": 1.0273972602739725,
+ "median_kr": 0.032,
+ "max_kr": 3.544,
+ "by_format": {
+  "A1": {
+   "n": 284,
+   "median_kr": 0.031,
+   "median_paths": 11661.0
+  },
+  "A3": {
+   "n": 11,
+   "median_kr": 0.202,
+   "median_paths": 13658
+  },
+  "A0+": {
+   "n": 1,
+   "median_kr": 0.961,
+   "median_paths": 75164
+  }
+ },
+ "assumptions": {
+  "vm_kr_per_month": 1200.0,
+  "vm_vcpu": 4,
+  "utilisation": 0.4,
+  "llm_kr_per_1k_input": 0.02,
+  "llm_kr_per_1k_output": 0.08,
+  "llm_output_tokens_per_question": 600,
+  "storage_kr_per_gb_month": 0.25,
+  "storage_months": 12,
+  "vision_kr_per_page": 0.9,
+  "payment_fee_pct": 1.5
+ }
+}
