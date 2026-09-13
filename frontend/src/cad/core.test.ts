@@ -2,7 +2,7 @@
  * mängdas, snittas och kollisionskontrolleras - och varje tal jämförs med det man räknar ut för hand.
  * Körs med node efter esbuild (se engine/tests/test_the_building_model_holds_together.py). */
 
-import { type CadDocument, type Wall, type Door, type Window, type Floor, type Column, type Beam, type Pipe, type Roof, type Room, migrate, newDocument, validate, relations, visibleIn, heightOf } from "./building";
+import { type CadDocument, type Wall, type Door, type Window, type Floor, type Column, type Beam, type Pipe, type Roof, type Room, type Equipment, migrate, newDocument, validate, relations, visibleIn, heightOf, connections } from "./building";
 import { Tx, commit, emptyHistory, redo, undo, touched } from "./commands";
 import { wallSolids, sectionOfDocument, elevationPlane, elevationOfDocument, roofHeightAt } from "./solids";
 import { quantities, materialQuantities, quantityOf } from "./quantities";
@@ -140,6 +140,22 @@ check("plan 0 visar väggar, rum och rör på plan 0", visibleIn(doc, plan0, doc
 const plan1 = { ...plan0, id: "v_plan1", level: "lv_1" };
 check("plan 1 visar inte plan 0:s rum", !visibleIn(doc, plan1, room));
 check("dörren syns där dess vägg syns", visibleIn(doc, plan0, d1) && !visibleIn(doc, plan1, d1));
+
+// ---------------------------------------------------------------- installationerna sitter ihop där de möts
+
+{
+  const pump: Equipment = { ...common("eq1", "VVS"), type: "equipment", kind: "pump", p: [[12000, 3000, 1000]], size: [600, 400, 500], connectors: [{ id: "c_in", name: "IN", kind: "in", at: [0, 0, 0] }, { id: "c_ut", name: "UT", kind: "out", at: [300, 0, 0] }] };
+  const p2: Pipe = { ...common("p2", "VVS"), type: "pipe", path: [[12300, 3000, 1000], [12300, 8000, 1000]], system: "KV", dn: 25, level: "lv_0" };
+  const p3: Pipe = { ...common("p3", "VVS"), type: "pipe", path: [[5000, 3000, 1000], [5000, 6000, 1000]], system: "KV", dn: 20, level: "lv_0" };
+  const loose: Pipe = { ...common("p4", "VVS"), type: "pipe", path: [[5000, 6500, 1000], [5000, 9000, 1000]], system: "KV", dn: 20, level: "lv_0" };
+  const wired: CadDocument = { ...doc, entities: [...doc.entities, pump, p2, p3, loose] };
+  const cs = connections(wired);
+  check("röret slutar i pumpens IN-anslutning", cs.some((c) => c.from === "p1" && c.to === "eq1" && c.via === "connector" && c.connector === "c_in"), cs);
+  check("nästa rör börjar i pumpens UT-anslutning", cs.some((c) => c.from === "p2" && c.to === "eq1" && c.connector === "c_ut"));
+  check("ett rör som börjar på ett annat rörs sträcka är ett T-stycke", cs.some((c) => c.from === "p3" && c.to === "p1" && c.via === "tee" && near(c.at[0], 5000)));
+  check("ett rör 500 mm bort sitter inte ihop med något", !cs.some((c) => c.from === "p4" || c.to === "p4"));
+  check("anslutningarna finns bland relationerna som CONNECTS_TO", relations(wired).filter((r) => r.kind === "CONNECTS_TO").length === cs.length);
+}
 
 // ---------------------------------------------------------------- validering fångar det som inte får sparas
 

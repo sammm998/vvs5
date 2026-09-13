@@ -339,6 +339,59 @@ export function relations(doc: CadDocument): Relation[] {
     if (c.kind === "grid") out.push({ kind: "ATTACHED_TO_GRID", from: c.entity, to: c.grid });
     if (c.kind === "support") out.push({ kind: "SUPPORTED_BY", from: c.entity, to: c.support });
   }
+  for (const c of connections(doc)) out.push({ kind: "CONNECTS_TO", from: c.from, to: c.to });
+  return out;
+}
+
+/** En anslutnings läge i byggets koordinater: utrustningens punkt plus anslutningens förskjutning, vriden med utrustningen. */
+export function connectorWorld(doc: CadDocument, e: Equipment, c: Connector): Pt3 {
+  const R = ((e.rot ?? 0) * Math.PI) / 180;
+  const z = elevation(doc, e.level) + e.p[0][2];
+  return [e.p[0][0] + c.at[0] * Math.cos(R) - c.at[1] * Math.sin(R), e.p[0][1] + c.at[0] * Math.sin(R) + c.at[1] * Math.cos(R), z + c.at[2]];
+}
+
+/** Var en väg (rör, kanal, stege) börjar och slutar, i byggets koordinater. */
+export function pathEnds(doc: CadDocument, e: Pipe | Duct | CableTray | Conduit): [Pt3, Pt3] | null {
+  if (e.path.length < 2) return null;
+  const z = elevation(doc, e.level) + (e.elevation ?? 0);
+  const a = e.path[0], b = e.path[e.path.length - 1];
+  return [[a[0], a[1], (a[2] ?? 0) + z], [b[0], b[1], (b[2] ?? 0) + z]];
+}
+
+export type Connection = { from: string; to: string; at: Pt3; via: "connector" | "end" | "tee"; connector?: string };
+/**
+ * Vad som sitter ihop i installationerna, härlett ur lägena: en vägs ände i en utrustnings anslutning, två
+ * vägars ändar mot varandra, eller en vägs ände på en annan vägs sträcka (ett T-stycke). Toleransen är
+ * `tol` millimeter. Ingen relation lagras: flyttas röret bort försvinner anslutningen, och det är rätt.
+ */
+export function connections(doc: CadDocument, tol = 60): Connection[] {
+  const out: Connection[] = [];
+  const paths = doc.entities.filter((e) => e.type === "pipe" || e.type === "duct" || e.type === "cable_tray" || e.type === "conduit") as (Pipe | Duct | CableTray | Conduit)[];
+  const eq = doc.entities.filter((e) => e.type === "equipment") as Equipment[];
+  const d3 = (a: Pt3, b: Pt3) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  const ends = new Map<string, [Pt3, Pt3]>();
+  for (const p of paths) { const e = pathEnds(doc, p); if (e) ends.set(p.id, e); }
+  for (const p of paths) {
+    const e = ends.get(p.id); if (!e) continue;
+    for (const end of e) {
+      for (const q of eq) for (const c of q.connectors ?? []) { const w = connectorWorld(doc, q, c); if (d3(w, end) <= tol) out.push({ from: p.id, to: q.id, at: w, via: "connector", connector: c.id }); }
+      for (const o of paths) {
+        if (o.id === p.id || o.type !== p.type) continue;
+        const oe = ends.get(o.id); if (!oe) continue;
+        if (oe.some((x) => d3(x, end) <= tol)) { if (p.id < o.id) out.push({ from: p.id, to: o.id, at: end, via: "end" }); continue; }
+        // T-stycke: änden ligger på den andra vägens sträcka, inte i dess ändar
+        const z = elevation(doc, o.level) + (o.elevation ?? 0);
+        for (let i = 0; i + 1 < o.path.length; i++) {
+          const a: Pt3 = [o.path[i][0], o.path[i][1], (o.path[i][2] ?? 0) + z], b: Pt3 = [o.path[i + 1][0], o.path[i + 1][1], (o.path[i + 1][2] ?? 0) + z];
+          const v = [b[0] - a[0], b[1] - a[1], b[2] - a[2]]; const L2 = v[0] * v[0] + v[1] * v[1] + v[2] * v[2]; if (!L2) continue;
+          const t = ((end[0] - a[0]) * v[0] + (end[1] - a[1]) * v[1] + (end[2] - a[2]) * v[2]) / L2;
+          if (t <= 0 || t >= 1) continue;
+          const q: Pt3 = [a[0] + v[0] * t, a[1] + v[1] * t, a[2] + v[2] * t];
+          if (d3(q, end) <= tol) out.push({ from: p.id, to: o.id, at: q, via: "tee" });
+        }
+      }
+    }
+  }
   return out;
 }
 

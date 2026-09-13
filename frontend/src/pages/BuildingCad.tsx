@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import {
-  type CadDocument, type Entity, type Level, type Pt, type View, type Discipline, type Wall, type TagField, DISCIPLINES, migrate, newDocument, uid, validate, levelOf, visibleIn,
+  type CadDocument, type Entity, type Level, type Pt, type View, type Discipline, type Wall, type TagField, DISCIPLINES, migrate, newDocument, uid, validate, levelOf, visibleIn, connections,
 } from "../cad/building";
 import { Tx, commit, emptyHistory, undo as undoTx, redo as redoTx, type History } from "../cad/commands";
 import { type Cam, type Snap, type SnapSettings, defaultSnaps, drawPlan, hits, gripsOf, gripped, moved, snapPoint, constrain, toWorld, toScreen, bboxOf, colourOf, wallAt } from "../cad/plan";
@@ -630,10 +630,14 @@ function Properties({ doc, e, onChange, onCalibrate }: { doc: CadDocument; e: En
       break;
     default: break;
   }
+  const isMep = e.type === "pipe" || e.type === "duct" || e.type === "cable_tray" || e.type === "conduit" || e.type === "equipment";
+  const conns = isMep ? connections(doc).filter((c) => c.from === e.id || c.to === e.id) : [];
+  const other = (c: { from: string; to: string }) => { const id = c.from === e.id ? c.to : c.from; const t = doc.entities.find((x) => x.id === id); return t ? `${t.name || qLabel(t.type)} (${t.id})` : id; };
   return (
     <div className="bcad-list">
       <div className="bcad-kind">{qLabel(e.type)} <span className="muted small">{e.id}</span></div>
       {specific}
+      {isMep && F("Ansluter till", <span className="muted small">{conns.length ? conns.map((c) => `${other(c)}${c.via === "tee" ? " (T)" : c.via === "connector" ? " (anslutning)" : ""}`).join(", ") : "inget - änden sitter inte i något"}</span>)}
       {common}
       <p className="muted small">Ursprung: {e.provenance} · version {e.version}{e.updated_at ? ` · ${new Date(e.updated_at).toLocaleString("sv-SE")}` : ""}</p>
     </div>
