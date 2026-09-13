@@ -114,7 +114,12 @@ def canon(name: str, fold: bool) -> str:
             parts[0] = m.group(1) + m.group(2)
     while len(parts) > 2 and re.match(r"^[FWL]\d{1,3}$", parts[-1]):
         parts.pop()
-    return "-".join(parts)
+    name = "-".join(parts)
+    # monteringssuffix skrivs olika av olika facitförfattare: "VS1-S13-12/W" på ett blad, "VS1-S13-12" på nästa,
+    # "VS1-S13-12 wallmounted" på ett tredje - samma rör. De faller till basen så att metrarna jämförs.
+    name = re.sub(r"\s+WALL\s*MOUNTED$", "", name)
+    name = re.sub(r"/WB?$", "", name)
+    return name
 
 
 def style_of(tag: str) -> str:

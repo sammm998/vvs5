@@ -322,6 +322,8 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
         _demote_sliver_outlines(g, states[fk], fk, ambiguous_runs)
     for fk, g in graphs.items():
         _bound_junction_flow(g, states[fk], fk, ambiguous_runs)
+    for fk, g in graphs.items():
+        _pair_unowned_runs(g, states[fk])
     given = _declare_unowned(graphs, states, list(declared), spelled_out, declared_max_pt) if declared else {}
     pipes: list[PhysicalPipe] = []
     for fk, g in graphs.items():
@@ -339,6 +341,132 @@ def propagate(graphs: dict[str, PipeGraph], anchors: list[PipeCodeAnchor], page:
 
 # the two rules that carry an identity into geometry no label touched and no drawn boundary delimits
 FLOWED_REASONS = ("collinear_through_junction", "unlabeled_branch_takes_the_only_junction_identity")
+
+# ---------------------------------------------------------------- parade ledningar: tillopp och retur i samma penna
+#
+# Ett värmesystem ritas som två parallella linjer - tillopp och retur - på ett fast avstånd, och etiketten
+# sätts på den ena. Facit räknar båda; läsningen ägde bara den etiketterade. Regeln här är bladets egen:
+# först måste pennan visa att den ritar par - två ägda linjer med *samma* identitet, parallella och
+# överlappande, på ett avstånd som återkommer (fördelningens topp). Först då får en oägd ledning som löper
+# parallellt med en ägd på just det avståndet, längs större delen av sin längd och utan att någon annan
+# identitet konkurrerar, ta identiteten. Avståndet är aldrig en konstant: det är pennans egen topp, mätt på
+# det som redan är ägt. Saknar bladet par blir ingenting parat.
+PAIR_ANGLE_DEG = 3.0          # parallellt: inom tre grader
+PAIR_OFFSET_MIN = 3.0         # pt: närmare än så är det samma streck (dubbla konturer), inte ett par
+PAIR_OFFSET_MAX = 60.0        # pt: längre bort än så är det två ledningar som råkar gå åt samma håll
+PAIR_SUPPORT_MIN = 40.0       # pt: så mycket överlapp måste de ägda paren ha innan pennan räknas som en som ritar par
+PAIR_SHARE_MIN = 0.6          # så stor del av den oägda ledningen måste löpa parallellt med den ägda
+PAIR_COMPETITION_MAX = 0.15   # ...och så liten del får en andra identitet göra anspråk på
+PAIRED_REASON = "paired_run_at_the_drawings_pair_spacing"
+
+
+def _pair_geometry(p: Prim, q: Prim, extend: float = 0.0) -> tuple[float, float] | None:
+    """Är q parallell med p? Då (vinkelrätt avstånd mellan linjerna, överlapp längs p i pt), annars None.
+
+    `extend` förlänger q i båda ändar: ett streck i en streckad linje täcker halva glappet på var sida, så att
+    en streckad tvilling räknas som den hela linje den är och inte som sina streck - annars avgör streckens
+    fas, inte ledningen, hur mycket som överlappar."""
+    if angle_diff(p.seg.angle, q.seg.angle) > _R("pipes.ownership.PAIR_ANGLE_DEG", PAIR_ANGLE_DEG):
+        return None
+    L = p.seg.length
+    if L < 1e-9:
+        return None
+    ux, uy = (p.seg.x1 - p.seg.x0) / L, (p.seg.y1 - p.seg.y0) / L
+    d = abs(-(q.seg.x0 - p.seg.x0) * uy + (q.seg.y0 - p.seg.y0) * ux)
+    t0 = (q.seg.x0 - p.seg.x0) * ux + (q.seg.y0 - p.seg.y0) * uy
+    t1 = (q.seg.x1 - p.seg.x0) * ux + (q.seg.y1 - p.seg.y0) * uy
+    lo, hi = max(0.0, min(t0, t1) - extend), min(L, max(t0, t1) + extend)
+    if hi - lo <= 0.0:
+        return None
+    return d, hi - lo
+
+
+def _pair_spacing(g: PipeGraph, st: dict[int, PrimState], idx: GridIndex) -> tuple[float, float] | None:
+    """Pennans eget paravstånd: toppen i fördelningen av avstånd mellan ägda, parallella, överlappande
+    primitiver med samma identitet - och hur mycket överlapp som bär toppen. None när pennan inte ritar par."""
+    lo_off = _R("pipes.ownership.PAIR_OFFSET_MIN", PAIR_OFFSET_MIN)
+    hi_off = _R("pipes.ownership.PAIR_OFFSET_MAX", PAIR_OFFSET_MAX)
+    hist: Counter = Counter()
+    seen: set[tuple[int, int]] = set()
+    ext = (g.gap_mode or 0.0) / 2.0 + 0.3
+    for pid in sorted(g.prims):
+        p = g.prims[pid]
+        sp = st[pid]
+        if sp.state != "CONFIRMED" or sp.identity is None or p.seg.length <= 2.5:
+            continue
+        x0, y0, x1, y1 = min(p.seg.x0, p.seg.x1), min(p.seg.y0, p.seg.y1), max(p.seg.x0, p.seg.x1), max(p.seg.y0, p.seg.y1)
+        for qid in idx.query((x0 - hi_off, y0 - hi_off, x1 + hi_off, y1 + hi_off)):
+            if qid == pid or (min(pid, qid), max(pid, qid)) in seen:
+                continue
+            sq = st[qid]
+            if sq.state != "CONFIRMED" or sq.identity is None or sq.identity.key != sp.identity.key or g.prims[qid].seg.length <= 2.5:
+                continue
+            seen.add((min(pid, qid), max(pid, qid)))
+            geo = _pair_geometry(p, g.prims[qid], ext)
+            if geo is None or not (lo_off <= geo[0] <= hi_off):
+                continue
+            hist[int(round(geo[0]))] += geo[1]
+    if not hist:
+        return None
+    mode = max(hist, key=lambda k: (hist[k] + hist.get(k - 1, 0.0) + hist.get(k + 1, 0.0), -k))
+    support = hist[mode] + hist.get(mode - 1, 0.0) + hist.get(mode + 1, 0.0)
+    if support < max(_R("pipes.ownership.PAIR_SUPPORT_MIN", PAIR_SUPPORT_MIN), 3.0 * mode):
+        return None
+    return float(mode), support
+
+
+def _pair_unowned_runs(g: PipeGraph, st: dict[int, PrimState]) -> int:
+    """Oägda ledningar som löper parallellt med en ägd på pennans eget paravstånd tar dess identitet."""
+    idx = GridIndex(cell=24.0)
+    for pid, p in g.prims.items():
+        idx.insert(pid, (min(p.seg.x0, p.seg.x1), min(p.seg.y0, p.seg.y1), max(p.seg.x0, p.seg.x1), max(p.seg.y0, p.seg.y1)))
+    spacing = _pair_spacing(g, st, idx)
+    if spacing is None:
+        return 0
+    d_star, support = spacing
+    tol = max(2.0, 0.25 * d_star)
+    ext = (g.gap_mode or 0.0) / 2.0 + 0.3
+    share_min = _R("pipes.ownership.PAIR_SHARE_MIN", PAIR_SHARE_MIN)
+    comp_max = _R("pipes.ownership.PAIR_COMPETITION_MAX", PAIR_COMPETITION_MAX)
+    n = 0
+    for comp in _unowned_components(g, st):
+        total = sum(g.prims[pid].seg.length for pid in comp)
+        if total <= 2.5:
+            continue
+        overlap: Counter = Counter()
+        idents: dict[str, Identity] = {}
+        anchors: dict[str, set[str]] = defaultdict(set)
+        for pid in comp:
+            p = g.prims[pid]
+            if p.seg.length <= 2.5:
+                continue
+            x0, y0, x1, y1 = min(p.seg.x0, p.seg.x1), min(p.seg.y0, p.seg.y1), max(p.seg.x0, p.seg.x1), max(p.seg.y0, p.seg.y1)
+            for qid in idx.query((x0 - d_star - tol, y0 - d_star - tol, x1 + d_star + tol, y1 + d_star + tol)):
+                sq = st[qid]
+                if sq.state != "CONFIRMED" or sq.identity is None or sq.reason == PAIRED_REASON:
+                    continue
+                geo = _pair_geometry(p, g.prims[qid], ext)
+                if geo is None or abs(geo[0] - d_star) > tol:
+                    continue
+                key = sq.identity.key
+                overlap[key] += geo[1]
+                idents[key] = sq.identity
+                anchors[key] |= sq.anchors
+        if not overlap:
+            continue
+        ranked = overlap.most_common(2)
+        best_key, best_ov = ranked[0]
+        second_ov = ranked[1][1] if len(ranked) > 1 else 0.0
+        best_ov, second_ov = min(best_ov, total), min(second_ov, total)
+        if best_ov < share_min * total or second_ov > comp_max * total:
+            continue
+        for pid in comp:
+            s = st[pid]
+            s.state, s.identity, s.reason = "CONFIRMED", idents[best_key], PAIRED_REASON
+            s.anchors = set(anchors[best_key])
+            s.evidence.append(f"paired_at_{d_star:.0f}pt_overlap_{best_ov / total:.2f}_pair_support_{support:.0f}pt")
+            n += 1
+    return n
 
 TRANSITION_EVIDENCE = "representation_transition_needs_its_own_evidence"
 

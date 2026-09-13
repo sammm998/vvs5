@@ -380,9 +380,13 @@ def test_a_system_with_its_own_layer_is_not_an_abbreviation():
     """A layer token that a longer system name merely ends with is another system when the file names that
     system in full on a layer of its own."""
     from vvs_engine.semantics.attachment import system_layer_match
-    assert system_layer_match("KV1", "V-52BB-FE--V1-") == "V1"
-    assert system_layer_match("KV1", "V-52BB-FE--V1-", frozenset({"V1"})) == "V1"
-    assert system_layer_match("KV1", "V-52BB-FE--V1-", frozenset({"V1", "KV1"})) is None
+    # lagrets klass (52BB = tappkallvatten) namnger KV före det korta tecknet V1 i svansen - och en klass är
+    # ingen förkortning, så den står kvar även när systemet är utskrivet på ett eget lager
+    assert system_layer_match("KV1", "V-52BB-FE--V1-") == "52BB"
+    assert system_layer_match("KV1", "V-52BB-FE--V1-", frozenset({"V1"})) == "52BB"
+    assert system_layer_match("KV1", "V-52BB-FE--V1-", frozenset({"V1", "KV1"})) == "52BB"
+    assert system_layer_match("KV1", "V-52B--FE--V1-") == "V1"                       # utan klass: svansen
+    assert system_layer_match("KV1", "V-52B--FE--V1-", frozenset({"V1", "KV1"})) is None
     assert system_layer_match("FJV1", "V-52BB-FE--V1-", frozenset({"V1", "FJV1"})) is None
     assert system_layer_match("FJV1", "V-56B--FE--FJV1-", frozenset({"V1", "FJV1"})) == "FJV1"
 

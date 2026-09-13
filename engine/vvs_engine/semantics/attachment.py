@@ -106,7 +106,15 @@ def layer_system_tokens(page) -> frozenset[str]:
 
 
 # how exactly a layer token names a system: the name itself, a numbered pattern, the letters alone, a tail
-MATCH_EXACT, MATCH_PATTERN, MATCH_ALPHA, MATCH_TAIL = 0, 1, 2, 3
+MATCH_EXACT, MATCH_PATTERN, MATCH_ALPHA, MATCH_CLASS, MATCH_CLASS_PREFIX, MATCH_TAIL = 0, 1, 2, 3, 4, 5
+
+# Lagerklasserna ur BSAB 96 / BH90 som svenska VVS-lager bär i namnet: "V-52BB-..." är tappkallvatten,
+# "V-52BC-..." tappvarmvatten, "V-52BD-..." varmvattencirkulation. Det är en nationell klassindelning, samma
+# på varje handling som följer den - ingen enskild ritnings vana - och den säger vilket system en penna ritar
+# när lagrets övriga tecken inte gör det. Ett system som *börjar* på klassens bokstäver (VVC på ett
+# varmvattenlager) hör dit svagare: cirkulationen ritas ofta på varmvattnets lager, men varmvattnet ritas inte
+# på cirkulationens.
+LAYER_CLASS = {"52BB": "KV", "52BC": "VV", "52BD": "VVC"}
 
 
 def system_layer_rank(system_token: str, layer: str, spelled_out: frozenset[str] = frozenset()) -> tuple[int, str] | None:
@@ -142,6 +150,12 @@ def system_layer_rank(system_token: str, layer: str, spelled_out: frozenset[str]
             r = MATCH_PATTERN
         elif TU == alpha and len(alpha) >= 2:
             r = MATCH_ALPHA
+        elif TU.replace(".", "") in LAYER_CLASS:
+            cls = LAYER_CLASS[TU.replace(".", "")]
+            if alpha == cls:
+                r = MATCH_CLASS
+            elif alpha.startswith(cls):
+                r = MATCH_CLASS_PREFIX
         # abbreviated system token: the layer token is the tail of the designation's system token with the same
         # digits (KV2 -> V2, VV1 -> V1); a token of another alpha family with other digits was excluded above
         elif len(S) > len(TU) and S.endswith(TU) and re.fullmatch(r"[A-ZÅÄÖ]+\d+", TU) and S not in spelled_out:
@@ -648,7 +662,7 @@ def parallel_runs(contacts: list[Contact], paths: dict) -> list[list[Contact]] |
     return [r for _, r in runs]
 
 def bundle_at(contacts: list[Contact], gidx: GeometryIndex, want: int, skip: set[str],
-              paths: dict) -> list[list[Contact]] | None:
+              paths: dict, families: set[str] | None = None) -> list[list[Contact]] | None:
     """De parallella rören vid kontaktpunkten, när en etikett namnger fler än linjen råkade träffa.
 
     En ritare som drar fram och retur bredvid varandra skriver beteckningen två gånger på två rader och drar EN
@@ -657,10 +671,14 @@ def bundle_at(contacts: list[Contact], gidx: GeometryIndex, want: int, skip: set
     både fram och retur blev omätta. Samma sak när KV, VV och VVC går i samma stråk under en etikett med tre
     rader.
 
-    Så här letas partnern upp: bland det bladet ritar med SAMMA penna, parallellt inom sex grader, och inom
-    buntens bredd tvärs linjen. Och antalet måste stämma exakt - hittas inte lika många rör som etiketten har
-    rader avgörs ingenting och fallet står kvar som tvetydigt. Det är skillnaden mot att gissa: två rader och
-    två rör är ett par, två rader och tre rör är en fråga ritningen inte har svarat på.
+    Så här letas partnern upp: bland det bladet ritar med de pennor hänvisningslinjen själv rörde vid
+    (`families`; utan den listan: samma penna som första kontakten), parallellt inom sex grader, och inom
+    buntens bredd tvärs linjen. Ett stråk med KV, VV och VVC ligger på två lager - kallvatten på ett,
+    varmvatten och cirkulation på ett annat - och en linje som slutar med ett streck över var och en av dem
+    har rört båda pennorna; en partner får då vara på vilken som helst av dem. Och antalet måste stämma exakt -
+    hittas inte lika många rör som etiketten har rader avgörs ingenting och fallet står kvar som tvetydigt.
+    Det är skillnaden mot att gissa: två rader och två rör är ett par, två rader och tre rör är en fråga
+    ritningen inte har svarat på.
     """
     if not contacts or want < 2:
         return None
@@ -685,8 +703,9 @@ def bundle_at(contacts: list[Contact], gidx: GeometryIndex, want: int, skip: set
 
     o0 = across(s0)
     found: dict[int, Contact] = {}
+    allowed = set(families) if families else {c0.family}
     for p, k, d in gidx.hits(c0.point[0], c0.point[1], tol=span, skip_pids=skip):
-        if family_of(p) != c0.family or k >= len(p.segs):
+        if family_of(p) not in allowed or k >= len(p.segs):
             continue
         sg = p.segs[k]
         if sg.length < _R("semantics.attachment.BUNDLE_MIN_RUN", BUNDLE_MIN_RUN):
@@ -699,7 +718,7 @@ def bundle_at(contacts: list[Contact], gidx: GeometryIndex, want: int, skip: set
             continue
         key = round(off / 1.2)
         if key not in found or d < found[key].distance:
-            found[key] = Contact(point=c0.point, kind="bundle_partner", family=c0.family, pid=p.pid,
+            found[key] = Contact(point=c0.point, kind="bundle_partner", family=family_of(p), pid=p.pid,
                                  seg_index=k, distance=d, via=c0.pid)
     if len(found) != want:
         return None
@@ -731,10 +750,23 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
     # layer of its own AND a shared one, the row is on the layer that names it, and the shared layer is left to
     # the rows that have nothing more exact - which is what tells two rows of one alpha family apart
     match: dict[str, list[str]] = {}
+    ranks: dict[str, dict[str, int]] = {}
     for d in rows:
         rk = {g: system_layer_rank(d.system_token, g.split("|s|")[0], spelled_out) for g in gkeys}
         rk = {g: v[0] for g, v in rk.items() if v is not None}
+        ranks[d.did] = rk
         match[d.did] = [g for g in gkeys if g in rk and rk[g] == min(rk.values())] if rk else []
+    # en grupp som två rader gör anspråk på tillhör den rad vars lager namnger den bäst: varmvattnets lager
+    # är varmvattnets rad, inte cirkulationens, när båda står i blocket
+    if len(rows) > 1:
+        for g in gkeys:
+            claims = {d.did: ranks[d.did][g] for d in rows if g in match[d.did]}
+            if len(claims) > 1:
+                best = min(claims.values())
+                if sum(1 for v in claims.values() if v == best) == 1:
+                    for did, v in claims.items():
+                        if v != best:
+                            match[did] = [x for x in match[did] if x != g]
     if len(rows) == 1:
         d = rows[0]
         if len(gkeys) == 1:
@@ -783,7 +815,7 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
         runs = parallel_runs([c for g in gkeys for c in groups[g]], paths)
         if (runs is None or len(runs) != len(rows)) and gidx is not None:
             # linjen nådde färre rör än etiketten namnger: se efter om resten går parallellt bredvid
-            runs = bundle_at([c for g in gkeys for c in groups[g]], gidx, len(rows), set(ld.path_ids), paths) or runs
+            runs = bundle_at([c for g in gkeys for c in groups[g]], gidx, len(rows), set(ld.path_ids), paths, set(gkeys)) or runs
         if runs is not None and len(runs) == len(rows):
             order = sorted(rows, key=lambda d: d.row_index)
             # Bär varje rad samma beteckning finns ingenting att avgöra: ritaren har skrivit ut att alla rören i
@@ -823,6 +855,14 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
 def _system_conflict(d: Designation, family: str, tokens: set[str], spelled_out: frozenset[str] = frozenset()) -> str | None:
     """A conflict exists when the layer carries a system token matching ANOTHER designation family but not this one."""
     layer = family.split("|s|")[0]
+    # lagrets klass säger vilket system pennan ritar; en beteckning av en annan familj på den pennan är en
+    # konflikt även om ett kortare tecken i namnet råkar passa (KV1 på ett varmvattenlager vars namn slutar på V1)
+    m0 = re.match(r"([A-ZÅÄÖ]+)", d.system_token.upper())
+    alpha = m0.group(1) if m0 else d.system_token.upper()
+    for T in layer_tokens(layer):
+        cls = LAYER_CLASS.get(T.upper().replace(".", ""))
+        if cls and not alpha.startswith(cls):
+            return f"layer_class_{T.upper()}_is_{cls}_not_{alpha}"
     if system_layer_match(d.system_token, layer, spelled_out):
         return None
     for t in sorted(tokens):
