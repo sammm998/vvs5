@@ -131,6 +131,44 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
    rather than over it. The parts that lean set their own perspective where they lean. */
 .main > main { padding: 40px 48px 72px; max-width: 1320px; }
 
+/* ---------- det inloggade läget: ett arbetsrum, inte en broschyr ----------
+
+   Landningssidan talar högt: rubriken i versaler och sjuttiosex punkter är dess röst, och den ska den ha. Inne i
+   verktyget är samma röst i vägen - "PROJEKT" i sjuttiosex punkter säger ingenting som inte redan står i
+   sidlisten, och tar den plats listan under den behöver. Här är rubriken normalstor och i gemener, med en liten
+   förklaring över sig, precis som i portalen och akademin.
+
+   Ytan får också ett ljus uppifrån. Utan det ligger varje kort på vitt mot vitt och den lyftning de fått i
+   skuggan syns inte; med det blir listan ting som ligger på ett bord. Och sidan kommer underifrån när man byter
+   rum, så att bytet känns som ett byte och inte som ett omslag.
+
+   Allt är fäst under `.app`, som bara det inloggade läget har - de publika sidorna returneras utan skalet och
+   behåller sin röst. */
+
+.app .main > main {
+  position: relative;
+  background:
+    radial-gradient(58% 34% at 16% -4%, rgba(13, 13, 13, 0.045), rgba(13, 13, 13, 0) 72%),
+    radial-gradient(36% 26% at 92% 0%, rgba(13, 13, 13, 0.025), rgba(13, 13, 13, 0) 74%);
+  animation: room-in 0.28s var(--ease) both;
+}
+@keyframes room-in { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .app .main > main { animation: none; } }
+
+.app .main > main > .crumb { margin-bottom: 6px; }
+.app .main > main > .head h1,
+.app .main > main > h1 {
+  font-size: clamp(26px, 2.4vw, 36px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+.app .main > main > .head .lead, .app .main > main > .lead { margin-top: 8px; max-width: 76ch; }
+
+/* Möbeln i rummet lyfter en aning när man pekar på den - men bara den som går att öppna. Ett kort som bara
+   visar något ska ligga still; att allting rör sig är samma sak som att ingenting gör det. */
+.app a .card:hover, .app .card.clickable:hover { box-shadow: var(--e2), var(--lift); }
+
 /* ---------- page furniture ---------- */
 
 .crumb {

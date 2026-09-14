@@ -1,0 +1,652 @@
+{
+ "004f4f6c22af393db6b26e179285fb27c063809876149b9d7c3de70247e9e786": {
+  "sha256": "004f4f6c22af393db6b26e179285fb27c063809876149b9d7c3de70247e9e786",
+  "local": "styles/z/13/1760282_1.pdf",
+  "name": "1760282_1.pdf",
+  "drawing": "1760282_1",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 475575,
+  "also": [
+   "styles/z/13/1760282_1.pdf"
+  ],
+  "state": "OK",
+  "seconds": 25.2,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 20,
+   "pipe_names_with_metres": 11,
+   "share": 0.55,
+   "drawn_m": 835.84,
+   "confirmed_m": 109.24,
+   "ambiguous_m": 11.95,
+   "unowned_m": 714.65,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 92,
+  "anchors": {
+   "NO_PIPE_ATTACHMENT": 9,
+   "VERIFIED_PIPE_ATTACHMENT": 61,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 13
+  },
+  "rows": 7,
+  "confirmed_horizontal_m": 137.1,
+  "ambiguous_m": 11.95,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "VS111-55-16",
+    "m": 90.23
+   },
+   {
+    "designation": "S101-52",
+    "m": 15.41
+   },
+   {
+    "designation": "S101-52-75",
+    "m": 11.58
+   },
+   {
+    "designation": "KV101-56-26",
+    "m": 7.23
+   },
+   {
+    "designation": "KB101-25-28",
+    "m": 5.44
+   },
+   {
+    "designation": "KV101-55-20",
+    "m": 4.68
+   },
+   {
+    "designation": "S101-52-110",
+    "m": 2.52
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "00d949246653fc82319757ddb9e6db7a37fea7db51021eee662dc68e22fccb2a": {
+  "sha256": "00d949246653fc82319757ddb9e6db7a37fea7db51021eee662dc68e22fccb2a",
+  "local": "cvat/CVAT/V-50-1-A0223.pdf",
+  "name": "V-50-1-A0223.pdf",
+  "drawing": "V-50-1-A0223",
+  "project": "CVAT",
+  "classification": "CVAT_SOURCE_PDF",
+  "role": "DEVELOPMENT",
+  "size": 304842,
+  "also": [],
+  "state": "OK",
+  "seconds": 13.4,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 5,
+   "pipe_names_with_metres": 2,
+   "share": 0.4,
+   "drawn_m": 68.64,
+   "confirmed_m": 64.79,
+   "ambiguous_m": 0.0,
+   "unowned_m": 3.85,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 83,
+  "anchors": {
+   "VERIFIED_PIPE_ATTACHMENT": 7,
+   "NO_PIPE_ATTACHMENT": 29,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 4
+  },
+  "rows": 2,
+  "confirmed_horizontal_m": 91.15,
+  "ambiguous_m": 0,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "VS21-S13-15-F50",
+    "m": 90.67
+   },
+   {
+    "designation": "VS21-S13-28-F60",
+    "m": 0.48
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "017e9af5dcacad64a41a50d8c15c7983b3d6d436446b25100ce1c563f0904998": {
+  "sha256": "017e9af5dcacad64a41a50d8c15c7983b3d6d436446b25100ce1c563f0904998",
+  "local": "cvat/CVAT/W-50-1-A-0334.pdf",
+  "name": "W-50-1-A-0334.pdf",
+  "drawing": "W-50-1-A0334",
+  "project": "CVAT",
+  "classification": "CVAT_SOURCE_PDF",
+  "role": "DEVELOPMENT",
+  "size": 457877,
+  "also": [
+   "cvat/CVAT/W-50-1-A-0334.pdf"
+  ],
+  "state": "OK",
+  "seconds": 23.3,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 22,
+   "pipe_names_with_metres": 5,
+   "share": 0.227,
+   "drawn_m": 63.45,
+   "confirmed_m": 50.29,
+   "ambiguous_m": 3.51,
+   "unowned_m": 9.65,
+   "scale_state": "CONFLICT",
+   "scale_settled": false,
+   "scale_reason": "scale_bar_disagrees_with_scale_text; bar (geometric) used"
+  },
+  "designations": 116,
+  "anchors": {
+   "VERIFIED_PIPE_ATTACHMENT": 14,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 23,
+   "NO_PIPE_ATTACHMENT": 16
+  },
+  "rows": 13,
+  "confirmed_horizontal_m": 24.88,
+  "ambiguous_m": 3.51,
+  "declared_m": 17.93,
+  "in_hatched_area_m": 39.25,
+  "top_rows": [
+   {
+    "designation": "VV1-X31-16",
+    "m": 13.32
+   },
+   {
+    "designation": "KV1-X7-20/W",
+    "m": 6.83
+   },
+   {
+    "designation": "KV1-X31-16",
+    "m": 4.73
+   },
+   {
+    "designation": "KV1-K5-15",
+    "m": 0
+   },
+   {
+    "designation": "KV1-X7-16/W",
+    "m": 0
+   },
+   {
+    "designation": "S2-P5-110",
+    "m": 0
+   },
+   {
+    "designation": "S2-P5-32",
+    "m": 0
+   },
+   {
+    "designation": "S2-P5",
+    "m": 0
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "01b00dc107315d85460466e7f691a066215abb98f0e1cdee0908fd1cea50bc0c": {
+  "sha256": "01b00dc107315d85460466e7f691a066215abb98f0e1cdee0908fd1cea50bc0c",
+  "local": "cvat/CVAT/W-50-1-A-0222.pdf",
+  "name": "W-50-1-A-0222.pdf",
+  "drawing": "W-50-1-A0222",
+  "project": "CVAT",
+  "classification": "CVAT_SOURCE_PDF",
+  "role": "DEVELOPMENT",
+  "size": 512580,
+  "also": [
+   "cvat/CVAT/W-50-1-A-0222.pdf"
+  ],
+  "state": "OK",
+  "seconds": 46.6,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 25,
+   "pipe_names_with_metres": 24,
+   "share": 0.96,
+   "drawn_m": 208.64,
+   "confirmed_m": 140.39,
+   "ambiguous_m": 0.19,
+   "unowned_m": 68.06,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 170,
+  "anchors": {
+   "AMBIGUOUS_PIPE_ATTACHMENT": 33,
+   "VERIFIED_PIPE_ATTACHMENT": 68,
+   "NO_PIPE_ATTACHMENT": 4
+  },
+  "rows": 12,
+  "confirmed_horizontal_m": 173.22,
+  "ambiguous_m": 0.19,
+  "declared_m": 43.48,
+  "in_hatched_area_m": 12.72,
+  "top_rows": [
+   {
+    "designation": "VS1-S13-12/W",
+    "m": 45.34
+   },
+   {
+    "designation": "KV1-X31-16",
+    "m": 28.93
+   },
+   {
+    "designation": "VS1-S13-28/W",
+    "m": 18.61
+   },
+   {
+    "designation": "VV1-X31-16",
+    "m": 17.19
+   },
+   {
+    "designation": "VS1-S13-22/W",
+    "m": 16.27
+   },
+   {
+    "designation": "VV1-X7-16/W",
+    "m": 14.35
+   },
+   {
+    "designation": "KV1-X7-20/W",
+    "m": 13.53
+   },
+   {
+    "designation": "VVC1-X7-16/W",
+    "m": 9.56
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "02c6951d3113b55911a250cdebc187c6e1ccadac44bdb3b603a4c8bfcf6c5834": {
+  "sha256": "02c6951d3113b55911a250cdebc187c6e1ccadac44bdb3b603a4c8bfcf6c5834",
+  "local": "styles/Rundstickan/V-50-1-B0423.pdf",
+  "name": "V-50-1-B0423.pdf",
+  "drawing": "V-50-1-B0423",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 240299,
+  "also": [],
+  "state": "OK",
+  "seconds": 10.8,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 5,
+   "pipe_names_with_metres": 2,
+   "share": 0.4,
+   "drawn_m": 5.42,
+   "confirmed_m": 5.42,
+   "ambiguous_m": 0.0,
+   "unowned_m": 0.0,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 14,
+  "anchors": {
+   "NO_PIPE_ATTACHMENT": 4,
+   "VERIFIED_PIPE_ATTACHMENT": 2
+  },
+  "rows": 2,
+  "confirmed_horizontal_m": 7.67,
+  "ambiguous_m": 0,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "S01-G3",
+    "m": 7.48
+   },
+   {
+    "designation": "S01-P5-110L",
+    "m": 0.19
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "0366ca0111f103d5d90fed6f2e9de44510cb2369c634706aaabaa3b40c2c2cfa": {
+  "sha256": "0366ca0111f103d5d90fed6f2e9de44510cb2369c634706aaabaa3b40c2c2cfa",
+  "local": "styles/Rundstickan/V-50-1-A5512.pdf",
+  "name": "V-50-1-A5512.pdf",
+  "drawing": "V-50-1-A5512",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 270387,
+  "also": [],
+  "state": "OK",
+  "seconds": 13.4,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 5,
+   "pipe_names_with_metres": 3,
+   "share": 0.6,
+   "drawn_m": 2.71,
+   "confirmed_m": 2.71,
+   "ambiguous_m": 0.0,
+   "unowned_m": 0.0,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 22,
+  "anchors": {
+   "VERIFIED_PIPE_ATTACHMENT": 3
+  },
+  "rows": 2,
+  "confirmed_horizontal_m": 3.77,
+  "ambiguous_m": 0,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "S01-P5-110L",
+    "m": 3.54
+   },
+   {
+    "designation": "S01-G3-100L",
+    "m": 0.22
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "044decc841a886fa73586e312b7c8d108a42ee951701365b5b8cd2350df31ad0": {
+  "sha256": "044decc841a886fa73586e312b7c8d108a42ee951701365b5b8cd2350df31ad0",
+  "local": "styles/z/2/V-50-1-A0123.pdf",
+  "name": "V-50-1-A0123.pdf",
+  "drawing": "V-50-1-A0123",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 374514,
+  "also": [
+   "styles/z/2/V-50-1-A0123.pdf"
+  ],
+  "state": "OK",
+  "seconds": 29.8,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 30,
+   "pipe_names_with_metres": 25,
+   "share": 0.833,
+   "drawn_m": 392.53,
+   "confirmed_m": 323.62,
+   "ambiguous_m": 16.66,
+   "unowned_m": 52.25,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 158,
+  "anchors": {
+   "VERIFIED_PIPE_ATTACHMENT": 52,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 43,
+   "NO_PIPE_ATTACHMENT": 9
+  },
+  "rows": 29,
+  "confirmed_horizontal_m": 442.37,
+  "ambiguous_m": 16.66,
+  "declared_m": 78.79,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "VS21-S13-15-F50",
+    "m": 75.08
+   },
+   {
+    "designation": "VP01-S2-65-F80",
+    "m": 47.95
+   },
+   {
+    "designation": "VS31-S13-28-F60",
+    "m": 43.18
+   },
+   {
+    "designation": "KV01-X31-16",
+    "m": 40.06
+   },
+   {
+    "designation": "VV01-X31-16",
+    "m": 38.73
+   },
+   {
+    "designation": "KV01-X7-40-W40",
+    "m": 26.24
+   },
+   {
+    "designation": "VVC01-X7-32",
+    "m": 25.55
+   },
+   {
+    "designation": "VV01-X7-40-F60",
+    "m": 25.29
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "056367713b0d1a6d29a12e17fa400a19adb7564624857a46fa5fec9f37e70140": {
+  "sha256": "056367713b0d1a6d29a12e17fa400a19adb7564624857a46fa5fec9f37e70140",
+  "local": "styles/TOFTASKOLAN HUS B/V-53-1-00 RIVNING.pdf",
+  "name": "V-53-1-00 RIVNING.pdf",
+  "drawing": "",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 2892646,
+  "also": [],
+  "state": "FAILED",
+  "error": "UnsupportedInputError: The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never guesses at pixels, so a scanned or image-only PDF cannot be measured (page 1: image page (48% coverage) with 7 vector paths).",
+  "seconds": 0.0,
+  "trace": "^^^^^^^^\n  File \"/home/user/vvs5/engine/vvs_engine/pdf/extract.py\", line 587, in extract_document\n    raise UnsupportedInputError(\nvvs_engine.pdf.extract.UnsupportedInputError: The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never guesses at pixels, so a scanned or image-only PDF cannot be measured (page 1: image page (48% coverage) with 7 vector paths).\n"
+ },
+ "0565eac92c31cfb2b02c619b84b46ac6cf470cdc45eb6d6ffe0cee987d89bd58": {
+  "sha256": "0565eac92c31cfb2b02c619b84b46ac6cf470cdc45eb6d6ffe0cee987d89bd58",
+  "local": "styles/Rundstickan/V-50-6-B0214.pdf",
+  "name": "V-50-6-B0214.pdf",
+  "drawing": "V-50-6-B0214",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 280452,
+  "also": [],
+  "state": "OK",
+  "seconds": 12.8,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 19,
+   "pipe_names_with_metres": 0,
+   "share": 0.0,
+   "drawn_m": 0.0,
+   "confirmed_m": 0.0,
+   "ambiguous_m": 0.0,
+   "unowned_m": 0.0,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 19,
+  "anchors": {},
+  "rows": 0,
+  "confirmed_horizontal_m": 0,
+  "ambiguous_m": 0,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [],
+  "contamination": "PASS"
+ },
+ "07b1d5f29d9124da2cbacc8af593b49d11042baaea93dd915e239ee1c2ccbe9f": {
+  "sha256": "07b1d5f29d9124da2cbacc8af593b49d11042baaea93dd915e239ee1c2ccbe9f",
+  "local": "styles/src/00 - skalstockar/R9UHA10-CLB001-004.pdf",
+  "name": "R9UHA10-CLB001-004.pdf",
+  "drawing": "R9UHA10-CLB001-004",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 334627,
+  "also": [
+   "styles/src/00 - skalstockar/R9UHA10-CLB001-004.pdf",
+   "styles/src/00 - skalstockar/R9UHA10-CLB001-004.pdf"
+  ],
+  "state": "OK",
+  "seconds": 45.3,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 42,
+   "pipe_names_with_metres": 0,
+   "share": 0.0,
+   "drawn_m": 0.0,
+   "confirmed_m": 0.0,
+   "ambiguous_m": 0.0,
+   "unowned_m": 0.0,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 113,
+  "anchors": {
+   "NO_PIPE_ATTACHMENT": 76
+  },
+  "rows": 0,
+  "confirmed_horizontal_m": 0,
+  "ambiguous_m": 0,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [],
+  "contamination": "PASS"
+ },
+ "09add2d08fd422983c86d9670ca0a6093d7386ccf92aba2d0502dbe7458732e5": {
+  "sha256": "09add2d08fd422983c86d9670ca0a6093d7386ccf92aba2d0502dbe7458732e5",
+  "local": "styles/z/13/1760315_1.pdf",
+  "name": "1760315_1.pdf",
+  "drawing": "1760315_1",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 134692,
+  "also": [
+   "styles/z/13/1760315_1.pdf"
+  ],
+  "state": "OK",
+  "seconds": 7.2,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 3,
+   "pipe_names_with_metres": 1,
+   "share": 0.333,
+   "drawn_m": 2288.6,
+   "confirmed_m": 6.01,
+   "ambiguous_m": 5.76,
+   "unowned_m": 2276.83,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 5,
+  "anchors": {
+   "VERIFIED_PIPE_ATTACHMENT": 2,
+   "NO_PIPE_ATTACHMENT": 5,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 2
+  },
+  "rows": 1,
+  "confirmed_horizontal_m": 6.01,
+  "ambiguous_m": 5.76,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "VS111-55-16",
+    "m": 6.01
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "09ec5f36ea3e47c8effd70a860ba2340dda725a1b28db29da781db76cdbd0110": {
+  "sha256": "09ec5f36ea3e47c8effd70a860ba2340dda725a1b28db29da781db76cdbd0110",
+  "local": "styles/TOFTASKOLAN HUS B/V-50-8-001.pdf",
+  "name": "V-50-8-001.pdf",
+  "drawing": "V-50-8-0001",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 187026,
+  "also": [],
+  "state": "OK",
+  "seconds": 12.8,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 21,
+   "pipe_names_with_metres": 0,
+   "share": 0.0,
+   "drawn_m": 0.0,
+   "confirmed_m": 0.0,
+   "ambiguous_m": 0.0,
+   "unowned_m": 0.0,
+   "scale_state": "TEXT_ONLY",
+   "scale_settled": true,
+   "scale_reason": "scale_text_only (no vector scale bar found)"
+  },
+  "designations": 86,
+  "anchors": {
+   "NO_PIPE_ATTACHMENT": 25
+  },
+  "rows": 0,
+  "confirmed_horizontal_m": 0,
+  "ambiguous_m": 0,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [],
+  "contamination": "PASS"
+ }
+}
