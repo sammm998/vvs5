@@ -174,6 +174,29 @@ A0222 +19,7 (127 → 169), A0133 +14,0 (200 → 242), A0114 +11,8 (223 → 261).
 
 **Beslut: ACCEPT.** +2,99 % täckning för +0,18 % falskhet.
 
-**gate64** = öppen. De två största kvarvarande posterna är mätta och skrivna i FYND §8-§9: skrafferingens
-betydelse (att räkna in allt kostar 7 % falskhet för 3 % täckning) och de 186 oägda metrarna på A0111:s
-systemnamngivna pennor som ingen etikett når.
+**gate64** = måttraden som bär en klass med en siffra i.
+
+# gate64: måttraden med en klass - ACCEPT (oförändrade meter, en felaktig rubrik färre)
+
+**Ändring.** `semantics/annotation.py`: en måttrad får bära ett tillägg som själv har en siffra, när tillägget
+börjar med en bokstav - "22-F60" är dimension 22 med isolerklass F60. Ett kryss följt av siffror är ett andra
+mått och ingen klass, så "600X300" är fortfarande ingen måttrad. Commit efter gate63.
+
+| | gate63 | gate64 |
+|---|---:|---:|
+| ägt | 9 097,7 m | 9 097,9 m |
+| falskt | 2 263,8 m | 2 263,7 m |
+| TÄCKNING | 79,81 % | 79,81 % |
+| FALSKHET | 19,86 % | 19,86 % |
+| beteckningsprecision | 78,48 % | **78,59 %** |
+| felaktiga namn (WRONG) | 95 | **94** |
+| blad som rörde sig | | 0 |
+
+**Beslut: ACCEPT.** Inga meter rör sig, och det är väntat: på V-50-1-A0423, där felet upptäcktes, läses
+beteckningen `VS21-S13-22-F60` nu rätt men blocket får fortfarande ingen hänvisningslinje (FYND §11), så
+metrarna sitter kvar hos grenarna. Det som ändras är att en rubrik som inte fanns i facit försvinner och
+precisionen stiger. En läsning som namnger röret rätt är bättre än en som inte gör det, även när meterna ännu
+hindras av ett annat fel - och utan regressioner är det ingen anledning att backa.
+
+**gate65** = baslinjebiten som svänger ned i hänvisningslinjen: fyra beteckningar på en rad, en linje under dem
+ritad i bitar på var sitt systemlager, och noll hänvisningslinjer för hela blocket (FYND §11).
