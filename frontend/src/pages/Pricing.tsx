@@ -14,7 +14,10 @@ export default function PricingPage() {
   const [p, setP] = useState<any>(null);
   const [err, setErr] = useState("");
   useEffect(() => {
-    fetch("/api/public/pricing").then((r) => r.json()).then(setP).catch(() => setErr("Prislistan kunde inte hämtas just nu."));
+    fetch("/api/public/pricing")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then(setP)
+      .catch(() => setErr("Prislistan kunde inte hämtas just nu."));
   }, []);
   const best = p ? p.packages.reduce((b: any, x: any) => (!b || x.kr / x.credits < b.kr / b.credits ? x : b), null) : null;
   return (
@@ -26,7 +29,24 @@ export default function PricingPage() {
           <div className="pub-key"><div className="n">{p.sheet?.A3}</div><div className="l">credits för ett A3-blad</div></div>
         </div>
       ) : undefined}>
-      {err && <p className="pub-err">{err}</p>}
+      {/* Prislistan kommer ur tjänsten, så att det som står här aldrig kan vara något annat än det som gäller.
+          Svarar den inte får sidan inte gissa ett pris - men den får inte heller bli tom. Det som står kvar är
+          det som är sant oavsett vad listan säger: löftena, och vägen till ett besked. */}
+      {err && (
+        <section className="pub-sec">
+          <div className="pub-card flat">
+            <h3>{err}</h3>
+            <p>
+              Priset hämtas ur tjänsten när sidan öppnas, så att det aldrig kan stå något annat här än det som
+              faktiskt dras. Just nu svarar den inte, och då skriver vi hellre ingen siffra än fel siffra.
+            </p>
+            <p className="pub-cta">
+              <button className="lp-btn primary" onClick={() => window.location.reload()}>Försök igen</button>
+              <Link className="lp-btn ghost" to="/kontakt">Fråga oss om priset</Link>
+            </p>
+          </div>
+        </section>
+      )}
       {p && (
         <>
           <section className="pub-sec">

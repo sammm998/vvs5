@@ -1955,3 +1955,18 @@ body.lp-dark { background: #100e0c; }
   line-height: 0.94;
   font-size: clamp(42px, 9.4vw, 152px);
 }
+
+/* Utan siffror bredvid sig ska rubriken ha hela bredden.
+ *
+ * Hjälten är satt som två spalter för att rubriken och nyckeltalen ska stå bredvid varandra. Har sidan inga
+ * nyckeltal - eller har de inte hämtats än - stod den tomma spalten kvar och rubriken pressades in på knappt
+ * två tredjedelar av sidan. Fyra rader där tre räckte, och halva bredden död. */
+.lp .pub-hero-in:not(:has(.pub-hero-aside)) { grid-template-columns: minmax(0, 1fr); }
+.lp .pub-hero-in:not(:has(.pub-hero-aside)) .pub-h1 { max-width: 17em; }
+
+/* En knapp och en länk som står bredvid varandra ska se likadana ut.
+ *
+ * Knapparna i verktyget är versala - det är gränssnittets röst. På de publika sidorna är samma klass oftast en
+ * länk, och länkar ärver ingen versalisering. Stod de bredvid varandra blev den ena skrikig och den andra
+ * stillsam, fast de gör samma sak. Här bestämmer klassen, inte elementet. */
+.lp button.lp-btn { text-transform: none; letter-spacing: 0; font-family: inherit; font-size: inherit; }
