@@ -294,3 +294,43 @@ gränsen mot grannen går. En regel som ska säga "den grövre äger stammen" m�
 dimensionerna faktiskt möts - vilket är vad gate68 provar.
 
 **gate68** = ett stråk som byter dimension: den grövre bär böjen (från produktionsbladet W-50-1-A0032).
+
+# gate68: ett stråk som byter dimension - ACCEPT
+
+**Fyndet kom ur produktionen.** En orange bit på `W-50-1-A0032` med texten "Kunde tillhöra S1-P2|DN110 eller
+S1-P2|DN160. Ritningen avgör det inte, så sträckan mäts inte." Biten är en böj på sjutton punkter mellan de två
+stråken. Det är inte två rör som möts - det är ett rör som byter dimension.
+
+**Ändringen.** `pipes/ownership.py`: där en onämnd förbindelse ser flera kandidater som delar stam och skiljer
+sig bara i dimension, och **båda stråken slutar vid förbindelsen**, bär det grövre den. En dimension byts vid
+en ritad del; där ingen sådan står ritad har stråket inte bytt ännu. Villkoret står i noderna: en ledning som
+slutar vid förbindelsen lägger en arm i noden, en som passerar lägger två. Ände mot ände är en böj i ett
+stråk; passerar de är förbindelsen en pinne i en stege mellan två olika rör, och då förblir svaret tvetydigt.
+
+| | gate66 | gate68 |
+|---|---:|---:|
+| TÄCKNING | 79,82 % | **80,06 %** |
+| FALSKHET | 19,93 % | **19,91 %** |
+| beteckningsåterkallelse | 88,03 % | 87,87 % |
+| beteckningsprecision | 78,62 % | 78,48 % |
+| FULL / PARTIAL / OVER / MISSED / WRONG | 153/187/213/140/94 | 154/187/211/142/94 |
+| blad som rörde sig | | 9 |
+
+**Beslut: ACCEPT.** Täckningen upp, falskheten ned, och åtta av nio blad åt rätt håll:
+
+    W-50-1-A0032  +4,6 %      V-50-1-A0412  +1,7 %      V-50-1-A0222  +1,6 % (falskhet −0,6)
+    V-50-1-A0421  +1,4 %      V-50-1-A0411  +1,4 %      W-50-1-A0122  +0,8 % (falskhet −0,8)
+    V-50-1-A0112  +0,7 %      V-50-1-B0122  +0,7 %      V-50-1-A0122  −0,1 % (falskhet +1,5)
+
+Det enda bladet åt fel håll, `V-50-1-A0122`, är ett av de sex blad där facit är en markeringsexport som inte
+täcker hela bladet (FYND §10): det äger redan 524 m mot facits 321, och dess falskhet är den postens, inte
+regelns. Två beteckningar gick från PARTIAL till MISSED, vilket är vad återkallelsen tappar på; de ligger på
+samma blad.
+
+Den ursprungliga formuleringen av #67 - att en böj som kopplas ihop låter en etikett ta hela stråket - var
+alltså rätt riktning men fel ände: det var inte att stoppa den som växte, det var att låta den grövre ta det
+som ingen vågade ta.
+
+**gate69** = väggen behandlas lika på alla ritningar: skrafferingen söks inom en penna i stället för som en
+egenskap hos hela pennan, och den del av ett rör som ligger i väggen mäts i stället för att avgöras av bitens
+mittpunkt.
