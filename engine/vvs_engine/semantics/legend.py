@@ -37,6 +37,7 @@ def _R(rule_id, default):
 MIN_ENTRIES = 6                 # a shorter stack is a table cell or a note, not a designation list
 MIN_CODES = 6                   # ...and it must say six different things, or it is one table column repeated
 USED_MIN = 2                    # codes the drawing writes out itself, for the list to be its own vocabulary
+LIST_MARGIN = 4.0               # how far outside its rows the list's own block still reaches, in points
 ALIGNED_SHARE = 0.6             # ...or the share of descriptions that share a left edge, which a note's do not
 MAX_CODE_LEN = 10
 DESC_GAP_ROWS = 12.0            # how far right of the code its description may start, in row heights
@@ -211,6 +212,20 @@ class DrawingLegend:
         xs = [v for e in self.entries for v in (e.bbox[0], e.bbox[2])]
         ys = [v for e in self.entries for v in (e.bbox[1], e.bbox[3])]
         return (min(xs), min(ys), max(xs), max(ys))
+
+    def holds(self, bbox) -> bool:
+        """Whether a label stands inside the list's own block rather than out on the drawing.
+
+        The list's rows are read as designations like any other text, so every code in the list appears twice in
+        the reading: once as a line of the list, once - if the drawing uses it - as a label out on the plan. The
+        two say entirely different things. A line of the list only repeats what the list already says; a label
+        out on the drawing is the sheet using the code. Wherever the question is what the list knows about this
+        sheet, the list's own rows must not be allowed to answer it, or the list vouches for itself."""
+        box = self.bbox()
+        if box is None or bbox is None:
+            return False
+        return (box[0] - LIST_MARGIN <= bbox[0] and bbox[2] <= box[2] + LIST_MARGIN
+                and box[1] - LIST_MARGIN <= bbox[1] and bbox[3] <= box[3] + LIST_MARGIN)
 
     def as_dict(self) -> dict[str, Any]:
         return {"column_x": round(self.column_x, 1) if self.column_x is not None else None,
@@ -553,7 +568,6 @@ def assign_roles(legend: DrawingLegend, designations, prior: dict[str, str] | No
 
     The legend's own rows are read as designations too, so they are left out of this: a legend line proves only
     that the code exists, never how the drawing uses it."""
-    box = legend.bbox()
     opens: set[str] = set()
     standalone: set[str] = set()
     codes = sorted({e.code.upper() for e in legend.entries}, key=len, reverse=True)
@@ -565,9 +579,7 @@ def assign_roles(legend: DrawingLegend, designations, prior: dict[str, str] | No
         return None
 
     def outside(d) -> bool:
-        b = getattr(d, "bbox", None)
-        return not (box is not None and b is not None and box[0] - 4.0 <= b[0] and b[2] <= box[2] + 4.0
-                    and box[1] - 4.0 <= b[1] and b[3] <= box[3] + 4.0)
+        return not legend.holds(getattr(d, "bbox", None))
 
     # Which shapes this sheet writes its pipe designations in. A code carrying a size is not yet a system: a
     # valve tag carries one too - `AV201-22` is a shut-off valve of 22 mm, not twenty-two metres of AV pipe -
@@ -585,9 +597,7 @@ def assign_roles(legend: DrawingLegend, designations, prior: dict[str, str] | No
     shared = {pat for pat, cs in by_pattern.items() if len(cs) >= 2}
 
     for d in designations:
-        b = getattr(d, "bbox", None)
-        if box is not None and b is not None and box[0] - 4.0 <= b[0] and b[2] <= box[2] + 4.0 \
-                and box[1] - 4.0 <= b[1] and b[3] <= box[3] + 4.0:
+        if legend.holds(getattr(d, "bbox", None)):
             continue                                    # this is the legend line itself
         text = (d.text or "").upper()
         head = (d.system_token or "").upper()

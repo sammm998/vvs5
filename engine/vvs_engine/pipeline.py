@@ -1925,6 +1925,8 @@ def _unknown_to_the_legend(legend, designations) -> set[str]:
     if not codes:
         return set()
 
+    holds = getattr(legend, "holds", None) or (lambda _b: False)
+
     def known(d) -> bool:
         text = (getattr(d, "text", "") or "").upper()
         head = (getattr(d, "system_token", "") or "").upper()
@@ -1932,7 +1934,14 @@ def _unknown_to_the_legend(legend, designations) -> set[str]:
             return True
         return any((text and text.startswith(c)) or (head and head.startswith(c)) for c in codes)
 
-    heads_known = {(getattr(d, "system_token", "") or "").upper() for d in designations if known(d)}
+    # Whether the list knows this sheet is asked of the labels out on the drawing, never of the list's own rows.
+    # The rows are read as designations like everything else, so every code in the list also stands in the
+    # reading as a label sitting inside the list - and those match the list by construction. A sheet whose list
+    # covers only valves and materials was credited with a dozen known codes on the strength of its own twelve
+    # rows, and then refused every pipe designation it draws: a hundred and thirteen labels, forty-two pipe
+    # names, and not a metre. A list must not be allowed to vouch for itself.
+    on_the_drawing = [d for d in designations if not holds(getattr(d, "bbox", None))]
+    heads_known = {(getattr(d, "system_token", "") or "").upper() for d in on_the_drawing if known(d)}
     heads_known.discard("")
     if len(heads_known) < _R("pipeline.LEGEND_MIN_KNOWN_HEADS", LEGEND_MIN_KNOWN_HEADS):
         return set()

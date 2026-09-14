@@ -229,4 +229,39 @@ andra sidan: en beteckning gick från MISSED till PARTIAL, återkallelsen steg 0
 **Beslut: ACCEPT.** En läsning som låter fyra etiketter namnge sitt rör är bättre än en som låter dem tiga, och
 den falskhet som följer är #67:s att bära, inte hänvisningslinjens.
 
-**gate66** = DN-gränsen på en hel kedja (#67), som nu är den enskilt största posten i felkatalogen.
+**gate66** = förklaringslistan som intygar sig själv (#76), funnen i korpussvepet utanför de 59 bladen.
+
+# gate66: en lista får inte vouchera för sig själv - ACCEPT
+
+**Fyndet.** `R9UHA10-CLB001-004.pdf` läste 113 beteckningar, hittade 76 hänvisningslinjer, och gav **0 meter**.
+Alla 38 pennfamiljer stod som `not_examined`. Ritningen är från ett annat kontor än de 59 grindbladen, och
+felet fanns bara därför att svepet läser mer än grinden gör.
+
+**Rotorsak.** Bladets egen förklaringslista avgör vilka koder som är rörbeteckningar. Regeln är med flit smal:
+den gäller bara när listan bevisligen känner igen bladets ordförråd, mätt som antalet kända systemkoder. Men
+listans rader läses som beteckningar de också, och en rad i listan stämmer med listan av bara farten. Det här
+bladets lista handlar om ventiler och material (`SA01`, `SPO1`, `P1`, `R61`, `S13` …). Dess tolv egna rader gav
+tolv "kända" koder, villkoret var uppfyllt - och sedan refuserades varenda rörbeteckning bladet faktiskt ritar:
+`KV01`, `VV01`, `VVC01`, `VS21`, `SP01`, `AV201`. Utan rörnamn kom inga röster fram till pennfamiljerna, och
+utan familjer fanns ingen geometri att mäta. Listan hade voucherat för sig själv.
+
+**Ändringen.** `semantics/legend.py`: `DrawingLegend.holds(bbox)` säger om en etikett står inne i listans egen
+ruta. Maskineriet fanns redan, i två kopior inuti `assign_roles`; de använder nu samma regel.
+`pipeline.py`: frågan "känner listan det här bladet?" ställs bara till etiketter **utanför** listans ruta.
+Ligger alla kända koder i listan säger listan ingenting om bladet, och då stänger den inte ute någonting.
+
+| | före | efter |
+|---|---:|---:|
+| R9UHA10-CLB001-004: rader | 0 | **10** |
+| R9UHA10-CLB001-004: bekräftade meter | 0,0 | **180,2** |
+| R9UHA10-CLB001-004: täckning | 0,0 % | 23,8 % |
+
+**Grinden.** `gate66` mot `gate65`: **0 blad rörde sig**. TÄCKNING 79,82 %, FALSKHET 19,93 %, återkallelse
+88,03 %, precision 78,62 % - identiska siffror. Inget av de 59 referensbladen har en lista som bara handlar om
+komponenter, så regeln var overksam där. Vinsten ligger utanför den mätta mängden och kostar ingenting på den.
+
+**Beslut: ACCEPT.** Regressionerna står i `test_a_list_does_not_vouch_for_itself.py`: listans egna rader gör den
+inte kunnig, en lista som känner etiketterna ute på planen stänger fortfarande ute det den aldrig nämner, en
+beteckning utan ruta vägs som förut, och en lånad lista har ingen ruta att diskvalificera med.
+
+**gate67** = DN-gränsen på en hel kedja (#67), som nu är den enskilt största posten i felkatalogen.

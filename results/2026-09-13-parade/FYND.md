@@ -310,3 +310,62 @@ Nästa steg, med egen grind: låt en baslinjebit som svänger ned i en linje ge 
 starten bära bitens x-spann så att bara beteckningen ovanför biten äger hänvisningen. Motsvarande regel finns
 redan för staplade rader med var sin understrykning (`_rows_owning_leader`); det som saknas är den för rader som
 står bredvid varandra.
+---
+
+## §12 Förklaringslistan som intygar sig själv - och de elva bladen som ger noll meter
+
+Grinden läser 59 blad. Korpussvepet (`engine/tools/corpus_sweep.py`) läser de 284 unika ritnings-PDF:er som
+ligger lokalt, utan facit och utan jämförelse, och skriver vad läsningen själv säger. Det är där det här
+fyndet kom ifrån: ett fel som inte finns på något av grindbladen, men på ritningar från ett annat kontor.
+
+**`R9UHA10-CLB001-004.pdf`: 113 beteckningar, 76 hänvisningslinjer, 0,0 m.**
+
+Kedjan bakåt:
+
+1. `pipe-code-anchors.json`: alla 76 ankare står som `NO_PIPE_ATTACHMENT`, skäl
+   `leader_endpoint_touches_no_pipe_geometry`. Hänvisningslinjerna hittades alltså - de landade bara inte på
+   någon rörgeometri.
+2. `drawing-profile.json`: `representation_families: []`. Det finns ingen rörgeometri att landa på.
+3. Men `tick_votes` är full av lager som uppenbart är rörlager: `V-52B-FE-_V01-KV--` (12 märken),
+   `V-52B-FE-_V01-VV--` (11), `V-56B--FE-_-VS21--` (10), `V-52B-FE-_V01-VVC01--` (6). Ledarna *rör* rören.
+4. `votes` är däremot tom. Skillnaden mellan de två räkningarna är en enda rad i `pipeline.py`: rösterna räknas
+   bara för en hänvisningslinje vars etikettblock innehåller ett **rörnamn** (`pipe_labels`). Bladet hade inga.
+5. `pipe_labels` utesluter koder som bladets egen förklaringslista aldrig nämner (`_unknown_to_the_legend`).
+   Bladets lista är en komponent- och materiallista: `SA01`, `SPO1`, `P1`, `P2`, `R1`, `R61`, `S13`, `HSP`.
+   Den nämner inte `KV01`, `VV01`, `VVC01`, `VS21`, `SP01` eller `AV201` - alltså inte ett enda rör på bladet.
+
+Regeln har ett skyddsvillkor just för det här: den gäller bara när listan bevisligen känner igen bladets
+ordförråd, minst tre kända systemkoder. Villkoret var uppfyllt - och det var där felet satt. **Listans egna
+rader läses som beteckningar de också.** Alla tolv "kända" koder visade sig ligga på x ≈ 2049, det vill säga
+inne i listans egen kolumn:
+
+    SAO1L [2049.6, 359.2 …]   R71 [2049.2, 577.2 …]   S1  [2049.6, 591.5 …]   P1 [2049.2, 504.4 …]
+    SA01  [2049.6, 344.9 …]   R2  [2049.2, 548.0 …]   R61 [2049.2, 562.7 …]   S2 [2049.6, 605.8 …]
+    SPO1L [2049.6, 402.0 …]   R1  [2049.2, 533.2 …]   S13 [2049.6, 634.5 …]   P2 [2049.2, 518.7 …]
+
+Ingen enda av dem står ute på ritningen. Listan hade intygat sin egen kompetens, och på den grunden raderat
+bladets alla rör.
+
+**Rättningen** är att ställa frågan till etiketterna ute på planen: `DrawingLegend.holds(bbox)` säger om en
+etikett ligger inne i listans ruta, och `_unknown_to_the_legend` räknar bara kända koder utanför den. Ligger
+alla kända koder i listan säger listan ingenting om bladet, och stänger inte ute något. Maskineriet fanns redan
+i `assign_roles`, i två kopior; de går nu genom samma regel.
+
+Efter: **10 rader, 180,2 m bekräftat**, täckning 23,8 %. Grind 66 rörde noll av de 59 referensbladen
+(TÄCKNING 79,82 %, FALSKHET 19,93 % - identiskt med gate65), så vinsten är gratis. ACCEPT.
+
+### Vad svepet i övrigt visar hittills
+
+Av de 29 första ritningarna ger **elva noll meter**, och de gör det av olika skäl - det är fyra separata
+uppgifter, inte en:
+
+| skäl | blad | vad läsningen säger |
+|---|---|---|
+| listan intygade sig själv | `R9UHA10-CLB001-004` | 113 beteckningar, 0 m → **rättat, 180,2 m** |
+| skalan står i konflikt | `V-530-1-010-100`, `V-520-1-010-100` | `scale_state: CONFLICT`, rader finns men inga meter |
+| skalan saknas | `V-50-8-B0001` (64 bet.), `V-50-8-001` (86 bet., `TEXT_ONLY`) | inget att mäta med |
+| skala verifierad, ändå noll | `V-50-6-B0214`, `V-50-6-B0314`, `V-50-1-B0514`, `V-50-1-020 HT` | samma klass som §12 ovan, ännu inte rotorsakad |
+
+Dessutom: en ritning (`V-500-1-010-100.pdf`) låste svepet i sju minuter utan att skriva en rad, och en
+(`V-53-1-00 RIVNING.pdf`) gick inte att läsa alls. Den första bär nu en egen process med tidsgräns och blir en
+`TIMEOUT`-rad i stället för en körning som står still.

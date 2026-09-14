@@ -20,7 +20,11 @@ import sys
 import time
 import traceback
 
-sys.path.insert(0, "/home/user/vvs5/engine")
+# Vilken motor svepet läser med. Ett svep är en mätning, och en mätning som byter mätare halvvägs mäter
+# ingenting: ändras motorn medan svepet går blir de första bladen lästa av en annan läsning än de sista, utan
+# att raderna säger det. Pekas den här på en fryst kopia står motorn stilla svepet ut.
+ENGINE = os.environ.get("VVS_SWEEP_ENGINE") or "/home/user/vvs5/engine"
+sys.path.insert(0, ENGINE)
 
 ROOT = "/home/user/vvs5"
 DATA = os.path.join(ROOT, "data")
@@ -136,13 +140,14 @@ def main() -> None:
     if limit:
         todo = todo[:limit]
     print(f"{len(done)} lästa sedan tidigare, {len(todo)} kvar", flush=True)
+    print(f"motor: {ENGINE}", flush=True)
     # Artefakterna per blad är många och tunga; svepets minne är json-filen. Arbetskatalogen ligger därför
     # utanför förrådet om den som kör säger var.
     work = os.environ.get("VVS_SWEEP_WORK") or os.path.join(os.path.dirname(out) or ".", "sweep_work")
     for i, rec in enumerate(todo, 1):
         outdir = os.path.join(work, rec["sha256"][:12])
         got = read_in_a_process(rec, outdir)
-        done[rec["sha256"]] = {**{k: v for k, v in rec.items() if k != "path"}, **got}
+        done[rec["sha256"]] = {**{k: v for k, v in rec.items() if k != "path"}, **got, "engine": ENGINE}
         with open(out, "w", encoding="utf-8") as fh:
             json.dump(done, fh, ensure_ascii=False, indent=1)
         m = got.get("confirmed_horizontal_m")
