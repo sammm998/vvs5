@@ -12,7 +12,7 @@
    "styles/z/13/1760282_1.pdf"
   ],
   "state": "OK",
-  "seconds": 25.2,
+  "seconds": 24.9,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -71,7 +71,8 @@
     "m": 2.52
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "00d949246653fc82319757ddb9e6db7a37fea7db51021eee662dc68e22fccb2a": {
   "sha256": "00d949246653fc82319757ddb9e6db7a37fea7db51021eee662dc68e22fccb2a",
@@ -84,7 +85,7 @@
   "size": 304842,
   "also": [],
   "state": "OK",
-  "seconds": 13.4,
+  "seconds": 13.3,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -123,7 +124,8 @@
     "m": 0.48
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "017e9af5dcacad64a41a50d8c15c7983b3d6d436446b25100ce1c563f0904998": {
   "sha256": "017e9af5dcacad64a41a50d8c15c7983b3d6d436446b25100ce1c563f0904998",
@@ -138,7 +140,7 @@
    "cvat/CVAT/W-50-1-A-0334.pdf"
   ],
   "state": "OK",
-  "seconds": 23.3,
+  "seconds": 23.6,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -201,7 +203,8 @@
     "m": 0
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "01b00dc107315d85460466e7f691a066215abb98f0e1cdee0908fd1cea50bc0c": {
   "sha256": "01b00dc107315d85460466e7f691a066215abb98f0e1cdee0908fd1cea50bc0c",
@@ -216,7 +219,7 @@
    "cvat/CVAT/W-50-1-A-0222.pdf"
   ],
   "state": "OK",
-  "seconds": 46.6,
+  "seconds": 26.2,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -279,7 +282,8 @@
     "m": 9.56
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "02c6951d3113b55911a250cdebc187c6e1ccadac44bdb3b603a4c8bfcf6c5834": {
   "sha256": "02c6951d3113b55911a250cdebc187c6e1ccadac44bdb3b603a4c8bfcf6c5834",
@@ -292,7 +296,7 @@
   "size": 240299,
   "also": [],
   "state": "OK",
-  "seconds": 10.8,
+  "seconds": 7.7,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -330,7 +334,8 @@
     "m": 0.19
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "0366ca0111f103d5d90fed6f2e9de44510cb2369c634706aaabaa3b40c2c2cfa": {
   "sha256": "0366ca0111f103d5d90fed6f2e9de44510cb2369c634706aaabaa3b40c2c2cfa",
@@ -343,7 +348,7 @@
   "size": 270387,
   "also": [],
   "state": "OK",
-  "seconds": 13.4,
+  "seconds": 9.9,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -380,7 +385,8 @@
     "m": 0.22
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "044decc841a886fa73586e312b7c8d108a42ee951701365b5b8cd2350df31ad0": {
   "sha256": "044decc841a886fa73586e312b7c8d108a42ee951701365b5b8cd2350df31ad0",
@@ -395,7 +401,7 @@
    "styles/z/2/V-50-1-A0123.pdf"
   ],
   "state": "OK",
-  "seconds": 29.8,
+  "seconds": 23.6,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -458,7 +464,8 @@
     "m": 25.29
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "056367713b0d1a6d29a12e17fa400a19adb7564624857a46fa5fec9f37e70140": {
   "sha256": "056367713b0d1a6d29a12e17fa400a19adb7564624857a46fa5fec9f37e70140",
@@ -473,7 +480,8 @@
   "state": "FAILED",
   "error": "UnsupportedInputError: The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never guesses at pixels, so a scanned or image-only PDF cannot be measured (page 1: image page (48% coverage) with 7 vector paths).",
   "seconds": 0.0,
-  "trace": "^^^^^^^^\n  File \"/home/user/vvs5/engine/vvs_engine/pdf/extract.py\", line 587, in extract_document\n    raise UnsupportedInputError(\nvvs_engine.pdf.extract.UnsupportedInputError: The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never guesses at pixels, so a scanned or image-only PDF cannot be measured (page 1: image page (48% coverage) with 7 vector paths).\n"
+  "trace": "91-c6a2444953b5/scratchpad/engine_sweep/vvs_engine/pdf/extract.py\", line 587, in extract_document\n    raise UnsupportedInputError(\nvvs_engine.pdf.extract.UnsupportedInputError: The PDF carries no vector drawing. This engine reads the drawing's own vector geometry and never guesses at pixels, so a scanned or image-only PDF cannot be measured (page 1: image page (48% coverage) with 7 vector paths).\n",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "0565eac92c31cfb2b02c619b84b46ac6cf470cdc45eb6d6ffe0cee987d89bd58": {
   "sha256": "0565eac92c31cfb2b02c619b84b46ac6cf470cdc45eb6d6ffe0cee987d89bd58",
@@ -486,7 +494,7 @@
   "size": 280452,
   "also": [],
   "state": "OK",
-  "seconds": 12.8,
+  "seconds": 9.7,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -512,7 +520,8 @@
   "declared_m": 0,
   "in_hatched_area_m": 0,
   "top_rows": [],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "07b1d5f29d9124da2cbacc8af593b49d11042baaea93dd915e239ee1c2ccbe9f": {
   "sha256": "07b1d5f29d9124da2cbacc8af593b49d11042baaea93dd915e239ee1c2ccbe9f",
@@ -528,7 +537,7 @@
    "styles/src/00 - skalstockar/R9UHA10-CLB001-004.pdf"
   ],
   "state": "OK",
-  "seconds": 45.3,
+  "seconds": 24.4,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -536,27 +545,63 @@
   },
   "coverage": {
    "pipe_names": 42,
-   "pipe_names_with_metres": 0,
-   "share": 0.0,
-   "drawn_m": 0.0,
-   "confirmed_m": 0.0,
-   "ambiguous_m": 0.0,
-   "unowned_m": 0.0,
+   "pipe_names_with_metres": 10,
+   "share": 0.238,
+   "drawn_m": 239.89,
+   "confirmed_m": 116.71,
+   "ambiguous_m": 4.87,
+   "unowned_m": 118.31,
    "scale_state": "VERIFIED",
    "scale_settled": true,
    "scale_reason": "scale_text_and_scale_bar_agree"
   },
   "designations": 113,
   "anchors": {
-   "NO_PIPE_ATTACHMENT": 76
+   "AMBIGUOUS_PIPE_ATTACHMENT": 41,
+   "VERIFIED_PIPE_ATTACHMENT": 44,
+   "NO_PIPE_ATTACHMENT": 5
   },
-  "rows": 0,
-  "confirmed_horizontal_m": 0,
-  "ambiguous_m": 0,
+  "rows": 10,
+  "confirmed_horizontal_m": 180.18,
+  "ambiguous_m": 4.87,
   "declared_m": 0,
   "in_hatched_area_m": 0,
-  "top_rows": [],
-  "contamination": "PASS"
+  "top_rows": [
+   {
+    "designation": "VVC01-K2-15-F50",
+    "m": 60.57
+   },
+   {
+    "designation": "KV01-K2-54-W40",
+    "m": 35.97
+   },
+   {
+    "designation": "VV01-K2-22-F60",
+    "m": 34.01
+   },
+   {
+    "designation": "VS21-S13-54-W60",
+    "m": 27.94
+   },
+   {
+    "designation": "VS21-S13-35-W60",
+    "m": 9.04
+   },
+   {
+    "designation": "KV01-K2-42-W40",
+    "m": 6.06
+   },
+   {
+    "designation": "VV01-K2-15-F50",
+    "m": 3.52
+   },
+   {
+    "designation": "KV01-K2-22-W40",
+    "m": 1.88
+   }
+  ],
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "09add2d08fd422983c86d9670ca0a6093d7386ccf92aba2d0502dbe7458732e5": {
   "sha256": "09add2d08fd422983c86d9670ca0a6093d7386ccf92aba2d0502dbe7458732e5",
@@ -571,7 +616,7 @@
    "styles/z/13/1760315_1.pdf"
   ],
   "state": "OK",
-  "seconds": 7.2,
+  "seconds": 6.2,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -606,7 +651,8 @@
     "m": 6.01
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "09ec5f36ea3e47c8effd70a860ba2340dda725a1b28db29da781db76cdbd0110": {
   "sha256": "09ec5f36ea3e47c8effd70a860ba2340dda725a1b28db29da781db76cdbd0110",
@@ -619,7 +665,7 @@
   "size": 187026,
   "also": [],
   "state": "OK",
-  "seconds": 12.8,
+  "seconds": 10.1,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -647,7 +693,8 @@
   "declared_m": 0,
   "in_hatched_area_m": 0,
   "top_rows": [],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "0aa7c91d5a3acfb3d4d0bca27f68b9ec53060749ce190dd1cf780dd2fe067036": {
   "sha256": "0aa7c91d5a3acfb3d4d0bca27f68b9ec53060749ce190dd1cf780dd2fe067036",
@@ -660,7 +707,7 @@
   "size": 575889,
   "also": [],
   "state": "OK",
-  "seconds": 254.9,
+  "seconds": 171.2,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -706,7 +753,8 @@
     "m": 0
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "0ba07b4d366355d23903021e0b54b58c6492feca300ed92985bbebfd5de6014a": {
   "sha256": "0ba07b4d366355d23903021e0b54b58c6492feca300ed92985bbebfd5de6014a",
@@ -721,7 +769,7 @@
    "styles/test/V-50-1-A0422.pdf"
   ],
   "state": "OK",
-  "seconds": 20.7,
+  "seconds": 16.6,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -784,7 +832,8 @@
     "m": 2.87
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "0f47672b0ab3b5af1e0a2aa2daa04cd62057077c2642ba0293ec938f19651c7a": {
   "sha256": "0f47672b0ab3b5af1e0a2aa2daa04cd62057077c2642ba0293ec938f19651c7a",
@@ -799,7 +848,7 @@
    "styles/Ritningar/V50-1-0832 - Plan B2, Del 32, Värme & Sanitäranlägg-.pdf"
   ],
   "state": "OK",
-  "seconds": 14.5,
+  "seconds": 12.3,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -849,7 +898,8 @@
     "m": 2.06
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "0f85ea113062bf33d6742fc6b1be29608514b251d9591f516527a6a4be6aa358": {
   "sha256": "0f85ea113062bf33d6742fc6b1be29608514b251d9591f516527a6a4be6aa358",
@@ -862,7 +912,7 @@
   "size": 406596,
   "also": [],
   "state": "OK",
-  "seconds": 57.3,
+  "seconds": 49.4,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -925,7 +975,8 @@
     "m": 0.59
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "0fd867bf048b5e47bb83de5909e5d4c1054e8a06718ad40564a644cd40d5349c": {
   "sha256": "0fd867bf048b5e47bb83de5909e5d4c1054e8a06718ad40564a644cd40d5349c",
@@ -939,7 +990,8 @@
   "also": [],
   "state": "TIMEOUT",
   "seconds": 420.1,
-  "error": "läsningen tog längre än 420 s och avbröts"
+  "error": "läsningen tog längre än 420 s och avbröts",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "119fd97e517c8fbb4b7749049a6b28e232c657ebbef4d97456e46179ce4f7949": {
   "sha256": "119fd97e517c8fbb4b7749049a6b28e232c657ebbef4d97456e46179ce4f7949",
@@ -952,7 +1004,7 @@
   "size": 309798,
   "also": [],
   "state": "OK",
-  "seconds": 16.9,
+  "seconds": 13.8,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -999,7 +1051,8 @@
     "m": 0.01
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "11dc663c7133ca8a9a0c47ea2f1e33443c1ac1bc894641ebf2811ff0e66852b0": {
   "sha256": "11dc663c7133ca8a9a0c47ea2f1e33443c1ac1bc894641ebf2811ff0e66852b0",
@@ -1014,7 +1067,7 @@
    "styles/z/13/1760299_1.pdf"
   ],
   "state": "OK",
-  "seconds": 11.4,
+  "seconds": 10.0,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1048,7 +1101,8 @@
     "m": 0.24
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "12616aa940dc8082be0a2fa476b91011664566dc55fee526210be4e81abfe315": {
   "sha256": "12616aa940dc8082be0a2fa476b91011664566dc55fee526210be4e81abfe315",
@@ -1061,7 +1115,7 @@
   "size": 309366,
   "also": [],
   "state": "OK",
-  "seconds": 15.2,
+  "seconds": 12.1,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1089,7 +1143,8 @@
   "declared_m": 0,
   "in_hatched_area_m": 0,
   "top_rows": [],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "1305703e3a357f5e95fb9eda4a9e36d055a6e204fdacefbbdcfa9ceb1336d2d4": {
   "sha256": "1305703e3a357f5e95fb9eda4a9e36d055a6e204fdacefbbdcfa9ceb1336d2d4",
@@ -1102,7 +1157,7 @@
   "size": 584545,
   "also": [],
   "state": "OK",
-  "seconds": 163.6,
+  "seconds": 171.9,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1165,7 +1220,8 @@
     "m": 0
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "133f689dce6fe4274a1f1edc23e2a608262f06d5cb7935077aa89064134d27f8": {
   "sha256": "133f689dce6fe4274a1f1edc23e2a608262f06d5cb7935077aa89064134d27f8",
@@ -1180,7 +1236,7 @@
    "styles/z/13/1760285_1.pdf"
   ],
   "state": "OK",
-  "seconds": 26.2,
+  "seconds": 27.5,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1243,7 +1299,8 @@
     "m": 1.25
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "13d7bf78d94e7175bfa95bac807cacc0497577b01df12d9d642b249022e0a249": {
   "sha256": "13d7bf78d94e7175bfa95bac807cacc0497577b01df12d9d642b249022e0a249",
@@ -1258,7 +1315,7 @@
    "styles/test/V-50-1-A0223.pdf"
   ],
   "state": "OK",
-  "seconds": 13.1,
+  "seconds": 14.0,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1297,7 +1354,8 @@
     "m": 0.48
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "144b3ca61b3ba73d0c7773f53578cf0dfa713ced3777746f3fccddf2eeb280b5": {
   "sha256": "144b3ca61b3ba73d0c7773f53578cf0dfa713ced3777746f3fccddf2eeb280b5",
@@ -1310,7 +1368,7 @@
   "size": 258533,
   "also": [],
   "state": "OK",
-  "seconds": 9.2,
+  "seconds": 9.1,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1338,7 +1396,8 @@
   "declared_m": 0,
   "in_hatched_area_m": 0,
   "top_rows": [],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "155c8156e229f03127f67c80f2168b5b5fc5c8261cb301f4ca294375964e696f": {
   "sha256": "155c8156e229f03127f67c80f2168b5b5fc5c8261cb301f4ca294375964e696f",
@@ -1351,7 +1410,7 @@
   "size": 252619,
   "also": [],
   "state": "OK",
-  "seconds": 20.3,
+  "seconds": 20.8,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1379,7 +1438,8 @@
   "declared_m": 0,
   "in_hatched_area_m": 0,
   "top_rows": [],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "1748198f0b7fb4793da94118de93a047783f4818e2394a2408e1a658e0c5eb5d": {
   "sha256": "1748198f0b7fb4793da94118de93a047783f4818e2394a2408e1a658e0c5eb5d",
@@ -1394,7 +1454,7 @@
    "styles/z/13/1760306_1.pdf"
   ],
   "state": "OK",
-  "seconds": 15.1,
+  "seconds": 15.2,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1453,7 +1513,8 @@
     "m": 1.12
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "17494842833ada89a473cec9b0f8e1cb4a3fd46e732f00564dcc94af2628462b": {
   "sha256": "17494842833ada89a473cec9b0f8e1cb4a3fd46e732f00564dcc94af2628462b",
@@ -1468,7 +1529,7 @@
    "styles/Ritningar/V50-1-0843 - Plan B2, Del 43, Värme & Sanitäranlägg-.pdf"
   ],
   "state": "OK",
-  "seconds": 10.4,
+  "seconds": 11.0,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1530,7 +1591,8 @@
     "m": 1.11
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "174a1408a92b70eda5a32e27653e9bf79cac1f5d79d62e1c9485e2a5382b6df9": {
   "sha256": "174a1408a92b70eda5a32e27653e9bf79cac1f5d79d62e1c9485e2a5382b6df9",
@@ -1543,7 +1605,7 @@
   "size": 257197,
   "also": [],
   "state": "OK",
-  "seconds": 8.3,
+  "seconds": 9.0,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1569,7 +1631,8 @@
   "declared_m": 0,
   "in_hatched_area_m": 0,
   "top_rows": [],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  },
  "19a08f7c6753a5d221dceef66b9b3a3e83ebd077bbc1eb4c05cd28873c41f68d": {
   "sha256": "19a08f7c6753a5d221dceef66b9b3a3e83ebd077bbc1eb4c05cd28873c41f68d",
@@ -1584,7 +1647,7 @@
    "cvat/CVAT/W-50-1-A-0023.pdf"
   ],
   "state": "OK",
-  "seconds": 18.7,
+  "seconds": 19.0,
   "pages": 1,
   "scale": {
    "of_the_set": null,
@@ -1623,6 +1686,7 @@
     "m": 16.07
    }
   ],
-  "contamination": "PASS"
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine_sweep"
  }
 }
