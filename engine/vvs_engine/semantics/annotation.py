@@ -708,6 +708,11 @@ def _designation_word(text: str) -> str | None:
     return None
 
 
+# a size's qualifier: a separator, then letters that may carry a number - "-F60", "/W", "(L)" - but never a
+# second measurement, which is what a cross followed by digits is
+_QUALIFIED_SIZE = re.compile(r"[^A-Za-z0-9]?(?![Xx]\d)[A-ZÅÄÖa-zåäö]{1,2}\d{1,3}[)\]]?")
+
+
 def _row_role(text: str, br: BlockRow, b: AnnotationBlock) -> str:
     t = text.strip()
     if not t:
@@ -721,8 +726,15 @@ def _row_role(text: str, br: BlockRow, b: AnnotationBlock) -> str:
         return "dn"
     packed = t.replace(" ", "")
     mq = re.match(r"(\d{1,4})(.*)$", packed)
-    if mq and int(mq.group(1)) in NOMINAL_SIZES and len(mq.group(2)) <= 4 \
-            and not any(c.isdigit() for c in mq.group(2)):
+    if mq and int(mq.group(1)) in NOMINAL_SIZES and (
+            (len(mq.group(2)) <= 4 and not any(c.isdigit() for c in mq.group(2)))
+            # ...and a qualifier may carry a number of its own. An insulation class is written "22-F60": the
+            # size is 22 and F60 names the insulation. The rule that the tail be digit-free read that row as a
+            # designation of its own, so the code above it kept no dimension at all - on one sheet the whole
+            # DN22 main, eighty metres, took the name of the DN15 branches beside it. What tells a qualifier
+            # from a second measurement is that it starts with a letter: "22-F60" is a size with a class,
+            # "600X300" is two sizes, and the cross between them is not a qualifier.
+            or _QUALIFIED_SIZE.fullmatch(mq.group(2))):
         return "dn"
     # elevation: short letter tag + signed number (VG+1.67, CL 4000, FG +19.82)
     if ELEV_RE.match(t.replace(" ", "")) or (len(words) == 2 and re.fullmatch(r"[A-ZÅÄÖ]{1,4}", words[0]) and re.fullmatch(r"[+\-]?\d+[.,]?\d*", words[1])):
