@@ -1222,9 +1222,6 @@ body.lp-dark { background: #07080a; }
 .pub-faq summary { cursor: pointer; color: #f4f5f7; font-weight: 500; }
 .pub-faq p { color: #a7aeb9; margin: 10px 0 0; line-height: 1.6; }
 .pub-cta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 28px; }
-.pub-prose h2 { margin-top: 36px; }
-.pub-prose p { color: #a7aeb9; font-size: 16.5px; line-height: 1.75; max-width: 66ch; margin: 0 0 18px; }
-.pub-prose p:first-child { color: #e8ecf1; font-size: 19px; }
 .pub-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
 .pub-step { display: grid; grid-template-columns: 44px 1fr; gap: 14px; padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.08); }
 .pub-step .no { font-family: ui-monospace, SFMono-Regular, monospace; color: #6ee7a5; font-size: 13px; letter-spacing: 0.1em; padding-top: 4px; }
@@ -1344,12 +1341,15 @@ body.lp-dark { background: #07080a; }
   margin: 0 auto;
   padding: 0 clamp(20px, 4vw, 56px);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  /* Nycklarna bredvid rubriken fick tidigare ta den plats de ville och pressade rubriken till elva tecken per
+     rad. Rubriken är sidans röst och får huvuddelen; siffrorna ryms i resten. */
+  grid-template-columns: minmax(0, 1.62fr) minmax(0, 1fr);
   gap: clamp(24px, 5vw, 64px);
   align-items: end;
 }
 .pub-h1 {
   margin: 18px 0 0;
+  max-width: 100%;
   font-size: clamp(36px, 5.6vw, 68px);
   /* Raden måste rymma prickarna över Ä och ringen över Å. Med 0,98 skars de av av bakgrundsklippet, och
      rubriken såg ut som en bild med fel beskärning. */
@@ -1358,7 +1358,6 @@ body.lp-dark { background: #07080a; }
   letter-spacing: -0.032em;
   font-weight: 600;
   text-transform: none;
-  max-width: 18ch;
   background: linear-gradient(180deg, #ffffff 30%, #b9c0cb 130%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -1379,8 +1378,12 @@ body.lp-dark { background: #07080a; }
 }
 
 /* en eller flera siffror bredvid rubriken */
-.pub-keys { display: flex; gap: clamp(18px, 3vw, 40px); flex-wrap: wrap; }
+/* Siffrorna står staplade bredvid rubriken i stället för på rad: rubriken är bred, spalten smal, och en rad
+   som bryts mitt i gör talen svårare att jämföra än en lista gör. */
+.pub-keys { display: grid; gap: clamp(16px, 2.4vh, 26px); }
 .pub-key { min-width: 92px; }
+.pub-key .l { max-width: 24ch; }
+@media (max-width: 900px) { .pub-keys { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } }
 .pub-key .n {
   font-size: clamp(26px, 3vw, 36px);
   font-weight: 600;
@@ -1450,8 +1453,50 @@ body.lp-dark { background: #07080a; }
   background: rgba(110, 231, 165, 0.07);
 }
 
-.pub-prose p { color: var(--lp-dim); font-size: 16.5px; line-height: 1.75; max-width: 68ch; margin: 0 0 20px; }
-.pub-prose h2 { margin: 42px 0 14px; font-size: clamp(22px, 2.6vw, 28px); letter-spacing: -0.02em; color: var(--lp-ink); }
+.pub-prose p { color: var(--lp-dim); font-size: 16.5px; line-height: 1.75; margin: 0 0 20px; }
+.pub-prose p:last-child { margin-bottom: 0; }
+
+/* ingressen: hela bredden, större grad, som en inledning och inte som ett stycke till */
+.prose-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 64px);
+  align-items: start;
+}
+.prose-lead .say p {
+  margin: 0 0 16px;
+  color: var(--lp-ink);
+  font-size: clamp(22px, 2.5vw, 33px);
+  line-height: 1.24;
+  letter-spacing: -0.026em;
+}
+.prose-lead .rest p { margin: 0 0 18px; color: var(--lp-dim); font-size: clamp(16px, 1.3vw, 17.5px); line-height: 1.72; }
+.prose-lead .rest p:last-child { margin-bottom: 0; }
+@media (max-width: 900px) { .prose-lead { grid-template-columns: 1fr; gap: 20px; } }
+
+/* avsnitten: rubriken i vänsterspalten, texten i den högra */
+.prose-sec {
+  display: grid;
+  grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+  gap: clamp(20px, 4vw, 64px);
+  padding: clamp(30px, 5vh, 52px) 0;
+  border-top: 1px solid var(--lp-line);
+}
+.prose-sec:first-of-type { margin-top: clamp(34px, 6vh, 60px); }
+.prose-sec h2 {
+  margin: 0;
+  align-self: start;
+  font-size: clamp(20px, 2.1vw, 27px);
+  letter-spacing: -0.026em;
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--lp-ink);
+  text-transform: none;
+}
+.prose-col p { max-width: 64ch; }
+@media (max-width: 900px) {
+  .prose-sec { grid-template-columns: 1fr; gap: 14px; }
+}
 
 .pub-cta { display: flex; gap: 12px; flex-wrap: wrap; margin: clamp(28px, 5vh, 48px) 0 0; }
 .pub-note, .pub-fine { color: var(--lp-faint); font-size: 13.5px; margin-top: 16px; }

@@ -110,12 +110,35 @@ export function usePublished(slug: string): { title: string; body: string } | nu
   return c;
 }
 
-/** Enkel text i stycken: tomrad blir nytt stycke, rader som börjar med "## " blir mellanrubrik. */
+/* Löpande text som en uppslagen sida i stället för en spalt.
+ *
+ * En rubrik och styckena under den hör ihop, så de sätts ihop till ett avsnitt: rubriken står kvar i vänstra
+ * spalten medan texten löper i den högra. Det som står före den första rubriken är ingressen och får hela
+ * bredden. Grupperingen sker här och inte i varje sida, så en text som en administratör skriver i
+ * innehållsverktyget får samma form som den inbyggda. */
 export function Prose({ text }: { text: string }) {
+  const blocks = text.split(/\n{2,}/).map((b) => b.trim()).filter(Boolean);
+  const lead: string[] = [];
+  const secs: { h: string; ps: string[] }[] = [];
+  for (const b of blocks) {
+    if (b.startsWith("## ")) secs.push({ h: b.slice(3), ps: [] });
+    else if (secs.length) secs[secs.length - 1].ps.push(b);
+    else lead.push(b);
+  }
   return (
     <>
-      {text.split(/\n{2,}/).map((blk, i) =>
-        blk.startsWith("## ") ? <h2 key={i}>{blk.slice(3)}</h2> : <p key={i}>{blk}</p>)}
+      {!!lead.length && (
+        <div className="prose-lead">
+          <div className="say"><p>{lead[0]}</p></div>
+          <div className="rest">{lead.slice(1).map((t, i) => <p key={i}>{t}</p>)}</div>
+        </div>
+      )}
+      {secs.map((s, i) => (
+        <section className="prose-sec" key={i}>
+          <h2>{s.h}</h2>
+          <div className="prose-col">{s.ps.map((t, k) => <p key={k}>{t}</p>)}</div>
+        </section>
+      ))}
     </>
   );
 }
