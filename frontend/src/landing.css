@@ -1983,3 +1983,62 @@ body.lp-dark { background: #100e0c; }
   .lp-corners .lp-logo-t { display: none; }
   .lp-corners .lp-pill { padding-left: 14px; padding-right: 14px; }
 }
+
+/* ---------- kopparn: sidans andra röst ---------- */
+
+/* Grönt betyder verifierat och är upptaget av betydelse. Det som saknades var en färg som bara är sidans egen -
+   en att lägga på ett ord i en rubrik, på en siffra, på det kapitel man står i. Koppar mot varm svärta är den
+   parningen förebilden bygger på, och den tar aldrig grönts plats: grönt säger något om röret, koppar säger
+   bara var man är. */
+.lp { --lp-copper: #a87963; --lp-copper-dim: rgba(168, 121, 99, 0.22); }
+
+/* ---------- kapitelraden ---------- */
+
+.ch {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 44;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  gap: 0;
+  padding: 0 clamp(14px, 3vw, 34px) 14px;
+  opacity: 0; transform: translateY(14px); pointer-events: none;
+  transition: opacity 0.5s var(--lp-ease, cubic-bezier(0.22, 1, 0.36, 1)), transform 0.5s var(--lp-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.ch.in { opacity: 1; transform: none; pointer-events: auto; }
+
+.ch-i {
+  display: grid; gap: 7px;
+  background: none; border: 0; box-shadow: none;
+  padding: 10px 16px 0 0;
+  text-align: left; cursor: pointer;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--lp-faint);
+  transition: color 0.3s;
+}
+.ch-i:hover { color: var(--lp-dim); transform: none; opacity: 1; }
+.ch-i.now { color: var(--lp-ink); }
+.ch-i.past { color: var(--lp-dim); }
+/* Etiketten syns bara på det kapitel man står i: raden ska säga var man är, inte läsas som en meny. */
+.ch-l { display: none; }
+.ch-i.now .ch-l { display: block; color: var(--lp-copper); letter-spacing: 0.1em; }
+.ch-bar { display: block; height: 1.5px; background: var(--lp-line-2); overflow: hidden; }
+.ch-bar i {
+  display: block; height: 100%; background: var(--lp-copper);
+  transform-origin: left center; transform: scaleX(0);
+  transition: transform 0.18s linear;
+}
+.ch-i.past .ch-bar i { background: var(--lp-copper-dim); }
+
+/* På en telefon ryms inga etiketter och knappt några siffror: raden blir rena streck, en per kapitel. */
+@media (max-width: 760px) {
+  .ch { padding-bottom: 10px; gap: 0; }
+  .ch-n, .ch-l { display: none; }
+  .ch-i.now .ch-l { display: none; }
+  .ch-i { padding: 14px 6px 0 0; }
+}
+@media (prefers-reduced-motion: reduce) { .ch { transition: none; } .ch-bar i { transition: none; } }
+
+/* Skrollprocenten låg i nedre högra hörnet och krockade med kapitelradens sista kapitel.
+   Kapitelraden säger samma sak fylligare - var man är, inte bara hur långt - så procenten flyttar upp ovanför
+   den i stället för att tävla om samma rad. */
+.lp .lp-scrollpct { bottom: 62px; }
+@media (max-width: 760px) { .lp .lp-scrollpct { bottom: 44px; } }

@@ -13,6 +13,7 @@ import AcademySection from "../components/AcademySection";
 import { useCountUp, useInView, useScrollProgress } from "../components/lp-motion";
 import { useParallax, useSmoothScroll } from "../components/lp-smooth";
 import RevealLines from "../components/Reveal";
+import ChapterBar from "../components/ChapterBar";
 import { tiltStyle, usePointerParallax, useTilt } from "../components/tilt";
 
 /* The drawing in the hero is the product's own subject: a dash-dot waste run with a branch, two labels on
@@ -241,6 +242,7 @@ export default function Landing() {
         <div className="lp-rail-fill" style={{ transform: `scaleY(${scrolled})` }} />
       </div>
       <div className="lp-scrollpct" aria-hidden="true">Skroll · {Math.round(scrolled * 100)} %</div>
+      <ChapterBar chapters={ANCHORS} />
 
       <header className="lp-stage">
         <Stage />
