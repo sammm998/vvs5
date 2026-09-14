@@ -31,7 +31,7 @@ SAME_PLACE_SHARE = 0.5
 # gånger närmare, och de fall där de ligger lika nära är fall ritningen inte har avgjort.
 UNIT_MARGIN = 1.5
 from ..text.model import Glyph, TextRow, make_row, project, row_axes
-from .grammar import DesignationGrammar, NOMINAL_SIZES, compress_pattern, dn_plausible, is_code_like, split_tokens, strip_count_prefix, word_readings
+from .grammar import DesignationGrammar, NOMINAL_SIZES, compress_pattern, dn_plausible, is_code_like, split_tokens, strip_count_prefix, strip_row_separator, word_readings
 
 
 # ----------------------------------------------------------------------------------------------------------------
@@ -672,7 +672,7 @@ def extract_designations(page: RawPage, blocks: list[AnnotationBlock]) -> tuple[
         for ri, br in enumerate(b.rows):
             if br.role != "designation":
                 continue
-            words = br.text_norm.split(" ")
+            words = [strip_row_separator(w) for w in br.text_norm.split(" ")]
             glyph_words = _words(br.line)
             multi = len(words) >= 2 and all(is_code_like(strip_count_prefix(w)[1]) for w in words)
             targets = list(zip(words, glyph_words)) if multi else [(_designation_word(br.text_norm) if " " in br.text_norm else words[0], None)]

@@ -21,3 +21,4 @@ data/validation_W/
 
 # Halvfärdiga grindkörningar: gate_resume skriver hit och slår ihop till <grind>.json när den är klar
 results/**/*.json.part
+data/openworld/

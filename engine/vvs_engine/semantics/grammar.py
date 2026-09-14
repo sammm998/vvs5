@@ -57,6 +57,20 @@ def token_shape(tok: str) -> str:
     return f"A{len(m.group(1))}D{len(m.group(2))}{'A' + str(len(m.group(3))) if m.group(3) else ''}"
 
 
+def strip_row_separator(word: str) -> str:
+    """Skiljetecknet sist i ett ord hör till raden, inte till koden.
+
+    En rad som räknar upp flera koder skriver dem med komma emellan - "KV0175-32, VV0175-32". Ordet före
+    kommatecknet är koden; kommatecknet är bara det som skiljer den från nästa. Behålls det blir samma kod två
+    olika koder: `KV0175-32,` och `KV0175-32` har samma tecken men olika mönster (`A9-9,` mot `A9-9`), och då
+    delas bladets egen grammatik i två familjer för ett rör, ingendera stark nog att bära det.
+
+    Bara sist i ordet. Ett kommatecken inne i ordet kan vara en decimal - "32,5" är ett mått, inte två koder -
+    och det röret rörs inte.
+    """
+    return word.rstrip(",;") if word.rstrip(",;") else word
+
+
 def compress_pattern(word: str) -> str:
     cnt, core = strip_count_prefix(word)
     if cnt > 1:
