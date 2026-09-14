@@ -648,5 +648,283 @@
   "in_hatched_area_m": 0,
   "top_rows": [],
   "contamination": "PASS"
+ },
+ "0aa7c91d5a3acfb3d4d0bca27f68b9ec53060749ce190dd1cf780dd2fe067036": {
+  "sha256": "0aa7c91d5a3acfb3d4d0bca27f68b9ec53060749ce190dd1cf780dd2fe067036",
+  "local": "styles/SJÄLVSTYRELSEGÅRDEN/V-530-1-010-100.pdf",
+  "name": "V-530-1-010-100.pdf",
+  "drawing": "V-530-1-0010",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 575889,
+  "also": [],
+  "state": "OK",
+  "seconds": 254.9,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 10,
+   "pipe_names_with_metres": 0,
+   "share": 0.0,
+   "drawn_m": null,
+   "confirmed_m": null,
+   "ambiguous_m": null,
+   "unowned_m": null,
+   "scale_state": "CONFLICT",
+   "scale_settled": false,
+   "scale_reason": "several_scale_texts_no_geometric_confirmation"
+  },
+  "designations": 29,
+  "anchors": {
+   "VERIFIED_PIPE_ATTACHMENT": 5,
+   "NO_PIPE_ATTACHMENT": 2
+  },
+  "rows": 4,
+  "confirmed_horizontal_m": 0,
+  "ambiguous_m": 0,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "S1-6-110",
+    "m": 0
+   },
+   {
+    "designation": "S1-6-32",
+    "m": 0
+   },
+   {
+    "designation": "S1-6-40",
+    "m": 0
+   },
+   {
+    "designation": "S1-6-75",
+    "m": 0
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "0ba07b4d366355d23903021e0b54b58c6492feca300ed92985bbebfd5de6014a": {
+  "sha256": "0ba07b4d366355d23903021e0b54b58c6492feca300ed92985bbebfd5de6014a",
+  "local": "styles/test/V-50-1-A0422.pdf",
+  "name": "V-50-1-A0422.pdf",
+  "drawing": "V-50-1-A0422",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 340103,
+  "also": [
+   "styles/test/V-50-1-A0422.pdf"
+  ],
+  "state": "OK",
+  "seconds": 20.7,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 14,
+   "pipe_names_with_metres": 13,
+   "share": 0.929,
+   "drawn_m": 217.82,
+   "confirmed_m": 155.93,
+   "ambiguous_m": 23.64,
+   "unowned_m": 38.25,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 132,
+  "anchors": {
+   "VERIFIED_PIPE_ATTACHMENT": 38,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 31,
+   "NO_PIPE_ATTACHMENT": 4
+  },
+  "rows": 10,
+  "confirmed_horizontal_m": 206.66,
+  "ambiguous_m": 23.64,
+  "declared_m": 76.95,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "VS21-S13-15-F50",
+    "m": 76.97
+   },
+   {
+    "designation": "KV01-X31-16",
+    "m": 54.16
+   },
+   {
+    "designation": "VV01-X31-16",
+    "m": 26.85
+   },
+   {
+    "designation": "S01-P5-110L",
+    "m": 25.16
+   },
+   {
+    "designation": "S01-P5",
+    "m": 7.14
+   },
+   {
+    "designation": "S01-P5-75",
+    "m": 5.21
+   },
+   {
+    "designation": "S01-P5-160",
+    "m": 3.45
+   },
+   {
+    "designation": "KV01-X7-25-W40",
+    "m": 2.87
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "0f47672b0ab3b5af1e0a2aa2daa04cd62057077c2642ba0293ec938f19651c7a": {
+  "sha256": "0f47672b0ab3b5af1e0a2aa2daa04cd62057077c2642ba0293ec938f19651c7a",
+  "local": "styles/Ritningar/V50-1-0832 - Plan B2, Del 32, Värme & Sanitäranlägg-.pdf",
+  "name": "V50-1-0832 - Plan B2, Del 32, Värme & Sanitäranlägg-.pdf",
+  "drawing": "V-50-1-0832",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 214528,
+  "also": [
+   "styles/Ritningar/V50-1-0832 - Plan B2, Del 32, Värme & Sanitäranlägg-.pdf"
+  ],
+  "state": "OK",
+  "seconds": 14.5,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 17,
+   "pipe_names_with_metres": 7,
+   "share": 0.412,
+   "drawn_m": 236.12,
+   "confirmed_m": 55.38,
+   "ambiguous_m": 16.31,
+   "unowned_m": 164.43,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": 51,
+  "anchors": {
+   "VERIFIED_PIPE_ATTACHMENT": 13,
+   "NO_PIPE_ATTACHMENT": 5
+  },
+  "rows": 5,
+  "confirmed_horizontal_m": 60.91,
+  "ambiguous_m": 16.31,
+  "declared_m": 0,
+  "in_hatched_area_m": 15.26,
+  "top_rows": [
+   {
+    "designation": "VS1-13-42/S1A/A",
+    "m": 29.04
+   },
+   {
+    "designation": "VS1-13KB1-10",
+    "m": 19.82
+   },
+   {
+    "designation": "KB1-10-200/S2A/P",
+    "m": 7.11
+   },
+   {
+    "designation": "VS1-12-88/S2A/P",
+    "m": 2.88
+   },
+   {
+    "designation": "VS1-12-XX/S2A/P",
+    "m": 2.06
+   }
+  ],
+  "contamination": "PASS"
+ },
+ "0f85ea113062bf33d6742fc6b1be29608514b251d9591f516527a6a4be6aa358": {
+  "sha256": "0f85ea113062bf33d6742fc6b1be29608514b251d9591f516527a6a4be6aa358",
+  "local": "styles/Priorn/V-50-1-A0001.pdf",
+  "name": "V-50-1-A0001.pdf",
+  "drawing": "V-50-1-A0001",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 406596,
+  "also": [],
+  "state": "OK",
+  "seconds": 57.3,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 18,
+   "pipe_names_with_metres": 13,
+   "share": 0.722,
+   "drawn_m": 159.16,
+   "confirmed_m": 78.89,
+   "ambiguous_m": 6.03,
+   "unowned_m": 74.25,
+   "scale_state": "TEXT_ONLY",
+   "scale_settled": true,
+   "scale_reason": "scale_text_only (no vector scale bar found)"
+  },
+  "designations": 92,
+  "anchors": {
+   "NO_PIPE_ATTACHMENT": 30,
+   "VERIFIED_PIPE_ATTACHMENT": 22,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 2
+  },
+  "rows": 11,
+  "confirmed_horizontal_m": 105.5,
+  "ambiguous_m": 6.03,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "S3-110",
+    "m": 28.26
+   },
+   {
+    "designation": "VVC13-25",
+    "m": 27.15
+   },
+   {
+    "designation": "S3-160",
+    "m": 22.37
+   },
+   {
+    "designation": "KV13-5Ö",
+    "m": 16.44
+   },
+   {
+    "designation": "KV13-125",
+    "m": 5.71
+   },
+   {
+    "designation": "KV31-15",
+    "m": 3.27
+   },
+   {
+    "designation": "VV13-20",
+    "m": 1.57
+   },
+   {
+    "designation": "S1-160",
+    "m": 0.59
+   }
+  ],
+  "contamination": "PASS"
  }
 }

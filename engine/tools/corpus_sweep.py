@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import time
 import traceback
@@ -27,6 +28,10 @@ MANIFEST = os.path.join(ROOT, "results/2026-09-11-topologi/corpus_manifest.json"
 DRAWING_CLASSES = ("CLEAN_ORIGINAL_CANDIDATE", "CVAT_SOURCE_PDF", "VIDEO_DRAWING_PDF", "TEST_DRAWING",
                    "SCALE_STUDY_PDF", "OTHER_FORMAT_PDF", "STYLE_SOURCE_PDF")
 DEADLINE_S = 240.0
+# Motorns egen tidsgräns prövas mellan stegen, och ett enda steg kan gå länge: ett blad låste svepet i sju
+# minuter utan att skriva en rad. Varje ritning läses därför i en egen process som får ta slut. Det som stannar
+# blir en rad i svepet - "TIMEOUT" - i stället för en körning som står still.
+HARD_S = 420.0
 
 
 def drawings() -> list[dict]:
@@ -95,7 +100,32 @@ def read_one(rec: dict, outdir: str) -> dict:
             "contamination": (s.get("contamination") or {}).get("state") if isinstance(s.get("contamination"), dict) else s.get("contamination")}
 
 
+def read_in_a_process(rec: dict, outdir: str) -> dict:
+    """Samma läsning, men i en egen process som går att avbryta."""
+    spec = json.dumps({"rec": {k: v for k, v in rec.items() if k != "also"}, "outdir": outdir})
+    t0 = time.perf_counter()
+    try:
+        p = subprocess.run([sys.executable, os.path.abspath(__file__), "--one", spec],
+                           capture_output=True, text=True, timeout=HARD_S)
+    except subprocess.TimeoutExpired:
+        return {"state": "TIMEOUT", "seconds": round(time.perf_counter() - t0, 1),
+                "error": f"läsningen tog längre än {int(HARD_S)} s och avbröts"}
+    tail = (p.stdout or "").strip().splitlines()
+    for line in reversed(tail):
+        if line.startswith("{"):
+            try:
+                return json.loads(line)
+            except ValueError:
+                break
+    return {"state": "FAILED", "seconds": round(time.perf_counter() - t0, 1),
+            "error": f"processen gav inget svar (kod {p.returncode})", "trace": (p.stderr or "")[-400:]}
+
+
 def main() -> None:
+    if sys.argv[1] == "--one":
+        spec = json.loads(sys.argv[2])
+        print(json.dumps(read_one(spec["rec"], spec["outdir"]), ensure_ascii=False))
+        return
     out = sys.argv[1]
     limit = int(sys.argv[sys.argv.index("--limit") + 1]) if "--limit" in sys.argv else None
     done: dict = {}
@@ -111,13 +141,13 @@ def main() -> None:
     work = os.environ.get("VVS_SWEEP_WORK") or os.path.join(os.path.dirname(out) or ".", "sweep_work")
     for i, rec in enumerate(todo, 1):
         outdir = os.path.join(work, rec["sha256"][:12])
-        got = read_one(rec, outdir)
+        got = read_in_a_process(rec, outdir)
         done[rec["sha256"]] = {**{k: v for k, v in rec.items() if k != "path"}, **got}
         with open(out, "w", encoding="utf-8") as fh:
             json.dump(done, fh, ensure_ascii=False, indent=1)
         m = got.get("confirmed_horizontal_m")
         print(f"{i:4d}/{len(todo)} {rec['name'][:42]:42s} {got['state']:6s} {got['seconds']:6.1f}s "
-              + (f"{m:8.1f} m  {got.get('rows', 0):3d} rader" if got["state"] == "OK" else got.get("error", "")[:60]),
+              + (f"{m:8.1f} m  {got.get('rows', 0):3d} rader" if got["state"] == "OK" else (got.get("error") or "")[:60]),
               flush=True)
     print("klart:", len(done), "blad", flush=True)
 
