@@ -11592,5 +11592,72 @@
   ],
   "contamination": "PASS",
   "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine69acc"
+ },
+ "90dae64cc6e63206ab23b21108790bea844e6d7e652cbe724ae938dc502bbf74": {
+  "sha256": "90dae64cc6e63206ab23b21108790bea844e6d7e652cbe724ae938dc502bbf74",
+  "local": "styles/z/13/1760302_1.pdf",
+  "name": "1760302_1.pdf",
+  "drawing": "1760302_1",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 323827,
+  "also": [
+   "styles/z/13/1760302_1.pdf"
+  ],
+  "state": "OK",
+  "seconds": 17.3,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 8,
+   "pipe_names_with_metres": 3,
+   "share": 0.375,
+   "drawn_m": 330.75,
+   "confirmed_m": 4.83,
+   "ambiguous_m": 1.67,
+   "unowned_m": 324.25,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "profile": {
+   "hatch_families": 0,
+   "hatch": [],
+   "pipe_families": 1
+  },
+  "unplaced_designations": [
+   "VS111-55-16",
+   "W-50-1-0180"
+  ],
+  "designations": 25,
+  "anchors": {
+   "NO_PIPE_ATTACHMENT": 5,
+   "VERIFIED_PIPE_ATTACHMENT": 4
+  },
+  "rows": 3,
+  "confirmed_horizontal_m": 5.2,
+  "ambiguous_m": 1.67,
+  "declared_m": 0,
+  "in_hatched_area_m": 0,
+  "top_rows": [
+   {
+    "designation": "VS2",
+    "m": 2.69
+   },
+   {
+    "designation": "VS111-55-16",
+    "m": 1.91
+   },
+   {
+    "designation": "VS3",
+    "m": 0.59
+   }
+  ],
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine69acc"
  }
 }
