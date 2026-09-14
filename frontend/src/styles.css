@@ -2560,44 +2560,44 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .tk-layer:first-of-type { margin-top: 6px; }
 
 /* ---- 3D-vyn: ritningen rest till en byggnad ------------------------------------------------------------ */
-.d3-wrap { position: fixed; inset: 0; z-index: 70; background: #0f1216; display: flex; flex-direction: column; }
+.d3-wrap { position: fixed; inset: 0; z-index: 70; background: #ecebe5; display: flex; flex-direction: column; }
 .d3-canvas { position: absolute; inset: 0; }
 .d3-canvas canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
 .d3-canvas canvas:active { cursor: grabbing; }
 .d3-top {
   position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 14px 18px; color: #eef2f6;
-  background: linear-gradient(180deg, rgba(10, 13, 17, 0.86), rgba(10, 13, 17, 0));
+  padding: 14px 18px; color: #2a2721;
+  background: linear-gradient(180deg, rgba(246, 244, 239, 0.92), rgba(246, 244, 239, 0));
 }
 .d3-top .d3-title { display: flex; flex-direction: column; gap: 3px; }
 .d3-top .d3-title b { font-size: 15px; letter-spacing: -0.01em; }
-.d3-top .muted { color: #9fb0c2; }
-.d3-top button { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.22); color: #eef2f6; }
-.d3-top button:hover { background: rgba(255, 255, 255, 0.18); }
+.d3-top .muted { color: #7b746a; }
+.d3-top button { background: rgba(255, 255, 255, 0.72); border-color: rgba(42, 39, 33, 0.16); color: #2a2721; }
+.d3-top button:hover { background: #ffffff; }
 .d3-controls {
   position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 2;
   display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center;
-  padding: 10px 14px; border-radius: 999px; color: #eef2f6;
-  background: rgba(18, 22, 28, 0.72); border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  padding: 10px 14px; border-radius: 999px; color: #2a2721;
+  background: rgba(252, 251, 248, 0.86); border: 1px solid rgba(42, 39, 33, 0.14);
+  backdrop-filter: blur(10px); box-shadow: 0 12px 40px rgba(60, 50, 38, 0.16);
 }
-.d3-controls .seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); }
+.d3-controls .seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(42, 39, 33, 0.07); }
 .d3-controls .seg button {
-  background: transparent; border: 0; color: #cfdae6; border-radius: 999px; padding: 7px 12px; box-shadow: none;
+  background: transparent; border: 0; color: #55504a; border-radius: 999px; padding: 7px 12px; box-shadow: none;
 }
-.d3-controls .seg button:hover { background: rgba(255, 255, 255, 0.14); color: #fff; opacity: 1; transform: none; }
-.d3-controls button.secondary { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: #eef2f6; }
-.d3-controls .check { color: #cfdae6; text-transform: none; letter-spacing: 0; }
-.d3-controls .d3-hint { color: #7f93a8; max-width: 46ch; }
+.d3-controls .seg button:hover { background: rgba(42, 39, 33, 0.1); color: #2a2721; opacity: 1; transform: none; }
+.d3-controls button.secondary { background: rgba(255, 255, 255, 0.8); border-color: rgba(42, 39, 33, 0.16); color: #2a2721; }
+.d3-controls .check { color: #55504a; text-transform: none; letter-spacing: 0; }
+.d3-controls .d3-hint { color: #8b8378; max-width: 46ch; }
 @media (max-width: 760px) { .d3-controls .d3-hint { display: none; } }
 .d3-info {
   position: absolute; right: 18px; top: 74px; z-index: 3; width: min(340px, 82vw); padding: 14px 16px;
-  border-radius: var(--r-m); color: #eef2f6; background: rgba(18, 22, 28, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  border-radius: var(--r-m); color: #2a2721; background: rgba(252, 251, 248, 0.9);
+  border: 1px solid rgba(42, 39, 33, 0.14); backdrop-filter: blur(10px); box-shadow: 0 18px 50px rgba(60, 50, 38, 0.18);
 }
-.d3-info table.qty td { color: #d6e0ea; border-color: rgba(255, 255, 255, 0.08); }
-.d3-info .muted { color: #92a5b8; }
-.d3-info button.ghost { color: #9fb0c2; }
+.d3-info table.qty td { color: #3a362f; border-color: rgba(42, 39, 33, 0.1); }
+.d3-info .muted { color: #7b746a; }
+.d3-info button.ghost { color: #6f6961; }
 .d3-loading { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
 .d3-loading span {
   width: 34px; height: 34px; border-radius: 999px; border: 2px solid rgba(255, 255, 255, 0.18);
