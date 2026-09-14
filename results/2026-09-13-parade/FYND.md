@@ -136,3 +136,31 @@ Prov: `test_a_short_piece_has_two_ends.py` - en böj ritad som CAD-exporten rita
 
 A0134: 218,0 → 258,7 m ägda av 350 (VS1-S13-12: 13,6 → 57,1; VS1-S13-12/W: 47,0 → 56,6). Några KV-rader
 tappade meter (KV1-X7-16/W 19,2 → 13,0) - grinden avgör nettot.
+
+## 7. Fyra blad som mätte noll: en rad som föll ur registret
+
+W-50-1-A0022, A0023, A0031 och A0034 - spillvattenplaner under bottenplatta - läste 37-40 beteckningar var och
+mätte **noll meter** av 161 i facit. Ingen rörfamilj valdes, varje ledare stod som
+`leader_endpoint_touches_no_pipe_geometry`, och hela bladet föll.
+
+Kedjan bakåt: rörfamiljerna röstas fram av bladets egna etiketter, men bara etiketter som *namnger rör* får
+rösta, och en beteckning vars system inte står i bladets förklaringslista räknas inte som rörnamn. Bladets
+lista säger `S1 SPILLVATTEN, ALLMÄNT I MARK` - men läsningen hade gjort `S1` till en **rubrik**, inte en post.
+Utan S1 i vokabulären var `S1-P2-160` okänt, röstade inte, ingen penna blev rör, inget mättes.
+
+Varför blev S1 en rubrik: en post paras ihop med sin beskrivning till höger, och kandidaterna hämtas ur ett
+index med tvåpunktsband, en bandbredd åt vardera hållet. Beskrivningsraden `SPILLVATTEN, ALLMÄNT I MARK` ritas
+med en hög bit i sig (`TT`-ligaturen bryter raden) och hamnar 2,1 pt högre än koden - inom det villkor som
+avgör (sex tiondels radhöjd) men *utanför* indexet, på grund av var avrundningen råkade falla. D1 och S2 klarade
+sig, S1 föll. Indexet var smalare än villkoret det tjänar.
+
+Regel (`semantics/legend.py`): bandets räckvidd räknas ur villkoret (`0.6·h`), inte ur en konstant.
+
+| blad | läst före | läst nu | facit |
+|---|---:|---:|---:|
+| W-50-1-A0022 | 0 m | 71,7 m | 72,8 m |
+| W-50-1-A0023 | 0 m | 42,6 m | 36,4 m |
+| W-50-1-A0031 | 0 m | 6,9 m | 7,0 m |
+| W-50-1-A0034 | 0 m | 44,1 m | 44,6 m |
+
+Fyra blad från noll till nära facit. Hela sviten: 531. Brandväggen: PASS.

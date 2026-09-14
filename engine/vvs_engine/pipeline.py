@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import sys
@@ -626,6 +627,125 @@ def _settle_bundles_by_elimination(anchors, ownership, graphs) -> int:
             a.evidence["settled_against"] = {"run": idx, "named_by_the_sheet": [n for n in named]}
             settled += 1
     return settled
+
+BUNDLE_ORDER_WITNESSES = 2  # bundles the sheet settled itself before its row order counts as said
+
+
+def _settle_bundles_by_the_sheets_own_row_order(anchors, page) -> int:
+    """What a bundle the sheet has already settled says about the bundles it has not.
+
+    A stacked label lists its codes in an order and the runs lie side by side. Which row is which line is not
+    written anywhere, and guessing it by a drawing convention swaps identities between systems on the sheets
+    where the convention does not hold - so the reading never guesses. But a sheet that has settled one bundle
+    on its own evidence has *stated* the relation: the row order and the order the leader meets the lines either
+    agree or they do not. Where every bundle the sheet settled says the same thing, and at least two of them
+    said it, the bundles it did not settle are read the same way.
+
+    Nothing here is a rule about VVS drawings. It is this drawing's own habit, measured on the cases it
+    answered by itself, and a sheet that answered none of them settles none of the rest.
+    """
+    paths = {p.pid: p for p in page.paths}
+
+    def ranks(a) -> list[int] | None:
+        """The bundle's runs in the order this label's own leader meets them."""
+        b = a.evidence.get("bundle") or {}
+        runs = b.get("runs") or []
+        if len(runs) < 2:
+            return None
+        centres = []
+        for run in runs:
+            pts = []
+            for fam_pid, seg in run:
+                pth = paths.get(fam_pid)
+                if pth is None or seg >= len(pth.segs):
+                    return None
+                sg = pth.segs[seg]
+                pts.append(((sg.x0 + sg.x1) / 2.0, (sg.y0 + sg.y1) / 2.0))
+            centres.append((sum(x for x, _ in pts) / len(pts), sum(y for _, y in pts) / len(pts)))
+        cx = sum(x for x, _ in centres) / len(centres)
+        cy = sum(y for _, y in centres) / len(centres)
+        far, best = None, -1.0
+        for pid in a.leader_paths:
+            pth = paths.get(pid)
+            if pth is None:
+                continue
+            for sg in pth.segs:
+                for pt in ((sg.x0, sg.y0), (sg.x1, sg.y1)):
+                    d = math.hypot(pt[0] - cx, pt[1] - cy)
+                    if d > best:
+                        best, far = d, pt
+        if far is None:
+            return None
+        order = sorted(range(len(centres)), key=lambda i: (math.hypot(centres[i][0] - far[0], centres[i][1] - far[1]), i))
+        out = [0] * len(centres)
+        for r, i in enumerate(order):
+            out[i] = r
+        return out
+
+    # what the sheet settled by itself, read as a relation between row order and line order
+    votes: dict[str, set] = {"same": set(), "reversed": set()}
+    for a in anchors:
+        if a.reason not in ("multi_row_bundle_settled_by_elimination", "multi_row_bundle_settled_by_sheet_consistency"):
+            continue
+        b = a.evidence.get("bundle") or {}
+        run = ((a.evidence.get("settled_against") or {}).get("run"))
+        if run is None:
+            run = ((a.evidence.get("sheet_consistency") or {}).get("run"))
+        rk = ranks(a)
+        if run is None or rk is None or run >= len(rk) or b.get("pos") is None:
+            continue
+        n, pos = len(rk), b["pos"]
+        if rk[run] == pos:
+            votes["same"].add(a.block_id)
+        elif rk[run] == n - 1 - pos:
+            votes["reversed"].add(a.block_id)
+        else:
+            return 0                      # the sheet contradicts itself: it has no habit to follow
+    said = [k for k, v in votes.items() if v]
+    if len(said) != 1 or len(votes[said[0]]) < _R("pipeline.BUNDLE_ORDER_WITNESSES", BUNDLE_ORDER_WITNESSES):
+        return 0
+    order = said[0]
+    witnesses = len(votes[order])
+
+    by_block: dict[tuple, list] = defaultdict(list)
+    for a in anchors:
+        if a.reason == "multi_row_bundle_awaiting_elimination" and a.evidence.get("bundle"):
+            by_block[(a.block_id, a.leader_id)].append(a)
+    settled = 0
+    for key, group in sorted(by_block.items(), key=lambda kv: str(kv[0])):
+        b = group[0].evidence["bundle"]
+        runs = b["runs"]
+        if len(group) != b["n"] or len(runs) != b["n"]:
+            continue
+        group.sort(key=lambda a: a.evidence["bundle"]["pos"])
+        codes = [(a.designation_display or a.designation or "").upper() for a in group]
+        if len(set(codes)) != len(codes):
+            continue                      # the same code twice: order says nothing about which line is which
+        rk = ranks(group[0])
+        if rk is None:
+            continue
+        n = len(runs)
+        assign = []
+        for a in group:
+            pos = a.evidence["bundle"]["pos"]
+            want = pos if order == "same" else n - 1 - pos
+            idx = next((i for i, r in enumerate(rk) if r == want), None)
+            if idx is None:
+                break
+            touching = [c for c in a.contacts if [c.pid, c.seg_index] in runs[idx]]
+            if not touching:
+                break
+            assign.append((a, idx, touching))
+        if len(assign) != len(group) or len({i for _, i, _ in assign}) != len(assign):
+            continue
+        for a, idx, touching in assign:
+            a.state = "VERIFIED_PIPE_ATTACHMENT"
+            a.reason = "multi_row_bundle_settled_by_the_sheets_own_row_order"
+            a.contacts = touching
+            a.evidence["row_order"] = {"run": idx, "order": order, "bundles_the_sheet_settled_itself": witnesses}
+            settled += 1
+    return settled
+
 
 SYSTEM_FAMILY_SHARE = 0.8   # the sheet places a system on one family this consistently
 SYSTEM_FAMILY_MIN = 3       # and has said so this many times before its habit counts as evidence
@@ -1404,6 +1524,11 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                           declared=declarations.connection_pipes, declared_max_pt=declared_max_pt, end_evidence=end_ev)
     # and what one bundle at a time cannot settle, the sheet taken as a whole sometimes can
     if settle_bundles_by_sheet_consistency(anchors, graphs, known_families):
+        identities = _identities_now()
+        ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
+                          declared=declarations.connection_pipes, declared_max_pt=declared_max_pt, end_evidence=end_ev)
+    # ...and last, what the sheet's own settled bundles say about the order its rows are written in
+    if _settle_bundles_by_the_sheets_own_row_order(anchors, page):
         identities = _identities_now()
         ownership = propagate(graphs, anchors, page.info.index, identities, spelled_out,
                           declared=declarations.connection_pipes, declared_max_pt=declared_max_pt, end_evidence=end_ev)

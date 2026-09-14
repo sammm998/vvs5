@@ -316,7 +316,7 @@ def _angle_to(sg: Seg, ux: float, uy: float) -> float:
 
 
 def _near_miss_hits(pt: tuple[float, float], gidx: "GeometryIndex", pipe_families: set[str] | None,
-                    skip: set[str]) -> list[tuple[RawPath, int, float]]:
+                    skip: set[str], skip_families: set[str] | None = None) -> list[tuple[RawPath, int, float]]:
     """The run a leader stopped a hair short of - but only where there is no doubt which run that is.
 
     Hand-drawn and hand-edited sheets carry leaders that end a fraction of a millimetre off the line they point
@@ -335,8 +335,11 @@ def _near_miss_hits(pt: tuple[float, float], gidx: "GeometryIndex", pipe_familie
         p, k, sg = gidx.items[i]
         if p.pid in skip:
             continue
-        if pipe_families is not None and family_of(p) not in pipe_families:
+        fam = family_of(p)
+        if pipe_families is not None and fam not in pipe_families:
             continue
+        if skip_families and fam in skip_families:
+            continue          # the leader's own pen: its tick and its arrow are not the line it points at
         d, t = point_seg_distance(pt[0], pt[1], sg)
         if d <= _R("semantics.attachment.NEAR_MISS", NEAR_MISS):
             near.append((p, k, d, (sg.x0 + t * (sg.x1 - sg.x0), sg.y0 + t * (sg.y1 - sg.y0))))
@@ -472,10 +475,22 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
                     continue
                 seen.add((q.pid, kk))
                 out.append(Contact(point=pt, kind=kind, family=family_of(q), pid=q.pid, seg_index=kk, distance=dd, mark_id=mid))
-    if not out and pipe_families:
-        # and last of all: the leader stopped just short of the line it points at, with nothing else in reach
+    if not out:
+        # And last of all: the leader stopped just short of the line it points at, with nothing else in reach.
+        #
+        # This used to run only once the sheet's pipe pens were known, which is a circle: the pens are elected
+        # from what the leaders touched, and on a sheet where every leader stops a couple of points short -
+        # the drainage plans end their leaders at a small circle on the pipe - nothing was ever touched, no pen
+        # was ever elected, and the whole sheet measured nothing. So it runs in the first reading too, where
+        # every drawn pen is still a candidate. The leader's own pen is left out of the reach: the tick it ends
+        # with is the leader's, not the line it means.
+        own_fams = {stroke_family(ld.layer, ld.width, ld.color)}
+        for pid in ld.path_ids:
+            q = all_paths.get(pid)
+            if q is not None:
+                own_fams.add(family_of(q))
         for (pt, kind, mid) in contact_points(ld):
-            for q, kk, dd in _near_miss_hits(pt, gidx, pipe_families, skip):
+            for q, kk, dd in _near_miss_hits(pt, gidx, pipe_families, skip, own_fams):
                 if (q.pid, kk) in seen:
                     continue
                 seen.add((q.pid, kk))

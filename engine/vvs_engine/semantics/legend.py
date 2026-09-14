@@ -358,7 +358,15 @@ def read_legend(lines: list[TextRow], designations=()) -> DrawingLegend:
             continue
         best = None
         band = round(l.bbox[1] / 2.0)
-        for k in (band - 1, band, band + 1):
+        # The bands are an index, not the rule: what decides is the test below, that the description sits on the
+        # code's own line within six tenths of its height. Two-point bands reached one band either way, which is
+        # narrower than that test - and a description drawn a couple of points higher than its code, as a row
+        # with a tall fragment in it is, fell outside the index and was never offered. Its code then read as a
+        # heading, the code itself vanished from the sheet's vocabulary, and every label of that system was
+        # unknown to the legend: on four drainage plans that was every pipe on the sheet, and they measured
+        # nothing at all. The index now reaches as far as the test does.
+        reach = int(0.6 * h / 2.0) + 2
+        for k in range(band - reach, band + reach + 1):
             for o in by_band.get(k, []):
                 if o is l or o.bbox[0] <= l.bbox[2] - 0.1 or abs(o.bbox[1] - l.bbox[1]) > 0.6 * h:
                     continue
