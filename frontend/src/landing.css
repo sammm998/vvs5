@@ -1832,3 +1832,25 @@ body.lp-dark { background: #07080a; }
 .fm-txt { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; }
 .fm-txt b { font-size: 16.5px; font-weight: 600; color: var(--lp-ink); }
 .fm-txt i { font-style: normal; font-size: 13.5px; line-height: 1.55; color: var(--lp-faint); }
+
+/* ---------- rubriken stiger upp bakom sin egen kant ---------- */
+
+.rv { }
+.rv .rv-line {
+  display: block;
+  overflow: hidden;
+  /* Masken måste rymma det som hänger ned (g, j, p) och det som står över (Å, Ä). Utan luften klipper kanten
+     mitt i bokstaven, och en rubrik med avklippt ring ser ut som ett fel och inte som en effekt. */
+  padding: 0.12em 0 0.18em;
+  margin: -0.12em 0 -0.18em;
+}
+.rv .rv-in {
+  display: block;
+  transform: translate3d(0, 105%, 0);
+  transition: transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.rv.in .rv-in { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .rv .rv-in { transform: none; transition: none; }
+}

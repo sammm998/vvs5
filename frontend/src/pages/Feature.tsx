@@ -4,6 +4,8 @@ import FeatureArt from "../components/FeatureArt";
 import FeatureFilm from "../components/FeatureFilm";
 import { FEATURES, featureBySlug, type Feature } from "../features";
 import { useInView } from "../components/lp-motion";
+import { useParallax, useSmoothScroll } from "../components/lp-smooth";
+import RevealLines from "../components/Reveal";
 
 /* En sida per funktion.
  *
@@ -29,13 +31,15 @@ function Slab({ s, accent, flip }: { s: Feature["slabs"][number]; accent: string
     <section className={`ft-slab${flip ? " flip" : ""}`}>
       <Reveal>
         <figure className="ft-art">
-          <FeatureArt id={s.art} accent={accent} />
+          <span data-par={flip ? -26 : 26} style={{ display: "block" }}>
+            <FeatureArt id={s.art} accent={accent} />
+          </span>
         </figure>
       </Reveal>
       <Reveal delay={90}>
         <div className="ft-said">
           <p className="lp-kicker" style={{ color: accent }}>{s.kicker}</p>
-          <h2>{s.h}</h2>
+          <RevealLines text={s.h} />
           <p className="ft-p">{s.p}</p>
           {!!s.bullets?.length && (
             <ul className="ft-list">
@@ -51,6 +55,8 @@ function Slab({ s, accent, flip }: { s: Feature["slabs"][number]; accent: string
 export default function FeaturePage() {
   const { slug } = useParams();
   const f = featureBySlug(slug);
+  useSmoothScroll();
+  useParallax();
   if (!f) return <Missing />;
   const others = FEATURES.filter((o) => o.slug !== f.slug);
   const i = FEATURES.findIndex((o) => o.slug === f.slug);
@@ -61,7 +67,7 @@ export default function FeaturePage() {
         <header className="ft-head">
           <div className="ft-head-l">
             <p className="lp-eyebrow"><span className="dot" style={{ background: f.accent }} />{f.kicker}</p>
-            <h1>{f.title.split("\n").map((r, k) => <span key={k}>{r}<br /></span>)}</h1>
+            <RevealLines as="h1" text={f.title.replace("\n", " ")} />
           </div>
           <div className="ft-head-r">
             <p className="ft-lede">{f.lede}</p>
@@ -96,7 +102,7 @@ export default function FeaturePage() {
           <Reveal>
             <div className="ft-steps-head">
               <p className="lp-kicker" style={{ color: f.accent }}>Guide</p>
-              <h2>{f.steps.title}</h2>
+              <RevealLines text={f.steps.title} />
               <p className="ft-p">{f.steps.lede}</p>
             </div>
           </Reveal>
@@ -118,7 +124,7 @@ export default function FeaturePage() {
 
         <section className="ft-close">
           <Reveal>
-            <h2>{f.toLabel}</h2>
+            <RevealLines text={f.toLabel} />
             <p className="ft-p">Det kostar ingenting att prova — ett nytt konto får credits att läsa ett par ritningar med.</p>
             <div className="ft-cta">
               <Link className="lp-btn primary lg" to={f.to}>{f.toLabel} <span aria-hidden="true">→</span></Link>

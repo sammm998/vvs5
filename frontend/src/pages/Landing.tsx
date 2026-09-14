@@ -11,6 +11,8 @@ import StyleFan from "../components/StyleFan";
 import AgentShowcase from "../components/AgentShowcase";
 import AcademySection from "../components/AcademySection";
 import { useCountUp, useInView, useScrollProgress } from "../components/lp-motion";
+import { useParallax, useSmoothScroll } from "../components/lp-smooth";
+import RevealLines from "../components/Reveal";
 import { tiltStyle, usePointerParallax, useTilt } from "../components/tilt";
 
 /* The drawing in the hero is the product's own subject: a dash-dot waste run with a branch, two labels on
@@ -189,7 +191,7 @@ function Funktioner() {
     <section className="lp-sec lp-wrap" id="funktioner">
       <div className="lp-sec-head">
         <div className="lp-kicker">Plattformen</div>
-        <h2>Sju rum, ett hus</h2>
+        <RevealLines text="Sju rum, ett hus" />
         <p>
           Läsningen är kärnan, men en mängd blir sällan färdig i ett steg. Rita det som saknas, mät det som
           måste mätas för hand, fråga agenten, räkna fram anbudet — och lär dig läsa bladet under tiden.
@@ -229,6 +231,8 @@ export default function Landing() {
     return () => document.body.classList.remove("lp-dark");
   }, []);
   const scrolled = useScrollProgress();
+  useSmoothScroll();
+  useParallax();
   return (
     <div className="lp">
       <SiteHeader anchors={ANCHORS} cta={{ to: "/login", label: "Starta projekt" }} />
@@ -297,7 +301,7 @@ export default function Landing() {
       <section className="lp-sec lp-wrap lp-light" id="ror">
         <div className="lp-sec-head">
           <div className="lp-kicker">Rörtyper</div>
-          <h2>Alla system på sidan, var för sig</h2>
+          <RevealLines text="Alla system på sidan, var för sig" />
           <p>
             Svensk ritstandard låter linjetypen berätta var röret ligger och beteckningen vilket system det är.
             Systemet läser båda — och håller isär tappvatten, spillvatten, värme och kyla i mängden.
@@ -351,7 +355,7 @@ export default function Landing() {
       </section>
 
       <section className="lp-close lp-wrap">
-        <h2>Ladda upp en ritning och se vad den säger</h2>
+        <RevealLines text="Ladda upp en ritning och se vad den säger" />
         <p>Ta en sida du redan mängdat för hand. Jämför. Det är den enda rimliga första körningen.</p>
         <div className="lp-cta">
           <Link className="lp-btn primary lg" to="/login">
