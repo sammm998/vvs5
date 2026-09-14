@@ -118,3 +118,21 @@ Prov: `test_a_run_joined_to_a_named_pipe_is_not_paired_away.py` (grafen byggd f�
 A0134 efter båda: 210,0 → 218,0 m ägda (VS1-S13-35: 3,4 → 22,1; VS1-S13-22: 11,7 och inte 23,6).
 Kvar på den ledningen: fronten vid x=1295 där stigarens hörn möter den vågräta - `AMBIGUOUS_JUNCTION`, fyra
 armar, och den vågräta oägd. Det är knutregeln, nästa rotorsak.
+
+## 6. En linjes två ändar är två ställen (A0134: 218 → 259 m av 350)
+
+De rundade böjarna exporteras som kedjor av mycket korta stycken - en tiondels punkt långa. Nodbygget slår ihop
+ändpunkter inom 0,15 pt, och ett stycke kortare än så fick **båda** sina ändar i samma nod. Noden räknade
+stycket två gånger: en vanlig böj kom ut som en fyrarmad knut, identiteten stannade där, och fronten skrevs
+`UNOWNED_CONTINUATION` med grad fyra och tvåhundra oägda punkter bortom sig.
+
+Mätt: 2 417 sådana slingor på A0134 och 2 337 på A0113, varav ~2 300 respektive ~2 250 blåste upp en nods grad.
+
+Regel: nodbygget håller isär ett styckes egna ändar (`find_node(..., not_prim=...)`). Allt annat i toleransen
+slås ihop som förut. Efter: 41 slingor kvar på A0134 (äkta nollängdsstycken).
+
+Prov: `test_a_short_piece_has_two_ends.py` - en böj ritad som CAD-exporten ritar den är en kedja med två fria
+ändar, ingen knut; före regeln gav samma böj graderna [1, 1, 2, 4, 4] med två slingor.
+
+A0134: 218,0 → 258,7 m ägda av 350 (VS1-S13-12: 13,6 → 57,1; VS1-S13-12/W: 47,0 → 56,6). Några KV-rader
+tappade meter (KV1-X7-16/W 19,2 → 13,0) - grinden avgör nettot.

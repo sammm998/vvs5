@@ -663,13 +663,20 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
     prim_nodes: dict[int, list[int]] = defaultdict(list)
     cell = TOUCH_TOL
 
-    def find_node(x, y):
+    def find_node(x, y, not_prim: int | None = None):
+        """The node at this point, if the family already has one. `not_prim` keeps a primitive's own two ends
+        apart: a line's ends are two places however short the line, and a piece shorter than the touch tolerance
+        - the tenth-of-a-point slivers a rounded corner is exported as - would otherwise put both its ends in one
+        node. That reads as a loop: the node counts the piece twice, a plain corner comes out as a four-armed
+        junction, and the identity stops there rather than running on round the bend."""
         cx, cy = int(math.floor(x / cell)), int(math.floor(y / cell))
         best = None
         for dx in (-1, 0, 1):
             for dy in (-1, 0, 1):
                 for nid in lattice.get((cx + dx, cy + dy), []):
                     n = nodes[nid]
+                    if not_prim is not None and not_prim in n.prims:
+                        continue
                     d = math.hypot(n.x - x, n.y - y)
                     if d <= TOUCH_TOL and (best is None or d < best[0]):
                         best = (d, nid)
@@ -677,7 +684,7 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
 
     for q in sorted(prims, key=lambda q: q.prim_id):
         for pt in (q.a, q.b):
-            nid = find_node(pt[0], pt[1])
+            nid = find_node(pt[0], pt[1], not_prim=q.prim_id)
             if nid is None:
                 nid = len(nodes)
                 nodes[nid] = Node(nid=nid, x=pt[0], y=pt[1])
