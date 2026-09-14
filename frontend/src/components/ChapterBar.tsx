@@ -42,6 +42,15 @@ export default function ChapterBar({ chapters }: { chapters: Chapter[] }) {
       }
       setOn(cur >= 0);
       if (cur >= 0) { setAt(cur); setP(frac); }
+      // Raden byter röst med rummet den ligger i. Mätt på avsnittens egna lägen och inte med elementFromPoint:
+      // raden ligger själv överst vid den punkten, så träffprovet svarade "kapitelraden" och aldrig "papper".
+      const probe = vh - 52;
+      let paper = false;
+      for (const el of document.querySelectorAll(".lp-light")) {
+        const r = (el as HTMLElement).getBoundingClientRect();
+        if (r.top <= probe && r.bottom >= probe) { paper = true; break; }
+      }
+      document.querySelector(".lp")?.classList.toggle("on-paper", paper);
     };
     const kick = () => { if (!frame.current) frame.current = requestAnimationFrame(read); };
     read();

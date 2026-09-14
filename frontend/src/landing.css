@@ -2042,3 +2042,50 @@ body.lp-dark { background: #100e0c; }
    den i stället för att tävla om samma rad. */
 .lp .lp-scrollpct { bottom: 62px; }
 @media (max-width: 760px) { .lp .lp-scrollpct { bottom: 44px; } }
+
+/* ---------- pappret: den ljusa halvan av sidan ---------- */
+
+/* Sidan ska växla mellan mörkt och ljust, inte bara vara mörk. Det ljusa var en kall grå (#f4f4f2) från när
+   grunden var blåsvart; mot den varma svärtan läste den som en annan sida. Nu är det papper: samma varma
+   familj, bara vänd. Ett mörkt rum, ett ljust rum, ett mörkt igen - och man märker att man bytt rum. */
+.lp .lp-light {
+  background: #f2efe8;
+  color: #1b1813;
+  box-shadow: 0 0 0 100vmax #f2efe8;
+}
+.lp .lp-light h2, .lp .lp-light h3, .lp .lp-light .n,
+.lp .lp-light b, .lp .lp-light strong, .lp .lp-light a,
+.lp .lp-light .rv { color: #16130f; }
+.lp .lp-light p, .lp .lp-light li, .lp .lp-light td, .lp .lp-light .l,
+.lp .lp-light .lp-sec-head p, .lp .lp-light .lp-lede, .lp .lp-light .lp-under { color: #574f45; }
+/* Etiketten i koppar, inte i grönt: grönt betyder verifierat och hör till röret, inte till rubriken. */
+.lp .lp-light .lp-kicker { color: #8a5f49; }
+.lp .lp-light .lp-card, .lp .lp-light .lp-step { background: #fbfaf7; border-color: rgba(27, 24, 19, 0.1); }
+.lp .lp-light table, .lp .lp-light th, .lp .lp-light td,
+.lp .lp-light .lp-legend td, .lp .lp-light .lp-legend th { border-color: rgba(27, 24, 19, 0.11); }
+.lp .lp-light th { color: #7b7266; background: rgba(27, 24, 19, 0.03); }
+.lp .lp-light .lp-legend td.code, .lp .lp-light .lp-quote, .lp .lp-light blockquote { color: #16130f; }
+/* Knappen på papper: mörk platta, ljus text - motsatsen till den på svärtan, så den syns lika bra i båda rummen. */
+.lp .lp-light .lp-btn.primary { background: #16130f; color: #f6f3ee; }
+.lp .lp-light .lp-btn.primary:hover { background: #2a251e; }
+.lp .lp-light .lp-btn.ghost { border-color: rgba(27, 24, 19, 0.22); color: #16130f; }
+.lp .lp-light .lp-btn.ghost:hover { border-color: rgba(27, 24, 19, 0.4); background: rgba(27, 24, 19, 0.04); }
+
+/* Kapitelraden ligger över sidan, och sidan rullar under den. Utan något emellan läste texten rakt igenom
+   siffrorna. En mjuk skugga underifrån - ingen kant, ingen platta - låter raden ligga kvar utan att stänga
+   ute det som passerar. Den följer rummet: varm svärta i det mörka, papper i det ljusa. */
+.ch::before {
+  content: "";
+  position: absolute; inset: -34px 0 0;
+  background: linear-gradient(180deg, rgba(16, 14, 12, 0), rgba(16, 14, 12, 0.82) 46%, rgba(16, 14, 12, 0.94));
+  pointer-events: none;
+  z-index: -1;
+}
+.ch { isolation: isolate; }
+.lp.on-paper .ch::before {
+  background: linear-gradient(180deg, rgba(242, 239, 232, 0), rgba(242, 239, 232, 0.86) 46%, rgba(242, 239, 232, 0.96));
+}
+.lp.on-paper .ch-i { color: #8c8376; }
+.lp.on-paper .ch-i.now { color: #16130f; }
+.lp.on-paper .ch-i.past { color: #574f45; }
+.lp.on-paper .ch-bar { background: rgba(27, 24, 19, 0.18); }
