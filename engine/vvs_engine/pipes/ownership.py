@@ -1237,6 +1237,9 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                 chain_prims = set(ch[ci])
                 cands: set = set()
                 aids: set[str] = set()
+                # Hur många armar varje kandidat har vid kedjans ändar. En ledning som *slutar* där lägger en
+                # arm i noden; en som passerar lägger två. Skillnaden avgör vad förbindelsen är - se nedan.
+                arms_of: Counter = Counter()
                 for end in {chain_nodes[ci][0], chain_nodes[ci][-1]}:
                     for p in g.nodes[end].prims:
                         if p in chain_prims:
@@ -1245,6 +1248,7 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                         if sp.state == "CONFIRMED" and sp.identity is not None:
                             cands.add(sp.identity)
                             aids |= sp.anchors
+                            arms_of[sp.identity] += 1
                 if not cands:
                     continue
                 # En korsning är ingen anslutning. Två rör kan korsa varandra utan att mötas, och en gren
@@ -1294,15 +1298,53 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                     touched = True
                     continue
                 else:
-                    for pid in ch[ci]:
-                        s = st[pid]
-                        if s.state == "UNOWNED":
-                            s.state, s.candidates, s.reason = "AMBIGUOUS", set(cands), "AMBIGUOUS_BRANCH"
-                            s.evidence.append(f"unlabeled_branch_at_node_{nid}")
-                    if len(cands) > 1:
-                        ambiguous_runs.append({"family": fk, "chain": ci, "from_prim": ch[ci][0],
-                                               "to_prim": ch[ci][-1], "reason": "AMBIGUOUS_BRANCH",
-                                               "identities": sorted({i.key for i in cands})})
+                    # Kandidaterna är oense - men ofta bara om storleken. Samma system, samma material, två
+                    # dimensioner: det är inte två rör som möts, det är ett rör som byter dimension. En
+                    # mängdare som tittar på en sådan koppling tvekar inte, och läsningen ska inte heller
+                    # göra det. Den sa "kunde tillhöra S1-P2|DN110 eller S1-P2|DN160, ritningen avgör det
+                    # inte" om böjen mellan just de stråken, och lämnade den omätt.
+                    #
+                    # Ritningen avgör den. En dimension byts vid en del - en övergång, en förminskning - och
+                    # den delen ritas. Där ingen sådan del står ritad har stråket inte bytt dimension än, och
+                    # det som fortsätter är det grövre. Det är också den riktning felet ligger åt mätt över
+                    # korpusen (FYND §13): den grövsta dimensionen i en stam är den som saknar mest.
+                    #
+                    # Villkoret är smalt: en enda stam, var kandidat sin egen dimension. Möts två system, två
+                    # material eller två likadana dimensioner säger ritningen ingenting och svaret förblir
+                    # "tvetydig" - det är fortfarande ett giltigt svar, bara inte här.
+                    #
+                    # Och det gäller bara när det verkligen är *ett* stråk. Två lodräta ledningar bredvid
+                    # varandra, DN20 och DN40, med en vågrät förbindelse emellan är inte ett rör som byter
+                    # dimension - det är en koppling mellan två olika rör, och vilken av dem den hör till
+                    # säger ritningen inte. Den skillnaden står i noderna: en ledning som slutar vid
+                    # förbindelsen lägger en arm där, en som bara passerar lägger två. Slutar båda - en ände
+                    # mot en ände - är det ett stråk med en böj. Passerar de är det en pinne i en stege, och
+                    # svaret förblir tvetydigt.
+                    coarser = None
+                    if (len(cands) > 1 and len({c.stem for c in cands}) == 1
+                            and all(c.dn is not None for c in cands)
+                            and len({c.dn for c in cands}) == len(cands)
+                            and all(arms_of[c] == 1 for c in cands)):
+                        coarser = max(cands, key=lambda c: c.dn)
+                    if coarser is not None:
+                        reach = set(_up_to_transition(g, ch[ci], from_end=(ch[ci] and ch[ci][-1] == u)))
+                        took = [pid for pid in ch[ci] if pid in reach and st[pid].state == "UNOWNED"]
+                        confirm(took, coarser, "same_run_changes_size_the_coarser_carries_on", aids)
+                        for pid in took:
+                            st[pid].evidence.append(f"one_run_two_sizes_at_node_{nid}")
+                        for pid in ch[ci]:
+                            if pid not in reach and st[pid].state == "UNOWNED":
+                                st[pid].evidence.append(TRANSITION_EVIDENCE)
+                    else:
+                        for pid in ch[ci]:
+                            s = st[pid]
+                            if s.state == "UNOWNED":
+                                s.state, s.candidates, s.reason = "AMBIGUOUS", set(cands), "AMBIGUOUS_BRANCH"
+                                s.evidence.append(f"unlabeled_branch_at_node_{nid}")
+                        if len(cands) > 1:
+                            ambiguous_runs.append({"family": fk, "chain": ci, "from_prim": ch[ci][0],
+                                                   "to_prim": ch[ci][-1], "reason": "AMBIGUOUS_BRANCH",
+                                                   "identities": sorted({i.key for i in cands})})
                 touched = True
         return touched
 
