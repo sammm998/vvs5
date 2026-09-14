@@ -411,3 +411,46 @@ dimension ska den *mindre* dimensionen inte fortsätta in i den grövre stammen.
 nedströms en avgrening, och när två märkta storlekar möts vid en knut är det den grövre som äger stammen.
 Regeln kommer ur hur rör dras och ur bladets egna två etiketter - ingen ritningsspecifik konstant - och den har
 en mätbar riktning att gå åt: 813 m saknade meter på de grövsta dimensionerna.
+
+## §14 Tre fjärdedelar av all tvetydighet är samma sak: en fleradig etikett över en bunt
+
+Användarens klagomål i produktion var att självklara rör står omätta för att läsningen säger att de "kunde"
+tillhöra det ena eller det andra. Det stämmer, och det är inte många fel utan ett.
+
+Räknat över arton blad ur tio olika projekt - inte ett blad, inte ett kontor:
+
+| fästets tillstånd | antal | andel |
+|---|---:|---:|
+| VERIFIED_PIPE_ATTACHMENT | 1227 | 68,6 % |
+| AMBIGUOUS_PIPE_ATTACHMENT | 379 | 21,2 % |
+| NO_PIPE_ATTACHMENT | 183 | 10,2 % |
+
+Och skälen bakom de tvetydiga:
+
+| skäl | antal | andel av de tvetydiga |
+|---|---:|---:|
+| `multi_row_label_shares_one_run` | 246 | **64,9 %** |
+| `multi_row_bundle_awaiting_elimination` | 44 | 11,6 % |
+| `multi_row_token_match_not_unique` | 26 | 6,9 % |
+| `system_conflict:*` (tretton varianter) | 33 | 8,7 % |
+| övriga | 30 | 7,9 % |
+
+De tre första är samma familj: en etikett med flera rader står över ett stråk, och läsningen kan inte säga
+vilken rad som är vilken linje. **Tillsammans 83,4 % av all tvetydighet.** Den största av dem,
+`multi_row_label_shares_one_run`, fyrar när etiketten namnger fler system än ritningen ritar linjer på stället
+och inget lagernamn skiljer raderna åt; regeln i `attachment.py` säger då att längden inte går att dela mellan
+koderna utan att hitta på en regel, och lämnar stråket oägt.
+
+Regeln är riktig så långt den går - tio meter stråk under tre koder *är* inte trettio meter av någon av dem -
+men den fyrar för brett. Den räknar varje rad i blocket som ett anspråk på röret, också rader som inte gör
+anspråk på något rör alls.
+
+**Inte rotorsaken:** en första hypotes var att bladets egen förklaringslista skulle skilja rörrader från
+komponentrader (`names_a_pipe`), och att felet var att `resolve_block` inte filtrerar på den. Den föll:
+på `Badskon 1`, bladet fyndet kommer ifrån, är förklaringslistan själv felläst - dess tretton rader är
+`cl`, `O`, `VG` och halva rörkoder med rollen "material" eller "unused", ingen med en betydelse. Där finns
+ingen lista att filtrera med, så regeln kan inte vara den. Att listan läses fel på ett blad med staplade
+datarutor är ett eget fynd och kanske det djupare.
+
+Ingen ändring gjord. Det här är det största enskilda felet som återstår, och det förtjänar en egen grind med
+en rotorsak som håller - inte den första som lät rimlig.
