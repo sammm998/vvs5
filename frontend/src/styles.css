@@ -1342,6 +1342,41 @@ details.settings .body p { margin: 2px 0 0; font-size: 12px; }
 /* Delmoment som plattor med djup: en läsning tar en stund, och det som görs under tiden ska kännas som en
    plats i produkten och inte som en väntsida. */
 
+/* ---------- akademin som egen plats, i hela fönstret ----------
+
+   Analysen är ett arbetsbord; att läsa sig till något är en annan sysselsättning och tål inte samma form. Här
+   tar akademin hela fönstret, sätter sitt eget huvud högst upp och låter texten stå på en yta som är papprets
+   snarare än verktygets: en varm ton, en spalt med luft omkring, och ett ljus uppifrån som ligger still medan
+   innehållet rullar. */
+
+.academy {
+  position: relative; height: 100dvh; min-height: 560px;
+  display: grid; grid-template-rows: auto minmax(0, 1fr);
+  background: #fcfcfb;
+}
+.academy-sky {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(62% 42% at 14% -8%, rgba(13, 13, 13, 0.055), rgba(13, 13, 13, 0) 70%),
+    radial-gradient(38% 30% at 94% 2%, rgba(13, 13, 13, 0.03), rgba(13, 13, 13, 0) 72%);
+}
+.academy-bar {
+  position: relative; z-index: 1;
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 15px 26px; border-bottom: 1px solid var(--line);
+  background: var(--glass); backdrop-filter: saturate(1.4) blur(8px);
+}
+.academy-scroll { position: relative; z-index: 1; overflow: auto; }
+.academy-col { width: min(1120px, 100%); margin: 0 auto; padding: 30px 24px 64px; }
+.academy .lf-hero { box-shadow: var(--e3), var(--lift); }
+.academy .lf-nav { position: sticky; top: 0; z-index: 2; background: rgba(252, 252, 251, 0.92); backdrop-filter: blur(6px); }
+@media (max-width: 700px) {
+  .academy { height: auto; min-height: 100dvh; }
+  .academy-bar { padding: 12px 16px; }
+  .academy-bar .muted.small { display: none; }
+  .academy-col { padding: 20px 16px 48px; }
+}
+
 .learn { padding-bottom: 40px; }
 .learn.compact { max-width: 1080px; }
 .lf-mono { font-family: var(--mono); }
@@ -1914,6 +1949,8 @@ body.wz-open { overflow: hidden; }
 /* nyckeltalen: en siffra, vad den är, och vad den betyder - i den ordningen, för det är så de läses */
 .adm-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 10px; }
 .adm-stat {
+  /* ett tal på en bricka som lyfter: samma ljus som resten av plattformen, en aning starkare här där siffrorna
+     är det man kommit för */
   background: #fff; border: 1px solid var(--line); border-radius: var(--r-m);
   padding: 14px 15px; box-shadow: var(--e1), var(--lift);
   display: flex; flex-direction: column; gap: 2px; min-width: 0;
@@ -2328,9 +2365,38 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .anbud-page { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 6px; box-shadow: var(--e2); background: #fff; }
 
 /* ---- adminportalen: ett skal med sektionsnav till vänster och sidan till höger --------------------------- */
-.adm-shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; align-items: start; }
-@media (max-width: 900px) { .adm-shell { grid-template-columns: 1fr; } .adm-nav { position: static; } }
-.adm-nav { position: sticky; top: 18px; display: flex; flex-direction: column; gap: 14px; }
+/* Portalen som ett eget rum, inte en sida bland andra.
+ *
+ * Den som driver tjänsten sitter här länge och byter avdelning ofta, så listan ska stå still medan innehållet
+ * rullar, och rubriken ska säga var man är utan att ta en tredjedel av skärmen. Ytan är en aning kallare än
+ * resten av plattformen - det här är maskinrummet - med ett ljus uppifrån som ligger kvar och en hårfin ram
+ * mellan spalterna i stället för en bred lucka. */
+
+.adm-shell {
+  position: relative;
+  height: 100dvh; min-height: 560px;
+  display: grid; grid-template-columns: 248px minmax(0, 1fr); gap: 0; align-items: stretch;
+  background: #fbfbfc;
+}
+.adm-sky {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(54% 38% at 20% -6%, rgba(13, 13, 13, 0.05), rgba(13, 13, 13, 0) 70%),
+    radial-gradient(40% 28% at 96% 0%, rgba(13, 13, 13, 0.028), rgba(13, 13, 13, 0) 74%);
+}
+@media (max-width: 900px) {
+  .adm-shell { height: auto; min-height: 100dvh; grid-template-columns: 1fr; }
+  .adm-nav { position: static; border-right: 0; border-bottom: 1px solid var(--line); }
+}
+.adm-nav {
+  position: relative; z-index: 1; overflow: auto;
+  border-right: 1px solid var(--line);
+  padding: 18px 14px 22px;
+  display: flex; flex-direction: column; gap: 14px;
+  background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(6px);
+}
+.adm-nav::-webkit-scrollbar { width: 0; }
+.adm-brand { display: flex; flex-direction: column; gap: 3px; padding: 2px 10px 10px; border-bottom: 1px solid var(--line); }
 .adm-nav .crumb { margin-bottom: 2px; }
 .adm-nav .grp { display: flex; flex-direction: column; gap: 2px; }
 .adm-nav .lbl {
@@ -2350,11 +2416,22 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
   background: var(--warn-bg); color: var(--warn); border: 1px solid rgba(138, 90, 0, 0.18);
 }
 .adm-nav .adm-note { padding: 6px 10px 0; line-height: 1.45; }
-.adm-main { min-width: 0; }
-.adm-sec { margin-bottom: 18px; }
-.adm-sec h1 { font-size: clamp(30px, 3.6vw, 48px); }
-.adm-sec .lead { max-width: 72ch; }
+.adm-main { position: relative; z-index: 1; min-width: 0; overflow: auto; padding: 26px 30px 60px; }
+.adm-sec { margin-bottom: 20px; }
+.adm-sec .eyebrow {
+  font-family: var(--mono); font-size: var(--label); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--faint);
+}
+/* Rubriken säger var man är. Den behöver inte ropa det: i versaler och fyrtioåtta punkter tog den en tredjedel
+   av skärmen och lämnade siffrorna under sig. */
+.adm-sec h1 { margin-top: 4px; font-size: clamp(24px, 2.2vw, 34px); text-transform: none; letter-spacing: -0.025em; line-height: 1.1; }
+.adm-sec .lead { max-width: 78ch; margin-top: 6px; }
 .adm-body > .card + .card, .adm-body section.card + section.card { margin-top: 14px; }
+/* byte av avdelning: innehållet kommer underifrån i stället för att slå om */
+.adm-body { animation: adm-in 0.26s var(--ease) both; }
+@keyframes adm-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .adm-body { animation: none; } }
+@media (max-width: 900px) { .adm-main { padding: 20px 16px 48px; } }
 .adm-toolbar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
 .adm-toolbar input { max-width: 320px; }
 .adm-toolbar .seg {

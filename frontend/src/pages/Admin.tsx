@@ -237,10 +237,16 @@ export default function AdminPage() {
     );
   }
 
+  const öppna = attn.items?.length ?? 0;
+
   return (
-    <main className="admin adm-shell">
+    <div className="admin adm-shell">
+      <div className="adm-sky" aria-hidden="true" />
       <aside className="adm-nav">
-        <p className="crumb">Administration</p>
+        <div className="adm-brand">
+          <span className="org">Administration</span>
+          <span className="muted small">{öppna ? `${öppna} att se på` : "inget väntar"}</span>
+        </div>
         {groups.map(([g, items]) => (
           <div key={g} className="grp">
             <span className="lbl">{g}</span>
@@ -260,10 +266,11 @@ export default function AdminPage() {
 
       <div className="adm-main">
         <header className="adm-sec">
+          <span className="eyebrow">{current.group}</span>
           <h1>{current.label}</h1>
           <p className="lead">{current.lead}</p>
         </header>
-        <div className="adm-body">
+        <div className="adm-body" key={sec}>
           {sec === "overblick" && <Overview attention={attn.items} go={pick} />}
           {sec === "lasningar" && <Readings />}
           {sec === "rattelser" && <Corrections />}
@@ -281,6 +288,6 @@ export default function AdminPage() {
           {sec === "system" && <SystemHealth />}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
