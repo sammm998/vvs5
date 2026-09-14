@@ -454,3 +454,42 @@ datarutor är ett eget fynd och kanske det djupare.
 
 Ingen ändring gjord. Det här är det största enskilda felet som återstår, och det förtjänar en egen grind med
 en rotorsak som håller - inte den första som lät rimlig.
+
+## §15 Mekanismen bakom §14: lagerlös penna, etiketter i ruta, och ett block som inte är en etikett
+
+§14 räknade fram att 83,4 % av all tvetydighet är samma familj. Det här är varför den fyrar, avläst ur
+fästenas egen bevisning på `Badskon 1`.
+
+**Pennan har inget namn.** `candidate_families` på varje tvetydigt fäste är `|s|w0.48|c(0.0, 0.0, 0.0)` -
+lagernamnet är tomt. Bladet är en lagerlös export där varje rör ritas med samma namnlösa penna. Då finns det
+ingenting för `system_layer_rank` att matcha mot, så ingen rad kan skiljas från någon annan på lagret, och
+varje block med mer än en rad faller rakt ned i "flera koder delar ett stråk".
+
+**Fördelningen rader mot grupper** över de 72:
+
+| rader i blocket | grupper ritningen erbjuder | antal |
+|---:|---:|---:|
+| 2 | 1 | 40 |
+| 3 | 1 | 15 |
+| 10 | 1 | 10 |
+| 4 | 1 | 4 |
+| 3 | 2 | 3 |
+
+**Tio rader i ett block är inte en etikett med tio rader.** Det är tio fristående etiketter i en spalt som
+klistrats ihop. `codes_sharing_the_run` för de tio: AV21, KV0175-32, S017, VS0165-26, VS0165-32, VV0175-32,
+VVC0175-25 - sju olika system, var och en med sitt eget rör. `_units` delar visserligen ett block i enheter vid
+varje beteckningsrad, men enheten kunde inte pekas ut för den här ledaren, och då får hela blocket göra anspråk.
+
+**Ledaren startar i ett hörn, inte vid en understrykning.** Ledarfamiljen är
+`straight|diagonal|box_corner|plain-end|...`. `_rows_owning_leader` - funktionen som avgör vilken rad en ledare
+tillhör - avstår med flit när blocket har en ram eller när starten inte är en understrykningsände. För etiketter
+i ruta finns alltså ingen radtillskrivning alls.
+
+**Prövat och förkastat:** att ställa radfrågan även när enheten är okänd (flytta `_rows_owning_leader` ut ur
+`if unit is not None`). Den kan bara smalna av och är därför ofarlig - men den är också verkningslös här:
+84 tvetydiga före, 84 efter, 74,184 m i båda fall. Ändringen backad. En rättning som inte kan visas hjälpa
+ska inte gå genom en grind.
+
+**Vad som återstår att lösa:** tillskrivning för etiketter i ruta. Vilken rad i rutan en hörnledare tillhör går
+inte att läsa ur understrykningen, för den finns inte - men rutan har en geometri, raderna har lägen i den, och
+ledaren lämnar vid ett bestämt hörn. Det är där svaret finns, och det är en egen grind.
