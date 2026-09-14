@@ -55,7 +55,7 @@ function Bundle() {
       </g>
       <g className="lfa-zoom">
         <rect x="250" y="72" width="120" height="132" rx="8" />
-        <text x="256" y="234" className="lfa-cap">i schaktet ligger de några cm isär — bara etiketten skiljer dem åt</text>
+        <text x="60" y="246" className="lfa-cap">i schaktet ligger de några cm isär — bara etiketten skiljer dem åt</text>
       </g>
     </svg>
   );
