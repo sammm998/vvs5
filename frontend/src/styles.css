@@ -2122,6 +2122,29 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .agentchat .msg.user { background: var(--bg-2); border-color: var(--line-2); align-self: flex-end; max-width: 80%; }
 .agentchat .msg .lf-pre { max-height: none; color: var(--ink); }
 
+/* ---------- agenten som egen plats: samtal till vänster, filerna bredvid ---------- */
+.deskwrap { margin-top: 20px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, 290px); gap: 18px; align-items: start; }
+.deskwrap.over { outline: 2px dashed var(--ink); outline-offset: 8px; border-radius: 14px; }
+@media (max-width: 900px) { .deskwrap { grid-template-columns: 1fr; } }
+.deskchat { border: 1px solid var(--line); border-radius: 14px; background: var(--bg); padding: 14px 16px; min-height: 52vh; max-height: 62vh; overflow: auto; display: flex; flex-direction: column; gap: 10px; }
+.deskempty { margin: auto; text-align: center; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.deskstart { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.deskchat .bubble { padding: 10px 12px; border-radius: var(--r-m); border: 1px solid var(--line); background: #fff; max-width: 86%; }
+.deskchat .bubble.user { background: var(--bg-2); border-color: var(--line-2); align-self: flex-end; }
+.deskchat .bubble .txt { white-space: pre-wrap; }
+.deskchat .tools { margin-top: 6px; font-size: 12px; color: var(--muted); }
+.deskchat .tool { margin: 4px 0 0; white-space: pre-wrap; font-size: 11px; background: var(--bg-2); padding: 6px 8px; border-radius: 6px; max-height: 220px; overflow: auto; }
+.deskfiles { display: flex; flex-direction: column; gap: 8px; position: sticky; top: 16px; }
+.deskfile { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+.deskfile .nm { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deskfile .row { display: flex; gap: 10px; margin-top: 4px; }
+.deskfile .st.ok { color: #2e7d32; }
+.deskfile .st.run { color: #b26a00; }
+.deskfile .st.bad { color: #b3261e; }
+.deskask { margin-top: 14px; display: flex; gap: 8px; align-items: center; }
+.deskask input { flex: 1; }
+.deskask .attach { padding: 8px 12px; font-size: 16px; line-height: 1; }
+
 /* ---------- på en liten skärm ---------- */
 /* Skalet är byggt för ett skrivbord: en 296 px list plus sidan bredvid. På en telefon sköt det ut hela
    innehållet ur rutan. Under 900 px viks listan ihop till sin ikonrad, och allt som stod i två spalter står

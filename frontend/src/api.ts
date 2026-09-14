@@ -84,6 +84,13 @@ export const api = {
   agent: (jobId: string, body: any) =>
     req(`/api/jobs/${jobId}/agent`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   agentTools: () => req(`/api/agent/tools`),
+  // Agenten som egen plats: filerna ligger på användaren, inte på ett projekt, och frågan går till dess egna
+  // verktyg. Skild från `agent(jobId, …)`, som svarar om en bestämd läsning.
+  deskFiles: () => req(`/api/desk/files`),
+  deskUpload: (file: File) => { const fd = new FormData(); fd.append("file", file); return req(`/api/desk/files`, { method: "POST", body: fd }); },
+  deskTools: () => req(`/api/desk/tools`),
+  deskAsk: (body: any) =>
+    req(`/api/desk/ask`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   judge: (jobId: string) => req(`/api/jobs/${jobId}/judge`),
   agentTool: (jobId: string, name: string, args: any = {}) =>
     req(`/api/jobs/${jobId}/agent/tool`, { method: "POST", headers: { "Content-Type": "application/json" },

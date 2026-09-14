@@ -16,8 +16,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
-from . import (academy as academy_api, admin as admin_api, cad as cad_api, calc as calc_api, credits as credits_api, exports,
-               jobs, markups as markups_api, projects_api, public as public_api)
+from . import (academy as academy_api, admin as admin_api, cad as cad_api, calc as calc_api, credits as credits_api,
+               desk as desk_api, exports, jobs, markups as markups_api, projects_api, public as public_api)
 from vvs_engine.output.schema import upgrade
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
 from vvs_engine.learning import KEYS, lessons, settle, situation
@@ -54,6 +54,7 @@ app.include_router(markups_api.presets)
 app.include_router(calc_api.router)
 app.include_router(cad_api.router)
 app.include_router(credits_api.router)
+app.include_router(desk_api.router)
 
 
 # ---------------------------------------------------------------- health / auth
@@ -201,7 +202,15 @@ def _job_out(j: AnalysisJob):
 
 @app.get("/api/projects")
 def list_projects(user: User = Depends(current_user), db: Session = Depends(get_db)):
-    return [_proj_out(p) for p in db.query(Project).filter(Project.owner_id == user.id).order_by(Project.created_at.desc()).all()]
+    """Handlingarna - inte agentens skrivbord.
+
+    Det som släpps i agentens chatt blir en riktig ritning med ett riktigt jobb, så att svaret går att öppna i
+    Analys och räkna vidare på. Men det är inte en handling någon har lagt upp, och i listan över projekt vore
+    den bara i vägen: skrivbordet hör till samtalet, och syns där.
+    """
+    rows = (db.query(Project).filter(Project.owner_id == user.id, Project.analysis_mode != desk_api.DESK_MODE)
+            .order_by(Project.created_at.desc()).all())
+    return [_proj_out(p) for p in rows]
 
 
 @app.post("/api/projects")
