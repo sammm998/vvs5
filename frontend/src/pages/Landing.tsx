@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "../landing.css";
 import LandingScene from "../components/LandingScene";
 import SiteHeader from "../components/SiteHeader";
+import FeatureArt from "../components/FeatureArt";
+import { FEATURES } from "../features";
 import LayerStack from "../components/LayerStack";
 import EvidenceSection from "../components/EvidenceSection";
 import StyleFan from "../components/StyleFan";
@@ -177,7 +179,42 @@ function Screen({ turn, children, caption }: { turn: number; children: React.Rea
   );
 }
 
+/* Vad plattformen består av, och vägen in i var och en.
+ *
+ * Startsidan visade läsningen och lite av resten i förbigående. Men den som kommer hit vill veta vad som
+ * finns - CAD, 3D, mängdning för hand, agenten, kalkylen, akademin - och sedan kunna gå in i den han kom för.
+ * Varje kort är en egen sida med sin egen figur, sina siffror och sin guide. */
+function Funktioner() {
+  return (
+    <section className="lp-sec lp-wrap" id="funktioner">
+      <div className="lp-sec-head">
+        <div className="lp-kicker">Plattformen</div>
+        <h2>Sju rum, ett hus</h2>
+        <p>
+          Läsningen är kärnan, men en mängd blir sällan färdig i ett steg. Rita det som saknas, mät det som
+          måste mätas för hand, fråga agenten, räkna fram anbudet — och lär dig läsa bladet under tiden.
+        </p>
+      </div>
+      <div className="lp-feat">
+        {FEATURES.map((f, i) => (
+          <Link key={f.slug} to={`/funktioner/${f.slug}`} className={`lp-feat-card${i === 0 ? " lead" : ""}`}
+            style={{ ["--ac" as any]: f.accent }}>
+            <span className="lf-art"><FeatureArt id={f.art} accent={f.accent} /></span>
+            <span className="lf-body">
+              <span className="lp-mono">{f.kicker}</span>
+              <b>{f.nav}</b>
+              <i>{f.card}</i>
+              <span className="lf-go">Läs mer <span aria-hidden="true">→</span></span>
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 const ANCHORS = [
+  { href: "#funktioner", label: "Plattformen" },
   { href: "#hur", label: "Så fungerar det" },
   { href: "#lager", label: "Tre lager" },
   { href: "#stilar", label: "Stilar" },
@@ -248,6 +285,8 @@ export default function Landing() {
       </section>
 
       <Figures />
+
+      <Funktioner />
 
       <LandingScene />
 

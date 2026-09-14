@@ -16,6 +16,7 @@ import PricingPage from "./pages/Pricing";
 import AboutPage from "./pages/About";
 import HowItWorksPage from "./pages/HowItWorks";
 import EducationPage, { EducationCoursePage, EducationLessonPage } from "./pages/Education";
+import FeaturePage from "./pages/Feature";
 import ContactPage from "./pages/Contact";
 import AdminPage from "./pages/Admin";
 import ProjectAnalysisPage from "./pages/ProjectAnalysis";
@@ -146,6 +147,7 @@ const ROUTES = (
     <Route path="/priser" element={<PricingPage />} />
     <Route path="/om-oss" element={<AboutPage />} />
     <Route path="/hur-det-funkar" element={<HowItWorksPage />} />
+    <Route path="/funktioner/:slug" element={<FeaturePage />} />
     <Route path="/utbildning" element={<EducationPage />} />
     <Route path="/utbildning/:modul" element={<EducationCoursePage />} />
     <Route path="/utbildning/:modul/:lektion" element={<EducationLessonPage />} />
@@ -229,7 +231,7 @@ export default function App() {
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
   const PUBLIC = ["", "/", "/login", "/dokumentation", "/priser", "/om-oss", "/hur-det-funkar", "/utbildning", "/kontakt"];
   // Akademins kurser och föreläsningar ligger under /utbildning och bär sin egen ram, precis som katalogen.
-  if (PUBLIC.includes(path) || path.startsWith("/utbildning/")) return ROUTES;
+  if (PUBLIC.includes(path) || path.startsWith("/utbildning/") || path.startsWith("/funktioner/")) return ROUTES;
   const email = currentEmail();
   // On a reading, the drawing is the page. The sidebar carries one link and a sign-out; on a wide sheet those
   // 244 px are the difference between seeing the whole drawing and hunting across it, so this route opens with
