@@ -265,3 +265,32 @@ inte kunnig, en lista som känner etiketterna ute på planen stänger fortfarand
 beteckning utan ruta vägs som förut, och en lånad lista har ingen ruta att diskvalificera med.
 
 **gate67** = DN-gränsen på en hel kedja (#67), som nu är den enskilt största posten i felkatalogen.
+
+# gate67: flödesbudget graderad efter dimensionsstegen - REVERT
+
+**Idén.** FYND §13 mätte riktningen i felet: den minsta dimensionen i en stam propagerar för långt tre gånger så
+ofta som den största (37,9 % mot 12,4 %), och den största är den som saknar mest (−813 m). Alltså borde en liten
+dimension inte få rinna lika långt genom en knut som en grov. Budgeten graderades efter bladets egen
+dimensionsstege: grövsta storleken behöll hela `FLOW_LIMIT`, finaste fick en bråkdel.
+
+**Mätningen.**
+
+| | gate66 | gate67 |
+|---|---:|---:|
+| TÄCKNING | 79,82 % | **79,44 %** |
+| FALSKHET | 19,93 % | **19,47 %** |
+| beteckningsåterkallelse | 88,03 % | 87,87 % |
+| beteckningsprecision | 78,62 % | 78,48 % |
+| blad som rörde sig | | 20 |
+
+**Beslut: REVERT.** Bytet är 0,38 täckning mot 0,46 falskhet - och det räcker inte, för **både återkallelse och
+precision faller**. En ändring som ökar precisionen betalar för sig; den här tar bort meter i ungefär samma
+blandning som de redan låg i. Det syns tydligast på `W-50-1-A0211`: −18,8 % täckning utan att en enda falsk
+meter försvinner. Där skär regeln rakt igenom något riktigt.
+
+Vad mätningen faktiskt lär: riktningen i §13 är verklig, men **flödesbudgeten är fel ställe att lägga den på**.
+Budgeten väger en identitets hela sammanhängande stråk mot dess egna etiketter, och den vet ingenting om var
+gränsen mot grannen går. En regel som ska säga "den grövre äger stammen" måste stå i knuten, där de två
+dimensionerna faktiskt möts - vilket är vad gate68 provar.
+
+**gate68** = ett stråk som byter dimension: den grövre bär böjen (från produktionsbladet W-50-1-A0032).
