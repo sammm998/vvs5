@@ -334,3 +334,37 @@ som ingen vågade ta.
 **gate69** = väggen behandlas lika på alla ritningar: skrafferingen söks inom en penna i stället för som en
 egenskap hos hela pennan, och den del av ett rör som ligger i väggen mäts i stället för att avgöras av bitens
 mittpunkt.
+
+| | gate68 | gate69 |
+|---|---:|---:|
+| TÄCKNING | 80,06 % | 79,03 % |
+| FALSKHET | 19,91 % | **16,16 %** |
+| beteckningsåterkallelse | 87,87 % | 87,87 % |
+| beteckningsprecision | 78,48 % | 78,48 % |
+| FULL / PARTIAL / OVER / MISSED / WRONG | 154/187/211/142/94 | **171**/201/**178**/151/**87** |
+| blad som rörde sig | | 26 |
+
+**Beslut: ACCEPT.** Täckningen faller 1,03 punkter och falskheten 3,75 - för varje meter som referensen har
+och vi slutar räkna försvinner 3,6 meter som referensen inte har. Sjutton fler beteckningar landar på rätt
+mängd (FULL 154 → 171), trettiotre färre är övermätta (OVER 211 → 178), och beteckningsåterkallelse och
+-precision rör sig inte alls: det är samma rör som läses, det är väggen som slutar räknas.
+
+Metrarna är inte borta. De står i `in_hatched_area_m` med kryssrutan i mängdtabellen kvar - den som vill
+räkna rör i vägg får dem tillbaka med ett klick.
+
+Sexton blad tappade täckning och alla sexton tappade mer falskhet än täckning utom tre. Fyra blad tappade
+enbart falskhet:
+
+    V-50-1-A0121  ±0,0 %  falskhet −21,1 %      V-50-1-A0221  ±0,0 %  falskhet −10,8 %
+    V-50-1-A0323  ±0,0 %  falskhet  −5,5 %      V-50-1-A0212  ±0,0 %  falskhet  −2,9 %
+
+Det är det starkaste beviset för att skrafferingen som nu hittas är vägg och inte rör: hade den nya
+upptäckten svalt en bunt parallella rör hade täckningen fallit på just de bladen. De tre blad där täckningen
+föll mer än falskheten - `V-50-1-A0111` (−3,9 / −0,9), `V-50-1-A0412` (−5,5 / −3,0), `V-50-1-A0223`
+(−3,5 / −2,8) - är blad där mängdaren själv räknat rör genom vägg. Kryssrutan finns för dem.
+
+På de här V-bladen hittade gate68 ingen skraffering alls: `in_hatched_area_m` var 0,0 på var och en av dem.
+Det var precis felet - väggen syntes på W-kontorets blad men inte på V-kontorets, för att skrafferingen söktes
+som en egenskap hos hela pennan i stället för inom den.
+
+589 tester, kontaminationsskanning PASS, determinism PASS (V-50-1-A0121 läst två gånger, samma hash).
