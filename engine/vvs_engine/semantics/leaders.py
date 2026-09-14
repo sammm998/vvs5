@@ -28,12 +28,12 @@ def _R(rule_id, default):
 
 TOUCH_TOL = 0.15      # PDF export precision for shared endpoints
 MAX_SEGMENTS = 8
-START_PRIORITY = {"underline_end": 0, "box_corner": 0, "row_baseline": 1, "underline_touch": 1, "bbox_corner": 2, "bbox_edge": 3,
-                  "row_underline": 4}
+START_PRIORITY = {"underline_end": 0, "box_corner": 0, "row_baseline": 1, "row_baseline_bend": 1, "underline_touch": 1,
+                  "bbox_corner": 2, "bbox_edge": 3, "row_underline": 4}
 # A start that meets a line the draughtsman drew is of a different kind from one that only meets the box the
 # reading put round the text; among the second kind, nearness is what decides which label a line belongs to.
-DERIVED_START = {"underline_end": 0, "box_corner": 0, "row_baseline": 0, "underline_touch": 0, "bbox_corner": 1, "bbox_edge": 1,
-                 "row_underline": 2}
+DERIVED_START = {"underline_end": 0, "box_corner": 0, "row_baseline": 0, "row_baseline_bend": 0, "underline_touch": 0,
+                 "bbox_corner": 1, "bbox_edge": 1, "row_underline": 2}
 
 
 @dataclass
@@ -54,6 +54,10 @@ class Leader:
     family: str = ""
     truncated_reason: str | None = None   # branch | max_segments
     start_row: int | None = None          # block row the start belongs to, when the start names one
+    # Where along the row the line left, when it left from a piece of the row's own base line. A row may hold
+    # several designations side by side, each written over its own piece of that line; then this says which of
+    # them the leader speaks for. None when the start says nothing about a place along the row.
+    start_span: tuple[float, float] | None = None
 
     @property
     def length(self) -> float:
@@ -78,7 +82,8 @@ class Leader:
                 "source_paths": self.path_ids, "segment_ids": [f"{s.pid}#{s.seg_index}" for s in self.segs],
                 "points": [[round(x, 2), round(y, 2)] for x, y in self.points],
                 "start": [round(self.start[0], 2), round(self.start[1], 2)], "end": [round(self.end[0], 2), round(self.end[1], 2)],
-                "start_type": self.start_type, "start_row": self.start_row, "layer": self.layer, "width": self.width, "n_segments": len(self.segs),
+                "start_type": self.start_type, "start_row": self.start_row,
+                "start_span": [round(v, 2) for v in self.start_span] if self.start_span else None, "layer": self.layer, "width": self.width, "n_segments": len(self.segs),
                 "n_bends": self.n_bends, "length": round(self.length, 2),
                 "end_marks": [m.mid for m in self.end_marks], "crossing_marks": [m.mid for m in self.crossing_marks],
                 "truncated_reason": self.truncated_reason}
@@ -151,7 +156,7 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
                         # to draw a short stub under the text before the run to the pipe. Judging that on the
                         # first segment alone refused every leader drawn that way and left the label bare, so the
                         # test moves to the grown chain; here we only record which kind of start this is.
-                        starts.append((f, ep, ptype, None))
+                        starts.append((f, ep, ptype, None, None))
         # the label written on a line: the row's own base line runs on past the text and becomes the leader. Its
         # free end sits at the row's baseline, inside the block, so no boundary point finds it - and because the
         # line belongs to one row, so does the leader, which tells a stacked block's labels apart.
@@ -170,7 +175,7 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
                 # the other side, it is a leader of some other label passing by, and this block does not own it.
                 if not _is_free_end(f, ep, fmap, ep_idx):
                     continue
-                starts.append((f, ep, "bbox_edge", None))
+                starts.append((f, ep, "bbox_edge", None, None))
         # also: leader touching an underline segment in its interior (T-start)
         for ri, r in enumerate(b.rows):
             for u in r.underline:
@@ -181,10 +186,10 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
                     for ep in _endpoints(f):
                         dd, t = point_seg_distance(ep[0], ep[1], u.seg)
                         if dd <= TOUCH_TOL and 0.02 < t < 0.98:
-                            starts.append((f, ep, "underline_touch", ri))
+                            starts.append((f, ep, "underline_touch", ri, None))
         # dedupe starts by fid within the block (strongest evidence first, then deterministic)
         seen: set[int] = set()
-        for f, ep, ptype, ri in sorted(starts, key=lambda t: (START_PRIORITY[t[2]], t[0].pid, t[0].seg_index, t[1])):
+        for f, ep, ptype, ri, span in sorted(starts, key=lambda t: (START_PRIORITY[t[2]], t[0].pid, t[0].seg_index, t[1])):
             if f.fid in seen:
                 continue
             seen.add(f.fid)
@@ -194,7 +199,7 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
             # comes. Without the second, a label whose derived corner happens to fall within a few points of a
             # line took that line from the label whose box the line ends on, and the second label was then
             # reported as having no leader at all.
-            claims[f.fid].append((*claim_rank(b, ep, ptype, f), b.bid, b, f, ep, ptype, ri))
+            claims[f.fid].append((*claim_rank(b, ep, ptype, f), b.bid, b, f, ep, ptype, ri, span))
     chosen = []
     for fid in sorted(claims):
         lst = sorted(claims[fid], key=lambda t: (t[0], t[1], t[2], t[3], t[4], t[5]))
@@ -216,7 +221,7 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
                     report.setdefault(t[5], []).append("start_taken_by_a_label_with_a_better_claim")
         chosen.append(top[0])
     # 2. grow chains, strongest starts first
-    for _lv, _derived, _says, _d, prio, bid, b, f, ep, ptype, srow in sorted(chosen, key=lambda t: (t[0], t[1], t[2], t[3], t[4], t[5], t[7].pid, t[7].seg_index)):
+    for _lv, _derived, _says, _d, prio, bid, b, f, ep, ptype, srow, sspan in sorted(chosen, key=lambda t: (t[0], t[1], t[2], t[3], t[4], t[5], t[7].pid, t[7].seg_index)):
         if f.fid in used_fids:
             if report is not None:
                 report.setdefault(bid, []).append("start_already_used_by_another_label_leader")
@@ -244,7 +249,7 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
         lid = stable_id("ldr", page.info.index, b.bid, *(f"{s.pid}#{s.seg_index}" for s in chain))
         ld = Leader(lid=lid, page=page.info.index, block_id=b.bid, segs=chain, points=points, start=points[0], end=end,
                     start_type=ptype, layer=chain[0].layer, width=chain[0].width, color=chain[0].color,
-                    truncated_reason=reason, start_row=srow)
+                    truncated_reason=reason, start_row=srow, start_span=sspan)
         _attach_marks(ld, mark_idx, mark_keys, mmap)
         if not ld.end_marks:
             _attach_free_ticks(ld, ep_idx, fmap, H)
@@ -320,9 +325,55 @@ def _row_baseline_starts(b: AnnotationBlock, fmap, ep_idx: GridIndex, used_fids:
                     continue                        # and the line must reach away from it
                 if not _is_free_end(f, ep, fmap, ep_idx):
                     continue
-                out.append((f, ep, "row_underline" if f.fid in own_frame else "row_baseline", ri))
+                out.append((f, ep, "row_underline" if f.fid in own_frame else "row_baseline", ri, None))
                 break
+            else:
+                bend = _baseline_bend(b, r, f, d, n, H, fmap, ep_idx, used_fids)
+                if bend is not None:
+                    g, ep, span = bend
+                    out.append((g, ep, "row_baseline_bend", ri, span))
     return out
+
+
+def _baseline_bend(b: AnnotationBlock, r, f: FreeSeg, d, n, H: float, fmap, ep_idx: GridIndex, used_fids: set[int]):
+    """The base line that turns down into the leader, for a row that holds several labels side by side.
+
+    A row may carry four designations over one ruled line, and the drawing then draws that line in pieces - one
+    under each designation, each on the layer of the system it names - and lets the leftmost piece bend down to
+    the pipe. Neither end of that piece is a free end: one meets the next piece, the other turns into the leader.
+    So the rule that a base line must end free found nothing, the whole block was left without a single leader,
+    and four labels named no pipe at all.
+
+    What is looked for here is the bend itself: exactly one line continues at the end of the piece, it leaves the
+    row's direction, and it is not another piece of the same line and not the label's own frame. The leader is
+    that line; the start is the corner; and the piece's own extent along the row travels with it, because it says
+    which of the row's labels the leader speaks for.
+    """
+    for ep in _endpoints(f):
+        cont = []
+        for fid in ep_idx.query_point(ep[0], ep[1], TOUCH_TOL):
+            g = fmap[fid]
+            if g.fid == f.fid or g.fid in used_fids:
+                continue
+            if any(dist(q, ep) <= TOUCH_TOL for q in _endpoints(g)):
+                cont.append(g)
+        if len(cont) != 1:
+            continue                    # a junction of several lines says nothing about which one leaves
+        g = cont[0]
+        if g.seg.length < 0.8 * H:
+            continue
+        if any(u.fid == g.fid for row in b.rows for u in row.underline) or any(sg.fid == g.fid for sg in b.box_segs):
+            continue                    # the label's own rule or frame, not a line to the pipe
+        turn = abs(g.seg.angle - f.seg.angle) % 180
+        if min(turn, 180 - turn) < 20.0:
+            continue                    # the next piece of the same line, not a bend away from it
+        far = _other(g, ep)
+        if _inside_block(b, H, far):
+            continue                    # a stub that stays at the label
+        p0 = project((f.seg.x0, f.seg.y0), d)
+        p1 = project((f.seg.x1, f.seg.y1), d)
+        return g, ep, (min(p0, p1), max(p0, p1))
+    return None
 
 
 def _start_distance(b: AnnotationBlock, ep, ptype: str) -> float:

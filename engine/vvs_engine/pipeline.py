@@ -24,6 +24,7 @@ from .profile.layers import compute_layer_stats
 from .profile.hatch import HatchFamily, discover_hatch, inside_hatch
 from .semantics.annotation import (AnnotationBlock, Designation, build_blocks, extract_designations,
                                     free_segments, merge_lines, one_reading_per_place)
+from .text.model import project, row_axes
 from .semantics.attachment import (GeometryIndex, PipeCodeAnchor, family_of, layer_system_tokens, leader_contacts,
                                    resolve_block, system_layer_match)
 from .semantics.legend import DrawingLegend, adopt, assign_roles, read_legend, roles_of
@@ -1777,6 +1778,19 @@ def _riser_symbols(page: RawPage, ann_layers, glyph_pids, graphs, ownership, anc
 def _rows_owning_leader(block: AnnotationBlock, rows: list[Designation], ld: Leader) -> list[Designation]:
     """Within a label unit of several designation rows each carrying its own underline (no box frame), a leader
     starting at the end of one row's underline belongs to that row alone."""
+    if len(rows) > 1 and ld.start_span is not None:
+        # ...and where a row holds several designations side by side, the line under them is drawn in pieces,
+        # one under each. The leader left from one of those pieces, and it speaks for the label written over it.
+        d, _n = row_axes(block.angle)
+        lo, hi = ld.start_span
+        own = []
+        for des in rows:
+            xs = [project((des.bbox[0], des.bbox[1]), d), project((des.bbox[2], des.bbox[1]), d),
+                  project((des.bbox[0], des.bbox[3]), d), project((des.bbox[2], des.bbox[3]), d)]
+            if min(hi, max(xs)) - max(lo, min(xs)) > 0:
+                own.append(des)
+        if len(own) == 1:
+            return own
     if len(rows) <= 1 or block.box_segs or ld.start_type != "underline_end":
         return rows
     tol = 0.35 * max(block.height, 1.0)
