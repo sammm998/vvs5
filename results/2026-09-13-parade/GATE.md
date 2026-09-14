@@ -368,3 +368,30 @@ Det var precis felet - väggen syntes på W-kontorets blad men inte på V-kontor
 som en egenskap hos hela pennan i stället för inom den.
 
 589 tester, kontaminationsskanning PASS, determinism PASS (V-50-1-A0121 läst två gånger, samma hash).
+
+**gate70** = kommatecknet mellan två koder på samma rad hör till raden, inte till koden.
+
+| | gate69 | gate70 |
+|---|---:|---:|
+| TÄCKNING | 79,03 % | 79,00 % |
+| FALSKHET | 16,16 % | 16,18 % |
+| beteckningsåterkallelse | 87,87 % | **88,03 %** |
+| beteckningsprecision | 78,48 % | **78,62 %** |
+| FULL / PARTIAL / OVER / MISSED / WRONG | 171/201/178/151/87 | 170/202/179/**149**/87 |
+| blad som rörde sig | | 1 |
+
+**Beslut: ACCEPT.** Metrarna står still - täckningen faller 0,03 punkter och falskheten stiger 0,02, båda
+under vad ett blad rör sig av egen kraft. Det som rör sig är det talet rättningen handlar om:
+beteckningsåterkallelsen stiger 0,16 och precisionen 0,14, och två beteckningar går från MISSED till mätta.
+Det är vad som händer när `KV0175-32,` och `KV0175-32` slutar vara två olika koder.
+
+Det enda blad som rörde sig är `W-50-1-A0122` (täckning −0,8, falskhet +0,8) - ett av de sex blad där facit är
+en markeringsexport som inte täcker hela bladet (FYND §10). Det äger redan 524 m mot facits 321, så dess
+falskhet är den postens och inte regelns.
+
+Rättningen hittades inte här utan på `Badskon 1`, ett blad ur ett projekt som aldrig legat i korpusen: fjorton
+beteckningar med ett komma sist, ingen av dem med en meter, efteråt noll. Att grinden knappt rör sig är
+väntat - kommatecknet står på de blad korpusen inte har. Regeln är ändå rätt: ett kommatecken är inte en del av
+en kod på någon ritning.
+
+595 tester, kontaminationsskanning PASS, manifest 038bbb898c793be7.
