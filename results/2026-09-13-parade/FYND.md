@@ -194,3 +194,45 @@ Alltså: ingen ändring. Att slå på inräkning skulle rätta A0124 och först�
 i ritningen som skiljer "angränsande del" från "vägg och golv i den här delen" - orienteringsplanen i hörnet
 pekar ut bladets egen del, och det är nästa sak att pröva. Tills dess står valet hos den som räknar, och
 tabellen visar summan.
+
+**Mätt, inte antaget** (gate62, 59 blad): att räkna in varje skrafferad meter ger täckning 76,82 → 79,76 % och
+falskhet 19,68 → **26,83 %**. Tre meter vunna kostar sju falska. Och även på bladen där facit räknar dem är det
+inte rena vinster: A0124 ägt 80,7 → 151,5 m men falskt 21,2 → 99,7 - av de 149 metrarna hör 71 hemma i facit
+och 78 gör det inte. Det är inte en tröskel som sitter fel utan en identitetsfråga: metrarna inne i
+skrafferingen får fel namn. Regeln står alltså kvar som den är, och kryssrutan är kvar där valet hör hemma.
+
+
+## 9. Var de 200 metrarna på W-50-1-A0111 ligger
+
+Bladet är korpusens största enskilda tapp: facit 519,5 m, ägt 298,4 (gate62). Uppmätt på det ritade:
+
+| | meter |
+|---|---:|
+| bekräftat | 366 |
+| tvetydigt | 42 |
+| oägt, på pennor som togs som rör | 186 |
+| förkastade pennor (V-lager) | 82 |
+
+De 186 oägda metrarna ligger inte i utkanten utan på egna pennor: `V-52B---T--V2--` 74,6 m, `V-56B--FE--VS1-`
+33,8, `V-56B--KE--VS1--` 30,9, `V-56B---T--VP1--` 26,2. Lagernamnen namnger system (V2, VS1, VP1) - men ingen
+etikett når dem.
+
+Två hypoteser prövade och **förkastade**:
+
+- *Identiteten fortsätter i en annan penna* (uppgift #63). Om den oägda pennan mötte den ägda ände mot ände
+  skulle identiteten kunna löpa vidare. Mätt: bara **1,5 m** oägd längd ligger vid en sådan skarv där lagret
+  dessutom namnger samma system (`V-56B--KE--VS1--` möter `V-56B--FE--VS1-`, exakt lagerträff). Resten möts
+  aldrig.
+- *Den oägda pennan går parallellt med den ägda* (samma rör ritat två gånger). Mätt på `V-52B---T--V2--`: av
+  74,6 m löper **2,7 m** parallellt med en ägd linje inom 60 pt. Pennan ritar egen sträckning, inte en kopia.
+
+Det som återstår är alltså inte en sakfråga om geometri utan om vem som får namnge: 186 m rör som ritningen
+ritar på lager som namnger systemet, utan att någon etikett pekar på dem. En regel som gav dem systemets namn
+utan dimension skulle inte matcha facit ändå - facit skriver `KV2-X7-32`, inte `KV2-X7`.
+
+Och bredvid det: **67 av 324 etiketter** på bladet slutar utan att röra något rör. De ligger inte nästan rätt -
+medianavståndet från en fäst etikett till närmaste rör är 1,2 pt, från en fästlös 27,7 pt. Där de landar finns
+ritat rör på en *finare* penna (0,48 pt på samma V-lager) som förkastats med skälet NO_CONTINUOUS_RUN: 82 m på
+V-lager, varav 52 m har etikettändar på sig. Den pennan ritar i mycket korta bitar - 1 430 segment på 13,9 m -
+och kedjebygget får inte ihop dem till en sträcka. Det är den mätbara nästa tråden: varför faller den fina
+pennans streck isär, och är de rör?
