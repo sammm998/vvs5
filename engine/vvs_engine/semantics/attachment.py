@@ -548,16 +548,25 @@ def _collectors_at(pt: tuple[float, float], own: str, skip: set[str],
     Inte i indexet: skrivpennorna är just de familjer indexet lämnar utanför i den andra läsningen, och
     samlingslinjen är ritad med en skrivpenna.
     """
+    # Proven ställs billigast först. Rutan är fyra jämförelser och avvisar nästan varje väg på bladet; familjen
+    # bygger en sträng av lager, bredd och färg. Ställdes familjen först byggdes den strängen för varje väg på
+    # bladet en gång per ledarände - på ett blad med sjuttiofemtusen vägar tog läsningen aldrig slut. Svaret är
+    # detsamma, bara ordningen är annan.
+    #
+    # Ordningen på svaret hör till svaret och inte till sökningen: listan sorteras när den är klar, i stället
+    # för att bladets alla nycklar sorteras om vid varje anrop.
     x, y = pt
     out = []
-    for pid in sorted(all_paths):
-        p = all_paths[pid]
-        if pid in skip or family_of(p) != own:
+    for pid, p in all_paths.items():
+        if pid in skip:
             continue
         if not (p.bbox[0] - 1.0 <= x <= p.bbox[2] + 1.0 and p.bbox[1] - 1.0 <= y <= p.bbox[3] + 1.0):
             continue
+        if family_of(p) != own:
+            continue
         if _collector_shaped(p, pt):
             out.append(p)
+    out.sort(key=lambda q: q.pid)
     return out
 
 

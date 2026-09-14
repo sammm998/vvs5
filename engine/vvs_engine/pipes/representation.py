@@ -9,6 +9,7 @@ from __future__ import annotations
 import math
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import Any
 
 import numpy as np
@@ -182,6 +183,16 @@ def stroke_family(layer: str, width: float, color) -> str:
     a run of several thousand points of dashes. Splitting on linetype would cut those runs in half at exactly
     the places where a pipe is most obviously continuous.
     """
+    return _family_string(layer, width, color)
+
+
+@lru_cache(maxsize=65536)
+def _family_string(layer: str, width: float, color: Any) -> str:
+    """Samma penna ger samma familj, så strängen byggs en gång per penna och inte en gång per fråga.
+
+    Familjen är en ren funktion av lager, bredd och färg - den kan inte ändra sig under en läsning. Den frågas
+    däremot om och om igen: en ledarände frågar efter varje väg på bladet, och ett blad kan ha sjuttiofemtusen
+    vägar. Ett blad ritas med några hundra pennor, så minnet är litet och träffarna nästan alla."""
     return f"{layer}|s|w{width:.2f}|c{color if color else '-'}"
 
 
