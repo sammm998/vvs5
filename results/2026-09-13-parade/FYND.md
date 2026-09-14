@@ -369,3 +369,45 @@ uppgifter, inte en:
 Dessutom: en ritning (`V-500-1-010-100.pdf`) låste svepet i sju minuter utan att skriva en rad, och en
 (`V-53-1-00 RIVNING.pdf`) gick inte att läsa alls. Den första bär nu en egen process med tidsgräns och blir en
 `TIMEOUT`-rad i stället för en körning som står still.
+
+
+## §13 Den minsta dimensionen äter den största: 628 meter för mycket, 813 meter som saknas
+
+`OVER_EXTENT_OVER_PROPAGATED` är den största posten i felkatalogen - 213 beteckningar, **1 858 m för mycket**
+fördelat över gate66. Uppgift #67 beskrev den som "när böjen kopplas ihop tar en etikett hela stråket". Det
+stämmer på enskilda blad, men det är inte formen på felet. Formen går att mäta.
+
+**Mätningen.** För varje blad, gruppera referensens beteckningar på stam - allt utom sista talet, alltså system
+och material (`VS1-S13-12`, `VS1-S13-15`, `VS1-S13-22` → stammen `VS1-S13`). Behåll de stammar där bladet
+skriver mer än en dimension, och fråga var i storleksordningen felen ligger. 519 beteckningar över 59 blad:
+
+| plats i stammen | n | OVER | överskott | saknat (PARTIAL) |
+|---|---:|---:|---:|---:|
+| **minsta dimensionen** | 177 | 67 (37,9 %) | **+627,6 m** | −235,4 m |
+| mellanliggande | 165 | 59 (35,8 %) | +328,5 m | −459,2 m |
+| **största dimensionen** | 177 | 22 (12,4 %) | +177,6 m | **−813,0 m** |
+
+Det är inte slumpmässig spridning. Den minsta dimensionen i ett system propagerar för långt tre gånger så ofta
+som den största, och den största saknar tre och en halv gång så mycket som den minsta. **Den lilla äter den
+stora.** Det stämmer med hur rör dras: stammen går från stigaren och avgreningarna blir mindre, avgreningarnas
+etiketter är fler och sitter närmare den ritade geometrin, och deras identitet rinner uppströms in i stammen.
+
+**Två hypoteser som mätningen förkastade.**
+
+*"En ensam etikett växer för långt."* Tvärtom: beteckningar med en enda etikett är OVER i 16,0 % av fallen och
+bär 77,6 m överskott; de med tre eller fler är OVER i 26,2 % och bär 383,3 m. Ett enskilt blad kan se ut så -
+`W-50-1-A0132` har en `VS1-S13-15` som växer 33,1 m ur en enda etikett längst ned till vänster, tvärs över hela
+bladet - men korpusen säger nej.
+
+*"Etiketten fastnade på fel linje i paret."* Också nej, åtminstone inte på A0132. Bladets enda
+`VS1-S13-22/W`-etikett sitter på (1504, 398) och dess hänvisningslinje slutar med ett ändmärke på
+**(1394,04, 300,16)**, mitt på den lodräta linjen - `VERIFIED_PIPE_ATTACHMENT`, avstånd 0,84 pt. Fästet är rätt.
+Kedjan klipps vid etikettens eget märke (`REAL_DN_BOUNDARY`, `from_dn: 22, to_dn: 12`), och nedanför märket ägs
+samma linje av `VS1-S13-12` med **fyra egna etiketter** längs sig. Läsningen gör alltså det den ska på den
+linjen; de 61,9 m facit ger DN 22 ligger inte där.
+
+**Vad som därmed står kvar som nästa grind.** Vid en knut där en märkt kedja möter en gren med en annan märkt
+dimension ska den *mindre* dimensionen inte fortsätta in i den grövre stammen. Ett rör blir inte grövre
+nedströms en avgrening, och när två märkta storlekar möts vid en knut är det den grövre som äger stammen.
+Regeln kommer ur hur rör dras och ur bladets egna två etiketter - ingen ritningsspecifik konstant - och den har
+en mätbar riktning att gå åt: 813 m saknade meter på de grövsta dimensionerna.
