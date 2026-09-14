@@ -59,7 +59,9 @@ export default function SiteHeader({ anchors, cta }:
 
         <Link className="lp-logo lp-pill" to="/" aria-label="Till startsidan">
           <Mark color="#6ee7a5" />
-          VVS Mängdning
+          {/* Ordmärket i ett eget element, så den smalaste skärmen kan behålla märket och släppa orden utan att
+              släppa ikonen med dem. Namnet finns kvar för uppläsning via aria-label på länken. */}
+          <span className="lp-logo-t">VVS Mängdning</span>
         </Link>
 
         <span className="lp-sp" />

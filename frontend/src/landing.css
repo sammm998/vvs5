@@ -1970,3 +1970,16 @@ body.lp-dark { background: #100e0c; }
  * länk, och länkar ärver ingen versalisering. Stod de bredvid varandra blev den ena skrikig och den andra
  * stillsam, fast de gör samma sak. Här bestämmer klassen, inte elementet. */
 .lp button.lp-btn { text-transform: none; letter-spacing: 0; font-family: inherit; font-size: inherit; }
+
+/* Tre piller ryms inte på en telefon.
+ *
+ * Meny, ordmärke och "Starta projekt" står på samma rad. På 390 px gick den sista utanför kanten och pilen
+ * klipptes av - huvudknappen på sidan, avhuggen. Det som får vika är orden som redan står någon annanstans:
+ * "Meny" bredvid sin egen ikon, och ordmärket bredvid sitt eget märke. Knappen som leder in behåller sina ord,
+ * för den är det enda på raden man faktiskt ska trycka på. */
+@media (max-width: 560px) {
+  .lp-corners { inset: 12px 12px auto 12px; gap: 8px; }
+  .lp-corners .sh-burger .sh-burger-t { display: none; }
+  .lp-corners .lp-logo-t { display: none; }
+  .lp-corners .lp-pill { padding-left: 14px; padding-right: 14px; }
+}
