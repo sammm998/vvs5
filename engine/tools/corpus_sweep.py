@@ -92,8 +92,32 @@ def read_one(rec: dict, outdir: str) -> dict:
             rows = (json.load(fh) or {}).get("rows") or []
     except (OSError, ValueError):
         pass
+    # Vad bladet självt sa om sin skraffering och sina pennor. Det är den raden som säger om väggarna
+    # hittades alls på just den här ritningen - och utan den går det inte att skilja "inga väggar ritade"
+    # från "väggarna hittades inte".
+    prof: dict = {}
+    try:
+        with open(os.path.join(outdir, "drawing-profile.json"), encoding="utf-8") as fh:
+            pf = json.load(fh) or {}
+        ann = pf.get("annotation_structure") or {}
+        prof = {"hatch_families": len(ann.get("hatched_areas") or []),
+                "hatch": [{"angle": h.get("angle_deg"), "spacing": h.get("spacing_pt"), "lines": h.get("n_lines")}
+                          for h in (ann.get("hatched_areas") or [])][:4],
+                "pipe_families": len((pf.get("pipe_structure") or {}).get("representation_families") or [])}
+    except (OSError, ValueError):
+        pass
+    # Hur många beteckningar som aldrig fick fäste - det svarar på "hittas alla rör beteckningarna kopplas mot"
+    unplaced = []
+    try:
+        with open(os.path.join(outdir, "pipe-code-anchors.json"), encoding="utf-8") as fh:
+            anchors = (json.load(fh) or {}).get("anchors") or []
+        unplaced = sorted({a.get("designation") or "?" for a in anchors
+                           if a.get("state") == "NO_PIPE_ATTACHMENT"})[:12]
+    except (OSError, ValueError):
+        pass
     return {"state": "OK", "seconds": round(time.perf_counter() - t0, 1),
             "pages": s.get("pages"), "scale": s.get("scale"), "coverage": cov,
+            "profile": prof, "unplaced_designations": unplaced,
             "designations": summ.get("designations"), "anchors": summ.get("anchors"),
             "rows": len(rows),
             "confirmed_horizontal_m": round(sum(r.get("confirmed_horizontal_m") or 0 for r in rows), 2),

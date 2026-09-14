@@ -239,6 +239,10 @@ def _t(timings: dict, key: str, t0: float) -> float:
 # and the next one is at 13, so nothing is reached for.
 CLOSE_ON_OWNED_TOL = 8.0
 
+# Hur många punkter en ritad bit högst provas i mot skrafferingen. Steget är en halv skrafferingsdelning, så
+# taket slår bara in på mycket långa bitar - och där räcker det gott för att veta hur stor del som ligger inne.
+HATCH_SAMPLES_MAX = 200
+
 
 def _close_labels_on_owned_runs(anchors, ownership, graphs) -> None:
     """A label the drawing repeats over a run it already named is not an unresolved case.
@@ -1568,9 +1572,22 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     hatch = discover_hatch(page, set(pipe_families))
     hatched_pt: dict[str, float] = {}
     if hatch:
+        # Hur mycket av varje bit som ligger inne i skrafferingen, inte om dess mittpunkt råkar göra det.
+        # Mittpunkten var hela provet förut, och en bit är antingen hel eller ingen: ett rör som ritats som en
+        # enda lång linje tvärs genom en vägg fick noll skrafferade meter, för mitten låg utanför väggen. Det
+        # är just det fallet man ser på en ritning där väggen är smal och ledningen lång.
+        step = max(2.0, min(h.spacing for h in hatch) / 2.0)
         for pp in ownership.pipes:
             g = graphs[pp.family]
-            hatched_pt[pp.physical_pipe_id] = sum(g.prims[pid].seg.length for pid in pp.prim_ids if inside_hatch(hatch, *g.prims[pid].seg.mid) is not None)
+            tot = 0.0
+            for pid in pp.prim_ids:
+                sg = g.prims[pid].seg
+                n = max(2, min(HATCH_SAMPLES_MAX, int(sg.length / step) + 1))
+                inside = sum(1 for i in range(n)
+                             if inside_hatch(hatch, sg.x0 + (sg.x1 - sg.x0) * (i + 0.5) / n,
+                                             sg.y0 + (sg.y1 - sg.y0) * (i + 0.5) / n) is not None)
+                tot += sg.length * inside / n
+            hatched_pt[pp.physical_pipe_id] = tot
     measures = measure_pipes(ownership, scale, elevations, hatched_pt)
     risers = _riser_symbols(page, ann_layers, glyph_pids, graphs, ownership, anchors, identities)
     label_risers = _risers_from_dn_rows(designations, anchors, leaders, identities)
