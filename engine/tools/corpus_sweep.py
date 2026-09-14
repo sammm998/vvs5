@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -150,6 +151,10 @@ def main() -> None:
         done[rec["sha256"]] = {**{k: v for k, v in rec.items() if k != "path"}, **got, "engine": ENGINE}
         with open(out, "w", encoding="utf-8") as fh:
             json.dump(done, fh, ensure_ascii=False, indent=1)
+        # Artefakterna för bladet är lästa och sammanfattade nu; de är tunga och behövs inte igen. Ett svep
+        # över hela korpusen lämnade annars ett par gigabyte efter sig, och ett svep som fyller disken tar
+        # med sig det den redan mätt.
+        shutil.rmtree(outdir, ignore_errors=True)
         m = got.get("confirmed_horizontal_m")
         print(f"{i:4d}/{len(todo)} {rec['name'][:42]:42s} {got['state']:6s} {got['seconds']:6.1f}s "
               + (f"{m:8.1f} m  {got.get('rows', 0):3d} rader" if got["state"] == "OK" else (got.get("error") or "")[:60]),
