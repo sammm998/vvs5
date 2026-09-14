@@ -1182,13 +1182,41 @@ def export(job_id: str, fmt: str, floor_height: float | None = None, include_hat
 
 # ---------------------------------------------------------------- built frontend (single-container deployment)
 _STATIC = settings.static_root
+
+
+def _looks_like_a_file(path: str) -> bool:
+    """En adress till en fil, inte till en sida. Sista ledet har en ändelse; en vy har ingen."""
+    last = path.rsplit("/", 1)[-1]
+    return "." in last and not last.startswith(".")
+
+
 if os.path.isfile(os.path.join(_STATIC, "index.html")):
     @app.get("/{full_path:path}", include_in_schema=False)
     def spa(full_path: str):
+        """Sidan för vyer, filen för filer, och 404 för en fil som inte finns.
+
+        Det sista är hela poängen. Ett bygge lägger sitt namn i filnamnet - index-CDF-0Pis.css - och sidan
+        hämtar just det namnet. Frågar webbläsaren efter ett namn den här versionen inte har, och vi då svarar
+        med index.html i stället för 404, får den tillbaka HTML där den bad om ett formatmall. Den vägrar då
+        att använda den, tyst, och sidan visas helt utan form medan skripten fungerar - för dem låg kvar i
+        cachen. Det ser ut som att formgivningen försvunnit, men det är adressen som pekar på ett bygge som
+        inte längre finns.
+
+        Därför: en adress som ser ut som en fil får aldrig sidan som svar, och sidan själv får aldrig sparas
+        i cachen. Namnsatta filer får sparas för alltid - de kan ändå aldrig ändra innehåll utan att byta
+        namn - och det är det som gör att ett nytt bygge slår igenom direkt i stället för i morgon.
+        """
         if full_path.startswith("api/"):
             raise HTTPException(404, "Okänd API-väg")
         candidate = os.path.normpath(os.path.join(_STATIC, full_path))
         # samma sak som i lagret: under katalogen med avskiljaren emellan, inte bara ett prefix
         if full_path and candidate.startswith(_STATIC + os.sep) and os.path.isfile(candidate):
-            return FileResponse(candidate)
-        return FileResponse(os.path.join(_STATIC, "index.html"))
+            r = FileResponse(candidate)
+            r.headers["Cache-Control"] = ("public, max-age=31536000, immutable"
+                                          if full_path.startswith("assets/") else "public, max-age=3600")
+            return r
+        if _looks_like_a_file(full_path):
+            raise HTTPException(404, "Filen finns inte i det här bygget")
+        r = FileResponse(os.path.join(_STATIC, "index.html"))
+        r.headers["Cache-Control"] = "no-cache, must-revalidate"
+        return r
