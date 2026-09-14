@@ -30,6 +30,7 @@ from vvs_engine.learning import lessons as build_lessons
 from .auth import current_admin, current_staff
 from .db import (Account, AnalysisJob, Content, Correction, CourseProgress, CrmNote, Drawing, Event,
                  Experiment, Partner, Payout, Project, RuleSetting, User, get_db, ServiceSetting)
+from .jobs import sheet_coverage
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 _STARTED = dt.datetime.now(dt.timezone.utc)
@@ -62,7 +63,7 @@ def overview(days: int = 30, admin: User = Depends(current_admin), db: Session =
     cov, false_share, secs = [], [], []
     for j in done:
         s = j.summary or {}
-        c = (s.get("coverage") or {}).get("named_vs_measured") or {}
+        c = sheet_coverage(s)
         if isinstance(c.get("share"), (int, float)):
             cov.append(c["share"])
         drawn, unowned = c.get("drawn_m") or 0.0, c.get("unowned_m") or 0.0
@@ -111,7 +112,7 @@ def timeline(days: int = 60, admin: User = Depends(current_admin), db: Session =
         d["readings"] += 1
         if j.status == "COMPLETED":
             d["done"] += 1
-            share = ((j.summary or {}).get("coverage") or {}).get("named_vs_measured", {}).get("share")
+            share = sheet_coverage(j.summary).get("share")
             if isinstance(share, (int, float)):
                 d["cov"].append(share)
         elif j.status == "FAILED":
@@ -146,7 +147,7 @@ def readings(limit: int = 100, offset: int = 0, status: str = "", q: str = "",
     out = []
     for j, d, p, u in rows:
         s = j.summary or {}
-        c = (s.get("coverage") or {}).get("named_vs_measured") or {}
+        c = sheet_coverage(s)
         out.append({
             "job_id": j.id, "status": j.status, "stage": j.stage, "created_at": _iso(j.created_at),
             "seconds": round((j.finished_at - j.started_at).total_seconds(), 1) if j.started_at and j.finished_at else None,

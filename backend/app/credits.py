@@ -230,8 +230,9 @@ def settle_after_reading(db: Session, job: AnalysisJob) -> None:
         refund_reading(db, job, "Läsningen gick inte att genomföra")
         return
     # det som står på jobbet är summarize(): skalans tillstånd och läsningens täckning för första bladet
+    from .jobs import sheet_coverage
     s = job.summary or {}
-    cov = s.get("coverage") or {}
+    cov = sheet_coverage(s)
     with_m = int(cov.get("pipe_names_with_metres") or 0)
     scale_state = s.get("scale") if isinstance(s.get("scale"), str) else cov.get("scale_state")
     unsettled = cov.get("scale_settled") is False or scale_state in (None, "NONE", "CONFLICT")

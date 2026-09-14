@@ -268,9 +268,14 @@ def run_job(job_id: str) -> None:
             # blir bättre. Den läste `summary["coverage"]["named_vs_measured"]`, som bara byggdes i
             # resultatsvaret - på jobbet fanns den aldrig, så kolumnen och kurvan stod tomma hur många blad som
             # än lästes. Talet hör hemma där frågan ställs.
+            #
+            # Raden skrivs platt, som läsningen själv skriver den. Att i stället lägga den under ett eget namn
+            # kostade pengar: återbetalningsregeln läser samma rad, hittade inga rörnamn med meter där den
+            # letade, och betalade tillbaka varenda läsning. En rad, en form, och `sheet_coverage` läser den.
             _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
                summary={"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr,
-                        "coverage": {"named_vs_measured": _first_sheet_coverage(out_dir)}, **carried})
+                        "coverage": _first_sheet_coverage(out_dir) or (summary["summary"].get("coverage") or {}),
+                        **carried})
     except UnsupportedInputError as e:
         # not a defect: the PDF carries no vector drawing, so there is nothing to read
         _set(job_id, status="FAILED", stage="FAILED", finished_at=dt.datetime.now(dt.timezone.utc),
@@ -300,6 +305,17 @@ def _first_sheet_coverage(out_dir: str) -> dict:
     keep = ("pipe_names", "pipe_names_with_metres", "share", "drawn_m", "confirmed_m", "ambiguous_m", "unowned_m",
             "scale_state", "scale_settled", "markup_set_aside")
     return {k: s[k] for k in keep if k in s}
+
+
+def sheet_coverage(summary: dict | None) -> dict:
+    """Täckningsraden för första bladet ur ett jobbs sammanfattning, vilken form den än skrevs i.
+
+    Raden skrivs platt under `coverage`. Under en period skrevs den i stället under `coverage.named_vs_measured`,
+    och de jobben ligger kvar i reskontran och i portalens historik. Båda läses här, så att en kurva inte får ett
+    hål och en läsning inte avräknas fel för att den gjordes en viss vecka."""
+    cov = (summary or {}).get("coverage") or {}
+    inner = cov.get("named_vs_measured")
+    return inner if isinstance(inner, dict) else cov
 
 
 def _settle_credits(job_id: str) -> None:
