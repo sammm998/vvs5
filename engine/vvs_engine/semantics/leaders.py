@@ -28,12 +28,12 @@ def _R(rule_id, default):
 
 TOUCH_TOL = 0.15      # PDF export precision for shared endpoints
 MAX_SEGMENTS = 8
-START_PRIORITY = {"underline_end": 0, "box_corner": 0, "row_baseline": 1, "row_baseline_bend": 1, "underline_touch": 1,
-                  "bbox_corner": 2, "bbox_edge": 3, "row_underline": 4}
+START_PRIORITY = {"underline_end": 0, "box_corner": 0, "row_baseline": 1, "underline_touch": 1,
+                  "bbox_corner": 2, "bbox_edge": 3, "row_underline": 4, "row_baseline_bend": 5}
 # A start that meets a line the draughtsman drew is of a different kind from one that only meets the box the
 # reading put round the text; among the second kind, nearness is what decides which label a line belongs to.
-DERIVED_START = {"underline_end": 0, "box_corner": 0, "row_baseline": 0, "row_baseline_bend": 0, "underline_touch": 0,
-                 "bbox_corner": 1, "bbox_edge": 1, "row_underline": 2}
+DERIVED_START = {"underline_end": 0, "box_corner": 0, "row_baseline": 0, "underline_touch": 0,
+                 "bbox_corner": 1, "bbox_edge": 1, "row_underline": 2, "row_baseline_bend": 2}
 
 
 @dataclass
@@ -226,8 +226,12 @@ def discover_leaders(page: RawPage, blocks: list[AnnotationBlock], free: list[Fr
             if report is not None:
                 report.setdefault(bid, []).append("start_already_used_by_another_label_leader")
             continue
-        if ptype == "row_underline" and any(ld.block_id == bid for ld in leaders):
-            continue        # the label already has a line of its own; its underline stays a frame
+        if ptype in ("row_underline", "row_baseline_bend") and any(ld.block_id == bid for ld in leaders):
+            # the label already has a line of its own; its underline stays a frame, and a bend off its base line
+            # is a last resort - it rescues a label that would otherwise name nothing, and never outbids a line
+            # that already reached the pipe. Taken any earlier it added a second leader to labels that had one,
+            # and those labels then claimed metres a reader would not have given them.
+            continue
         H = max(b.height, 1.0)
         chain, points, reason = _grow_chain(f, ep, fmap, ep_idx, used_fids)
         if not chain:
