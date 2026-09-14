@@ -43,6 +43,35 @@ def _clip(obj: Any) -> str:
     return s if len(s) <= MAX_RESULT_CHARS else s[:MAX_RESULT_CHARS] + " …(avkortat)"
 
 
+ROLES = ("user", "assistant", "system", "developer")
+
+
+def _history(items: list[dict] | None) -> list[dict]:
+    """Vad som sagts tidigare, i den form modellen tar emot.
+
+    Historiken kommer utifrån - en webbsida skickar den - och får aldrig gå vidare som den är. En rad utan roll
+    blev en roll modellen inte känner igen, och hela turen föll med ett 502 innan frågan ens ställdes. Här läses
+    bara det som går att läsa: en roll av de fyra som finns (agentens egen heter assistant), en text som är text,
+    och rader som inte säger något hoppas över i stället för att fälla svaret.
+    """
+    out: list[dict] = []
+    for it in (items or []):
+        if not isinstance(it, dict):
+            continue
+        role = str(it.get("role") or it.get("roll") or "").strip().lower()
+        role = {"agent": "assistant", "svar": "assistant", "fraga": "user", "fråga": "user"}.get(role, role)
+        if role not in ROLES:
+            role = "user"
+        text = it.get("content")
+        if not isinstance(text, str):
+            text = it.get("text")
+        text = (text or "").strip() if isinstance(text, str) else ""
+        if not text:
+            continue
+        out.append({"role": role, "content": text})
+    return out[-20:]
+
+
 def run_turn(model, ask, question: str, selection: dict | None = None,
              history: list[dict] | None = None, tools=None) -> dict:
     """One question, answered through the tools. Returns the words, the calls made and what to light up.
@@ -68,7 +97,7 @@ def run_turn(model, ask, question: str, selection: dict | None = None,
         if bits:
             lines.append("\n[Användarens markering] " + "; ".join(bits))
 
-    items: list[dict] = list(history or [])
+    items: list[dict] = _history(history)
     items.append({"role": "user", "content": "\n".join(lines)})
 
     used: list[dict] = []

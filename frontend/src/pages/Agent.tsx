@@ -104,7 +104,9 @@ export default function AgentPage() {
     const fraga = q.trim();
     if (!fraga || busy) return;
     setText(""); setErr("");
-    const historik = msgs.slice(-8).map((m) => ({ roll: m.role === "user" ? "user" : "assistant", text: m.text }));
+    // vad som sagts tidigare, i modellens egna ord: roll och text. Sidan skickar det den vet; servern läser
+    // bara det som går att läsa, så en tom rad fäller aldrig svaret.
+    const historik = msgs.slice(-8).map((m) => ({ role: m.role === "user" ? "user" : "assistant", content: m.text }));
     const bifogade = files;
     setMsgs((m) => [...m, { role: "user", text: fraga, filer: bifogade }]);
     setBusy(true);
