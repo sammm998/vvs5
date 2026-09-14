@@ -68,17 +68,30 @@ def _structural_char(g: GlyphCandidate, rc: RowCluster) -> str | None:
             sags = [(-(x - p0[0]) * uy + (y - p0[1]) * ux) for x, y in pts]
             smax, smin = max(sags), min(sags)
             sag = smax if abs(smax) > abs(smin) else smin
-            if abs(sag) >= 0.12 * chord and (abs(smax) < 0.03 * chord or abs(smin) < 0.03 * chord):
-                # bulge direction relative to reading axis: bulge toward -d (left) => '(' ; toward +d => ')'
+            one_sided = abs(smax) < 0.03 * chord or abs(smin) < 0.03 * chord
+            # A shallow arc is still an arc when the stroke is nothing but bow. The parentheses of the condensed
+            # CAD typefaces stand off their chord by less than a tenth of it, under the depth a bracket usually
+            # has, and read as I - so `160(L)` became `160ILI` and a declaration of hidden connection pipes,
+            # `KV/VV(1-2)`, was never found. What tells a shallow paren from a stroke that merely leans: it is
+            # thin (its whole width along the row is the bow itself) and its crown sits in the middle of the
+            # chord, where a kink or a hook would put it at an end.
+            ts = [((x - p0[0]) * ux + (y - p0[1]) * uy) / chord for x, y in pts]
+            crown = ts[max(range(len(pts)), key=lambda i: abs(sags[i]))]
+            all_bow = width_along <= PAREN_THIN * H and 0.3 <= crown <= 0.7
+            if one_sided and (abs(sag) >= 0.12 * chord or (all_bow and abs(sag) >= PAREN_SHALLOW * chord)):
+                # bulge direction relative to reading axis: bulge toward -d (left) => '(' ; toward +d => ')'.
+                # The bulge is a vector on the page - the chord's normal times the signed sagitta - and it does
+                # not depend on which end the stroke was drawn from: turn the chord around and both the normal
+                # and the sagitta change sign. (A flip by the chord's direction once stood here, and it turned
+                # every ')' drawn bottom-to-top into a '(' - an unpaired one, which was then re-read as an I.)
                 bulge_dir = (-uy * sag, ux * sag)     # normal * sag
                 side = bulge_dir[0] * d[0] + bulge_dir[1] * d[1]
-                # for chord oriented along -n (top-to-bottom in row frame) sign flips; normalise by chord direction
-                orient = (ux * n[0] + uy * n[1])
-                if orient < 0:
-                    side = -side
                 return "(" if side < 0 else ")"
     return None
 
+
+PAREN_SHALLOW = 0.06     # of the chord: the least bow a thin, crowned single stroke needs to be a parenthesis
+PAREN_THIN = 0.2         # of the row height: the width along the row of a stroke that is nothing but bow
 
 BRACKETS = "()[]{}"
 _PARTNER = {"(": ")", ")": "(", "[": "]", "]": "[", "{": "}", "}": "{"}

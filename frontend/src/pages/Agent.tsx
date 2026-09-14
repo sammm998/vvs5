@@ -2,18 +2,26 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 
-/* Agenten som egen plats.
+/* Agenten som egen plats, i hela fönstret.
  *
  * Inte analysens agent bakom en projektväljare: den här börjar tomt. Du drar in en handling i samtalet och
  * frågar. Filen blir en riktig ritning på ditt eget skrivbord - samma motor, samma credits, samma artefakter -
  * så svaret går att öppna i Analys och räkna vidare på, utan att du har lagt upp ett projekt.
  *
+ * Formen är den ett samtal har: en spalt i mitten, frågan längst ned, filerna som brickor i rutan där du
+ * skriver. Ingen sidopanel att sneglar åt, ingen rubrik som tar halva skärmen - det som står kvar på skärmen
+ * är det som sagts.
+ *
  * Samma löfte som överallt: modellen väljer vilken fråga som ställs till ritningen, verktygen svarar ur det som
  * lästs, och en siffra utan belägg blir "det står inte i handlingen".
  */
 
-type Fil = { id: string; filnamn: string; sidor: number; storlek: number; jobb?: { id: string; status: string; steg: string; andel: number } | null };
-type Msg = { role: "user" | "agent"; text: string; tools?: any[]; jobs?: string[] };
+type Fil = {
+  id: string; filnamn: string; sidor: number; storlek: number;
+  jobb?: { id: string; status: string; steg: string; andel: number } | null;
+};
+type Verktyg = { namn: string; argument: any; resultat: any };
+type Msg = { role: "user" | "agent"; text: string; tools?: Verktyg[]; jobs?: string[]; filer?: Fil[] };
 
 const START = [
   "Vad är det här för blad?",
@@ -30,8 +38,16 @@ function lage(f: Fil) {
   const j = f.jobb;
   if (!j) return { txt: "inte läst", cls: "" };
   if (j.status === "COMPLETED") return { txt: "läst", cls: "ok" };
-  if (j.status === "FAILED") return { txt: "läsningen gick inte", cls: "bad" };
-  return { txt: `läser · ${Math.round((j.andel || 0) * 100)} %`, cls: "run" };
+  if (j.status === "FAILED") return { txt: "gick inte att läsa", cls: "bad" };
+  return { txt: `läser ${Math.round((j.andel || 0) * 100)} %`, cls: "run" };
+}
+
+function Papper() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" />
+    </svg>
+  );
 }
 
 export default function AgentPage() {
@@ -43,13 +59,16 @@ export default function AgentPage() {
   const [err, setErr] = useState("");
   const end = useRef<HTMLDivElement>(null);
   const pick = useRef<HTMLInputElement>(null);
+  const box = useRef<HTMLTextAreaElement>(null);
+  const drag = useRef(0);
 
   const load = useCallback(async () => {
     try { setFiles((await api.deskFiles()).filer || []); } catch (e: any) { setErr(e.message); }
   }, []);
 
   useEffect(() => { load(); }, [load]);
-  useEffect(() => { end.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs, busy]);
+  useEffect(() => { end.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [msgs, busy]);
+  useEffect(() => { box.current?.focus(); }, []);
 
   // en läsning tar en stund; så länge någon fil läser frågar sidan om läget, sedan slutar den
   useEffect(() => {
@@ -59,6 +78,15 @@ export default function AgentPage() {
     return () => clearInterval(t);
   }, [files, load]);
 
+  // rutan växer med texten, upp till en dryg halv skärm
+  const grow = () => {
+    const el = box.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 220)}px`;
+  };
+  useEffect(grow, [text]);
+
   const take = async (list: FileList | File[]) => {
     const arr = Array.from(list).filter((f) => f.name.toLowerCase().endsWith(".pdf"));
     if (!arr.length) { setErr("Agenten läser PDF. Spara om filen som PDF och släpp den igen."); return; }
@@ -67,17 +95,18 @@ export default function AgentPage() {
       try {
         const up = await api.deskUpload(f);
         setFiles((x) => [...x, up]);
-        setMsgs((m) => [...m, { role: "user", text: `📄 ${up.filnamn} · ${up.sidor} sid` }]);
       } catch (e: any) { setErr(e?.message || "filen kunde inte tas emot"); }
     }
+    box.current?.focus();
   };
 
   const send = async (q: string) => {
     const fraga = q.trim();
     if (!fraga || busy) return;
     setText(""); setErr("");
-    const historik: any[] = [];
-    setMsgs((m) => [...m, { role: "user", text: fraga }]);
+    const historik = msgs.slice(-8).map((m) => ({ roll: m.role === "user" ? "user" : "assistant", text: m.text }));
+    const bifogade = files;
+    setMsgs((m) => [...m, { role: "user", text: fraga, filer: bifogade }]);
     setBusy(true);
     try {
       const r = await api.deskAsk({ fraga, filer: files.map((f) => f.id), historik });
@@ -85,98 +114,121 @@ export default function AgentPage() {
       if (r.filer) setFiles(r.filer);
     } catch (e: any) {
       setErr(e?.message || "agenten kunde inte svara");
-    } finally { setBusy(false); }
+    } finally { setBusy(false); box.current?.focus(); }
   };
 
-  const read = files.filter((f) => f.jobb?.status === "COMPLETED");
+  const onKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(text); }
+  };
+
+  const laste = files.filter((f) => f.jobb?.status === "COMPLETED");
+  const tomt = !msgs.length;
 
   return (
-    <main className="agentpage"
-      onDragOver={(e) => { e.preventDefault(); setOver(true); }}
-      onDragLeave={() => setOver(false)}
-      onDrop={(e) => { e.preventDefault(); setOver(false); take(e.dataTransfer.files); }}>
-      <p className="crumb">Agent</p>
-      <div className="head">
-        <div>
-          <h1>Agenten</h1>
-          <p className="lead">
-            Släpp en ritning i samtalet och fråga. Agenten läser den med samma motor som analysen, svarar ur det
-            som står i handlingen och säger vad den inte kunde avgöra. Den hittar inte på en siffra.
-          </p>
-        </div>
-      </div>
-      {err && <p className="error">{err}</p>}
+    <div className="desk"
+      onDragEnter={(e) => { e.preventDefault(); drag.current++; setOver(true); }}
+      onDragOver={(e) => e.preventDefault()}
+      onDragLeave={() => { drag.current = Math.max(0, drag.current - 1); if (!drag.current) setOver(false); }}
+      onDrop={(e) => { e.preventDefault(); drag.current = 0; setOver(false); take(e.dataTransfer.files); }}>
 
-      <div className={`deskwrap${over ? " over" : ""}`}>
-        <section className="deskchat">
-          {!msgs.length && (
-            <div className="deskempty">
-              <p className="muted">Inget i samtalet ännu.</p>
+      <header className="deskbar">
+        <span className="org">Agenten</span>
+        <span className="muted small">fristående · läser med samma motor som analysen</span>
+        <div className="sp" />
+        {!!files.length && (
+          <button className="ghost small" onClick={() => setMsgs([])} disabled={busy || tomt}>Nytt samtal</button>
+        )}
+      </header>
+
+      <div className="deskthread">
+        <div className="deskcol">
+          {tomt && (
+            <div className="deskhello">
+              <h1>Vad säger ritningen?</h1>
+              <p className="lead">
+                Släpp en PDF var som helst på sidan och fråga. Agenten svarar ur det som står i handlingen och
+                säger vad den inte kunde avgöra. Den hittar inte på en siffra.
+              </p>
               <div className="deskstart">
                 {START.map((s) => <button key={s} className="chip" onClick={() => send(s)}>{s}</button>)}
               </div>
-              <p className="muted small">Du kan dra in en PDF var som helst på sidan.</p>
             </div>
           )}
+
           {msgs.map((m, i) => (
-            <div key={i} className={`bubble ${m.role}`}>
-              <div className="txt">{m.text}</div>
-              {!!m.jobs?.length && (
-                <p className="small muted">Läsningen är startad. Den syns bland filerna här bredvid när den är klar.</p>
-              )}
-              {!!m.tools?.length && (
-                <details className="tools">
-                  <summary>{m.tools.length} verktygsanrop</summary>
-                  {m.tools.map((t: any, k: number) => (
-                    <pre key={k} className="tool"><b>{t.namn}</b>({JSON.stringify(t.argument)}){"\n"}
-                      {JSON.stringify(t.resultat, null, 1).slice(0, 1400)}</pre>
-                  ))}
-                </details>
+            <div key={i} className={`turn ${m.role}`}>
+              {m.role === "user" ? (
+                <div className="said">
+                  {!!m.filer?.length && (
+                    <div className="saidfiles">
+                      {m.filer.map((f) => <span key={f.id} className="filechip small"><Papper /> {f.filnamn}</span>)}
+                    </div>
+                  )}
+                  <div className="txt">{m.text}</div>
+                </div>
+              ) : (
+                <div className="answered">
+                  <div className="txt">{m.text}</div>
+                  {!!m.jobs?.length && (
+                    <p className="small muted">Läsningen är startad. Filen säger till här nedanför när den är klar.</p>
+                  )}
+                  {!!m.tools?.length && (
+                    <details className="tools">
+                      <summary>{m.tools.length === 1 ? "1 verktygsanrop" : `${m.tools.length} verktygsanrop`}</summary>
+                      {m.tools.map((t, k) => (
+                        <pre key={k} className="tool"><b>{t.namn}</b>({JSON.stringify(t.argument)}){"\n"}
+                          {JSON.stringify(t.resultat, null, 1).slice(0, 1400)}</pre>
+                      ))}
+                    </details>
+                  )}
+                </div>
               )}
             </div>
           ))}
-          {busy && <div className="bubble agent"><div className="txt muted">tänker…</div></div>}
-          <div ref={end} />
-        </section>
 
-        <aside className="deskfiles">
-          <div className="org">Filer i samtalet</div>
-          {!files.length && <p className="muted small">Inga filer ännu. Dra in en PDF, eller välj en nedan.</p>}
-          {files.map((f) => {
-            const l = lage(f);
-            return (
-              <div key={f.id} className="deskfile">
-                <div className="nm" title={f.filnamn}>{f.filnamn}</div>
-                <div className="muted small">{f.sidor} sid · {kb(f.storlek)} · <span className={`st ${l.cls}`}>{l.txt}</span></div>
-                {f.jobb?.status === "COMPLETED" && (
-                  <div className="row small">
-                    <Link to={`/jobs/${f.jobb.id}`}>Öppna i analysen</Link>
-                    <Link to={`/mangda/${f.id}`}>Mängda</Link>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-          <input ref={pick} type="file" accept="application/pdf" multiple hidden
-                 onChange={(e) => { if (e.target.files) take(e.target.files); e.currentTarget.value = ""; }} />
-          <button className="ghost" onClick={() => pick.current?.click()}>Välj fil…</button>
-          {read.length > 1 && (
-            <button className="ghost" onClick={() => send(`Jämför ${read[0].filnamn} med ${read[1].filnamn}`)}>
-              Jämför de två senast lästa
-            </button>
-          )}
-          <p className="muted small" style={{ marginTop: 10 }}>
-            En läsning kostar credits, precis som i analysen. Filerna ligger på ditt konto och syns inte bland
-            projekten.
-          </p>
-        </aside>
+          {busy && <div className="turn agent"><div className="answered"><span className="dots"><i /><i /><i /></span></div></div>}
+          <div ref={end} />
+        </div>
       </div>
 
-      <form className="deskask" onSubmit={(e) => { e.preventDefault(); send(text); }}>
-        <button type="button" className="ghost attach" title="Bifoga PDF" onClick={() => pick.current?.click()}>＋</button>
-        <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Fråga om ritningen…" disabled={busy} />
-        <button type="submit" disabled={busy || !text.trim()}>Fråga</button>
-      </form>
-    </main>
+      <div className="deskfoot">
+        <div className="deskcol">
+          {err && <p className="error small">{err}</p>}
+          <form className="composer" onSubmit={(e) => { e.preventDefault(); send(text); }}>
+            {!!files.length && (
+              <div className="attached">
+                {files.map((f) => {
+                  const l = lage(f);
+                  return (
+                    <span key={f.id} className={`filechip ${l.cls}`} title={`${f.sidor} sid · ${kb(f.storlek)}`}>
+                      <Papper />
+                      <span className="nm">{f.filnamn}</span>
+                      <span className="st">{l.txt}</span>
+                      {f.jobb?.status === "COMPLETED" && <Link to={`/jobs/${f.jobb.id}`} className="op">öppna</Link>}
+                    </span>
+                  );
+                })}
+              </div>
+            )}
+            <div className="row">
+              <button type="button" className="round" title="Bifoga PDF" onClick={() => pick.current?.click()} disabled={busy}>+</button>
+              <textarea ref={box} rows={1} value={text} placeholder="Fråga om ritningen…"
+                        onChange={(e) => setText(e.target.value)} onKeyDown={onKey} disabled={busy} />
+              <button type="submit" className="round send" disabled={busy || !text.trim()} title="Fråga">↑</button>
+            </div>
+          </form>
+          <p className="deskhint small muted">
+            {laste.length > 1
+              ? <>Enter skickar, Shift+Enter ny rad. Du kan be den <button className="linky" onClick={() => send(`Jämför ${laste[0].filnamn} med ${laste[1].filnamn}`)}>jämföra två blad</button>.</>
+              : <>Enter skickar, Shift+Enter ny rad. En läsning kostar credits, precis som i analysen.</>}
+          </p>
+        </div>
+      </div>
+
+      <input ref={pick} type="file" accept="application/pdf" multiple hidden
+             onChange={(e) => { if (e.target.files) take(e.target.files); e.currentTarget.value = ""; }} />
+
+      {over && <div className="deskdrop"><div>Släpp ritningen här</div></div>}
+    </div>
   );
 }

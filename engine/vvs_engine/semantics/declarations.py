@@ -50,6 +50,52 @@ def _norm(t: str) -> str:
     return re.sub(r"\s+", " ", (t or "").upper()).strip()
 
 
+# What a reading may get wrong in a phrase without the phrase being another phrase: a glyph it could not name,
+# and the twins that share a shape between the digit row and the alphabet. "0M E? ANNAT ANGES" is the rule
+# "om ej annat anges" with an O read as a zero and a J left unread - and a sheet whose rule is not recognised
+# declares nothing, so the rule is matched with the reading's own uncertainty allowed for.
+TWINS = {"O": "O0", "I": "I1", "S": "S5", "B": "B8", "Z": "Z2", "G": "G6"}
+
+
+def _phrase_pattern(phrase: str) -> re.Pattern:
+    return re.compile("".join(r"\s+" if c == " " else "[" + re.escape(TWINS.get(c, c)) + r"?]" for c in phrase))
+
+
+_PHRASES = tuple(_phrase_pattern(p) for p in DEFAULT_PHRASES)
+
+
+def _states_the_default(t: str) -> bool:
+    return any(p.search(t) for p in _PHRASES)
+
+
+_COMPACT = re.compile(r"^([A-ZÅÄÖ]+(?:/[A-ZÅÄÖ]+)*)(?:(\d+)|\((\d+)-(\d+)\))?-(.+)$")
+
+
+def _stems(w: str) -> list[str]:
+    """The designation stems a word writes: one, or several written as one.
+
+    KV01-X31 is one stem. A sheet short of room writes KV/VV(1-2)-X31 for four - the classes before the slash,
+    the system numbers in the range, the rest shared: KV1-X31, KV2-X31, VV1-X31, VV2-X31."""
+    m = _COMPACT.match(w)
+    if not m:
+        return []
+    heads, digits, lo, hi, tail = m.groups()
+    if lo is not None:
+        if int(hi) < int(lo) or int(hi) - int(lo) > 9:
+            return []
+        nums = [str(n) for n in range(int(lo), int(hi) + 1)]
+    elif digits:
+        nums = [digits]
+    else:
+        return []
+    return [st for st in (f"{h}{n}-{tail}" for h in heads.split("/") for n in nums) if _is_stem(st)]
+
+
+def _class(stem: str) -> str:
+    m = re.match(r"[A-ZÅÄÖ]+", stem)
+    return m.group(0) if m else stem
+
+
 def _words(row: TextRow) -> list[tuple[str, float, float]]:
     """The words on a row with their x-spans: the row's own spaces divide them, and so does a gap between two
     glyphs wider than a good share of their height - a table writes its columns further apart than its words."""
@@ -140,7 +186,7 @@ def read_declarations(lines: list[TextRow]) -> Declarations:
                          if abs(q.bbox[0] - r.bbox[0]) <= COL_TOL * h
                          and -2.0 * h <= q.bbox[1] - r.bbox[1] <= STATEMENT_ROWS * h),
                         key=lambda q: q.bbox[1])
-        phrased = [q for q in column if any(p in _norm(q.text) for p in DEFAULT_PHRASES)]
+        phrased = [q for q in column if _states_the_default(_norm(q.text))]
         if not phrased:
             continue
         bottom = max(q.bbox[3] for q in phrased)
@@ -150,13 +196,28 @@ def read_declarations(lines: list[TextRow]) -> Declarations:
                  and q.bbox[2] >= r.bbox[0] - 4.0 * h and q.bbox[0] <= r.bbox[0] + 60.0 * h]
         bands = _bands(table, 0.5 * h)
         header_i = None
-        cols: list[tuple[str, float, float]] = []
+        cols: list[tuple[list[str], float, float]] = []       # the stems a column declares, and its x-span
         for i, band in enumerate(bands):
             ws = [w for q in band for w in _words(q)]
-            stems = [(w, x0, x1) for w, x0, x1 in ws if _is_stem(w)]
-            if stems and all(_is_stem(w) or (w.isalpha() and len(w) <= 12) for w, _, _ in ws):
-                header_i, cols = i, sorted(stems, key=lambda c: c[1])
-                break
+            stems = [(_stems(w), x0, x1) for w, x0, x1 in ws if _stems(w)]
+            if not (stems and all(_stems(w) or (w.isalpha() and len(w) <= 12) for w, _, _ in ws)):
+                continue
+            header_i, cols = i, sorted(stems, key=lambda c: c[1])
+            # The stems written as one word - KV/VV(1-2)-X31 - and the classes set out as column heads on the
+            # row below, KV and VV: the head is the column, and it carries every declared stem of its class.
+            # A head that no stem belongs to (S, for the drains) is a column the rule does not declare.
+            by_class: dict[str, list[str]] = {}
+            for ss, _, _ in stems:
+                for st in ss:
+                    by_class.setdefault(_class(st), []).append(st)
+            if i + 1 < len(bands):
+                nws = [w for q in bands[i + 1] for w in _words(q)]
+                heads_ = [(w, x0, x1) for w, x0, x1 in nws if w in by_class]
+                if heads_ and all(w.isalpha() and len(w) <= 12 for w, _, _ in nws) \
+                        and len(heads_) == len({w for w, _, _ in heads_}):
+                    header_i = i + 1
+                    cols = [(list(by_class[w]), x0, x1) for w, x0, x1 in sorted(heads_, key=lambda c: c[1])]
+            break
         if header_i is None:
             continue
         head_y = bands[header_i][0].bbox[3]
@@ -168,7 +229,10 @@ def read_declarations(lines: list[TextRow]) -> Declarations:
             if band[0].bbox[1] > head_y + TABLE_ROWS * hh:
                 break
             ws = [w for q in band for w in _words(q)]
-            nums = [(w, x0, x1) for w, x0, x1 in ws if re.fullmatch(r"\d{1,4}", w) and dn_plausible(int(w))]
+            # "16(15)": the dimension, and in parentheses what the sheet adds about it; the dimension is the
+            # number written first
+            nums = [(m.group(1), x0, x1) for w, x0, x1 in ws
+                    for m in [re.fullmatch(r"(\d{1,4})(?:\(\d{1,4}\))?", w)] if m and dn_plausible(int(m.group(1)))]
             if not nums:
                 continue
             head = next((w for w, _, _ in ws if w.isalpha()), "")
@@ -184,18 +248,19 @@ def read_declarations(lines: list[TextRow]) -> Declarations:
                     dims[best].append(int(w))
                     if head:
                         heads[best].append(head)
-        for i, (stem, _, _) in enumerate(cols):
-            if stem in seen_stems:
-                continue
-            seen_stems.add(stem)
+        for i, (stems_, _, _) in enumerate(cols):
             ds = dims[i]
             dn = None
             if ds:
                 v, n = Counter(ds).most_common(1)[0]
                 if n >= DOMINANT * len(ds):
                     dn = v
-            out.connection_pipes.append(DeclaredPipe(stem=stem, system_token=split_tokens(stem)[0], dn=dn,
-                                                     dns=tuple(sorted(set(ds))), apparatus=tuple(dict.fromkeys(heads[i]))))
+            for stem in stems_:
+                if stem in seen_stems:
+                    continue
+                seen_stems.add(stem)
+                out.connection_pipes.append(DeclaredPipe(stem=stem, system_token=split_tokens(stem)[0], dn=dn,
+                                                         dns=tuple(sorted(set(ds))), apparatus=tuple(dict.fromkeys(heads[i]))))
         if not out.statement:
             out.statement = [q.text.strip() for q in statement]
     return out

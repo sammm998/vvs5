@@ -119,3 +119,30 @@ backa en riktig geometri för att dölja en gränsregel vore att byta ett synlig
 
 **gate62** = raden som föll ur förklaringslistan (fyra blad från noll till facit) och buntens radordning ur
 bladets egna avgjorda buntar.
+
+# gate62: raden ur förklaringslistan, buntens radordning - ACCEPT
+
+**Ändring.** `semantics/legend.py`: indexet över kod/beskrivning-par nådde färre band än villkoret det tjänar
+(räckvidden är nu `0,6·h/2 + 2` band), så avloppsbladens förklaringslista lästes tom och fyra blad fick noll
+meter. `pipeline.py`: en bunt med flera rader avgörs, när varken eliminering eller bladets samstämmighet räcker,
+av den radordning bladets egna redan avgjorda buntar visar (minst två vittnen, skäl
+`multi_row_bundle_settled_by_the_sheets_own_row_order`). Commit 8143e59 och 410bbe3.
+
+| | gate61 | gate62 |
+|---|---:|---:|
+| ägt | 8550,8 m | 8756,7 m |
+| falskt | 2218,8 m | 2243,3 m |
+| TÄCKNING | 75,01 % | **76,82 %** |
+| FALSKHET | 19,46 % | 19,68 % |
+| beteckningsåterkallelse | 83,94 % | 86,46 % |
+| blad som rörde sig | | 10 |
+
+De fyra avloppsbladen: W-50-1-A0022 0 → 68,1 m (facit 72,8), A0023 0 → 36,4 (36,4), A0031 0 → 4,1 (7,0),
+A0034 0 → 41,1 (44,6). Radordningen: A/W-50-1-A0011 189,0 → 202,6 (213,7), W-50-1-A0133 179,9 → 199,5
+(305,1), D +1,8 %. Ingen minskning på något blad; falskheten +0,22 procentenheter, allt på de fyra bladen som
+förut inte ägde något alls (4–7 m var).
+
+**Beslut: ACCEPT.** +1,81 % täckning, +2,5 % beteckningsåterkallelse.
+
+**gate63** = parentesen som lästes som I (`160(L)` → `160ILI`, `KV/VV(1-2)-X31` → ingenting), bladets
+kompakta kopplingsledningstabell, och den bäst namngivna pennan tar den förklarade ledningen.

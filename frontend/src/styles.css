@@ -2123,27 +2123,106 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .agentchat .msg .lf-pre { max-height: none; color: var(--ink); }
 
 /* ---------- agenten som egen plats: samtal till vänster, filerna bredvid ---------- */
-.deskwrap { margin-top: 20px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, 290px); gap: 18px; align-items: start; }
-.deskwrap.over { outline: 2px dashed var(--ink); outline-offset: 8px; border-radius: 14px; }
-@media (max-width: 900px) { .deskwrap { grid-template-columns: 1fr; } }
-.deskchat { border: 1px solid var(--line); border-radius: 14px; background: var(--bg); padding: 14px 16px; min-height: 52vh; max-height: 62vh; overflow: auto; display: flex; flex-direction: column; gap: 10px; }
-.deskempty { margin: auto; text-align: center; display: flex; flex-direction: column; gap: 10px; align-items: center; }
-.deskstart { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
-.deskchat .bubble { padding: 10px 12px; border-radius: var(--r-m); border: 1px solid var(--line); background: #fff; max-width: 86%; }
-.deskchat .bubble.user { background: var(--bg-2); border-color: var(--line-2); align-self: flex-end; }
-.deskchat .bubble .txt { white-space: pre-wrap; }
-.deskchat .tools { margin-top: 6px; font-size: 12px; color: var(--muted); }
-.deskchat .tool { margin: 4px 0 0; white-space: pre-wrap; font-size: 11px; background: var(--bg-2); padding: 6px 8px; border-radius: 6px; max-height: 220px; overflow: auto; }
-.deskfiles { display: flex; flex-direction: column; gap: 8px; position: sticky; top: 16px; }
-.deskfile { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
-.deskfile .nm { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.deskfile .row { display: flex; gap: 10px; margin-top: 4px; }
-.deskfile .st.ok { color: #2e7d32; }
-.deskfile .st.run { color: #b26a00; }
-.deskfile .st.bad { color: #b3261e; }
-.deskask { margin-top: 14px; display: flex; gap: 8px; align-items: center; }
-.deskask input { flex: 1; }
-.deskask .attach { padding: 8px 12px; font-size: 16px; line-height: 1; }
+/* ---------- agenten: ett samtal i hela fönstret ----------
+
+   Formen är den ett samtal har. En spalt i mitten för det som sagts, frågan fäst längst ned, filerna som
+   brickor i rutan där du skriver - där de hör hemma, eftersom det är dem frågan gäller. Sidan rullar inte;
+   tråden gör det, så att rutan du skriver i alltid står still. */
+
+.desk {
+  position: relative;
+  height: 100dvh; min-height: 520px;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--bg);
+}
+.deskbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 24px; border-bottom: 1px solid var(--line);
+  background: var(--glass); backdrop-filter: saturate(1.4) blur(8px);
+}
+.deskbar .sp { flex: 1; }
+.deskthread { overflow: auto; scroll-behavior: smooth; }
+.deskcol { width: min(760px, 100%); margin: 0 auto; padding: 0 20px; }
+.deskthread .deskcol { padding-top: 28px; padding-bottom: 24px; display: flex; flex-direction: column; gap: 22px; }
+
+.deskhello { margin: min(14vh, 120px) 0 8px; text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.deskhello h1 { margin: 0; font-size: clamp(26px, 4vw, 40px); letter-spacing: -0.03em; }
+.deskhello .lead { margin: 0; max-width: 56ch; color: var(--muted); }
+.deskstart { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 6px; }
+
+.turn { display: flex; }
+.turn.user { justify-content: flex-end; }
+.turn .said {
+  max-width: 82%; background: var(--bg-2); border: 1px solid var(--line);
+  border-radius: 20px 20px 6px 20px; padding: 11px 15px; box-shadow: var(--e1);
+}
+.turn .said .txt, .turn .answered .txt { white-space: pre-wrap; overflow-wrap: anywhere; }
+.turn .saidfiles { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.turn .answered { max-width: 100%; }
+.turn .answered .tools { margin-top: 10px; font-size: 12px; color: var(--muted); }
+.turn .answered .tools summary { cursor: pointer; }
+.turn .answered .tool {
+  margin: 6px 0 0; white-space: pre-wrap; font-size: 11px; font-family: var(--mono);
+  background: var(--bg-2); border: 1px solid var(--line); padding: 8px 10px; border-radius: 10px;
+  max-height: 260px; overflow: auto;
+}
+.dots { display: inline-flex; gap: 4px; align-items: center; height: 20px; }
+.dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); animation: deskblink 1.2s infinite ease-in-out; }
+.dots i:nth-child(2) { animation-delay: 0.18s; }
+.dots i:nth-child(3) { animation-delay: 0.36s; }
+@keyframes deskblink { 0%, 80%, 100% { opacity: 0.25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-2px); } }
+
+.deskfoot { border-top: 1px solid var(--line); background: var(--bg); padding: 14px 0 18px; }
+.composer {
+  border: 1px solid var(--line-2); border-radius: 26px; background: var(--bg);
+  padding: 8px 8px 8px 10px; box-shadow: var(--e2), var(--lift);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.composer:focus-within { border-color: var(--ink); box-shadow: var(--e3), var(--lift); }
+.composer .row { display: flex; align-items: flex-end; gap: 8px; }
+.composer textarea {
+  flex: 1; border: 0; outline: 0; resize: none; background: transparent;
+  font: inherit; line-height: 1.5; padding: 8px 2px; max-height: 220px; color: var(--text);
+}
+.composer .round {
+  flex: none; width: 34px; height: 34px; padding: 0; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 17px; line-height: 1;
+  border: 1px solid var(--line-2); background: var(--bg); color: var(--ink);
+}
+.composer .round:hover:not(:disabled) { background: var(--chip); }
+.composer .round.send { background: var(--ink); color: #fff; border-color: var(--ink); }
+.composer .round:disabled { opacity: 0.4; cursor: not-allowed; }
+.composer .attached { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 4px 8px; }
+
+.filechip {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 320px;
+  border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; background: var(--bg-2); font-size: 12px;
+}
+.filechip svg { flex: none; opacity: 0.7; }
+.filechip .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.filechip .st { color: var(--muted); }
+.filechip .st::before { content: "·"; margin-right: 5px; }
+.filechip.ok .st { color: var(--ok); }
+.filechip.run .st { color: var(--warn); }
+.filechip.bad .st { color: var(--bad); }
+.filechip .op { margin-left: 2px; text-decoration: underline; text-underline-offset: 2px; }
+.deskhint { margin: 8px 2px 0; }
+.linky { border: 0; background: none; padding: 0; font: inherit; color: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+
+.deskdrop {
+  position: absolute; inset: 0; z-index: 5; display: grid; place-items: center;
+  background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(2px);
+}
+.deskdrop > div {
+  border: 2px dashed var(--ink); border-radius: var(--r-l); padding: 22px 34px;
+  font-family: var(--mono); font-size: var(--label); letter-spacing: var(--track); text-transform: uppercase;
+}
+@media (max-width: 700px) {
+  .desk { height: auto; min-height: 100dvh; }
+  .deskbar { padding: 12px 16px; }
+  .deskbar .muted.small { display: none; }
+  .turn .said { max-width: 92%; }
+}
 
 /* ---------- på en liten skärm ---------- */
 /* Skalet är byggt för ett skrivbord: en 296 px list plus sidan bredvid. På en telefon sköt det ut hela

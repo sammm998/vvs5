@@ -264,18 +264,22 @@ def _declare_unowned(graphs: dict[str, PipeGraph], states: dict[str, dict[int, "
     "Kopplingsledningar från fördelare till apparat enligt tabell om inget annat anges": the table gives a
     designation per system and a dimension, and the rule applies to the pipes nobody labelled. So an UNOWNED
     primitive - never AMBIGUOUS, never one a label reached - on a pen whose layer name carries the declared
-    system's token takes the declared identity. A layer that two declared systems could both name gets nothing:
-    the sheet has not said which. The reason is written on every primitive so the takeoff can show which metres
-    were pointed at and which were declared."""
-    from ..semantics.attachment import system_layer_match
+    system's token takes the declared identity. A layer that two declared systems name equally well gets
+    nothing: the sheet has not said which. A layer that names one of them better - its class and its number,
+    against its class alone - is that one's: a rule declared for KV1 and KV2 alike names the pen whose layer
+    says V1. The reason is written on every primitive so the takeoff can show which metres were pointed at and
+    which were declared."""
+    from ..semantics.attachment import system_layer_rank
     from ..semantics.grammar import split_tokens
     given: dict[str, int] = {}
     for fk, g in graphs.items():
         layer = fk.split("|s|")[0]
-        match = [d for d in declared if d.dn is not None and system_layer_match(d.system_token, layer, spelled_out)]
-        if len(match) != 1:
+        ranked = sorted(((r[0], d) for d in declared if d.dn is not None
+                         for r in [system_layer_rank(d.system_token, layer, spelled_out)] if r),
+                        key=lambda t: (t[0], t[1].text))
+        if not ranked or (len(ranked) > 1 and ranked[1][0] == ranked[0][0]):
             continue
-        d = match[0]
+        d = ranked[0][1]
         ident = identity_from_text(d.text, d.dn, d.system_token, len(split_tokens(d.stem)))
         n = 0
         for comp in _unowned_components(g, states[fk]):

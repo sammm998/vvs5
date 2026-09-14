@@ -345,27 +345,48 @@ class Designation:
     family: str = ""
 
     @property
+    def aside(self) -> str:
+        """What the dimension row adds in parentheses about the pipe, without naming it.
+
+        A drawing writes `160(L)` where 160 is the dimension and the parenthesis says something more about that
+        pipe. An aside is not part of a name: two pipes of the same system and the same dimension are the same
+        pipe to a takeoff whether or not one of them carries a note. So it is kept - a reader can see it on the
+        designation - but it is not written into the name, where it would split one row of the takeoff in two."""
+        if not self.dn_row_text:
+            return ""
+        m = re.search(r"\(([^()]*)\)\s*$", self.dn_row_text.strip())
+        return m.group(0) if m else ""
+
+    @property
+    def dimension_text(self) -> str:
+        """The dimension row with its aside removed: what the row says the pipe measures."""
+        return (self.dn_row_text or "")[:len(self.dn_row_text or "") - len(self.aside)].strip() if self.aside \
+            else (self.dn_row_text or "")
+
+    @property
     def display_text(self) -> str:
         """The designation as the drawing states it.
 
         A dimension written on the row below belongs to the code above it - the drawing only breaks the line to
         fit the label - so the name a reader would write down, and the name a takeoff lists, carries it. The two
-        rows are joined by the separator the code itself uses between its tokens."""
-        if self.dn_source != "row" or not self.dn_row_text:
+        rows are joined by the separator the code itself uses between its tokens. What the row adds in
+        parentheses stays out of the name (see `aside`)."""
+        if self.dn_source != "row" or not self.dimension_text:
             return self.text
+        dim = self.dimension_text
         seps = re.findall(r"[\-/+.,:]", self.text)
         sep = seps[0] if seps else "-"
         # a code may end with a short medium qualifier written off with a separator; the dimension goes in front
         # of it, where the drawing puts it when it writes the whole label on one line
         tail = re.search(r"[\-/+.,:][A-ZÅÄÖa-zåäö]{1,3}$", self.text)
         if tail:
-            return f"{self.text[:tail.start()]}{sep}{self.dn_row_text}{tail.group(0)}"
-        return f"{self.text}{sep}{self.dn_row_text}"
+            return f"{self.text[:tail.start()]}{sep}{dim}{tail.group(0)}"
+        return f"{self.text}{sep}{dim}"
 
     def as_dict(self) -> dict[str, Any]:
         return {"did": self.did, "page": self.page, "block_id": self.block_id, "row_index": self.row_index, "text": self.text,
                 "raw_text": self.raw_text, "pattern": self.pattern, "tokens": self.tokens, "system_token": self.system_token,
-                "dn": self.dn, "dn_source": self.dn_source, "display_text": self.display_text,
+                "dn": self.dn, "dn_source": self.dn_source, "display_text": self.display_text, "aside": self.aside,
                 "multiplier": self.multiplier, "bbox": [round(v, 2) for v in self.bbox],
                 "angle": round(self.angle, 1), "layer": self.layer, "source": self.source, "unknown_chars": self.unknown_chars,
                 "min_glyph_confidence": round(1.0 - max(self.glyph_scores), 3) if self.glyph_scores else None,
