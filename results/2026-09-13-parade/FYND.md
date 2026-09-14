@@ -274,3 +274,39 @@ De förklarade metrarna bär 1 483 m rätt mot 429 m fel. Förvalet står allts�
 det vara tvärtom: A0521 tappar 112,6 m falskt och 0,5 m rätt om de räknas bort. Därför är det ett val i
 tabellen, "Räkna med förklarade kopplingsledningar", vid sidan av det för skrafferade ytor, och exporten följer
 skärmen.
+
+
+## 11. Fyra beteckningar på en rad, en linje under dem - och ingen hänvisning alls
+
+V-50-1-A0423 är korpusens värsta enskilda överdrag: `VS21-S13-15` får 111,8 m mot facit 36,6, medan stammen
+`VS21-S13-22-F60` står på 1,7 m mot facit 82,6. Åttio meter under fel rubrik.
+
+Etiketten ser ut så här:
+
+```
+VS21-S13   SF01-P5  SF01-P5  S01-P5
+──────────────────────────────────      <- en linje, som svänger ned till röret i vänsterkanten
+ 22-F60     110L     110L     110
+```
+
+Två fel, båda generiska:
+
+1. **Måttraden med en klass i.** "22-F60" är dimension 22 med isolerklass F60, men regeln för en måttrad krävde
+   att tillägget efter siffran var sifferfritt. Raden lästes som en egen beteckning, och `VS21-S13` blev kvar
+   utan dimension. Rättat: ett tillägg som börjar med en bokstav får bära en siffra ("22-F60", "-PE1"), medan ett
+   kryss följt av siffror är ett andra mått och ingen klass ("600X300"). Beteckningen läses nu rätt.
+
+2. **Linjen under raden är ritad i bitar, en per beteckning, var och en på sitt eget systems lager.** Mätt:
+   `V-56B---T-_VS2x-` 1109,9-1159,3 (under VS21-S13), `V-53BB--T-_SFxx` 1159,4-1197,5 och 1197,4-1235,4 (under
+   de två SF01), `V-53BBB-T-_Sxx` 1235,4-1268,4 (under S01). Bitarna möts, men kedjebygget kräver samma penna,
+   så det stannar efter 33 pt. Och bitens vänstra ände är ingen fri ände - den svänger ned i hänvisningslinjen -
+   så regeln "raden är skriven på en linje som fortsätter till röret" hittar ingen start. Blocket får **noll**
+   hänvisningslinjer, och fyra beteckningar blir utan ankare.
+
+Att bitarna ligger på systemets eget lager är för övrigt ritningens egen upplysning om vilken beteckning som
+äger vilken bit - och därmed vilken av de fyra hänvisningen talar för.
+
+Nästa steg, med egen grind: låt en baslinjebit som svänger ned i en linje ge en start vid hörnet, och låt den
+starten bära bitens x-spann så att bara beteckningen ovanför biten äger hänvisningen. Motsvarande regel finns
+redan för staplade rader med var sin understrykning (`_rows_owning_leader`); det som saknas är den för rader som
+står bredvid varandra.
