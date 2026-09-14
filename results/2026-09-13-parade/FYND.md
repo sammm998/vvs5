@@ -232,7 +232,11 @@ utan dimension skulle inte matcha facit ändå - facit skriver `KV2-X7-32`, inte
 
 Och bredvid det: **67 av 324 etiketter** på bladet slutar utan att röra något rör. De ligger inte nästan rätt -
 medianavståndet från en fäst etikett till närmaste rör är 1,2 pt, från en fästlös 27,7 pt. Där de landar finns
-ritat rör på en *finare* penna (0,48 pt på samma V-lager) som förkastats med skälet NO_CONTINUOUS_RUN: 82 m på
-V-lager, varav 52 m har etikettändar på sig. Den pennan ritar i mycket korta bitar - 1 430 segment på 13,9 m -
-och kedjebygget får inte ihop dem till en sträcka. Det är den mätbara nästa tråden: varför faller den fina
-pennans streck isär, och är de rör?
+ritat något på en *finare* penna (0,48 pt på samma V-lager) som förkastats med skälet NO_CONTINUOUS_RUN: 82 m på
+V-lager, varav 52 m har etikettändar på sig.
+
+Men den pennan ritar inte rör. Klumpar man ihop dess streck faller `V-56B--FE--VS1-` 0,48 pt sönder i **26
+klumpar**, var och en 128 streck om 0,55 pt i en låda på ~50x50 pt: apparatsymboler, inte sträckor. Etiketterna
+som landar där pekar på en apparat - en radiator, en värmeväxlare - och en apparat är ingen rörsträcka.
+NO_CONTINUOUS_RUN är alltså rätt beslut, och de 67 fästlösa etiketterna är till stor del etiketter som inte
+namnger något rör. Tråden är stängd; det som återstår på A0111 är de 186 oägda metrarna ovan.

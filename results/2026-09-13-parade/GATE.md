@@ -146,3 +146,34 @@ förut inte ägde något alls (4–7 m var).
 
 **gate63** = parentesen som lästes som I (`160(L)` → `160ILI`, `KV/VV(1-2)-X31` → ingenting), bladets
 kompakta kopplingsledningstabell, och den bäst namngivna pennan tar den förklarade ledningen.
+
+# gate63: parentesen, den korta tabellen, tillägget som inte döper - ACCEPT
+
+**Ändring.** `text/vector_text.py`: den strukturella parentesregeln tar även en grund båge när strecket är tunt
+och kröningen sitter mitt på kordan, och sidan avgörs av bågens riktning på sidan i stället för av ritordningen.
+`semantics/declarations.py`: regelraden känns igen genom läsningens egna tvillingfel (0/O, I/1, oläst tecken),
+fyra stammar skrivna som ett ord (`KV/VV(1-2)-X31`) blir fyra, klasserna på raden under blir kolumner, och
+måttet `16(15)` är 16. `pipes/ownership.py`: när regeln förklarar flera system tar den penna vars lager namnger
+systemet bäst ledningen; lika bra namn ger fortfarande ingenting. `semantics/annotation.py`: ett tillägg i
+parentes på måttraden är en anteckning, inte en del av namnet. Commit 42494e5.
+
+| | gate62 | gate63 |
+|---|---:|---:|
+| ägt | 8 756,7 m | 9 097,7 m |
+| falskt | 2 243,3 m | 2 263,8 m |
+| TÄCKNING | 76,82 % | **79,81 %** |
+| FALSKHET | 19,68 % | 19,86 % |
+| beteckningsåterkallelse | 86,46 % | 87,87 % |
+| beteckningsprecision | 77,54 % | 78,48 % |
+| blad som rörde sig | | 14 |
+
+Störst: W-50-1-A0213 +31,8 % täckning och −3,9 % falskhet (94 → 161 m av 212), A0124 +27,1 (81 → 148 av 247),
+A0222 +19,7 (127 → 169), A0133 +14,0 (200 → 242), A0114 +11,8 (223 → 261). Blad A 202,6 → **208,8 av 213,7**
+(97,7 % täckning, 1,2 % falskt). Två blad ned: A0122 −0,4 % täckning och +2,1 % falskhet, A0134 +2,9 % falskhet
+- båda från förklarade kopplingsledningar som tar någon meter för mycket.
+
+**Beslut: ACCEPT.** +2,99 % täckning för +0,18 % falskhet.
+
+**gate64** = öppen. De två största kvarvarande posterna är mätta och skrivna i FYND §8-§9: skrafferingens
+betydelse (att räkna in allt kostar 7 % falskhet för 3 % täckning) och de 186 oägda metrarna på A0111:s
+systemnamngivna pennor som ingen etikett når.
