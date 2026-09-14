@@ -1,11 +1,8 @@
 {
- "commit": "34dc559edd8cdaecc01a5ad6f6bf7dcc74575712",
- "uncommitted": [
-  "M engine/vvs_engine/pipeline.py",
-  " M engine/vvs_engine/semantics/leaders.py"
- ],
+ "commit": "8a47dc5272444b355a296fc3be799e8a49070b87",
+ "uncommitted": [],
  "n_files": 110,
- "manifest_sha256": "bfdd2f45cad9a822",
+ "manifest_sha256": "bfb2f2179d478405",
  "python": "3.11.15",
  "files": {
   "engine/vvs_engine/__init__.py": "ad49e92ec1d28191",
@@ -28,7 +25,7 @@
   "engine/vvs_engine/semantics/attachment.py": "c4b941d1aba2ae35",
   "engine/vvs_engine/semantics/declarations.py": "4b9c7ef781bbc1b2",
   "engine/vvs_engine/semantics/grammar.py": "47f77fdd1f8cc8f4",
-  "engine/vvs_engine/semantics/leaders.py": "659fa0b0bf191ce1",
+  "engine/vvs_engine/semantics/leaders.py": "4de934e80c1108f1",
   "engine/vvs_engine/semantics/legend.py": "9ef82b4c7adc6f0f",
   "engine/vvs_engine/text/__init__.py": "e3b0c44298fc1c14",
   "engine/vvs_engine/text/hershey.py": "d69e05736633f9a9",
@@ -98,7 +95,7 @@
   "backend/app/__init__.py": "e3b0c44298fc1c14",
   "backend/app/academy.py": "06a92177e752d95a",
   "backend/app/admin.py": "6b104254c41b9b8a",
-  "backend/app/agent.py": "111c8aef56764900",
+  "backend/app/agent.py": "d80d5bc66015616d",
   "backend/app/auth.py": "4bc9ff56351fb61f",
   "backend/app/cad.py": "555c5d58a5075cd9",
   "backend/app/cad_agent.py": "e27cdd17b769ddd9",
@@ -112,7 +109,7 @@
   "backend/app/db.py": "624b81d2d06c3534",
   "backend/app/desk.py": "2fd0dc5ef1e8ccc0",
   "backend/app/exports.py": "e65042c4742b04d2",
-  "backend/app/jobs.py": "967146029126b0b6",
+  "backend/app/jobs.py": "a7f8b42886205e31",
   "backend/app/main.py": "c02244dcfb7dfec2",
   "backend/app/markups.py": "e24ee9befe0782fe",
   "backend/app/projects_api.py": "1cd1664f50ad6bf1",

@@ -3,7 +3,7 @@
   "state": "OK",
   "input": "validation_A/clean.pdf",
   "input_sha256": "c2884f3007f3764a",
-  "seconds": 75.0,
+  "seconds": 68.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -13,14 +13,14 @@
   "coverage": {
    "designations": 22,
    "with_dn": null,
-   "leaders": 153,
+   "leaders": 150,
    "verified_attachments": 130,
    "ambiguous_attachments": 12,
-   "no_attachments": 11,
+   "no_attachments": 8,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 130,
     "AMBIGUOUS_PIPE_ATTACHMENT": 12,
-    "NO_PIPE_ATTACHMENT": 11
+    "NO_PIPE_ATTACHMENT": 8
    },
    "pipe_names": 22,
    "pipe_names_with_metres": 19,
@@ -366,7 +366,7 @@
   "state": "OK",
   "input": "validation_C/clean.pdf",
   "input_sha256": "c6a4a7e8e2f5d78c",
-  "seconds": 13.7,
+  "seconds": 13.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -376,13 +376,13 @@
   "coverage": {
    "designations": 11,
    "with_dn": null,
-   "leaders": 14,
+   "leaders": 13,
    "verified_attachments": 9,
    "ambiguous_attachments": 0,
-   "no_attachments": 5,
+   "no_attachments": 4,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 9,
-    "NO_PIPE_ATTACHMENT": 5
+    "NO_PIPE_ATTACHMENT": 4
    },
    "pipe_names": 11,
    "pipe_names_with_metres": 5,
@@ -503,7 +503,7 @@
   "state": "OK",
   "input": "validation_D/clean.pdf",
   "input_sha256": "a5c6493c92fb2a2e",
-  "seconds": 24.8,
+  "seconds": 25.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -513,12 +513,12 @@
   "coverage": {
    "designations": 21,
    "with_dn": null,
-   "leaders": 104,
+   "leaders": 103,
    "verified_attachments": 71,
    "ambiguous_attachments": 12,
-   "no_attachments": 21,
+   "no_attachments": 20,
    "anchor_states": {
-    "NO_PIPE_ATTACHMENT": 21,
+    "NO_PIPE_ATTACHMENT": 20,
     "VERIFIED_PIPE_ATTACHMENT": 71,
     "AMBIGUOUS_PIPE_ATTACHMENT": 12
    },
@@ -844,7 +844,7 @@
   "state": "OK",
   "input": "validation_E/clean.pdf",
   "input_sha256": "d0242e5f34c3be17",
-  "seconds": 17.9,
+  "seconds": 18.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -854,13 +854,13 @@
   "coverage": {
    "designations": 5,
    "with_dn": null,
-   "leaders": 74,
+   "leaders": 73,
    "verified_attachments": 63,
    "ambiguous_attachments": 2,
-   "no_attachments": 9,
+   "no_attachments": 8,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 63,
-    "NO_PIPE_ATTACHMENT": 9,
+    "NO_PIPE_ATTACHMENT": 8,
     "AMBIGUOUS_PIPE_ATTACHMENT": 2
    },
    "pipe_names": 5,
@@ -1007,7 +1007,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0111/clean.pdf",
   "input_sha256": "1a4dbfd8ac3fac25",
-  "seconds": 13.8,
+  "seconds": 13.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -1017,12 +1017,12 @@
   "coverage": {
    "designations": 14,
    "with_dn": null,
-   "leaders": 34,
-   "verified_attachments": 34,
+   "leaders": 33,
+   "verified_attachments": 33,
    "ambiguous_attachments": 0,
    "no_attachments": 0,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 34
+    "VERIFIED_PIPE_ATTACHMENT": 33
    },
    "pipe_names": 14,
    "pipe_names_with_metres": 6,
@@ -1036,12 +1036,12 @@
     "VV01-X7-32-F60",
     "VVC01-X7-20"
    ],
-   "physical_pipes": 40,
-   "unowned_m": 24.59,
+   "physical_pipes": 38,
+   "unowned_m": 25.57,
    "ambiguous_m": 1.04,
    "claimed_m": 1.67,
    "reconciliation": "VALID",
-   "named_vs_measured": 76.9
+   "named_vs_measured": 76.0
   },
   "names_read": [
    "KV01-X31",
@@ -1066,8 +1066,8 @@
    "VS21-S13-22-F60"
   ],
   "frontiers": {
-   "frontiers": 91,
-   "pipes": 40,
+   "frontiers": 87,
+   "pipes": 38,
    "silent_pipes": [],
    "by_reason": {
     "BROKEN_CONTINUITY": 4,
@@ -1075,11 +1075,11 @@
     "FREE_END": 1,
     "REAL_DN_BOUNDARY": 4,
     "REPRESENTATION_TRANSITION": 1,
-    "SYMBOL": 35,
+    "SYMBOL": 33,
     "UNOWNED_CONTINUATION": 15,
-    "VERTICAL": 26
+    "VERTICAL": 24
    },
-   "real_boundaries": 66,
+   "real_boundaries": 62,
    "lossy_boundaries": 19,
    "open_boundaries": 6,
    "unowned_beyond_pt": 1050.25,
@@ -1167,11 +1167,11 @@
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 32,
-    "confirmed_horizontal_m": 89.487,
+    "physical_pipe_count": 30,
+    "confirmed_horizontal_m": 88.208,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 89.487,
-    "horizontal_pdf_units": 5073.261,
+    "confirmed_total_m": 88.208,
+    "horizontal_pdf_units": 5000.76,
     "ambiguous_m": 1.042,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -1188,7 +1188,6 @@
      "pp_3a21d497b3ea",
      "pp_46f7f5852e7d",
      "pp_486abe27a0ef",
-     "pp_495e2200b9e0",
      "pp_49854a352796",
      "pp_5e1a934e61ad",
      "pp_69bc8e4f99f9",
@@ -1208,14 +1207,13 @@
      "pp_e73feb98d016",
      "pp_e87dac2f19ff",
      "pp_e8ab0f527312",
-     "pp_eab7f3dd1a64",
      "pp_fe39107353b0",
      "pp_ff27a0fdd133"
     ],
     "ambiguous_pdf_units": 59.053,
-    "label_count": 21,
-    "riser_count_from_labels": 18,
-    "riser_count": 18,
+    "label_count": 20,
+    "riser_count_from_labels": 17,
+    "riser_count": 17,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -1246,13 +1244,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 40,
-   "confirmed_horizontal_m": 116.278,
+   "physical_pipes": 38,
+   "confirmed_horizontal_m": 114.999,
    "confirmed_vertical_m": 0.2,
-   "confirmed_total_m": 116.478,
+   "confirmed_total_m": 115.199,
    "ambiguous_m": 1.042,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 27
+   "riser_labels": 26
   },
   "n_issues": 0,
   "blocking": 0,
@@ -1262,7 +1260,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0112/clean.pdf",
   "input_sha256": "57975e37c6062be2",
-  "seconds": 30.3,
+  "seconds": 23.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -1272,24 +1270,24 @@
   "coverage": {
    "designations": 30,
    "with_dn": null,
-   "leaders": 103,
+   "leaders": 100,
    "verified_attachments": 72,
    "ambiguous_attachments": 23,
-   "no_attachments": 8,
+   "no_attachments": 5,
    "anchor_states": {
-    "NO_PIPE_ATTACHMENT": 8,
     "VERIFIED_PIPE_ATTACHMENT": 72,
+    "NO_PIPE_ATTACHMENT": 5,
     "AMBIGUOUS_PIPE_ATTACHMENT": 23
    },
    "pipe_names": 30,
    "pipe_names_with_metres": 30,
    "without_metres": [],
-   "physical_pipes": 105,
-   "unowned_m": 15.15,
-   "ambiguous_m": 18.44,
-   "claimed_m": 24.16,
+   "physical_pipes": 104,
+   "unowned_m": 16.37,
+   "ambiguous_m": 23.29,
+   "claimed_m": 20.38,
    "reconciliation": "VALID",
-   "named_vs_measured": 89.5
+   "named_vs_measured": 87.7
   },
   "names_read": [
    "KV01-K5",
@@ -1350,8 +1348,8 @@
    "VVC01-X7-32"
   ],
   "frontiers": {
-   "frontiers": 230,
-   "pipes": 105,
+   "frontiers": 226,
+   "pipes": 104,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 16,
@@ -1363,14 +1361,14 @@
     "REAL_DN_BOUNDARY": 16,
     "REPRESENTATION_CHANGE": 1,
     "SYMBOL": 104,
-    "UNOWNED_CONTINUATION": 7,
-    "VERTICAL": 24
+    "UNOWNED_CONTINUATION": 5,
+    "VERTICAL": 22
    },
-   "real_boundaries": 176,
-   "lossy_boundaries": 32,
+   "real_boundaries": 174,
+   "lossy_boundaries": 30,
    "open_boundaries": 22,
-   "unowned_beyond_pt": 242.67,
-   "unowned_beyond_m": 4.28
+   "unowned_beyond_pt": 132.53,
+   "unowned_beyond_m": 2.34
   },
   "quantities": [
    {
@@ -1650,11 +1648,11 @@
     "base": "S01-P5",
     "dn": 110,
     "system": "S01",
-    "physical_pipe_count": 4,
-    "confirmed_horizontal_m": 14.236,
+    "physical_pipe_count": 3,
+    "confirmed_horizontal_m": 6.85,
     "confirmed_vertical_m": 0.99,
-    "confirmed_total_m": 15.226,
-    "horizontal_pdf_units": 807.1,
+    "confirmed_total_m": 7.84,
+    "horizontal_pdf_units": 388.318,
     "ambiguous_m": 3.286,
     "vertical_known": true,
     "in_hatched_area_m": 0.0,
@@ -1662,15 +1660,14 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_3c29be1d753d",
      "pp_6c632d4818d3",
      "pp_707a99d4fbef",
      "pp_8265176dc230"
     ],
     "ambiguous_pdf_units": 186.299,
-    "label_count": 6,
-    "riser_count_from_labels": 8,
-    "riser_count": 1,
+    "label_count": 5,
+    "riser_count_from_labels": 7,
+    "riser_count": 0,
     "vertical_m": 0.99
    },
    {
@@ -1706,24 +1703,25 @@
     "base": "S01-P5",
     "dn": 75,
     "system": "S01",
-    "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 2.193,
+    "physical_pipe_count": 2,
+    "confirmed_horizontal_m": 2.564,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 2.193,
-    "horizontal_pdf_units": 124.312,
-    "ambiguous_m": 0.0,
+    "confirmed_total_m": 2.564,
+    "horizontal_pdf_units": 145.358,
+    "ambiguous_m": 4.854,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_7dd4116f967a"
+     "pp_7dd4116f967a",
+     "pp_ae67bb2a7569"
     ],
+    "ambiguous_pdf_units": 275.21,
     "label_count": 5,
     "riser_count_from_labels": 5,
     "riser_count": 5,
-    "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -1757,11 +1755,11 @@
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 17,
-    "confirmed_horizontal_m": 65.07,
+    "physical_pipe_count": 16,
+    "confirmed_horizontal_m": 64.051,
     "confirmed_vertical_m": 1.4,
-    "confirmed_total_m": 66.47,
-    "horizontal_pdf_units": 3688.982,
+    "confirmed_total_m": 65.451,
+    "horizontal_pdf_units": 3631.255,
     "ambiguous_m": 7.936,
     "vertical_known": true,
     "in_hatched_area_m": 0.0,
@@ -1774,7 +1772,6 @@
      "pp_0abcb02364d5",
      "pp_0d31bd5b65ba",
      "pp_245fbf924e98",
-     "pp_343f440e3ada",
      "pp_75ec71c3308d",
      "pp_7c78c96d65e6",
      "pp_80a42fabaf89",
@@ -1788,9 +1785,9 @@
      "pp_fa63efcd5899"
     ],
     "ambiguous_pdf_units": 449.899,
-    "label_count": 15,
-    "riser_count_from_labels": 11,
-    "riser_count": 8,
+    "label_count": 16,
+    "riser_count_from_labels": 10,
+    "riser_count": 7,
     "vertical_m": 1.4
    },
    {
@@ -2122,13 +2119,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 105,
-   "confirmed_horizontal_m": 395.021,
+   "physical_pipes": 104,
+   "confirmed_horizontal_m": 386.987,
    "confirmed_vertical_m": 4.28,
-   "confirmed_total_m": 399.301,
-   "ambiguous_m": 18.439,
+   "confirmed_total_m": 391.267,
+   "ambiguous_m": 23.293,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 28
+   "riser_labels": 26
   },
   "n_issues": 0,
   "blocking": 0,
@@ -2138,7 +2135,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0121/clean.pdf",
   "input_sha256": "4ecc369de69487b7",
-  "seconds": 19.4,
+  "seconds": 16.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -2148,13 +2145,13 @@
   "coverage": {
    "designations": 14,
    "with_dn": null,
-   "leaders": 30,
-   "verified_attachments": 23,
+   "leaders": 28,
+   "verified_attachments": 21,
    "ambiguous_attachments": 4,
    "no_attachments": 3,
    "anchor_states": {
     "AMBIGUOUS_PIPE_ATTACHMENT": 4,
-    "VERIFIED_PIPE_ATTACHMENT": 23,
+    "VERIFIED_PIPE_ATTACHMENT": 21,
     "NO_PIPE_ATTACHMENT": 3
    },
    "pipe_names": 14,
@@ -2162,12 +2159,12 @@
    "without_metres": [
     "S01-P3"
    ],
-   "physical_pipes": 32,
-   "unowned_m": 1.2,
-   "ambiguous_m": 5.47,
+   "physical_pipes": 27,
+   "unowned_m": 5.4,
+   "ambiguous_m": 3.68,
    "claimed_m": 0.51,
    "reconciliation": "VALID",
-   "named_vs_measured": 95.5
+   "named_vs_measured": 93.9
   },
   "names_read": [
    "KV01-X31",
@@ -2199,21 +2196,20 @@
    "VVC01-X7-32"
   ],
   "frontiers": {
-   "frontiers": 67,
-   "pipes": 32,
+   "frontiers": 56,
+   "pipes": 27,
    "silent_pipes": [],
    "by_reason": {
-    "AMBIGUOUS_JUNCTION": 5,
-    "FLOW_BUDGET": 2,
+    "AMBIGUOUS_JUNCTION": 3,
     "FREE_END": 14,
     "REAL_DESIGNATION_BOUNDARY": 4,
-    "SYMBOL": 31,
+    "SYMBOL": 27,
     "UNOWNED_CONTINUATION": 1,
-    "VERTICAL": 10
+    "VERTICAL": 7
    },
-   "real_boundaries": 59,
+   "real_boundaries": 52,
    "lossy_boundaries": 1,
-   "open_boundaries": 7,
+   "open_boundaries": 3,
    "unowned_beyond_pt": 8.2,
    "unowned_beyond_m": 0.14
   },
@@ -2351,12 +2347,12 @@
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 16,
-    "confirmed_horizontal_m": 42.049,
+    "physical_pipe_count": 11,
+    "confirmed_horizontal_m": 38.999,
     "confirmed_vertical_m": 0.5,
-    "confirmed_total_m": 42.549,
-    "horizontal_pdf_units": 2383.905,
-    "ambiguous_m": 5.466,
+    "confirmed_total_m": 39.499,
+    "horizontal_pdf_units": 2210.955,
+    "ambiguous_m": 3.675,
     "vertical_known": true,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
@@ -2365,25 +2361,20 @@
     "pipe_ids": [
      "pp_104628cdf382",
      "pp_47b5f86730ac",
-     "pp_59996edf6135",
      "pp_5e07ae6f5ef6",
      "pp_640ad2e3df89",
-     "pp_806bc77d5916",
      "pp_89e321ff4420",
-     "pp_8d080d69879b",
-     "pp_93887fa58477",
      "pp_96f777563235",
-     "pp_9cca4c5f857d",
      "pp_ad7c487b0d3c",
      "pp_bd62ddc84b2f",
      "pp_dfb4fab3be81",
      "pp_e043ed7fdfc2",
      "pp_f46ac686f027"
     ],
-    "ambiguous_pdf_units": 309.859,
-    "label_count": 11,
-    "riser_count_from_labels": 3,
-    "riser_count": 6,
+    "ambiguous_pdf_units": 208.352,
+    "label_count": 9,
+    "riser_count_from_labels": 1,
+    "riser_count": 4,
     "vertical_m": 0.5
    },
    {
@@ -2516,13 +2507,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 32,
-   "confirmed_horizontal_m": 198.235,
+   "physical_pipes": 27,
+   "confirmed_horizontal_m": 195.185,
    "confirmed_vertical_m": 0.9,
-   "confirmed_total_m": 199.135,
-   "ambiguous_m": 5.466,
+   "confirmed_total_m": 196.085,
+   "ambiguous_m": 3.675,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 7
+   "riser_labels": 5
   },
   "n_issues": 0,
   "blocking": 0,
@@ -2532,7 +2523,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0122/clean.pdf",
   "input_sha256": "7a4d549c4841fda1",
-  "seconds": 65.3,
+  "seconds": 49.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -2542,14 +2533,14 @@
   "coverage": {
    "designations": 25,
    "with_dn": null,
-   "leaders": 126,
-   "verified_attachments": 75,
+   "leaders": 119,
+   "verified_attachments": 73,
    "ambiguous_attachments": 28,
-   "no_attachments": 23,
+   "no_attachments": 18,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 75,
+    "VERIFIED_PIPE_ATTACHMENT": 73,
     "AMBIGUOUS_PIPE_ATTACHMENT": 28,
-    "NO_PIPE_ATTACHMENT": 23
+    "NO_PIPE_ATTACHMENT": 18
    },
    "pipe_names": 25,
    "pipe_names_with_metres": 23,
@@ -2557,12 +2548,12 @@
     "S01-P3",
     "VV01-X7-20-F50"
    ],
-   "physical_pipes": 161,
-   "unowned_m": 33.22,
+   "physical_pipes": 160,
+   "unowned_m": 33.52,
    "ambiguous_m": 11.67,
    "claimed_m": 20.44,
    "reconciliation": "VALID",
-   "named_vs_measured": 89.6
+   "named_vs_measured": 89.5
   },
   "names_read": [
    "KV01-X31",
@@ -2620,8 +2611,8 @@
    "VVC01-X7-32"
   ],
   "frontiers": {
-   "frontiers": 348,
-   "pipes": 161,
+   "frontiers": 346,
+   "pipes": 160,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 12,
@@ -2632,11 +2623,11 @@
     "REAL_DESIGNATION_BOUNDARY": 11,
     "REAL_DN_BOUNDARY": 6,
     "REPRESENTATION_CHANGE": 4,
-    "SYMBOL": 190,
+    "SYMBOL": 189,
     "UNOWNED_CONTINUATION": 2,
-    "VERTICAL": 71
+    "VERTICAL": 70
    },
-   "real_boundaries": 316,
+   "real_boundaries": 314,
    "lossy_boundaries": 18,
    "open_boundaries": 14,
    "unowned_beyond_pt": 0.27,
@@ -2735,8 +2726,8 @@
      "pp_1a6f7b029cae",
      "pp_e4f2d4577656"
     ],
-    "label_count": 3,
-    "riser_count_from_labels": 3,
+    "label_count": 2,
+    "riser_count_from_labels": 2,
     "riser_count": 2,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -2929,11 +2920,11 @@
     "base": "SF01-P3",
     "dn": 75,
     "system": "SF01",
-    "physical_pipe_count": 6,
-    "confirmed_horizontal_m": 1.47,
+    "physical_pipe_count": 5,
+    "confirmed_horizontal_m": 1.174,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 1.47,
-    "horizontal_pdf_units": 83.354,
+    "confirmed_total_m": 1.174,
+    "horizontal_pdf_units": 66.556,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -2944,13 +2935,12 @@
      "pp_4ca92bb95f55",
      "pp_7997388c6a91",
      "pp_842cddf55cfc",
-     "pp_957341e84456",
      "pp_c22acfb165f0",
      "pp_de72eba6876e"
     ],
-    "label_count": 5,
-    "riser_count_from_labels": 5,
-    "riser_count": 5,
+    "label_count": 4,
+    "riser_count_from_labels": 4,
+    "riser_count": 4,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
@@ -3430,13 +3420,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 161,
-   "confirmed_horizontal_m": 523.665,
+   "physical_pipes": 160,
+   "confirmed_horizontal_m": 523.369,
    "confirmed_vertical_m": 0.7,
-   "confirmed_total_m": 524.365,
+   "confirmed_total_m": 524.069,
    "ambiguous_m": 11.666,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 39
+   "riser_labels": 38
   },
   "n_issues": 0,
   "blocking": 0,
@@ -3446,7 +3436,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0123/clean.pdf",
   "input_sha256": "f3af362ab82b6623",
-  "seconds": 28.9,
+  "seconds": 22.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -3456,14 +3446,14 @@
   "coverage": {
    "designations": 30,
    "with_dn": null,
-   "leaders": 132,
-   "verified_attachments": 58,
+   "leaders": 104,
+   "verified_attachments": 52,
    "ambiguous_attachments": 43,
-   "no_attachments": 31,
+   "no_attachments": 9,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 58,
+    "VERIFIED_PIPE_ATTACHMENT": 52,
     "AMBIGUOUS_PIPE_ATTACHMENT": 43,
-    "NO_PIPE_ATTACHMENT": 31
+    "NO_PIPE_ATTACHMENT": 9
    },
    "pipe_names": 30,
    "pipe_names_with_metres": 25,
@@ -3474,12 +3464,12 @@
     "VS11-S13-42-F60",
     "VV01-X7-20-F50"
    ],
-   "physical_pipes": 103,
-   "unowned_m": 50.33,
-   "ambiguous_m": 17.11,
-   "claimed_m": 2.97,
+   "physical_pipes": 100,
+   "unowned_m": 52.25,
+   "ambiguous_m": 16.66,
+   "claimed_m": 3.02,
    "reconciliation": "VALID",
-   "named_vs_measured": 82.8
+   "named_vs_measured": 82.4
   },
   "names_read": [
    "KV01-K5",
@@ -3544,8 +3534,8 @@
    "VVC01-X7-32"
   ],
   "frontiers": {
-   "frontiers": 212,
-   "pipes": 103,
+   "frontiers": 205,
+   "pipes": 100,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 8,
@@ -3555,13 +3545,13 @@
     "FLOW_BUDGET": 2,
     "FREE_END": 16,
     "REAL_DESIGNATION_BOUNDARY": 5,
-    "REAL_DN_BOUNDARY": 8,
+    "REAL_DN_BOUNDARY": 6,
     "REPRESENTATION_CHANGE": 1,
-    "SYMBOL": 110,
+    "SYMBOL": 121,
     "UNOWNED_CONTINUATION": 2,
-    "VERTICAL": 56
+    "VERTICAL": 40
    },
-   "real_boundaries": 197,
+   "real_boundaries": 190,
    "lossy_boundaries": 5,
    "open_boundaries": 10,
    "unowned_beyond_pt": 74.56,
@@ -3816,23 +3806,23 @@
     "dn": 110,
     "system": "SF01",
     "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 9.637,
+    "confirmed_horizontal_m": 10.562,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 9.637,
-    "horizontal_pdf_units": 546.371,
-    "ambiguous_m": 0.0,
+    "confirmed_total_m": 10.562,
+    "horizontal_pdf_units": 598.811,
+    "ambiguous_m": 2.726,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_193af153652c"
+     "pp_1c18d62821cc"
     ],
+    "ambiguous_pdf_units": 154.533,
     "label_count": 1,
     "riser_count": 0,
     "riser_count_from_labels": 0,
-    "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -3840,30 +3830,27 @@
     "base": "SF01-P5",
     "dn": 75,
     "system": "SF01",
-    "physical_pipe_count": 7,
-    "confirmed_horizontal_m": 6.436,
+    "physical_pipe_count": 4,
+    "confirmed_horizontal_m": 4.245,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 6.436,
-    "horizontal_pdf_units": 364.871,
-    "ambiguous_m": 8.867,
+    "confirmed_total_m": 4.245,
+    "horizontal_pdf_units": 240.665,
+    "ambiguous_m": 5.693,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_2aa59411855e",
      "pp_81c9433eb8b8",
      "pp_b34470d345f7",
-     "pp_b484bc3fb78f",
-     "pp_d5d84f467eb5",
      "pp_f9b5436355e1",
      "pp_f9b5c3339bdc"
     ],
-    "ambiguous_pdf_units": 502.724,
-    "label_count": 8,
-    "riser_count_from_labels": 12,
-    "riser_count": 12,
+    "ambiguous_pdf_units": 322.737,
+    "label_count": 4,
+    "riser_count_from_labels": 5,
+    "riser_count": 5,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -4059,7 +4046,7 @@
      "pp_247c3d4c8af1"
     ],
     "label_count": 1,
-    "riser_count": 1,
+    "riser_count": 0,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -4111,7 +4098,7 @@
      "pp_8064e9c166ae",
      "pp_c136065c9f35"
     ],
-    "label_count": 3,
+    "label_count": 2,
     "riser_count": 1,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
@@ -4367,13 +4354,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 103,
-   "confirmed_horizontal_m": 443.641,
+   "physical_pipes": 100,
+   "confirmed_horizontal_m": 442.375,
    "confirmed_vertical_m": 3.0,
-   "confirmed_total_m": 446.641,
-   "ambiguous_m": 17.108,
+   "confirmed_total_m": 445.375,
+   "ambiguous_m": 16.66,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 30
+   "riser_labels": 22
   },
   "n_issues": 0,
   "blocking": 0,
@@ -4383,7 +4370,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0124/clean.pdf",
   "input_sha256": "b3b7b1df765bb650",
-  "seconds": 30.0,
+  "seconds": 25.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -4393,14 +4380,14 @@
   "coverage": {
    "designations": 24,
    "with_dn": null,
-   "leaders": 169,
-   "verified_attachments": 62,
-   "ambiguous_attachments": 46,
-   "no_attachments": 61,
+   "leaders": 158,
+   "verified_attachments": 60,
+   "ambiguous_attachments": 41,
+   "no_attachments": 57,
    "anchor_states": {
-    "NO_PIPE_ATTACHMENT": 61,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 46,
-    "VERIFIED_PIPE_ATTACHMENT": 62
+    "NO_PIPE_ATTACHMENT": 57,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 41,
+    "VERIFIED_PIPE_ATTACHMENT": 60
    },
    "pipe_names": 24,
    "pipe_names_with_metres": 19,
@@ -4411,12 +4398,12 @@
     "VV01-X7-40-F60",
     "VVC01-X7-32"
    ],
-   "physical_pipes": 109,
-   "unowned_m": 59.12,
-   "ambiguous_m": 10.59,
-   "claimed_m": 13.22,
+   "physical_pipes": 106,
+   "unowned_m": 63.93,
+   "ambiguous_m": 8.11,
+   "claimed_m": 12.54,
    "reconciliation": "VALID",
-   "named_vs_measured": 75.2
+   "named_vs_measured": 74.3
   },
   "names_read": [
    "FJV01-S6-65-F52",
@@ -4453,7 +4440,6 @@
    "KV01-X7-50-W40",
    "KV02-X7-25-W40",
    "SF01-P3-75",
-   "SF01-P5",
    "SF01-P5-110",
    "SF01-P5-75",
    "VP01-S13-28-F60",
@@ -4470,8 +4456,8 @@
    "VVC01-X7-40"
   ],
   "frontiers": {
-   "frontiers": 221,
-   "pipes": 109,
+   "frontiers": 214,
+   "pipes": 106,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 6,
@@ -4480,14 +4466,14 @@
     "DECLARED_BOUNDARY": 4,
     "FLOW_BUDGET": 2,
     "FREE_END": 8,
-    "REAL_DESIGNATION_BOUNDARY": 8,
+    "REAL_DESIGNATION_BOUNDARY": 6,
     "REAL_DN_BOUNDARY": 4,
     "REPRESENTATION_CHANGE": 18,
-    "SYMBOL": 115,
+    "SYMBOL": 112,
     "UNOWNED_CONTINUATION": 3,
-    "VERTICAL": 36
+    "VERTICAL": 34
    },
-   "real_boundaries": 180,
+   "real_boundaries": 173,
    "lossy_boundaries": 33,
    "open_boundaries": 8,
    "unowned_beyond_pt": 70.27,
@@ -4736,7 +4722,7 @@
     "confirmed_vertical_m": 0.0,
     "confirmed_total_m": 1.016,
     "horizontal_pdf_units": 57.578,
-    "ambiguous_m": 3.163,
+    "ambiguous_m": 3.486,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
@@ -4746,7 +4732,7 @@
      "pp_5757725271d2",
      "pp_5e904af7094a"
     ],
-    "ambiguous_pdf_units": 179.294,
+    "ambiguous_pdf_units": 197.623,
     "label_count": 1,
     "riser_count": 0,
     "riser_count_from_labels": 0,
@@ -4784,7 +4770,7 @@
     "confirmed_vertical_m": 0.0,
     "confirmed_total_m": 0.294,
     "horizontal_pdf_units": 16.68,
-    "ambiguous_m": 0.0,
+    "ambiguous_m": 0.879,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
@@ -4793,35 +4779,10 @@
     "pipe_ids": [
      "pp_dd404a56394f"
     ],
+    "ambiguous_pdf_units": 49.811,
     "label_count": 3,
     "riser_count_from_labels": 5,
     "riser_count": 3,
-    "ambiguous_pdf_units": 0.0,
-    "vertical_m": "UNKNOWN"
-   },
-   {
-    "designation": "SF01-P5",
-    "base": "SF01-P5",
-    "dn": null,
-    "system": "SF01",
-    "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 0.879,
-    "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 0.879,
-    "horizontal_pdf_units": 49.811,
-    "ambiguous_m": 3.679,
-    "vertical_known": false,
-    "in_hatched_area_m": 0.0,
-    "declared_m": 0.0,
-    "double_line_m": 0.0,
-    "state": "CONFIRMED",
-    "pipe_ids": [
-     "pp_6bc72122acaf"
-    ],
-    "ambiguous_pdf_units": 208.585,
-    "label_count": 1,
-    "riser_count": 1,
-    "riser_count_from_labels": 0,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -4880,11 +4841,11 @@
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 19,
-    "confirmed_horizontal_m": 34.223,
+    "physical_pipe_count": 17,
+    "confirmed_horizontal_m": 32.618,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 34.223,
-    "horizontal_pdf_units": 1940.175,
+    "confirmed_total_m": 32.618,
+    "horizontal_pdf_units": 1849.202,
     "ambiguous_m": 1.874,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -4893,7 +4854,6 @@
     "state": "CONFIRMED",
     "pipe_ids": [
      "pp_0ee80cb61107",
-     "pp_2abe364c598e",
      "pp_55c5c762142d",
      "pp_5b37aa615eaf",
      "pp_7d1df1aff23e",
@@ -4907,15 +4867,14 @@
      "pp_c70e1e3c2317",
      "pp_db3f8b5dbd1b",
      "pp_e1ce05b0ab8a",
-     "pp_e652b8d03aab",
      "pp_f226588d4024",
      "pp_f9ae8a29addf",
      "pp_fd5d7c4d5c85"
     ],
     "ambiguous_pdf_units": 106.23,
-    "label_count": 13,
-    "riser_count_from_labels": 10,
-    "riser_count": 8,
+    "label_count": 12,
+    "riser_count_from_labels": 8,
+    "riser_count": 7,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -5016,7 +4975,7 @@
      "pp_fb9b7137df3f"
     ],
     "label_count": 0,
-    "riser_count": 1,
+    "riser_count": 2,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -5179,13 +5138,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 109,
-   "confirmed_horizontal_m": 282.112,
+   "physical_pipes": 106,
+   "confirmed_horizontal_m": 279.628,
    "confirmed_vertical_m": 1.32,
-   "confirmed_total_m": 283.432,
-   "ambiguous_m": 10.59,
+   "confirmed_total_m": 280.948,
+   "ambiguous_m": 8.113,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 22
+   "riser_labels": 21
   },
   "n_issues": 0,
   "blocking": 0,
@@ -5195,7 +5154,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0211/clean.pdf",
   "input_sha256": "e872025eacb08a62",
-  "seconds": 13.2,
+  "seconds": 11.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -5205,28 +5164,29 @@
   "coverage": {
    "designations": 7,
    "with_dn": null,
-   "leaders": 45,
-   "verified_attachments": 39,
-   "ambiguous_attachments": 1,
-   "no_attachments": 5,
+   "leaders": 20,
+   "verified_attachments": 19,
+   "ambiguous_attachments": 0,
+   "no_attachments": 1,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 39,
-    "NO_PIPE_ATTACHMENT": 5,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 1
+    "VERIFIED_PIPE_ATTACHMENT": 19,
+    "NO_PIPE_ATTACHMENT": 1
    },
    "pipe_names": 7,
-   "pipe_names_with_metres": 4,
+   "pipe_names_with_metres": 2,
    "without_metres": [
     "KV01-X31",
     "S01-P5",
+    "VP01-S13-35-F60",
+    "VS11-S13-35-F60",
     "VV01-X31"
    ],
-   "physical_pipes": 46,
-   "unowned_m": 33.95,
+   "physical_pipes": 19,
+   "unowned_m": 5.67,
    "ambiguous_m": 0.0,
    "claimed_m": 0.18,
    "reconciliation": "VALID",
-   "named_vs_measured": 73.3
+   "named_vs_measured": 93.4
   },
   "names_read": [
    "KV01-X31",
@@ -5238,88 +5198,34 @@
    "VV01-X31"
   ],
   "names_with_metres": [
-   "VP01-S13-35-F60",
-   "VS11-S13-35-F60",
    "VS21-S13-15-F50"
   ],
   "frontiers": {
-   "frontiers": 94,
-   "pipes": 46,
+   "frontiers": 40,
+   "pipes": 19,
    "silent_pipes": [],
    "by_reason": {
-    "BROKEN_CONTINUITY": 50,
-    "FREE_END": 2,
-    "REAL_SYSTEM_BOUNDARY": 2,
-    "SYMBOL": 20,
+    "FREE_END": 1,
+    "SYMBOL": 19,
     "VERTICAL": 20
    },
-   "real_boundaries": 44,
-   "lossy_boundaries": 50,
+   "real_boundaries": 40,
+   "lossy_boundaries": 0,
    "open_boundaries": 0,
    "unowned_beyond_pt": 0.0,
    "unowned_beyond_m": 0.0
   },
   "quantities": [
    {
-    "designation": "VP01-S13-35-F60",
-    "base": "VP01-S13-F60",
-    "dn": 35,
-    "system": "VP01",
-    "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 9.51,
-    "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 9.51,
-    "horizontal_pdf_units": 539.16,
-    "ambiguous_m": 0.0,
-    "vertical_known": false,
-    "in_hatched_area_m": 0.0,
-    "declared_m": 0.0,
-    "double_line_m": 0.0,
-    "state": "CONFIRMED",
-    "pipe_ids": [
-     "pp_bcd6c8af2ca3"
-    ],
-    "label_count": 3,
-    "riser_count": 0,
-    "riser_count_from_labels": 0,
-    "ambiguous_pdf_units": 0.0,
-    "vertical_m": "UNKNOWN"
-   },
-   {
-    "designation": "VS11-S13-35-F60",
-    "base": "VS11-S13-F60",
-    "dn": 35,
-    "system": "VS11",
-    "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 7.199,
-    "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 7.199,
-    "horizontal_pdf_units": 408.12,
-    "ambiguous_m": 0.0,
-    "vertical_known": false,
-    "in_hatched_area_m": 0.0,
-    "declared_m": 0.0,
-    "double_line_m": 0.0,
-    "state": "CONFIRMED",
-    "pipe_ids": [
-     "pp_36271ee41938"
-    ],
-    "label_count": 1,
-    "riser_count": 0,
-    "riser_count_from_labels": 0,
-    "ambiguous_pdf_units": 0.0,
-    "vertical_m": "UNKNOWN"
-   },
-   {
     "designation": "VS21-S13-15-F50",
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 44,
-    "confirmed_horizontal_m": 113.655,
+    "physical_pipe_count": 19,
+    "confirmed_horizontal_m": 111.954,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 113.655,
-    "horizontal_pdf_units": 6443.451,
+    "confirmed_total_m": 111.954,
+    "horizontal_pdf_units": 6346.986,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -5327,66 +5233,41 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_00c088e7a250",
-     "pp_05c2907b6bf1",
      "pp_0786e33c83a7",
-     "pp_0a8a980ad45f",
-     "pp_0b8b6e5cc6a5",
      "pp_0d9e2bff14f4",
-     "pp_0dc36a49b61c",
-     "pp_13401fe19e62",
-     "pp_19adc8968492",
      "pp_1bdde7b1bb20",
      "pp_1d95d245b7a0",
      "pp_1e4e10f18803",
      "pp_1f03a2b2714b",
      "pp_1fdef2910f03",
-     "pp_273598b74931",
      "pp_31279b12977a",
      "pp_31a5ef850840",
-     "pp_391eb475d960",
-     "pp_3a46941d13e9",
      "pp_40bb71bd3635",
-     "pp_419a80f72b7f",
      "pp_495e2200b9e0",
      "pp_4a752429679c",
      "pp_4f21da76182c",
-     "pp_645f39768a25",
-     "pp_732b142d62c9",
-     "pp_7b2c1a02f786",
-     "pp_861a5a8e5c1a",
-     "pp_869cf1e44659",
-     "pp_9707e76cc170",
      "pp_9c5769f8e90d",
      "pp_a0475c5fb7c6",
      "pp_a1c5b11c8907",
      "pp_adc5a9b3dc52",
-     "pp_bb43d126b722",
-     "pp_be101ef44a6b",
-     "pp_e80164ffc8a2",
-     "pp_eb19a81e07e5",
      "pp_edca56e8ac1f",
-     "pp_f4d95dfdd459",
-     "pp_f596c2ce2073",
-     "pp_f62ed95ce2c4",
-     "pp_f910cadfe9e5",
-     "pp_f9f099d473dc"
+     "pp_f4d95dfdd459"
     ],
-    "label_count": 24,
-    "riser_count_from_labels": 14,
-    "riser_count": 11,
+    "label_count": 19,
+    "riser_count_from_labels": 13,
+    "riser_count": 12,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    }
   ],
   "totals": {
-   "physical_pipes": 46,
-   "confirmed_horizontal_m": 130.364,
+   "physical_pipes": 19,
+   "confirmed_horizontal_m": 111.954,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 130.364,
+   "confirmed_total_m": 111.954,
    "ambiguous_m": 0.0,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 11
+   "riser_labels": 12
   },
   "n_issues": 0,
   "blocking": 0,
@@ -5396,7 +5277,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0212/clean.pdf",
   "input_sha256": "2a0caed528287327",
-  "seconds": 21.4,
+  "seconds": 20.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -5406,24 +5287,24 @@
   "coverage": {
    "designations": 25,
    "with_dn": null,
-   "leaders": 96,
-   "verified_attachments": 55,
-   "ambiguous_attachments": 31,
-   "no_attachments": 10,
+   "leaders": 90,
+   "verified_attachments": 53,
+   "ambiguous_attachments": 30,
+   "no_attachments": 7,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 55,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 31,
-    "NO_PIPE_ATTACHMENT": 10
+    "VERIFIED_PIPE_ATTACHMENT": 53,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 30,
+    "NO_PIPE_ATTACHMENT": 7
    },
    "pipe_names": 25,
    "pipe_names_with_metres": 25,
    "without_metres": [],
-   "physical_pipes": 79,
-   "unowned_m": 10.42,
+   "physical_pipes": 77,
+   "unowned_m": 10.7,
    "ambiguous_m": 7.37,
    "claimed_m": 2.87,
    "reconciliation": "VALID",
-   "named_vs_measured": 93.7
+   "named_vs_measured": 93.6
   },
   "names_read": [
    "KV01-X31",
@@ -5473,8 +5354,8 @@
    "VVC01-X7-20"
   ],
   "frontiers": {
-   "frontiers": 168,
-   "pipes": 79,
+   "frontiers": 164,
+   "pipes": 77,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 16,
@@ -5483,11 +5364,11 @@
     "FREE_END": 5,
     "REAL_DESIGNATION_BOUNDARY": 4,
     "REAL_DN_BOUNDARY": 12,
-    "SYMBOL": 109,
+    "SYMBOL": 107,
     "UNOWNED_CONTINUATION": 2,
-    "VERTICAL": 11
+    "VERTICAL": 9
    },
-   "real_boundaries": 143,
+   "real_boundaries": 139,
    "lossy_boundaries": 9,
    "open_boundaries": 16,
    "unowned_beyond_pt": 10.97,
@@ -5636,7 +5517,7 @@
     ],
     "ambiguous_pdf_units": 128.399,
     "label_count": 6,
-    "riser_count_from_labels": 6,
+    "riser_count_from_labels": 5,
     "riser_count": 1,
     "vertical_m": 0.08
    },
@@ -5670,11 +5551,11 @@
     "base": "S01-P5",
     "dn": 75,
     "system": "S01",
-    "physical_pipe_count": 5,
-    "confirmed_horizontal_m": 0.798,
+    "physical_pipe_count": 3,
+    "confirmed_horizontal_m": 0.523,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 0.798,
-    "horizontal_pdf_units": 45.253,
+    "confirmed_total_m": 0.523,
+    "horizontal_pdf_units": 29.653,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -5682,15 +5563,13 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_07aa1d2c8568",
      "pp_10f603c7053b",
      "pp_28425b4641ae",
-     "pp_ae54a1b8c2a7",
      "pp_e8209c598e36"
     ],
-    "label_count": 8,
-    "riser_count_from_labels": 8,
-    "riser_count": 3,
+    "label_count": 7,
+    "riser_count_from_labels": 7,
+    "riser_count": 2,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
@@ -5806,9 +5685,9 @@
      "pp_ef362950385c"
     ],
     "ambiguous_pdf_units": 37.652,
-    "label_count": 18,
-    "riser_count_from_labels": 8,
-    "riser_count": 7,
+    "label_count": 17,
+    "riser_count_from_labels": 7,
+    "riser_count": 6,
     "vertical_m": 0.64
    },
    {
@@ -6007,13 +5886,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 79,
-   "confirmed_horizontal_m": 354.756,
+   "physical_pipes": 77,
+   "confirmed_horizontal_m": 354.481,
    "confirmed_vertical_m": 1.92,
-   "confirmed_total_m": 356.676,
+   "confirmed_total_m": 356.401,
    "ambiguous_m": 7.372,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 12
+   "riser_labels": 10
   },
   "n_issues": 0,
   "blocking": 0,
@@ -6023,7 +5902,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0221/clean.pdf",
   "input_sha256": "916af1ba537580a1",
-  "seconds": 12.3,
+  "seconds": 12.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -6033,12 +5912,12 @@
   "coverage": {
    "designations": 7,
    "with_dn": null,
-   "leaders": 28,
-   "verified_attachments": 23,
+   "leaders": 26,
+   "verified_attachments": 21,
    "ambiguous_attachments": 0,
    "no_attachments": 5,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 23,
+    "VERIFIED_PIPE_ATTACHMENT": 21,
     "NO_PIPE_ATTACHMENT": 5
    },
    "pipe_names": 7,
@@ -6047,12 +5926,12 @@
     "KV01-X31",
     "VV01-X31"
    ],
-   "physical_pipes": 21,
+   "physical_pipes": 20,
    "unowned_m": 67.55,
-   "ambiguous_m": 7.81,
-   "claimed_m": 6.68,
+   "ambiguous_m": 6.97,
+   "claimed_m": 8.02,
    "reconciliation": "VALID",
-   "named_vs_measured": 45.7
+   "named_vs_measured": 46.3
   },
   "names_read": [
    "KV01-X31",
@@ -6070,20 +5949,20 @@
    "VS21-S13-15-F50"
   ],
   "frontiers": {
-   "frontiers": 52,
-   "pipes": 21,
+   "frontiers": 51,
+   "pipes": 20,
    "silent_pipes": [],
    "by_reason": {
-    "AMBIGUOUS_JUNCTION": 9,
+    "AMBIGUOUS_JUNCTION": 7,
     "FLOW_BUDGET": 2,
-    "FREE_END": 2,
+    "FREE_END": 3,
     "REAL_DN_BOUNDARY": 4,
     "SYMBOL": 23,
     "VERTICAL": 12
    },
-   "real_boundaries": 41,
+   "real_boundaries": 42,
    "lossy_boundaries": 0,
-   "open_boundaries": 11,
+   "open_boundaries": 9,
    "unowned_beyond_pt": 0.0,
    "unowned_beyond_m": 0.0
   },
@@ -6121,10 +6000,10 @@
     "dn": 160,
     "system": "S01",
     "physical_pipe_count": 2,
-    "confirmed_horizontal_m": 9.106,
+    "confirmed_horizontal_m": 10.538,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 9.106,
-    "horizontal_pdf_units": 516.231,
+    "confirmed_total_m": 10.538,
+    "horizontal_pdf_units": 597.455,
     "ambiguous_m": 0.571,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -6132,8 +6011,8 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_738c9692983a",
-     "pp_c9ee19eb0903"
+     "pp_499ff03756fa",
+     "pp_738c9692983a"
     ],
     "ambiguous_pdf_units": 32.348,
     "label_count": 2,
@@ -6146,26 +6025,25 @@
     "base": "S01-P5",
     "dn": 75,
     "system": "S01",
-    "physical_pipe_count": 4,
-    "confirmed_horizontal_m": 4.723,
+    "physical_pipe_count": 3,
+    "confirmed_horizontal_m": 4.226,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 4.723,
-    "horizontal_pdf_units": 267.779,
-    "ambiguous_m": 1.77,
+    "confirmed_total_m": 4.226,
+    "horizontal_pdf_units": 239.592,
+    "ambiguous_m": 0.934,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_6fbdfefa7bd8",
      "pp_8d9acb0af20f",
      "pp_bbbf228f23bf",
      "pp_fa35c879aa44"
     ],
-    "ambiguous_pdf_units": 100.344,
-    "label_count": 5,
-    "riser_count_from_labels": 6,
+    "ambiguous_pdf_units": 52.968,
+    "label_count": 4,
+    "riser_count_from_labels": 5,
     "riser_count": 5,
     "vertical_m": "UNKNOWN"
    },
@@ -6199,21 +6077,21 @@
      "pp_b295c5522752",
      "pp_f8783f7e851b"
     ],
-    "label_count": 10,
-    "riser_count_from_labels": 7,
-    "riser_count": 8,
+    "label_count": 9,
+    "riser_count_from_labels": 6,
+    "riser_count": 7,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    }
   ],
   "totals": {
-   "physical_pipes": 21,
-   "confirmed_horizontal_m": 84.065,
+   "physical_pipes": 20,
+   "confirmed_horizontal_m": 85.0,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 84.065,
-   "ambiguous_m": 7.811,
+   "confirmed_total_m": 85.0,
+   "ambiguous_m": 6.975,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 14
+   "riser_labels": 13
   },
   "n_issues": 0,
   "blocking": 0,
@@ -6223,7 +6101,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0222/clean.pdf",
   "input_sha256": "d233df39397aae36",
-  "seconds": 16.1,
+  "seconds": 15.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -6233,13 +6111,13 @@
   "coverage": {
    "designations": 8,
    "with_dn": null,
-   "leaders": 64,
-   "verified_attachments": 33,
+   "leaders": 62,
+   "verified_attachments": 32,
    "ambiguous_attachments": 0,
-   "no_attachments": 31,
+   "no_attachments": 30,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 33,
-    "NO_PIPE_ATTACHMENT": 31
+    "VERIFIED_PIPE_ATTACHMENT": 32,
+    "NO_PIPE_ATTACHMENT": 30
    },
    "pipe_names": 8,
    "pipe_names_with_metres": 5,
@@ -6398,9 +6276,9 @@
      "pp_fde2fd4f8f32",
      "pp_fe66bf3e79f3"
     ],
-    "label_count": 10,
-    "riser_count_from_labels": 7,
-    "riser_count": 6,
+    "label_count": 9,
+    "riser_count_from_labels": 6,
+    "riser_count": 5,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    }
@@ -6412,7 +6290,7 @@
    "confirmed_total_m": 129.577,
    "ambiguous_m": 4.78,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 14
+   "riser_labels": 13
   },
   "n_issues": 0,
   "blocking": 0,
@@ -6422,7 +6300,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0223/clean.pdf",
   "input_sha256": "3c4342246e9008a1",
-  "seconds": 14.7,
+  "seconds": 13.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -6432,12 +6310,12 @@
   "coverage": {
    "designations": 5,
    "with_dn": null,
-   "leaders": 41,
-   "verified_attachments": 8,
+   "leaders": 40,
+   "verified_attachments": 7,
    "ambiguous_attachments": 4,
    "no_attachments": 29,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 8,
+    "VERIFIED_PIPE_ATTACHMENT": 7,
     "NO_PIPE_ATTACHMENT": 29,
     "AMBIGUOUS_PIPE_ATTACHMENT": 4
    },
@@ -6448,12 +6326,12 @@
     "S01-P5",
     "VV01-X31"
    ],
-   "physical_pipes": 7,
-   "unowned_m": 3.03,
+   "physical_pipes": 5,
+   "unowned_m": 3.85,
    "ambiguous_m": 0.0,
    "claimed_m": 0.0,
    "reconciliation": "VALID",
-   "named_vs_measured": 95.6
+   "named_vs_measured": 94.4
   },
   "names_read": [
    "KV01-X31",
@@ -6467,16 +6345,16 @@
    "VS21-S13-28-F60"
   ],
   "frontiers": {
-   "frontiers": 14,
-   "pipes": 7,
+   "frontiers": 10,
+   "pipes": 5,
    "silent_pipes": [],
    "by_reason": {
     "FREE_END": 2,
     "REAL_DN_BOUNDARY": 2,
-    "SYMBOL": 7,
-    "VERTICAL": 3
+    "SYMBOL": 5,
+    "VERTICAL": 1
    },
-   "real_boundaries": 14,
+   "real_boundaries": 10,
    "lossy_boundaries": 0,
    "open_boundaries": 0,
    "unowned_beyond_pt": 0.0,
@@ -6488,11 +6366,11 @@
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 6,
-    "confirmed_horizontal_m": 91.581,
+    "physical_pipe_count": 4,
+    "confirmed_horizontal_m": 90.666,
     "confirmed_vertical_m": 0.2,
-    "confirmed_total_m": 91.781,
-    "horizontal_pdf_units": 5191.995,
+    "confirmed_total_m": 90.866,
+    "horizontal_pdf_units": 5140.138,
     "ambiguous_m": 0.0,
     "vertical_known": true,
     "in_hatched_area_m": 0.0,
@@ -6500,16 +6378,14 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_264f1252d049",
      "pp_2c860a6790aa",
      "pp_49fba10e06c5",
-     "pp_603b435ecd7d",
      "pp_647cb67b0259",
      "pp_b665df7b8aaa"
     ],
-    "label_count": 7,
-    "riser_count_from_labels": 6,
-    "riser_count": 1,
+    "label_count": 6,
+    "riser_count_from_labels": 5,
+    "riser_count": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": 0.2
    },
@@ -6540,13 +6416,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 7,
-   "confirmed_horizontal_m": 92.064,
+   "physical_pipes": 5,
+   "confirmed_horizontal_m": 91.149,
    "confirmed_vertical_m": 0.2,
-   "confirmed_total_m": 92.264,
+   "confirmed_total_m": 91.349,
    "ambiguous_m": 0.0,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 2
+   "riser_labels": 1
   },
   "n_issues": 0,
   "blocking": 0,
@@ -6556,7 +6432,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0311/clean.pdf",
   "input_sha256": "4c918dc42c8563f8",
-  "seconds": 12.0,
+  "seconds": 11.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -6566,13 +6442,13 @@
   "coverage": {
    "designations": 8,
    "with_dn": null,
-   "leaders": 28,
-   "verified_attachments": 24,
+   "leaders": 26,
+   "verified_attachments": 23,
    "ambiguous_attachments": 0,
-   "no_attachments": 4,
+   "no_attachments": 3,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 24,
-    "NO_PIPE_ATTACHMENT": 4
+    "VERIFIED_PIPE_ATTACHMENT": 23,
+    "NO_PIPE_ATTACHMENT": 3
    },
    "pipe_names": 8,
    "pipe_names_with_metres": 4,
@@ -6731,8 +6607,8 @@
      "pp_b50bb13b865a",
      "pp_ec2e54f9b2a7"
     ],
-    "label_count": 18,
-    "riser_count_from_labels": 10,
+    "label_count": 17,
+    "riser_count_from_labels": 9,
     "riser_count": 7,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": 1.2
@@ -6755,7 +6631,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0312/clean.pdf",
   "input_sha256": "3909a1620fd36293",
-  "seconds": 17.8,
+  "seconds": 17.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -6765,14 +6641,14 @@
   "coverage": {
    "designations": 18,
    "with_dn": null,
-   "leaders": 68,
-   "verified_attachments": 40,
-   "ambiguous_attachments": 23,
+   "leaders": 56,
+   "verified_attachments": 31,
+   "ambiguous_attachments": 20,
    "no_attachments": 5,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 40,
+    "VERIFIED_PIPE_ATTACHMENT": 31,
     "NO_PIPE_ATTACHMENT": 5,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 23
+    "AMBIGUOUS_PIPE_ATTACHMENT": 20
    },
    "pipe_names": 18,
    "pipe_names_with_metres": 16,
@@ -6780,12 +6656,12 @@
     "VP01-S13",
     "VP01-S13-35-F60"
    ],
-   "physical_pipes": 50,
-   "unowned_m": 43.82,
-   "ambiguous_m": 5.58,
+   "physical_pipes": 41,
+   "unowned_m": 47.21,
+   "ambiguous_m": 5.49,
    "claimed_m": 3.21,
    "reconciliation": "VALID",
-   "named_vs_measured": 77.0
+   "named_vs_measured": 75.5
   },
   "names_read": [
    "KV01-X31",
@@ -6821,24 +6697,23 @@
    "VV01-X7-25-F60"
   ],
   "frontiers": {
-   "frontiers": 107,
-   "pipes": 50,
+   "frontiers": 89,
+   "pipes": 41,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 8,
     "BROKEN_CONTINUITY": 11,
     "DECLARED_BOUNDARY": 1,
-    "FLOW_BUDGET": 1,
     "FREE_END": 7,
     "REAL_DESIGNATION_BOUNDARY": 5,
     "REAL_DN_BOUNDARY": 4,
-    "SYMBOL": 58,
+    "SYMBOL": 51,
     "UNOWNED_CONTINUATION": 1,
-    "VERTICAL": 11
+    "VERTICAL": 1
    },
-   "real_boundaries": 86,
+   "real_boundaries": 69,
    "lossy_boundaries": 12,
-   "open_boundaries": 9,
+   "open_boundaries": 8,
    "unowned_beyond_pt": 5.43,
    "unowned_beyond_m": 0.1
   },
@@ -6932,12 +6807,12 @@
     "base": "S01-P5",
     "dn": 110,
     "system": "S01",
-    "physical_pipe_count": 3,
-    "confirmed_horizontal_m": 9.444,
+    "physical_pipe_count": 2,
+    "confirmed_horizontal_m": 9.429,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 9.444,
-    "horizontal_pdf_units": 535.389,
-    "ambiguous_m": 3.453,
+    "confirmed_total_m": 9.429,
+    "horizontal_pdf_units": 534.549,
+    "ambiguous_m": 3.36,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
@@ -6945,13 +6820,12 @@
     "state": "CONFIRMED",
     "pipe_ids": [
      "pp_39da13b35a0f",
-     "pp_8b5c4dd003e0",
      "pp_c7e8afb76e39"
     ],
-    "ambiguous_pdf_units": 195.762,
-    "label_count": 6,
-    "riser_count_from_labels": 2,
-    "riser_count": 2,
+    "ambiguous_pdf_units": 190.482,
+    "label_count": 4,
+    "riser_count_from_labels": 1,
+    "riser_count": 0,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -7035,11 +6909,11 @@
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 17,
-    "confirmed_horizontal_m": 114.09,
+    "physical_pipe_count": 9,
+    "confirmed_horizontal_m": 110.315,
     "confirmed_vertical_m": 0.64,
-    "confirmed_total_m": 114.73,
-    "horizontal_pdf_units": 6468.094,
+    "confirmed_total_m": 110.955,
+    "horizontal_pdf_units": 6254.098,
     "ambiguous_m": 0.0,
     "vertical_known": true,
     "in_hatched_area_m": 0.0,
@@ -7048,26 +6922,18 @@
     "state": "CONFIRMED",
     "pipe_ids": [
      "pp_08e0ce52ce5d",
-     "pp_309f28493988",
-     "pp_380bb2fd3b0c",
      "pp_4729a53087ef",
      "pp_5096216454a5",
      "pp_526638b86a2f",
      "pp_549a664741c5",
      "pp_5d9f159681d5",
-     "pp_841ec20c1357",
-     "pp_91bd0fc67193",
-     "pp_ba056ff1e243",
      "pp_d757e1f9b792",
      "pp_d7fe44532fdb",
-     "pp_db67aa7785fb",
-     "pp_eb5fe99ed195",
-     "pp_eb9784eb4d4b",
-     "pp_f6afc0c88715"
+     "pp_db67aa7785fb"
     ],
-    "label_count": 20,
-    "riser_count_from_labels": 7,
-    "riser_count": 5,
+    "label_count": 14,
+    "riser_count_from_labels": 3,
+    "riser_count": 1,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": 0.64
    },
@@ -7159,13 +7025,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 50,
-   "confirmed_horizontal_m": 224.571,
+   "physical_pipes": 41,
+   "confirmed_horizontal_m": 220.781,
    "confirmed_vertical_m": 0.64,
-   "confirmed_total_m": 225.211,
-   "ambiguous_m": 5.583,
+   "confirmed_total_m": 221.421,
+   "ambiguous_m": 5.49,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 7
+   "riser_labels": 1
   },
   "n_issues": 0,
   "blocking": 0,
@@ -7175,7 +7041,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0321/clean.pdf",
   "input_sha256": "029185080e5de254",
-  "seconds": 16.1,
+  "seconds": 15.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -7185,14 +7051,14 @@
   "coverage": {
    "designations": 11,
    "with_dn": null,
-   "leaders": 41,
-   "verified_attachments": 30,
-   "ambiguous_attachments": 1,
-   "no_attachments": 10,
+   "leaders": 38,
+   "verified_attachments": 24,
+   "ambiguous_attachments": 5,
+   "no_attachments": 9,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 30,
-    "NO_PIPE_ATTACHMENT": 10,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 1
+    "VERIFIED_PIPE_ATTACHMENT": 24,
+    "NO_PIPE_ATTACHMENT": 9,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 5
    },
    "pipe_names": 11,
    "pipe_names_with_metres": 8,
@@ -7201,12 +7067,12 @@
     "VV01-X7-20-F50",
     "VV01-X7VVC01-X7"
    ],
-   "physical_pipes": 54,
-   "unowned_m": 33.16,
-   "ambiguous_m": 14.74,
+   "physical_pipes": 51,
+   "unowned_m": 35.88,
+   "ambiguous_m": 14.81,
    "claimed_m": 2.05,
    "reconciliation": "VALID",
-   "named_vs_measured": 77.2
+   "named_vs_measured": 75.9
   },
   "names_read": [
    "KV01-X31",
@@ -7231,23 +7097,23 @@
    "VV01-X31-16"
   ],
   "frontiers": {
-   "frontiers": 109,
-   "pipes": 54,
+   "frontiers": 103,
+   "pipes": 51,
    "silent_pipes": [],
    "by_reason": {
-    "AMBIGUOUS_JUNCTION": 6,
+    "AMBIGUOUS_JUNCTION": 7,
     "BROKEN_CONTINUITY": 1,
     "FLOW_BUDGET": 2,
     "FREE_END": 10,
     "REAL_DN_BOUNDARY": 2,
     "REPRESENTATION_CHANGE": 1,
-    "SYMBOL": 72,
+    "SYMBOL": 70,
     "UNOWNED_CONTINUATION": 1,
-    "VERTICAL": 14
+    "VERTICAL": 9
    },
-   "real_boundaries": 98,
+   "real_boundaries": 91,
    "lossy_boundaries": 3,
-   "open_boundaries": 8,
+   "open_boundaries": 9,
    "unowned_beyond_pt": 0.48,
    "unowned_beyond_m": 0.01
   },
@@ -7404,12 +7270,12 @@
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 15,
-    "confirmed_horizontal_m": 80.124,
+    "physical_pipe_count": 12,
+    "confirmed_horizontal_m": 76.549,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 80.124,
-    "horizontal_pdf_units": 4542.476,
-    "ambiguous_m": 4.318,
+    "confirmed_total_m": 76.549,
+    "horizontal_pdf_units": 4339.762,
+    "ambiguous_m": 4.391,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
@@ -7417,9 +7283,6 @@
     "state": "CONFIRMED",
     "pipe_ids": [
      "pp_0d67f56eea46",
-     "pp_17a288d7df0f",
-     "pp_1d809bcd040b",
-     "pp_3c6e52fe16b6",
      "pp_587b1e07a7f6",
      "pp_658dcc357bd7",
      "pp_7058a3696034",
@@ -7428,14 +7291,14 @@
      "pp_8b4ab200e46e",
      "pp_af654bf19453",
      "pp_d302cf628e01",
+     "pp_e9314badad08",
      "pp_ec737997f5ea",
-     "pp_f66e4e01d9f4",
-     "pp_fb2784d892df"
+     "pp_f66e4e01d9f4"
     ],
-    "ambiguous_pdf_units": 244.814,
-    "label_count": 19,
-    "riser_count_from_labels": 7,
-    "riser_count": 10,
+    "ambiguous_pdf_units": 248.932,
+    "label_count": 14,
+    "riser_count_from_labels": 5,
+    "riser_count": 6,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -7476,13 +7339,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 54,
-   "confirmed_horizontal_m": 217.502,
+   "physical_pipes": 51,
+   "confirmed_horizontal_m": 213.927,
    "confirmed_vertical_m": 0.035,
-   "confirmed_total_m": 217.537,
-   "ambiguous_m": 14.735,
+   "confirmed_total_m": 213.962,
+   "ambiguous_m": 14.808,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 12
+   "riser_labels": 8
   },
   "n_issues": 0,
   "blocking": 0,
@@ -7492,7 +7355,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0322/clean.pdf",
   "input_sha256": "ea982c7f61efdcfa",
-  "seconds": 18.6,
+  "seconds": 17.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -7502,12 +7365,12 @@
   "coverage": {
    "designations": 15,
    "with_dn": null,
-   "leaders": 52,
+   "leaders": 51,
    "verified_attachments": 23,
    "ambiguous_attachments": 22,
-   "no_attachments": 7,
+   "no_attachments": 6,
    "anchor_states": {
-    "NO_PIPE_ATTACHMENT": 7,
+    "NO_PIPE_ATTACHMENT": 6,
     "AMBIGUOUS_PIPE_ATTACHMENT": 22,
     "VERIFIED_PIPE_ATTACHMENT": 23
    },
@@ -7909,7 +7772,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0323/clean.pdf",
   "input_sha256": "4fe83ad595f20439",
-  "seconds": 10.9,
+  "seconds": 11.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -7919,12 +7782,12 @@
   "coverage": {
    "designations": 6,
    "with_dn": null,
-   "leaders": 18,
-   "verified_attachments": 14,
+   "leaders": 19,
+   "verified_attachments": 15,
    "ambiguous_attachments": 4,
    "no_attachments": 0,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 14,
+    "VERIFIED_PIPE_ATTACHMENT": 15,
     "AMBIGUOUS_PIPE_ATTACHMENT": 4
    },
    "pipe_names": 6,
@@ -7934,12 +7797,12 @@
     "S01-P5",
     "VV01-X31"
    ],
-   "physical_pipes": 18,
-   "unowned_m": 10.14,
+   "physical_pipes": 17,
+   "unowned_m": 10.77,
    "ambiguous_m": 0.0,
    "claimed_m": 0.07,
    "reconciliation": "VALID",
-   "named_vs_measured": 89.3
+   "named_vs_measured": 88.6
   },
   "names_read": [
    "KV01-X31",
@@ -7955,17 +7818,17 @@
    "VS21-S13-22-F60"
   ],
   "frontiers": {
-   "frontiers": 36,
-   "pipes": 18,
+   "frontiers": 34,
+   "pipes": 17,
    "silent_pipes": [],
    "by_reason": {
     "FREE_END": 3,
     "REAL_DN_BOUNDARY": 8,
     "SYMBOL": 13,
     "UNOWNED_CONTINUATION": 2,
-    "VERTICAL": 10
+    "VERTICAL": 8
    },
-   "real_boundaries": 34,
+   "real_boundaries": 32,
    "lossy_boundaries": 2,
    "open_boundaries": 0,
    "unowned_beyond_pt": 524.48,
@@ -8041,11 +7904,11 @@
     "base": "VS21-S13",
     "dn": null,
     "system": "VS21",
-    "physical_pipe_count": 2,
-    "confirmed_horizontal_m": 1.42,
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 0.584,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 1.42,
-    "horizontal_pdf_units": 80.493,
+    "confirmed_total_m": 0.584,
+    "horizontal_pdf_units": 33.111,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -8053,24 +7916,23 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_966f3feb4439",
-     "pp_cf2cfe711ae8"
+     "pp_966f3feb4439"
     ],
-    "label_count": 2,
-    "riser_count": 1,
+    "label_count": 3,
+    "riser_count": 0,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    }
   ],
   "totals": {
-   "physical_pipes": 18,
-   "confirmed_horizontal_m": 118.01,
+   "physical_pipes": 17,
+   "confirmed_horizontal_m": 117.174,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 118.01,
+   "confirmed_total_m": 117.174,
    "ambiguous_m": 0.0,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 6
+   "riser_labels": 5
   },
   "n_issues": 0,
   "blocking": 0,
@@ -8080,7 +7942,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0411/clean.pdf",
   "input_sha256": "356e77c82ceb2ad3",
-  "seconds": 14.4,
+  "seconds": 14.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -8090,26 +7952,26 @@
   "coverage": {
    "designations": 13,
    "with_dn": null,
-   "leaders": 64,
-   "verified_attachments": 34,
+   "leaders": 61,
+   "verified_attachments": 31,
    "ambiguous_attachments": 22,
    "no_attachments": 8,
    "anchor_states": {
     "AMBIGUOUS_PIPE_ATTACHMENT": 22,
     "NO_PIPE_ATTACHMENT": 8,
-    "VERIFIED_PIPE_ATTACHMENT": 34
+    "VERIFIED_PIPE_ATTACHMENT": 31
    },
    "pipe_names": 13,
    "pipe_names_with_metres": 12,
    "without_metres": [
     "VS11-S13-35-F60"
    ],
-   "physical_pipes": 40,
-   "unowned_m": 3.56,
+   "physical_pipes": 38,
+   "unowned_m": 4.32,
    "ambiguous_m": 10.26,
    "claimed_m": 6.82,
    "reconciliation": "VALID",
-   "named_vs_measured": 91.5
+   "named_vs_measured": 91.1
   },
   "names_read": [
    "KV01-X31",
@@ -8138,8 +8000,8 @@
    "VVC01-X7-20"
   ],
   "frontiers": {
-   "frontiers": 86,
-   "pipes": 40,
+   "frontiers": 82,
+   "pipes": 38,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 3,
@@ -8149,11 +8011,11 @@
     "REAL_DESIGNATION_BOUNDARY": 1,
     "REAL_DN_BOUNDARY": 2,
     "REPRESENTATION_CHANGE": 1,
-    "SYMBOL": 46,
+    "SYMBOL": 44,
     "UNOWNED_CONTINUATION": 1,
-    "VERTICAL": 26
+    "VERTICAL": 24
    },
-   "real_boundaries": 79,
+   "real_boundaries": 75,
    "lossy_boundaries": 2,
    "open_boundaries": 5,
    "unowned_beyond_pt": 31.7,
@@ -8273,11 +8135,11 @@
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 16,
-    "confirmed_horizontal_m": 65.456,
+    "physical_pipe_count": 14,
+    "confirmed_horizontal_m": 64.601,
     "confirmed_vertical_m": 1.6,
-    "confirmed_total_m": 67.056,
-    "horizontal_pdf_units": 3710.868,
+    "confirmed_total_m": 66.201,
+    "horizontal_pdf_units": 3662.393,
     "ambiguous_m": 0.0,
     "vertical_known": true,
     "in_hatched_area_m": 0.0,
@@ -8285,9 +8147,7 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_10031f61c02a",
      "pp_1073d02f8bcf",
-     "pp_1ecd6faa93f4",
      "pp_327716e10fa0",
      "pp_47e09d689e80",
      "pp_562c82849279",
@@ -8302,9 +8162,9 @@
      "pp_c2abbc5b71f4",
      "pp_caff7ce3db55"
     ],
-    "label_count": 18,
-    "riser_count_from_labels": 15,
-    "riser_count": 9,
+    "label_count": 15,
+    "riser_count_from_labels": 14,
+    "riser_count": 8,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": 1.6
    },
@@ -8418,13 +8278,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 40,
-   "confirmed_horizontal_m": 203.309,
+   "physical_pipes": 38,
+   "confirmed_horizontal_m": 202.454,
    "confirmed_vertical_m": 1.6,
-   "confirmed_total_m": 204.909,
+   "confirmed_total_m": 204.054,
    "ambiguous_m": 10.264,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 19
+   "riser_labels": 18
   },
   "n_issues": 0,
   "blocking": 0,
@@ -8434,7 +8294,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0412/clean.pdf",
   "input_sha256": "bdb60455ceac6754",
-  "seconds": 23.3,
+  "seconds": 22.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -8444,24 +8304,24 @@
   "coverage": {
    "designations": 19,
    "with_dn": null,
-   "leaders": 129,
-   "verified_attachments": 67,
-   "ambiguous_attachments": 50,
-   "no_attachments": 12,
+   "leaders": 120,
+   "verified_attachments": 63,
+   "ambiguous_attachments": 53,
+   "no_attachments": 4,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 67,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 50,
-    "NO_PIPE_ATTACHMENT": 12
+    "VERIFIED_PIPE_ATTACHMENT": 63,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 53,
+    "NO_PIPE_ATTACHMENT": 4
    },
    "pipe_names": 19,
    "pipe_names_with_metres": 19,
    "without_metres": [],
-   "physical_pipes": 97,
-   "unowned_m": 31.58,
-   "ambiguous_m": 23.74,
-   "claimed_m": 15.83,
+   "physical_pipes": 95,
+   "unowned_m": 32.34,
+   "ambiguous_m": 35.55,
+   "claimed_m": 8.74,
    "reconciliation": "VALID",
-   "named_vs_measured": 85.9
+   "named_vs_measured": 82.7
   },
   "names_read": [
    "KV01-X31",
@@ -8499,25 +8359,25 @@
    "VVC01-X7-20"
   ],
   "frontiers": {
-   "frontiers": 207,
-   "pipes": 97,
+   "frontiers": 199,
+   "pipes": 95,
    "silent_pipes": [],
    "by_reason": {
-    "AMBIGUOUS_JUNCTION": 18,
+    "AMBIGUOUS_JUNCTION": 16,
     "BROKEN_CONTINUITY": 12,
     "DECLARED_BOUNDARY": 1,
-    "FLOW_BUDGET": 3,
+    "FLOW_BUDGET": 6,
     "FREE_END": 5,
     "REAL_DESIGNATION_BOUNDARY": 1,
     "REAL_DN_BOUNDARY": 8,
     "REPRESENTATION_CHANGE": 4,
     "SYMBOL": 111,
     "UNOWNED_CONTINUATION": 1,
-    "VERTICAL": 43
+    "VERTICAL": 34
    },
-   "real_boundaries": 169,
+   "real_boundaries": 160,
    "lossy_boundaries": 17,
-   "open_boundaries": 21,
+   "open_boundaries": 22,
    "unowned_beyond_pt": 10.73,
    "unowned_beyond_m": 0.19
   },
@@ -8568,8 +8428,8 @@
      "pp_fae7ac4e5be7"
     ],
     "ambiguous_pdf_units": 114.404,
-    "label_count": 7,
-    "riser_count_from_labels": 8,
+    "label_count": 6,
+    "riser_count_from_labels": 7,
     "riser_count": 4,
     "vertical_m": "UNKNOWN"
    },
@@ -8604,28 +8464,29 @@
     "base": "S01-P5",
     "dn": 110,
     "system": "S01",
-    "physical_pipe_count": 5,
-    "confirmed_horizontal_m": 20.975,
+    "physical_pipe_count": 6,
+    "confirmed_horizontal_m": 11.985,
     "confirmed_vertical_m": 0.01,
-    "confirmed_total_m": 20.985,
-    "horizontal_pdf_units": 1189.148,
-    "ambiguous_m": 8.132,
+    "confirmed_total_m": 11.995,
+    "horizontal_pdf_units": 679.471,
+    "ambiguous_m": 20.852,
     "vertical_known": true,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_2875ef5e3c76",
+     "pp_0e4971113393",
      "pp_56f10d45ace2",
      "pp_725234e36499",
      "pp_959e5ed04885",
-     "pp_bff746d6e326"
+     "pp_bff746d6e326",
+     "pp_fc6c328d875c"
     ],
-    "ambiguous_pdf_units": 461.006,
+    "ambiguous_pdf_units": 1182.185,
     "label_count": 7,
     "riser_count_from_labels": 3,
-    "riser_count": 5,
+    "riser_count": 2,
     "vertical_m": 0.01
    },
    {
@@ -8658,12 +8519,12 @@
     "base": "S01-P5",
     "dn": 75,
     "system": "S01",
-    "physical_pipe_count": 6,
-    "confirmed_horizontal_m": 14.946,
+    "physical_pipe_count": 5,
+    "confirmed_horizontal_m": 8.536,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 14.946,
-    "horizontal_pdf_units": 847.333,
-    "ambiguous_m": 2.123,
+    "confirmed_total_m": 8.536,
+    "horizontal_pdf_units": 483.911,
+    "ambiguous_m": 1.663,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
@@ -8674,35 +8535,12 @@
      "pp_4349ac10e8b2",
      "pp_53e45f12527a",
      "pp_690e8b6bc6eb",
-     "pp_73acac7be321",
      "pp_a6484a48158d"
     ],
-    "ambiguous_pdf_units": 120.335,
-    "label_count": 14,
-    "riser_count_from_labels": 16,
-    "riser_count": 9,
-    "vertical_m": "UNKNOWN"
-   },
-   {
-    "designation": "S01-P5",
-    "base": "S01-P5",
-    "dn": null,
-    "system": "",
-    "physical_pipe_count": 0,
-    "confirmed_horizontal_m": 0.0,
-    "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 0.0,
-    "horizontal_pdf_units": 0.0,
-    "ambiguous_m": 0.459,
-    "vertical_known": false,
-    "state": "AMBIGUOUS",
-    "pipe_ids": [],
-    "ambiguous_pdf_units": 26.04,
-    "label_count": 1,
-    "riser_count": 0,
-    "riser_count_from_labels": 0,
-    "in_hatched_area_m": 0.0,
-    "double_line_m": 0.0,
+    "ambiguous_pdf_units": 94.295,
+    "label_count": 13,
+    "riser_count_from_labels": 13,
+    "riser_count": 8,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -8762,11 +8600,11 @@
     "base": "VS21-S13-F50",
     "dn": 15,
     "system": "VS21",
-    "physical_pipe_count": 16,
-    "confirmed_horizontal_m": 62.613,
+    "physical_pipe_count": 14,
+    "confirmed_horizontal_m": 61.756,
     "confirmed_vertical_m": 0.54,
-    "confirmed_total_m": 63.153,
-    "horizontal_pdf_units": 3549.708,
+    "confirmed_total_m": 62.296,
+    "horizontal_pdf_units": 3501.12,
     "ambiguous_m": 4.442,
     "vertical_known": true,
     "in_hatched_area_m": 0.0,
@@ -8784,17 +8622,15 @@
      "pp_561d4c04a3fe",
      "pp_5d689f404edc",
      "pp_65383b67da05",
-     "pp_73e88ca01fc5",
-     "pp_81b7e1cda5d1",
      "pp_8cae06122f56",
      "pp_c6514b333ccd",
      "pp_f6088aad03e6",
      "pp_fb163f1365be"
     ],
     "ambiguous_pdf_units": 251.811,
-    "label_count": 13,
+    "label_count": 11,
     "riser_count_from_labels": 8,
-    "riser_count": 7,
+    "riser_count": 6,
     "vertical_m": 0.54
    },
    {
@@ -8823,7 +8659,7 @@
     ],
     "ambiguous_pdf_units": 251.811,
     "label_count": 6,
-    "riser_count": 0,
+    "riser_count": 1,
     "riser_count_from_labels": 0,
     "vertical_m": 0.4
    },
@@ -8931,13 +8767,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 97,
-   "confirmed_horizontal_m": 453.074,
+   "physical_pipes": 95,
+   "confirmed_horizontal_m": 436.817,
    "confirmed_vertical_m": 1.75,
-   "confirmed_total_m": 454.824,
-   "ambiguous_m": 23.746,
+   "confirmed_total_m": 438.567,
+   "ambiguous_m": 35.547,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 30
+   "riser_labels": 26
   },
   "n_issues": 0,
   "blocking": 0,
@@ -8947,7 +8783,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0421/clean.pdf",
   "input_sha256": "2e83cb9872fe92f7",
-  "seconds": 16.5,
+  "seconds": 16.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -8957,26 +8793,25 @@
   "coverage": {
    "designations": 12,
    "with_dn": null,
-   "leaders": 59,
-   "verified_attachments": 37,
-   "ambiguous_attachments": 18,
+   "leaders": 58,
+   "verified_attachments": 38,
+   "ambiguous_attachments": 16,
    "no_attachments": 4,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 37,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 18,
+    "VERIFIED_PIPE_ATTACHMENT": 38,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 16,
     "NO_PIPE_ATTACHMENT": 4
    },
    "pipe_names": 12,
-   "pipe_names_with_metres": 9,
+   "pipe_names_with_metres": 10,
    "without_metres": [
     "S01-P5KV01-X31",
-    "S01-P5KV01-X7",
-    "VV01-X7VVC01-X7"
+    "S01-P5KV01-X7"
    ],
    "physical_pipes": 53,
    "unowned_m": 23.62,
    "ambiguous_m": 16.77,
-   "claimed_m": 16.19,
+   "claimed_m": 16.24,
    "reconciliation": "VALID",
    "named_vs_measured": 82.2
   },
@@ -9001,7 +8836,8 @@
    "S01-P5-160",
    "S01-P5-75",
    "VS21-S13-15-F50",
-   "VV01-X31-16"
+   "VV01-X31-16",
+   "VV01-X7VVC01-X7"
   ],
   "frontiers": {
    "frontiers": 116,
@@ -9013,8 +8849,8 @@
     "FLOW_BUDGET": 6,
     "FREE_END": 5,
     "REAL_DN_BOUNDARY": 6,
-    "SYMBOL": 57,
-    "VERTICAL": 31
+    "SYMBOL": 56,
+    "VERTICAL": 32
    },
    "real_boundaries": 99,
    "lossy_boundaries": 1,
@@ -9211,15 +9047,15 @@
     "base": "VV01-X31",
     "dn": 16,
     "system": "VV01",
-    "physical_pipe_count": 14,
-    "confirmed_horizontal_m": 76.744,
+    "physical_pipe_count": 13,
+    "confirmed_horizontal_m": 74.215,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 76.744,
-    "horizontal_pdf_units": 4350.835,
+    "confirmed_total_m": 74.215,
+    "horizontal_pdf_units": 4207.492,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
-    "declared_m": 49.27817631939541,
+    "declared_m": 46.7497637800613,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
@@ -9227,7 +9063,6 @@
      "pp_34a5c37c72a2",
      "pp_37a04575af59",
      "pp_4154dedf340f",
-     "pp_4b98f5780169",
      "pp_5593805ee180",
      "pp_6a141a94593e",
      "pp_75c88ff058e9",
@@ -9243,16 +9078,41 @@
     "riser_count": 3,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
+   },
+   {
+    "designation": "VV01-X7VVC01-X7",
+    "base": "VV01-X7VVC01-X7",
+    "dn": null,
+    "system": "VV01",
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 2.528,
+    "confirmed_vertical_m": 0.0,
+    "confirmed_total_m": 2.528,
+    "horizontal_pdf_units": 143.343,
+    "ambiguous_m": 0.0,
+    "vertical_known": false,
+    "in_hatched_area_m": 0.0,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_9f5c82cd32dc"
+    ],
+    "label_count": 1,
+    "riser_count": 1,
+    "riser_count_from_labels": 0,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": "UNKNOWN"
    }
   ],
   "totals": {
    "physical_pipes": 53,
-   "confirmed_horizontal_m": 246.879,
+   "confirmed_horizontal_m": 246.878,
    "confirmed_vertical_m": 0.01,
-   "confirmed_total_m": 246.889,
+   "confirmed_total_m": 246.888,
    "ambiguous_m": 16.775,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 28
+   "riser_labels": 29
   },
   "n_issues": 0,
   "blocking": 0,
@@ -9262,7 +9122,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0422/clean.pdf",
   "input_sha256": "4607b9fbe93b64e7",
-  "seconds": 16.7,
+  "seconds": 15.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -9272,13 +9132,13 @@
   "coverage": {
    "designations": 14,
    "with_dn": null,
-   "leaders": 72,
-   "verified_attachments": 39,
-   "ambiguous_attachments": 29,
+   "leaders": 73,
+   "verified_attachments": 38,
+   "ambiguous_attachments": 31,
    "no_attachments": 4,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 39,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 29,
+    "VERIFIED_PIPE_ATTACHMENT": 38,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 31,
     "NO_PIPE_ATTACHMENT": 4
    },
    "pipe_names": 14,
@@ -9564,9 +9424,9 @@
      "pp_e98ae48a16b3"
     ],
     "ambiguous_pdf_units": 34.059,
-    "label_count": 9,
-    "riser_count_from_labels": 10,
-    "riser_count": 5,
+    "label_count": 8,
+    "riser_count_from_labels": 9,
+    "riser_count": 4,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -9635,7 +9495,7 @@
    "confirmed_total_m": 206.699,
    "ambiguous_m": 23.639,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 19
+   "riser_labels": 18
   },
   "n_issues": 0,
   "blocking": 0,
@@ -9645,7 +9505,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0423/clean.pdf",
   "input_sha256": "9f9cf698b707e533",
-  "seconds": 11.1,
+  "seconds": 11.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -9655,12 +9515,12 @@
   "coverage": {
    "designations": 7,
    "with_dn": null,
-   "leaders": 36,
-   "verified_attachments": 27,
+   "leaders": 35,
+   "verified_attachments": 26,
    "ambiguous_attachments": 7,
    "no_attachments": 2,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 27,
+    "VERIFIED_PIPE_ATTACHMENT": 26,
     "AMBIGUOUS_PIPE_ATTACHMENT": 7,
     "NO_PIPE_ATTACHMENT": 2
    },
@@ -9698,8 +9558,8 @@
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 5,
     "FREE_END": 1,
-    "SYMBOL": 20,
-    "VERTICAL": 16
+    "SYMBOL": 22,
+    "VERTICAL": 14
    },
    "real_boundaries": 37,
    "lossy_boundaries": 0,
@@ -9813,9 +9673,9 @@
      "pp_d43a4506e16c",
      "pp_e32844c42c29"
     ],
-    "label_count": 12,
+    "label_count": 11,
     "riser_count_from_labels": 5,
-    "riser_count": 4,
+    "riser_count": 3,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
@@ -9878,7 +9738,7 @@
    "confirmed_total_m": 151.582,
    "ambiguous_m": 1.382,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 11
+   "riser_labels": 10
   },
   "n_issues": 0,
   "blocking": 0,
@@ -9888,7 +9748,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0511/clean.pdf",
   "input_sha256": "12604a79e10db874",
-  "seconds": 11.2,
+  "seconds": 11.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -10141,7 +10001,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0512/clean.pdf",
   "input_sha256": "0753dd06811638da",
-  "seconds": 22.2,
+  "seconds": 20.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -10151,14 +10011,14 @@
   "coverage": {
    "designations": 25,
    "with_dn": null,
-   "leaders": 123,
-   "verified_attachments": 57,
+   "leaders": 115,
+   "verified_attachments": 52,
    "ambiguous_attachments": 43,
-   "no_attachments": 23,
+   "no_attachments": 20,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 57,
+    "VERIFIED_PIPE_ATTACHMENT": 52,
     "AMBIGUOUS_PIPE_ATTACHMENT": 43,
-    "NO_PIPE_ATTACHMENT": 23
+    "NO_PIPE_ATTACHMENT": 20
    },
    "pipe_names": 25,
    "pipe_names_with_metres": 22,
@@ -10167,12 +10027,12 @@
     "VP01-S13-35-F60",
     "VV01-X7-20-F50"
    ],
-   "physical_pipes": 115,
-   "unowned_m": 35.14,
+   "physical_pipes": 110,
+   "unowned_m": 35.45,
    "ambiguous_m": 0.48,
    "claimed_m": 4.22,
    "reconciliation": "VALID",
-   "named_vs_measured": 84.9
+   "named_vs_measured": 84.7
   },
   "names_read": [
    "KV01-K5",
@@ -10224,22 +10084,21 @@
    "VVC01-X7-32"
   ],
   "frontiers": {
-   "frontiers": 227,
-   "pipes": 115,
+   "frontiers": 217,
+   "pipes": 110,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 4,
     "BROKEN_CONTINUITY": 13,
     "DECLARED_BOUNDARY": 3,
     "FREE_END": 8,
-    "REAL_DESIGNATION_BOUNDARY": 13,
+    "REAL_DESIGNATION_BOUNDARY": 9,
     "REAL_DN_BOUNDARY": 2,
-    "REAL_SYSTEM_BOUNDARY": 2,
-    "SYMBOL": 155,
+    "SYMBOL": 153,
     "UNOWNED_CONTINUATION": 2,
-    "VERTICAL": 25
+    "VERTICAL": 23
    },
-   "real_boundaries": 208,
+   "real_boundaries": 198,
    "lossy_boundaries": 15,
    "open_boundaries": 4,
    "unowned_beyond_pt": 10.85,
@@ -10444,10 +10303,10 @@
     "dn": null,
     "system": "S01",
     "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 6.421,
+    "confirmed_horizontal_m": 7.884,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 6.421,
-    "horizontal_pdf_units": 364.028,
+    "confirmed_total_m": 7.884,
+    "horizontal_pdf_units": 446.948,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -10455,10 +10314,10 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_6b4ba43d9f91"
+     "pp_6e38af7ec1d3"
     ],
     "label_count": 3,
-    "riser_count": 0,
+    "riser_count": 2,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -10468,11 +10327,11 @@
     "base": "S01-P5",
     "dn": 110,
     "system": "S01",
-    "physical_pipe_count": 2,
-    "confirmed_horizontal_m": 1.067,
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 0.51,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 1.067,
-    "horizontal_pdf_units": 60.48,
+    "confirmed_total_m": 0.51,
+    "horizontal_pdf_units": 28.92,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -10480,12 +10339,11 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_14d760d4d86c",
      "pp_23cb31c48413"
     ],
-    "label_count": 3,
-    "riser_count_from_labels": 4,
-    "riser_count": 3,
+    "label_count": 2,
+    "riser_count_from_labels": 3,
+    "riser_count": 2,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
@@ -10494,11 +10352,11 @@
     "base": "S01-P5",
     "dn": 75,
     "system": "S01",
-    "physical_pipe_count": 3,
-    "confirmed_horizontal_m": 0.781,
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 0.387,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 0.781,
-    "horizontal_pdf_units": 44.28,
+    "confirmed_total_m": 0.387,
+    "horizontal_pdf_units": 21.96,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -10506,13 +10364,11 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_40c90a1b559c",
-     "pp_410e7bc67e7c",
-     "pp_d9b400d9455b"
+     "pp_410e7bc67e7c"
     ],
-    "label_count": 3,
-    "riser_count_from_labels": 16,
-    "riser_count": 3,
+    "label_count": 1,
+    "riser_count_from_labels": 13,
+    "riser_count": 1,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
@@ -10521,11 +10377,11 @@
     "base": "S01-P5",
     "dn": null,
     "system": "S01",
-    "physical_pipe_count": 2,
-    "confirmed_horizontal_m": 1.461,
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 0.648,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 1.461,
-    "horizontal_pdf_units": 82.8,
+    "confirmed_total_m": 0.648,
+    "horizontal_pdf_units": 36.72,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -10533,11 +10389,10 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_3332225fc053",
      "pp_3fcdd222d3a8"
     ],
-    "label_count": 3,
-    "riser_count": 2,
+    "label_count": 2,
+    "riser_count": 1,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -10547,11 +10402,11 @@
     "base": "VS11-S13-F60",
     "dn": 35,
     "system": "VS11",
-    "physical_pipe_count": 3,
-    "confirmed_horizontal_m": 14.501,
+    "physical_pipe_count": 2,
+    "confirmed_horizontal_m": 14.018,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 14.501,
-    "horizontal_pdf_units": 822.098,
+    "confirmed_total_m": 14.018,
+    "horizontal_pdf_units": 794.738,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -10560,10 +10415,9 @@
     "state": "CONFIRMED",
     "pipe_ids": [
      "pp_42d8b5f2c94c",
-     "pp_7c35aa1763b5",
      "pp_c8dc2010a138"
     ],
-    "label_count": 2,
+    "label_count": 1,
     "riser_count": 0,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
@@ -10575,10 +10429,10 @@
     "dn": 15,
     "system": "VS21",
     "physical_pipe_count": 3,
-    "confirmed_horizontal_m": 21.844,
+    "confirmed_horizontal_m": 22.327,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 21.844,
-    "horizontal_pdf_units": 1238.421,
+    "confirmed_total_m": 22.327,
+    "horizontal_pdf_units": 1265.781,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -10586,8 +10440,8 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_1c56bd622257",
      "pp_9cc5432b4f2c",
+     "pp_a29be32eef60",
      "pp_de228ec1a447"
     ],
     "label_count": 9,
@@ -10843,13 +10697,13 @@
    }
   ],
   "totals": {
-   "physical_pipes": 115,
-   "confirmed_horizontal_m": 268.548,
+   "physical_pipes": 110,
+   "confirmed_horizontal_m": 268.247,
    "confirmed_vertical_m": 9.6,
-   "confirmed_total_m": 278.148,
+   "confirmed_total_m": 277.847,
    "ambiguous_m": 0.478,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 21
+   "riser_labels": 19
   },
   "n_issues": 0,
   "blocking": 0,
@@ -10859,7 +10713,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0521/clean.pdf",
   "input_sha256": "9f56253c5986a0b2",
-  "seconds": 16.2,
+  "seconds": 15.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -10869,14 +10723,14 @@
   "coverage": {
    "designations": 18,
    "with_dn": null,
-   "leaders": 82,
-   "verified_attachments": 34,
-   "ambiguous_attachments": 33,
-   "no_attachments": 15,
+   "leaders": 78,
+   "verified_attachments": 33,
+   "ambiguous_attachments": 32,
+   "no_attachments": 13,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 34,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 33,
-    "NO_PIPE_ATTACHMENT": 15
+    "VERIFIED_PIPE_ATTACHMENT": 33,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 32,
+    "NO_PIPE_ATTACHMENT": 13
    },
    "pipe_names": 18,
    "pipe_names_with_metres": 12,
@@ -10888,12 +10742,12 @@
     "VV01-X7-25-F60",
     "VVC01-X7-25"
    ],
-   "physical_pipes": 109,
-   "unowned_m": 5.53,
+   "physical_pipes": 110,
+   "unowned_m": 0.0,
    "ambiguous_m": 4.6,
    "claimed_m": 0.0,
    "reconciliation": "VALID",
-   "named_vs_measured": 94.5
+   "named_vs_measured": 97.5
   },
   "names_read": [
    "KV01-X31",
@@ -10929,18 +10783,18 @@
    "VVC01-X7-32"
   ],
   "frontiers": {
-   "frontiers": 211,
-   "pipes": 109,
+   "frontiers": 213,
+   "pipes": 110,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 4,
     "BROKEN_CONTINUITY": 46,
-    "FREE_END": 12,
+    "FREE_END": 13,
     "REAL_DESIGNATION_BOUNDARY": 4,
-    "SYMBOL": 114,
-    "VERTICAL": 31
+    "SYMBOL": 117,
+    "VERTICAL": 29
    },
-   "real_boundaries": 161,
+   "real_boundaries": 163,
    "lossy_boundaries": 46,
    "open_boundaries": 4,
    "unowned_beyond_pt": 0.0,
@@ -10952,21 +10806,22 @@
     "base": "KV01-X31",
     "dn": 16,
     "system": "KV01",
-    "physical_pipe_count": 41,
-    "confirmed_horizontal_m": 69.396,
+    "physical_pipe_count": 46,
+    "confirmed_horizontal_m": 71.751,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 69.396,
-    "horizontal_pdf_units": 3934.256,
+    "confirmed_total_m": 71.751,
+    "horizontal_pdf_units": 4067.767,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
-    "declared_m": 69.3958989934343,
+    "declared_m": 71.7508908349293,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
      "pp_099ed8f126e4",
      "pp_0ad0e725c12a",
      "pp_0b45823d449d",
+     "pp_101d176cca04",
      "pp_10da7a9a6f0d",
      "pp_1376c1a00659",
      "pp_15d3f8addb48",
@@ -10981,6 +10836,7 @@
      "pp_503ee8c09408",
      "pp_548e4cbc2151",
      "pp_551665257c30",
+     "pp_561f000c728a",
      "pp_56938a54bc46",
      "pp_6af54409a8ae",
      "pp_7241e848d1b9",
@@ -10997,17 +10853,20 @@
      "pp_ac9d03f76c6f",
      "pp_b0fdd02980c4",
      "pp_b0ff4985ec92",
+     "pp_bca03851091b",
      "pp_bff721029630",
      "pp_c36355d3c717",
      "pp_c9447c1df6a9",
      "pp_cb768691c873",
+     "pp_d7eeea97b7c7",
      "pp_d82a8eb3346a",
      "pp_dc4a8856ccff",
      "pp_e6d4d378f07f",
-     "pp_e8138e2e80b0"
+     "pp_e8138e2e80b0",
+     "pp_ff895973b6ce"
     ],
     "label_count": 0,
-    "riser_count_from_labels": 7,
+    "riser_count_from_labels": 6,
     "riser_count": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -11017,11 +10876,11 @@
     "base": "KV01-X31",
     "dn": null,
     "system": "KV01",
-    "physical_pipe_count": 6,
-    "confirmed_horizontal_m": 2.428,
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 0.073,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 2.428,
-    "horizontal_pdf_units": 137.646,
+    "confirmed_total_m": 0.073,
+    "horizontal_pdf_units": 4.134,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -11029,15 +10888,10 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_27a5e3bc88fc",
-     "pp_3bfce9259cc8",
-     "pp_40013f02af1a",
-     "pp_68f3a603c2d1",
-     "pp_9962beca95f3",
-     "pp_ca2eff95c4c2"
+     "pp_27a5e3bc88fc"
     ],
-    "label_count": 2,
-    "riser_count": 2,
+    "label_count": 1,
+    "riser_count": 1,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -11193,7 +11047,7 @@
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
-    "declared_m": 38.59166196303997,
+    "declared_m": 41.36786987440125,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
@@ -11239,9 +11093,9 @@
      "pp_fc128ed3e082",
      "pp_fede52e2027e"
     ],
-    "label_count": 8,
+    "label_count": 7,
     "riser_count_from_labels": 3,
-    "riser_count": 8,
+    "riser_count": 7,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
@@ -11300,11 +11154,11 @@
     "base": "VVC01-X7",
     "dn": 32,
     "system": "VVC01",
-    "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 23.139,
+    "physical_pipe_count": 2,
+    "confirmed_horizontal_m": 30.775,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 23.139,
-    "horizontal_pdf_units": 1311.798,
+    "confirmed_total_m": 30.775,
+    "horizontal_pdf_units": 1744.744,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -11312,23 +11166,24 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
+     "pp_60d18de61545",
      "pp_87914040a4a3"
     ],
-    "label_count": 2,
-    "riser_count": 0,
+    "label_count": 3,
+    "riser_count": 1,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    }
   ],
   "totals": {
-   "physical_pipes": 109,
-   "confirmed_horizontal_m": 232.137,
+   "physical_pipes": 110,
+   "confirmed_horizontal_m": 239.773,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 232.137,
+   "confirmed_total_m": 239.773,
    "ambiguous_m": 4.598,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 16
+   "riser_labels": 15
   },
   "n_issues": 0,
   "blocking": 0,
@@ -11338,7 +11193,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0522/clean.pdf",
   "input_sha256": "38f2c35a2b7334ae",
-  "seconds": 20.5,
+  "seconds": 20.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -12023,7 +11878,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0523/clean.pdf",
   "input_sha256": "fce9242066972b41",
-  "seconds": 10.8,
+  "seconds": 11.5,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -12382,7 +12237,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-B0112/clean.pdf",
   "input_sha256": "7ee67c1356bd83ba",
-  "seconds": 10.0,
+  "seconds": 9.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -12392,14 +12247,14 @@
   "coverage": {
    "designations": 9,
    "with_dn": null,
-   "leaders": 26,
-   "verified_attachments": 18,
-   "ambiguous_attachments": 6,
-   "no_attachments": 2,
+   "leaders": 25,
+   "verified_attachments": 15,
+   "ambiguous_attachments": 9,
+   "no_attachments": 1,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 18,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 6,
-    "NO_PIPE_ATTACHMENT": 2
+    "VERIFIED_PIPE_ATTACHMENT": 15,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 9,
+    "NO_PIPE_ATTACHMENT": 1
    },
    "pipe_names": 9,
    "pipe_names_with_metres": 7,
@@ -12410,7 +12265,7 @@
    "physical_pipes": 13,
    "unowned_m": 0.18,
    "ambiguous_m": 0.77,
-   "claimed_m": 7.26,
+   "claimed_m": 11.81,
    "reconciliation": "VALID",
    "named_vs_measured": 98.6
   },
@@ -12440,9 +12295,9 @@
     "AMBIGUOUS_JUNCTION": 3,
     "FREE_END": 2,
     "REAL_DN_BOUNDARY": 4,
-    "SYMBOL": 13,
+    "SYMBOL": 14,
     "UNOWNED_CONTINUATION": 4,
-    "VERTICAL": 8
+    "VERTICAL": 7
    },
    "real_boundaries": 27,
    "lossy_boundaries": 4,
@@ -12458,8 +12313,8 @@
     "system": "S01",
     "physical_pipe_count": 1,
     "confirmed_horizontal_m": 14.01,
-    "confirmed_vertical_m": 0.1,
-    "confirmed_total_m": 14.11,
+    "confirmed_vertical_m": 0.02,
+    "confirmed_total_m": 14.03,
     "horizontal_pdf_units": 794.248,
     "ambiguous_m": 0.316,
     "vertical_known": true,
@@ -12471,10 +12326,10 @@
      "pp_65cd68bd7839"
     ],
     "ambiguous_pdf_units": 17.906,
-    "label_count": 3,
-    "riser_count_from_labels": 2,
-    "riser_count": 2,
-    "vertical_m": 0.1
+    "label_count": 2,
+    "riser_count_from_labels": 1,
+    "riser_count": 1,
+    "vertical_m": 0.02
    },
    {
     "designation": "S01-P5-75",
@@ -12520,16 +12375,16 @@
     "pipe_ids": [
      "pp_1a84c31577d0",
      "pp_1d0f3f88aa91",
+     "pp_3259a25d82aa",
      "pp_3b308cf5d215",
      "pp_4b423e4d7364",
      "pp_754153ea2d25",
-     "pp_e8cea7c8d7ba",
-     "pp_fefa6db9f00b"
+     "pp_e8cea7c8d7ba"
     ],
     "ambiguous_pdf_units": 7.68,
-    "label_count": 8,
-    "riser_count_from_labels": 2,
-    "riser_count": 3,
+    "label_count": 6,
+    "riser_count_from_labels": 3,
+    "riser_count": 2,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -12588,11 +12443,11 @@
   "totals": {
    "physical_pipes": 13,
    "confirmed_horizontal_m": 79.459,
-   "confirmed_vertical_m": 0.1,
-   "confirmed_total_m": 79.559,
+   "confirmed_vertical_m": 0.02,
+   "confirmed_total_m": 79.479,
    "ambiguous_m": 0.767,
    "in_hatched_area_m": 11.317,
-   "riser_labels": 9
+   "riser_labels": 7
   },
   "n_issues": 0,
   "blocking": 0,
@@ -12602,7 +12457,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-B0114/clean.pdf",
   "input_sha256": "77b0ac1f87e3053a",
-  "seconds": 11.2,
+  "seconds": 11.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -12907,7 +12762,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-B0122/clean.pdf",
   "input_sha256": "07d1319d70aa000d",
-  "seconds": 27.6,
+  "seconds": 25.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -12917,14 +12772,14 @@
   "coverage": {
    "designations": 38,
    "with_dn": null,
-   "leaders": 150,
-   "verified_attachments": 95,
+   "leaders": 149,
+   "verified_attachments": 93,
    "ambiguous_attachments": 50,
-   "no_attachments": 5,
+   "no_attachments": 6,
    "anchor_states": {
     "AMBIGUOUS_PIPE_ATTACHMENT": 50,
-    "VERIFIED_PIPE_ATTACHMENT": 95,
-    "NO_PIPE_ATTACHMENT": 5
+    "VERIFIED_PIPE_ATTACHMENT": 93,
+    "NO_PIPE_ATTACHMENT": 6
    },
    "pipe_names": 38,
    "pipe_names_with_metres": 31,
@@ -12939,10 +12794,10 @@
    ],
    "physical_pipes": 111,
    "unowned_m": 219.92,
-   "ambiguous_m": 9.27,
+   "ambiguous_m": 10.19,
    "claimed_m": 22.93,
    "reconciliation": "VALID",
-   "named_vs_measured": 58.2
+   "named_vs_measured": 58.1
   },
   "names_read": [
    "FJV01-S6-65-F52",
@@ -13013,7 +12868,7 @@
    "VVC01-X7-25"
   ],
   "frontiers": {
-   "frontiers": 245,
+   "frontiers": 244,
    "pipes": 111,
    "silent_pipes": [],
    "by_reason": {
@@ -13021,17 +12876,18 @@
     "BROKEN_CONTINUITY": 23,
     "CLOSED_LOOP": 2,
     "DECLARED_BOUNDARY": 3,
+    "FLOW_BUDGET": 1,
     "FREE_END": 4,
     "REAL_DESIGNATION_BOUNDARY": 3,
     "REAL_DN_BOUNDARY": 14,
     "REPRESENTATION_CHANGE": 3,
     "SYMBOL": 123,
     "UNOWNED_CONTINUATION": 3,
-    "VERTICAL": 44
+    "VERTICAL": 42
    },
-   "real_boundaries": 193,
+   "real_boundaries": 191,
    "lossy_boundaries": 29,
-   "open_boundaries": 23,
+   "open_boundaries": 24,
    "unowned_beyond_pt": 142.06,
    "unowned_beyond_m": 2.51
   },
@@ -13318,7 +13174,7 @@
      "pp_d6d30277b0d2"
     ],
     "label_count": 6,
-    "riser_count_from_labels": 10,
+    "riser_count_from_labels": 11,
     "riser_count": 5,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -13382,11 +13238,11 @@
     "dn": 75,
     "system": "S01",
     "physical_pipe_count": 6,
-    "confirmed_horizontal_m": 13.242,
+    "confirmed_horizontal_m": 12.324,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 13.242,
-    "horizontal_pdf_units": 750.754,
-    "ambiguous_m": 3.692,
+    "confirmed_total_m": 12.324,
+    "horizontal_pdf_units": 698.675,
+    "ambiguous_m": 4.611,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
@@ -13394,16 +13250,16 @@
     "state": "CONFIRMED",
     "pipe_ids": [
      "pp_641b193ba242",
-     "pp_82ccf9c04bc5",
      "pp_b3218ccf2dac",
      "pp_c590b037011b",
      "pp_dad3eaa2ea80",
+     "pp_e58c6527dfa3",
      "pp_f345f7656f5e"
     ],
-    "ambiguous_pdf_units": 209.332,
-    "label_count": 16,
-    "riser_count_from_labels": 16,
-    "riser_count": 15,
+    "ambiguous_pdf_units": 261.411,
+    "label_count": 14,
+    "riser_count_from_labels": 14,
+    "riser_count": 13,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -13453,7 +13309,7 @@
      "pp_810293f39c63"
     ],
     "label_count": 3,
-    "riser_count": 0,
+    "riser_count": 1,
     "riser_count_from_labels": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -13818,12 +13674,12 @@
   ],
   "totals": {
    "physical_pipes": 111,
-   "confirmed_horizontal_m": 430.557,
+   "confirmed_horizontal_m": 429.639,
    "confirmed_vertical_m": 2.63,
-   "confirmed_total_m": 433.187,
-   "ambiguous_m": 9.27,
+   "confirmed_total_m": 432.269,
+   "ambiguous_m": 10.189,
    "in_hatched_area_m": 0.0,
-   "riser_labels": 44
+   "riser_labels": 43
   },
   "n_issues": 0,
   "blocking": 0,
@@ -13833,7 +13689,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0011/clean.pdf",
   "input_sha256": "c2884f3007f3764a",
-  "seconds": 76.3,
+  "seconds": 67.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -13843,14 +13699,14 @@
   "coverage": {
    "designations": 22,
    "with_dn": null,
-   "leaders": 153,
+   "leaders": 150,
    "verified_attachments": 130,
    "ambiguous_attachments": 12,
-   "no_attachments": 11,
+   "no_attachments": 8,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 130,
     "AMBIGUOUS_PIPE_ATTACHMENT": 12,
-    "NO_PIPE_ATTACHMENT": 11
+    "NO_PIPE_ATTACHMENT": 8
    },
    "pipe_names": 22,
    "pipe_names_with_metres": 19,
@@ -14196,7 +14052,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0021/clean.pdf",
   "input_sha256": "3f245a29bf30e845",
-  "seconds": 16.4,
+  "seconds": 15.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -14206,13 +14062,13 @@
   "coverage": {
    "designations": 8,
    "with_dn": null,
-   "leaders": 51,
+   "leaders": 50,
    "verified_attachments": 36,
    "ambiguous_attachments": 2,
-   "no_attachments": 13,
+   "no_attachments": 12,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 36,
-    "NO_PIPE_ATTACHMENT": 13,
+    "NO_PIPE_ATTACHMENT": 12,
     "AMBIGUOUS_PIPE_ATTACHMENT": 2
    },
    "pipe_names": 8,
@@ -14364,7 +14220,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0022/clean.pdf",
   "input_sha256": "d938b6b23232e40e",
-  "seconds": 14.2,
+  "seconds": 14.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -14519,7 +14375,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0023/clean.pdf",
   "input_sha256": "19a08f7c6753a5d2",
-  "seconds": 18.4,
+  "seconds": 18.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -14653,7 +14509,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0024/clean.pdf",
   "input_sha256": "f52aae17d88a11c8",
-  "seconds": 16.4,
+  "seconds": 15.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -14663,14 +14519,13 @@
   "coverage": {
    "designations": 5,
    "with_dn": null,
-   "leaders": 56,
+   "leaders": 54,
    "verified_attachments": 52,
-   "ambiguous_attachments": 1,
-   "no_attachments": 3,
+   "ambiguous_attachments": 0,
+   "no_attachments": 2,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 52,
-    "NO_PIPE_ATTACHMENT": 3,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 1
+    "NO_PIPE_ATTACHMENT": 2
    },
    "pipe_names": 5,
    "pipe_names_with_metres": 5,
@@ -14820,7 +14675,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0031/clean.pdf",
   "input_sha256": "2e8196ba551e1e9d",
-  "seconds": 16.7,
+  "seconds": 16.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -14830,14 +14685,14 @@
   "coverage": {
    "designations": 5,
    "with_dn": null,
-   "leaders": 56,
+   "leaders": 54,
    "verified_attachments": 48,
-   "ambiguous_attachments": 2,
-   "no_attachments": 6,
+   "ambiguous_attachments": 1,
+   "no_attachments": 5,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 48,
-    "NO_PIPE_ATTACHMENT": 6,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 2
+    "NO_PIPE_ATTACHMENT": 5,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 1
    },
    "pipe_names": 5,
    "pipe_names_with_metres": 5,
@@ -14986,7 +14841,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0032/clean.pdf",
   "input_sha256": "6a1bd88d64046512",
-  "seconds": 15.5,
+  "seconds": 14.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -14996,13 +14851,13 @@
   "coverage": {
    "designations": 5,
    "with_dn": null,
-   "leaders": 50,
+   "leaders": 49,
    "verified_attachments": 41,
    "ambiguous_attachments": 0,
-   "no_attachments": 9,
+   "no_attachments": 8,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 41,
-    "NO_PIPE_ATTACHMENT": 9
+    "NO_PIPE_ATTACHMENT": 8
    },
    "pipe_names": 5,
    "pipe_names_with_metres": 5,
@@ -15122,7 +14977,7 @@
      "pp_e3e3cec9ba1a"
     ],
     "label_count": 8,
-    "riser_count_from_labels": 6,
+    "riser_count_from_labels": 5,
     "riser_count": 3,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": 0.06
@@ -15145,7 +15000,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0033/clean.pdf",
   "input_sha256": "6d3727568126772c",
-  "seconds": 12.7,
+  "seconds": 13.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -15355,7 +15210,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0034/clean.pdf",
   "input_sha256": "d58e8dc68fc0605b",
-  "seconds": 14.8,
+  "seconds": 13.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -15365,13 +15220,13 @@
   "coverage": {
    "designations": 5,
    "with_dn": null,
-   "leaders": 33,
+   "leaders": 32,
    "verified_attachments": 31,
    "ambiguous_attachments": 0,
-   "no_attachments": 2,
+   "no_attachments": 1,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 31,
-    "NO_PIPE_ATTACHMENT": 2
+    "NO_PIPE_ATTACHMENT": 1
    },
    "pipe_names": 5,
    "pipe_names_with_metres": 5,
@@ -15510,7 +15365,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0111/clean.pdf",
   "input_sha256": "9e825bc058e30454",
-  "seconds": 161.8,
+  "seconds": 139.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -15520,14 +15375,14 @@
   "coverage": {
    "designations": 50,
    "with_dn": null,
-   "leaders": 343,
+   "leaders": 324,
    "verified_attachments": 176,
-   "ambiguous_attachments": 82,
-   "no_attachments": 85,
+   "ambiguous_attachments": 81,
+   "no_attachments": 67,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 176,
-    "NO_PIPE_ATTACHMENT": 85,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 82
+    "NO_PIPE_ATTACHMENT": 67,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 81
    },
    "pipe_names": 50,
    "pipe_names_with_metres": 42,
@@ -15706,7 +15561,7 @@
      "pp_1b7414f747d3"
     ],
     "label_count": 1,
-    "riser_count_from_labels": 4,
+    "riser_count_from_labels": 2,
     "riser_count": 1,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -15736,7 +15591,7 @@
     ],
     "ambiguous_pdf_units": 24.3,
     "label_count": 6,
-    "riser_count_from_labels": 8,
+    "riser_count_from_labels": 7,
     "riser_count": 4,
     "vertical_m": "UNKNOWN"
    },
@@ -15764,7 +15619,7 @@
     ],
     "ambiguous_pdf_units": 13.097,
     "label_count": 9,
-    "riser_count_from_labels": 8,
+    "riser_count_from_labels": 7,
     "riser_count": 3,
     "vertical_m": "UNKNOWN"
    },
@@ -15799,7 +15654,7 @@
      "pp_e495b8065fc6"
     ],
     "label_count": 2,
-    "riser_count_from_labels": 2,
+    "riser_count_from_labels": 1,
     "riser_count": 3,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -16163,7 +16018,7 @@
     "in_hatched_area_m": 0.0,
     "state": "RISER_LABELS_ONLY",
     "pipe_ids": [],
-    "riser_count_from_labels": 24,
+    "riser_count_from_labels": 22,
     "riser_count": 0,
     "label_count": 0,
     "double_line_m": 0.0,
@@ -16435,7 +16290,7 @@
      "pp_745050fa0165"
     ],
     "label_count": 1,
-    "riser_count_from_labels": 3,
+    "riser_count_from_labels": 1,
     "riser_count": 1,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -16463,7 +16318,7 @@
      "pp_c22efc3d1b7b"
     ],
     "label_count": 4,
-    "riser_count_from_labels": 6,
+    "riser_count_from_labels": 5,
     "riser_count": 4,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -16492,7 +16347,7 @@
      "pp_b92a2c4d205e"
     ],
     "label_count": 7,
-    "riser_count_from_labels": 11,
+    "riser_count_from_labels": 10,
     "riser_count": 6,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -16545,7 +16400,7 @@
      "pp_bb86c9396097"
     ],
     "label_count": 1,
-    "riser_count_from_labels": 8,
+    "riser_count_from_labels": 7,
     "riser_count": 0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -16738,7 +16593,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0112/clean.pdf",
   "input_sha256": "d1f1ab42ab978562",
-  "seconds": 21.8,
+  "seconds": 21.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -17019,7 +16874,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0113/clean.pdf",
   "input_sha256": "c52ff45a537a3a54",
-  "seconds": 80.5,
+  "seconds": 77.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -17058,11 +16913,11 @@
     "VV1-X7-50/W"
    ],
    "physical_pipes": 133,
-   "unowned_m": 53.17,
+   "unowned_m": 124.03,
    "ambiguous_m": 22.49,
    "claimed_m": 18.47,
    "reconciliation": "VALID",
-   "named_vs_measured": 83.1
+   "named_vs_measured": 71.7
   },
   "names_read": [
    "FJV1",
@@ -18510,7 +18365,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0114/clean.pdf",
   "input_sha256": "61e5d07b2e3a7136",
-  "seconds": 61.2,
+  "seconds": 57.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -18520,14 +18375,14 @@
   "coverage": {
    "designations": 50,
    "with_dn": null,
-   "leaders": 266,
-   "verified_attachments": 139,
-   "ambiguous_attachments": 56,
-   "no_attachments": 71,
+   "leaders": 262,
+   "verified_attachments": 138,
+   "ambiguous_attachments": 54,
+   "no_attachments": 70,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 139,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 56,
-    "NO_PIPE_ATTACHMENT": 71
+    "VERIFIED_PIPE_ATTACHMENT": 138,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 54,
+    "NO_PIPE_ATTACHMENT": 70
    },
    "pipe_names": 50,
    "pipe_names_with_metres": 33,
@@ -19036,8 +18891,8 @@
      "pp_f77a3ce6837b"
     ],
     "ambiguous_pdf_units": 431.685,
-    "label_count": 30,
-    "riser_count_from_labels": 19,
+    "label_count": 29,
+    "riser_count_from_labels": 18,
     "riser_count": 17,
     "vertical_m": "UNKNOWN"
    },
@@ -19515,7 +19370,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0121/clean.pdf",
   "input_sha256": "f7c27df64d1eb788",
-  "seconds": 38.9,
+  "seconds": 36.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -19525,13 +19380,13 @@
   "coverage": {
    "designations": 35,
    "with_dn": null,
-   "leaders": 167,
+   "leaders": 163,
    "verified_attachments": 98,
-   "ambiguous_attachments": 41,
-   "no_attachments": 28,
+   "ambiguous_attachments": 39,
+   "no_attachments": 26,
    "anchor_states": {
-    "NO_PIPE_ATTACHMENT": 28,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 41,
+    "NO_PIPE_ATTACHMENT": 26,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 39,
     "VERIFIED_PIPE_ATTACHMENT": 98
    },
    "pipe_names": 35,
@@ -20183,7 +20038,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0122/clean.pdf",
   "input_sha256": "7e34264b8725fd9f",
-  "seconds": 49.5,
+  "seconds": 51.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -20193,30 +20048,28 @@
   "coverage": {
    "designations": 33,
    "with_dn": null,
-   "leaders": 203,
-   "verified_attachments": 134,
+   "leaders": 202,
+   "verified_attachments": 133,
    "ambiguous_attachments": 55,
    "no_attachments": 14,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 134,
+    "VERIFIED_PIPE_ATTACHMENT": 133,
     "AMBIGUOUS_PIPE_ATTACHMENT": 55,
     "NO_PIPE_ATTACHMENT": 14
    },
    "pipe_names": 33,
-   "pipe_names_with_metres": 28,
+   "pipe_names_with_metres": 30,
    "without_metres": [
     "KV2",
     "S2-P2",
-    "S2-P3",
-    "VS1-S13-12",
-    "VVC1-X7-16/W"
+    "S2-P3"
    ],
    "physical_pipes": 83,
-   "unowned_m": 16.74,
-   "ambiguous_m": 9.11,
-   "claimed_m": 15.61,
+   "unowned_m": 105.39,
+   "ambiguous_m": 9.14,
+   "claimed_m": 15.58,
    "reconciliation": "VALID",
-   "named_vs_measured": 91.2
+   "named_vs_measured": 70.2
   },
   "names_read": [
    "KV1",
@@ -20262,6 +20115,7 @@
    "S2-G3-50",
    "S2-P5-110",
    "S2-P5-75",
+   "VS1-S13",
    "VS1-S13-12/W",
    "VS1-S13-15/W",
    "VS1-S13-22/W",
@@ -20271,26 +20125,28 @@
    "VV1-X7-16/W",
    "VV1-X7-20/W",
    "VV1-X7-40/W",
+   "VVC1-X7-16/W",
    "VVC1-X7-32/W"
   ],
   "frontiers": {
-   "frontiers": 197,
+   "frontiers": 198,
    "pipes": 83,
    "silent_pipes": [],
    "by_reason": {
-    "AMBIGUOUS_JUNCTION": 14,
+    "AMBIGUOUS_JUNCTION": 15,
     "DECLARED_BOUNDARY": 3,
     "FLOW_BUDGET": 7,
     "FREE_END": 1,
-    "REAL_DESIGNATION_BOUNDARY": 13,
+    "REAL_DESIGNATION_BOUNDARY": 11,
     "REAL_DN_BOUNDARY": 10,
+    "REAL_SYSTEM_BOUNDARY": 2,
     "SYMBOL": 57,
     "UNOWNED_CONTINUATION": 41,
     "VERTICAL": 51
    },
    "real_boundaries": 135,
    "lossy_boundaries": 41,
-   "open_boundaries": 21,
+   "open_boundaries": 22,
    "unowned_beyond_pt": 397.1,
    "unowned_beyond_m": 7.0
   },
@@ -20576,12 +20432,12 @@
     "base": "VS1-S13-W",
     "dn": 12,
     "system": "VS1",
-    "physical_pipe_count": 48,
-    "confirmed_horizontal_m": 90.915,
+    "physical_pipe_count": 44,
+    "confirmed_horizontal_m": 88.849,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 90.915,
-    "horizontal_pdf_units": 5154.233,
-    "ambiguous_m": 8.491,
+    "confirmed_total_m": 88.849,
+    "horizontal_pdf_units": 5037.104,
+    "ambiguous_m": 8.464,
     "vertical_known": false,
     "in_hatched_area_m": 19.137,
     "declared_m": 0.0,
@@ -20597,9 +20453,7 @@
      "pp_1df280f6864d",
      "pp_1fae80bc5871",
      "pp_358af354440b",
-     "pp_3855330b044c",
      "pp_38c6fffbbd2a",
-     "pp_390b17a22b62",
      "pp_398324326b5f",
      "pp_3aad422596f7",
      "pp_3b753c8044c4",
@@ -20608,7 +20462,6 @@
      "pp_428a7f67b674",
      "pp_433b9d8993f5",
      "pp_49850e6dacb3",
-     "pp_4a8a441aa072",
      "pp_5589d247f8a8",
      "pp_5cfd68b1c240",
      "pp_60b425581fc3",
@@ -20628,7 +20481,6 @@
      "pp_b694435ec372",
      "pp_bd96c4b5a789",
      "pp_c01473560df0",
-     "pp_c26d4827bed4",
      "pp_c3274698c193",
      "pp_c452b311d2f5",
      "pp_d545795a8f13",
@@ -20637,10 +20489,10 @@
      "pp_fdc017f73745",
      "pp_fffb996fde3b"
     ],
-    "ambiguous_pdf_units": 481.387,
-    "label_count": 60,
-    "riser_count_from_labels": 36,
-    "riser_count": 36,
+    "ambiguous_pdf_units": 479.827,
+    "label_count": 59,
+    "riser_count_from_labels": 35,
+    "riser_count": 35,
     "vertical_m": "UNKNOWN"
    },
    {
@@ -20721,6 +20573,34 @@
     "vertical_m": "UNKNOWN"
    },
    {
+    "designation": "VS1-S13",
+    "base": "VS1-S13",
+    "dn": null,
+    "system": "VS1",
+    "physical_pipe_count": 4,
+    "confirmed_horizontal_m": 2.034,
+    "confirmed_vertical_m": 0.0,
+    "confirmed_total_m": 2.034,
+    "horizontal_pdf_units": 115.329,
+    "ambiguous_m": 0.059,
+    "vertical_known": false,
+    "in_hatched_area_m": 0.0,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_43fc3ad248cb",
+     "pp_53c0d9ba09ac",
+     "pp_c6a2c7e2a9f2",
+     "pp_ddce8fc41712"
+    ],
+    "ambiguous_pdf_units": 3.36,
+    "label_count": 1,
+    "riser_count": 1,
+    "riser_count_from_labels": 0,
+    "vertical_m": "UNKNOWN"
+   },
+   {
     "designation": "VV1-X31-16",
     "base": "VV1-X31",
     "dn": 16,
@@ -20779,11 +20659,11 @@
     "base": "VV1-X7-W",
     "dn": 20,
     "system": "VV1",
-    "physical_pipe_count": 2,
-    "confirmed_horizontal_m": 10.021,
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 3.684,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 10.021,
-    "horizontal_pdf_units": 568.115,
+    "confirmed_total_m": 3.684,
+    "horizontal_pdf_units": 208.835,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -20791,10 +20671,9 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_01127b365d8b",
      "pp_84e1f7436449"
     ],
-    "label_count": 4,
+    "label_count": 3,
     "riser_count_from_labels": 2,
     "riser_count": 0,
     "ambiguous_pdf_units": 0.0,
@@ -20852,24 +20731,27 @@
     "vertical_m": "UNKNOWN"
    },
    {
-    "designation": "VVC1-X7-W",
+    "designation": "VVC1-X7-16/W",
     "base": "VVC1-X7-W",
     "dn": 16,
-    "system": "",
-    "physical_pipe_count": 0,
-    "confirmed_horizontal_m": 0.0,
+    "system": "VVC1",
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 6.337,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 0.0,
-    "horizontal_pdf_units": 0.0,
+    "confirmed_total_m": 6.337,
+    "horizontal_pdf_units": 359.28,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
-    "state": "RISER_LABELS_ONLY",
-    "pipe_ids": [],
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_95041f919356"
+    ],
+    "label_count": 3,
     "riser_count_from_labels": 3,
     "riser_count": 0,
-    "label_count": 2,
-    "double_line_m": 0.0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
@@ -20901,10 +20783,10 @@
   ],
   "totals": {
    "physical_pipes": 83,
-   "confirmed_horizontal_m": 316.789,
+   "confirmed_horizontal_m": 316.757,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 316.789,
-   "ambiguous_m": 9.109,
+   "confirmed_total_m": 316.757,
+   "ambiguous_m": 9.141,
    "in_hatched_area_m": 46.233,
    "riser_labels": 56
   },
@@ -20916,7 +20798,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0123/clean.pdf",
   "input_sha256": "ae64e35d1490cdc1",
-  "seconds": 36.0,
+  "seconds": 34.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -20926,14 +20808,14 @@
   "coverage": {
    "designations": 34,
    "with_dn": null,
-   "leaders": 154,
+   "leaders": 152,
    "verified_attachments": 106,
    "ambiguous_attachments": 30,
-   "no_attachments": 18,
+   "no_attachments": 16,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 106,
     "AMBIGUOUS_PIPE_ATTACHMENT": 30,
-    "NO_PIPE_ATTACHMENT": 18
+    "NO_PIPE_ATTACHMENT": 16
    },
    "pipe_names": 34,
    "pipe_names_with_metres": 28,
@@ -21553,7 +21435,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0124/clean.pdf",
   "input_sha256": "799af38a8835ae86",
-  "seconds": 49.9,
+  "seconds": 47.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -22480,7 +22362,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0131/clean.pdf",
   "input_sha256": "2a0ec2a4e5e53f65",
-  "seconds": 61.0,
+  "seconds": 59.5,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -22490,14 +22372,14 @@
   "coverage": {
    "designations": 42,
    "with_dn": null,
-   "leaders": 229,
+   "leaders": 226,
    "verified_attachments": 111,
    "ambiguous_attachments": 87,
-   "no_attachments": 31,
+   "no_attachments": 28,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 111,
     "AMBIGUOUS_PIPE_ATTACHMENT": 87,
-    "NO_PIPE_ATTACHMENT": 31
+    "NO_PIPE_ATTACHMENT": 28
    },
    "pipe_names": 42,
    "pipe_names_with_metres": 29,
@@ -22907,7 +22789,7 @@
      "pp_efcf5ba1e765"
     ],
     "label_count": 12,
-    "riser_count_from_labels": 5,
+    "riser_count_from_labels": 4,
     "riser_count": 4,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -23360,7 +23242,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0132/clean.pdf",
   "input_sha256": "f0e1619a4557c6c0",
-  "seconds": 71.0,
+  "seconds": 70.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -23370,12 +23252,12 @@
   "coverage": {
    "designations": 48,
    "with_dn": null,
-   "leaders": 322,
+   "leaders": 314,
    "verified_attachments": 189,
-   "ambiguous_attachments": 112,
+   "ambiguous_attachments": 104,
    "no_attachments": 21,
    "anchor_states": {
-    "AMBIGUOUS_PIPE_ATTACHMENT": 112,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 104,
     "VERIFIED_PIPE_ATTACHMENT": 189,
     "NO_PIPE_ATTACHMENT": 21
    },
@@ -23601,7 +23483,7 @@
      "pp_f8a953627911"
     ],
     "label_count": 14,
-    "riser_count_from_labels": 14,
+    "riser_count_from_labels": 12,
     "riser_count": 9,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -23983,7 +23865,7 @@
     ],
     "ambiguous_pdf_units": 2.233,
     "label_count": 15,
-    "riser_count_from_labels": 15,
+    "riser_count_from_labels": 13,
     "riser_count": 12,
     "vertical_m": "UNKNOWN"
    },
@@ -24212,7 +24094,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0133/clean.pdf",
   "input_sha256": "aae9ab15830c08ab",
-  "seconds": 26.5,
+  "seconds": 26.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -24954,7 +24836,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0134/clean.pdf",
   "input_sha256": "9b68e885ca816fd1",
-  "seconds": 32.9,
+  "seconds": 29.4,
   "n_pages": 1,
   "scale": {
    "state": "CONFLICT",
@@ -24964,14 +24846,14 @@
   "coverage": {
    "designations": 32,
    "with_dn": null,
-   "leaders": 204,
+   "leaders": 196,
    "verified_attachments": 127,
    "ambiguous_attachments": 62,
-   "no_attachments": 15,
+   "no_attachments": 7,
    "anchor_states": {
     "VERIFIED_PIPE_ATTACHMENT": 127,
     "AMBIGUOUS_PIPE_ATTACHMENT": 62,
-    "NO_PIPE_ATTACHMENT": 15
+    "NO_PIPE_ATTACHMENT": 7
    },
    "pipe_names": 32,
    "pipe_names_with_metres": 29,
@@ -25123,7 +25005,7 @@
      "pp_ff8dab5a8c88"
     ],
     "label_count": 6,
-    "riser_count_from_labels": 7,
+    "riser_count_from_labels": 5,
     "riser_count": 3,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
@@ -25619,7 +25501,7 @@
     ],
     "ambiguous_pdf_units": 80.03,
     "label_count": 8,
-    "riser_count_from_labels": 7,
+    "riser_count_from_labels": 5,
     "riser_count": 7,
     "vertical_m": "UNKNOWN"
    },
@@ -25932,7 +25814,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0213/clean.pdf",
   "input_sha256": "c5f7db233d2ab642",
-  "seconds": 27.4,
+  "seconds": 26.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -26376,7 +26258,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0214/clean.pdf",
   "input_sha256": "d0a69e2560cc6b0a",
-  "seconds": 36.7,
+  "seconds": 36.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -26386,12 +26268,12 @@
   "coverage": {
    "designations": 17,
    "with_dn": null,
-   "leaders": 129,
+   "leaders": 128,
    "verified_attachments": 37,
    "ambiguous_attachments": 18,
-   "no_attachments": 74,
+   "no_attachments": 73,
    "anchor_states": {
-    "NO_PIPE_ATTACHMENT": 74,
+    "NO_PIPE_ATTACHMENT": 73,
     "AMBIGUOUS_PIPE_ATTACHMENT": 18,
     "VERIFIED_PIPE_ATTACHMENT": 37
    },
@@ -26705,7 +26587,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0221/clean.pdf",
   "input_sha256": "efc2337d63677305",
-  "seconds": 35.4,
+  "seconds": 35.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -27095,14 +26977,14 @@
   "coverage": {
    "designations": 25,
    "with_dn": null,
-   "leaders": 106,
+   "leaders": 105,
    "verified_attachments": 68,
    "ambiguous_attachments": 33,
-   "no_attachments": 5,
+   "no_attachments": 4,
    "anchor_states": {
     "AMBIGUOUS_PIPE_ATTACHMENT": 33,
     "VERIFIED_PIPE_ATTACHMENT": 68,
-    "NO_PIPE_ATTACHMENT": 5
+    "NO_PIPE_ATTACHMENT": 4
    },
    "pipe_names": 25,
    "pipe_names_with_metres": 24,
@@ -27361,7 +27243,7 @@
     ],
     "ambiguous_pdf_units": 6.36,
     "label_count": 21,
-    "riser_count_from_labels": 13,
+    "riser_count_from_labels": 12,
     "riser_count": 12,
     "vertical_m": "UNKNOWN"
    },

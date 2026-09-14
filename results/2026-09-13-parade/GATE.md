@@ -200,3 +200,33 @@ hindras av ett annat fel - och utan regressioner är det ingen anledning att bac
 
 **gate65** = baslinjebiten som svänger ned i hänvisningslinjen: fyra beteckningar på en rad, en linje under dem
 ritad i bitar på var sitt systemlager, och noll hänvisningslinjer för hela blocket (FYND §11).
+
+# gate65: baslinjen som svänger ned - ACCEPT som sista utväg
+
+**Ändring.** `semantics/leaders.py`: en bit av radens baslinje vars ände fortsätter i exakt en linje som lämnar
+radens riktning ger en start vid hörnet, och bitens eget spann längs raden följer med. `pipeline.py`: det
+spannet avgör vilken av radens beteckningar hänvisningen talar för - motsvarigheten till regeln för staplade
+rader med var sin understrykning.
+
+**Först för brett, sedan snävat.** Med böjen som ett anspråk bland andra blev det täckning +0,10 % och falskhet
++0,37 %: femton blad rörde sig, de flesta åt fel håll, därför att etiketter som redan hade en hänvisningslinje
+fick en andra. Med böjen sist i ordningen och överhoppad för ett block som redan fått en linje:
+
+| | gate64 | gate65 (brett) | gate65 (sista utväg) |
+|---|---:|---:|---:|
+| TÄCKNING | 79,81 % | 79,91 % | **79,82 %** |
+| FALSKHET | 19,86 % | 20,23 % | **19,93 %** |
+| beteckningsåterkallelse | 87,87 % | 87,87 % | **88,03 %** |
+| beteckningsprecision | 78,48 % | 78,48 % | **78,62 %** |
+| blad som rörde sig | | 15 | 4 |
+
+**Var falskheten hamnar.** Av de 8,8 m som tillkommer ligger **8,8 m på `VS21-S13-15`** - en beteckning som på
+vart och ett av de bladen redan låg över facit (A0121 37,3 mot 15,4; A0112 64,0 mot 41,0; A0311 110,0 mot 108,4).
+Regeln ger alltså en riktig hänvisningslinje, och metrarna rinner sedan iväg längs en kedja där en känd brist -
+DN-gränsen på en hel kedja, uppgift #67 - låter en identitet ta hela stråket. Det som är nytt och rätt syns på
+andra sidan: en beteckning gick från MISSED till PARTIAL, återkallelsen steg 0,16 % och precisionen 0,14 %.
+
+**Beslut: ACCEPT.** En läsning som låter fyra etiketter namnge sitt rör är bättre än en som låter dem tiga, och
+den falskhet som följer är #67:s att bära, inte hänvisningslinjens.
+
+**gate66** = DN-gränsen på en hel kedja (#67), som nu är den enskilt största posten i felkatalogen.
