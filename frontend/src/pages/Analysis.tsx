@@ -391,6 +391,21 @@ export default function AnalysisPage() {
         </div>
         {tab === "mangder" && (
           <div className="card">
+            {job?.motor?.foraldrad && (
+              <p className="badge warn">
+                {`Den här läsningen gjordes med en äldre motor (${job.motor.last_med}${job.motor.last ? `, ${String(job.motor.last).slice(0, 10)}` : ""}); `
+                  + `den som svarar nu är ${job.motor.nu}. Ett resultat är en läsning gjord en gång - det räknas inte om `
+                  + "av sig självt. Läs om bladet för att se vad motorn säger idag."}
+                <button className="small" style={{ marginLeft: 10 }} disabled={rescaling}
+                  onClick={async () => {
+                    setRescaling(true); setErr("");
+                    try {
+                      const nj = await api.analyze(job.drawing_id);
+                      navigate(`/jobs/${nj.id}`);
+                    } catch (e: any) { setErr(e.message); } finally { setRescaling(false); }
+                  }}>{rescaling ? "Läser om…" : "Läs om"}</button>
+              </p>
+            )}
             {markup && (
               <p className={`badge${markup.removed ? "" : " warn"}`}>
                 {markup.removed

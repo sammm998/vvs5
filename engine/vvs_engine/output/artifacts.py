@@ -668,6 +668,17 @@ def performance_report(pa, timings: dict) -> dict[str, Any]:
 
 
 def source_revision() -> str:
+    """Which source read this drawing.
+
+    A result is a reading made by a particular engine, and the engine moves: a takeoff read in April is not the
+    takeoff the same drawing gets in September, and a reader looking at an old one deserves to know that rather
+    than to wonder why the numbers differ from a colleague's. In a checkout the question is answered by git; a
+    deployed image usually has no checkout, so the build writes the revision into the environment instead.
+    """
+    for var in ("VVS_SOURCE_REVISION", "RAILWAY_GIT_COMMIT_SHA", "SOURCE_COMMIT", "GIT_COMMIT"):
+        rev = (os.environ.get(var) or "").strip()
+        if rev:
+            return rev
     try:
         return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=os.path.dirname(os.path.abspath(__file__)), stderr=subprocess.DEVNULL).decode().strip()
     except Exception:

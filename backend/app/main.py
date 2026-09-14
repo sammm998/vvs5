@@ -345,9 +345,38 @@ def analyze(drawing_id: str, body: AnalyzeIn | None = None, user: User = Depends
     return _job_out(j)
 
 
+def _reading_engine(j: AnalysisJob) -> dict | None:
+    """Vilken motor som läste - och om den är en annan än den som svarar nu.
+
+    Ett resultat är en läsning gjord av en viss motor, och en läsning görs en gång. Motorn står inte stilla: ett
+    blad som lästes i våras är inte det blad samma ritning ger idag, och den som tittar på det gamla svaret ska
+    slippa undra varför siffran skiljer sig från kollegans. Läsningen skriver sin källa i sitt frysprotokoll, så
+    frågan går att besvara utan att gissa - och svaret är inte "fel siffra", det är "läst med en äldre motor".
+    """
+    if j.status != "COMPLETED" or not j.result_key:
+        return None
+    try:
+        with open(os.path.join(storage.path(j.result_key), "freeze-manifest.json"), encoding="utf-8") as fh:
+            man = json.load(fh)
+    except (OSError, ValueError):
+        return None
+    read_with = (man.get("source_revision") or "").strip()
+    now = _build_stamp().get("build") or ""
+    known = bool(read_with) and read_with.lower() != "unknown" and bool(now) and now.lower() != "unknown"
+    return {"last_med": read_with[:12] or None, "nu": now or None, "motorversion": man.get("engine_version"),
+            "last": man.get("created"),
+            # samma källa = samma svar; olika källa säger bara att de kan skilja sig, inte att någon är fel
+            "foraldrad": bool(known and not read_with.startswith(now) and not now.startswith(read_with[:12]))}
+
+
 @app.get("/api/jobs/{job_id}")
 def job_status(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
-    return _job_out(_job(db, user, job_id))
+    j = _job(db, user, job_id)
+    out = _job_out(j)
+    motor = _reading_engine(j)
+    if motor:
+        out["motor"] = motor
+    return out
 
 
 def _proposals(db: Session, user: User, anchors: list, pipes: list, geom: list) -> list[dict]:

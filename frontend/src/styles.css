@@ -2146,9 +2146,17 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .deskthread .deskcol { padding-top: 28px; padding-bottom: 24px; display: flex; flex-direction: column; gap: 22px; }
 
 .deskhello { margin: min(14vh, 120px) 0 8px; text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; }
-.deskhello h1 { margin: 0; font-size: clamp(26px, 4vw, 40px); letter-spacing: -0.03em; }
+.deskhello h1 { margin: 0; font-size: clamp(26px, 4vw, 40px); line-height: 1.08; letter-spacing: -0.03em; text-transform: none; }
 .deskhello .lead { margin: 0; max-width: 56ch; color: var(--muted); }
 .deskstart { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 6px; }
+/* Ett förslag är en knapp, och sidans knappar är svarta pillror med vit text. Här ska det läsas som text du
+   kan peka på, så färgen sätts om - annars ärvs den vita texten och förslaget står vitt på vitt. */
+.deskstart .chip {
+  font-family: var(--sans); font-size: 13px; letter-spacing: 0; text-transform: none;
+  color: var(--text); background: var(--bg-2); border: 1px solid var(--line);
+  padding: 7px 14px; box-shadow: none;
+}
+.deskstart .chip:hover { background: var(--chip); border-color: var(--line-2); color: var(--ink); transform: none; }
 
 .turn { display: flex; }
 .turn.user { justify-content: flex-end; }
@@ -2180,10 +2188,13 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 }
 .composer:focus-within { border-color: var(--ink); box-shadow: var(--e3), var(--lift); }
 .composer .row { display: flex; align-items: flex-end; gap: 8px; }
-.composer textarea {
-  flex: 1; border: 0; outline: 0; resize: none; background: transparent;
-  font: inherit; line-height: 1.5; padding: 8px 2px; max-height: 220px; color: var(--text);
+/* Fältet är inte en egen ruta i rutan: komponeraren är rutan, och texten står i den. Sidans fält är sänkta
+   pillror, så både ramen, den inre skuggan och fokusringen tas bort här. */
+.composer textarea, .composer textarea:focus {
+  flex: 1; border: 0; outline: 0; resize: none; background: transparent; box-shadow: none; border-radius: 0;
+  font: inherit; line-height: 1.5; padding: 8px 4px; max-height: 220px; color: var(--text);
 }
+.composer textarea::placeholder { color: var(--faint); }
 .composer .round {
   flex: none; width: 34px; height: 34px; padding: 0; border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center; font-size: 17px; line-height: 1;
