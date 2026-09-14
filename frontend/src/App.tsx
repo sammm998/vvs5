@@ -9,6 +9,7 @@ import ProjectPage from "./pages/Project";
 import DrawingPage from "./pages/Drawing";
 import AnalysisPage from "./pages/Analysis";
 import Boundary from "./components/Boundary";
+import PageCurtain from "./components/PageCurtain";
 import LearnPage, { LearnCoursePage, LearnLessonPage } from "./pages/LearnPage";
 import MaterialPage from "./pages/Material";
 import CreditsPage from "./pages/Credits";
@@ -231,7 +232,8 @@ export default function App() {
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
   const PUBLIC = ["", "/", "/login", "/dokumentation", "/priser", "/om-oss", "/hur-det-funkar", "/utbildning", "/kontakt"];
   // Akademins kurser och föreläsningar ligger under /utbildning och bär sin egen ram, precis som katalogen.
-  if (PUBLIC.includes(path) || path.startsWith("/utbildning/") || path.startsWith("/funktioner/")) return ROUTES;
+  if (PUBLIC.includes(path) || path.startsWith("/utbildning/") || path.startsWith("/funktioner/"))
+    return <><PageCurtain />{ROUTES}</>;
   const email = currentEmail();
   // On a reading, the drawing is the page. The sidebar carries one link and a sign-out; on a wide sheet those
   // 244 px are the difference between seeing the whole drawing and hunting across it, so this route opens with
