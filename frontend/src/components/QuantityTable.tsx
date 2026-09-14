@@ -13,33 +13,43 @@ const M = (v: number | null | undefined, noScale: boolean) => (noScale || v == n
 
 export const riserCount = (r: any, source: string) => (source === "labels" ? r.riser_count_from_labels : r.riser_count) ?? 0;
 
-export function withFloorHeight(rows: any[], floorHeight: number | null, includeHatched = false, riserSource = "labels"): any[] {
+export function withFloorHeight(rows: any[], floorHeight: number | null, includeHatched = false, riserSource = "labels",
+                                includeDeclared = true): any[] {
   // vertical metres are never assumed by the engine; with a user-given floor height each riser counts height metres.
   // pipe drawn inside hatched areas is measured but kept out of the total unless the takeoff includes those areas.
+  //
+  // Förklarade kopplingsledningar är rör bladet namnger i ord i stället för med en etikett - "kopplingsledningar
+  // från fördelare till apparat enligt tabell". Ritningen säger att de är där, så de räknas normalt med. Men en
+  // mängdförteckning behöver inte ha dem med: de kan vara prissatta per apparat eller mätta på ett annat blad.
+  // Därför går de att räkna bort, och då står kvar bara det en etikett pekat ut.
   return rows.map((r) => {
     const risers = riserCount(r, riserSource);
     const known = r.vertical_m !== "UNKNOWN" ? Number(r.vertical_m) : 0;
     const v = floorHeight && risers > 0 ? known + risers * floorHeight : (r.vertical_m === "UNKNOWN" ? null : known);
-    const h = r.confirmed_horizontal_m + (includeHatched ? Number(r.in_hatched_area_m ?? 0) : 0);
+    const declared = Number(r.declared_m ?? 0);
+    const h = Math.max(0, r.confirmed_horizontal_m - (includeDeclared ? 0 : declared))
+      + (includeHatched ? Number(r.in_hatched_area_m ?? 0) : 0);
     return { ...r, risers_calc: risers, horizontal_calc: h, vertical_calc: v, total_calc: h + (v ?? 0) };
   });
 }
 
 export default function QuantityTable({ rows, selected, onSelect, floorHeight, includeHatched, onIncludeHatched, riserSource,
-  pipes = [], onPipeClick, meterPerPt }: {
+  includeDeclared = true, onIncludeDeclared, pipes = [], onPipeClick, meterPerPt }: {
     rows: any[]; selected: string | null; onSelect: (key: string | null) => void; floorHeight: number | null;
     includeHatched: boolean; onIncludeHatched: (v: boolean) => void; riserSource: string;
+    includeDeclared?: boolean; onIncludeDeclared?: (v: boolean) => void;
     pipes?: any[]; onPipeClick?: (p: any) => void; meterPerPt?: number | null }) {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState<string | null>(null);
   const [status, setStatus] = useState("");
   const [sort, setSort] = useState<{ k: string; dir: 1 | -1 }>({ k: "designation", dir: 1 });
   const list = useMemo(() => {
-    let l = withFloorHeight(rows, floorHeight, includeHatched, riserSource).filter((r) => (!q || r.designation.toLowerCase().includes(q.toLowerCase()) || String(r.dn).includes(q)) && (!status || r.state === status));
+    let l = withFloorHeight(rows, floorHeight, includeHatched, riserSource, includeDeclared).filter((r) => (!q || r.designation.toLowerCase().includes(q.toLowerCase()) || String(r.dn).includes(q)) && (!status || r.state === status));
     l = [...l].sort((a, b) => { const va = a[sort.k], vb = b[sort.k]; return (va > vb ? 1 : va < vb ? -1 : 0) * sort.dir; });
     return l;
-  }, [rows, q, status, sort, floorHeight, includeHatched, riserSource]);
+  }, [rows, q, status, sort, floorHeight, includeHatched, riserSource, includeDeclared]);
   const hatchedTotal = rows.reduce((s, r) => s + Number(r.in_hatched_area_m ?? 0), 0);
+  const declaredTotal = rows.reduce((s, r) => s + Number(r.declared_m ?? 0), 0);
   const th = (k: string, label: string, unit?: string) => (
     <th onClick={() => setSort((s) => ({ k, dir: s.k === k ? (s.dir === 1 ? -1 : 1) : 1 }))}>
       {label}{sort.k === k ? (sort.dir === 1 ? " ▲" : " ▼") : ""}
@@ -60,6 +70,12 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
           <label title="Rör som är ritade inuti skrafferade ytor (väggsnitt, angränsande ritningsdel). Mäts alltid, men räknas normalt inte in i mängden.">
             <input type="checkbox" checked={includeHatched} onChange={(e) => onIncludeHatched(e.target.checked)} />
             {` Räkna med skrafferade ytor (${hatchedTotal.toFixed(2)} m)`}
+          </label>
+        )}
+        {declaredTotal > 0 && onIncludeDeclared && (
+          <label title="Rör som ingen etikett pekar ut, men som bladet namnger i ord: kopplingsledningar från fördelare till apparat enligt tabell. Ritningen säger att de är där, så de räknas med - men en förteckning som prissätter dem per apparat kan räkna bort dem här.">
+            <input type="checkbox" checked={includeDeclared} onChange={(e) => onIncludeDeclared(e.target.checked)} />
+            {` Räkna med förklarade kopplingsledningar (${declaredTotal.toFixed(2)} m)`}
           </label>
         )}
       </div>

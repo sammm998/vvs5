@@ -596,7 +596,8 @@ def materials(q: str = "", group: str = "", unit: str = "", limit: int = 60, off
             "groups": sorted({(r.get("gr") or "") for r in book["rows"] if r.get("gr")})[:60]}
 
 
-ASSUMPTION_DEFAULTS = {"floor_height_m": None, "riser_source": "labels", "include_hatched": False}
+ASSUMPTION_DEFAULTS = {"floor_height_m": None, "riser_source": "labels", "include_hatched": False,
+                       "include_declared": True}
 
 # Vad läsningen kör, till skillnad från vad den antar. De två OCR-passen kostar tid och är mätta: se
 # `Settings.review_ocr` och `Settings.ocr_assist` för siffrorna. Standarden kommer ur installationens miljö;
@@ -723,6 +724,8 @@ def write_settings(body: dict, admin: User = Depends(current_admin), db: Session
         clean["riser_source"] = body["riser_source"]
     if "include_hatched" in body:
         clean["include_hatched"] = bool(body["include_hatched"])
+    if "include_declared" in body:
+        clean["include_declared"] = bool(body["include_declared"])
     for k in RUN_KEYS:
         if k in body:
             row = db.get(ServiceSetting, f"run:{k}")
@@ -1141,7 +1144,7 @@ def _attachment(name: str) -> dict:
 
 @app.get("/api/jobs/{job_id}/export/{fmt}")
 def export(job_id: str, fmt: str, floor_height: float | None = None, include_hatched: bool = False,
-           riser_source: str = "labels",
+           riser_source: str = "labels", include_declared: bool = True,
            user: User = Depends(current_user), db: Session = Depends(get_db)):
     j = _job(db, user, job_id)
     rd = _result_dir(j)
@@ -1161,10 +1164,10 @@ def export(job_id: str, fmt: str, floor_height: float | None = None, include_hat
              for m in db.query(Markup).filter(Markup.drawing_id == j.drawing_id, Markup.deleted.is_(False))
              .order_by(Markup.created_at).all()]
     if fmt == "xlsx":
-        return Response(exports.to_xlsx(rd, fh, include_hatched, rows, riser_source, marks), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        return Response(exports.to_xlsx(rd, fh, include_hatched, rows, riser_source, marks, include_declared), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         headers=_attachment(f"{base}-mangder.xlsx"))
     if fmt == "csv":
-        return Response(exports.to_csv(rd, fh, include_hatched, rows, riser_source).encode("utf-8-sig"), media_type="text/csv", headers=_attachment(f"{base}-mangder.csv"))
+        return Response(exports.to_csv(rd, fh, include_hatched, rows, riser_source, include_declared).encode("utf-8-sig"), media_type="text/csv", headers=_attachment(f"{base}-mangder.csv"))
     if fmt == "json":
         return Response(json.dumps({**quantities, "rows": rows, "corrections_applied": len(corr), "markups": marks},
                                    ensure_ascii=False, indent=1).encode("utf-8"),

@@ -14,7 +14,7 @@ HEADERS = ["Beteckning", "DN", "Beteckningar på ritningen", "Sammanhängande r�
 
 
 def _rows(result_dir: str, floor_height: float | None = None, include_hatched: bool = False,
-          rows: list[dict] | None = None, riser_source: str = "labels") -> list[dict]:
+          rows: list[dict] | None = None, riser_source: str = "labels", include_declared: bool = True) -> list[dict]:
     """The rows an export is built from.
 
     `rows` is the corrected reading when the caller has one. Without it the engine's own reading is read off the
@@ -26,6 +26,14 @@ def _rows(result_dir: str, floor_height: float | None = None, include_hatched: b
             rows = json.load(fh)["rows"]
     rows = [dict(r) for r in rows]
     for r in rows:
+        # Förklarade kopplingsledningar: rör ingen etikett pekar ut, men som bladet namnger i ord. De räknas med
+        # som förval - ritningen säger att de är där - och räknas bort för den förteckning som prissätter dem per
+        # apparat eller mäter dem på ett annat blad. Filen ska visa samma summa som skärmen den togs från.
+        if not include_declared:
+            declared = float(r.get("declared_m", 0.0) or 0.0)
+            if declared:
+                r["confirmed_horizontal_m"] = round(max(0.0, r["confirmed_horizontal_m"] - declared), 3)
+                r["confirmed_total_m"] = round(max(0.0, float(r.get("confirmed_total_m", 0.0) or 0.0) - declared), 3)
         # pipe drawn inside hatched areas is measured but stays out of the total unless the takeoff includes it
         if include_hatched:
             hatched = float(r.get("in_hatched_area_m", 0.0) or 0.0)
@@ -75,14 +83,15 @@ def _markup_row(m: dict) -> list:
 
 
 def to_xlsx(result_dir: str, floor_height: float | None = None, include_hatched: bool = False,
-          rows: list[dict] | None = None, riser_source: str = "labels", markups: list[dict] | None = None) -> bytes:
+          rows: list[dict] | None = None, riser_source: str = "labels", markups: list[dict] | None = None,
+          include_declared: bool = True) -> bytes:
     wb = Workbook()
     ws = wb.active
     ws.title = "Mängder"
     ws.append(HEADERS)
     for c in ws[1]:
         c.font = Font(bold=True)
-    for r in _rows(result_dir, floor_height, include_hatched, rows, riser_source):
+    for r in _rows(result_dir, floor_height, include_hatched, rows, riser_source, include_declared):
         ws.append([r["designation"], r["dn"] if r["dn"] is not None else "?", r.get("label_count", 0), r["physical_pipe_count"], round(r["confirmed_horizontal_m"], 2),
                    _fmt(r["vertical_m"]) if r["vertical_m"] == "UNKNOWN" else round(r["vertical_m"], 2),
                    r["vertical_source"], round(r["confirmed_total_m"], 2),
@@ -107,11 +116,11 @@ def to_xlsx(result_dir: str, floor_height: float | None = None, include_hatched:
 
 
 def to_csv(result_dir: str, floor_height: float | None = None, include_hatched: bool = False,
-          rows: list[dict] | None = None, riser_source: str = "labels") -> str:
+          rows: list[dict] | None = None, riser_source: str = "labels", include_declared: bool = True) -> str:
     buf = io.StringIO()
     w = csv.writer(buf, delimiter=";")
     w.writerow(HEADERS)
-    for r in _rows(result_dir, floor_height, include_hatched, rows, riser_source):
+    for r in _rows(result_dir, floor_height, include_hatched, rows, riser_source, include_declared):
         w.writerow([r["designation"], r["dn"] if r["dn"] is not None else "?", r.get("label_count", 0), r["physical_pipe_count"], f"{r['confirmed_horizontal_m']:.2f}",
                     _fmt(r["vertical_m"]) if r["vertical_m"] == "UNKNOWN" else f"{r['vertical_m']:.2f}",
                     r["vertical_source"], f"{r['confirmed_total_m']:.2f}",

@@ -240,3 +240,37 @@ klumpar**, var och en 128 streck om 0,55 pt i en låda på ~50x50 pt: apparatsym
 som landar där pekar på en apparat - en radiator, en värmeväxlare - och en apparat är ingen rörsträcka.
 NO_CONTINUOUS_RUN är alltså rätt beslut, och de 67 fästlösa etiketterna är till stor del etiketter som inte
 namnger något rör. Tråden är stängd; det som återstår på A0111 är de 186 oägda metrarna ovan.
+
+
+## 10. Vad ritningen säger och vad mängdaren räknade: de förklarade kopplingsledningarna
+
+Facit är inte en sanning om ritningen, det är en export av någons markeringar: kolumnerna i `facit.xlsx` heter
+Sidetikett, Färg, Kommentarer, Längd. Ett rör som ingen markerade finns inte i facit även om det står ritat.
+
+Det syns tydligast på de blad där läsningen äger flera gånger facit:
+
+| blad | facit | ägt | kvot |
+|---|---:|---:|---:|
+| V-50-1-A0521 | 68,5 | 239,8 | 3,50 |
+| V-50-1-A0321 | 76,9 | 213,2 | 2,77 |
+| V-50-1-A0421 | 129,9 | 246,9 | 1,90 |
+| V-50-1-A0121 | 101,5 | 192,3 | 1,89 |
+| V-50-1-A0122 | 321,1 | 524,1 | 1,63 |
+| V-50-1-A0221 | 55,8 | 85,0 | 1,52 |
+
+Sex blad av 59. På A0521 äger `KV01-X31-16` 71,8 m **utan en enda etikett** - varenda meter kommer ur bladets
+egen tabell "KOPPLINGSLEDNINGAR FRÅN FÖRDELARE TILL APPARAT ENLIGT TABELL" - och facit har 0,5 m. Läsningen gör
+rätt: regeln står på bladet. Mängdaren valde att inte mäta dem där.
+
+**Mätt över korpusen** (gate63, 59 blad):
+
+| | täckning | falskhet |
+|---|---:|---:|
+| allt förklarat räknas (förval) | **79,81 %** | 19,86 % |
+| förklarat utan egen etikett räknas bort | 72,25 % | 18,04 % |
+| allt förklarat räknas bort | 66,80 % | 16,09 % |
+
+De förklarade metrarna bär 1 483 m rätt mot 429 m fel. Förvalet står alltså kvar - men på ett enskilt blad kan
+det vara tvärtom: A0521 tappar 112,6 m falskt och 0,5 m rätt om de räknas bort. Därför är det ett val i
+tabellen, "Räkna med förklarade kopplingsledningar", vid sidan av det för skrafferade ytor, och exporten följer
+skärmen.

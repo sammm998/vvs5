@@ -88,6 +88,9 @@ export default function AnalysisPage() {
   const [nPages, setNPages] = useState(1);
   const [floorHeight, setFloorHeight] = useState<string>(() => { try { return localStorage.getItem("vvs.floorHeight") ?? ""; } catch { return ""; } });
   const [includeHatched, setIncludeHatched] = useState<boolean>(() => { try { return localStorage.getItem("vvs.includeHatched") === "1"; } catch { return false; } });
+  // Förklarade kopplingsledningar räknas med som förval: det är ritningens eget besked om dem. Valet finns för
+  // den förteckning som prissätter dem per apparat eller mäter dem på ett annat blad.
+  const [includeDeclared, setIncludeDeclared] = useState<boolean>(() => { try { return localStorage.getItem("vvs.includeDeclared") !== "0"; } catch { return true; } });
   const [riserSource, setRiserSource] = useState<string>(() => { try { return localStorage.getItem("vvs.riserSource") ?? "labels"; } catch { return "labels"; } });
   // the service's assumptions are the starting point; what this browser set for itself stays in front of them
   useEffect(() => {
@@ -96,10 +99,12 @@ export default function AnalysisPage() {
         if (localStorage.getItem("vvs.floorHeight") == null && s.floor_height_m != null) setFloorHeight(String(s.floor_height_m).replace(".", ","));
         if (localStorage.getItem("vvs.riserSource") == null && s.riser_source) setRiserSource(s.riser_source);
         if (localStorage.getItem("vvs.includeHatched") == null && s.include_hatched) setIncludeHatched(true);
+        if (localStorage.getItem("vvs.includeDeclared") == null && s.include_declared === false) setIncludeDeclared(false);
       } catch { /* privat läge: tjänstens antaganden gäller rakt av */
         if (s.floor_height_m != null) setFloorHeight(String(s.floor_height_m).replace(".", ","));
         if (s.riser_source) setRiserSource(s.riser_source);
         setIncludeHatched(!!s.include_hatched);
+        setIncludeDeclared(s.include_declared !== false);
       }
     }).catch(() => { /* utan svar gäller webbläsarens egna */ });
   }, []);
@@ -107,6 +112,7 @@ export default function AnalysisPage() {
   const exportQuery = [
     floorHeight.trim() && !Number.isNaN(Number(floorHeight.replace(",", "."))) ? `floor_height=${Number(floorHeight.replace(",", "."))}` : "",
     includeHatched ? "include_hatched=true" : "",
+    includeDeclared ? "" : "include_declared=false",
     `riser_source=${riserSource}`,
   ].filter(Boolean).join("&");
   const fh = floorHeight.trim() ? Number(floorHeight.replace(",", ".")) : NaN;
@@ -518,6 +524,7 @@ export default function AnalysisPage() {
             <QuantityTable rows={result.quantities} selected={selIdent} onSelect={onIdentityPick} floorHeight={floorH}
               pipes={result.pipes} meterPerPt={result.scale?.meters_per_pdf_point ?? null} onPipeClick={onPipeClick}
               includeHatched={includeHatched} onIncludeHatched={(v) => { setIncludeHatched(v); try { localStorage.setItem("vvs.includeHatched", v ? "1" : "0"); } catch { /* private window: the setting just does not persist */ } }}
+              includeDeclared={includeDeclared} onIncludeDeclared={(v) => { setIncludeDeclared(v); try { localStorage.setItem("vvs.includeDeclared", v ? "1" : "0"); } catch { /* privat läge: valet gäller bara den här sessionen */ } }}
               riserSource={riserSource} />
             {why && (
               <div style={{ marginTop: 12 }}>
@@ -580,7 +587,7 @@ export default function AnalysisPage() {
           // The overview used to read the engine's raw totals while the table beside it read the same numbers
           // under the takeoff's own assumptions. A sheet full of stacks then said "0,0 m vertikalt" on one tab
           // and counted its risers on the next. One reading, one set of assumptions, both tabs.
-          const calc = withFloorHeight(result.quantities || [], floorH, includeHatched, riserSource);
+          const calc = withFloorHeight(result.quantities || [], floorH, includeHatched, riserSource, includeDeclared);
           const sum = (k: string) => calc.reduce((t: number, r: any) => t + (Number(r[k]) || 0), 0);
           const risers = calc.reduce((t: number, r: any) => t + (r.risers_calc || 0), 0);
           return (
