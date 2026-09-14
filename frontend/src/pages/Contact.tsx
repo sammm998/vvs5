@@ -20,7 +20,7 @@ export default function ContactPage() {
     finally { setBusy(false); }
   };
   return (
-    <PublicFrame kicker="Kontakta oss" title="Ta en ritning du redan mängdat. Vi läser den tillsammans."
+    <PublicFrame kicker="Kontakta oss" title={<>Ta en ritning du redan mängdat.<br />Vi läser den tillsammans.</>}
       lede="Skriv vad det gäller - en demo på er egen handling, ett större konto, utbildning för kontoret, eller en ritning som lästes fel. Vi svarar inom en arbetsdag.">
       <section className="pub-sec pub-contact">
         {done ? (

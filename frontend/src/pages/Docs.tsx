@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import SiteHeader from "../components/SiteHeader";
+
 
 type Sec = { id: string; h: string; body: JSX.Element };
 
@@ -405,19 +406,18 @@ export default function Docs() {
   const nav = useMemo(() => SECTIONS.map((s) => ({ id: s.id, h: s.h })), []);
   return (
     <div className="lp docs">
-      <div className="lp-corners">
-        <Link className="lp-pill" to="/">← Tillbaka</Link>
-        <span className="lp-logo lp-pill static">Dokumentation</span>
-        <span className="lp-sp" />
-        <Link className="lp-pill lp-start" to="/login">Starta projekt <span className="plus">+</span></Link>
-      </div>
+      <SiteHeader anchors={nav.map((n) => ({ href: `#${n.id}`, label: n.h }))} />
 
-      <header className="docs-head">
-        <p className="lp-mono">Dokumentation</p>
-        <h1>Hur systemet läser en ritning</h1>
-        <p className="docs-lede">
-          Vad som läses, i vilken ordning, vad som får bli en siffra och vad som aldrig får det.
-        </p>
+      <header className="pub-hero">
+        <div className="pub-hero-in">
+          <div>
+            <p className="lp-eyebrow"><span className="dot" />Dokumentation</p>
+            <h1 className="pub-h1">Hur systemet läser en ritning</h1>
+            <p className="pub-lede">
+              Vad som läses, i vilken ordning, vad som får bli en siffra och vad som aldrig får det.
+            </p>
+          </div>
+        </div>
       </header>
 
       <div className="docs-body">

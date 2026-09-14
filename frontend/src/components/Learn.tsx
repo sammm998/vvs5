@@ -135,7 +135,7 @@ export function Exercise() {
  * vet vad ett system är - men en lås som inte går att öppna är en fälla, så varje låst kurs går att öppna ändå
  * med ett klick som säger att man hoppar.
  */
-function Awards() {
+export function Awards() {
   const [rows, setRows] = useState<any[] | null>(null);
   useEffect(() => { api.awards().then((r) => setRows(r.awards)).catch(() => setRows([])); }, []);
   if (!rows || !rows.length) return null;

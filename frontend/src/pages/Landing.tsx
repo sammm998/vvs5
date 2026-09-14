@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../landing.css";
 import LandingScene from "../components/LandingScene";
+import SiteHeader from "../components/SiteHeader";
 import LayerStack from "../components/LayerStack";
 import EvidenceSection from "../components/EvidenceSection";
 import StyleFan from "../components/StyleFan";
@@ -176,58 +177,29 @@ function Screen({ turn, children, caption }: { turn: number; children: React.Rea
   );
 }
 
+const ANCHORS = [
+  { href: "#hur", label: "Så fungerar det" },
+  { href: "#lager", label: "Tre lager" },
+  { href: "#stilar", label: "Stilar" },
+  { href: "#agent", label: "Agenten" },
+  { href: "#ror", label: "Rörtyper" },
+  { href: "#belagg", label: "Beläggen" },
+];
+
 export default function Landing() {
   useEffect(() => {
     document.body.classList.add("lp-dark");
     return () => document.body.classList.remove("lp-dark");
   }, []);
-  const [menu, setMenu] = useState(false);
   const scrolled = useScrollProgress();
   return (
     <div className="lp">
-      <div className="lp-corners">
-        <button className="lp-pill" aria-expanded={menu} aria-label={menu ? "Stäng menyn" : "Öppna menyn"}
-          onClick={() => setMenu(!menu)}>
-          <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
-            {menu
-              ? <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" />
-              : <path d="M2 4.5h12M2 11.5h12" stroke="currentColor" strokeWidth="1.5" />}
-          </svg>
-        </button>
-        <span className="lp-logo lp-pill static">
-          <svg width="16" height="16" viewBox="0 0 22 22" aria-hidden="true">
-            <path d="M3 15 H8 V7 H14 V15 H19" stroke="#6ee7a5" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          VVS Mängdning
-        </span>
-        <span className="lp-sp" />
-        <Link className="lp-pill lp-start" to="/login">
-          Starta projekt <span className="plus">+</span>
-        </Link>
-      </div>
+      <SiteHeader anchors={ANCHORS} cta={{ to: "/login", label: "Starta projekt" }} />
 
       <div className="lp-rail" aria-hidden="true">
         <div className="lp-rail-fill" style={{ transform: `scaleY(${scrolled})` }} />
       </div>
       <div className="lp-scrollpct" aria-hidden="true">Skroll · {Math.round(scrolled * 100)} %</div>
-
-      {menu && (
-        <div className="lp-menu">
-          <a href="#hur" onClick={() => setMenu(false)}>Så fungerar det</a>
-          <a href="#lager" onClick={() => setMenu(false)}>Tre lager</a>
-          <a href="#stilar" onClick={() => setMenu(false)}>Stilar</a>
-          <a href="#agent" onClick={() => setMenu(false)}>Agenten</a>
-          <a href="#ror" onClick={() => setMenu(false)}>Rörtyper</a>
-          <a href="#belagg" onClick={() => setMenu(false)}>Beläggen</a>
-          <Link to="/hur-det-funkar" onClick={() => setMenu(false)}>Hur det funkar</Link>
-          <Link to="/priser" onClick={() => setMenu(false)}>Priser</Link>
-          <Link to="/utbildning" onClick={() => setMenu(false)}>Utbildning</Link>
-          <Link to="/om-oss" onClick={() => setMenu(false)}>Om oss</Link>
-          <Link to="/dokumentation" onClick={() => setMenu(false)}>Dokumentation</Link>
-          <Link to="/kontakt" onClick={() => setMenu(false)}>Kontakta oss</Link>
-          <Link to="/login" onClick={() => setMenu(false)}>Logga in</Link>
-        </div>
-      )}
 
       <header className="lp-stage">
         <Stage />

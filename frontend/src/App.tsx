@@ -9,13 +9,13 @@ import ProjectPage from "./pages/Project";
 import DrawingPage from "./pages/Drawing";
 import AnalysisPage from "./pages/Analysis";
 import Boundary from "./components/Boundary";
-import LearnPage from "./pages/LearnPage";
+import LearnPage, { LearnCoursePage, LearnLessonPage } from "./pages/LearnPage";
 import MaterialPage from "./pages/Material";
 import CreditsPage from "./pages/Credits";
 import PricingPage from "./pages/Pricing";
 import AboutPage from "./pages/About";
 import HowItWorksPage from "./pages/HowItWorks";
-import EducationPage from "./pages/Education";
+import EducationPage, { EducationCoursePage, EducationLessonPage } from "./pages/Education";
 import ContactPage from "./pages/Contact";
 import AdminPage from "./pages/Admin";
 import ProjectAnalysisPage from "./pages/ProjectAnalysis";
@@ -147,6 +147,8 @@ const ROUTES = (
     <Route path="/om-oss" element={<AboutPage />} />
     <Route path="/hur-det-funkar" element={<HowItWorksPage />} />
     <Route path="/utbildning" element={<EducationPage />} />
+    <Route path="/utbildning/:modul" element={<EducationCoursePage />} />
+    <Route path="/utbildning/:modul/:lektion" element={<EducationLessonPage />} />
     <Route path="/kontakt" element={<ContactPage />} />
     <Route path="/projekt" element={<Guard><Projects /></Guard>} />
     <Route path="/projects/:id" element={<Guard><ProjectPage /></Guard>} />
@@ -163,6 +165,8 @@ const ROUTES = (
     <Route path="/granska" element={<Navigate to="/mangda" replace />} />
     <Route path="/granska/:id" element={<GranskaRedirect />} />
     <Route path="/lar" element={<Guard><LearnPage /></Guard>} />
+    <Route path="/lar/:modul" element={<Guard><LearnCoursePage /></Guard>} />
+    <Route path="/lar/:modul/:lektion" element={<Guard><LearnLessonPage /></Guard>} />
     <Route path="/agent" element={<Guard><AgentPage /></Guard>} />
     <Route path="/material" element={<Guard><MaterialPage /></Guard>} />
     <Route path="/credits" element={<Guard><CreditsPage /></Guard>} />
@@ -224,7 +228,8 @@ export default function App() {
   // a trailing slash is the same page: without this, /dokumentation/ fell through and got the app's sidebar
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
   const PUBLIC = ["", "/", "/login", "/dokumentation", "/priser", "/om-oss", "/hur-det-funkar", "/utbildning", "/kontakt"];
-  if (PUBLIC.includes(path)) return ROUTES;
+  // Akademins kurser och föreläsningar ligger under /utbildning och bär sin egen ram, precis som katalogen.
+  if (PUBLIC.includes(path) || path.startsWith("/utbildning/")) return ROUTES;
   const email = currentEmail();
   // On a reading, the drawing is the page. The sidebar carries one link and a sign-out; on a wide sheet those
   // 244 px are the difference between seeing the whole drawing and hunting across it, so this route opens with

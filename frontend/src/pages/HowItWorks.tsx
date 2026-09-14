@@ -31,8 +31,16 @@ const REASONS = [
 
 export default function HowItWorksPage() {
   return (
-    <PublicFrame kicker="Hur det funkar" title="Från streck till meter, med belägg för varje steg"
-      lede="Läsningen går i tolv steg. Varje steg lämnar spår som går att öppna, och där den inte kan gå vidare säger den varför." wide>
+    <PublicFrame kicker="Hur det funkar" title={<>Från streck till meter,<br />med belägg för varje steg</>}
+      lede="Läsningen går i tolv steg. Varje steg lämnar spår som går att öppna, och där den inte kan gå vidare säger den varför."
+      anchors={[{ href: "#steg", label: "De tolv stegen" }, { href: "#skal", label: "Varför ett rör slutar" }]}
+      aside={
+        <div className="pub-keys">
+          <div className="pub-key"><div className="n">{STEPS.length}</div><div className="l">steg i läsningen</div></div>
+          <div className="pub-key"><div className="n">{REASONS.length}</div><div className="l">skäl ett rör kan sluta av</div></div>
+          <div className="pub-key"><div className="n">0</div><div className="l">meter utan belägg</div></div>
+        </div>
+      } wide>
       <section className="pub-sec">
         <ol className="pub-steps">
           {STEPS.map((s) => (

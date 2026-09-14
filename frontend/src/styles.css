@@ -2873,3 +2873,269 @@ button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 
 .bcad-msg.user { background: #eef3ff; }
 .bcad-msg pre { margin: 0; white-space: pre-wrap; font-family: inherit; font-size: 12px; }
 .bcad-proposal ul { margin: 4px 0 6px 16px; padding: 0; }
+
+/* ============================================================================================================
+   AKADEMIN SOM EN UTBILDNINGSPLATTFORM
+
+   Det som gör en utbildningsplattform till en utbildningsplattform är att man alltid vet tre saker: vad kursen
+   innehåller, var man själv är i den, och vad nästa steg är. Formen nedan säger alla tre utan att man behöver
+   leta - och varje kurs och föreläsning har en egen sida, så att läsa en lektion är att vara någonstans, inte
+   att ha en ruta öppen ovanpå något annat.
+
+   Samma klasser används publikt (mörkt, i .lp) och inloggat (ljust, i .academy). Färgerna kommer ur variabler,
+   så samma form bär båda tonerna; det som skiljer står längst ned under `.lp .ac-*`.
+   ============================================================================================================ */
+
+.ac-lede { color: var(--muted, #6a6a6a); font-size: 16.5px; line-height: 1.7; max-width: 62ch; margin: 14px 0 0; }
+
+/* ---- var du är, och vad som är nästa steg ---- */
+
+.ac-resume {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; align-items: center;
+  padding: clamp(22px, 3vw, 34px);
+  border: 1px solid var(--line); border-radius: 18px;
+  background: linear-gradient(135deg, rgba(13, 13, 13, 0.035), rgba(13, 13, 13, 0.01) 60%), var(--glass);
+  box-shadow: var(--e2), var(--lift);
+}
+.ac-resume .lp-mono { margin: 0 0 8px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.ac-resume h2 { margin: 0; font-size: clamp(22px, 2.6vw, 30px); letter-spacing: -0.02em; line-height: 1.15; }
+.ac-resume-sub { margin: 10px 0 20px; color: var(--muted, #6a6a6a); font-size: 14.5px; }
+@media (max-width: 760px) { .ac-resume { grid-template-columns: 1fr; } }
+
+.ac-ring { position: relative; display: grid; place-items: center; flex: none; }
+.ac-ring svg { position: absolute; inset: 0; }
+.ac-ring-n { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.ac-ring-n i { font-style: normal; color: var(--faint); font-size: 14px; font-weight: 500; }
+
+/* ---- flikarna ---- */
+
+.ac-tabs { display: flex; gap: 6px; margin: clamp(26px, 4vh, 40px) 0 20px; flex-wrap: wrap; }
+.ac-tabs button {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 38px; padding: 0 16px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: transparent; color: var(--muted, #6a6a6a);
+  font: inherit; font-size: 14.5px; cursor: pointer;
+  transition: background 0.18s var(--ease), color 0.18s, border-color 0.18s;
+}
+.ac-tabs button:hover { color: var(--ink); border-color: var(--line-2); }
+.ac-tabs button.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.ac-tabs .n {
+  font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px;
+  padding: 1px 7px; border-radius: 999px; background: rgba(125, 125, 125, 0.18);
+}
+
+/* ---- katalogen ---- */
+
+.ac-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(288px, 1fr)); gap: 16px; }
+
+.ac-course {
+  position: relative; display: flex; flex-direction: column;
+  padding: 22px 22px 18px;
+  border: 1px solid var(--line); border-radius: 16px;
+  background: var(--glass);
+  box-shadow: var(--e1);
+  transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.28s;
+  overflow: hidden;
+}
+.ac-course::before {
+  content: ""; position: absolute; inset: 0 0 auto; height: 2px;
+  background: linear-gradient(90deg, #6ee7a5, rgba(110, 231, 165, 0));
+  transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform 0.4s var(--ease);
+}
+.ac-course:hover { transform: translateY(-3px); box-shadow: var(--e3), var(--lift); border-color: var(--line-2); }
+.ac-course:hover::before { transform: scaleX(1); }
+.ac-course:focus-within { border-color: var(--line-2); }
+/* hela kortet är klickbart, men rubriken är länken skärmläsaren läser upp */
+.ac-course-hit { position: absolute; inset: 0; z-index: 2; border-radius: inherit; }
+.ac-course-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.ac-course-top .lp-mono { font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+.ac-no {
+  display: inline-grid; place-items: center; width: 30px; height: 30px;
+  border-radius: 9px; border: 1px solid var(--line-2);
+  font-family: ui-monospace, SFMono-Regular, monospace; font-size: 12px; color: var(--ink);
+}
+.ac-course.full .ac-no { background: rgba(110, 231, 165, 0.16); border-color: rgba(110, 231, 165, 0.5); }
+.ac-course h3 { margin: 0 0 8px; font-size: 18px; letter-spacing: -0.015em; }
+.ac-course > p { margin: 0 0 14px; color: var(--muted, #6a6a6a); font-size: 14.5px; line-height: 1.6; }
+.ac-course-list { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 5px; }
+.ac-course-list li { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--muted, #6a6a6a); }
+.ac-course-list li.more { color: var(--faint); padding-left: 24px; }
+.ac-course-list .tick {
+  flex: none; width: 15px; height: 15px; border-radius: 50%;
+  border: 1.5px solid var(--line-2); position: relative;
+}
+.ac-course-list li.done .tick { background: #6ee7a5; border-color: #6ee7a5; }
+.ac-course-list li.done .tick::after {
+  content: ""; position: absolute; left: 4px; top: 1.5px; width: 4px; height: 8px;
+  border: solid #0b2f1c; border-width: 0 1.7px 1.7px 0; transform: rotate(42deg);
+}
+.ac-course-list li.done { color: var(--ink); }
+.ac-course-foot { display: flex; align-items: center; gap: 12px; margin-top: auto; }
+.ac-course-foot .lp-mono { font-size: 11px; color: var(--faint); white-space: nowrap; }
+.ac-bar { flex: 1; height: 4px; border-radius: 99px; background: rgba(125, 125, 125, 0.2); overflow: hidden; }
+.ac-bar i { display: block; height: 100%; border-radius: 99px; background: #6ee7a5; transition: width 0.7s var(--ease); }
+.ac-course-go {
+  margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--line);
+  font-size: 13.5px; color: var(--ink); opacity: 0.55;
+  transition: opacity 0.22s, transform 0.22s var(--ease);
+}
+.ac-course:hover .ac-course-go { opacity: 1; transform: translateX(2px); }
+
+/* ---- kurssidan ---- */
+
+.ac-crumbs { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--faint); margin-bottom: 20px; flex-wrap: wrap; }
+.ac-crumbs a { color: var(--muted, #6a6a6a); }
+.ac-crumbs a:hover { color: var(--ink); }
+.ac-crumbs .here { color: var(--ink); }
+
+.ac-coursehead {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; align-items: center;
+  padding-bottom: clamp(22px, 4vh, 34px); border-bottom: 1px solid var(--line);
+}
+.ac-coursehead .lp-mono { margin: 0 0 10px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.ac-coursehead h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.03em; line-height: 1.1; text-transform: none; }
+.ac-coursehead .ac-lede { margin-bottom: 22px; }
+@media (max-width: 760px) { .ac-coursehead { grid-template-columns: 1fr; } }
+
+.ac-lessons { list-style: none; margin: clamp(22px, 4vh, 34px) 0 0; padding: 0; display: grid; gap: 8px; counter-reset: ac; }
+.ac-lessons li a {
+  display: grid; grid-template-columns: 22px 30px minmax(0, 1fr) auto; gap: 14px; align-items: center;
+  padding: 15px 18px;
+  border: 1px solid var(--line); border-radius: 13px;
+  background: var(--glass); color: inherit;
+  transition: transform 0.2s var(--ease), border-color 0.2s, box-shadow 0.2s;
+}
+.ac-lessons li a:hover { transform: translateX(3px); border-color: var(--line-2); box-shadow: var(--e1); }
+.ac-lessons .tick { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--line-2); position: relative; }
+.ac-lessons li.done .tick { background: #6ee7a5; border-color: #6ee7a5; }
+.ac-lessons li.done .tick::after {
+  content: ""; position: absolute; left: 5.5px; top: 2px; width: 4px; height: 9px;
+  border: solid #0b2f1c; border-width: 0 1.8px 1.8px 0; transform: rotate(42deg);
+}
+.ac-lessons .no { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 12.5px; color: var(--faint); }
+.ac-lessons .nm { font-size: 15.5px; font-weight: 500; min-width: 0; }
+.ac-lessons .nm i { display: block; font-style: normal; font-weight: 400; font-size: 13.5px; color: var(--faint); margin-top: 3px; }
+.ac-lessons .mi { font-size: 11px; color: var(--faint); white-space: nowrap; }
+
+.ac-coursenav, .ac-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: clamp(26px, 5vh, 44px); }
+.ac-step {
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 16px 18px; border: 1px solid var(--line); border-radius: 13px;
+  background: var(--glass); color: inherit; text-align: left;
+  font: inherit; cursor: pointer;
+  transition: transform 0.2s var(--ease), border-color 0.2s;
+}
+.ac-step.next { text-align: right; align-items: flex-end; }
+.ac-step:hover { border-color: var(--line-2); transform: translateY(-2px); }
+.ac-step .lp-mono { font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--faint); }
+.ac-step b { font-size: 15px; font-weight: 500; }
+@media (max-width: 640px) { .ac-coursenav, .ac-steps { grid-template-columns: 1fr; } .ac-step.next { text-align: left; align-items: flex-start; } }
+
+/* ---- föreläsningen ---- */
+
+.ac-lechead { padding-bottom: clamp(20px, 3vh, 30px); border-bottom: 1px solid var(--line); }
+.ac-lechead .lp-mono { margin: 0 0 12px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.ac-lechead h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.03em; line-height: 1.1; max-width: 20ch; text-transform: none; }
+
+.ac-lecbody { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: clamp(26px, 4vw, 52px); padding-top: clamp(24px, 4vh, 38px); align-items: start; }
+@media (max-width: 1000px) { .ac-lecbody { grid-template-columns: 1fr; } }
+
+.ac-read { font-size: 16.5px; line-height: 1.78; max-width: 68ch; }
+.ac-read > p { margin: 0 0 20px; color: var(--muted, #4a4a4a); }
+.ac-read > p:first-child { font-size: 18.5px; color: var(--ink); }
+.ac-ul { margin: 0 0 20px; padding: 0; list-style: none; display: grid; gap: 9px; }
+.ac-ul li { position: relative; padding-left: 20px; color: var(--muted, #4a4a4a); }
+.ac-ul li::before { content: ""; position: absolute; left: 2px; top: 11px; width: 6px; height: 6px; border-radius: 50%; background: #6ee7a5; }
+.ac-terms { margin: 0 0 22px; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 13px; overflow: hidden; }
+.ac-terms > div { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 16px; padding: 14px 18px; background: var(--glass); }
+.ac-terms dt { font-weight: 600; font-size: 15px; }
+.ac-terms dd { margin: 0; color: var(--muted, #6a6a6a); font-size: 15px; line-height: 1.62; }
+@media (max-width: 640px) { .ac-terms > div { grid-template-columns: 1fr; gap: 4px; } }
+.ac-note {
+  margin: 0 0 22px; padding: 16px 18px 16px 20px;
+  border-left: 2.5px solid #6ee7a5; border-radius: 0 11px 11px 0;
+  background: rgba(110, 231, 165, 0.08);
+  font-size: 15.5px; line-height: 1.68;
+}
+.ac-fig { margin: 0 0 24px; }
+.ac-fig figcaption { margin-top: 10px; font-size: 13.5px; color: var(--faint); }
+
+.ac-side { position: sticky; top: 18px; }
+.ac-sidefig { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--glass); box-shadow: var(--e1); }
+.ac-shorts { list-style: none; margin: 16px 0 0; padding: 16px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px; }
+.ac-shorts li { position: relative; padding-left: 18px; font-size: 14px; line-height: 1.6; color: var(--muted, #6a6a6a); }
+.ac-shorts li::before { content: ""; position: absolute; left: 0; top: 9px; width: 5px; height: 5px; border-radius: 50%; background: #6ee7a5; }
+@media (max-width: 1000px) { .ac-side { position: static; } }
+
+.ac-quiz { margin: clamp(26px, 5vh, 42px) 0 0; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--glass); }
+.ac-quiz .lp-mono { margin: 0 0 10px; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.ac-quiz h3 { margin: 0 0 18px; font-size: 18px; line-height: 1.4; letter-spacing: -0.012em; }
+.ac-opts { display: grid; gap: 8px; }
+.ac-opt {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 13px 15px; border: 1px solid var(--line); border-radius: 11px;
+  background: transparent; color: inherit; font: inherit; font-size: 15px; text-align: left; cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s var(--ease);
+}
+.ac-opt:hover:not(:disabled) { border-color: var(--line-2); transform: translateX(2px); }
+.ac-opt .mark {
+  flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 7px;
+  border: 1px solid var(--line-2); font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; color: var(--faint);
+}
+.ac-opt.right { border-color: #6ee7a5; background: rgba(110, 231, 165, 0.12); }
+.ac-opt.right .mark { background: #6ee7a5; border-color: #6ee7a5; color: #0b2f1c; }
+.ac-opt.wrong { border-color: rgba(214, 90, 90, 0.6); background: rgba(214, 90, 90, 0.08); }
+.ac-opt.is-answer:not(.right) { border-color: rgba(110, 231, 165, 0.55); }
+.ac-why { margin: 16px 0 0; font-size: 15px; line-height: 1.65; color: var(--muted, #6a6a6a); }
+.ac-why.ok { color: var(--ink); }
+
+.ac-drill { margin: clamp(26px, 5vh, 42px) 0 0; }
+.ac-drill .lp-mono { margin: 0 0 12px; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.ac-drills { display: grid; gap: 18px; }
+
+.ac-lecfoot { margin-top: clamp(30px, 5vh, 48px); padding-top: clamp(22px, 4vh, 32px); border-top: 1px solid var(--line); }
+.ac-done { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.ac-badge {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 9px 16px; border-radius: 999px;
+  border: 1px solid rgba(110, 231, 165, 0.5); background: rgba(110, 231, 165, 0.12);
+  font-size: 14.5px;
+}
+.ac-badge b { color: #1d7a4c; }
+
+.ac-missing { padding: clamp(40px, 10vh, 90px) 0; text-align: center; }
+.ac-missing h1 { font-size: clamp(26px, 3.4vw, 38px); letter-spacing: -0.025em; margin: 0 0 12px; text-transform: none; }
+.ac-missing .ac-lede { margin: 0 auto 26px; }
+
+/* ---- samma form, mörk ton, på de publika sidorna ---- */
+
+.lp .ac-lede, .lp .ac-read > p, .lp .ac-course > p, .lp .ac-terms dd, .lp .ac-why,
+.lp .ac-shorts li, .lp .ac-ul li, .lp .ac-resume-sub { color: var(--lp-dim); }
+.lp .ac-read > p:first-child, .lp .ac-why.ok, .lp .ac-crumbs .here { color: var(--lp-ink); }
+.lp .ac-resume, .lp .ac-course, .lp .ac-lessons li a, .lp .ac-step, .lp .ac-quiz,
+.lp .ac-sidefig, .lp .ac-terms > div {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+  border-color: var(--lp-line); box-shadow: none;
+}
+.lp .ac-resume { background: linear-gradient(135deg, rgba(110, 231, 165, 0.07), rgba(255, 255, 255, 0.015) 55%); }
+.lp .ac-course:hover, .lp .ac-lessons li a:hover, .lp .ac-step:hover { border-color: var(--lp-line-2); box-shadow: none; }
+.lp .ac-terms { background: var(--lp-line); border-color: var(--lp-line); }
+.lp .ac-no, .lp .ac-opt .mark { border-color: var(--lp-line-2); color: var(--lp-ink); }
+.lp .ac-course-go { color: var(--lp-ink); border-top-color: var(--lp-line); }
+.lp .ac-crumbs a { color: var(--lp-dim); }
+.lp .ac-crumbs a:hover { color: var(--lp-ink); }
+.lp .ac-lechead, .lp .ac-coursehead, .lp .ac-lecfoot, .lp .ac-shorts { border-color: var(--lp-line); }
+.lp .ac-opt { border-color: var(--lp-line); }
+.lp .ac-opt:hover:not(:disabled) { border-color: var(--lp-line-2); }
+.lp .ac-bar { background: rgba(255, 255, 255, 0.12); }
+.lp .ac-tabs button { border-color: var(--lp-line); color: var(--lp-dim); }
+.lp .ac-tabs button.on { background: var(--lp-ink); border-color: var(--lp-ink); color: #0a0b0d; }
+.lp .ac-badge b { color: #6ee7a5; }
+.lp .ac-note { background: rgba(110, 231, 165, 0.09); }
+.lp .ac-lessons .tick, .lp .ac-course-list .tick { border-color: var(--lp-line-2); }
+
+/* akademins huvudrad: logotypen är en väg tillbaka, inte bara en etikett */
+.academy-bar .org { color: inherit; text-decoration: none; }
+.academy-bar .org:hover { text-decoration: underline; }

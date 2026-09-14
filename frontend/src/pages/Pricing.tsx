@@ -18,8 +18,14 @@ export default function PricingPage() {
   }, []);
   const best = p ? p.packages.reduce((b: any, x: any) => (!b || x.kr / x.credits < b.kr / b.credits ? x : b), null) : null;
   return (
-    <PublicFrame kicker="Priser" title="Betala för det som lästes - inte för att du provade"
-      lede="En läsning kostar credits. Priset står på ritningen innan du trycker, och en läsning som inte kunde ge en enda meter betalas tillbaka av sig själv.">
+    <PublicFrame kicker="Priser" title={<>Betala för det som lästes —<br />inte för att du provade</>}
+      lede="En läsning kostar credits. Priset står på ritningen innan du trycker, och en läsning som inte kunde ge en enda meter betalas tillbaka av sig själv."
+      aside={p ? (
+        <div className="pub-keys">
+          <div className="pub-key"><div className="n">{p.trial_credits}</div><div className="l">credits att prova med</div></div>
+          <div className="pub-key"><div className="n">{p.sheet?.A3}</div><div className="l">credits för ett A3-blad</div></div>
+        </div>
+      ) : undefined}>
       {err && <p className="pub-err">{err}</p>}
       {p && (
         <>
