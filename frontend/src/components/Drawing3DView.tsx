@@ -33,6 +33,7 @@ type Props = {
   onClose: () => void;
 };
 
+const SKY = "#ecebe5";
 const REDUCED = () => typeof window !== "undefined"
   && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
@@ -109,8 +110,11 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
 
     // ---- scen, ljus, mark ------------------------------------------------------------------------------
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#131820");
-    scene.fog = new THREE.Fog("#131820", span * 1.8, span * 5.0);
+    // Ett hus i snitt läses som arkitekten ritar det: varm ljus grund, vita väggar, mjuk skugga. Den mörka
+    // grunden gjorde modellen till en teknisk figur; den ljusa gör den till en byggnad, och rören syns bättre
+    // mot den eftersom deras systemfärger är det enda mättade i bilden.
+    scene.background = new THREE.Color(SKY);
+    scene.fog = new THREE.Fog(SKY, span * 2.2, span * 6.0);
 
     const camera = new THREE.PerspectiveCamera(46, 1, 0.08, Math.max(400, span * 8));
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -118,14 +122,14 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.06;
     el.appendChild(renderer.domElement);
     const dom = renderer.domElement;
     dom.tabIndex = 0;
 
-    const hemi = new THREE.HemisphereLight("#e9f1fb", "#232a34", 1.55);
+    const hemi = new THREE.HemisphereLight("#ffffff", "#ded6c8", 2.15);
     scene.add(hemi);
-    const key = new THREE.DirectionalLight("#ffffff", 2.3);
+    const key = new THREE.DirectionalLight("#fffaf1", 2.5);
     key.position.set(span * 0.5, span * 0.9, span * 0.4);
     key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048);
@@ -136,13 +140,13 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
     key.shadow.camera.top = s; key.shadow.camera.bottom = -s;
     key.shadow.bias = -0.0008;
     scene.add(key);
-    const fill = new THREE.DirectionalLight("#b9d4ff", 0.6);
+    const fill = new THREE.DirectionalLight("#eaf0f6", 0.5);
     fill.position.set(-span * 0.6, span * 0.4, -span * 0.5);
     scene.add(fill);
 
     const ground = new THREE.Mesh(
       new THREE.PlaneGeometry(span * 6, span * 6),
-      new THREE.MeshStandardMaterial({ color: "#1b212a", roughness: 0.96, metalness: 0.0 }),
+      new THREE.MeshStandardMaterial({ color: "#e3dfd6", roughness: 0.98, metalness: 0.0 }),
     );
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -0.02;
@@ -151,7 +155,7 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
 
     const slab = new THREE.Mesh(
       new THREE.BoxGeometry(Math.max(model.size.width, 1) * 1.04, 0.12, Math.max(model.size.depth, 1) * 1.04),
-      new THREE.MeshStandardMaterial({ color: "#eef1f5", roughness: 0.85, metalness: 0.02 }),
+      new THREE.MeshStandardMaterial({ color: "#f2efe9", roughness: 0.92, metalness: 0.0 }),
     );
     slab.position.y = -0.06;
     slab.receiveShadow = true;
@@ -361,8 +365,8 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
     const ndc = new THREE.Vector2();
     let hi: THREE.Mesh | null = null;
     // väggarna delar material, så den utpekade lyfts fram med sin egen instansfärg
-    const plainWall = new THREE.Color("#ffffff");
-    const litWall = new THREE.Color("#9fd8e6");
+    const plainWall = new THREE.Color("#f6f3ee");
+    const litWall = new THREE.Color("#7fc6d8");
     let lastWall = -1;
     const click = (e: PointerEvent) => {
       const r = dom.getBoundingClientRect();

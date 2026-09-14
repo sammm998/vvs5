@@ -45,6 +45,7 @@ type Props = {
   wire?: boolean;
 };
 
+const GROUND = "#eceae4";
 const MM = 0.001;
 
 function prismGeometry(p: Prism | RoofPlane, o: [number, number]): THREE.BufferGeometry {
@@ -94,7 +95,17 @@ function tubeGeometry(t: ReturnType<typeof pathTube>, o: [number, number]): THRE
   return out;
 }
 
-const KIND_COLOUR: Record<string, string> = { wall: "#d9dde3", curtain_wall: "#9fd3e8", door: "#c8a165", window: "#9fd3e8", opening: "#e8e8e8", floor: "#c4c8ce", ceiling: "#efece4", roof: "#a5533a", column: "#8b8f97", beam: "#7f8590", foundation: "#7a7d83", stair: "#cfc6b8", equipment: "#5c7080" };
+/* Arkitektens snitt, inte ingenjörens tråd.
+ *
+ * En modell av ett hus läses bäst som ett snitt genom det: väggarna vita med sin tjocklek synlig, golvet varmt
+ * och matt, och skuggan mjuk nog att säga vad som står ovanpå vad. Färgerna är dämpade med flit - det som ska
+ * synas är rummen och installationen, och ett rör i sitt systems färg syns bara mot en grund som håller tyst.
+ */
+const KIND_COLOUR: Record<string, string> = {
+  wall: "#f4f1ec", curtain_wall: "#cfe0e6", door: "#b98f5e", window: "#d6e6ec", opening: "#efece7",
+  floor: "#e6e0d7", ceiling: "#f7f5f1", roof: "#8d6a57", column: "#e2ddd5", beam: "#d8d2c8",
+  foundation: "#cdc6ba", stair: "#ddd5c7", equipment: "#a9b3b8",
+};
 
 export default function BuildingView3D({ doc, view, selected, onSelect, onMove, transparency, sectionBox, standardView, ortho, wire }: Props) {
   const [, setLoaded] = useState(0);        // räknas upp när ett referensnät laddats, så att scenen byggs om
@@ -107,7 +118,7 @@ export default function BuildingView3D({ doc, view, selected, onSelect, onMove, 
   useEffect(() => {
     const el = host.current; if (!el) return;
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#131820");
+    scene.background = new THREE.Color(GROUND);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
     renderer.shadowMap.enabled = true;
@@ -117,9 +128,27 @@ export default function BuildingView3D({ doc, view, selected, onSelect, onMove, 
     const orthoCam = new THREE.OrthographicCamera(-10, 10, 10, -10, -500, 500);
     const controls = new OrbitControls(persp, renderer.domElement);
     controls.enableDamping = true; controls.dampingFactor = 0.1;
-    const hemi = new THREE.HemisphereLight("#e9f1fb", "#232a34", 1.4); scene.add(hemi);
-    const key = new THREE.DirectionalLight("#ffffff", 2.0); key.position.set(30, 60, 20); key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.03; scene.add(key);
-    const grid = new THREE.GridHelper(200, 200, "#2a313c", "#1d232c"); (grid.material as THREE.Material).transparent = true; (grid.material as THREE.Material).opacity = 0.5; scene.add(grid);
+    // Ljuset är dagsljus i ett rum: en mjuk himmel överallt, en sol som kastar skuggan, och en svag fyllnad
+    // från motsatt håll så att den skuggade sidan av en vägg inte blir svart. Skuggan är det som gör snittet
+    // läsbart - utan den ligger allt platt i samma vita.
+    const hemi = new THREE.HemisphereLight("#ffffff", "#d9d2c6", 2.1); scene.add(hemi);
+    const key = new THREE.DirectionalLight("#fffaf2", 2.4);
+    key.position.set(34, 62, 26); key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.03;
+    key.shadow.camera.near = 1; key.shadow.camera.far = 400;
+    key.shadow.camera.left = -120; key.shadow.camera.right = 120;
+    key.shadow.camera.top = 120; key.shadow.camera.bottom = -120;
+    scene.add(key);
+    const fill = new THREE.DirectionalLight("#eef2f6", 0.55); fill.position.set(-30, 26, -22); scene.add(fill);
+    // Golvet under huset tar emot skuggan. Ingen ruta: ett rutnät säger "modell", en yta säger "hus".
+    const shadowFloor = new THREE.Mesh(
+      new THREE.PlaneGeometry(600, 600),
+      new THREE.ShadowMaterial({ opacity: 0.17 }));
+    shadowFloor.rotation.x = -Math.PI / 2; shadowFloor.position.y = -0.02; shadowFloor.receiveShadow = true;
+    scene.add(shadowFloor);
+    const grid = new THREE.GridHelper(200, 40, "#cfc7ba", "#e0dace");
+    (grid.material as THREE.Material).transparent = true; (grid.material as THREE.Material).opacity = 0.32;
+    scene.add(grid);
     const group = new THREE.Group(); scene.add(group);
     const gizmo = new TransformControls(persp, renderer.domElement);
     gizmo.setMode("translate"); gizmo.addEventListener("dragging-changed", (ev: any) => { controls.enabled = !ev.value; });
@@ -185,7 +214,7 @@ export default function BuildingView3D({ doc, view, selected, onSelect, onMove, 
     const matFor = (e: Entity, kind: string) => {
       const base = e.type === "pipe" || e.type === "duct" || e.type === "cable_tray" || e.type === "conduit" ? colourOf(doc, e) : KIND_COLOUR[kind] || colourOf(doc, e);
       const alpha = transparency?.[e.discipline];
-      const m = new THREE.MeshStandardMaterial({ color: sel.has(e.id) ? "#1f6feb" : base, roughness: 0.8, metalness: 0.05, transparent: alpha != null && alpha < 1 || kind === "window" || kind === "curtain_wall", opacity: alpha != null ? alpha : kind === "window" || kind === "curtain_wall" ? 0.45 : 1, side: THREE.DoubleSide, wireframe: !!wire, clippingPlanes: planes });
+      const m = new THREE.MeshStandardMaterial({ color: sel.has(e.id) ? "#1f6feb" : base, roughness: 0.92, metalness: 0.0, transparent: alpha != null && alpha < 1 || kind === "window" || kind === "curtain_wall", opacity: alpha != null ? alpha : kind === "window" || kind === "curtain_wall" ? 0.45 : 1, side: THREE.DoubleSide, wireframe: !!wire, clippingPlanes: planes });
       if (e.phase === "DEMOLISH") { m.color.set("#c0392b"); m.opacity = Math.min(m.opacity, 0.5); m.transparent = true; }
       if (e.phase === "EXISTING") { m.color.multiplyScalar(0.7); }
       return m;
