@@ -9461,5 +9461,99 @@
   ],
   "contamination": "PASS",
   "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine69acc"
+ },
+ "74f5e82220637f14d69636c974a7d701f6da91b966b99dbc5082378a87d32cb6": {
+  "sha256": "74f5e82220637f14d69636c974a7d701f6da91b966b99dbc5082378a87d32cb6",
+  "local": "styles/test/V-50-1-A0512.pdf",
+  "name": "V-50-1-A0512.pdf",
+  "drawing": "V-50-1-A0512",
+  "project": "Other drawings (different format)",
+  "classification": "OTHER_FORMAT_PDF",
+  "role": "DEVELOPMENT",
+  "size": 345605,
+  "also": [
+   "styles/test/V-50-1-A0512.pdf"
+  ],
+  "state": "OK",
+  "seconds": 26.9,
+  "pages": 1,
+  "scale": {
+   "of_the_set": null,
+   "sheets_reread_with_it": 0
+  },
+  "coverage": {
+   "pipe_names": 25,
+   "pipe_names_with_metres": 22,
+   "share": 0.88,
+   "drawn_m": 235.5,
+   "confirmed_m": 199.57,
+   "ambiguous_m": 0.48,
+   "unowned_m": 35.45,
+   "scale_state": "VERIFIED",
+   "scale_settled": true,
+   "scale_reason": "scale_text_and_scale_bar_agree"
+  },
+  "profile": {
+   "hatch_families": 0,
+   "hatch": [],
+   "pipe_families": 8
+  },
+  "unplaced_designations": [
+   "FKV101-10",
+   "FVV101-11",
+   "KV01-X31",
+   "KV01-X7-25-W40",
+   "S01-P5",
+   "VS21-S13",
+   "VS21-S13-15-F50",
+   "VV01-X31"
+  ],
+  "designations": 207,
+  "anchors": {
+   "VERIFIED_PIPE_ATTACHMENT": 52,
+   "AMBIGUOUS_PIPE_ATTACHMENT": 43,
+   "NO_PIPE_ATTACHMENT": 20
+  },
+  "rows": 20,
+  "confirmed_horizontal_m": 254.4,
+  "ambiguous_m": 0.48,
+  "declared_m": 75.52,
+  "in_hatched_area_m": 13.85,
+  "top_rows": [
+   {
+    "designation": "VS21-S13-22-F60",
+    "m": 48.53
+   },
+   {
+    "designation": "KV01-X31-16",
+    "m": 38.0
+   },
+   {
+    "designation": "VV01-X31-16",
+    "m": 37.8
+   },
+   {
+    "designation": "VVC01-X7-32",
+    "m": 28.18
+   },
+   {
+    "designation": "VV01-X7-40-F60",
+    "m": 21.25
+   },
+   {
+    "designation": "VS21-S13-15-F50",
+    "m": 19.67
+   },
+   {
+    "designation": "KV01-X7-40-W40",
+    "m": 15.0
+   },
+   {
+    "designation": "VS11-S13-35-F60",
+    "m": 14.02
+   }
+  ],
+  "contamination": "PASS",
+  "engine": "/tmp/claude-0/-home-user-vvs5/7ee765b4-ebb4-57f7-b191-c6a2444953b5/scratchpad/engine69acc"
  }
 }
