@@ -262,8 +262,15 @@ def run_job(job_id: str) -> None:
             sr = dict(summary["summary"].get("second_reader") or {})
             sr.update({"enabled": on, "why": why,
                      "model": os.environ.get("VVS_SECOND_READER_MODEL", "gpt-6-astra") if on else None})
+            # Hur långt läsningen kom på bladet, sparat på jobbet och inte bara i artefakten.
+            #
+            # Portalen ritar en kurva över täckningen per dygn och kallar den den enda som säger om systemet
+            # blir bättre. Den läste `summary["coverage"]["named_vs_measured"]`, som bara byggdes i
+            # resultatsvaret - på jobbet fanns den aldrig, så kolumnen och kurvan stod tomma hur många blad som
+            # än lästes. Talet hör hemma där frågan ställs.
             _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
-               summary={"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr, **carried})
+               summary={"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr,
+                        "coverage": {"named_vs_measured": _first_sheet_coverage(out_dir)}, **carried})
     except UnsupportedInputError as e:
         # not a defect: the PDF carries no vector drawing, so there is nothing to read
         _set(job_id, status="FAILED", stage="FAILED", finished_at=dt.datetime.now(dt.timezone.utc),
@@ -278,6 +285,21 @@ def run_job(job_id: str) -> None:
         _set(job_id, status="FAILED", stage="FAILED",
              error=f"Analysen kunde inte slutföras: {type(e).__name__}: {e}"[:600],
              finished_at=dt.datetime.now(dt.timezone.utc))
+
+
+def _first_sheet_coverage(out_dir: str) -> dict:
+    """Bladets täckningsrad ur läsningens egen artefakt: hur många rörnamn som fick meter, och hur mycket."""
+    try:
+        with open(os.path.join(out_dir, "reading-coverage.json"), encoding="utf-8") as fh:
+            sheets = (json.load(fh) or {}).get("sheets") or []
+    except (OSError, ValueError):
+        return {}
+    if not sheets:
+        return {}
+    s = sheets[0]
+    keep = ("pipe_names", "pipe_names_with_metres", "share", "drawn_m", "confirmed_m", "ambiguous_m", "unowned_m",
+            "scale_state", "scale_settled", "markup_set_aside")
+    return {k: s[k] for k in keep if k in s}
 
 
 def _settle_credits(job_id: str) -> None:
