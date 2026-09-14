@@ -83,3 +83,38 @@ och VS1-S13-35 (81 m, 3 m ägda - ett annat fel).
 gate59 = de tre reglerna tillsammans, blint på 59 blad, mot gate58 med den nya måttstocken (avsnitt 0).
 Frysning: `hashmanifest-gate59.json`. Beslut i `GATE.md` när körningen är klar. Rör sig ett blad åt fel håll
 delas grinden per regel.
+
+## 4. Korsningen som blev en knut (A0134: VS1-S13-35, 3 → 22 m)
+
+VS1-S13-35 stannade efter 3 av 81 meter. Två fel på samma ställe, båda i grafen.
+
+**Punkten som inte fick peka.** Streck-punkt-linjen bryts där en annan ledning korsar den, och glappet är
+pennans eget. Den fria änden före glappet är *punkten*, och en punkt har ingen egen riktning - regeln lät den
+aldrig göra anspråk. Bortom glappet börjar strecket i en nod den korsande linjen redan delar, och ett ensidigt
+anspråk konkurrerade med varje annat anspråk på *noden*. Ingen gjorde anspråk, kedjan slutade.
+Nu: en punkt som ett streck har tagit ärver streckets riktning och ser vidare (två hopp, för streck-punkt-punkt),
+och ett ensidigt anspråk konkurrerar med anspråken på samma *stycke*, inte på samma nod.
+
+**Korsningen som blev en knut.** Där två ledningar korsas och pennans bitar råkar nudda varandra blir det en nod
+med fyra armar. En kedja som gick in svängde ut i den andra ledningen. Nu: en nod där varje arm har sin raka
+fortsättning på andra sidan (samma linje inom kollineäritetstoleransen, fria ändarna åt var sitt håll) är två
+linjer som korsas, inte en knut - de ligger på olika höjd, och ritningen säger inget om en förbindelse. Varje
+rakt par får sin egen nod på samma ställe. Bryggorna som landar på en nod som redan slagits ihop följer med
+dit den tog vägen (`_merge_nodes` med aliastabell), annars tappar den andra ledningen sin brygga.
+
+Prov: `test_a_run_goes_straight_through_a_crossing_whose_pieces_touch.py` (den etiketterade ledningen ägs hela
+vägen, den korsande får inget namn) och `test_a_run_broken_where_another_line_crosses_goes_on.py`.
+
+## 5. En förbindelse går före ett avstånd (parregelns spärr)
+
+Med kedjan hel tog VS1-S13-35 22 m - och stannade vid en DN-gräns läsningen själv hade ritat: stigaren (DN35)
+svängde ned i en vågrät ledning som parregeln redan hade gett DN22, för att en DN22-ledning låg på paravståndet
+under den. På A0134 har VS1-S13-22 inte en meter i facit; läsningen hade 23,6.
+
+Regel: grannen tvärs över glappet säger vilket par det är, grannen i noden säger vad ledningen sitter ihop med.
+En oägd ledning som delar nod med en namngiven av *annan* identitet är knutens sak att avgöra, inte parets.
+Prov: `test_a_run_joined_to_a_named_pipe_is_not_paired_away.py` (grafen byggd för hand, med och utan stigaren).
+
+A0134 efter båda: 210,0 → 218,0 m ägda (VS1-S13-35: 3,4 → 22,1; VS1-S13-22: 11,7 och inte 23,6).
+Kvar på den ledningen: fronten vid x=1295 där stigarens hörn möter den vågräta - `AMBIGUOUS_JUNCTION`, fyra
+armar, och den vågräta oägd. Det är knutregeln, nästa rotorsak.

@@ -437,11 +437,73 @@ def _apply_cuts(prims: list[Prim], cuts: dict[int, list[float]]) -> list[Prim]:
     return out
 
 
-def _merge_nodes(nodes, prim_nodes, nid: int, tn: int) -> None:
+def _merge_nodes(nodes, prim_nodes, nid: int, tn: int, merged: dict[int, int] | None = None) -> None:
+    """Join node tn into node nid. `merged` remembers where an emptied node went, so that a later bridge that
+    still names the old node lands on the node its pieces now sit in instead of on an empty shell - at a
+    crossing two runs bridge onto the same node, and the second must find what the first left behind."""
+    if merged is not None:
+        while nid in merged:
+            nid = merged[nid]
+        while tn in merged:
+            tn = merged[tn]
+        if nid == tn:
+            return
+        merged[tn] = nid
     for p in nodes[tn].prims:
         nodes[nid].prims.append(p)
         prim_nodes[p] = [nid if x == tn else x for x in prim_nodes[p]]
     nodes[tn].prims = []
+
+
+def _split_crossings(nodes, pmap, prim_nodes) -> None:
+    """A node where every arm pairs off with a collinear arm on the opposite side - two straight runs through one
+    point and nothing else - is two lines crossing, not a junction. Two pipes that cross in plan lie at different
+    heights; the drawing says nothing about a connection, and a chain that walked into such a node would turn
+    the corner into the other line. Each straight pair gets a node of its own at the same place."""
+    for nid in sorted(nodes):
+        n = nodes[nid]
+        arms = sorted(set(n.prims))
+        if len(arms) < 4 or len(arms) != len(n.prims):
+            continue
+        # The node sits where the first bridge left it, which can be a gap's width off the other run's axis, so the
+        # arms are paired by their own directions: the same line (within the collinearity tolerance) and their far
+        # ends on opposite sides of the node.
+        def ends(p):
+            q = pmap[p]
+            near, far = (q.a, q.b) if dist(q.a, (n.x, n.y)) < dist(q.b, (n.x, n.y)) else (q.b, q.a)
+            return near, far
+        pairs: list[tuple[int, int]] = []
+        left = list(arms)
+        while left:
+            a = left.pop(0)
+            _, fa = ends(a)
+            best = None
+            for b in left:
+                _, fb = ends(b)
+                if angle_diff(pmap[a].seg.angle, pmap[b].seg.angle) > 3.0:
+                    continue
+                if (fa[0] - n.x) * (fb[0] - n.x) + (fa[1] - n.y) * (fb[1] - n.y) >= 0:
+                    continue        # same side: a fold, not a run through
+                best = b
+                break
+            if best is None:
+                pairs = []
+                break
+            left.remove(best)
+            pairs.append((a, best))
+        if len(pairs) < 2:
+            continue
+        for k, (a, b) in enumerate(pairs):
+            na, nb = ends(a)[0], ends(b)[0]
+            x, y = (na[0] + nb[0]) / 2.0, (na[1] + nb[1]) / 2.0     # the gap's centre, on the run's own axis
+            if k == 0:
+                n.x, n.y = x, y
+                continue
+            new = max(nodes) + 1
+            nodes[new] = Node(nid=new, x=x, y=y, prims=[a, b])
+            for p in (a, b):
+                n.prims.remove(p)
+                prim_nodes[p] = [new if x_ == nid else x_ for x_ in prim_nodes[p]]
 
 
 def _outward(node, prim) -> tuple[float, float] | None:
@@ -630,27 +692,18 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
     gaps = []
     cand_bridges = []
     deg1 = [n for n in nodes.values() if n.degree == 1]
-    for n in deg1:
-        q = pmap[n.prims[0]]
-        if q.seg.length <= DOT_MAX:
-            continue                      # a dot's direction is noise: it never claims, it gets claimed
-        # direction pointing outward from the node
-        far = q.b if dist(q.a, (n.x, n.y)) < dist(q.b, (n.x, n.y)) else q.a
-        dx, dy = n.x - far[0], n.y - far[1]
-        L = math.hypot(dx, dy)
-        if L < 1e-9:
-            continue
-        ux, uy = dx / L, dy / L
-        # search window ahead
+
+    def look_ahead(n, ux: float, uy: float, ref, skip: set[int]):
+        """The nearest collinear end ahead of node n along (ux, uy), within the family's largest gap: (along, pid, end)."""
         R = tol.max_gap
         box = (min(n.x, n.x + ux * R) - 1, min(n.y, n.y + uy * R) - 1, max(n.x, n.x + ux * R) + 1, max(n.y, n.y + uy * R) + 1)
         best = None
         for pid2 in idx.query(box):
-            if pid2 == q.prim_id:
+            if pid2 in skip:
                 continue
             r = pmap[pid2]
             is_dot = r.seg.length <= DOT_MAX
-            if not is_dot and not collinear(q.seg, r.seg, ang_tol=tol.ang_tol, off_tol=tol.off_tol):
+            if not is_dot and not collinear(ref.seg, r.seg, ang_tol=tol.ang_tol, off_tol=tol.off_tol):
                 continue
             if is_dot:
                 # the whole dot has to sit on the dash's own ray, not only the end nearest the gap
@@ -664,9 +717,45 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
                 if 0.2 < along <= R and perp <= tol.off_tol:
                     if best is None or along < best[0]:
                         best = (along, pid2, ep)
-        if best is not None:
-            gaps.append(best[0])
-            cand_bridges.append((n.nid, best[1], best[2], best[0], pmap[best[1]].seg.length <= DOT_MAX))
+        return best
+
+    claimants: set[int] = set()
+    for n in deg1:
+        q = pmap[n.prims[0]]
+        if q.seg.length <= DOT_MAX:
+            continue                      # a dot's direction is noise: it never claims, it gets claimed
+        # direction pointing outward from the node
+        far = q.b if dist(q.a, (n.x, n.y)) < dist(q.b, (n.x, n.y)) else q.a
+        dx, dy = n.x - far[0], n.y - far[1]
+        L = math.hypot(dx, dy)
+        if L < 1e-9:
+            continue
+        ux, uy = dx / L, dy / L
+        best = look_ahead(n, ux, uy, q, {q.prim_id})
+        if best is None:
+            continue
+        gaps.append(best[0])
+        cand_bridges.append((n.nid, best[1], best[2], best[0], pmap[best[1]].seg.length <= DOT_MAX))
+        claimants.add(n.nid)
+        # A dot the dash claimed lies on the dash's own ray, and the dash's direction is the dot's too: from the
+        # dot's far end the run looks on for the next piece the same way. Without this the run stops wherever a
+        # dot faces a piece that cannot claim back - a dash whose end is already a junction with a crossing
+        # line, as at every crossing where the pieces touch. Two hops, for a dash-dot-dot pattern.
+        hops = 0
+        while pmap[best[1]].seg.length <= DOT_MAX and hops < 2:
+            hops += 1
+            dot = pmap[best[1]]
+            near = find_node(best[2][0], best[2][1])
+            far_n = next((k for k in prim_nodes[dot.prim_id] if k != near), None)
+            if far_n is None or nodes[far_n].degree != 1 or far_n in claimants:
+                break
+            nxt = look_ahead(nodes[far_n], ux, uy, q, {q.prim_id, dot.prim_id})
+            if nxt is None:
+                break
+            gaps.append(nxt[0])
+            cand_bridges.append((far_n, nxt[1], nxt[2], nxt[0], pmap[nxt[1]].seg.length <= DOT_MAX))
+            claimants.add(far_n)
+            best = nxt
     gap_mode = None
     gap_modes: list[float] = []
     if len(gaps) >= 6:
@@ -677,6 +766,7 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
         gap_modes = [g for g, cnt in hist.most_common(3) if cnt >= 0.15 * len(gaps)]
         gap_mode = gap_modes[0] if gap_modes else None
     bridges = []
+    merged_into: dict[int, int] = {}
     if gap_mode is not None or any(is_dot and g <= DOT_GAP_MAX for _, _, _, g, is_dot in cand_bridges):
         gtol = max(0.6, tol.gap_slack * gap_mode) if gap_mode is not None else 0.6
         # the commonest gap keeps the family's own slack; a further gap of the pattern is matched tightly, since
@@ -703,39 +793,45 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
             if nid in claim.get(tn, (None, None, None))[:1]:
                 pairs.setdefault((min(nid, tn), max(nid, tn)), (nid, tn, pid2, g))
         taken = {n for key in pairs for n in key}
-        one_sided: dict[int, list[tuple[int, int, str, float]]] = defaultdict(list)
+        # A one-sided claim competes with the other claims on the same piece, not with every claim on the same
+        # node: at a node where a crossing line's pieces already meet, the run continuing straight through and
+        # the crossing run continuing straight through each name their own piece, and both go on.
+        one_sided: dict[tuple[int, str], list[tuple[int, int, str, float]]] = defaultdict(list)
         for nid in sorted(claim):
             tn, pid2, g = claim[nid]
             if nid in taken or tn in taken:
                 continue
-            one_sided[tn].append((nid, tn, pid2, g))
-        for tn in sorted(one_sided):
-            lst = one_sided[tn]
+            one_sided[(tn, pid2)].append((nid, tn, pid2, g))
+        for tn, pid2 in sorted(one_sided):
+            lst = one_sided[(tn, pid2)]
             if len(lst) != 1 or lst[0][0] in taken or tn in taken:
                 continue    # competing continuations -> no bridge (ambiguous)
             pairs[(min(lst[0][0], tn), max(lst[0][0], tn))] = lst[0]
-            taken |= {lst[0][0], tn}
+            taken.add(lst[0][0])
+            if nodes[tn].degree == 1:
+                taken.add(tn)
         for key in sorted(pairs):
             nid, tn, pid2, g = pairs[key]
-            _merge_nodes(nodes, prim_nodes, nid, tn)
+            _merge_nodes(nodes, prim_nodes, nid, tn, merged_into)
             bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": "collinear",
                             "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
         # corner bridges: a dashed run that turns a corner inside a gap leaves two free ends that are not
         # collinear. Their outward rays meet at the corner, and the two legs together span exactly one gap of
         # this line style - the drawing's own evidence that the run continues around the bend.
         for nid, tn, g, kind in (_corner_bridges(nodes, pmap, prim_nodes, idx, gap_mode, gtol, tol) if gap_mode is not None else []):
-            _merge_nodes(nodes, prim_nodes, nid, tn)
+            _merge_nodes(nodes, prim_nodes, nid, tn, merged_into)
             bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2), "kind": kind,
                             "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
     if symbols is not None:
         # a valve in the line, or another line of the same pen crossing it: the run goes on beyond it,
         # whatever gap style the pen has
         for nid, tn, g, sym in _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols, family):
-            _merge_nodes(nodes, prim_nodes, nid, tn)
+            _merge_nodes(nodes, prim_nodes, nid, tn, merged_into)
             crossing = sym.startswith("crossing:")
             bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2),
                             "kind": "crossing" if crossing else "symbol", "symbol": sym,
                             "prims": sorted({pmap[n_p].pid for n_p in nodes[nid].prims})[:4]})
+    _split_crossings(nodes, pmap, prim_nodes)
     # remove emptied nodes
     nodes = {k: v for k, v in nodes.items() if v.prims}
     pn = {k: (v[0], v[1]) for k, v in prim_nodes.items()}

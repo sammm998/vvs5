@@ -460,6 +460,16 @@ def _pair_unowned_runs(g: PipeGraph, st: dict[int, PrimState]) -> int:
         best_ov, second_ov = min(best_ov, total), min(second_ov, total)
         if best_ov < share_min * total or second_ov > comp_max * total:
             continue
+        # A run the drawing already joins to a named pipe - it shares a node with a confirmed primitive of
+        # another identity, an elbow into it or a tee off it - is that junction's to decide, not the pair's.
+        # Measured on a bend where a DN35 riser turned into a horizontal that a DN22 line ran beside: the
+        # pair rule named the horizontal DN22 and the riser's own run stopped at a DN boundary it had drawn
+        # itself. The neighbour across the gap says which pair it is; the neighbour at the node says what it
+        # is connected to, and a connection outranks a spacing.
+        joined = {st[r].identity.key for pid in comp for node in g.prim_nodes[pid] for r in g.nodes[node].prims
+                  if st[r].state == "CONFIRMED" and st[r].identity is not None}
+        if joined - {best_key}:
+            continue
         for pid in comp:
             s = st[pid]
             s.state, s.identity, s.reason = "CONFIRMED", idents[best_key], PAIRED_REASON
