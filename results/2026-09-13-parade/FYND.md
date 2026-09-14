@@ -164,3 +164,33 @@ Regel (`semantics/legend.py`): bandets räckvidd räknas ur villkoret (`0.6·h`)
 | W-50-1-A0034 | 0 m | 44,1 m | 44,6 m |
 
 Fyra blad från noll till nära facit. Hela sviten: 531. Brandväggen: PASS.
+
+## 8. Skrafferade ytor: 1 074 meter som facit är oense om
+
+Ett rör som går inne i en skrafferad yta mäts men läggs utanför den horisontella mängden och redovisas för sig
+(`in_hatched_area_m`; kryssrutan "Räkna med skrafferade ytor" i tabellen tar med den). Skälet står i
+`profile/hatch.py`: skraffering markerar ofta det som ligger utanför entreprenaden.
+
+Över korpusen är det **1 074 m på 26 blad** av 10 883 ägda. Frågan är om facit räknar dem, och svaret är olika
+på olika blad:
+
+| blad | referens | ägt | i skraffering | saknas mot facit |
+|---|---:|---:|---:|---:|
+| W-50-1-A0124 | 247 | 81 | 149 | 166 |
+| W-50-1-A0114 | 326 | 223 | 130 | 103 |
+| W-50-1-A0131 | 201 | 112 | 118 | 89 |
+| W-50-1-A0121 | 171 | 127 | 106 | 45 |
+| E | 51 | 49 | 40 | 1 |
+
+På E stämmer den nuvarande regeln på metern: skrafferingen ligger som band runt bladets egen del - de
+angränsande delarna av byggnaden - och rören som löper in i dem fortsätter ut ur bladet. Mängdaren räknade
+insidan. På A0124 täcker skrafferingen bladets *egen* plan, väggar och golv, och de röda (undantagna) rören är
+mitt i installationen. Där räknade mängdaren dem.
+
+Prövade skiljelinjer som **inte** håller: om etiketten själv står inne i skrafferingen (gäller båda bladen: 40 m
+på E, 145 m på A0124), och hur stor andel av bladets rör som ligger i skraffering (45 % mot 64 %).
+
+Alltså: ingen ändring. Att slå på inräkning skulle rätta A0124 och förstöra E. Det som behövs är ett kännetecken
+i ritningen som skiljer "angränsande del" från "vägg och golv i den här delen" - orienteringsplanen i hörnet
+pekar ut bladets egen del, och det är nästa sak att pröva. Tills dess står valet hos den som räknar, och
+tabellen visar summan.

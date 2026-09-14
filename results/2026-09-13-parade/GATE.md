@@ -88,3 +88,34 @@ A och W-50-1-A0011 (+8,0 %) är klass-och-svans: KV1-X31-16 tillbaka med 17,1 m,
 
 **gate61** = självslingan i noden (en linjes två ändar är två ställen), korsningen som delas i två linjer,
 punktens anspråk framåt och parspärren vid en knut. A0134 lokalt: 218,0 → 258,7 m av 350.
+
+# gate61: självslingan i noden, korsningen som två linjer, punktens anspråk, parspärren - ACCEPT
+
+**Ändring.** `pipes/representation.py`: en linjes två ändar är två ställen hur kort linjen än är (nodbygget
+höll inte isär dem, och de tiondels punkter en rundad böj exporteras som blev självslingor som gjorde böjen
+till en fyrarmad knut - 2 417 på W-50-1-A0134); en nod där varje arm har sin raka fortsättning på andra sidan
+delas i en nod per linje; en punkt som ett streck tagit ärver riktningen och ser vidare; ett ensidigt anspråk
+konkurrerar med anspråken på samma stycke, inte på samma nod. `pipes/ownership.py`: en oägd ledning som delar
+nod med en namngiven av annan identitet är knutens sak, inte parets. Commits f1d85d6, e7118ee, ae66170.
+
+| | gate60 | gate61 |
+|---|---:|---:|
+| ägt | 8166,5 m | 8550,8 m |
+| falskt | 1997,3 m | 2218,8 m |
+| TÄCKNING | 71,64 % | **75,01 %** |
+| FALSKHET | 17,52 % | 19,46 % |
+| blad som rörde sig | | 42 |
+
+Störst uppåt: W-50-1-A0211 +50,8 % täckning och −8,0 % falskhet, V-50-1-A0323 +16,8, W-50-1-A0222 +15,1,
+V-50-1-B0114 +15,0, A0134 +13,4. Fem blad ned, alla under 6 %.
+
+**Vad falskheten kostar, och varför den inte backas.** Med kedjorna hela genom böjar rinner identiteten längre,
+och där två etiketter med olika DN sitter på samma kedja tar den ena allt: A0132 VS1-S13-15 13 → 49 m mot 15 i
+facit medan VS1-S13-22 föll 20 → 0,3 mot 62. Samma på V-50-1-B0112 och A0422. Det är inte geometrin som är fel -
+en linjes två ändar *är* två ställen - utan gränsen mellan två frön på en kedja som förut var två kedjor. Att
+backa en riktig geometri för att dölja en gränsregel vore att byta ett synligt fel mot ett gömt.
+
+**Beslut: ACCEPT.** +3,37 % täckning; DN-gränsen på en hel kedja är nästa regel (uppgift #67).
+
+**gate62** = raden som föll ur förklaringslistan (fyra blad från noll till facit) och buntens radordning ur
+bladets egna avgjorda buntar.
