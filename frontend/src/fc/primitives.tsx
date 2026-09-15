@@ -1,4 +1,7 @@
 import { createElement, useEffect, useRef, useState, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { getToken } from "../api";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { splitChars, splitLines, splitWords } from "./split";
@@ -365,3 +368,32 @@ export function JumpLink({ to, children, className = "" }: { to: string; childre
 }
 
 export { DURATION_MEDIUM, EASE_PRIMARY, EASE_REVEAL };
+
+/* En länk in i verktyget, från en sida där besökaren kan vara utloggad.
+ *
+ * Publika sidor pekar på "Mängda", "CAD", "Projekt" - rum som ligger bakom inloggningen. Utloggad hamnade man
+ * på inloggningssidan utan att den visste vart man var på väg, så efter inloggningen kom man till projekt-
+ * listan i stället för dit man klickade. Åtta länkar på de publika sidorna gjorde så.
+ *
+ * Nu bär vägen med sig målet: utloggad går länken till /login?next=<målet>, och inloggningen fortsätter dit
+ * när den är klar. Inloggad går den rakt fram. Läget läses vid klicket, inte vid renderingen, så den som
+ * loggat in i en annan flik inte skickas till inloggningen i onödan.
+ */
+export function AppLink({ to, children, className, ...rest }:
+    { to: string; children: React.ReactNode; className?: string } & Record<string, unknown>) {
+  const nav = useNavigate();
+  return (
+    <a
+      href={to}
+      className={className}
+      onClick={(e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;   // öppna i ny flik ska fungera
+        e.preventDefault();
+        nav(getToken() ? to : `/login?next=${encodeURIComponent(to)}`);
+      }}
+      {...rest}
+    >
+      {children}
+    </a>
+  );
+}

@@ -3,6 +3,7 @@ import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } fr
 import { api, getToken, setToken, currentEmail, flushEvents, track } from "./api";
 import Landing from "./pages/Landing";
 import Home from "./fc/Home";
+import { PlatformPage, VprPage } from "./fc/Platform";
 import { AcademyCourse, AcademyHome, AcademyLesson } from "./academy/Academy";
 import { ExamPage, QuizPage } from "./academy/Exam";
 import { CertificatePage, VerifyPage } from "./academy/Certificate";
@@ -152,6 +153,10 @@ const ROUTES = (
     <Route path="/klassisk" element={<Landing />} />
     <Route path="/login" element={<Login />} />
     <Route path="/dokumentation" element={<Docs />} />
+    {/* Plattformen och VPR stod i menyn men hade ingen rutt: den som klickade föll igenom till startsidan
+        igen. Nu finns rummen de pekade på. */}
+    <Route path="/plattformen" element={<PlatformPage />} />
+    <Route path="/vpr" element={<VprPage />} />
     <Route path="/priser" element={<PricingPage />} />
     <Route path="/om-oss" element={<AboutPage />} />
     <Route path="/hur-det-funkar" element={<HowItWorksPage />} />
@@ -246,7 +251,8 @@ export default function App() {
   // the landing page and the login screen bring their own layout
   // a trailing slash is the same page: without this, /dokumentation/ fell through and got the app's sidebar
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
-  const PUBLIC = ["", "/", "/login", "/dokumentation", "/priser", "/om-oss", "/hur-det-funkar", "/utbildning", "/kontakt"];
+  const PUBLIC = ["", "/", "/login", "/dokumentation", "/priser", "/om-oss", "/hur-det-funkar", "/utbildning",
+                  "/kontakt", "/plattformen", "/vpr"];
   // Akademins kurser och föreläsningar ligger under /utbildning och bär sin egen ram, precis som katalogen.
   if (PUBLIC.includes(path) || path.startsWith("/utbildning/") || path.startsWith("/funktioner/"))
     return <><PageCurtain />{ROUTES}</>;

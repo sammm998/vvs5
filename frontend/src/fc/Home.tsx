@@ -6,8 +6,8 @@ import Preloader from "./Preloader";
 import Blueprint, { RUNS, SYS } from "./Blueprint";
 import Scene3D from "./Scene3D";
 import {
-  ChapterIndicator, CountUp, CustomCursor, HorizontalGallery, LineReveal, MagneticButton, PinnedSection,
-  RevealMedia, ScrollProgress, TechnicalLabel, WordReveal,
+  AppLink, ChapterIndicator, CountUp, CustomCursor, HorizontalGallery, LineReveal, MagneticButton,
+  PinnedSection, RevealMedia, ScrollProgress, TechnicalLabel, WordReveal,
 } from "./primitives";
 import { EASE_REVEAL, useScene, useSmoothScroll } from "./motion";
 import "./fc.css";
@@ -303,7 +303,7 @@ const PRODUCTS = [
     tags: ["Materialbok", "Påslag", "Anbud"] },
   { n: "04", t: "Projekt", d: "Hela handlingen som en modell. Blad mot blad, revision mot revision.", to: "/plattformen",
     tags: ["Handling", "Revision", "Kollision"] },
-  { n: "05", t: "Academy", d: "Lär dig mängda och kalkylera på riktiga ritningar. Certifiering ingår.", to: "/academy",
+  { n: "05", t: "Academy", d: "Lär dig mängda och kalkylera på riktiga ritningar. Certifiering ingår.", to: "/utbildning",
     tags: ["Övningar", "Sluttenta", "Certifikat"] },
 ];
 
@@ -352,7 +352,7 @@ function AcademyChapter() {
             <li key={t}><b>{t}</b><span>{d}</span></li>
           ))}
         </ul>
-        <MagneticButton className="solid" href="/academy">Explore education <span aria-hidden="true">→</span></MagneticButton>
+        <MagneticButton className="solid" href="/utbildning">Explore education <span aria-hidden="true">→</span></MagneticButton>
       </div>
       <div className="fc-ac-r">
         <RevealMedia className="fc-ac-cert">
@@ -405,7 +405,7 @@ function Footer() {
           <p className="fc-label">Plattformen</p>
           <Link className="fc-link" to="/plattformen">Översikt</Link>
           <Link className="fc-link" to="/vpr">VPR</Link>
-          <Link className="fc-link" to="/academy">Academy</Link>
+          <Link className="fc-link" to="/utbildning">Academy</Link>
           <Link className="fc-link" to="/priser">Priser</Link>
         </div>
         <div>
@@ -417,7 +417,7 @@ function Footer() {
         <div>
           <p className="fc-label">Konto</p>
           <Link className="fc-link" to="/login">Logga in</Link>
-          <Link className="fc-link" to="/projekt">Projekt</Link>
+          <AppLink className="fc-link" to="/projekt">Projekt</AppLink>
         </div>
       </div>
       <div className="fc-foot-mark" aria-hidden="true">FUTURECALC®</div>

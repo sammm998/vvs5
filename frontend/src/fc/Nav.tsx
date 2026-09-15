@@ -20,7 +20,9 @@ import { MagneticButton } from "./primitives";
 export const NAV_LINKS = [
   { to: "/plattformen", label: "Plattformen", n: "01" },
   { to: "/vpr", label: "VPR", n: "02" },
-  { to: "/academy", label: "Academy", n: "03" },
+  // Den publika akademisidan, inte appens - /academy ligger bakom inloggningen, och en publik meny ska inte
+  // skicka en besökare till en inloggningsruta när sidan den lovade faktiskt finns.
+  { to: "/utbildning", label: "Academy", n: "03" },
   { to: "/priser", label: "Priser", n: "04" },
   { to: "/om-oss", label: "FutureCalc", n: "05" },
   { to: "/kontakt", label: "Kontakt", n: "06" },

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../api";
 import { usePointerParallax } from "../components/tilt";
 
@@ -40,6 +40,12 @@ export default function Login() {
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
   const nav = useNavigate();
+  /* Den som klickade på "Mängda" ute på sajten ville till mängdningen, inte till projektlistan. Vägen dit
+     bär med sig vart den var på väg, och efter inloggningen fortsätter resan. Bara adresser inom sajten
+     följs - en `next` som pekar ut på nätet är inte en väg tillbaka utan en vidarebefordran. */
+  const [params] = useSearchParams();
+  const next = params.get("next");
+  const efterat = next && next.startsWith("/") && !next.startsWith("//") ? next : "/projekt";
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErr("");
@@ -47,7 +53,7 @@ export default function Login() {
     try {
       if (mode === "login") await api.login(email, password);
       else await api.register(email, password);
-      nav("/projekt");
+      nav(efterat);
     } catch (ex: any) {
       setErr(ex.message);
     } finally {
