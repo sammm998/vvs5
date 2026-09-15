@@ -923,6 +923,22 @@ def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                         ocr_report=ocr_report, timings=timings, vt_timing=vt_timing, declarations=declarations)
 
 
+def rows_needing_a_pipe(rows: list, pipe_labels: set[str]) -> list:
+    """Raderna i en etikettruta som faktiskt ska ha var sin ritad sträcka.
+
+    Rutan bär rörnamnen och under dem ofta en höjd - "CL 3060 REL", "CL=2500". Höjden säger var röret ligger,
+    inte att där finns ett rör till, och bladets egen förklaringslista säger själv att CL är centrumlinje. Men
+    raden har samma form som en beteckning, så den räknades som en rad till som skulle ha en sträcka. Då gick
+    avbildningen inte ihop - två rader mot en ritad sträcka - och kravet på ett-till-ett gjorde *båda*
+    tvetydiga: rörnamnet tappade sitt rör för att noten stod bredvid det.
+
+    Noten räknas därför inte med. Men bara när rutan har ett rörnamn att lämna den åt: en ruta som bara bär
+    noter lämnas som den är, så att den redovisas som den olösta rad den är i stället för att tystna.
+    """
+    pipe_rows = [d for d in rows if d.did in pipe_labels]
+    return pipe_rows if pipe_rows and len(pipe_rows) < len(rows) else rows
+
+
 def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
                  film_sink: Callable[[str, dict], None] | None = None,
                  second_reader: Callable[[Any], str] | None = None,
@@ -1238,6 +1254,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
             # a leader that starts on one row's own line speaks for that row's label, whatever else the block holds
             unit = block.unit_of_row(ld.start_row) if ld.start_row is not None else block.unit_for_point(ld.start)
             rows = sorted(des_by_block[ld.block_id], key=lambda d: d.row_index)
+            rows = rows_needing_a_pipe(rows, pipe_labels)
             if unit is not None:
                 rows = [d for d in rows if d.row_index in unit]
                 if not rows:
