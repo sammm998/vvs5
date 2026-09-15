@@ -3219,3 +3219,6 @@ button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 
 .asteps code { grid-column: 2; font-size: 11px; color: var(--dim); word-break: break-all; }
 .awork { margin: 4px 0 0; font-size: 12.5px; color: var(--dim); }
 .awork-t { font-family: ui-monospace, monospace; }
+/* Vägen från ett utpekat rör till agenten: knapparna står på rad under "Varför?" och bär färdiga frågor. */
+.agentask { flex-wrap: wrap; gap: 6px; margin: 8px 0 4px; align-items: center; }
+.agentask .muted { margin-right: 2px; }

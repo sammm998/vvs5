@@ -180,12 +180,33 @@ def _rows_of(db: Session, job: AnalysisJob) -> list[dict]:
     from .db import Correction
     if not job.result_key:
         return []
-    path = os.path.join(storage.path(job.result_key), "quantities.json")
-    if not os.path.isfile(path):
+    base = storage.path(job.result_key)
+    # Handlingen, inte första bladet. En uppladdad PDF bär ofta hela handlingen - tjugosex blad i en fil - och
+    # quantities.json är bara det första bladets rader; document-quantities.json är alla blad, summerade per
+    # beteckning. Läste vi den första mätte vi bottenvåningen och kallade det huset: på en verklig handling gav
+    # blad 1 noll rader och noll meter medan bladen bakom bar 64,91 m. Kalkylen och anbudet stod på nollan.
+    # Bladets egen fil finns kvar som reserv för läsningar gjorda innan handlingsfilen skrevs.
+    doc_path = os.path.join(base, "document-quantities.json")
+    path = os.path.join(base, "quantities.json")
+    q = {}
+    rows = []
+    by_page: dict[int, float] = {}
+    if os.path.isfile(path):
+        with open(path, "r", encoding="utf-8") as fh:
+            q = json.load(fh)
+        rows = q.get("rows") or []
+    if os.path.isfile(doc_path):
+        with open(doc_path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh) or {}
+        rows = doc.get("rows") or rows
+        # Varje blad bär sin egen skala. En rättelse ritad på en detalj i 1:20 och en ritad på en plan i 1:100
+        # blir vitt skilda längder av samma streck, så bladets egen skala följer med rättelsen till dess blad.
+        for sh in doc.get("sheets") or []:
+            mpp = (sh.get("scale") or {}).get("meters_per_pt")
+            if sh.get("page") is not None and mpp:
+                by_page[int(sh["page"])] = float(mpp)
+    if not rows:
         return []
-    with open(path, "r", encoding="utf-8") as fh:
-        q = json.load(fh)
-    rows = q.get("rows") or []
     corr = db.query(Correction).filter(Correction.drawing_id == job.drawing_id,
                                        Correction.undone.is_(False)).all()
     if not corr:
@@ -193,7 +214,8 @@ def _rows_of(db: Session, job: AnalysisJob) -> list[dict]:
     out = [{"id": c.id, "drawing_id": c.drawing_id, "job_id": c.job_id, "page": c.page, "kind": c.kind,
             "designation": c.designation, "payload": c.payload, "situation": c.situation, "note": c.note,
             "undone": c.undone} for c in corr]
-    return apply_corrections(rows, out, (q.get("scale") or {}).get("meters_per_pdf_point"))["quantities"]
+    return apply_corrections(rows, out, (q.get("scale") or {}).get("meters_per_pdf_point"),
+                             by_page)["quantities"]
 
 
 def _quantities_by_building(db: Session, project_id: str, report: dict) -> dict:

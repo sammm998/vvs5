@@ -58,6 +58,8 @@ export default function AnalysisPage() {
   const [view, setView] = useState<"forklaring" | "analys" | "resonemang">("analys");
   const [selIdent, setSelIdent] = useState<string | null>(null);
   const [selPipe, setSelPipe] = useState<any>(null);
+  // Frågan som ska ligga i agentens ruta när man går dit från ett utpekat rör.
+  const [agentAsk, setAgentAsk] = useState("");
   const [why, setWhy] = useState<any>(null);
   const [page, setPage] = useState(0);
   // The quantity table has more columns than any fixed panel width fits, so the split is the reader's to set:
@@ -183,7 +185,17 @@ export default function AnalysisPage() {
     }
   };
 
+  /* Ett klick pekar ut, ett klick till släpper taget.
+   *
+   * Att klicka på ett rör zoomar in på det och färgar resten av bladet ned. Utan en väg tillbaka satt man kvar
+   * i det: enda sättet ut var att leta rätt på knappen "Sida". Nu är samma klick vägen ut - trycker man på det
+   * rör man redan står på släpps markeringen och bladet läggs tillbaka som det låg innan. */
   const onPipeClick = async (p: any) => {
+    if (selPipe && selPipe.physical_pipe_id === p.physical_pipe_id) {
+      setSelPipe(null); setSelIdent(null); setWhy(null);
+      viewer.current?.fitPage();
+      return;
+    }
     setSelPipe(p); setSelIdent(p.identity);
     // while correcting, the click picks the run to correct: staying on the takeoff tab would hide the tools
     if (tab !== "rattelser") setTab("mangder");
@@ -193,6 +205,12 @@ export default function AnalysisPage() {
 
   /** Picking a designation goes to everything it owns, on the page that holds most of it. */
   const onIdentityPick = (key: string | null) => {
+    // samma sak för beteckningen: trycker man på den man redan står på läggs bladet tillbaka som det låg
+    if (key && key === selIdent && !selPipe) {
+      setSelIdent(null); setWhy(null);
+      viewer.current?.fitPage();
+      return;
+    }
     setSelIdent(key); setSelPipe(null); setWhy(null);
     if (!key || !result) return;
     const mine = result.pipes.filter((p: any) => p.identity === key);
@@ -530,6 +548,20 @@ export default function AnalysisPage() {
               <div style={{ marginTop: 12 }}>
                 <h4>Varför? {why.pipe.designation} DN{why.pipe.dn ?? "?"} · {typeof why.pipe.horizontal_m === "number" ? `${why.pipe.horizontal_m.toFixed(2)} m` : "ingen skala"}</h4>
                 <p className="muted">Rör-id {why.pipe.physical_pipe_id} · {why.pipe.raw_pt.toFixed(1)} pt + {why.pipe.bridged_gap_pt.toFixed(1)} pt överbryggade mikrogap · {why.pipe.source_path_ids.length} PDF-objekt</p>
+                {/* Vägen från det utpekade röret till agenten. Frågan skrivs färdig med rörets eget namn och
+                    id, och läggs i rutan - inte i samtalet - så att den går att läsa och ändra innan den
+                    ställs. Agenten ser samma rör som markerats på bladet. */}
+                <div className="row agentask">
+                  <span className="muted small">Fråga agenten:</span>
+                  {[["Vad är det här?", `Vad är ${why.pipe.designation} DN${why.pipe.dn ?? "?"} (rör ${why.pipe.physical_pipe_id}) för något, och var går det?`],
+                    ["Varför slutar det här?", `Varför slutar ${why.pipe.designation} (rör ${why.pipe.physical_pipe_id}) där det gör? Visa fronterna.`],
+                    ["Följ nätet", `Följ nätet från rör ${why.pipe.physical_pipe_id} och visa vad det sitter ihop med.`],
+                    ["Förläng den", `Rör ${why.pipe.physical_pipe_id} (${why.pipe.designation}) ser ut att sluta för tidigt. Vad finns i förlängningen, och går det att låta beteckningen äga den biten också?`]]
+                    .map(([label, q]) => (
+                      <button key={label} className="ghost small"
+                              onClick={() => { setAgentAsk(q); setTab("agent"); }}>{label}</button>
+                    ))}
+                </div>
                 {(why.pipe.frontiers ?? []).length > 0 && (
                   <div className="frontiers">
                     <h5>Var röret slutar</h5>
@@ -557,7 +589,7 @@ export default function AnalysisPage() {
           </div>
         )}
         {tab === "agent" && (
-          <AgentChat jobId={id!} page={page}
+          <AgentChat jobId={id!} page={page} ask={agentAsk}
             selection={{ pipeIds: selPipe ? [selPipe.physical_pipe_id] : agentIds, bbox: null }}
             onHighlight={(ids) => {
               setAgentIds(ids);

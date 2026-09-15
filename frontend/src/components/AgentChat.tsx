@@ -115,15 +115,20 @@ function Working() {
   );
 }
 
-export default function AgentChat({ jobId, page, selection, onHighlight, onChanged }: {
+export default function AgentChat({ jobId, page, selection, onHighlight, onChanged, ask }: {
   jobId: string;
   page: number;
   selection: { pipeIds: string[]; bbox: number[] | null };
   onHighlight: (ids: string[]) => void;
   onChanged?: () => void;
+  /** En fråga som lagts i rutan någon annanstans ifrån - från röret man just pekat ut på bladet. */
+  ask?: string;
 }) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [text, setText] = useState("");
+  // Frågan som följde med från bladet läggs i rutan, inte i samtalet: den som pekat ut ett rör ska få läsa
+  // frågan och ändra den innan den ställs. Den skrivs bara när rutan är tom, så att ingen text går förlorad.
+  useEffect(() => { if (ask) setText((t) => (t.trim() ? t : ask)); }, [ask]);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [listening, setListening] = useState(false);
