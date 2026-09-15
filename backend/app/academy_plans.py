@@ -167,4 +167,84 @@ STAM = Plan("stam-1", "Tappvattenstam med KV, VV och VVC genom tre plan", 0.02, 
  .symbol("i1", "injustering", 280, 300, "Injustering VVC")
  )
 
-PLANS = {p.slug: p for p in (BAD, VARME, STAM)}
+# ---------------------------------------------------------------- blad 4: ett ventilationsblad
+
+VENT = Plan("vent-1", "Till- och frånluft med don, spjäll och aggregat", 0.035, (0, 0, 1180, 720))
+(VENT
+ .wall((60, 60), (1120, 60), (1120, 660), (60, 660), (60, 60))
+ .wall((420, 60), (420, 400)).wall((760, 300), (760, 660))
+ .room("Kontorslandskap", 60, 60, 360, 600).room("Mötesrum", 420, 60, 340, 340)
+ .room("Pentry", 760, 300, 360, 360)
+ # tilluft: huvudkanal och avstick till varje don
+ .run("tl-huvud", "TL", 400, (140, 620), (140, 140), (980, 140), label="TL1-400")
+ .run("tl-gren1", "TL", 160, (300, 140), (300, 300), label="TL1-160")
+ .run("tl-gren2", "TL", 160, (560, 140), (560, 280), label="TL1-160")
+ .run("tl-gren3", "TL", 125, (900, 140), (900, 420), label="TL1-125")
+ # frånluft går tillbaka i egen kanal
+ .run("fl-huvud", "FL", 400, (200, 620), (200, 200), (980, 200), label="FL1-400")
+ .run("fl-gren1", "FL", 160, (360, 200), (360, 300), label="FL1-160")
+ .run("fl-gren2", "FL", 125, (660, 200), (660, 280), label="FL1-125")
+ .run("fl-pentry", "FL", 100, (940, 200), (940, 480), label="FL1-100")
+ .symbol("agg1", "aggregat", 170, 620, "Luftbehandlingsaggregat LA01")
+ .symbol("don1", "tilluftsdon", 300, 320, "Tilluftsdon kontor")
+ .symbol("don2", "tilluftsdon", 560, 300, "Tilluftsdon mötesrum")
+ .symbol("don3", "tilluftsdon", 900, 440, "Tilluftsdon pentry")
+ .symbol("don4", "franluftsdon", 360, 320, "Frånluftsdon kontor")
+ .symbol("don5", "franluftsdon", 660, 300, "Frånluftsdon mötesrum")
+ .symbol("don6", "franluftsdon", 940, 500, "Frånluftsdon pentry")
+ .symbol("sp1", "spjall", 300, 220, "Injusteringsspjäll TL gren 1")
+ .symbol("sp2", "spjall", 560, 220, "Injusteringsspjäll TL gren 2")
+ .symbol("bsp1", "brandspjall", 420, 140, "Brandspjäll i vägg mot mötesrum")
+ .symbol("bsp2", "brandspjall", 760, 200, "Brandspjäll i vägg mot pentry")
+ )
+
+# ---------------------------------------------------------------- blad 5: spill och dag under mark
+
+MARK = Plan("mark-1", "Spill- och dagvatten med brunnar och självfall", 0.05, (0, 0, 1200, 700))
+(MARK
+ .wall((80, 80), (1120, 80), (1120, 620), (80, 620), (80, 80))
+ .room("Byggnad", 80, 80, 640, 540).room("Gård", 720, 80, 400, 540)
+ .run("s-samling", "S", 160, (200, 540), (200, 200), (980, 200), label="S1-M-160")
+ .run("s-gren-a", "S", 110, (340, 200), (340, 380), label="S1-M-110")
+ .run("s-gren-b", "S", 110, (520, 200), (520, 420), label="S1-M-110")
+ .run("s-gren-c", "S", 75, (660, 200), (660, 340), label="S1-M-75")
+ .run("d-samling", "D", 200, (860, 540), (860, 300), (1060, 300), label="D1-M-200")
+ .run("d-gren-a", "D", 110, (860, 420), (740, 420), label="D1-M-110")
+ .run("d-gren-b", "D", 110, (960, 300), (960, 480), label="D1-M-110")
+ .symbol("sb1", "spolbrunn", 200, 200, "Spolbrunn SB1")
+ .symbol("sb2", "spolbrunn", 980, 200, "Spolbrunn SB2")
+ .symbol("rb1", "rensbrunn", 340, 380, "Rensbrunn RB1")
+ .symbol("db1", "dagvattenbrunn", 740, 420, "Dagvattenbrunn DB1")
+ .symbol("db2", "dagvattenbrunn", 960, 480, "Dagvattenbrunn DB2")
+ .symbol("fb1", "fettavskiljare", 520, 440, "Fettavskiljare")
+ .symbol("lv1", "luftare", 660, 320, "Vakuumventil")
+ )
+
+# ---------------------------------------------------------------- blad 6: en undercentral
+
+UC = Plan("uc-1", "Undercentral: fjärrvärme, växlare, VVC och shuntgrupp", 0.02, (0, 0, 1040, 680))
+(UC
+ .wall((60, 60), (980, 60), (980, 620), (60, 620), (60, 60))
+ .room("Undercentral", 60, 60, 920, 560)
+ .run("fv-fram", "FV", 65, (120, 560), (120, 180), (420, 180), label="FV-F-65")
+ .run("fv-retur", "FV", 65, (160, 560), (160, 220), (420, 220), label="FV-R-65")
+ .run("vs-fram", "VS", 50, (500, 180), (860, 180), (860, 380), label="VS1-F-50")
+ .run("vs-retur", "VS", 50, (500, 220), (800, 220), (800, 380), label="VS1-R-50")
+ .run("vv-ut", "VV", 40, (500, 300), (900, 300), label="VV1-40")
+ .run("vvc-in", "VVC", 20, (900, 340), (520, 340), label="VVC1-20")
+ .run("kv-in", "KV", 50, (120, 460), (460, 460), (460, 320), label="KV1-50")
+ .symbol("vx1", "varmevaxlare", 460, 200, "Värmeväxlare värme")
+ .symbol("vx2", "varmevaxlare", 460, 320, "Värmeväxlare tappvarmvatten")
+ .symbol("p1", "pump", 700, 180, "Värmekretspump")
+ .symbol("p2", "pump", 700, 340, "VVC-pump")
+ .symbol("exp1", "expansionskarl", 900, 420, "Expansionskärl")
+ .symbol("sv1", "styrventil", 380, 180, "Styrventil primär värme")
+ .symbol("sv2", "styrventil", 380, 300, "Styrventil primär tappvarmvatten")
+ .symbol("v1", "kulventil", 120, 520, "Avstängning fjärrvärme fram")
+ .symbol("v2", "kulventil", 160, 520, "Avstängning fjärrvärme retur")
+ .symbol("v3", "kulventil", 200, 460, "Avstängning inkommande kallvatten")
+ .symbol("smf1", "smutsfilter", 260, 180, "Smutsfilter primär")
+ .symbol("mv1", "matare", 300, 220, "Energimätare fjärrvärme")
+ )
+
+PLANS = {p.slug: p for p in (BAD, VARME, STAM, VENT, MARK, UC)}

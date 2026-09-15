@@ -3,6 +3,7 @@ from __future__ import annotations
 from sqlalchemy.orm import Session
 
 from .academy_models import Course, Exam, Exercise, Lesson, Module, Question
+from .academy_courses_2 import COURSES_2, EXERCISES_2
 from .academy_plans import BAD, STAM, VARME
 
 """Innehållet i FutureCalc Academy.
@@ -548,7 +549,7 @@ KURS5 = {
     ],
 }
 
-COURSES = [KURS1, KURS2, KURS3, KURS4, KURS5]
+COURSES = [KURS1, KURS2, KURS3, KURS4, KURS5] + COURSES_2
 
 
 # ================================================================ övningarna
@@ -808,20 +809,24 @@ EXERCISES = [
         tolerance=0.04, points=40, difficulty=3,
         hints=["Ta ett system i taget och markera det du mätt.",
                "Antalsposterna har ingen tolerans — de är rätt eller fel."]),
-]
+] + EXERCISES_2
 
 
 # ================================================================ sluttentan
 
+# Tentan ska mäta hela utbildningen, inte den kurs den hänger under. Med tio kurser i akademin drar den
+# frågor ur samtliga: teorin bakom en kalkyl, bladets grammatik, mängdning av både rör och luft, prissättning,
+# avtalet arbetet utförs under, och förmågan att se när en färdig kalkyl är fel. Delarnas vikt säger vad som
+# kostar mest när det blir fel; section_min_pct att ingen del får lämnas tom och räknas upp av de andra.
 EXAM = {
     "slug": "fc-certified-vvs", "title": "FutureCalc Certified — VVS Kalkyl & Mängdning",
     "course": "grund-vvs-kalkyl", "pass_pct": 80, "section_min_pct": 60, "minutes": 0,
     "sections": [
-        {"area": "teori", "title": "Del 1 — Teori", "weight": 20, "n": 4},
-        {"area": "ritning", "title": "Del 2 — Ritningsläsning", "weight": 20, "n": 4},
-        {"area": "mangdning", "title": "Del 3 — Mängdning", "weight": 25, "n": 4},
-        {"area": "kalkyl", "title": "Del 4 — Kalkyl", "weight": 25, "n": 4},
-        {"area": "kontroll", "title": "Del 5 — Kalkylkontroll", "weight": 10, "n": 2},
+        {"area": "teori", "title": "Del 1 — Kalkylens grunder och entreprenadformer", "weight": 20, "n": 8},
+        {"area": "ritning", "title": "Del 2 — Ritningsläsning", "weight": 20, "n": 8},
+        {"area": "mangdning", "title": "Del 3 — Mängdning: rör, luft och mark", "weight": 25, "n": 10},
+        {"area": "kalkyl", "title": "Del 4 — Kalkyl, pris och anbud", "weight": 25, "n": 10},
+        {"area": "kontroll", "title": "Del 5 — Kalkylkontroll och överlämnande", "weight": 10, "n": 4},
     ],
 }
 
