@@ -40,17 +40,28 @@ export default function ChapterBar({ chapters }: { chapters: Chapter[] }) {
           frac = span > 0 ? Math.min(1, Math.max(0, (mark - r.top) / span)) : 1;
         }
       }
-      setOn(cur >= 0);
+      // Sist på sidan står foten med sina egna länkar, och den låg rakt under romarsiffrorna. Kapitelraden
+      // har gjort sitt när sista kapitlet är passerat, så den stiger undan i stället för att lägga sig över
+      // det sista man ska kunna läsa.
+      const foot = document.querySelector(".lp-foot");
+      const footIn = !!foot && (foot as HTMLElement).getBoundingClientRect().top < vh - 40;
+      setOn(cur >= 0 && !footIn);
       if (cur >= 0) { setAt(cur); setP(frac); }
-      // Raden byter röst med rummet den ligger i. Mätt på avsnittens egna lägen och inte med elementFromPoint:
-      // raden ligger själv överst vid den punkten, så träffprovet svarade "kapitelraden" och aldrig "papper".
+      // Raderna byter röst med rummet de ligger över - kapitelraden längst ned, och huvudet högst upp. Mätt på
+      // avsnittens egna lägen och inte med elementFromPoint: raderna ligger själva överst vid sina punkter, så
+      // träffprovet svarade "raden" och aldrig "papper". Huvudet har en egen punkt: det ligger i toppen av
+      // rutan och rummet där är sällan samma som rummet nere vid foten.
       const probe = vh - 52;
       let paper = false;
+      let headPaper = false;
       for (const el of document.querySelectorAll(".lp-light")) {
         const r = (el as HTMLElement).getBoundingClientRect();
-        if (r.top <= probe && r.bottom >= probe) { paper = true; break; }
+        if (r.top <= probe && r.bottom >= probe) paper = true;
+        if (r.top <= 34 && r.bottom >= 34) headPaper = true;
       }
-      document.querySelector(".lp")?.classList.toggle("on-paper", paper);
+      const root = document.querySelector(".lp");
+      root?.classList.toggle("on-paper", paper);
+      root?.classList.toggle("head-paper", headPaper);
     };
     const kick = () => { if (!frame.current) frame.current = requestAnimationFrame(read); };
     read();

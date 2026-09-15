@@ -2076,16 +2076,47 @@ body.lp-dark { background: #100e0c; }
    ute det som passerar. Den följer rummet: varm svärta i det mörka, papper i det ljusa. */
 .ch::before {
   content: "";
-  position: absolute; inset: -34px 0 0;
-  background: linear-gradient(180deg, rgba(16, 14, 12, 0), rgba(16, 14, 12, 0.82) 46%, rgba(16, 14, 12, 0.94));
+  /* Skuggan måste börja långt ovanför siffrorna. Var den bara trettio punkter hög låg dess genomskinliga del
+     precis där en textrad passerade, och raden lästes rakt igenom romarsiffrorna. Nu tonar sidan ut en bit
+     innan den når raden, vilket är hela poängen: texten ska försvinna, inte mötas. */
+  position: absolute; inset: -120px 0 0;
+  background: linear-gradient(180deg, rgba(16, 14, 12, 0), rgba(16, 14, 12, 0.6) 42%,
+              rgba(16, 14, 12, 0.93) 72%, rgba(16, 14, 12, 0.97));
   pointer-events: none;
   z-index: -1;
 }
 .ch { isolation: isolate; }
 .lp.on-paper .ch::before {
-  background: linear-gradient(180deg, rgba(242, 239, 232, 0), rgba(242, 239, 232, 0.86) 46%, rgba(242, 239, 232, 0.96));
+  background: linear-gradient(180deg, rgba(242, 239, 232, 0), rgba(242, 239, 232, 0.66) 42%,
+              rgba(242, 239, 232, 0.95) 72%, rgba(242, 239, 232, 0.99));
 }
 .lp.on-paper .ch-i { color: #8c8376; }
 .lp.on-paper .ch-i.now { color: #16130f; }
 .lp.on-paper .ch-i.past { color: #574f45; }
 .lp.on-paper .ch-bar { background: rgba(27, 24, 19, 0.18); }
+
+/* Huvudet byter röst med rummet det ligger över, precis som kapitelraden gör.
+ *
+ * Den mörka glasraden över ett pappersavsnitt blev en grumlig brun list med grå text i, och menyn gick knappt
+ * att läsa - sidans mest använda rad, otydlig på hälften av sidan. Över papper är raden papper. Knappen som
+ * leder in behåller sin svärta: den ska sticka ut mot rummet, inte smälta in i det, och mörkt på ljust är lika
+ * tydligt som ljust på mörkt. */
+.lp.head-paper .lp-corners.lifted {
+  background: rgba(242, 239, 232, 0.88);
+  border-bottom-color: rgba(27, 24, 19, 0.13);
+}
+.lp.head-paper .lp-corners .lp-pill {
+  background: rgba(255, 255, 255, 0.66);
+  border-color: rgba(27, 24, 19, 0.15);
+  color: #1b1813;
+}
+.lp.head-paper .lp-corners .lp-pill:hover { background: #fff; border-color: rgba(27, 24, 19, 0.3); }
+.lp.head-paper .lp-corners .sh-nav a { color: #6b6357; }
+.lp.head-paper .lp-corners .sh-nav a:hover { color: #16130f; background: rgba(27, 24, 19, 0.05); }
+.lp.head-paper .lp-corners .sh-nav a.on { color: #16130f; }
+.lp.head-paper .lp-corners .lp-pill.lp-start {
+  background: #1b1813;
+  border-color: #1b1813;
+  color: #f4f2ec;
+}
+.lp.head-paper .lp-corners .lp-pill.lp-start:hover { background: #2c2720; border-color: #2c2720; }
