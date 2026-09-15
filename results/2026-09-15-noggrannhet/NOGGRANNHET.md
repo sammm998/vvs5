@@ -242,3 +242,40 @@ slutstrecket och staplingsordningen ändrade alla någon promille åt fel eller 
 Det är en annan sorts arbete: sammanfogningen (glapp, symboler, pennbyten), inte ägandet. Och det har ett
 mått att arbeta mot som inte kräver referensen alls - oägt bläck inom tjugo punkter från ett namngivet stråk
 i samma penna är en siffra läsningen kan räkna själv, blad för blad, och som ska gå mot noll.
+
+## Bläckets bredd som beröringstolerans: backad, och mönstret blev synligt
+
+Nodbygget slog bara ihop ändar inom en tiondels punkt. Toleransen togs i stället ur pennans egen bredd -
+1,44 punkters penna lägger bläck 0,72 punkter åt vardera hållet, så två ändar närmare än så överlappar i
+tryck - med spärren att toleransen aldrig får vara vidare än de stycken den slår ihop (en radie exporteras som
+tiondels punkt långa bitar och skulle annars kollapsa till en nod; det provet fångade det direkt).
+
+Grind 71 mot grind 67, 59 blad:
+
+| mått | grind 67 | grind 71 (bläckets bredd) |
+|---|---|---|
+| täckning | **79,25 %** | 76,57 % |
+| falskt ägande | 15,82 % | **14,27 %** |
+| FULL / PARTIAL / OVER / MISSED / WRONG | **171** / **200** / 179 / 150 / 88 | 166 / 217 / **167** / 151 / 89 |
+
+Cirka 306 m täckning bort för cirka 177 m mindre falskt. **Backad.**
+
+### Mönstret i fyra mätningar
+
+| grind | ändring | täckning | falskt |
+|---|---|---|---|
+| 68 | vattengången vid knuten | −0,29 | +0,32 |
+| 69 | staplingsordningen | −0,02 | +0,03 |
+| 70 | hänvisningslinjens slutstreck | **−2,63** | −0,96 |
+| 71 | bläckets bredd som beröring | **−2,68** | −1,55 |
+
+Varje ändring som *begränsar* vad läsningen får äga tar bort mer riktigt än falskt - ungefär två meter riktigt
+per meter falskt. Läsningen lutar alltså redan åt att hellre ta än att avstå, och den lutningen är
+nettopositiv mot facit som det mäts. Det betyder inte att den är rätt: den betyder att vägen framåt är
+**additiv**. Det som ska byggas är regler som ger namn åt det oägda bläcket, inte regler som tar namn ifrån
+det ägda.
+
+Och beröringstoleransen var tänkt som additiv men mätte som begränsande, av ett skäl värt att komma ihåg:
+grafen används också för att *avgöra vilka pennor som är rör*. En vidare tolerans ändrade den bedömningen och
+tappade en penna på ett blad - sjuttiofem meter bläck föll ur läsningen innan ägandet ens började. Nästa
+försök ska därför hålla familjeurvalet på den snäva toleransen och vidga den först när pennorna är valda.
