@@ -27,6 +27,18 @@ def _R(rule_id, default):
 
 
 TOUCH_TOL = 0.15
+# ...men två streck möts på papperet när deras bläck möts, inte när deras mittlinjer råkar sammanfalla på en
+# tiondels punkt. En penna som är 1,44 punkter bred lägger sitt bläck 0,72 punkter åt vardera hållet från
+# mittlinjen, så två ändar som ligger närmare än så än varandra överlappar i tryck. Det är ritningens eget
+# mått - pennans bredd - och inte ett tal valt på fri hand.
+#
+# Måttet spelar roll: på de blad som tappar mest ligger en fjärdedel av det oägda bläcket inom två punkter
+# från ett namngivet streck i samma penna, och en tiondels punkts tolerans låter dem stå isär. Halva
+# pennbredden är samtidigt smalt nog att ett streck som bara passerar förbi inte kopplas ihop.
+def touch_tol(prims) -> float:
+    """Hur nära två ändar ska ligga för att vara samma punkt: en tiondels punkt, eller halva pennans bredd."""
+    w = [q.width for q in prims if q.width]
+    return max(TOUCH_TOL, (sorted(w)[len(w) // 2] / 2.0) if w else 0.0)
 # A stroke shorter than this is a dot of the line style - the dot of a dash-dot line - and has no direction of
 # its own: at a point and a half long, the export's rounding turns it a few degrees, and a collinearity test
 # that trusts its angle finds every dash-to-dot gap "not collinear" and breaks the run at every dot. A dot
@@ -382,9 +394,10 @@ def collect_prims(page: RawPage, families: set[str], exclude_pids: set[str] | No
     return out
 
 
-def split_t_junctions(prims: list[Prim]) -> tuple[list[Prim], list[dict]]:
+def split_t_junctions(prims: list[Prim], tol: float | None = None) -> tuple[list[Prim], list[dict]]:
     """An endpoint lying on the interior of another primitive of the same family is a proven T-contact
     (not a crossing): split that primitive there so the junction becomes a graph node."""
+    tol = touch_tol(prims) if tol is None else tol
     idx = GridIndex(cell=12.0)
     for q in prims:
         idx.insert(q.prim_id, q.seg.bbox())
@@ -393,14 +406,14 @@ def split_t_junctions(prims: list[Prim]) -> tuple[list[Prim], list[dict]]:
     junctions = []
     for q in prims:
         for ep in (q.a, q.b):
-            for pid2 in idx.query_point(ep[0], ep[1], TOUCH_TOL + 0.05):
+            for pid2 in idx.query_point(ep[0], ep[1], tol + 0.05):
                 if pid2 == q.prim_id:
                     continue
                 r = pmap[pid2]
                 d, t = point_seg_distance(ep[0], ep[1], r.seg)
-                if d <= TOUCH_TOL and 0.02 < t < 0.98:
+                if d <= tol and 0.02 < t < 0.98:
                     # not already an endpoint of r
-                    if dist(ep, r.a) > TOUCH_TOL and dist(ep, r.b) > TOUCH_TOL:
+                    if dist(ep, r.a) > tol and dist(ep, r.b) > tol:
                         cuts[pid2].append(t)
                         junctions.append({"prim": pid2, "t": round(t, 4), "from_prim": q.prim_id})
     return _apply_cuts(prims, cuts), junctions
@@ -593,7 +606,7 @@ def _crossing_in_gap(n, along: float, ux: float, uy: float, pmap, prim_nodes, id
     return None
 
 
-def _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols: SymbolIndex, family: str):
+def _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols: SymbolIndex, family: str, touch: float = TOUCH_TOL):
     """Two free ends of one run facing each other across a symbol of another pen: (node, node, gap, symbol).
 
     Each free end of a real stroke (not a dot) looks ahead along its own ray for the nearest free end of a
@@ -627,7 +640,7 @@ def _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols: SymbolIndex, family: 
                 along = vx * ux + vy * uy
                 perp = abs(-vx * uy + vy * ux)
                 if 0.5 < along <= R and perp <= SYMBOL_OFF:
-                    tn = next((nn for nn in prim_nodes[pid2] if dist((nodes[nn].x, nodes[nn].y), ep) <= TOUCH_TOL + 0.05), None)
+                    tn = next((nn for nn in prim_nodes[pid2] if dist((nodes[nn].x, nodes[nn].y), ep) <= touch + 0.05), None)
                     if tn is None or tn == n.nid or nodes[tn].degree != 1:
                         continue
                     if best is None or along < best[0]:
@@ -664,7 +677,8 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
     """Nodes: shared endpoints (within TOUCH_TOL) incl. proven T-junctions. Then bridge collinear micro-gaps
     with unique continuation, and the gaps a symbol of another pen sits in."""
     tol = tol or VECTOR_TOL
-    prims, junctions = split_t_junctions(prims)
+    touch = touch_tol(prims)
+    prims, junctions = split_t_junctions(prims, touch)
     # 1. endpoint clustering on a lattice
     pts = []
     for q in prims:
@@ -672,14 +686,22 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
     nodes: dict[int, Node] = {}
     lattice: dict[tuple[int, int], list[int]] = defaultdict(list)
     prim_nodes: dict[int, list[int]] = defaultdict(list)
-    cell = TOUCH_TOL
+    cell = touch
 
-    def find_node(x, y, not_prim: int | None = None):
+    plen = {q.prim_id: q.seg.length for q in prims}
+
+    def find_node(x, y, not_prim: int | None = None, own_len: float | None = None):
         """The node at this point, if the family already has one. `not_prim` keeps a primitive's own two ends
         apart: a line's ends are two places however short the line, and a piece shorter than the touch tolerance
         - the tenth-of-a-point slivers a rounded corner is exported as - would otherwise put both its ends in one
         node. That reads as a loop: the node counts the piece twice, a plain corner comes out as a four-armed
-        junction, and the identity stops there rather than running on round the bend."""
+        junction, and the identity stops there rather than running on round the bend.
+
+        Och toleransen får aldrig vara vidare än de stycken den slår ihop. Pennans bredd säger vad som möts i
+        tryck, men en radie som exporterats som tiondels punkt långa bitar skulle då kollapsa till en enda nod -
+        samma slinga som ovan, bara skapad av en generösare tolerans i stället för en snålare. Ett stycke som är
+        kortare än glappet kan inte överbrygga det, så gränsen är det kortaste stycket i noden, och aldrig
+        snävare än den ursprungliga beröringstoleransen."""
         cx, cy = int(math.floor(x / cell)), int(math.floor(y / cell))
         best = None
         for dx in (-1, 0, 1):
@@ -688,14 +710,18 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
                     n = nodes[nid]
                     if not_prim is not None and not_prim in n.prims:
                         continue
+                    lim = touch if own_len is None else min(touch, own_len)
+                    for p in n.prims:
+                        lim = min(lim, plen.get(p, lim))
+                    lim = max(TOUCH_TOL, lim)
                     d = math.hypot(n.x - x, n.y - y)
-                    if d <= TOUCH_TOL and (best is None or d < best[0]):
+                    if d <= lim and (best is None or d < best[0]):
                         best = (d, nid)
         return best[1] if best else None
 
     for q in sorted(prims, key=lambda q: q.prim_id):
         for pt in (q.a, q.b):
-            nid = find_node(pt[0], pt[1], not_prim=q.prim_id)
+            nid = find_node(pt[0], pt[1], not_prim=q.prim_id, own_len=q.seg.length)
             if nid is None:
                 nid = len(nodes)
                 nodes[nid] = Node(nid=nid, x=pt[0], y=pt[1])
@@ -843,7 +869,7 @@ def build_graph(prims: list[Prim], family: str, tol: GraphTolerances | None = No
     if symbols is not None:
         # a valve in the line, or another line of the same pen crossing it: the run goes on beyond it,
         # whatever gap style the pen has
-        for nid, tn, g, sym in _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols, family):
+        for nid, tn, g, sym in _symbol_bridges(nodes, pmap, prim_nodes, idx, symbols, family, touch):
             _merge_nodes(nodes, prim_nodes, nid, tn, merged_into)
             crossing = sym.startswith("crossing:")
             bridges.append({"from_node": nid, "to_node": tn, "gap_pt": round(g, 2),
