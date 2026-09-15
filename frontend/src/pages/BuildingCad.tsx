@@ -30,7 +30,6 @@ const fmtMm = (v: number) => `${Math.round(v).toLocaleString("sv-SE")} mm`;
 const AREA_TOOLS = new Set(["bjalklag", "platta", "tak", "undertak", "rum", "skraffering", "tomtgrans"]);
 
 /* Verktyg där nästa objekt börjar där det förra slutade. En vägg ritas nästan aldrig ensam. */
-const CHAINS = new Set(["vagg", "glasfasad", "balk", "linje"]);
 
 export default function BuildingCadPage() {
   const { id } = useParams();
@@ -213,11 +212,11 @@ export default function BuildingCadPage() {
       apply(new Tx(`${TOOLS.find((t) => t.id === tool)?.label ?? "Objekt"}`).add("entities", e));
       setSel([e.id]);
     }
-    // Kedjan: en vägg slutar där nästa börjar. Utan den blir ett rum fyra gånger "klicka, klicka" med ett
-    // omtag mellan varje, och det var det som gjorde att det kändes som att klicket inte tog. Esc eller
-    // högerklick bryter kedjan.
-    const chained = CHAINS.has(tool) && pts.length >= 2 && !closed;
-    setDraft(chained ? [pts[pts.length - 1]] : []);
+    // Ett objekt i taget. Väggen fortsatte förut där den slutade, så att nästa vägg började av sig själv - men
+    // då tog ritandet aldrig slut, och den som satt en vägg fick en till på köpet som måste avbrytas. Satt start
+    // och slut är väggen färdig, och nästa klick börjar en ny. Fångsten sätter ändå nästa vägg på den förras
+    // ände, så kedjan går att rita lika fort - skillnaden är att den slutar när man slutar.
+    setDraft([]);
     setTyped(""); setTypedAngle(null); setErr("");
   }, [tool, doc, view, tol, ctx, apply, defaults.grid.label]);
 
