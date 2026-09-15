@@ -121,14 +121,19 @@ def _lista_filer(desk: Desk) -> dict:
                        "inga credits.", _obj(_FIL, ["fil"]))
 def _titta(desk: Desk, fil: str) -> dict:
     import pymupdf
+    from vvs_engine.pdf.glyphtext import repaired_page_text, repairs_for_page
     d = desk.file(fil)
     doc = pymupdf.open(storage.path(d.storage_key))
     pages = []
     for i, pg in enumerate(doc):
-        words = pg.get_text("text") or ""
+        # CAD-plottar bäddar ofta in typsnitt utan teckentabell, och då kommer namnrutan ut som
+        # ersättningstecken. repaired_page_text fyller i dem ur typsnittet självt.
+        fixes = repairs_for_page(pg, doc)
+        words = repaired_page_text(pg, doc, fixes=fixes) or ""
         # namnrutan står nere till höger på ett byggblad; det är den text som säger vad bladet är
         r = pg.rect
-        corner = pg.get_text("text", clip=pymupdf.Rect(r.x1 * 0.62, r.y1 * 0.66, r.x1, r.y1)) or ""
+        corner = repaired_page_text(pg, doc, clip=pymupdf.Rect(r.x1 * 0.62, r.y1 * 0.66, r.x1, r.y1),
+                                    fixes=fixes) or ""
         pages.append({"sida": i, "bredd_pt": round(r.width, 1), "hojd_pt": round(r.height, 1),
                       "tecken": len(words.strip()),
                       "namnruta": [ln.strip() for ln in corner.splitlines() if ln.strip()][:18]})

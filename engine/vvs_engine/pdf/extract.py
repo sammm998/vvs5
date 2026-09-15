@@ -17,6 +17,7 @@ import pymupdf
 from ..geometry.core import Seg, bbox_union, flatten_bezier, stable_id
 
 from .. import rules as _rules
+from .glyphtext import repairs_for_page
 
 
 def _R(rule_id, default):
@@ -625,6 +626,10 @@ def _extract_text(page, pno: int, M) -> list[TextSpan]:
         raw = page.get_text("rawdict", flags=pymupdf.TEXT_PRESERVE_WHITESPACE | pymupdf.TEXT_PRESERVE_LIGATURES)
     except Exception:
         return spans
+    # Tecken läsaren inte kunde tyda, ifyllda ur typsnittets egen glyftabell. Tom på nästan varje blad; på ett
+    # som plottats med Identity-H och ofullständig teckentabell är det skillnaden mellan "Längd(m)" och åtta
+    # ersättningstecken.
+    fixes = repairs_for_page(page, page.parent)
     seq = 0
     for b in raw.get("blocks", []):
         if b.get("type") != 0:
@@ -636,12 +641,14 @@ def _extract_text(page, pno: int, M) -> list[TextSpan]:
                 for ch in sp.get("chars", []):
                     bb = ch["bbox"]
                     org = ch.get("origin", (bb[0], bb[3]))
+                    glyph = fixes.get((round(float(org[0]), 1), round(float(org[1]), 1)))
                     if M is not None:
                         r = pymupdf.Rect(bb) * M
                         bb = (r.x0, r.y0, r.x1, r.y1)
                         o = pymupdf.Point(org) * M
                         org = (o.x, o.y)
-                    chars.append(TextChar(c=ch["c"], bbox=tuple(float(v) for v in bb), origin=(float(org[0]), float(org[1]))))
+                    chars.append(TextChar(c=glyph or ch["c"], bbox=tuple(float(v) for v in bb),
+                                          origin=(float(org[0]), float(org[1]))))
                 text = "".join(c.c for c in chars)
                 if not text.strip():
                     continue
