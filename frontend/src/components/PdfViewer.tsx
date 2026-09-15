@@ -78,6 +78,10 @@ export interface ViewerProps {
   editPipe?: any | null;
   meterPerPt?: number | null;
   onDrawn?: (d: Drawn) => void;
+  /** Hur många punkter verktyget behöver innan mätningen är klar. En längd är två punkter: när den andra är
+   *  satt är sträckan mätt, och nästa klick börjar en ny mätning i stället för att förlänga den förra.
+   *  Utelämnad betyder att linjen fortsätter tills man dubbelklickar eller trycker Enter. */
+  maxPoints?: number;
   corrections?: { id: string; kind: string; designation: string | null; payload: any }[];
   /** What the reader drew in by hand: measured, marked or noted. Beside the reading, never in it. */
   markups?: { id: string; tool: string; points: number[][]; layer?: string; text?: string; measure?: any;
@@ -736,7 +740,15 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     // the sheet's rectangle off it throws, taking the whole page with it. An event is only an event during its
     // own handler.
     const pt = at(e, pending.length ? pending[pending.length - 1] : null);
-    setPending((q) => [...q, pt]);
+    const next = [...pending, pt];
+    // Ett verktyg med ett bestämt antal punkter avslutar sig själv. Måttet är taget när sista punkten är satt,
+    // och nästa klick ska börja om - inte fortsätta samma sträcka.
+    if (props.maxPoints && next.length >= props.maxPoints) {
+      if (next.length >= 2) props.onDrawn?.({ points: next, meters: metres(next) });
+      setPending([]);
+      return;
+    }
+    setPending(next);
   };
   const finish = () => {
     if (kind !== "draw" || pending.length < 2) return;

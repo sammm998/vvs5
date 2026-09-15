@@ -119,6 +119,14 @@ export default function BuildingCadPage() {
     }
   }, [doc.entities]);
 
+  /* Att välja verktyg är att bestämma vad man ritar, och det som avgör vad det blir - rörets DN och system,
+     väggens tjocklek - står i verktygets inställningar. De ska fram innan första punkten sätts, inte efteråt
+     i egenskaperna på något som redan är ritat. Därför följer panelen med dit när ett ritverktyg armeras. */
+  const pickTool = useCallback((id: ToolId) => {
+    setTool(id); setDraft([]);
+    if (id !== "valj") { setSel([]); setPanel("egenskaper"); }
+  }, []);
+
   const undo = useCallback(() => { const r = undoTx(doc, hist); if (r.tx) { setDoc(r.doc); setHist(r.hist); dirty.current = true; setDraft([]); } }, [doc, hist]);
   const redo = useCallback(() => { const r = redoTx(doc, hist); if (r.tx) { setDoc(r.doc); setHist(r.hist); dirty.current = true; setDraft([]); } }, [doc, hist]);
 
@@ -332,11 +340,11 @@ export default function BuildingCadPage() {
       if (k === "F3") { ev.preventDefault(); setSnaps((s) => ({ ...s, on: !s.on })); return; }
       if (k.toLowerCase() === "c" && draft.length >= 3) { ev.preventDefault(); finish(draft, true); return; }
       const hit = tools.find((x) => x.key.toLowerCase() === k.toLowerCase());
-      if (hit && !ev.ctrlKey && !ev.metaKey && !ev.altKey) { setTool(hit.id); setDraft([]); }
+      if (hit && !ev.ctrlKey && !ev.metaKey && !ev.altKey) { pickTool(hit.id); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [undo, redo, sel, doc, apply, draft, typed, typedAngle, tool, finish, applyTyped, tools]);
+  }, [undo, redo, sel, doc, apply, draft, typed, typedAngle, tool, finish, applyTyped, tools, pickTool]);
 
   // ---------------------------------------------------------------- ändringar från panelerna
 
@@ -422,7 +430,7 @@ export default function BuildingCadPage() {
             onChange={(e) => { setDiscipline(e.target.value as Discipline); setTool("valj"); setDraft([]); }}>
             {DISCIPLINES.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}
           </select>
-          {tools.map((t) => <button key={t.id} className={`bcad-tool${tool === t.id ? " on" : ""}`} title={`${t.hint} (${t.key})`} onClick={() => { setTool(t.id); setDraft([]); }}>{t.label}<kbd>{t.key}</kbd></button>)}
+          {tools.map((t) => <button key={t.id} className={`bcad-tool${tool === t.id ? " on" : ""}`} title={`${t.hint} (${t.key})`} onClick={() => pickTool(t.id)}>{t.label}<kbd>{t.key}</kbd></button>)}
         </div>
         <div className="bcad-right">
           <FileMenu sheetId={sheetId} name={meta.name} doc={doc} viewId={view.id} scaleRatio={view.scale_ratio ?? 100} level={level} centre={() => { const r = wrap.current?.getBoundingClientRect(); return r ? toWorld(cam, r.width / 2, r.height / 2) : [0, 0]; }} apply={apply} onError={setErr} onUnderlayAdded={(uid_, cal) => { setSel([uid_]); if (cal) setCalib({ id: uid_, pts: [] }); }} />

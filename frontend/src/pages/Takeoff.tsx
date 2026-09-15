@@ -23,9 +23,13 @@ import { InkIndex, pageInk } from "../cad/pagesnap";
 
 type Tool = "langd" | "polylinje" | "area" | "volym" | "antal" | "rektangel" | "moln" | "frihand" | "text" | null;
 
-const TOOLS: { id: Exclude<Tool, null>; label: string; hint: string; kind: "langd" | "yta" | "antal" | "text" }[] = [
-  { id: "langd", label: "Längd", hint: "Klicka längs det som ska mätas. Dubbelklick avslutar, Esc avbryter.", kind: "langd" },
-  { id: "polylinje", label: "Polylinje", hint: "Samma som längd, för en sträcka med många knäckar.", kind: "langd" },
+/* `punkter` är hur många klick verktyget behöver innan måttet är taget. Längden är två: startpunkt och
+   ändpunkt, och sedan är sträckan mätt. Utan tal fortsätter linjen tills man dubbelklickar eller trycker
+   Enter - det är polylinjens hela poäng, och en yta vet inte på förhand hur många hörn den har. */
+const TOOLS: { id: Exclude<Tool, null>; label: string; hint: string; kind: "langd" | "yta" | "antal" | "text";
+               punkter?: number }[] = [
+  { id: "langd", label: "Längd", hint: "Klicka startpunkt och ändpunkt. Sträckan är mätt när den andra punkten är satt.", kind: "langd", punkter: 2 },
+  { id: "polylinje", label: "Polylinje", hint: "Samma som längd, för en sträcka med många knäckar. Dubbelklick avslutar, Esc avbryter.", kind: "langd" },
   { id: "frihand", label: "Frihand", hint: "Dra med musen längs en böjd sträcka.", kind: "langd" },
   { id: "area", label: "Yta", hint: "Klicka runt ytan; den sluts automatiskt.", kind: "yta" },
   { id: "rektangel", label: "Rektangel", hint: "Två hörn räcker för en rätvinklig yta.", kind: "yta" },
@@ -302,6 +306,7 @@ export default function TakeoffPage() {
             onPipeClick={() => { /* ingen läsning här */ }} onPageCount={setNPages}
             editKind={(drawing_on ? "draw" : null) as any}
             meterPerPt={mpp}
+            maxPoints={calibrating || cutting ? undefined : TOOLS.find((t) => t.id === tool)?.punkter}
             onDrawn={(d: any) => setDraft({ points: d.points, meters: d.meters })}
             markups={allRows.filter((r) => r.page === page) as any}
             selectedMarkup={selected}
@@ -322,7 +327,7 @@ export default function TakeoffPage() {
           {tab === "matt" && (
             <>
               <section className="card">
-                <h3 style={{ marginTop: 0 }}>{calibrating ? "Kalibrera skalan" : cutting ? "Avdrag" : "Verktyg"}</h3>
+                <h3 style={{ marginTop: 0 }}>{calibrating ? "Kalibrera skalan" : cutting ? "Avdrag" : "Mät upp"}</h3>
                 {calibrating ? (
                   <>
                     <p className="muted small">
@@ -355,21 +360,7 @@ export default function TakeoffPage() {
                   </>
                 ) : (
                   <>
-                    <div className="tk-tools">
-                      {/* Pekaren är ett verktyg som de andra: med den pekar man ut en markering som redan
-                          finns - för att ändra den, dra av ur den eller ta bort den. Utan den kan ett armerat
-                          ritverktyg aldrig släppa taget om bladet, och en sparad yta går inte att välja. */}
-                      <button className={tool === null ? "" : "secondary"}
-                              onClick={() => { setTool(null); setDraft(null); }}>Välj</button>
-                      {TOOLS.map((t) => (
-                        <button key={t.id} className={tool === t.id ? "" : "secondary"}
-                                onClick={() => { setTool(t.id); setDraft(null); }}>{t.label}</button>
-                      ))}
-                    </div>
-                    <p className="muted small">
-                      {tool === null ? "Klicka på en markering på bladet för att arbeta med den."
-                        : TOOLS.find((t) => t.id === tool)?.hint}
-                    </p>
+                    <div className="tk-step"><b>1</b> Vad du mäter</div>
                     <div className="tk-fields">
                       <label className="adm-field"><span>Lager</span>
                         <input value={layer} onChange={(e) => setLayer(e.target.value)} list="tk-layers" />
@@ -397,6 +388,22 @@ export default function TakeoffPage() {
                           <input value={text} onChange={(e) => setText(e.target.value)} /></label>
                       )}
                     </div>
+                    <div className="tk-step"><b>2</b> Verktyg</div>
+                    <div className="tk-tools">
+                      {/* Pekaren är ett verktyg som de andra: med den pekar man ut en markering som redan
+                          finns - för att ändra den, dra av ur den eller ta bort den. Utan den kan ett armerat
+                          ritverktyg aldrig släppa taget om bladet, och en sparad yta går inte att välja. */}
+                      <button className={tool === null ? "" : "secondary"}
+                              onClick={() => { setTool(null); setDraft(null); }}>Välj</button>
+                      {TOOLS.map((t) => (
+                        <button key={t.id} className={tool === t.id ? "" : "secondary"}
+                                onClick={() => { setTool(t.id); setDraft(null); }}>{t.label}</button>
+                      ))}
+                    </div>
+                    <p className="muted small">
+                      {tool === null ? "Klicka på en markering på bladet för att arbeta med den."
+                        : TOOLS.find((t) => t.id === tool)?.hint}
+                    </p>
                     <div className="row" style={{ marginTop: 10 }}>
                       <button disabled={!draft || busy} onClick={save}>{busy ? "Sparar…" : "Spara markering"}</button>
                       {draft && <button className="ghost small" onClick={() => setDraft(null)}>Rensa</button>}

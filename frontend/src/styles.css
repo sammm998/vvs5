@@ -2553,6 +2553,17 @@ tr.pa-fixed td:first-child { box-shadow: inset 3px 0 0 var(--ok); }
 .tk-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 6px; }
 .tk-tools button { padding: 9px 10px; font-size: 10px; }
 .tk-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; margin-top: 10px; }
+/* Ordningen är inte en smaksak: beteckningen bestämmer vilken rad måttet hamnar på, så den sätts först och
+   måttet tas sedan. Siffrorna säger det utan att någon behöver läsa en instruktion. */
+.tk-step {
+  display: flex; align-items: center; gap: 8px; margin: 14px 0 2px;
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+}
+.tk-step:first-child { margin-top: 0; }
+.tk-step b {
+  display: grid; place-items: center; width: 17px; height: 17px; border-radius: 50%;
+  background: var(--ink, #2a2721); color: #fff; font-size: 10px; letter-spacing: 0;
+}
 .tk-presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
 .tk-preset { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; }
 .tk-preset .x { padding: 4px 8px; }
