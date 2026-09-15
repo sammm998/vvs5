@@ -279,3 +279,39 @@ Och beröringstoleransen var tänkt som additiv men mätte som begränsande, av 
 grafen används också för att *avgöra vilka pennor som är rör*. En vidare tolerans ändrade den bedömningen och
 tappade en penna på ett blad - sjuttiofem meter bläck föll ur läsningen innan ägandet ens började. Nästa
 försök ska därför hålla familjeurvalet på den snäva toleransen och vidga den först när pennorna är valda.
+
+## Skrivpennan som togs för rör: godtagen
+
+Användaren pekade på två ställen där läsningen säger *"ritad som rör, men ingen beteckning nådde hit"*. Spåret
+gick till pennan, och läsningen hade rätt i andra halvan av meningen och fel i den första.
+
+På W-50-1-A0132 ligger **249,4 m** i en penna som tagits som rörgeometri med **noll röster, noll streck från
+någon hänvisningslinje och noll bekräftade meter**. Vad släppte in den? Ett lagernamn som följer samma mall
+som rörlagrens - `V-53BB--T--S1--` mot rörens `V-53BB-FE--S2-`. Och vad är den? Varenda ett av dess 4 228
+streck börjar eller slutar vid en beteckningsruta. Det är bladets hänvisningslinjer.
+
+Skillnaden står i bladet självt och behöver ingen tröskel:
+
+| penna | streck som går från en etikett | bekräftade meter |
+|---|---:|---:|
+| `V-56B--FE--VS1-` (1,44) | 46,7 % | 130,0 |
+| `V-52BC-FE--V1-` (1,44) | 46,3 % | 109,1 |
+| `V-53BB-FE--S2-` (2,04) | 50,5 % | 50,7 |
+| `V-52BB-FE--V1-` (1,44) | 57,8 % | 101,6 |
+| **`V-53BB--T--S1--` (0,72)** | **100,0 %** | **0,0** |
+| **`V-56B--KE--VS1--` (0,72)** | **100,0 %** | **0,0** |
+
+En ledning passerar ofta nära en etikett - men aldrig alla. Där varenda streck gör det skriver pennan.
+
+Grind 72 mot grind 67, 59 blad:
+
+| mått | grind 67 | grind 72 (skrivpennan) |
+|---|---|---|
+| täckning | 79,25 % | 79,23 % |
+| falskt ägande | 15,82 % | **15,76 %** |
+| FULL / PARTIAL / OVER / MISSED / WRONG | 171 / 200 / 179 / 150 / 88 | **173** / **199** / **176** / 153 / 88 |
+
+**Godtagen.** En enda rad i hela korpusen bytte klass - en rad som ägde 8,9 m mot en referens på 2,5 och nu
+äger noll - och ägda meter ändrades på ett enda blad, med 2,5 av 11 399. Det är den första ändringen på fem
+grindar som inte kostar något, och dess värde ligger inte i måttet: den slutar kalla tvåhundrasjuttio meter
+hänvisningslinje för rör.
