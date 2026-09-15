@@ -837,6 +837,24 @@ def _merge_identity(ids: list[Identity]) -> Identity | None:
                     stem=stem, qualifier=qual)
 
 
+def flows_into_other_size(source: Identity, arm: Identity) -> bool:
+    """Får källans dimension ta över en arm som är märkt med en annan?
+
+    Vid en knut är det den grövre ledningen som fortsätter och den klenare som lämnar den. En stam i DN110 som
+    möter en gren märkt DN75 löper vidare fram till grenens bock - det är så en dimensionsändring ritas, och
+    därför får den grövre flyta in i den klenares arm.
+
+    Åt andra hållet går det inte. En gren i DN75 kan inte ta stammens DN110-arm, för då vore grenen grövre än
+    det den grenar av från. Utan den spärren blev det tvärtom: ett stråk som bar åtta etiketter - sju som sa
+    DN110, en som sa DN75 - bokfördes i sin helhet som DN75. Metrarna var mätta, bara skrivna på fel rad, och
+    en mängd som står under fel dimension är värre för en kalkyl än en tappad meter: summan ser rätt ut och
+    varje prissatt rad är fel.
+
+    Säger den ena ingenting om sin dimension är det ingen storleksfråga, och då gäller de övriga reglerna.
+    """
+    return source.dn is None or arm.dn is None or source.dn > arm.dn
+
+
 def _conflict_reason(ids: list[Identity]) -> str:
     return "AMBIGUOUS_DN_BOUNDARY" if len({i.base for i in ids}) == 1 or len({i.system for i in ids}) == 1 else "SYSTEM_CONFLICT"
 
@@ -1355,6 +1373,8 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                     merged = _merge_identity([X, Y])
                     if merged is not None and Y.dn is not None:
                         continue
+                    if merged is None and not flows_into_other_size(X, Y):
+                        continue      # den klenare får inte ta den grövres arm
                     if any(is_collinear(p, v) for p in arms if p != v) and not any(is_collinear(p, v) for p in sources):
                         continue    # straight run through the junction: only its own run may flow into it
                     pids, _ = info[v]
@@ -1387,6 +1407,8 @@ def _resolve_family(g: PipeGraph, st: dict[int, PrimState], seeds, ambiguous_run
                 merged = _merge_identity([Xv, Y])
                 if merged is not None and Y.dn is not None:
                     continue
+                if merged is None and not flows_into_other_size(Xv, Y):
+                    continue          # den klenare får inte ta den grövres arm
                 pids, _ = info[v]
                 collinear = any(is_collinear(p, v) for p in others)
                 if any(is_collinear(p, v) for p in arms if p != v) and not collinear:
