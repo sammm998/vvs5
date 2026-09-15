@@ -529,6 +529,8 @@ export const MODULES: Module[] = [
           ] },
           { k: "note", t: "En mängd som tyst antagit en våningshöjd ser färdig ut och är omöjlig att kontrollera. Skriv ut vilken höjd som använts, så att den som läser kan byta den." },
           { k: "p", t: "Och fråga alltid vad stigaren är till för innan du bokför den. Ett avlopp som slutar vid en köksvask eller en golvbrunn har ingen ledning i planet alls - fyrkanten på ritningen är inredningen, inte röret, och den mängdas inte. Det som mängdas är den lodräta biten ned genom bjälklaget, och den hör till våningen under. Samma etikett, två olika blad: här är den ett antal, där blir den meter." },
+          { k: "p", t: "Men samma slags etikett används också åt andra hållet: ett rör kommer upp ur golvet och dras vidare längs väggen. Då finns ledningen i planet och ska mängdas. Etiketten ensam säger inte vilket av de två fallen det är - det gör strecket vid dimensionssiffran. Streck ovanför siffran: röret går bara nedåt. Streck under: bara uppåt. Båda: det stannar i våningen. Inget streck: det går rakt igenom." },
+          { k: "note", t: "Går strecket inte att avgöra är svaret okänt, inte \"inget streck\". Skillnaden är hela mängden: i det ena fallet är stigaren ett antal på våningen under, i det andra är den ett antal plus de meter röret dras längs väggen här." },
         ],
         quiz: {
           q: "Bladet visar sex stigare för S1-P2-110 och säger ingenting om våningshöjd. Vad redovisas?",

@@ -100,11 +100,14 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
                   </button>
                 ) : r.physical_pipe_count}
               </td>
-              {/* En rad som bara är stigare har inga vågräta meter, och en nolla där läses som "hittade
-                  ingenting". Raden finns därför att etiketterna finns: golvbrunnen eller vasken har ingen
-                  ledning i planet, den går ned genom bjälklaget. Strecket säger det utan att påstå en nolla. */}
+              {/* En rad som bara är stigare har inga vågräta meter, och en nolla där läses som en mätning.
+                  Det är den inte. Samma slags etikett används på två sätt: vid en vask eller golvbrunn finns
+                  ingen ledning i planet alls - röret går ned genom bjälklaget - men den används också där ett
+                  rör kommer upp ur golvet och dras vidare längs väggen, och då finns ledningen och läsningen
+                  kan ha missat den. Strecket säger att ingen vågrät sträcka hittades, utan att påstå vilket
+                  av de två fallen det är. */}
               <td className="num">{r.state === "RISER_LABELS_ONLY" && !(r.horizontal_calc > 0)
-                ? <span className="muted" title="Bara stigare: etiketten märker ett rör som går ned genom bjälklaget, inte en ledning i planet">–</span>
+                ? <span className="muted" title="Ingen vågrät sträcka hittad för den här etiketten. Den märker ett rör som går genom bjälklaget: antingen slutar det där (en vask, en golvbrunn) och det finns ingen ledning i planet, eller så fortsätter det längs väggen och läsningen har inte hittat den. Ritningen avgör det med strecket vid dimensionssiffran.">–</span>
                 : M(r.horizontal_calc, noScale)}</td>
               <td className="num">{noScale || r.vertical_calc == null
                 ? (r.risers_calc > 0
