@@ -45,10 +45,18 @@ export default function Nav({ light = false }: { light?: boolean }) {
     const still = prefersStill();
     const ctx = gsap.context(() => {
       if (still) return;
+      // Båda ändarna skrivs ut. `from` lämnar målet underförstått - "dit där elementet redan står" - och när
+      // den punkten läses medan rutan just monterats blev startvärdet också slutvärdet: menyraderna animerade
+      // ned 108 % av sin egen höjd och stannade där, utanför radens överflow. Kvar syntes numren och linjerna,
+      // och inte ett enda ord. `fromTo` säger var rörelsen slutar, och clearProps tar bort stilen efteråt så
+      // att raden står med sitt eget utseende och hovringens förskjutning fungerar som den ska.
       const tl = gsap.timeline();
-      tl.from(el, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.78, ease: EASE_REVEAL })
-        .from(".fc-menu-row .fc-line-in, .fc-menu-row-in", { yPercent: 108, duration: 0.85, ease: EASE_REVEAL, stagger: 0.06 }, "-=0.42")
-        .from(".fc-menu-side > *", { opacity: 0, y: 14, duration: 0.5, stagger: 0.06 }, "-=0.45");
+      tl.fromTo(el, { clipPath: "inset(0% 0% 100% 0%)" },
+                { clipPath: "inset(0% 0% 0% 0%)", duration: 0.78, ease: EASE_REVEAL, clearProps: "clipPath" })
+        .fromTo(".fc-menu-row .fc-line-in, .fc-menu-row-in", { yPercent: 108 },
+                { yPercent: 0, duration: 0.85, ease: EASE_REVEAL, stagger: 0.06, clearProps: "transform" }, "-=0.42")
+        .fromTo(".fc-menu-side > *", { opacity: 0, y: 14 },
+                { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, clearProps: "opacity,transform" }, "-=0.45");
     }, el);
 
     const focusable = () =>
