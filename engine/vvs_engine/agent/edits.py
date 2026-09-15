@@ -411,3 +411,112 @@ def foresla_rita_ror(m: DrawingModel, geometri_id: str = "", beteckning: str = "
                            f"({fam.get('why_sv') or fam.get('why')}).",
                   bevis={"hanvisningar_som_ror_den": int(touching), "etikettroster": round(votes, 1),
                          "lager": fam.get("layer")})
+
+
+# ---------------------------------------------------------------- carry a run on past where it stopped
+
+# Where the reading itself says it probably lost metres. A run that stops for one of these reasons stops
+# because the reading ran out, not because the drawing did - and those are the only ends worth carrying on.
+LOSSY_FRONTIERS = ("UNOWNED_CONTINUATION", "BROKEN_CONTINUITY", "REPRESENTATION_CHANGE")
+
+FRONTIER_SV = {
+    "UNOWNED_CONTINUATION": "samma penna fortsätter och ingen etikett når fram dit",
+    "BROKEN_CONTINUITY": "samma penna fortsätter i samma riktning efter ett gap som inte kunde slutas",
+    "REPRESENTATION_CHANGE": "ledningen fortsätter på en annan penna",
+}
+
+
+def _lossy_ends(m: DrawingModel, pipe_id: str) -> list[dict]:
+    """The ends of one run where the reading says the pipe carries on and it stopped anyway."""
+    return [f for f in m.frontiers_by_pipe.get(pipe_id, []) if f.get("reason") in LOSSY_FRONTIERS]
+
+
+def _beyond_pt(fronts: list[dict]) -> float:
+    """How much unowned ink lies past those ends, counted once per end."""
+    return sum(_num((f.get("detail") or {}).get("unowned_pt")) for f in fronts)
+
+
+@tool("hitta_ror_att_forlanga",
+      "Rör som slutar där läsningen tog slut, inte där ritningen tar slut - kandidater att förlänga, med hur "
+      "mycket oägt bläck som ligger bortom varje ände.", {})
+def hitta_ror_att_forlanga(m: DrawingModel) -> dict:
+    mpp = m.meters_per_pt
+    out = []
+    for p in m.pipes:
+        fronts = _lossy_ends(m, p["physical_pipe_id"])
+        if not fronts:
+            continue
+        pt = _beyond_pt(fronts)
+        if pt <= 0:
+            continue
+        out.append({"ror_id": p["physical_pipe_id"], "beteckning": p.get("designation"), "dn": p.get("dn"),
+                    "blad": p.get("page", 0),
+                    "mangd_nu_m": round(_num(p.get("horizontal_m")), 2),
+                    "bortom_anden_m": round(pt * mpp, 2) if mpp else None,
+                    "bortom_anden_pt": round(pt, 2),
+                    "skal": sorted({FRONTIER_SV.get(f["reason"], f["reason"]) for f in fronts}),
+                    "punkter": [[round(_num(f.get("x")), 1), round(_num(f.get("y")), 1)] for f in fronts]})
+    out.sort(key=lambda r: -(r["bortom_anden_m"] or r["bortom_anden_pt"]))
+    return {"antal": len(out), "kandidater": out[:40],
+            "skala_fastställd": bool(mpp)}
+
+
+@tool("foresla_forlang_ror",
+      "Föreslå att ett rör förlängs ut i det ritade bläck som fortsätter förbi den ände där läsningen stannade. "
+      "Metrarna är den ritade längden bortom änden, mätt av läsningen - aldrig ett tal ur frågan.",
+      {"ror_id": {"type": "string", "description": "Röret som ska förlängas, med läsningens eget id.",
+                  "required": True},
+       "skal": {"type": "string", "description": "Vad på ritningen som säger att ledningen fortsätter."}},
+      writes=True)
+def foresla_forlang_ror(m: DrawingModel, ror_id: str = "", skal: str = "") -> dict:
+    """Carry a run on into the ink that continues past it.
+
+    A run ends for a reason, and the reading writes that reason down. Four of them are the drawing's own - the
+    size changes, the system changes, it goes into a riser, it leaves the sheet - and a run that ends for one of
+    those ends where it is drawn to end. Three are the reading running out: the pen carries on and no label
+    reaches that far, a gap could not be closed, the line continues in another pen. Only those are offered here,
+    and only with the metres the reading measured beyond the end.
+
+    What it refuses is the whole point. Asked to extend a run that ends at a real boundary it says which
+    boundary and proposes nothing: extending there would take metres from the pipe on the other side and hand
+    them to this one, and the sheet already said whose they are.
+    """
+    p = m.pipe_by_id.get(str(ror_id))
+    if p is None:
+        return _refuse(f"inget rör med id {ror_id}")
+    if not m.meters_per_pt:
+        return _refuse("ritningens skala är inte fastställd, så det som ligger bortom änden har ingen längd "
+                       "att lägga till")
+    alla = m.frontiers_by_pipe.get(str(ror_id), [])
+    if not alla:
+        return _refuse("läsningen har ingen kant för det röret, så det går inte att säga var det slutar")
+    fronts = _lossy_ends(m, str(ror_id))
+    if not fronts:
+        return _refuse("röret slutar där ritningen säger att det slutar, inte där läsningen tog slut",
+                       kanter=sorted({f.get("reason") for f in alla}),
+                       skal_per_kant=sorted({f.get("reason") for f in alla}))
+    pt = _beyond_pt(fronts)
+    if pt <= 0:
+        return _refuse("ingenting ritat fortsätter förbi den änden, så det finns inga meter att lägga till",
+                       kanter=sorted({f.get("reason") for f in fronts}))
+    meters = round(pt * m.meters_per_pt, 3)
+    if meters > LARGE_CHANGE_M:
+        return _refuse(f"förlängningen är {meters:.1f} m, mer än {LARGE_CHANGE_M:.0f} m - det är inte en "
+                       f"rättelse av ett rör utan en omläsning av bladet, och den ska inte gå att godta på en "
+                       f"rads sammanfattning", meter=meters)
+    name = p.get("designation")
+    if not name:
+        return _refuse("röret har ingen beteckning att skriva metrarna på")
+    forslag = [_correction("extend", name, meters,
+                           f"{name}: {meters:.2f} m till där ledningen fortsätter förbi änden",
+                           meters=meters, pipe_ids=[p["physical_pipe_id"]],
+                           points=[[round(_num(f.get("x")), 2), round(_num(f.get("y")), 2)] for f in fronts],
+                           frontier_reasons=sorted({f.get("reason") for f in fronts}),
+                           reason=skal or None)]
+    return _offer(forslag,
+                  f"Förlänger {name} med {meters:.2f} m: "
+                  + ", ".join(sorted({FRONTIER_SV.get(f["reason"], f["reason"]) for f in fronts})) + ".",
+                  [p["physical_pipe_id"]],
+                  bevis={"mangd_nu_m": round(_num(p.get("horizontal_m")), 2),
+                         "bortom_anden_pt": round(pt, 2),
+                         "kanter": sorted({f.get("reason") for f in fronts})})

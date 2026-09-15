@@ -84,7 +84,7 @@ def apply(quantities: list[dict], corrections: list[dict], meters_per_pt: float 
         scale = page_mpp if page_mpp is not None else meters_per_pt
         # A length in metres needs a scale. Without one the drawn line has no length we can defend, and writing
         # zero would report the correction as applied while changing nothing.
-        if kind in ("extend", "draw") or (kind == "erase" and p.get("meters") is None):
+        if p.get("meters") is None and kind in ("extend", "draw", "erase"):
             if scale is None:
                 log.append({"id": c.get("id"), "kind": kind, "designation": name, "applied": False,
                             "why": "ritningens skala är inte fastställd, så sträckan har ingen längd att lägga till"})
@@ -98,7 +98,10 @@ def apply(quantities: list[dict], corrections: list[dict], meters_per_pt: float 
 
         delta = 0.0
         if kind in ("extend", "draw"):
-            delta = _length_m(p.get("points") or [], mpp)
+            # What an extend adds is the pipe the run carries on into, not the stroke somebody drew over it. A
+            # correction that knows those metres - the reading measured the ink beyond the run's own edge -
+            # brings them with it; the drawn stroke's length is the fallback for one recorded without them.
+            delta = float(given) if given is not None else _length_m(p.get("points") or [], mpp)
             r = row(name)
             r["confirmed_horizontal_m"] = round(r.get("confirmed_horizontal_m", 0.0) + delta, 3)
         elif kind == "erase":

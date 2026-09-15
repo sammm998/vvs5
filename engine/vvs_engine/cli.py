@@ -12,7 +12,7 @@ from . import __version__
 from .contamination import scan_source
 from .determinism import run_determinism
 from .output.schema import stamp as _stamp
-from .output.artifacts import why as why_fn, write_all
+from .output.artifacts import why as why_fn, write_all, write_sheet
 from .output.overlays import OverlayWriter
 from .pdf.extract import extract_document
 from .pipeline import PageAnalysis, analyze_page, prepare_page, reading_coverage, summarize
@@ -103,10 +103,12 @@ def sheet_record(pa) -> dict:
         "no_attachments": sum(1 for a in anchors if a.state == "NO_PIPE_ATTACHMENT"),
         "legend": {"codes": len(pa.legend.entries), "own": pa.legend.own},
         "coverage": reading_coverage(pa),
+        # pipe_ids följer med: utan dem kan handlingens rad inte peka tillbaka på de sträckor den kom ur, och
+        # "visa hur mängden räknades" har inget att visa för en handling med flera blad
         "quantities": [{k: q.get(k) for k in ("designation", "base", "dn", "state", "label_count",
                                               "physical_pipe_count", "confirmed_horizontal_m",
                                               "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
-                                              "in_hatched_area_m", "riser_count")}
+                                              "in_hatched_area_m", "riser_count", "pipe_ids")}
                        for q in pa.quantities],
         "second_reader": pa.second_reader,
     }
@@ -171,6 +173,10 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
         learn_roles(vocab, pa.legend)
         overlay.add(pa)
         sheets.append(sheet_record(pa))
+        # The sheet is written down while it is still in hand. Keeping every reading until the end is what makes
+        # a fifty-sheet set need fifty readings' worth of geometry at once, and reporting only the one sheet that
+        # was kept is what makes a set of twenty-six drawings look like an empty first page.
+        write_sheet(pa, doc, out_dir, vocab)
         done += 1
         # A sheet's reading is used the moment it exists - drawn onto the overlays, written down as a row - and
         # then let go of. Keeping all of them is what makes a fifty-sheet set need a reading's worth of geometry
@@ -199,6 +205,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
             learn_roles(vocab, pa.legend)
             overlay.replace(pa)
             sheets[i] = sheet_record(pa)
+            write_sheet(pa, doc, out_dir, vocab)      # bladet lästes om under handlingens skala; det som stod är inte längre sant
             rescaled += 1
             if i == 0:
                 first = pa

@@ -814,17 +814,48 @@ def _load(rd: str, name: str):
         return upgrade(name, json.load(fh))
 
 
+def _sheet_dir(rd: str, page: int) -> str:
+    """Where the reading of one sheet was written down, or the result root for a reading that has only one.
+
+    A set of drawings is read sheet by sheet and each sheet written down as it is read, under sheets/<page>/.
+    Older readings - made before the sheets were kept apart - have only the root, which holds the first sheet.
+    Falling back to it is right for a single-sheet drawing and honest for an old multi-sheet one: the reader gets
+    what was actually written down rather than an error about a directory.
+    """
+    d = os.path.join(rd, "sheets", str(int(page)))
+    return d if os.path.isdir(d) else rd
+
+
+def _sheet_pages(rd: str) -> list[int]:
+    d = os.path.join(rd, "sheets")
+    if not os.path.isdir(d):
+        return []
+    return sorted(int(n) for n in os.listdir(d) if n.isdigit())
+
+
 @app.get("/api/jobs/{job_id}/result")
-def job_result(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def job_result(job_id: str, page: int = 0, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """The reading, as the sheet the reader is looking at plus the takeoff for the whole set.
+
+    `page` picks the sheet. Everything drawn on the drawing - the pipes, the labels, the leaders, the ink that
+    was declined - is a fact about one sheet and comes from that sheet's own reading. The quantity rows are the
+    set's: a designation drawn on four sheets is one row, and the sheets it stands on are named on it. Serving
+    the first sheet's rows for a twenty-six sheet set is how a reading of four hundred metres shows up as an
+    empty table.
+    """
     j = _job(db, user, job_id)
-    rd = _result_dir(j)
+    root = _result_dir(j)
+    pages = _sheet_pages(root)
+    if pages and page not in pages:
+        page = pages[0]
+    rd = _sheet_dir(root, page)
     quantities = _load(rd, "quantities.json")
     pipes = _load(rd, "physical-pipes.json")["physical_pipes"]
     issues = _load(rd, "unresolved-issues.json")["issues"]
-    prof = _load(rd, "drawing-profile.json")
+    prof = _load(root, "drawing-profile.json")
     rec = _load(rd, "reconciliation.json")
-    perf = _load(rd, "performance-report.json")
-    summary = _load(rd, "summary.json")
+    perf = _load(root, "performance-report.json")
+    summary = _load(root, "summary.json")
     anchors = _load(rd, "pipe-code-anchors.json")["anchors"]
     des = _load(rd, "vector-designations.json")["designations"]
     leaders = _load(rd, "leader-forensics.json")["leaders"]
@@ -837,7 +868,8 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
     ambiguous = [g for g in geom if g["state"] == "AMBIGUOUS"]
     hatched = [g for g in geom if g["state"] == "CONFIRMED" and g.get("in_hatch")]
     mpp = quantities["scale"].get("meters_per_pdf_point")
-    page = prof["page_structure"]
+    # the sheet in front of the reader, not whichever sheet the set-wide profile was built from
+    page = _load_optional(rd, "page.json") or prof["page_structure"]
     # what a person changed is layered over the reading, never into it: the engine's own figure stays on every row
     corr = [_correction_out(c) for c in
             db.query(Correction).filter(Correction.drawing_id == j.drawing_id, Correction.undone == False).all()]  # noqa: E712
@@ -892,13 +924,16 @@ def job_result(job_id: str, user: User = Depends(current_user), db: Session = De
             # How much of what the drawing names ended up with a metre. Every other number here is about what was
             # found; this one is about what was not, and it is what separates a sheet the reading got through
             # from one it barely opened.
-            "named_vs_measured": ((_load_optional(rd, "reading-coverage.json") or {}).get("sheets") or [{}])[0],
+            "named_vs_measured": next((c for c in ((_load_optional(root, "reading-coverage.json") or {}).get("sheets") or [])
+                                       if c.get("page") == page.get("page")), {}),
         },
         # The whole set, not only its first sheet: a row per designation summed over the sheets it stands on,
         # and what each sheet on its own contributed.
-        "document": _load_optional(rd, "document-quantities.json"),
+        "document": _load_optional(root, "document-quantities.json"),
+        # which sheets this reading holds, so the reader can move between them
+        "pages": pages or [page.get("page", 0)],
         "performance": perf,
-        "review": _load_optional(rd, "review-findings.json"),
+        "review": _load_optional(root, "review-findings.json"),
         "crosscheck": _load_optional(rd, "route-crosscheck.json"),
         "reading_review": _load_optional(rd, "reading-review.json"),
         # the drawing's own designation list, as the reading understood it: which codes it took for systems,
@@ -1122,11 +1157,23 @@ def vision_check(job_id: str, page: int = 0, user: User = Depends(current_user),
 
 
 @app.get("/api/jobs/{job_id}/why/{pipe_id}")
-def why(job_id: str, pipe_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def why(job_id: str, pipe_id: str, page: int | None = None,
+        user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Why this run is what it is - looked up on the sheet it was found on.
+
+    A run belongs to one sheet, and so does the chain behind it. Searching only the first sheet is how a
+    question about a pipe on page nine comes back "unknown pipe" for a reading that measured it.
+    """
     j = _job(db, user, job_id)
-    rd = _result_dir(j)
-    pipes = _load(rd, "physical-pipes.json")["physical_pipes"]
-    p = next((x for x in pipes if x["physical_pipe_id"] == pipe_id), None)
+    root = _result_dir(j)
+    order = ([page] if page is not None else []) + (_sheet_pages(root) or [0])
+    rd, p = root, None
+    for pg in order:
+        rd = _sheet_dir(root, pg)
+        pipes = _load_optional(rd, "physical-pipes.json") or {}
+        p = next((x for x in (pipes.get("physical_pipes") or []) if x["physical_pipe_id"] == pipe_id), None)
+        if p is not None:
+            break
     if p is None:
         raise HTTPException(404, "Okänt rör")
     anchors = {a["anchor_id"]: a for a in _load(rd, "pipe-code-anchors.json")["anchors"]}

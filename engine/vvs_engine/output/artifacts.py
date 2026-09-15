@@ -449,11 +449,13 @@ def document_quantities(sheets: list[dict]) -> dict[str, Any]:
         for q in sh.get("quantities") or []:
             key = (q.get("designation"), q.get("dn"))
             r = rows.setdefault(key, {"designation": q.get("designation"), "base": q.get("base"), "dn": q.get("dn"),
-                                      "sheets": [], "label_count": 0, "physical_pipe_count": 0,
+                                      "sheets": [], "pipe_ids": [], "label_count": 0, "physical_pipe_count": 0,
                                       "confirmed_horizontal_m": 0.0, "confirmed_vertical_m": 0.0,
                                       "confirmed_total_m": 0.0, "ambiguous_m": 0.0, "in_hatched_area_m": 0.0,
                                       "riser_count": 0, "riser_count_from_labels": 0})
             r["sheets"].append(sh.get("page"))
+            # the runs behind the row, sheet by sheet: a set's figure has to lead back to the ink like a sheet's
+            r["pipe_ids"].extend(q.get("pipe_ids") or [])
             # both riser readings travel with the row: the takeoff chooses between them, and a rollup that
             # carried only one of them would answer a question the reader did not ask
             for k in ("label_count", "physical_pipe_count", "riser_count", "riser_count_from_labels"):
@@ -463,7 +465,7 @@ def document_quantities(sheets: list[dict]) -> dict[str, Any]:
                 r[k] += float(q.get(k) or 0.0)
     out_rows = []
     for r in sorted(rows.values(), key=lambda r: (r["designation"] or "", r["dn"] if r["dn"] is not None else -1)):
-        out_rows.append({**r, "sheets": sorted(set(r["sheets"])),
+        out_rows.append({**r, "sheets": sorted(set(r["sheets"])), "pipe_ids": sorted(set(r["pipe_ids"])),
                          **{k: round(r[k], 2) for k in ("confirmed_horizontal_m", "confirmed_vertical_m",
                                                         "confirmed_total_m", "ambiguous_m", "in_hatched_area_m")}})
     totals = {k: round(sum(r[k] for r in out_rows), 2)
@@ -477,59 +479,64 @@ def document_quantities(sheets: list[dict]) -> dict[str, Any]:
     return {"totals": totals, "rows": out_rows, "sheets": sheets, "sheets_without_a_settled_scale": unscaled}
 
 
-def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timings: dict, determinism: dict | None,
-              contamination: dict | None, overlays: dict, config: dict, review: dict | None = None,
-              sheets: list[dict] | None = None, doc_legend=None) -> dict[str, str]:
+# The names of what one sheet's reading is written down as. Every one of them is about a single sheet, so on a
+# set each sheet gets its own copy under sheets/<page>/ and the reader is served the sheet they are looking at.
+SHEET_FILES = ("vector-designations.json", "leader-forensics.json", "leader-family-report.json",
+               "pipe-code-anchors.json", "pipe-representation-families.json", "pipe-geometry-inventory.json",
+               "drawn-system-families.json", "declined-geometry.json", "pipe-topology.json",
+               "physical-pipes.json", "pipe-extent-frontiers.json", "quantities.json",
+               "unresolved-issues.json", "evidence-graph.json", "reconciliation.json",
+               "coverage-validity.json", "route-crosscheck.json", "reading-review.json",
+               "drawing-legend.json", "drawing-declarations.json", "cad-layer-map.json", "page.json")
+
+
+def sheet_reading(pa, doc, doc_legend=None, profile: dict | None = None,
+                  forensics: bool = True) -> dict[str, Any]:
+    """Everything one sheet's reading says, as the files it is written down as.
+
+    A set of drawings is read sheet by sheet and each sheet is let go of as soon as it has been used, so that a
+    fifty-sheet set does not need fifty readings' worth of geometry at once. That is why this exists: the sheet
+    is written down here, while it is still in hand, instead of being kept in memory until the end. Reporting
+    only the sheet that happened to be kept would show the reader an empty first page and hide the twenty-five
+    pipes drawn behind it.
+
+    What comes back is the sheet alone - its pipes, its labels, its leaders, its ink and what was decided about
+    each piece of it. The set-wide answers (the takeoff summed over sheets, the coverage per sheet, the shared
+    designation list) are not in here, because they are not facts about one sheet.
+    """
     from ..profile.hatch import inside_hatch
-    os.makedirs(out_dir, exist_ok=True)
-    pa = analyses[0]
-    files: dict[str, str] = {}
-    def W(fn, obj):
-        path = os.path.join(out_dir, fn); _dump(path, obj); files[fn] = path
-    prof = drawing_profile(pa, doc)
-    W("drawing-profile.json", prof)
-    with open(os.path.join(out_dir, "drawing-profile-report.md"), "w", encoding="utf-8") as fh:
-        fh.write(profile_report_md(prof, name))
-    files["drawing-profile-report.md"] = os.path.join(out_dir, "drawing-profile-report.md")
-    W("raw-vector-inventory.json", doc.inventory())
-    W("cad-layer-map.json", {"layers": [{"layer": k, **v.as_dict(), "role": next((l["role"] for l in prof["cad_structure"]["layers"] if l["layer"] == k), "UNKNOWN")} for k, v in sorted(pa.layer_stats.items())],
-                              "annotation_layers": pa.ann_layers, "pipe_families": sorted(pa.pipe_families)})
-    # Where a mark sits matters as much as what it says. A label or a leader end inside a hatched area is inside
-    # a wall, and pipe length in a wall is already outside the horizontal quantity - so a mark drawn there claims
-    # something the takeoff does not count. And a leader from a component tag reaches a floor drain or a mixer,
-    # not a run: it is an attachment, but not an attachment to any pipe. Both are said per item, once, here,
-    # rather than left for a reader to work out from a coloured ring.
+    prof = profile if profile is not None else drawing_profile(pa, doc)
+    out: dict[str, Any] = {"page.json": {"page": pa.page.info.index, **prof["page_structure"]}}
+
     def _in_wall(x: float, y: float) -> bool:
         return bool(pa.hatch_families) and inside_hatch(pa.hatch_families, x, y) is not None
+
+    out["cad-layer-map.json"] = {"layers": [{"layer": k, **v.as_dict(), "role": next((l["role"] for l in prof["cad_structure"]["layers"] if l["layer"] == k), "UNKNOWN")} for k, v in sorted(pa.layer_stats.items())],
+                                 "annotation_layers": pa.ann_layers, "pipe_families": sorted(pa.pipe_families)}
     des_out = []
     for d in pa.designations:
         dd = d.as_dict()
         dd["in_wall"] = _in_wall((d.bbox[0] + d.bbox[2]) / 2, (d.bbox[1] + d.bbox[3]) / 2)
         dd["names_a_pipe"] = bool(pa.legend.names_a_pipe(d)) and (d.text or "").upper() not in pa.legend.components()
         des_out.append(dd)
-    W("vector-designations.json", {"designations": des_out, "text_rows": [r.as_dict() for r in pa.lines]})
-    # The set's designation list, not the first sheet's. A drawing set writes the list on whichever sheet has
-    # room for it, so reporting page one's copy reports a borrowed list on any set that puts it further back -
-    # and the project has nothing to hand its next drawing.
+    # The sheet's whole text layer, every row of it, is a forensic record: nothing that serves a reader reads
+    # it, and on a set it is by far the largest thing written - twenty-six copies of it is ninety per cent of a
+    # reading's disk for something no page of the application opens. It is written once, with the sheet the
+    # profile report is about, and the per-sheet copies carry the labels alone.
+    out["vector-designations.json"] = {"designations": des_out,
+                                       **({"text_rows": [r.as_dict() for r in pa.lines]} if forensics else {})}
     # The set's list, but told from this sheet: whether the sheet in front of the reader is the one that wrote
     # the list is a fact about this sheet, and the set-wide copy is marked borrowed for everybody by construction.
     _lg = doc_legend if doc_legend is not None and doc_legend.entries else pa.legend
-    W("drawing-legend.json", {**_lg.as_dict(), "own": pa.legend.own and bool(pa.legend.entries)})
-    W("drawing-declarations.json", pa.declarations.as_dict())
-    W("document-quantities.json", document_quantities(sheets or []))
-    # How much of what the drawing names the reading carried through to a metre. It is the only figure that
-    # tells a sheet the reading got through from a sheet it barely opened, so it is written down as its own
-    # artifact rather than left to be worked out from a count of review rows.
-    W("reading-coverage.json", {"sheets": [{"page": sh.get("page"), **(sh.get("coverage") or {})}
-                                           for sh in (sheets or [])]} if sheets
-      else {"sheets": [{"page": pa.page.info.index, **reading_coverage(pa)}]})
+    out["drawing-legend.json"] = {**_lg.as_dict(), "own": pa.legend.own and bool(pa.legend.entries)}
+    out["drawing-declarations.json"] = pa.declarations.as_dict()
     lead_out = []
     for l in pa.leaders:
         ld = l.as_dict()
         ld["in_wall"] = _in_wall(*l.end)
         lead_out.append(ld)
-    W("leader-forensics.json", {"leaders": lead_out})
-    W("leader-family-report.json", leader_family_report(pa.leaders))
+    out["leader-forensics.json"] = {"leaders": lead_out}
+    out["leader-family-report.json"] = leader_family_report(pa.leaders)
     names_pipe = {d["did"]: d["names_a_pipe"] for d in des_out}
     anc_out = []
     for a in pa.anchors:
@@ -537,8 +544,8 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
         ad["in_wall"] = _in_wall(*a.endpoint)
         ad["names_a_pipe"] = bool(names_pipe.get(a.designation_id, False))
         anc_out.append(ad)
-    W("pipe-code-anchors.json", {"anchors": anc_out})
-    W("pipe-representation-families.json", {"families": [rf.as_dict() for rf in pa.pipe_families.values()]})
+    out["pipe-code-anchors.json"] = {"anchors": anc_out}
+    out["pipe-representation-families.json"] = {"families": [rf.as_dict() for rf in pa.pipe_families.values()]}
     # Which unowned lines a label actually points at. Not a measurement - nothing here settles anything - but a
     # line the sheet plainly draws and plainly labels must not be filed with the ink nobody mentioned.
     from ..pipeline import claimed_runs
@@ -553,7 +560,7 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
                         "candidates": sorted(c.key for c in st.candidates), "reason": st.reason,
                         "claimed_by": sorted(by),
                         "in_hatch": bool(pa.hatch_families) and inside_hatch(pa.hatch_families, *q.seg.mid) is not None})
-    W("pipe-geometry-inventory.json", {"primitives": inv})
+    out["pipe-geometry-inventory.json"] = {"primitives": inv}
     # What this sheet states about which pen its office draws which system with. A label verified on a run says
     # it outright; nothing here is inferred. It is written down so the next sheet of the same project can use it
     # where its own bundles are symmetric - one drawing telling another, with no reader in between.
@@ -564,40 +571,79 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
         for c in a.contacts:
             if c.family.split("|s|")[0]:
                 states[(c.family, a.system_token.upper())] += 1
-    W("drawn-system-families.json",
-      {"stated": [{"family": f, "system": sy, "times": n} for (f, sy), n in states.most_common()]})
-    W("declined-geometry.json", declined_geometry(pa))
-    W("pipe-topology.json", {"families": [{"family": fk, "nodes": [{"id": n.nid, "x": round(n.x, 2), "y": round(n.y, 2), "degree": n.degree, "prims": n.prims} for n in g.nodes.values()],
-                                            "edges": [{"prim": pid, "a": ab[0], "b": ab[1]} for pid, ab in g.prim_nodes.items()], "bridges": g.bridges, "junctions": g.junctions, "gap_mode": g.gap_mode}
-                                           for fk, g in pa.graphs.items()]})
-    W("physical-pipes.json", {"physical_pipes": [physical_pipe_dict(m) for m in pa.measures]})
-    W("pipe-extent-frontiers.json", extent_frontiers(pa))
-    W("quantities.json", {"scale": pa.scale.as_dict(), "rows": pa.quantities,
-                          "totals": {"physical_pipes": len(pa.measures),
-                                     "confirmed_horizontal_m": round(sum(q["confirmed_horizontal_m"] for q in pa.quantities), 3),
-                                     "confirmed_vertical_m": round(sum(q["confirmed_vertical_m"] for q in pa.quantities), 3),
-                                     "confirmed_total_m": round(sum(q["confirmed_total_m"] for q in pa.quantities), 3),
-                                     "ambiguous_m": round(sum(q["ambiguous_m"] for q in pa.quantities), 3),
-                                     "in_hatched_area_m": round(sum(q.get("in_hatched_area_m", 0.0) for q in pa.quantities), 3),
-                                     "riser_labels": sum(q.get("riser_count", 0) for q in pa.quantities)},
-                          "hatched_areas": [h.as_dict() for h in pa.hatch_families],
-                          "risers": pa.risers})
-    W("unresolved-issues.json", {"issues": unresolved_issues(pa)})
+    out["drawn-system-families.json"] = {"stated": [{"family": f, "system": sy, "times": n} for (f, sy), n in states.most_common()]}
+    out["declined-geometry.json"] = declined_geometry(pa)
+    out["pipe-topology.json"] = {"families": [{"family": fk, "nodes": [{"id": n.nid, "x": round(n.x, 2), "y": round(n.y, 2), "degree": n.degree, "prims": n.prims} for n in g.nodes.values()],
+                                               "edges": [{"prim": pid, "a": ab[0], "b": ab[1]} for pid, ab in g.prim_nodes.items()], "bridges": g.bridges, "junctions": g.junctions, "gap_mode": g.gap_mode}
+                                              for fk, g in pa.graphs.items()]}
+    out["physical-pipes.json"] = {"physical_pipes": [physical_pipe_dict(m) for m in pa.measures]}
+    out["pipe-extent-frontiers.json"] = extent_frontiers(pa)
+    out["quantities.json"] = {"scale": pa.scale.as_dict(), "rows": pa.quantities,
+                              "totals": {"physical_pipes": len(pa.measures),
+                                         "confirmed_horizontal_m": round(sum(q["confirmed_horizontal_m"] for q in pa.quantities), 3),
+                                         "confirmed_vertical_m": round(sum(q["confirmed_vertical_m"] for q in pa.quantities), 3),
+                                         "confirmed_total_m": round(sum(q["confirmed_total_m"] for q in pa.quantities), 3),
+                                         "ambiguous_m": round(sum(q["ambiguous_m"] for q in pa.quantities), 3),
+                                         "in_hatched_area_m": round(sum(q.get("in_hatched_area_m", 0.0) for q in pa.quantities), 3),
+                                         "riser_labels": sum(q.get("riser_count", 0) for q in pa.quantities)},
+                              "hatched_areas": [h.as_dict() for h in pa.hatch_families],
+                              "risers": pa.risers}
+    out["unresolved-issues.json"] = {"issues": unresolved_issues(pa)}
+    out["evidence-graph.json"] = evidence_graph(pa)
+    from ..reconcile import reconcile
+    rec = reconcile(pa)
+    out["reconciliation.json"] = rec
+    # giltigheten är en annan fråga än konserveringen: nådde läsningen bladet?
+    from ..coverage import coverage_validity
+    from ..pipeline import reading_coverage as _rc
+    out["coverage-validity.json"] = coverage_validity(_rc(pa), pa.anchors, rec, pa.scale.state if pa.scale else None,
+                                                      len(pa.measures))
+    out["route-crosscheck.json"] = pa.crosscheck
+    out["reading-review.json"] = pa.review_findings
+    return out
+
+
+def write_sheet(pa, doc, out_dir: str, doc_legend=None) -> str:
+    """One sheet's reading, written down under sheets/<page>/ while the sheet is still in hand."""
+    d = os.path.join(out_dir, "sheets", str(pa.page.info.index))
+    os.makedirs(d, exist_ok=True)
+    for fn, obj in sheet_reading(pa, doc, doc_legend, forensics=False).items():
+        _dump(os.path.join(d, fn), obj)
+    return d
+
+
+def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timings: dict, determinism: dict | None,
+              contamination: dict | None, overlays: dict, config: dict, review: dict | None = None,
+              sheets: list[dict] | None = None, doc_legend=None) -> dict[str, str]:
+    os.makedirs(out_dir, exist_ok=True)
+    pa = analyses[0]
+    files: dict[str, str] = {}
+    def W(fn, obj):
+        path = os.path.join(out_dir, fn); _dump(path, obj); files[fn] = path
+    prof = drawing_profile(pa, doc)
+    W("drawing-profile.json", prof)
+    with open(os.path.join(out_dir, "drawing-profile-report.md"), "w", encoding="utf-8") as fh:
+        fh.write(profile_report_md(prof, name))
+    files["drawing-profile-report.md"] = os.path.join(out_dir, "drawing-profile-report.md")
+    W("raw-vector-inventory.json", doc.inventory())
+    W("document-quantities.json", document_quantities(sheets or []))
+    # How much of what the drawing names the reading carried through to a metre. It is the only figure that
+    # tells a sheet the reading got through from a sheet it barely opened, so it is written down as its own
+    # artifact rather than left to be worked out from a count of review rows.
+    W("reading-coverage.json", {"sheets": [{"page": sh.get("page"), **(sh.get("coverage") or {})}
+                                           for sh in (sheets or [])]} if sheets
+      else {"sheets": [{"page": pa.page.info.index, **reading_coverage(pa)}]})
+    # This sheet's own reading, written down once. The same shape is written per sheet under sheets/<page>/ by
+    # write_sheet as each sheet is read, so a set is served the sheet the reader is looking at rather than
+    # whichever sheet happened to be kept in memory.
+    for _fn, _obj in sheet_reading(pa, doc, doc_legend, profile=prof).items():
+        if _fn != "page.json":
+            W(_fn, _obj)
     if review is not None:
         W("review-findings.json", review)
     if getattr(pa, "ocr_assist", None) is not None:
         W("ocr-assisted-characters.json", pa.ocr_assist)
-    W("evidence-graph.json", evidence_graph(pa))
-    from ..reconcile import reconcile
-    rec = reconcile(pa)
-    W("reconciliation.json", rec)
-    # giltigheten är en annan fråga än konserveringen: nådde läsningen bladet?
-    from ..coverage import coverage_validity
-    from ..pipeline import reading_coverage as _rc
-    W("coverage-validity.json", coverage_validity(_rc(pa), pa.anchors, rec, pa.scale.state if pa.scale else None,
-                                                  len(pa.measures)))
-    W("route-crosscheck.json", pa.crosscheck)
-    W("reading-review.json", pa.review_findings)
+
     if determinism is not None:
         W("determinism.json", determinism)
     if contamination is not None:

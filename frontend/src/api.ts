@@ -72,7 +72,8 @@ export const api = {
           body: JSON.stringify({ scale_ratio: scaleRatio, page }) }
       : { method: "POST" }),
   job: (id: string) => req(`/api/jobs/${id}`),
-  result: (id: string) => req(`/api/jobs/${id}/result`),
+  // bladet läsaren står på: rören, etiketterna och bläcket hör till ett blad, och handlingens mängd följer med
+  result: (id: string, page = 0) => req(`/api/jobs/${id}/result?page=${page}`),
   artifacts: (id: string) => req(`/api/jobs/${id}/artifacts`),
   why: (jobId: string, pipeId: string) => req(`/api/jobs/${jobId}/why/${pipeId}`),
   // a second opinion by eye on a finished reading; its findings never move a metre

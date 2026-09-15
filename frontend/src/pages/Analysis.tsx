@@ -88,6 +88,7 @@ export default function AnalysisPage() {
   });
   const dragging = useRef(false);
   const [nPages, setNPages] = useState(1);
+  const [sheetBusy, setSheetBusy] = useState(false);
   const [floorHeight, setFloorHeight] = useState<string>(() => { try { return localStorage.getItem("vvs.floorHeight") ?? ""; } catch { return ""; } });
   const [includeHatched, setIncludeHatched] = useState<boolean>(() => { try { return localStorage.getItem("vvs.includeHatched") === "1"; } catch { return false; } });
   // Förklarade kopplingsledningar räknas med som förval: det är ritningens eget besked om dem. Valet finns för
@@ -144,7 +145,7 @@ export default function AnalysisPage() {
         if (j.status === "COMPLETED") {
           if (!loaded) {
             loaded = true;
-            const r = await api.result(id!); setResult(r);
+            const r = await api.result(id!, 0); setResult(r);
             const b = await api.fetchBlob(api.fileUrl(j.drawing_id)); setPdf(await b.arrayBuffer());
             try { setDrawing(await api.drawing(j.drawing_id)); } catch { /* namnet är trevligt, inte nödvändigt */ }
             setArtifacts(await api.artifacts(id!));
@@ -156,6 +157,33 @@ export default function AnalysisPage() {
     poll();
     return () => clearTimeout(t);
   }, [id]);
+
+  /* Bladet byts: läsningen av det bladet hämtas.
+   *
+   * Rören, etiketterna, hänvisningslinjerna och det avvisade bläcket är fakta om ett blad, och en handling kan
+   * vara tjugosex blad i en fil. Förr låg bara det första bladets läsning i svaret, så en handling där blad ett
+   * är en försättssida visade ingenting alls fast fyrahundra meter var uppmätta bakom den. Nu hämtas bladet man
+   * står på, och den utpekning som väntade på det görs när det kommit fram. */
+  const wantBox = useRef<{ page: number; bbox: number[] } | null>(null);
+  useEffect(() => {
+    if (!result || !job || job.status !== "COMPLETED") return;
+    if ((result.page?.page ?? 0) === page) return;
+    let levande = true;
+    setSheetBusy(true);
+    api.result(id!, page)
+      .then((r) => { if (levande) setResult(r); })
+      .catch((e: any) => { if (levande) setErr(e.message); })
+      .finally(() => { if (levande) setSheetBusy(false); });
+    return () => { levande = false; };
+  }, [page, job?.status, id, job, result]);
+
+  // den utpekning som väntade på sitt blad görs när bladets läsning kommit fram
+  useEffect(() => {
+    const w = wantBox.current;
+    if (!w || !result || (result.page?.page ?? 0) !== w.page) return;
+    wantBox.current = null;
+    viewer.current?.zoomTo(w.bbox);
+  }, [result]);
 
   /** A run's extent on the sheet, from the geometry it carries. The pipe record has never had a box of its
       own, so every "go to this run" in the application was quietly doing nothing at all. */
@@ -177,9 +205,9 @@ export default function AnalysisPage() {
   const goTo = (bbox: number[] | null, onPage: number) => {
     if (!bbox) return;
     if (onPage !== page) {
+      // bladets egen läsning hämtas först; utpekningen görs när den kommit fram, inte efter en gissad väntan
+      wantBox.current = { page: onPage, bbox };
       setPage(onPage);
-      // the sheet has to be laid out at the new page before it can be aimed at
-      setTimeout(() => viewer.current?.zoomTo(bbox), 260);
     } else {
       viewer.current?.zoomTo(bbox);
     }
@@ -350,7 +378,8 @@ export default function AnalysisPage() {
           <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>Helskärm</button>
           <button className="small d3-open" title="Res ritningen till en byggnad"
             onClick={() => { setRising(true); setShow3d(true); }}>Visa i 3D</button>
-          {nPages > 1 && <select value={page} onChange={(e) => {
+          {sheetBusy && <span className="muted small">Läser bladet…</span>}
+          {nPages > 1 && <select value={page} disabled={sheetBusy} onChange={(e) => {
             // the selected run belongs to the page it was found on; carrying it across would put its ends,
             // and any correction dragged from them, on geometry that is not it
             setPage(Number(e.target.value)); setSelPipe(null); setWhy(null);
@@ -556,7 +585,7 @@ export default function AnalysisPage() {
                   {[["Vad är det här?", `Vad är ${why.pipe.designation} DN${why.pipe.dn ?? "?"} (rör ${why.pipe.physical_pipe_id}) för något, och var går det?`],
                     ["Varför slutar det här?", `Varför slutar ${why.pipe.designation} (rör ${why.pipe.physical_pipe_id}) där det gör? Visa fronterna.`],
                     ["Följ nätet", `Följ nätet från rör ${why.pipe.physical_pipe_id} och visa vad det sitter ihop med.`],
-                    ["Förläng den", `Rör ${why.pipe.physical_pipe_id} (${why.pipe.designation}) ser ut att sluta för tidigt. Vad finns i förlängningen, och går det att låta beteckningen äga den biten också?`]]
+                    ["Förläng den", `Förläng rör ${why.pipe.physical_pipe_id} (${why.pipe.designation}) ut i det som fortsätter förbi änden, om ritningen tillåter det. Säg vad som ligger bortom änden och hur många meter det blir.`]]
                     .map(([label, q]) => (
                       <button key={label} className="ghost small"
                               onClick={() => { setAgentAsk(q); setTab("agent"); }}>{label}</button>
@@ -598,7 +627,7 @@ export default function AnalysisPage() {
             }}
             onChanged={async () => {
               setCorrections(await api.corrections(job.drawing_id));
-              setResult(await api.result(id!));
+              setResult(await api.result(id!, page));
             }} />
         )}
         {tab === "rattelser" && (
@@ -607,7 +636,7 @@ export default function AnalysisPage() {
             onKindChange={setDrawKind} onDraftClear={() => setDraft(null)}
             onChanged={async () => {
               setCorrections(await api.corrections(job.drawing_id));
-              setResult(await api.result(id!));
+              setResult(await api.result(id!, page));
             }} />
         )}
         {tab === "markera" && (
@@ -619,7 +648,10 @@ export default function AnalysisPage() {
           // The overview used to read the engine's raw totals while the table beside it read the same numbers
           // under the takeoff's own assumptions. A sheet full of stacks then said "0,0 m vertikalt" on one tab
           // and counted its risers on the next. One reading, one set of assumptions, both tabs.
-          const calc = withFloorHeight(result.quantities || [], floorH, includeHatched, riserSource, includeDeclared);
+          // Handlingen, inte bladet man råkar stå på. Översikten är det tal någon prissätter, och en handling på
+          // tjugosex blad prissätts inte efter sitt försättsblad.
+          const calcRows = nSheets > 1 && setDoc?.rows?.length ? setDoc.rows : (result.quantities || []);
+          const calc = withFloorHeight(calcRows, floorH, includeHatched, riserSource, includeDeclared);
           const sum = (k: string) => calc.reduce((t: number, r: any) => t + (Number(r[k]) || 0), 0);
           const risers = calc.reduce((t: number, r: any) => t + (r.risers_calc || 0), 0);
           return (

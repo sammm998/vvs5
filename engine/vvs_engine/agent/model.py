@@ -24,27 +24,82 @@ def _load(root: str, name: str, default: Any = None) -> Any:
 
 
 class DrawingModel:
-    """Everything one analysed drawing is, as the reading left it."""
+    """Everything one analysed drawing is, as the reading left it.
 
-    def __init__(self, result_dir: str):
+    A drawing is often a whole set - twenty-six sheets in one file - and the reading writes each sheet down
+    under sheets/<page>/ as it reads it. The agent is asked about the drawing, not about its cover page, so
+    everything that is a list of things found on a sheet is gathered across every sheet here. Reading only the
+    root is how the agent comes to answer "no pipes were found" about a set it measured four hundred metres on.
+
+    The ids carry their page already, so gathering cannot collide: a label is `des|<page>|…`, an attachment
+    `anc|<page>|…`. Readings made before the sheets were kept apart have only the root, and it is used as the
+    single sheet it is.
+    """
+
+    def __init__(self, result_dir: str, page: int | None = None):
         self.root = result_dir
+        # när ett blad pekas ut svarar modellen om det bladet; annars om hela handlingen
+        self.page = page
+
+    @cached_property
+    def sheets(self) -> list[tuple[int, str]]:
+        """Each sheet of this reading as (page, directory), or the root as the one sheet it holds."""
+        d = os.path.join(self.root, "sheets")
+        if os.path.isdir(d):
+            found = [(int(n), os.path.join(d, n)) for n in os.listdir(d) if n.isdigit()]
+            if found:
+                found.sort()
+                return [x for x in found if self.page is None or x[0] == self.page] or found
+        return [(0, self.root)]
+
+    def _gather(self, name: str, key: str) -> list[dict]:
+        out: list[dict] = []
+        for pg, d in self.sheets:
+            for row in (_load(d, name, {}) or {}).get(key) or []:
+                if isinstance(row, dict):
+                    row.setdefault("page", pg)
+                out.append(row)
+        return out
 
     # ---- the artifacts, read once ------------------------------------------------
     @cached_property
     def quantities(self) -> dict:
-        return _load(self.root, "quantities.json", {"rows": [], "scale": {}, "totals": {}})
+        """The takeoff. For a set it is the set's - a designation drawn on four sheets is one row.
+
+        The scale belongs to a sheet, not to a set, so the one carried here is the first settled one; a sheet's
+        own is in `sheet_scales`. Nothing is measured here: both files were written by the reading.
+        """
+        doc = _load(self.root, "document-quantities.json") if self.page is None else None
+        own = _load(self.root, "quantities.json", {"rows": [], "scale": {}, "totals": {}})
+        if self.page is not None and self.sheets:
+            own = _load(self.sheets[0][1], "quantities.json", own)
+        if doc and (doc.get("rows") or doc.get("totals", {}).get("sheets", 0) > 1):
+            scale = own.get("scale") or {}
+            if not scale.get("meters_per_pdf_point"):
+                for sc in self.sheet_scales.values():
+                    if sc.get("meters_per_pdf_point"):
+                        scale = sc
+                        break
+            return {"rows": doc.get("rows") or [], "scale": scale, "totals": doc.get("totals") or {},
+                    "sheets": doc.get("sheets") or []}
+        return own
+
+    @cached_property
+    def sheet_scales(self) -> dict[int, dict]:
+        """What each sheet is drawn in. A set is not one scale, and a metre is not comparable across two."""
+        return {pg: (_load(d, "quantities.json", {}) or {}).get("scale") or {} for pg, d in self.sheets}
 
     @cached_property
     def pipes(self) -> list[dict]:
-        return _load(self.root, "physical-pipes.json", {"physical_pipes": []})["physical_pipes"]
+        return self._gather("physical-pipes.json", "physical_pipes")
 
     @cached_property
     def anchors(self) -> list[dict]:
-        return _load(self.root, "pipe-code-anchors.json", {"anchors": []})["anchors"]
+        return self._gather("pipe-code-anchors.json", "anchors")
 
     @cached_property
     def designations(self) -> list[dict]:
-        return _load(self.root, "vector-designations.json", {"designations": []})["designations"]
+        return self._gather("vector-designations.json", "designations")
 
     @cached_property
     def legend(self) -> dict:
@@ -52,15 +107,29 @@ class DrawingModel:
 
     @cached_property
     def topology(self) -> list[dict]:
-        return _load(self.root, "pipe-topology.json", {"families": []})["families"]
+        return self._gather("pipe-topology.json", "families")
 
     @cached_property
     def declined(self) -> dict:
-        return _load(self.root, "declined-geometry.json", {"families": [], "unconsidered": [], "drawn_twice": {}})
+        """Ink the reading looked at and decided was not pipe, gathered over the sheets it was declined on."""
+        out: dict = {"families": [], "unconsidered": [], "drawn_twice": {}, "totals": {}}
+        for pg, d in self.sheets:
+            one = _load(d, "declined-geometry.json", {}) or {}
+            for k in ("families", "unconsidered"):
+                for row in one.get(k) or []:
+                    if isinstance(row, dict):
+                        row.setdefault("page", pg)
+                    out[k].append(row)
+            for k, v in (one.get("drawn_twice") or {}).items():
+                out["drawn_twice"][f"{pg}:{k}"] = v
+            for k, v in (one.get("totals") or {}).items():
+                if isinstance(v, (int, float)):
+                    out["totals"][k] = round(out["totals"].get(k, 0) + v, 3)
+        return out
 
     @cached_property
     def issues(self) -> list[dict]:
-        return _load(self.root, "unresolved-issues.json", {"issues": []})["issues"]
+        return self._gather("unresolved-issues.json", "issues")
 
     @cached_property
     def review(self) -> dict:
@@ -206,6 +275,18 @@ class DrawingModel:
                                 "point": [round(n["x"], 1), round(n["y"], 1)]})
         out.sort(key=lambda d: (d["pipe_id"], d["point"]))
         return out
+
+    @cached_property
+    def frontiers(self) -> list[dict]:
+        """Where every run stops, and why - gathered over the sheets the runs are drawn on."""
+        return self._gather("pipe-extent-frontiers.json", "frontiers")
+
+    @cached_property
+    def frontiers_by_pipe(self) -> dict[str, list[dict]]:
+        out: dict[str, list[dict]] = defaultdict(list)
+        for f in self.frontiers:
+            out[str(f.get("pipe"))].append(f)
+        return dict(out)
 
     def size_frontiers(self) -> list[dict]:
         """Nodes where the drawing changes what the pipe is: a size, a system or a material boundary."""
