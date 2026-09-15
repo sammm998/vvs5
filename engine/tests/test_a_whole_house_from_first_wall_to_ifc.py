@@ -21,6 +21,22 @@ FRONT = os.path.join(ROOT, "frontend")
 ESBUILD = os.path.join(FRONT, "node_modules", ".bin", "esbuild")
 
 
+def needs_the_core():
+    """Steg som bara går att ta när ritbordets kärna går att köra.
+
+    Huset byggs i ordning och varje steg står på det föregående. Fem av stegen - validering, mängder,
+    kollisioner, hålen som godtas, snittet - körs av samma kod som ritbordet, genom node, och hoppas över där
+    node_modules saknas. De två sista stegen läser huset de stegen byggde: revisionen som hålet skapade och
+    hålet självt i IFC-filen.
+
+    Utan den här spärren hoppade de fem över och de två föll - vilket är precis vad som hände i bygget, där
+    node_modules inte installeras för motorns prov. Ett prov som faller för att ett annat hoppades över säger
+    ingenting om koden, och det stod rött i tvåhundra byggen innan någon läste vad det stod.
+    """
+    if not os.path.exists(ESBUILD):
+        pytest.skip("frontend/node_modules saknas: huset är inte färdigbyggt utan stegen som kör kärnan")
+
+
 @pytest.fixture(scope="module")
 def client(tmp_path_factory):
     tmp = tmp_path_factory.mktemp("house29")
@@ -386,6 +402,7 @@ def test_27_section_elevation_and_a_drawing_sheet(house, core, client):
 # ---------------------------------------------------------------- 28: revisioner och agenten
 
 def test_28_history_restores_and_the_agent_proposes(house, client):
+    needs_the_core()
     revs = client.get(f"/api/cad/sheets/{house.sid}/revisions", headers=house.H).json()
     assert revs["current"] == house.doc["revision"] and len(revs["rows"]) == house.doc["revision"]
     labels = [r["label"] for r in revs["rows"]]
@@ -411,6 +428,7 @@ def test_28_history_restores_and_the_agent_proposes(house, client):
 # ---------------------------------------------------------------- 29: exporterna
 
 def test_29_every_export_opens_and_ifc_comes_back_as_the_same_house(house, client):
+    needs_the_core()
     H, sid = house.H, house.sid
     ifc = client.get(f"/api/cad/sheets/{sid}/export.ifc", headers=H).text
     assert ifc.count("IFCBUILDINGSTOREY(") == 4 and ifc.count("IFCWALL(") == 15 and ifc.count("IFCDOOR(") == 4 and ifc.count("IFCWINDOW(") == 8

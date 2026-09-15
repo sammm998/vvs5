@@ -272,10 +272,21 @@ def run_job(job_id: str) -> None:
             # Raden skrivs platt, som läsningen själv skriver den. Att i stället lägga den under ett eget namn
             # kostade pengar: återbetalningsregeln läser samma rad, hittade inga rörnamn med meter där den
             # letade, och betalade tillbaka varenda läsning. En rad, en form, och `sheet_coverage` läser den.
-            _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0, finished_at=dt.datetime.now(dt.timezone.utc),
-               summary={"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr,
-                        "coverage": _first_sheet_coverage(out_dir) or (summary["summary"].get("coverage") or {}),
-                        **carried})
+            # Avräkningen görs innan läsningen visas som klar, inte efter.
+            #
+            # Förut stod ordningen tvärtom: jobbet sattes till COMPLETED och avräknades i ett finally efteråt.
+            # Mellan de två fanns ett glapp där den som laddat upp ett blad utan skala såg "klar" och en credit
+            # borta - återbetalningen kom en stund senare. Under belastning är glappet långt nog att synas, och
+            # dör processen i det kommer återbetalningen aldrig: pengen är då bara borta. Nu skrivs det
+            # läsningen kom fram till först, avräkningen görs på det, och först när den ligger i reskontran
+            # flyttas jobbet till COMPLETED. Ingen ser en läsning som är klar och obetald på en gång.
+            done = {"total_seconds": summary["total_seconds"], **summary["summary"], "second_reader": sr,
+                    "coverage": _first_sheet_coverage(out_dir) or (summary["summary"].get("coverage") or {}),
+                    **carried}
+            _set(job_id, summary=done)
+            _settle_credits(job_id)
+            _set(job_id, status="COMPLETED", stage="COMPLETED", progress=1.0,
+                 finished_at=dt.datetime.now(dt.timezone.utc), summary=done)
     except UnsupportedInputError as e:
         # not a defect: the PDF carries no vector drawing, so there is nothing to read
         _set(job_id, status="FAILED", stage="FAILED", finished_at=dt.datetime.now(dt.timezone.utc),
@@ -336,6 +347,9 @@ def submit(job_id: str) -> None:
         try:
             run_job(job_id)
         finally:
+            # Nätet under: en läsning som föll, eller som avbröts innan sin egen avräkning hann göras, ska ändå
+            # inte kosta något. refund_reading betalar tillbaka en gång och bara en gång, så den här andra
+            # omgången är gratis när den första redan gjort sitt.
             _settle_credits(job_id)
     _executor.submit(_run)
 

@@ -175,3 +175,32 @@ def test_a_message_from_the_contact_page_reaches_the_administrator(client):
     rows = client.get("/api/admin/contact", headers=Ha).json()["rows"]
     assert rows and rows[0]["email"] == "anna@example.com" and rows[0]["status"] == "ny"
     assert client.put(f"/api/admin/contact/{rows[0]['id']}", json={"status": "besvarad"}, headers=Ha).json()["status"] == "besvarad"
+
+
+def test_a_reading_is_never_klar_and_unpaid_at_the_same_time(client, tmp_path):
+    """Återbetalningen ska ligga i reskontran innan läsningen visas som klar.
+
+    Ordningen var förut den omvända: jobbet sattes till COMPLETED och avräknades i ett finally efteråt. Mellan
+    de två fanns ett glapp där den som laddat upp ett blad utan skala såg "klar" och en credit borta. Under
+    belastning är glappet långt nog att synas - det föll i provsviten när maskinen samtidigt körde en
+    korpusgrind - och dör processen i glappet kommer återbetalningen aldrig: pengen är då bara borta.
+
+    Ordningen går att läsa ur tiderna i efterhand, och det är stabilare än att tjuvlyssna på när något händer:
+    återbetalningens tidpunkt ska ligga före den stund jobbet skrevs som färdigt.
+    """
+    H, _ = _user(client, "kund9@example.com")
+    d = _upload(client, H, _sheet_without_scale(str(tmp_path / "utan-skala-2.pdf")), name="utan-skala-2.pdf")
+    start = client.get("/api/credits", headers=H).json()["balance"]
+    j = client.post(f"/api/drawings/{d['id']}/analyze", headers=H).json()
+    klart = _wait(client, H, j["id"])
+    assert klart["status"] == "COMPLETED"
+    assert client.get("/api/credits", headers=H).json()["balance"] == start
+
+    poster = client.get("/api/credits", headers=H).json()["entries"]
+    mina = [e for e in poster if e.get("ref") == j["id"]]
+    assert {e["kind"] for e in mina} == {"lasning", "aterbetalning"}, mina
+    aterbetald = next(e for e in mina if e["kind"] == "aterbetalning")
+    assert klart["finished_at"], klart
+    assert aterbetald["created_at"] <= klart["finished_at"], (
+        f"återbetalningen skrevs {aterbetald['created_at']}, efter att jobbet blivit klart "
+        f"{klart['finished_at']}: det finns ett glapp där läsningen är klar och obetald")
