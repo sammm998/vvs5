@@ -195,3 +195,50 @@ både slutet och de rör linjen korsar - och korsstrecken är då fästet, preci
 A0423 ligger någon annanstans, och tills den är hittad är "tvetydigt" fortfarande det riktiga svaret. Fyndet
 om vad som *går fel* på A0423 står kvar: en enda svag etikett äger trettiofem meter stam genom
 `chain_from_anchor`, och det är den regeln som ska prövas härnäst - inte fästet.
+
+## Var de tappade metrarna faktiskt ligger
+
+Efter tre backade regler slutade jag gissa vad som var fel och mätte i stället var metrarna tog vägen. På de
+tio blad som tappar mest, med motorns egna tal ställda mot referensens summa:
+
+| | meter |
+|---|---:|
+| referensen vill ha | 3 836 |
+| läsningen äger | 3 019 |
+| läsningen kallar tvetydigt | 187 |
+| **ritat i en godtagen rörpenna, men ingen etikett äger det** | **1 085** |
+
+Underskottet är 817 m. Det oägda bläcket i de pennor läsningen redan godtagit som rör är 1 085 m. **De
+tappade metrarna är inte borta - de är ritade, i rätt penna, utan ägare.** Och de följer underskottet blad för
+blad: 519 mot 367 ägt med 186 oägt; 517 mot 319 med 220 oägt; 516 mot 374 med 123 oägt.
+
+### Varför de står oägda
+
+Kedja för kedja, över de fem värsta bladen: **100 % av det oägda bläcket sitter i kedjor där ingen granne i
+någon ände bär ett namn.** Det är alltså inte korsningen som inte kunde avgöra - det finns ingenting att
+avgöra. Bläcket ligger som öar, frånkopplat från allt etiketterna nådde.
+
+### Och öarna ligger inte långt bort
+
+Avståndet från varje ö till närmaste namngivna streck **i samma penna**:
+
+| avstånd | meter | andel |
+|---|---:|---:|
+| 0-2 pt - rör vid rör, grafen är bruten | 67,1 | 24,6 % |
+| 2-6 pt - litet glapp | 38,1 | 13,9 % |
+| 6-20 pt - en symbol eller del emellan | 20,5 | 7,5 % |
+| 20-120 pt | 113,3 | 41,5 % |
+| längre än 120 pt - en egen ö | 34,3 | 12,5 % |
+
+**Nästan halva det oägda bläcket ligger inom tjugo punkter från ett namngivet stråk i samma penna**, en
+fjärdedel av det så nära som två punkter. På papperet hänger de ihop. I läsningens graf gör de inte det.
+
+### Vad det betyder för vad som ska byggas härnäst
+
+Felet ligger inte i vilket segment en etikett beskriver. Det har tre mätningar nu sagt: vattengången,
+slutstrecket och staplingsordningen ändrade alla någon promille åt fel eller inget håll. Felet ligger i att
+**grafen inte kopplar ihop det ritningen kopplar ihop** - och därför har namnet ingenstans att ta vägen.
+
+Det är en annan sorts arbete: sammanfogningen (glapp, symboler, pennbyten), inte ägandet. Och det har ett
+mått att arbeta mot som inte kräver referensen alls - oägt bläck inom tjugo punkter från ett namngivet stråk
+i samma penna är en siffra läsningen kan räkna själv, blad för blad, och som ska gå mot noll.
