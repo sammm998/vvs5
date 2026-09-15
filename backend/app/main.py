@@ -16,8 +16,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
-from . import (academy as academy_api, admin as admin_api, cad as cad_api, calc as calc_api, credits as credits_api,
-               desk as desk_api, exports, jobs, markups as markups_api, projects_api, public as public_api)
+from . import (academy as academy_legacy, academy_api, admin as admin_api, cad as cad_api, calc as calc_api,
+               credits as credits_api, desk as desk_api, exports, jobs, markups as markups_api, projects_api,
+               public as public_api)
 from vvs_engine.output.schema import upgrade
 from vvs_engine.corrections import KINDS as CORRECTION_KINDS, apply as apply_corrections
 from vvs_engine.learning import KEYS, lessons, settle, situation
@@ -33,6 +34,16 @@ async def _lifespan(_app: FastAPI):
     # gå upp alls. Ett varningsmeddelande i en logg ingen läser är samma sak som ingenting.
     demand_a_real_secret()
     init_db()
+    # Utbildningens innehåll hör till koden, inte till en handpåläggning efter driftsättning. Seedningen känner
+    # igen allt på slug och uppdaterar i stället för att skapa dubbletter, så den kan köras vid varje uppstart.
+    try:
+        from .academy_seed import seed as _seed_academy
+        from .db import SessionLocal as _S
+        with _S() as _db:
+            _seed_academy(_db)
+    except Exception as e:                                     # noqa: BLE001
+        # En utbildning som inte gick att lägga in får inte hindra tjänsten från att starta.
+        print(f"[academy] innehållet kunde inte läggas in: {e}", flush=True)
     # jobb som var på väg när tjänsten senast stängde körs igen; ett RUNNING som ingen kör är en lögn på skärmen
     if os.environ.get("PYTEST_CURRENT_TEST") is None or os.environ.get("VVS_RESUBMIT_ON_START") == "1":
         from . import jobs as _jobs
@@ -48,7 +59,12 @@ app.add_middleware(CORSMiddleware, allow_origins=[o.strip() for o in settings.co
 app.include_router(admin_api.router)
 app.include_router(public_api.router)
 app.include_router(projects_api.router)
+# Den gamla akademins framsteg ligger kvar och bär den befintliga lärandevyn; den nya bär FutureCalc Academy.
+# De delar prefix men inga vägar, och den gamla tabellen rörs inte.
+app.include_router(academy_legacy.router)
 app.include_router(academy_api.router)
+app.include_router(academy_api.public)
+app.include_router(academy_api.admin)
 app.include_router(markups_api.router)
 app.include_router(markups_api.presets)
 app.include_router(calc_api.router)
