@@ -1,23 +1,34 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../landing.css";
+import "../fc/fc.css";
+import "../fc/public.css";
 import SiteHeader, { PUBLIC_LINKS } from "./SiteHeader";
-import { useScrollProgress } from "./lp-motion";
+import Nav from "../fc/Nav";
+import { CustomCursor, LineReveal, ScrollProgress } from "../fc/primitives";
+import { useSmoothScroll } from "../fc/motion";
 
 /* Ramen kring de publika sidorna.
  *
  * Priser, om oss, hur det funkar, utbildning och kontakt ska vara rum i samma hus som startsidan, inte fem
- * hemsidor. Därför samma rad högst upp (SiteHeader), samma mörka grund med sitt korn och sitt ljus, samma
- * skrollskena i kanten - och en hjälte som är byggd som startsidans: en liten etikett, en stor rubrik som får
- * ta plats, och en ingress som säger vad rummet är till för.
+ * hemsidor. Ramen bär därför samma sak som startsidan gör: FutureCalcs typsnitt och färger, samma rad högst
+ * upp med sin fullskärmsmeny, samma mjuka rullning, samma muspekare, och en hjälte med kapitelskyltens rytm -
+ * etikett, stor rubrik som kommer fram rad för rad, ingress bredvid i stället för under.
  *
- * Det enda som skiljer sidorna åt är innehållet.
+ * Att ramen bär det och inte varje sida är hela poängen: en ny sida får rummet gratis, och en ändring i huset
+ * når alla rum på en gång.
+ *
+ * Den gamla raden (SiteHeader) ligger kvar för de vyer som ber om den med `legacyHeader` - akademins gamla
+ * lärandevy använder dess ankarmeny - men ingen publik sida gör det längre.
  */
 
 export { PUBLIC_LINKS };
 
-export default function PublicFrame({ kicker, title, lede, children, wide = false, aside, anchors, bare }: {
+export default function PublicFrame({ kicker, title, lede, children, wide = false, aside, anchors, bare,
+  legacyHeader = false }: {
   kicker?: string; title?: any; lede?: any; children: any; wide?: boolean;
+  /** den gamla raden med sin ankarmeny, för vyer som behöver den */
+  legacyHeader?: boolean;
   /** sidan har ett eget huvud och vill inte ha ramens hjälte ovanför det */
   bare?: boolean;
   /** det som står bredvid rubriken: en siffra, en figur, ett par nycklar */
@@ -26,29 +37,32 @@ export default function PublicFrame({ kicker, title, lede, children, wide = fals
   anchors?: { href: string; label: string }[];
 }) {
   const { pathname } = useLocation();
-  const scrolled = useScrollProgress();
+  useSmoothScroll();
   useEffect(() => {
     document.body.classList.add("lp-dark");
     window.scrollTo(0, 0);
     return () => document.body.classList.remove("lp-dark");
   }, [pathname]);
   return (
-    <div className="lp pub">
-      <SiteHeader anchors={anchors} />
-
-      <div className="lp-rail" aria-hidden="true">
-        <div className="lp-rail-fill" style={{ transform: `scaleY(${scrolled})` }} />
-      </div>
+    <div className="lp pub fcpub">
+      {legacyHeader ? <SiteHeader anchors={anchors} /> : <Nav />}
+      <CustomCursor />
+      <ScrollProgress />
 
       {bare ? <div className="pub-bare" /> : (
         <header className="pub-hero">
+          <div className="fc-grid" aria-hidden="true" />
           <div className="pub-hero-in">
             <div>
-              {kicker && <p className="lp-eyebrow"><span className="dot" />{kicker}</p>}
-              <h1 className="pub-h1">{title}</h1>
-              {lede && <p className="pub-lede">{lede}</p>}
+              {kicker && <p className="fc-label">{kicker}</p>}
+              {typeof title === "string"
+                ? <LineReveal as="h1" className="pub-h1 fc-display fc-display-lg" text={title} />
+                : <h1 className="pub-h1 fc-display fc-display-lg">{title}</h1>}
             </div>
-            {aside && <div className="pub-hero-aside">{aside}</div>}
+            <div className="pub-hero-r">
+              {lede && <p className="pub-lede fc-lead">{lede}</p>}
+              {aside && <div className="pub-hero-aside">{aside}</div>}
+            </div>
           </div>
         </header>
       )}
@@ -78,6 +92,7 @@ export default function PublicFrame({ kicker, title, lede, children, wide = fals
             <Link to="/kontakt">Kontakta oss</Link>
           </nav>
         </div>
+        <div className="fc-foot-mark" aria-hidden="true">FUTURECALC®</div>
       </footer>
     </div>
   );
