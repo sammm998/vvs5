@@ -100,7 +100,12 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
                   </button>
                 ) : r.physical_pipe_count}
               </td>
-              <td className="num">{M(r.horizontal_calc, noScale)}</td>
+              {/* En rad som bara är stigare har inga vågräta meter, och en nolla där läses som "hittade
+                  ingenting". Raden finns därför att etiketterna finns: golvbrunnen eller vasken har ingen
+                  ledning i planet, den går ned genom bjälklaget. Strecket säger det utan att påstå en nolla. */}
+              <td className="num">{r.state === "RISER_LABELS_ONLY" && !(r.horizontal_calc > 0)
+                ? <span className="muted" title="Bara stigare: etiketten märker ett rör som går ned genom bjälklaget, inte en ledning i planet">–</span>
+                : M(r.horizontal_calc, noScale)}</td>
               <td className="num">{noScale || r.vertical_calc == null
                 ? (r.risers_calc > 0
                   ? <span className="muted" title="Stigarna är hittade; ange våningshöjd för att räkna om dem till meter">{`${r.risers_calc} st × höjd`}</span>

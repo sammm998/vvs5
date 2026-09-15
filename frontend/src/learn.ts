@@ -528,6 +528,7 @@ export const MODULES: Module[] = [
             "Antal gånger höjd är den vertikala mängden, och den redovisas för sig.",
           ] },
           { k: "note", t: "En mängd som tyst antagit en våningshöjd ser färdig ut och är omöjlig att kontrollera. Skriv ut vilken höjd som använts, så att den som läser kan byta den." },
+          { k: "p", t: "Och fråga alltid vad stigaren är till för innan du bokför den. Ett avlopp som slutar vid en köksvask eller en golvbrunn har ingen ledning i planet alls - fyrkanten på ritningen är inredningen, inte röret, och den mängdas inte. Det som mängdas är den lodräta biten ned genom bjälklaget, och den hör till våningen under. Samma etikett, två olika blad: här är den ett antal, där blir den meter." },
         ],
         quiz: {
           q: "Bladet visar sex stigare för S1-P2-110 och säger ingenting om våningshöjd. Vad redovisas?",
