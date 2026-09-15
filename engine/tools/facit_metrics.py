@@ -122,6 +122,20 @@ def canon(name: str, fold: bool) -> str:
     return name
 
 
+def members_of(name: str) -> list[str]:
+    """De namn en referensrad som skriver flera system med snedstreck står för: VV01/KV01-X31-16 är två rör.
+
+    En sådan rad namnger rör som ritas tillsammans och mängdas på en rad. Läsningen skriver dem som var sin
+    rad, med rätt meter på var och en. Jämförs namn mot namn saknas referensraden helt och våra rader står som
+    namn referensen inte har - hundra meter tappade och hundra falska, på ett blad där ingenting är fel.
+    Snedstrecket måste sitta i systemdelen: "VS1-S13-12/W" är ett monteringssuffix, inte två system.
+    """
+    head, _, rest = (name or "").partition("-")
+    if "/" not in head:
+        return []
+    return [f"{h}-{rest}" if rest else h for h in head.split("/") if h]
+
+
 def style_of(tag: str) -> str:
     if tag in ("A", "C", "D", "E") or tag.startswith("W-"):
         return "W (konturglyfer)"
@@ -140,10 +154,25 @@ def score_sheet(tag: str, run: dict, fac0: dict[str, float], fold: bool) -> dict
     ours_all: dict[str, float] = defaultdict(float)
     for q in run.get("quantities", []):
         ours_all[canon(q["designation"], fold)] += q.get("confirmed_total_m", 0.0)
+    # rader som referensen skriver ihop vägs ihop, så att de jämförs som referensen själv mängdade dem
+    combined: dict[str, str] = {}
+    for k in fac:
+        ms = [canon(mname, fold) for mname in members_of(k)]
+        # ...men bara när referensen inte också mängdar medlemmarna var för sig. Gör den det finns det två
+        # slags rader med samma namn - den ihopskrivna och den enskilda - och namnet ensamt kan inte skilja
+        # dem åt. Då vägs ingenting ihop: hellre en rad som inte går att poängsätta än en poäng som ser bra ut.
+        if ms and not any(mm in fac for mm in ms):
+            for mm in ms:
+                combined[mm] = k
+    if combined:
+        merged: dict[str, float] = defaultdict(float)
+        for k, v in ours_all.items():
+            merged[combined.get(k, k)] += v
+        ours_all = merged
     ours = {k: v for k, v in ours_all.items() if system(k) in scope}
     outside = {k: v for k, v in ours_all.items() if system(k) not in scope}
-    read_names = {canon(n, fold) for n in (run.get("names_read") or [])}
-    named_with_metres = {canon(n, fold) for n in (run.get("names_with_metres") or [])}
+    read_names = {combined.get(canon(n, fold), canon(n, fold)) for n in (run.get("names_read") or [])}
+    named_with_metres = {combined.get(canon(n, fold), canon(n, fold)) for n in (run.get("names_with_metres") or [])}
 
     found = set(fac) & set(ours)
     f_tot = sum(fac.values())

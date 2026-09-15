@@ -136,7 +136,7 @@ Kvar i trädet: `system_letters` (`S1` *är* ett självfallssystem - sant oberoe
 |---|---|---|
 | täckning | **79,25 %** | 78,96 % |
 | falskt ägande | **15,82 %** | 16,14 % |
-| FULL / PARTIAL / OVER / MISSED / WRONG | **171** / 200 / 179 / 150 / 88 | 166 / 203 / 180 / 152 / 88 |
+| FULL / PARTIAL / OVER / MISSED / WRONG | **173** / **199** / **177** / **152** / 88 | 166 / 203 / 180 / 152 / 88 |
 
 Sämre på varje mått. Backat.
 
@@ -154,7 +154,7 @@ Grind 69 mot grind 67, 59 blad:
 |---|---|---|
 | täckning | 79,25 % | 79,23 % |
 | falskt ägande | 15,82 % | 15,85 % |
-| FULL / PARTIAL / OVER / MISSED / WRONG | 171 / 200 / 179 / 150 / 88 | **174** / 200 / **176** / 151 / 89 |
+| FULL / PARTIAL / OVER / MISSED / WRONG | 173 / 199 / 177 / 152 / 88 | **174** / 200 / **176** / **151** / 89 |
 | beteckningar funna | 87,72 % | **87,87 %** |
 
 **Två blad av 59 ändrades.** På det ena (V-50-1-A0123) blir en MISSED en OVER - röret hittas men dras för
@@ -185,7 +185,7 @@ Grind 70 mot grind 67, 59 blad:
 |---|---|---|
 | täckning | **79,25 %** | 76,62 % |
 | falskt ägande | 15,82 % | **14,86 %** |
-| FULL / PARTIAL / OVER / MISSED / WRONG | **171** / **200** / 179 / 150 / 88 | 167 / 211 / **171** / 151 / 88 |
+| FULL / PARTIAL / OVER / MISSED / WRONG | **173** / **199** / 177 / 152 / 88 | 167 / 211 / **171** / **151** / 88 |
 
 Den tog bort omkring 110 m falskt och kostade omkring 300 m riktigt. Tjugotvå blad ändrades, och de som
 tappade mest tappade rejält: −50,5 m ägt på ett blad, −43,1 på ett annat, −42,6 på ett tredje. **Backad.**
@@ -256,7 +256,7 @@ Grind 71 mot grind 67, 59 blad:
 |---|---|---|
 | täckning | **79,25 %** | 76,57 % |
 | falskt ägande | 15,82 % | **14,27 %** |
-| FULL / PARTIAL / OVER / MISSED / WRONG | **171** / **200** / 179 / 150 / 88 | 166 / 217 / **167** / 151 / 89 |
+| FULL / PARTIAL / OVER / MISSED / WRONG | **173** / **199** / 177 / 152 / 88 | 166 / 217 / **167** / **151** / 89 |
 
 Cirka 306 m täckning bort för cirka 177 m mindre falskt. **Backad.**
 
@@ -309,9 +309,34 @@ Grind 72 mot grind 67, 59 blad:
 |---|---|---|
 | täckning | 79,25 % | 79,23 % |
 | falskt ägande | 15,82 % | **15,76 %** |
-| FULL / PARTIAL / OVER / MISSED / WRONG | 171 / 200 / 179 / 150 / 88 | **173** / **199** / **176** / 153 / 88 |
+| FULL / PARTIAL / OVER / MISSED / WRONG | 173 / 199 / 177 / 152 / 88 | 173 / 199 / **176** / 153 / 88 |
 
 **Godtagen.** En enda rad i hela korpusen bytte klass - en rad som ägde 8,9 m mot en referens på 2,5 och nu
 äger noll - och ägda meter ändrades på ett enda blad, med 2,5 av 11 399. Det är den första ändringen på fem
 grindar som inte kostar något, och dess värde ligger inte i måttet: den slutar kalla tvåhundrasjuttio meter
 hänvisningslinje för rör.
+
+
+## Rättelse: fem tabeller jämförde mot fel grind
+
+Meterfälten i grindtabellerna ovan är riktiga, men raden `FULL / PARTIAL / OVER / MISSED / WRONG` för grind 67
+var i fem av dem hämtad ur den här rapportens **inledande** tabell, som gäller grind **66**. Grind 67:s egna
+klasser är **173 / 199 / 177 / 152 / 88**. Tabellerna är rättade.
+
+Vad rättelsen ändrar i besluten: ingenting. Grind 68, 70 och 71 backades på täckning och falskhet, som var
+riktiga. Grind 69 står kvar utanför trädet, och mot rätt jämförelse är den om möjligt ännu plattare än jag
+skrev. Grind 72 är godtagen som metralneutral, vilket den är - men påståendet "FULL-rader 171 → 173" var fel:
+de var 173 före och 173 efter. Ändringens värde ligger i vad den slutar kalla rör, inte i klasserna.
+
+## Referensrader som skriver flera system på en rad
+
+`facit_metrics.py` jämför namn mot namn. En referensrad som skriver `VV01/KV01-X31-16` namnger rör som ritas
+tillsammans och mängdas på en rad; läsningen skriver dem som var sin rad med rätt meter på var och en. Namn
+mot namn saknades referensraden helt (106,6 m "tappade") och våra två rader stod som namn referensen inte har
+(109,9 m "falska") - på ett blad där ingenting var fel.
+
+Verktyget väger nu ihop våra rader till referensens egen rad, men **bara när referensen inte också mängdar
+medlemmarna var för sig**. Gör den det - och på just det bladet gör den det - finns två slags rader med samma
+namn och namnet ensamt kan inte skilja dem åt. Då vägs ingenting ihop: hellre en rad som inte går att
+poängsätta än en poäng som ser bra ut. Över korpusen är ändringen därför en nolla i dag, och den ligger där
+för de blad där referensen skriver ihop utan att också skriva isär.
