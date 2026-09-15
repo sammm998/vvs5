@@ -27,6 +27,7 @@ tyst standardval.
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -84,16 +85,29 @@ class Choice:
                 "review": self.review, "considered": list(self.considered)}
 
 
+_ORDINAL = re.compile(r"\d+$")
+
+
+def system_letters(system: str) -> str:
+    """Systemets bokstäver utan dess löpnummer: S1 och S3 är båda S, SA2 är SA, VS21 är VS.
+
+    En svensk beteckning skriver systemet som bokstäver följt av ett nummer som skiljer stammarna åt. Numret
+    säger *vilken* stam, bokstäverna vilket *slags* system - och det är bokstäverna som avgör om stråket har
+    fall. Läses hela token som system hör S1 inte till självfallen, och vattengången får aldrig svara.
+    """
+    return _ORDINAL.sub("", (system or "").strip().upper())
+
+
 def is_gravity(system: str) -> bool:
-    return (system or "").strip().upper() in GRAVITY_SYSTEMS
+    return system_letters(system) in GRAVITY_SYSTEMS
 
 
 def is_circulating(system: str) -> bool:
-    return (system or "").strip().upper() in CIRCULATING_SYSTEMS
+    return system_letters(system) in CIRCULATING_SYSTEMS
 
 
 def has_own_label(system: str) -> bool:
-    return (system or "").strip().upper() in OWN_LABEL_SYSTEMS
+    return system_letters(system) in OWN_LABEL_SYSTEMS
 
 
 def _svar(v: float | None) -> str:
@@ -201,6 +215,39 @@ def choose_segment(segments: list[Segment], system: str, label_dn: int | None = 
                           considered=tuple(s.segment_id for s in kvar))
 
     return _nearest(kvar, "Varken vattengång, dimension eller läge skilde segmenten åt")
+
+
+def water_level(elevations: list[dict] | None) -> float | None:
+    """Vattengången ur ett etikettblocks höjdangivelser, i meter, eller None om bladet inte skriver den.
+
+    Bara VG är vattengång. CL är centrumhöjd och säger ingenting om fall, så den läses inte här. Skriver
+    bladet flera vattengångar i samma block säger det inte en nivå, och svaret blir None.
+    """
+    vals: set[float] = set()
+    for e in elevations or []:
+        if (e.get("tag") or "").strip().upper() not in VG_TAGS:
+            continue
+        v, unit = e.get("value"), e.get("unit")
+        if v is None:
+            continue
+        if unit == "m":
+            vals.add(float(v))
+        elif unit == "mm":
+            vals.add(float(v) / 1000.0)
+        # En siffra utan enhet är ingen nivå. Att gissa meter eller millimeter där gör en halvmeter av femtio.
+    return next(iter(vals)) if len(vals) == 1 else None
+
+
+def flows_downhill(source: float | None, arm: float | None) -> bool | None:
+    """Ligger källan uppströms armen? True när den gör det, False när armen ligger högre, None när bladet
+    inte skriver vattengång på båda sidor eller skriver samma nivå.
+
+    Detta är signal 1: på ett självfallsstråk avgör fallet riktningen, oavsett dimensioner. None betyder att
+    vattengången inte sagt något - inte att den sagt nej - och nästa signal får svara.
+    """
+    if source is None or arm is None or source == arm:
+        return None
+    return source > arm
 
 
 @dataclass

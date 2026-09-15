@@ -90,3 +90,42 @@ egen mätt grind — 1 033 m i VS-S13 och sannolikt en stor del av de 1 463 fals
 
 Det är samma fel som står som uppgift #63 och #67. Den här mätningen säger hur mycket det är värt och var det
 sitter.
+
+## Vattengången: första försöket, mätt och backat
+
+Riktningsspecifikationen säger att vattengången går före dimensionen. Den kopplades in på det ställe i ägandet
+där dimensionen redan svarar - knuten, där en stams identitet rinner ut i en arm fram till dess ritade gräns.
+
+Två fynd, i ordning.
+
+**Vattengången fanns, men hade aldrig fått svara.** Bladen skriver `VG` i etikettblocken: 71 etiketter på blad
+A, 46 på E, 8 på C. Signalen läste system som hela token - `S1`, `S3` - och `S1` finns inte bland
+självfallssystemen, som stavas `S`. Löpnumret säger *vilken* stam, bokstäverna vilket *slags* system. Rättat
+(`system_letters`) svarade vattengången 41 gånger på blad A och 30 på E.
+
+**Och svaret blev sämre.** Mätt mot referensen, blad för blad:
+
+| blad | täckning 67 → 68 | falskt 67 → 68 |
+|---|---|---|
+| A | 97,8 % → **92,1 %** | 1,2 % → **6,9 %** |
+| E | 97,3 % → **92,2 %** | 1,8 % → **6,8 %** |
+| C | 99,9 % → 99,9 % | 0,6 % → 0,6 % |
+
+Ändringen backades.
+
+**Varför den var fel, och vad det lär.** Regeln jämförde fel par. Vid knuten avgörs *sträckan fram till
+stumpens ritade gräns*. Stumpens etikett beskriver inte den sträckan - den beskriver det som ligger **bortom**
+gränsen, stigaren eller grenen som etiketten pekar på. Dess vattengång hör alltså till den andra sidan av
+gränsen. Att väga den mot stammens vattengång är att jämföra två punkter som knuten inte ordnar.
+
+Det är samma sak specifikationen själv säger med andra ord: *etiketten beskriver det som kommer efter den*. En
+signal som är riktig i sak blir fel när den läggs på fel par av segment, och det syns bara genom att mäta.
+
+Det utesluter också nästa kandidat: att låta det högst liggande stråket ta förbindelsen mellan två namngivna
+stråk. På självfall är det **grövre** röret nedströms - flödet växer neråt - så "uppströms bär vidare" är
+samma riktning som nyss förlorade metrar. Referensen säger tvärtom att det grövre bär vidare, och skälet är
+ritat: en dimensionsändring ritas som en del, och där ingen del står ritad har stråket inte bytt dimension.
+
+Kvar i trädet: `system_letters` (`S1` *är* ett självfallssystem - sant oberoende av referensen) och
+`water_level`/`flows_downhill` med sina prov, eftersom de hör till `choose_segment`, där ramen stämmer.
+Ägandeguarden och rördragningen genom `pipeline.py` är backade.

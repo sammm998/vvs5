@@ -168,3 +168,45 @@ def test_en_knut_med_ett_enda_segment_ar_inget_val():
 def test_utan_segment_ges_inget_svar_och_ingen_konfidens():
     v = choose_segment([], system="KV")
     assert v.segment_id is None and v.confidence == 0.0 and v.review
+
+
+# ---------------------------------------------------------------- systemets bokstäver, och vattengången ur bladet
+
+def test_systemets_lopnummer_hor_inte_till_vilket_slags_system_det_ar():
+    """S1 och S3 är två stammar av samma slag. Läses hela token som system hör ingen av dem till självfallen.
+
+    Det var precis så vattengången kunde stå skriven på sjuttio etiketter utan att någonsin få svara: bladet
+    skriver S1, S3, SA2 - bokstäverna säger slaget, siffran säger vilken stam.
+    """
+    from vvs_engine.pipes.direction import system_letters
+    assert system_letters("S1") == "S" and system_letters("SA2") == "SA" and system_letters("VS21") == "VS"
+    assert is_gravity("S1") and is_gravity("S3") and is_gravity("SA2")
+    assert is_circulating("VS21") and is_circulating("VP2")
+    assert has_own_label("KV1") and has_own_label("VVC3")
+    assert not is_gravity("VS21") and not is_gravity("")
+
+
+def test_vattengangen_lases_ur_bladets_egna_hojdangivelser():
+    """Bara VG är vattengång, och bara med en enhet bladet faktiskt skrivit."""
+    from vvs_engine.pipes.direction import water_level
+    assert water_level([{"tag": "VG", "value": 1.47, "unit": "m"}]) == pytest.approx(1.47)
+    assert water_level([{"tag": "VG", "value": 1470.0, "unit": "mm"}]) == pytest.approx(1.47)
+    assert water_level([{"tag": "CL", "value": 3.4, "unit": "m"}]) is None
+    assert water_level([{"tag": "VG", "value": 150.0, "unit": None}]) is None    # varken meter eller millimeter
+    assert water_level([]) is None and water_level(None) is None
+
+
+def test_tva_olika_vattengangar_i_samma_block_ar_ingen_niva():
+    """Skriver blocket två fall säger det inte ett, och att välja ett av dem vore att hitta på ritningen."""
+    from vvs_engine.pipes.direction import water_level
+    assert water_level([{"tag": "VG", "value": 1.47, "unit": "m"},
+                        {"tag": "VG", "value": 1.31, "unit": "m"}]) is None
+
+
+def test_fallet_sager_vad_som_ar_uppstroms_och_tiger_nar_bladet_tiger():
+    """True när källan ligger högre, False när armen gör det, None när bladet inte skriver båda."""
+    from vvs_engine.pipes.direction import flows_downhill
+    assert flows_downhill(1.60, 1.20) is True
+    assert flows_downhill(1.20, 1.60) is False
+    assert flows_downhill(1.40, 1.40) is None       # samma nivå säger ingen riktning
+    assert flows_downhill(1.40, None) is None and flows_downhill(None, 1.40) is None
