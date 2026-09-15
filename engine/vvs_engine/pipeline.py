@@ -154,6 +154,7 @@ def label_reach_fails(families, anchors, pipe_labels: set[str]) -> bool:
 
 
 BLOCK_INK_SHARE = 0.6       # så stor del av en pennas streck måste börja eller sluta vid en beteckningsruta
+WRITING_PEN_MIN_STROKES = 8  # så många streck måste en penna ha innan "varenda ett" säger något om den
 
 
 def _runs_from_a_block(pth, boxes: list[tuple[float, float, float, float]], tol: float = 14.0) -> bool:
@@ -164,6 +165,47 @@ def _runs_from_a_block(pth, boxes: list[tuple[float, float, float, float]], tol:
                 if x0 - tol <= x <= x1 + tol and y0 - tol <= y <= y1 + tol:
                     return True
     return False
+
+
+def _block_boxes(blocks) -> list[tuple[float, float, float, float]]:
+    """Rutorna bladet skriver sina beteckningar i."""
+    return [(min(r.line.bbox[0] for r in b.rows), min(r.line.bbox[1] for r in b.rows),
+             max(r.line.bbox[2] for r in b.rows), max(r.line.bbox[3] for r in b.rows))
+            for b in (blocks or []) if b.rows]
+
+
+def _writing_pens(page: RawPage, families, blocks) -> set[str]:
+    """Pennor som skriver i stället för att rita: varenda streck börjar eller slutar vid en beteckningsruta.
+
+    En hänvisningslinje går från etiketten till röret. En ledning går genom byggnaden. På ett tätt blad passerar
+    en ledning ofta nära en etikettruta - mätt på de blad som tappar mest ligger mellan 46 och 82 procent av
+    rörpennornas streck an mot en ruta - men aldrig alla. Pennorna där *varenda* streck gör det bar noll
+    bekräftade meter: de drar bladets hänvisningslinjer, och ett lagernamn som liknar rörlagrens hade släppt in
+    dem som rörgeometri ändå. Då står tvåhundrafemtio meter hänvisningslinje i läsningen som "ritad som rör",
+    och den som granskar letar efter ett tappat rör som aldrig fanns.
+
+    Villkoret har ingen tröskel att ställa in: antingen finns ett streck som är fritt från bladets etiketter
+    eller så finns det inte. Bara kravet att pennan ritat tillräckligt många streck för att "varenda ett" ska
+    betyda något, så att en penna med två streck inte döms av en slump.
+    """
+    boxes = _block_boxes(blocks)
+    if not boxes:
+        return set()
+    # Glyfstrecken räknas med, inte bort. En penna vars bläck är bokstäver skriver om möjligt ännu tydligare än
+    # en som drar hänvisningslinjer, och en ritpenna har fria streck hur som helst.
+    n: Counter = Counter()
+    free: Counter = Counter()
+    for pth in page.paths:
+        if pth.kind != "s":
+            continue
+        fk = stroke_family(pth.layer, pth.width, pth.color)
+        if fk not in families:
+            continue
+        n[fk] += 1
+        if not _runs_from_a_block(pth, boxes):
+            free[fk] += 1
+    floor = _R("pipeline.WRITING_PEN_MIN_STROKES", WRITING_PEN_MIN_STROKES)
+    return {fk for fk in families if n[fk] >= floor and free[fk] == 0}
 
 
 def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_layers: dict, glyph_pids: set,
@@ -1500,6 +1542,12 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     t0 = _t(timings, "leader_attachment_ms", t0)
     if progress:
         progress("BUILDING_TOPOLOGY")
+    # En penna vars varenda streck börjar eller slutar vid en beteckningsruta skriver, den ritar inte - och en
+    # skrivpenna är inte rörgeometri, hur mycket dess lagernamn än liknar rörlagrens.
+    for fk in sorted(_writing_pens(page, set(pipe_families), blocks)):
+        pipe_families.pop(fk, None)
+        graphs.pop(fk, None)
+        contact_stats.setdefault("writing_pens_not_taken_as_pipe", []).append(fk)
     graphs, pipe_families = _split_at_tick_contacts(page, graphs, pipe_families, anchors)
     prims = {fk: graphs[fk].prims for fk in graphs}
     # a family taken after the passes ran is not a declined one, whatever the pass that looked at it decided

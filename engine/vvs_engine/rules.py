@@ -134,6 +134,11 @@ RULES: tuple[Rule, ...] = (
          "En penna utan lagernamn är hänvisningspennan när hänvisningslinjerna är den här andelen av allt den "
          "ritar.",
          "andel", 0.5, 0.0, 1.0, "layers", True),
+    Rule("pipeline.WRITING_PEN_MIN_STROKES", G_LEADER, "Hur många streck en skrivpenna måste ha",
+         "En penna vars varenda streck börjar eller slutar vid en beteckningsruta skriver i stället för att "
+         "rita, och tas inte som rör. Den måste ha ritat så här många streck innan \"varenda ett\" säger "
+         "något om den.",
+         "antal", 8, 2, 50, "layers", True),
     Rule("pipeline.CLOSE_ON_OWNED_TOL", G_LEADER, "Etiketten står på sin egen sträcka",
          "Hur nära en redan namngiven sträcka en etikettände får sluta för att räknas som att den bekräftar "
          "samma sträcka i stället för att vara olöst.",
