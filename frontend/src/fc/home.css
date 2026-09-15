@@ -52,13 +52,44 @@
 
 /* ---------------------------------------------------------------- kapitelskylten */
 .fc-chap {
-  padding: clamp(80px, 16vh, 200px) var(--fc-gut) clamp(40px, 8vh, 90px);
-  display: grid; gap: 18px; max-width: var(--fc-col); margin: 0 auto;
+  padding: clamp(56px, 11vh, 130px) var(--fc-gut) clamp(20px, 4vh, 48px);
+  display: grid; gap: 14px; max-width: var(--fc-col); margin: 0 auto;
 }
-.fc-chap-rule { height: 1px; background: var(--fc-line); margin-bottom: clamp(20px, 5vh, 54px); }
-.fc-chap-t { margin: 0; max-width: 16ch; }
-.fc-chap-s { margin: 0; max-width: 54ch; justify-self: end; }
-@media (max-width: 760px) { .fc-chap-s { justify-self: start; } }
+.fc-chap-rule { height: 1px; background: var(--fc-line); margin-bottom: clamp(14px, 3vh, 34px); }
+/* Rubrik och ingress bredvid varandra. Under varandra blev sidan en trappa av tomma fält. */
+.fc-chap-in {
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(20px, 5vw, 80px); align-items: end;
+}
+.fc-chap-t { margin: 0; max-width: 15ch; }
+.fc-chap-s { margin: 0; max-width: 48ch; padding-bottom: 0.6em; }
+@media (max-width: 860px) { .fc-chap-in { grid-template-columns: minmax(0, 1fr); align-items: start; } }
+
+/* ---------------------------------------------------------------- bladet som reser sig */
+.fc-rise { height: 340vh; position: relative; }
+.fc-rise-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.fc-3d { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fc-rise-3d { z-index: 0; }
+.fc-rise-over {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  display: grid; grid-template-rows: auto 1fr auto;
+  padding: clamp(80px, 13vh, 150px) var(--fc-gut) clamp(28px, 5vh, 60px);
+}
+.fc-rise-t { max-width: 22ch; }
+.fc-rise-t .fc-label { max-width: none; white-space: nowrap; }
+.fc-rise-t h2 { margin: 8px 0 0; }
+/* Texten står ovanpå en modell som rör sig. En svag skugga bakom orden gör den läsbar mot både vägg och golv
+   utan att lägga en platta över bilden. */
+.fc-rise-t h2, .fc-rise-t p { text-shadow: 0 2px 24px rgba(8, 8, 8, 0.85); }
+.fc-rise-meta {
+  grid-row: 3; justify-self: end; display: grid; gap: 8px; justify-items: end;
+  background: rgba(8, 8, 8, 0.62); backdrop-filter: blur(10px);
+  border: 1px solid var(--fc-line); border-radius: var(--fc-r); padding: 14px 18px;
+}
+@media (max-width: 760px) {
+  .fc-rise { height: 280vh; }
+  .fc-rise-meta { justify-self: stretch; justify-items: start; }
+}
 
 /* ---------------------------------------------------------------- påståendet */
 .fc-state-in {

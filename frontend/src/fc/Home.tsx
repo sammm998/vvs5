@@ -4,6 +4,7 @@ import gsap from "gsap";
 import Nav, { Logo } from "./Nav";
 import Preloader from "./Preloader";
 import Blueprint, { RUNS, SYS } from "./Blueprint";
+import Scene3D from "./Scene3D";
 import {
   ChapterIndicator, CountUp, CustomCursor, HorizontalGallery, LineReveal, MagneticButton, PinnedSection,
   RevealMedia, ScrollProgress, TechnicalLabel, WordReveal,
@@ -42,10 +43,24 @@ function Hero() {
 
     if (still) return;
 
-    // Öppningen: raderna reser sig, ritningen öppnas underifrån, etiketterna tänds en efter en.
+    // Öppningen: raderna reser sig, bladet ritar sig själv, etiketterna tänds en efter en.
+    //
+    // Rören ritas med sin egen streckning i stället för att tonas in. Det är skillnaden mellan en bild som
+    // dyker upp och en ritning som blir till, och det är det senare sidan handlar om.
+    const runs = root.querySelectorAll<SVGPathElement>(".fc-hero-plan .bp-run");
+    runs.forEach((r) => {
+      const len = r.getTotalLength();
+      r.style.strokeDasharray = String(len);
+      r.style.strokeDashoffset = String(len);
+    });
+    const leaders = root.querySelectorAll(".fc-hero-plan .bp-leader");
+    gsap.set(leaders, { opacity: 0 });
+
     const tl = gsap.timeline({ delay: 0.15 });
     tl.from(head, { yPercent: 112, duration: 1.15, ease: EASE_REVEAL, stagger: 0.075 })
       .from(plan, { clipPath: "inset(100% 0% 0% 0%)", duration: 1.5, ease: EASE_REVEAL }, 0.25)
+      .to(runs, { strokeDashoffset: 0, duration: 2.1, ease: "power2.inOut", stagger: 0.14 }, 0.55)
+      .to(leaders, { opacity: 1, duration: 0.5, stagger: 0.1 }, 1.5)
       .from(meta, { opacity: 0, y: 12, duration: 0.6, stagger: 0.07 }, 0.75)
       .from(foot, { opacity: 0, y: 16, duration: 0.7 }, 0.95);
 
@@ -93,13 +108,47 @@ function Hero() {
 
 /* ---------------------------------------------------------------- kapitelskylt */
 
+/* Kapitelskylten.
+ *
+ * Den låg förut som en egen skärm med luft över och under, och gjorde sidan till en trappa: en skylt, ett
+ * tomt fält, en scen, ett tomt fält. Nu står den tätt mot det den introducerar - rubrik och ingress bredvid
+ * varandra i stället för under - och scenen börjar direkt efter. */
 function ChapterOpener({ n, title, sub, id }: { n: string; title: string; sub: string; id?: string }) {
   return (
     <section className="fc-chap" id={id}>
       <div className="fc-chap-rule" />
       <p className="fc-label">Chapter {n}</p>
-      <LineReveal as="h2" className="fc-display fc-display-lg fc-chap-t" text={title} />
-      <p className="fc-body fc-chap-s">{sub}</p>
+      <div className="fc-chap-in">
+        <LineReveal as="h2" className="fc-display fc-display-lg fc-chap-t" text={title} />
+        <p className="fc-body fc-chap-s">{sub}</p>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------------------------------------------- bladet som reser sig */
+
+function RiseScene() {
+  return (
+    <section className="fc-rise" id="kap-1b">
+      <div className="fc-rise-pin">
+        <Scene3D className="fc-rise-3d" />
+        <div className="fc-rise-over">
+          <div className="fc-rise-t">
+            <p className="fc-label">Samma geometri, två representationer</p>
+            <h2 className="fc-display fc-display-lg">
+              ETT PLATT BLAD<br /><i className="fc-italic">blir en byggnad</i>
+            </h2>
+          </div>
+          <div className="fc-rise-meta">
+            <TechnicalLabel k="Blad" v="V-50-1-A0121" />
+            <TechnicalLabel k="Skala" v="1:50" />
+            <TechnicalLabel k="System" v="KV / VV / VVC / S / VS" />
+            <TechnicalLabel k="Våningshöjd" v="2,60 m" />
+            <TechnicalLabel k="Läst" v="Ur bladets bläck" on />
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
@@ -395,6 +444,7 @@ export default function Home() {
       <Hero />
       <ChapterOpener n="I" title="The future of calculation"
         sub="FutureCalc läser en VVS-ritning som en mängdare gör det: via beteckningarna och deras hänvisningslinjer, aldrig via närmaste streck. Det som inte går att avgöra får heta tvetydigt." />
+      <RiseScene />
       <StickyStatement />
 
       <ChapterOpener n="II" id="kap-2" title="From drawing to quantity"

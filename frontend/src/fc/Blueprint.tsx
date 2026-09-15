@@ -21,13 +21,26 @@ export const SYS = {
   VS: "#b48cff",
 };
 
+/* Planen som punkter, en gång.
+ *
+ * Både bladet och byggnaden ritas ur samma tal. Det är inte en förenkling utan hela poängen: det som visas i
+ * 3D är samma geometri som ligger i 2D, och en ändring i den ena kan därför inte glida isär från den andra.
+ * Punkterna är bladets koordinater; 3D-scenen skalar om dem till meter. */
+export type Pt = [number, number];
+
+export const WALL_PTS: Pt[][] = [
+  [[120, 120], [1080, 120], [1080, 640], [120, 640], [120, 120]],
+  [[470, 140], [470, 430]], [[470, 510], [470, 620]],
+  [[740, 140], [740, 300]], [[740, 380], [740, 620]],
+  [[140, 430], [470, 430]],
+];
+
+const d = (pts: Pt[]) => "M" + pts.map(([x, y]) => `${x} ${y}`).join(" L");
+
 /* Väggarna. En yttervägg i dubbel linje, innerväggar i enkel, och tre rum som hänger ihop. */
 const WALLS = [
-  "M120 120 H1080 V640 H120 Z",
+  ...WALL_PTS.map(d),
   "M140 140 H1060 V620 H140 Z",
-  "M470 140 V430", "M470 510 V620",
-  "M740 140 V300", "M740 380 V620",
-  "M140 430 H470",
 ];
 
 /** Måttlinje med pilar i båda ändar och text i mitten. */
@@ -61,13 +74,21 @@ export function Leader(
 }
 
 /* Rörstråken. Varje stråk har id så att en scen kan rita det, tända det eller mäta det. */
-export const RUNS: { id: string; d: string; sys: keyof typeof SYS; dn: number; m: number }[] = [
-  { id: "kv-1", sys: "KV", dn: 25, m: 12.48, d: "M170 580 H400 V300 H660 V210" },
-  { id: "vv-1", sys: "VV", dn: 20, m: 10.9, d: "M188 580 H418 V318 H660 V232" },
-  { id: "vvc-1", sys: "VVC", dn: 15, m: 9.8, d: "M206 580 H436 V336 H660 V254" },
-  { id: "s-1", sys: "S", dn: 110, m: 16.2, d: "M300 640 V470 H830 V300 H1010" },
-  { id: "vs-1", sys: "VS", dn: 32, m: 14.4, d: "M900 620 V360 H540 V180" },
+export const RUN_PTS: { id: string; sys: keyof typeof SYS; dn: number; label: string; pts: Pt[] }[] = [
+  { id: "kv-1", sys: "KV", dn: 25, label: "KV1-X31-25", pts: [[170, 580], [400, 580], [400, 300], [660, 300], [660, 210]] },
+  { id: "vv-1", sys: "VV", dn: 20, label: "VV1-X31-20", pts: [[188, 580], [418, 580], [418, 318], [660, 318], [660, 232]] },
+  { id: "vvc-1", sys: "VVC", dn: 15, label: "VVC1-X31-15", pts: [[206, 580], [436, 580], [436, 336], [660, 336], [660, 254]] },
+  { id: "s-1", sys: "S", dn: 110, label: "S1-P5-110", pts: [[300, 640], [300, 470], [830, 470], [830, 300], [1010, 300]] },
+  { id: "vs-1", sys: "VS", dn: 32, label: "VS1-S13-32", pts: [[900, 620], [900, 360], [540, 360], [540, 180]] },
 ];
+
+/** Metrarna räknas ur punkterna, inte ur ett tal någon skrivit. Skalan är bladets: 1:50 på 1200 enheter. */
+const M_PER_UNIT = 0.0265;
+const len = (pts: Pt[]) =>
+  pts.slice(1).reduce((a, p, i) => a + Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1]), 0) * M_PER_UNIT;
+
+export const RUNS = RUN_PTS.map((r) => ({ ...r, d: d(r.pts), m: Math.round(len(r.pts) * 100) / 100 }));
+export const PLAN_SCALE = M_PER_UNIT;
 
 export default function Blueprint(
   { className = "", labels = true, dims = true }: { className?: string; labels?: boolean; dims?: boolean },

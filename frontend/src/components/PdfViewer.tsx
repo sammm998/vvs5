@@ -149,6 +149,45 @@ export interface ViewerHandle {
   zoomTo(bbox: number[]): void;
 }
 
+/* Vad läsningen faktiskt tvekar om.
+ *
+ * "Tvetydig — kunde tillhöra S1-P2|DN75" är fel sagt när listan har ett enda namn i sig. Läsningen vet vilken
+ * beteckning det gäller; det den inte vet är om beteckningen når ända hit. Det är två olika sorters ovisshet
+ * och de ska heta olika saker, för den ena ser ut som tvekan inför ett uppenbart rör och den andra är en
+ * verklig konflikt mellan två system.
+ *
+ * Skälet skrivs ut på svenska. En kod som AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS säger ingenting till den
+ * som ska avgöra om läsningen har rätt. */
+const AMBIGUOUS_WHY: Record<string, string> = {
+  AMBIGUOUS_BRANCH:
+    "Här grenar ledningen av utan att grenen har en egen beteckning, och inget säger att grenen är samma rör.",
+  UNLABELLED_BRANCH_WITHOUT_END_EVIDENCE:
+    "Grenen saknar både egen beteckning och apparat i änden, så ingenting på bladet visar vad den är.",
+  AMBIGUOUS_FLOW_BEYOND_THE_LABELLED_RUNS:
+    "Beteckningen sitter långt härifrån och sträckan fortsätter mycket längre än vad etiketterna avgränsar.",
+  SYSTEM_CONFLICT: "Två system gör anspråk på samma streck.",
+  AMBIGUOUS_DN_BOUNDARY: "Dimensionen byter här utan att någon reducering är ritad.",
+  AMBIGUOUS_SLIVER_PAIR_READS_AS_A_DRAWN_OUTLINE:
+    "De två strecken ligger så tätt att de lika gärna är konturen av ett föremål som två rör.",
+};
+
+function ambiguousSaid(g: { candidates?: string[]; reason?: string }): { title: string; detail: string } {
+  const cands = g.candidates || [];
+  const why = AMBIGUOUS_WHY[g.reason || ""] || "Ritningen avgör det inte.";
+  if (cands.length === 1) {
+    return {
+      title: "Obekräftad utbredning",
+      detail: `Beteckningen är känd — ${cands[0]} — men inte att den når hit. ${why} `
+        + "Sträckan mäts därför inte. Rätta den på bladet om du ser att den hör dit.",
+    };
+  }
+  return {
+    title: "Tvetydig beteckning",
+    detail: `Sträckan kunde tillhöra ${cands.join(" eller ") || "mer än en beteckning"}. ${why} `
+      + "Ritningen avgör det inte, så sträckan mäts inte.",
+  };
+}
+
 const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props, ref) {
   const container = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -644,11 +683,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
       });
     }
     for (const g of props.ambiguous) {
-      take(segDist(pt, [g.x0, g.y0], [g.x1, g.y1]), {
-        at: pt, kind: "tvetydig",
-        title: "Tvetydig",
-        detail: `Kunde tillhöra ${(g.candidates || []).join(" eller ") || "mer än en beteckning"}. Ritningen avgör det inte, så sträckan mäts inte. Skäl: ${g.reason || "okänt"}.`,
-      });
+      take(segDist(pt, [g.x0, g.y0], [g.x1, g.y1]), { at: pt, kind: "tvetydig", ...ambiguousSaid(g) });
     }
     for (const g of props.claimed ?? []) {
       take(segDist(pt, [g.x0, g.y0], [g.x1, g.y1]), {
