@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { buildModel, type BuildingModel, type ModelPipe, type ModelWall } from "../three/model";
+import {
+  bandOf, couplingMaterial, jacketMaterial, jacketThickness, MEDIUM_TEXT, mediumOf, pipeCurve,
+  pipeMaterial, readableRadius,
+} from "../three/pipeArt";
 import Drawing3DControls, { type ViewName } from "./Drawing3DControls";
 
 /* Ritningen som byggnad.
@@ -25,6 +30,11 @@ import Drawing3DControls, { type ViewName } from "./Drawing3DControls";
  *   * **Man kan gå in i den.** Gå-läget sätter kameran i ögonhöjd och låter tangenterna föra den genom
  *     byggnaden. Det finns ingen krockberäkning - man går rakt genom en vägg - för en plan ritad i ett plan
  *     har inga dörrar att hitta, och att fastna i en vägg vore sämre än att gå igenom den.
+ *
+ * Och två som gör den trovärdig i stället för bara begriplig. Rören går raka och böjer i hörnen i stället för
+ * att slingra sig genom punkterna - se ../three/pipeArt - och de får den yta materialet har: koppar blankt,
+ * plast matt, isolering med mantel. Ljuset kommer från en omgivning i stället för bara från lampor, vilket är
+ * vad som gör att en metall ser ut som metall; utan speglingar är blankt och matt samma grå.
  */
 
 type Props = {
@@ -33,7 +43,27 @@ type Props = {
   onClose: () => void;
 };
 
-const SKY = "#ecebe5";
+const SKY = "#dcd8cf";          // horisonten, och dimmans färg: allt som försvinner bort ska försvinna i den
+
+/* Himlen som en toning. En platt färg bakom en modell ger ingen riktning åt ljuset och ingen horisont att
+ * ställa huset mot; en toning från ljust uppe till dovare nere gör rummet till ett rum. Den ritas en gång i
+ * en liten duk och läggs som bakgrund. */
+function skyTexture(): THREE.Texture {
+  const c = document.createElement("canvas");
+  c.width = 4; c.height = 256;
+  const g = c.getContext("2d")!;
+  const grad = g.createLinearGradient(0, 0, 0, 256);
+  grad.addColorStop(0, "#f4f2ec");
+  grad.addColorStop(0.5, "#e4e1d8");
+  grad.addColorStop(0.62, SKY);
+  grad.addColorStop(1, "#b9b2a5");
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 4, 256);
+  const tex = new THREE.CanvasTexture(c);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
 const REDUCED = () => typeof window !== "undefined"
   && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
@@ -96,6 +126,12 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
   const [xray, setXray] = useState(false);
   const [walking, setWalking] = useState(false);
 
+  // samma ordning som scenen lägger banden i, så panelen kan säga vilken höjd ett rör faktiskt ritades på
+  const systems = useMemo(
+    () => [...new Set(model.pipes.map((p) => p.system).filter(Boolean))].sort(),
+    [model],
+  );
+
   const qtyByDesignation = useMemo(() => {
     const m = new Map<string, any>();
     for (const q of result?.quantities ?? []) m.set(q.designation, q);
@@ -113,8 +149,9 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
     // Ett hus i snitt läses som arkitekten ritar det: varm ljus grund, vita väggar, mjuk skugga. Den mörka
     // grunden gjorde modellen till en teknisk figur; den ljusa gör den till en byggnad, och rören syns bättre
     // mot den eftersom deras systemfärger är det enda mättade i bilden.
-    scene.background = new THREE.Color(SKY);
-    scene.fog = new THREE.Fog(SKY, span * 2.2, span * 6.0);
+    const sky = skyTexture();
+    scene.background = sky;
+    scene.fog = new THREE.Fog(SKY, span * 1.9, span * 5.0);
 
     const camera = new THREE.PerspectiveCamera(46, 1, 0.08, Math.max(400, span * 8));
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -122,20 +159,33 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.06;
+    renderer.toneMappingExposure = 0.98;
     el.appendChild(renderer.domElement);
+
+    // Ljuset från rummet, inte bara från lamporna. En metall syns som metall först när det finns något att
+    // spegla; med bara riktade lampor blir blankt och matt samma grå, och alla rör ser ut att vara av samma
+    // material. Omgivningen är räknad en gång ur en enkel rumsscen och kostar inget per bildruta.
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const env = pmrem.fromScene(new RoomEnvironment(), 0.04);
+    pmrem.dispose();
     const dom = renderer.domElement;
     dom.tabIndex = 0;
 
-    const hemi = new THREE.HemisphereLight("#ffffff", "#ded6c8", 2.15);
+    scene.environment = env.texture;
+    scene.environmentIntensity = 0.85;
+
+    const hemi = new THREE.HemisphereLight("#ffffff", "#ded6c8", 1.0);
     scene.add(hemi);
-    const key = new THREE.DirectionalLight("#fffaf1", 2.5);
+    const key = new THREE.DirectionalLight("#fffaf1", 2.7);
     key.position.set(span * 0.5, span * 0.9, span * 0.4);
     key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048);
     key.shadow.camera.near = 0.5;
     key.shadow.camera.far = span * 4;
-    const s = span * 0.8;
+    key.shadow.radius = 2.4;
+    // Skuggkameran spänns om huset och inte om hela marken. Samma 2048 punkter över en fjärdedel så stor yta
+    // är fyra gånger så fin skugga, och det är skuggans skärpa som avgör om ett rör ser ut att ligga på något.
+    const s = Math.max(2, Math.hypot(model.size.width, model.size.depth) * 0.62);
     key.shadow.camera.left = -s; key.shadow.camera.right = s;
     key.shadow.camera.top = s; key.shadow.camera.bottom = -s;
     key.shadow.bias = -0.0008;
@@ -144,25 +194,44 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
     fill.position.set(-span * 0.6, span * 0.4, -span * 0.5);
     scene.add(fill);
 
+    // Marken mörkare än huset. Var det förra felet att allt var nästan vitt - himmel, mark, platta och vägg
+    // inom några procent av varandra - så fanns ingen kontrast att läsa formen ur, och modellen såg ut som en
+    // skiss i dimma. Nu står en ljus byggnad på ett dovare underlag, vilket är hur en modell på ett bord ser ut.
     const ground = new THREE.Mesh(
       new THREE.PlaneGeometry(span * 6, span * 6),
-      new THREE.MeshStandardMaterial({ color: "#e3dfd6", roughness: 0.98, metalness: 0.0 }),
+      new THREE.MeshStandardMaterial({ color: "#aca595", roughness: 1.0, metalness: 0.0 }),
     );
     ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -0.02;
+    ground.position.y = -0.03;
     ground.receiveShadow = true;
     scene.add(ground);
 
+    // Rutnätet ger måttet. Utan det är en modell lika stor som betraktaren tror; med en meterruta under sig
+    // syns det direkt om ett rum är tre meter eller trettio, och det är halva skillnaden mot en teknisk figur.
+    const grid = new THREE.GridHelper(Math.ceil(span * 3), Math.ceil(span * 3), 0x8d8779, 0x9f9a8d);
+    (grid.material as THREE.Material).opacity = 0.32;
+    (grid.material as THREE.Material).transparent = true;
+    grid.position.y = -0.024;
+    scene.add(grid);
+
     const slab = new THREE.Mesh(
-      new THREE.BoxGeometry(Math.max(model.size.width, 1) * 1.04, 0.12, Math.max(model.size.depth, 1) * 1.04),
-      new THREE.MeshStandardMaterial({ color: "#f2efe9", roughness: 0.92, metalness: 0.0 }),
+      new THREE.BoxGeometry(Math.max(model.size.width, 1) * 1.04, 0.14, Math.max(model.size.depth, 1) * 1.04),
+      new THREE.MeshStandardMaterial({ color: "#d7d1c4", roughness: 0.94, metalness: 0.0 }),
     );
-    slab.position.y = -0.06;
+    slab.position.y = -0.07;
     slab.receiveShadow = true;
     scene.add(slab);
 
     // ---- väggar ----------------------------------------------------------------------------------------
-    const wallMat = new THREE.MeshStandardMaterial({ color: "#d6dae0", roughness: 0.78, metalness: 0.04 });
+    // Väggen är puts och inte plast: helt matt, utan metall, med en aning sken som en målad yta har. Den
+    // gamla var blank nog att spegla, och en vägg som speglar drar till sig blicken från rören.
+    const wallMat = new THREE.MeshPhysicalMaterial({
+      color: "#f8f6f1", roughness: 0.94, metalness: 0.0, sheen: 0.25, sheenRoughness: 0.9,
+    });
+    // Väggens översida är ett snitt - planen är ritad genom huset - och ett snitt ritas mörkare än ytan runt
+    // om. Den läggs som en egen tunn skiva ovanpå väggarna i stället för som en materialgrupp, eftersom en
+    // instansmängd med flera material är svårare att lita på än en till instansmängd.
+    const capMat = new THREE.MeshPhysicalMaterial({ color: "#9b9488", roughness: 0.98, metalness: 0.0 });
     const wallGroup = new THREE.Group();
     const wallGeo = new THREE.BoxGeometry(1, 1, 1);
     const walls = new THREE.InstancedMesh(wallGeo, wallMat, Math.max(1, model.walls.length));
@@ -179,45 +248,133 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
     });
     walls.instanceMatrix.needsUpdate = true;
     wallGroup.add(walls);
+
+    const caps = new THREE.InstancedMesh(wallGeo, capMat, Math.max(1, model.walls.length));
+    model.walls.forEach((w, i) => {
+      const dx = w.b[0] - w.a[0], dz = w.b[1] - w.a[1];
+      const len = Math.hypot(dx, dz) || 0.01;
+      dummy.position.set((w.a[0] + w.b[0]) / 2, w.height + 0.012, (w.a[1] + w.b[1]) / 2);
+      dummy.rotation.set(0, Math.atan2(-dz, dx), 0);
+      dummy.scale.set(len * 1.004, 0.024, Math.max(0.05, w.thickness) * 1.004);
+      dummy.updateMatrix();
+      caps.setMatrixAt(i, dummy.matrix);
+    });
+    caps.instanceMatrix.needsUpdate = true;
+    wallGroup.add(caps);
     scene.add(wallGroup);
 
     // ---- rör -------------------------------------------------------------------------------------------
     // Ett DN16-rör är åtta millimeter i radie. På ett trettio meter brett hus är det ett hårstrå som försvinner
-    // mot en vägg, så det ritas med en minsta grovlek som går att se och att peka på. Måttet i panelen är
-    // ritningens; grovleken på skärmen är läsbarhet, och panelen säger det.
-    const minR = Math.max(0.018, span * 0.0011);
+    // mot en vägg, så det som är för tunt trycks upp mot en minsta grovlek - men ihoptryckt och inte avklippt,
+    // så att DN20 fortfarande är tunnare än DN110. Måttet i panelen är ritningens; grovleken på skärmen är
+    // läsbarhet, och panelen säger det.
+    const minR = Math.max(0.024, span * 0.0022);
+    // Bladet är en plan och säger ingenting om höjd. Lades alla rör i samma plan lade sig korsande rör i
+    // varandra och bilden blev en matta; systemen läggs därför i band, i bokstavsordning så att samma ritning
+    // alltid ger samma bild. Det är en läsbarhetsordning och ingen mätning, och panelen säger det rakt ut.
+    const systems = [...new Set(model.pipes.map((p) => p.system).filter(Boolean))].sort();
     const pipeGroup = new THREE.Group();
     const labelGroup = new THREE.Group();
-    const height = model.floorHeight * 0.82;
-    const longest = new Map<string, { pipe: ModelPipe; at: [number, number] }>();
+    const bandFor = (p: ModelPipe) => bandOf(p.system, systems, model.floorHeight);
+    const sleeveGeo = new THREE.CylinderGeometry(1, 1, 1, 14);
+    const longest = new Map<string, { pipe: ModelPipe; at: [number, number]; y: number }>();
     model.pipes.forEach((p) => {
-      const pts = p.path.map(([x, z]) => new THREE.Vector3(x, height, z));
-      if (pts.length < 2) return;
-      const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.02);
-      const tubular = Math.min(600, Math.max(8, Math.round(p.meters * 3)));
-      const geo = new THREE.TubeGeometry(curve, tubular, Math.max(minR, p.radius), 10, false);
-      const mat = new THREE.MeshStandardMaterial({ color: p.color, roughness: 0.35, metalness: 0.45 });
+      if (p.path.length < 2) return;
+      const y = bandFor(p);
+      const pts = p.path.map(([x, z]) => new THREE.Vector3(x, y, z));
+      const r = readableRadius(p.radius, minR);
+      const medium = mediumOf(p.system);
+      // Böjradien på ett riktigt rör är drygt en diameter. Den klipps ändå mot halva den kortaste sträckan
+      // den ligger emellan, så två hörn nära varandra aldrig äter upp sträckan mellan sig.
+      const { curve, bends } = pipeCurve(pts, Math.max(r * 2.6, 0.1));
+      if (!curve.curves.length) return;
+      const segs = Math.min(700, Math.max(10, Math.round(p.meters * 4) + bends * 8));
+      const geo = new THREE.TubeGeometry(curve, segs, r, medium === "plast" ? 12 : 16, false);
+      const mat = pipeMaterial(p.color, medium, !!p.inWall);
       const mesh = new THREE.Mesh(geo, mat);
       mesh.castShadow = true;
       mesh.userData.pipe = p;
       pipeGroup.add(mesh);
-      // stigare: ett lodrätt rör där läsningen räknat en
+
+      // Isoleringen utanpå ett varmt rör: en matt mantel, grövre än röret. Ett isolerat rör är märkbart
+      // tjockare än sitt eget mått, och en modell som ritar det lika tunt som ett kallvattenrör ljuger om
+      // hur trångt det är där uppe.
+      if (medium === "isolerat" && !p.inWall) {
+        const jr = r + jacketThickness(r);
+        const jacket = new THREE.Mesh(new THREE.TubeGeometry(curve, segs, jr, 14, false), jacketMaterial(p.color));
+        jacket.castShadow = true;
+        jacket.userData.pipe = p;
+        pipeGroup.add(jacket);
+        // Manteln är ljus, och under den försvinner beteckningens färg - och färgen är det som säger vilket rör
+        // man ser. Ett isolerat rör märks i verkligheten med tejp med jämna mellanrum, och samma band gör här
+        // båda sakerna: det ser ut som ett isolerat rör, och röret behåller sin identitet.
+        const total = curve.getLength();
+        const n = Math.min(40, Math.max(1, Math.floor(total / 1.6)));
+        if (n >= 1) {
+          const bands = new THREE.InstancedMesh(sleeveGeo, new THREE.MeshPhysicalMaterial({
+            color: p.color, roughness: 0.55, metalness: 0.0,
+          }), n);
+          const d = new THREE.Object3D();
+          const up = new THREE.Vector3(0, 1, 0);
+          for (let i = 0; i < n; i++) {
+            const t = (i + 0.5) / n;
+            d.position.copy(curve.getPoint(t));
+            d.quaternion.setFromUnitVectors(up, curve.getTangent(t).normalize());
+            d.scale.set(jr * 1.03, Math.min(0.13, jr * 1.7), jr * 1.03);
+            d.updateMatrix();
+            bands.setMatrixAt(i, d.matrix);
+          }
+          bands.userData.pipe = p;
+          pipeGroup.add(bands);
+        }
+      }
+
+      // Kopplingarna i böjarna: korta hylsor, något grövre än röret. Det är de som gör ett rör till rör och
+      // inte till en slang, och de sitter där böjen börjar och slutar - alltså där de sitter i verkligheten.
+      if (!p.inWall && bends > 0 && bends <= 80) {
+        const sleeves = new THREE.InstancedMesh(sleeveGeo, couplingMaterial(p.color, medium), bends * 2);
+        const d = new THREE.Object3D();
+        const up = new THREE.Vector3(0, 1, 0);
+        let n = 0;
+        for (const c of curve.curves) {
+          if (!(c instanceof THREE.QuadraticBezierCurve3)) continue;
+          for (const t of [0, 1]) {
+            d.position.copy(c.getPoint(t));
+            d.quaternion.setFromUnitVectors(up, c.getTangent(t).normalize());
+            d.scale.set(r * 1.3, Math.max(r * 2.4, 0.03), r * 1.3);
+            d.updateMatrix();
+            sleeves.setMatrixAt(n++, d.matrix);
+          }
+        }
+        sleeves.count = n;
+        sleeves.castShadow = true;
+        sleeves.userData.pipe = p;
+        pipeGroup.add(sleeves);
+      }
+
+      // Stigare: ett lodrätt rör där läsningen räknat en, med en krage i bjälklaget. Röret går genom golvet
+      // och slutar inte vid det - det är skillnaden mellan ett rör som går vidare och ett som är kapat.
       if (p.risers > 0) {
-        const at = p.path[0];
-        const riser = new THREE.Mesh(
-          new THREE.CylinderGeometry(Math.max(minR, p.radius), Math.max(minR, p.radius), model.floorHeight, 12),
-          mat,
-        );
-        riser.position.set(at[0], model.floorHeight / 2, at[1]);
+        const tall = model.floorHeight + 0.34;
+        const riser = new THREE.Mesh(new THREE.CylinderGeometry(r, r, tall, 16), mat);
+        riser.position.set(p.path[0][0], tall / 2 - 0.22, p.path[0][1]);
         riser.castShadow = true;
         riser.userData.pipe = p;
         pipeGroup.add(riser);
+        const collar = new THREE.Mesh(
+          new THREE.CylinderGeometry(r * 2.2, r * 2.2, 0.07, 18),
+          couplingMaterial(p.color, medium),
+        );
+        collar.position.set(p.path[0][0], 0.035, p.path[0][1]);
+        collar.userData.pipe = p;
+        pipeGroup.add(collar);
       }
+
       // var beteckningen ska stå: mitt på den längsta sträcka den har
       const mid = p.path[Math.floor(p.path.length / 2)];
       const seen = longest.get(p.designation);
       if (p.designation && (!seen || p.meters > seen.pipe.meters)) {
-        longest.set(p.designation, { pipe: p, at: [mid[0], mid[1]] });
+        longest.set(p.designation, { pipe: p, at: [mid[0], mid[1]], y });
       }
     });
     scene.add(pipeGroup);
@@ -225,28 +382,58 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
     // Varje beteckning får en skylt - det är hela poängen med att kunna läsa modellen - och de långa sträckorna
     // får en till, så att ett rör som går genom hela huset är namngivet där man råkar titta.
     const placed: { sprite: THREE.Sprite; primary: boolean }[] = [];
-    const put = (text: string, color: string, x: number, z: number, primary: boolean) => {
+    const stems: number[] = [];
+    const LIFT = 0.42;
+    const put = (text: string, color: string, x: number, z: number, y: number, primary: boolean) => {
       if (placed.length >= MAX_LABELS) return;
       const sp = labelSprite(text, color);
-      sp.position.set(x, height + 0.34, z);
+      sp.position.set(x, y + LIFT, z);
       labelGroup.add(sp);
       placed.push({ sprite: sp, primary });
+      // hänvisningslinjen: skylten pekar på sitt rör i stället för att sväva över det. Det är samma sätt som
+      // beteckningen sitter på bladet, och det som gör att man ser vilket rör en skylt gäller.
+      stems.push(x, y, z, x, y + LIFT - 0.07, z);
     };
     // en skylt per beteckning är det som måste synas; de långa sträckorna får en extra där man råkar titta
-    for (const [des, { pipe, at }] of longest) {
-      put(pipe.dn ? `${des} · DN${pipe.dn}` : des, pipe.color, at[0], at[1], true);
+    for (const [des, { pipe, at, y }] of longest) {
+      put(pipe.dn ? `${des} · DN${pipe.dn}` : des, pipe.color, at[0], at[1], y, true);
     }
-    for (const p of [...model.pipes].sort((a, b) => b.meters - a.meters).slice(0, 90)) {
-      if (!p.designation || p.inWall || p.meters < 4) continue;
-      const q = p.path[Math.floor(p.path.length / 4)];
-      put(p.designation, p.color, q[0], q[1], false);
+    // En extra skylt på en lång sträcka hjälper; fem skyltar med samma namn är buller som täcker huset. Varje
+    // beteckning får därför en enda extra, och bara om den hamnar en bit från den första - annars säger den
+    // ingenting som den första inte redan sagt.
+    const extra = new Set<string>();
+    for (const p of [...model.pipes].sort((a, b) => b.meters - a.meters)) {
+      if (!p.designation || p.inWall || p.meters < 8) continue;
+      if (extra.has(p.designation)) continue;
+      const home = longest.get(p.designation);
+      const q = p.path[Math.floor(p.path.length / 2)];
+      if (home && Math.hypot(home.at[0] - q[0], home.at[1] - q[1]) < Math.max(8, span * 0.22)) continue;
+      extra.add(p.designation);
+      put(p.designation, p.color, q[0], q[1], bandFor(p), false);
     }
+    const stemGeo = new THREE.BufferGeometry();
+    stemGeo.setAttribute("position", new THREE.Float32BufferAttribute(stems, 3));
+    const stemLines = new THREE.LineSegments(stemGeo, new THREE.LineBasicMaterial({
+      color: "#2c3742", transparent: true, opacity: 0.5, depthTest: false,
+    }));
+    stemLines.renderOrder = 9;
+    labelGroup.add(stemLines);
     labelGroup.visible = false;          // skyltarna kommer när väggarna rest sig
     scene.add(labelGroup);
 
     // ---- kamera: en bana från rakt ovanifrån till perspektiv --------------------------------------------
     const target = new THREE.Vector3(0, model.floorHeight * 0.35, 0);
-    const radius = Math.max(model.size.width, model.size.depth) * 0.95 + 6;
+    // Hur långt bort kameran ska stå räknas ur modellen och rutan, inte ur en gissning. Den förra gissningen
+    // lämnade huset som en remsa i mitten med tom mark runt om; det här fyller bilden med det man kom för att
+    // se. Bredden prövas mot höjden, för en lång smal plan begränsas av den ena och en kvadratisk av den andra.
+    const fit = () => {
+      const w = el.clientWidth || 1, h = el.clientHeight || 1;
+      const rad = Math.hypot(model.size.width, model.size.depth) / 2 + model.floorHeight;
+      const vFov = (camera.fov * Math.PI) / 180;
+      const hFov = 2 * Math.atan(Math.tan(vFov / 2) * (w / h));
+      return Math.max(4, (rad / Math.sin(Math.min(vFov, hFov) / 2)) * 0.86);
+    };
+    const radius = fit();
     const state = { theta: Math.PI * 0.25, phi: 0.02, dist: radius };
     const TOP = Math.PI / 2 - 0.004;
     const place = () => {
@@ -292,6 +479,7 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
       walker.pitch = -0.04;
       walker.pos.set(target.x, EYE, target.z);
       pipeGroup.position.y = 0;
+      resize();                 // inne i modellen ligger inga reglage i vägen, så bilden får hela rutan
       placeWalk();
       dom.requestPointerLock?.();
     };
@@ -299,6 +487,7 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
       walker.on = false;
       keys.clear();
       if (document.pointerLockElement === dom) document.exitPointerLock?.();
+      resize();
       place();
     };
     const keyDown = (e: KeyboardEvent) => {
@@ -401,11 +590,22 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
     };
     dom.addEventListener("click", click as any);
 
+    // Skuggan i vinkeln, där vägg möter golv, är det som skiljer en modell som står på golvet från en som är
+    // klistrad på det. Den prövades med en efterberäkning ur djupbilden (GTAOPass) och backades: på väggarnas
+    // översidor lade den smutsfläckar i stället för skugga, och bilden blev platt i stället för djup. Ett fel
+    // som syns är sämre än ett djup som saknas, så scenen renderas rakt av.
+
     // ---- storlek ---------------------------------------------------------------------------------------
     const resize = () => {
       const w = el.clientWidth || 1, h = el.clientHeight || 1;
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
+      // Reglagen ligger över bildens nedre fjärdedel. Mitten av rutan är därför inte mitten av det man ser, och
+      // en modell som centreras i rutan hamnar halvt bakom panelen. Bilden räknas som om den vore högre och
+      // bara den nedre delen visas - då hamnar huset mitt i det som faktiskt syns.
+      const pad = walker.on ? 0 : Math.min(190, h * 0.24);
+      if (pad > 1) camera.setViewOffset(w, h + pad, 0, pad, w, h);
+      else camera.clearViewOffset();
       camera.updateProjectionMatrix();
     };
     resize();
@@ -460,12 +660,12 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
           .map((q) => ({ ...q, d: camera.position.distanceTo(q.sprite.position) }))
           .sort((a, b) => (a.primary === b.primary ? a.d - b.d : a.primary ? -1 : 1));
         for (const { sprite, d } of order) {
-          const h = Math.max(0.16, d * vh * 0.026);
+          const h = Math.max(0.14, d * vh * 0.021);
           sprite.scale.set(h * (sprite.userData.ratio as number), h, 1);
           v.copy(sprite.position).project(camera);
           if (v.z > 1 || Math.abs(v.x) > 1.25 || Math.abs(v.y) > 1.25) { sprite.visible = false; continue; }
           const sx = v.x * 0.5 * el.clientWidth, sy = v.y * 0.5 * el.clientHeight;
-          const room = kept.every(([kx, ky]) => Math.abs(kx - sx) > 120 || Math.abs(ky - sy) > 26);
+          const room = kept.every(([kx, ky]) => Math.abs(kx - sx) > 168 || Math.abs(ky - sy) > 34);
           sprite.visible = room;
           if (room) kept.push([sx, sy]);
         }
@@ -516,9 +716,13 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
       setLabels: (v: boolean) => { wantLabels = v; labelGroup.visible = v; },
       setXray: (v: boolean) => {
         wallMat.transparent = v;
-        wallMat.opacity = v ? 0.26 : 1;
+        wallMat.opacity = v ? 0.24 : 1;
         wallMat.depthWrite = !v;
         wallMat.needsUpdate = true;
+        capMat.transparent = v;
+        capMat.opacity = v ? 0.24 : 1;
+        capMat.depthWrite = !v;
+        capMat.needsUpdate = true;
         walls.castShadow = !v;
       },
       setWalking: (v: boolean) => { if (v) enterWalk(); else if (walker.on) leaveWalk(); },
@@ -537,6 +741,9 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
       dom.removeEventListener("wheel", wheel);
       dom.removeEventListener("click", click as any);
       renderer.dispose();
+      sky.dispose();
+      env.texture.dispose();
+      sleeveGeo.dispose();
       scene.traverse((o: any) => { o.geometry?.dispose?.(); o.material?.dispose?.(); });
       el.removeChild(renderer.domElement);
     };
@@ -588,7 +795,10 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
                 {picked.pipe.system && <tr><td>System</td><td className="num">{picked.pipe.system}</td></tr>}
                 <tr><td>Dimension</td><td className="num">DN{picked.pipe.dn ?? "?"}</td></tr>
                 <tr><td>Denna sträcka</td><td className="num">{picked.pipe.meters.toFixed(2)} m</td></tr>
-                <tr><td>Höjd över golv</td><td className="num">{(model.floorHeight * 0.82).toFixed(2)} m</td></tr>
+                <tr><td>Antaget material</td><td className="num">{MEDIUM_TEXT[mediumOf(picked.pipe.system)]}</td></tr>
+                <tr><td>Ritad höjd</td><td className="num">
+                  {bandOf(picked.pipe.system, systems, model.floorHeight).toFixed(2)} m
+                </td></tr>
                 {picked.qty && <>
                   <tr><td>Hela beteckningen</td><td className="num">{Number(picked.qty.confirmed_total_m ?? 0).toFixed(2)} m</td></tr>
                   <tr><td>Sträckor</td><td className="num">{picked.qty.physical_pipe_count}</td></tr>
@@ -598,7 +808,10 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
               </tbody></table>
               <p className="muted small" style={{ marginBottom: 0 }}>
                 Mängden kommer från läsningens tabell, inte ur 3D-modellen. Ett tunt rör ritas grövre än det är
-                för att synas; dimensionen ovan är ritningens.
+                för att synas; dimensionen ovan är ritningens. Materialet är gissat ur systembokstäverna och
+                står inte på bladet. Höjden är inte heller mätt - bladet är en plan och har ingen. Systemen
+                läggs i band så att korsande rör går att skilja åt, och raden säger vilket band det här röret
+                ritades i.
               </p>
             </>
           ) : (
