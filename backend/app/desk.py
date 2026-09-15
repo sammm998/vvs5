@@ -138,9 +138,14 @@ def _titta(desk: Desk, fil: str) -> dict:
     return {"fil": d.filename, "sidor": d.n_pages, "sidor_lista": pages}
 
 
-@tool("las_ritning", "Starta en läsning av filen: motorn mäter rören och skriver mängderna. Kostar credits "
-                     "som vilken läsning som helst. Svaret säger att den startat; fråga sedan om mängderna.",
-      _obj({**_FIL, "skala": {"type": "integer", "description": "nämnaren i 1:N, bara om bladet saknar skala"}},
+@tool("las_ritning", "Starta en läsning av filen: motorn mäter rören och skriver mängderna. Använd det här "
+                     "direkt när någon frågar om mängder ur en fil som inte är läst. Motorn hittar skalan "
+                     "själv ur bladets skalstock - fråga aldrig användaren om skalan innan du läst. Kostar "
+                     "credits som vilken läsning som helst. Svaret säger att den startat; fråga sedan om "
+                     "mängderna.",
+      _obj({**_FIL, "skala": {"type": "integer",
+                              "description": "nämnaren i 1:N. Skicka bara om en tidigare läsning sagt att den "
+                                             "inte kunde hitta någon skala; annars åsidosätter du det motorn läste"}},
            ["fil"]))
 def _las(desk: Desk, fil: str, skala: int | None = None) -> dict:
     from . import credits as credits_api

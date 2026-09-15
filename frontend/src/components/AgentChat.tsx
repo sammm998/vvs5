@@ -48,6 +48,73 @@ const QUICK: { grupp: string; fragor: Quick[] }[] = [
   ] },
 ];
 
+/* Stegen agenten tog, i klartext.
+ *
+ * Raden sade "2 verktygsanrop" och gömde `lista_filer({})` bakom en triangel. Det säger ingenting om vad som
+ * hände. Här står varje steg som en mening med sitt föremål - "Tittade i W-50-1-A-0011.pdf" - och listan är
+ * öppen från början: den som undrar vad agenten gjorde ska se det utan att leta. Det råa anropet finns kvar
+ * under varje rad för den som vill kontrollera exakt vad som skickades.
+ */
+const STEP_SAID: Record<string, (a: Record<string, unknown>) => string> = {
+  lista_filer: () => "Listade filerna i samtalet",
+  titta_i_filen: (a) => `Tittade i ${String(a.fil ?? "filen")}`,
+  las_ritning: (a) => `Startade läsningen av ${String(a.fil ?? "ritningen")}`,
+  mangder: (a) => `Hämtade mängderna ur ${String(a.fil ?? "läsningen")}`,
+  fragorna: (a) => `Hämtade de olösta fallen i ${String(a.fil ?? "läsningen")}`,
+  jamfor: (a) => `Jämförde ${String(a.fil_a ?? "A")} mot ${String(a.fil_b ?? "B")}`,
+  rakna: (a) => `Räknade ut ${String(a.uttryck ?? "uttrycket")}`,
+  material: (a) => `Slog upp "${String(a.sok ?? "")}" i materialboken`,
+};
+
+function stepSaid(namn: string, arg: Record<string, unknown>): string {
+  const f = STEP_SAID[namn];
+  if (f) return f(arg || {});
+  // Ett verktyg utan egen mening får sitt namn läst som en: foresla_identitet blir "Föreslå identitet".
+  const words = namn.replace(/_/g, " ");
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
+function Steps({ tools }: { tools: any[] }) {
+  return (
+    <details className="atools" open>
+      <summary>{tools.length === 1 ? "Så här gjorde agenten" : `Så här gjorde agenten · ${tools.length} steg`}</summary>
+      <ol className="asteps">
+        {tools.map((t: any, j: number) => (
+          <li key={j}>
+            <span className="astep-n">{j + 1}</span>
+            <span className="astep-t">{stepSaid(t.namn, t.argument)}</span>
+            <code>{t.namn}({Object.entries(t.argument || {}).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(", ")})</code>
+          </li>
+        ))}
+      </ol>
+    </details>
+  );
+}
+
+/* Medan agenten arbetar.
+ *
+ * Tre prickar säger att något händer men inte att det tar tid, och en läsning gör det. Klockan räknar uppåt
+ * och efter tio sekunder står det vad som är på gång. Inga påhittade steg: sidan vet inte vad modellen gör
+ * just nu, och att låtsas är värre än att säga att det pågår.
+ */
+function Working() {
+  const [s, setS] = useState(0);
+  useEffect(() => {
+    const t = window.setInterval(() => setS((v) => v + 1), 1000);
+    return () => window.clearInterval(t);
+  }, []);
+  return (
+    <div className="abub agent" role="status">
+      <div className="who">Agenten</div>
+      <p className="dots"><i /><i /><i /></p>
+      <p className="awork">
+        {s < 10 ? "Väljer verktyg…" : s < 30 ? "Arbetar med ritningen…" : "Läsningen tar en stund — den fortsätter i bakgrunden."}
+        {s >= 3 && <span className="awork-t"> {s} s</span>}
+      </p>
+    </div>
+  );
+}
+
 export default function AgentChat({ jobId, page, selection, onHighlight, onChanged }: {
   jobId: string;
   page: number;
@@ -161,16 +228,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
           <div key={i} className={`abub ${m.role}`}>
             <div className="who">{m.role === "user" ? "Du" : "Agenten"}</div>
             <p>{m.text}</p>
-            {m.tools && m.tools.length > 0 && (
-              <details className="atools">
-                <summary>{m.tools.length} verktygsanrop</summary>
-                {m.tools.map((t: any, j: number) => (
-                  <div key={j} className="atool">
-                    <code>{t.namn}({Object.entries(t.argument || {}).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(", ")})</code>
-                  </div>
-                ))}
-              </details>
-            )}
+            {m.tools && m.tools.length > 0 && <Steps tools={m.tools} />}
             {m.role === "agent" && proposalsIn(m.tools || []).map((p, k) => (
               <div key={`p${k}`} className={`proposal${m.done ? " done" : ""}`}>
                 <div className="phead">
@@ -202,7 +260,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
             )}
           </div>
         ))}
-        {busy && <div className="abub agent"><div className="who">Agenten</div><p className="dots"><i /><i /><i /></p></div>}
+        {busy && <Working />}
         {err && <p className="error">{err}</p>}
         <div ref={end} />
       </div>

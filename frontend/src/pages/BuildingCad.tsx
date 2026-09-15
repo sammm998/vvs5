@@ -26,6 +26,12 @@ type Mode = "2d" | "3d" | "split";
 const DISC_LABEL = Object.fromEntries(DISCIPLINES.map((d) => [d.id, d.label])) as Record<Discipline, string>;
 const fmtMm = (v: number) => `${Math.round(v).toLocaleString("sv-SE")} mm`;
 
+/* Verktyg som ritar en sluten yta. Dubbelklick och högerklick sluter dem; en linje bara avslutas. */
+const AREA_TOOLS = new Set(["bjalklag", "platta", "tak", "undertak", "rum", "skraffering", "tomtgrans"]);
+
+/* Verktyg där nästa objekt börjar där det förra slutade. En vägg ritas nästan aldrig ensam. */
+const CHAINS = new Set(["vagg", "glasfasad", "balk", "linje"]);
+
 export default function BuildingCadPage() {
   const { id } = useParams();
   const sheetId = id!;
@@ -37,6 +43,12 @@ export default function BuildingCadPage() {
   const [hist, setHist] = useState<History>(() => emptyHistory());
   const [mode, setMode] = useState<Mode>("split");
   const [discipline, setDiscipline] = useState<Discipline>("ARK");
+  // Panelerna går att fälla undan. En ritning som ska granskas vill ha hela rutan, och verktygslådan står i
+  // vägen så snart man slutat rita. Läget ligger kvar mellan besök: den som ritar i fullskärm gör det ofta.
+  const [bare, setBare] = useState(() => {
+    try { return localStorage.getItem("bcad_bare") === "1"; } catch { return false; }
+  });
+  useEffect(() => { try { localStorage.setItem("bcad_bare", bare ? "1" : "0"); } catch { /* privat läge */ } }, [bare]);
   const [tool, setTool] = useState<ToolId>("valj");
   const [draft, setDraft] = useState<Pt[]>([]);
   const [sel, setSel] = useState<string[]>([]);
@@ -193,15 +205,28 @@ export default function BuildingCadPage() {
       apply(new Tx(`${TOOLS.find((t) => t.id === tool)?.label ?? "Objekt"}`).add("entities", e));
       setSel([e.id]);
     }
-    setDraft([]); setTyped(""); setTypedAngle(null); setErr("");
+    // Kedjan: en vägg slutar där nästa börjar. Utan den blir ett rum fyra gånger "klicka, klicka" med ett
+    // omtag mellan varje, och det var det som gjorde att det kändes som att klicket inte tog. Esc eller
+    // högerklick bryter kedjan.
+    const chained = CHAINS.has(tool) && pts.length >= 2 && !closed;
+    setDraft(chained ? [pts[pts.length - 1]] : []);
+    setTyped(""); setTypedAngle(null); setErr("");
   }, [tool, doc, view, tol, ctx, apply, defaults.grid.label]);
+
+  /** Avsluta det som ritas: sluter ytan om verktyget ritar en yta, annars bara avslutar linjen. */
+  const closeDraft = useCallback(() => {
+    if (draft.length >= 2) finish(draft, AREA_TOOLS.has(tool) && draft.length >= 3);
+    else setDraft([]);
+  }, [draft, finish, tool]);
+
+  const cancelDraft = useCallback(() => { setDraft([]); setTyped(""); setTypedAngle(null); setErr(""); }, []);
 
   const onDown = (ev: React.PointerEvent) => {
     const r = canvas.current!.getBoundingClientRect();
     const x = ev.clientX - r.left, y = ev.clientY - r.top;
     (ev.target as Element).setPointerCapture?.(ev.pointerId);
     if (ev.button === 1 || ev.altKey) { drag.current = { kind: "pan", from: toWorld(cam, x, y), screen: [x, y] }; return; }
-    if (ev.button !== 0) return;
+    if (ev.button !== 0) return;          // högerklick tas av onContextMenu, som avslutar eller avbryter
     if (calib) {
       // två punkter i underlaget och ett känt avstånd: skalan följer, och underlaget är uppmätt
       const q = toWorld(cam, x, y);
@@ -386,10 +411,17 @@ export default function BuildingCadPage() {
   const curTool = TOOLS.find((t) => t.id === tool)!;
 
   return (
-    <div className="bcad">
+    <div className={`bcad${bare ? " bare" : ""}`}>
       <header className="bcad-top">
         <div className="bcad-crumb"><Link to="/cad">CAD</Link> / <b>{meta.name}</b> <span className="muted small">· {doc.project.name} · {doc.building.name}</span></div>
         <div className="bcad-tools">
+          {/* Vilken disciplin man ritar i bestämmer vilka verktyg som finns. Den låg bara i vänsterpanelen
+              bland genomskinlighetsreglagen, så "rita ett rör" krävde att man först hittade VVS i en lista
+              som ser ut att handla om vad som syns i 3D. Nu står den först i verktygsraden. */}
+          <select className="bcad-disc" value={discipline} aria-label="Disciplin att rita i"
+            onChange={(e) => { setDiscipline(e.target.value as Discipline); setTool("valj"); setDraft([]); }}>
+            {DISCIPLINES.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}
+          </select>
           {tools.map((t) => <button key={t.id} className={`bcad-tool${tool === t.id ? " on" : ""}`} title={`${t.hint} (${t.key})`} onClick={() => { setTool(t.id); setDraft([]); }}>{t.label}<kbd>{t.key}</kbd></button>)}
         </div>
         <div className="bcad-right">
@@ -401,6 +433,10 @@ export default function BuildingCadPage() {
           <span className="bcad-modes">
             {(["2d", "split", "3d"] as Mode[]).map((m) => <button key={m} className={mode === m ? "on" : ""} onClick={() => setMode(m)}>{m === "2d" ? "2D" : m === "3d" ? "3D" : "Delad"}</button>)}
           </span>
+          <button className={`ghost small${bare ? " on" : ""}`} onClick={() => setBare((b) => !b)}
+            title={bare ? "Visa panelerna" : "Dölj panelerna och rita i hela rutan"}>
+            {bare ? "Visa paneler" : "Fullskärm"}
+          </button>
           <span className={`badge ${saving === "krock" ? "bad" : saving ? "ok" : ""}`}>{saving === "sparar" ? "sparar…" : saving === "sparat" ? "sparat" : saving === "krock" ? "krock" : `rev ${doc.revision}`}</span>
         </div>
       </header>
@@ -441,10 +477,29 @@ export default function BuildingCadPage() {
         </div>
       </aside>
 
+      {/* Det som ritas just nu, och vägen ut ur det.
+          Enter och Esc fanns, men bara i tangentbordet. Den som ritar med musen såg ingenting som sade hur
+          man avslutar en yta, och klickade vidare tills figuren blev orimlig - det var det som kändes som att
+          klicket inte tog. */}
+      {!!draft.length && (
+        <div className="bcad-doing" role="status">
+          <span className="bcad-doing-t">
+            {curTool.label} · {draft.length} {draft.length === 1 ? "punkt" : "punkter"}
+            {typed && ` · ${typed} mm`}
+          </span>
+          {draft.length >= 2 && (
+            <button className="bcad-doing-b on" onClick={closeDraft}>
+              {AREA_TOOLS.has(tool) && draft.length >= 3 ? "Slut ytan" : "Klart"} <kbd>Enter</kbd>
+            </button>
+          )}
+          <button className="bcad-doing-b" onClick={cancelDraft}>Avbryt <kbd>Esc</kbd></button>
+        </div>
+      )}
+
       <main className="bcad-stage">
         {mode !== "3d" && (
           <div ref={wrap} className={`bcad-plan${mode === "split" ? " half" : ""}`}>
-            <canvas ref={canvas} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={() => setHover(null)} onWheel={onWheel} onDoubleClick={() => { if (draft.length >= 2) finish(draft); }} onContextMenu={(e) => { e.preventDefault(); if (draft.length >= 2) finish(draft); else setDraft([]); }} style={{ display: "block", cursor: tool === "valj" ? "default" : "crosshair", touchAction: "none" }} />
+            <canvas ref={canvas} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={() => setHover(null)} onWheel={onWheel} onDoubleClick={closeDraft} onContextMenu={(e) => { e.preventDefault(); if (draft.length) closeDraft(); else { setTool("valj"); setSel([]); } }} style={{ display: "block", cursor: tool === "valj" ? "default" : "crosshair", touchAction: "none" }} />
             <div className="bcad-planbar"><span>{levelOf(doc, level)?.name}</span><button className="ghost small" onClick={fit}>Anpassa</button><span className="muted small">1 px = {(1 / cam.s).toFixed(0)} mm</span></div>
           </div>
         )}

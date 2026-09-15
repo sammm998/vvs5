@@ -3152,3 +3152,59 @@ button.d3-open:hover { box-shadow: 0 6px 20px rgba(18, 158, 176, 0.45), inset 0 
 .academy .lp-btn.primary:hover { background: #000; }
 .academy .lp-btn.ghost { border-color: var(--line-2); color: var(--ink); }
 .academy .lp-btn.ghost:hover { border-color: var(--ink); background: rgba(13, 13, 13, 0.04); }
+
+/* ================================================================ CAD: fullskärm och det som ritas */
+
+/* Fullskärm är inte ett annat läge utan samma rityta utan paneler. Rutnätet går från tre spalter till en,
+   och panelerna slutar ta plats i stället för att bara döljas - annars ligger deras bredd kvar som luft. */
+.bcad.bare { grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "stage"; }
+.bcad.bare .bcad-browser, .bcad.bare .bcad-props { display: none; }
+
+/* Verktygsraden blir en rad som går att rulla i stället för tre rader som äter en fjärdedel av skärmen. */
+.bcad-tools { display: flex; gap: 4px; align-items: center; overflow-x: auto; scrollbar-width: thin; padding-bottom: 2px; }
+.bcad-tools::-webkit-scrollbar { height: 5px; }
+.bcad-tools::-webkit-scrollbar-thumb { background: var(--line); border-radius: 9px; }
+.bcad-disc {
+  flex: none; margin-right: 8px; padding: 5px 8px; border-radius: 7px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  font-size: 12px; font-weight: 600;
+}
+
+/* Det som ritas just nu, och vägen ut ur det. Ligger över ritytan i underkant, där blicken är när man ritar. */
+.bcad-doing {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 40;
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 8px 7px 14px; border-radius: 999px;
+  background: rgba(17, 19, 22, 0.94); color: #f2f1ed;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+.bcad-doing-t { font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bcad-doing-b {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.18); background: transparent; color: inherit;
+  border-radius: 999px; padding: 5px 12px; font-size: 12px; cursor: pointer;
+}
+.bcad-doing-b.on { background: #6ee7a5; border-color: #6ee7a5; color: #06130c; font-weight: 600; }
+.bcad-doing-b kbd {
+  font-family: ui-monospace, monospace; font-size: 10px; opacity: 0.7;
+  border: 1px solid currentColor; border-radius: 4px; padding: 0 4px;
+}
+@media (max-width: 720px) { .bcad-doing { left: 12px; right: 12px; transform: none; justify-content: space-between; } }
+
+/* ---------------------------------------------------------------- agentens steg */
+.atools > summary { cursor: pointer; font-size: 12px; color: var(--dim); padding: 4px 0; }
+.asteps { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+.asteps li {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px; align-items: baseline;
+  padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-2);
+}
+.astep-n {
+  grid-row: span 2; width: 20px; height: 20px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 11px;
+  font-family: ui-monospace, monospace; background: var(--line); color: var(--ink);
+}
+.astep-t { font-size: 13.5px; }
+.asteps code { grid-column: 2; font-size: 11px; color: var(--dim); word-break: break-all; }
+.awork { margin: 4px 0 0; font-size: 12.5px; color: var(--dim); }
+.awork-t { font-family: ui-monospace, monospace; }
