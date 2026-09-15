@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+
+import { getToken } from "../api";
 import gsap from "gsap";
 import { EASE_REVEAL, prefersStill } from "./motion";
 import { MagneticButton } from "./primitives";
@@ -27,6 +29,8 @@ export const NAV_LINKS = [
 export default function Nav({ light = false }: { light?: boolean }) {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  // läses när menyn öppnas, inte en gång vid montering: den som loggar in i en annan flik ska få rätt meny
+  const inne = open && !!getToken();
   const panel = useRef<HTMLDivElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
 
@@ -123,11 +127,27 @@ export default function Nav({ light = false }: { light?: boolean }) {
                 </li>
               ))}
             </ul>
+            {/* Genvägarna ska leda dit den som klickar faktiskt kan komma. Projekt och Academy ligger bakom
+                inloggningen, så för den som inte är inloggad var "FutureCalc Academy" en resa till
+                inloggningssidan - och för den som är inloggad ett hopp rakt från den mörka publika sidan in i
+                det ljusa verktyget, utan något steg emellan. Utloggad pekar spalten därför på det publika:
+                utbildningssidan och dokumentationen, med inloggningen först. Inloggad pekar den in i
+                verktyget, där det ljusa läget är väntat. */}
             <div className="fc-menu-side">
               <p className="fc-label">Direkt in</p>
-              <Link className="fc-link" to="/login">Logga in</Link>
-              <Link className="fc-link" to="/projekt">Projekt</Link>
-              <Link className="fc-link" to="/academy">FutureCalc Academy</Link>
+              {inne ? (
+                <>
+                  <Link className="fc-link" to="/projekt">Projekt</Link>
+                  <Link className="fc-link" to="/academy">FutureCalc Academy</Link>
+                  <Link className="fc-link" to="/mangda">Mängda ett blad</Link>
+                </>
+              ) : (
+                <>
+                  <Link className="fc-link" to="/login">Logga in</Link>
+                  <Link className="fc-link" to="/utbildning">VVS-akademin</Link>
+                  <Link className="fc-link" to="/priser">Priser</Link>
+                </>
+              )}
               <Link className="fc-link" to="/dokumentation">Dokumentation</Link>
               <p className="fc-label" style={{ marginTop: 28 }}>Kontakt</p>
               <a className="fc-link" href="mailto:hej@futurecalc.se">hej@futurecalc.se</a>
