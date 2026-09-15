@@ -166,3 +166,32 @@ Slutsatsen är inte att regeln är fel. Slutsatsen är att **korpusen inte kan a
 blad, och det ena är trasigt av andra skäl. Den ligger därför utanför trädet tills det finns ett blad där en
 staplad etikett står över en bunt och referensen skiljer raderna åt. Att lägga in den på det här underlaget
 vore att göra läsningen säkrare på en fråga mätningen inte har svarat på.
+
+## Hänvisningslinjens slutstreck: rätt på ett blad, fel över korpusen
+
+Korpusens största enskilda tapp ligger på V-50-1-A0423: DN22 har 82,6 m i referensen och fick 1,66, medan
+DN15 har 36,6 och fick 105,72. Etiketterna följdes hela vägen ned. Fyra radiatoranslutningar drar sin
+hänvisningslinje förbi stammen på väg till sitt eget stråk; ritaren sätter ett streck där linjen korsar och
+ett streck där den slutar, och läsningen tog båda som fäste. En kedja med ett enda frö bekräftas i sin helhet,
+så ett ensamt korsstreck gjorde trettiofem meter stam till radiatoranslutningens dimension.
+
+Regeln som prövades: *har ritaren markerat var linjen slutar har hon sagt vad den pekar på, och då är
+korsstrecken bara vägen dit.* På just det bladet gjorde den precis vad den skulle - 46,8 m falskt ägande bort,
+noll täckning tappad.
+
+Grind 70 mot grind 67, 59 blad:
+
+| mått | grind 67 | grind 70 (slutstrecket) |
+|---|---|---|
+| täckning | **79,25 %** | 76,62 % |
+| falskt ägande | 15,82 % | **14,86 %** |
+| FULL / PARTIAL / OVER / MISSED / WRONG | **171** / **200** / 179 / 150 / 88 | 167 / 211 / **171** / 151 / 88 |
+
+Den tog bort omkring 110 m falskt och kostade omkring 300 m riktigt. Tjugotvå blad ändrades, och de som
+tappade mest tappade rejält: −50,5 m ägt på ett blad, −43,1 på ett annat, −42,6 på ett tredje. **Backad.**
+
+Vad mätningen lär: slutstrecket är *inte* det som skiljer fallen åt. På de blad som tappade markerar ritaren
+både slutet och de rör linjen korsar - och korsstrecken är då fästet, precis som över en bunt. Skillnaden mot
+A0423 ligger någon annanstans, och tills den är hittad är "tvetydigt" fortfarande det riktiga svaret. Fyndet
+om vad som *går fel* på A0423 står kvar: en enda svag etikett äger trettiofem meter stam genom
+`chain_from_anchor`, och det är den regeln som ska prövas härnäst - inte fästet.

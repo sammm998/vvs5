@@ -1257,6 +1257,13 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                 why = "NO_CONTINUOUS_RUN"
             elif not layer and rf.width < annotation_width - 1e-6:
                 why = "FAINTEST_PEN_ON_THE_SHEET"
+            elif tick_votes.get(f, 0) or votes.get(f, 0):
+                # Etiketter nådde fram, och läsningen tog pennan ändå inte. Att då säga "ingen rörbeteckning
+                # når fram till den" är inte bara oprecist utan osant: den som läser ser sin hänvisningslinje
+                # sluta på strecket och letar efter ett fel som inte finns där. Det som hände var att pennan
+                # vägdes och inte togs - ofta rätt, för arkitektens väggar bär hänvisningslinjer som slutar
+                # strax bortom röret - och det är den meningen som ska stå.
+                why = "A_LABEL_POINTED_AT_IT_AND_IT_WAS_NOT_TAKEN"
             else:
                 why = "NO_LABEL_REACHED_IT"
             declined[f] = {"family": f, "kind": rf.kind, "why": why, "width": round(rf.width, 2),

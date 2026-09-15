@@ -60,7 +60,7 @@ export interface ViewerProps {
   anchors: any[];
   hatched?: any[];
   /** Ink that never became pipe: families weighed and set aside, and families no leader ever pointed at. */
-  declined?: { family: string; kind: string; why_sv?: string; why?: string; layer?: string; style?: string; length_m?: number | null; segments: number[][] }[];
+  declined?: { family: string; kind: string; why_sv?: string; why?: string; layer?: string; style?: string; length_m?: number | null; leader_ends_touching?: number; label_votes?: number; segments: number[][] }[];
   /** One declined family picked out of the rest, so a reader can see which ink a row is talking about. */
   selectedDeclined?: string | null;
   selectedIdentity: string | null;
@@ -710,7 +710,11 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
           title: f.why === "IT_RUNS_FROM_A_LABEL_BLOCK" ? "Hänvisningslinje, inte rör"
             : f.kind === "not_examined" ? "Aldrig vägd som rör" : "Bortvald: inte rör",
           // the layer name is what a draughtsman recognises; the stroke style is an internal key and only noise here
-          detail: `${f.why_sv || f.why || "inget skäl noterat"}${f.layer ? ` · lager ${f.layer}` : ""}`,
+          // hur mycket bladets egna etiketter faktiskt pekade hit: utan den siffran låter ett bortval som
+          // ett påstående, med den kan den som granskar väga det själv
+          detail: `${f.why_sv || f.why || "inget skäl noterat"}`
+            + (f.leader_ends_touching ? ` · ${f.leader_ends_touching} hänvisningar slutar på den` : "")
+            + (f.layer ? ` · lager ${f.layer}` : ""),
         });
       }
     }
