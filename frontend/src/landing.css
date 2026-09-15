@@ -2120,3 +2120,29 @@ body.lp-dark { background: #100e0c; }
   color: #f4f2ec;
 }
 .lp.head-paper .lp-corners .lp-pill.lp-start:hover { background: #2c2720; border-color: #2c2720; }
+
+/* Utbildningens kurslista på den publika sidan: en rad per kurs, läsbar uppifrån och ned som en kursplan
+   och inte som ett rutnät av kort - ordningen mellan kurserna är en del av vad sidan säger. */
+.pub-courselist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.1); }
+.pub-courselist li { border-bottom: 1px solid rgba(255,255,255,0.1); }
+.pub-courselist a { display: grid; grid-template-columns: 56px 1fr 28px; gap: 18px; align-items: start;
+  padding: 22px 6px; color: inherit; text-decoration: none; transition: background 0.25s ease, padding 0.25s ease; }
+.pub-courselist a:hover { background: rgba(255,255,255,0.04); padding-left: 14px; padding-right: 0; }
+.pub-cno { font-family: ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em;
+  color: rgba(110,231,165,0.85); padding-top: 4px; }
+.pub-cbody { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.pub-clevel { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(244,245,247,0.45); }
+.pub-cbody strong { font-size: 19px; font-weight: 600; color: #f4f5f7; letter-spacing: -0.01em; }
+.pub-cblurb { font-size: 14.5px; line-height: 1.55; color: rgba(244,245,247,0.7); }
+.pub-cmeta { font-family: ui-monospace, monospace; font-size: 11.5px; color: rgba(244,245,247,0.45); }
+.pub-cmods { font-size: 13px; line-height: 1.5; color: rgba(244,245,247,0.38); }
+.pub-carrow { font-size: 18px; color: rgba(244,245,247,0.35); padding-top: 4px;
+  transition: transform 0.25s ease, color 0.25s ease; }
+.pub-courselist a:hover .pub-carrow { transform: translateX(5px); color: rgba(110,231,165,0.9); }
+@media (max-width: 720px) {
+  .pub-courselist a { grid-template-columns: 34px 1fr; gap: 12px; padding: 18px 4px; }
+  .pub-carrow { display: none; }
+  .pub-cbody strong { font-size: 17px; }
+}

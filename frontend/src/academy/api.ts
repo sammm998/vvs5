@@ -27,6 +27,9 @@ const post = (p: string, body?: unknown) =>
   call(p, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body ?? {}) });
 
 export const ac = {
+  /* Katalogen utifrån. Öppen: den som väljer en utbildning har rätt att se vad den innehåller innan hen
+     skaffar ett konto, och en sida som räknar kurserna själv räknar fel så fort någon lägger till en. */
+  catalogue: () => call("/api/public/academy"),
   courses: () => call("/api/academy/courses"),
   course: (slug: string) => call(`/api/academy/courses/${slug}`),
   plan: (slug: string) => call(`/api/academy/plan/${slug}`),

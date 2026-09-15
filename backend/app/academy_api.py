@@ -560,6 +560,43 @@ def my_certs(user: User = Depends(current_user), db: Session = Depends(get_db)):
     } for c in rows]}
 
 
+@public.get("/academy")
+def catalogue(db: Session = Depends(get_db)):
+    """Utbildningen utifrån: vad den består av, för den som inte loggat in.
+
+    Öppen med flit. En utbildningssida som beskriver en kurs den inte kan visa är en annons, och den som väljer
+    en utbildning har rätt att se vad den faktiskt innehåller innan hen skaffar ett konto. Det som är stängt är
+    att **göra** den - lektionstexten, övningarna, tentan - inte att veta vad den är.
+
+    Räknat ur databasen, aldrig ur en siffra skriven i gränssnittet: en sida som lovar nio kurser när det finns
+    tio är fel på samma sätt oavsett åt vilket håll den räknar fel.
+    """
+    kurser = db.query(Course).filter(Course.published == True).order_by(Course.order).all()  # noqa: E712
+    ut = []
+    for c in kurser:
+        mods = db.query(Module).filter(Module.course_id == c.id, Module.published == True).all()  # noqa: E712
+        mids = [m.id for m in mods]
+        lek = db.query(Lesson).filter(Lesson.module_id.in_(mids or [""]),
+                                      Lesson.published == True).count()  # noqa: E712
+        ovn = db.query(Exercise).filter(Exercise.module_id.in_(mids or [""]),
+                                        Exercise.published == True).count()  # noqa: E712
+        ut.append({"slug": c.slug, "title": c.title, "blurb": c.blurb, "level": c.level, "hours": c.hours,
+                   "moduler": len(mods), "lektioner": lek, "ovningar": ovn,
+                   "modulnamn": [m.title for m in sorted(mods, key=lambda m: m.order)]})
+    tenta = db.query(Exam).filter(Exam.published == True).order_by(Exam.slug).first()  # noqa: E712
+    return {
+        "kurser": ut,
+        "totalt": {"kurser": len(ut), "moduler": sum(k["moduler"] for k in ut),
+                   "lektioner": sum(k["lektioner"] for k in ut), "ovningar": sum(k["ovningar"] for k in ut),
+                   "timmar": round(sum(k["hours"] or 0 for k in ut), 1)},
+        "tenta": ({"slug": tenta.slug, "title": tenta.title, "pass_pct": tenta.pass_pct,
+                   "delar": [{"title": d.get("title"), "n": d.get("n"), "weight": d.get("weight")}
+                             for d in (tenta.sections or [])],
+                   "uppgifter": sum(int(d.get("n") or 0) for d in (tenta.sections or []))}
+                  if tenta else None),
+    }
+
+
 @public.get("/certificate/{code}")
 def verify(code: str, db: Session = Depends(get_db)):
     """Verifieringen. Öppen med flit - ett certifikat som bara innehavaren kan visa bevisar ingenting.

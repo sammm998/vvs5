@@ -1,18 +1,35 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PublicFrame, { PubSection } from "../components/PublicFrame";
 import { MODULES } from "../learn";
 import Lecture, { findLesson, findModule, FLAT } from "../components/Lecture";
 import { CourseGrid, CourseView, useProgress, courseMinutes } from "../components/Academy";
+import { ac } from "../academy/api";
+import { AppLink } from "../fc/primitives";
 
 /* VVS-akademin utåt.
  *
- * Kurserna och föreläsningarna är samma som i tjänsten (learn.ts), så sidan kan aldrig lova en kurs som inte
- * finns - och eftersom varje föreläsning nu har en egen adress går den att läsa, spara och dela utan konto.
- * Det är också det ärligaste sättet att visa vad utbildningen är: man får läsa den, inte bara läsa om den.
- * Kontot behövs för att stegen ska följa med mellan datorer.
+ * Här fanns bara de fria föreläsningarna - en egen uppsättning kurser som bor i webbläsaren - och de
+ * presenterades som hela akademin. Samtidigt växte den riktiga utbildningen i tjänsten: tio kurser med
+ * övningar som rättas, en sluttenta och ett verifierbart certifikat. Den som klickade Academy i menyn kom till
+ * de fria föreläsningarna, såg "9 kurser, 2 h" och fick aldrig veta att det andra fanns.
+ *
+ * Nu visar sidan utbildningen som den är, räknad ur tjänsten själv: så många kurser som faktiskt finns, inte
+ * en siffra skriven här som blir fel så fort någon lägger till en. Föreläsningarna står kvar under den som det
+ * de är - fritt läsbara, utan konto, utan rättning - i stället för att utge sig för att vara utbildningen.
  */
 
 const BASE = "/utbildning";
+
+type Katalog = {
+  kurser: { slug: string; title: string; blurb: string; level: string; hours: number;
+            moduler: number; lektioner: number; ovningar: number; modulnamn: string[] }[];
+  totalt: { kurser: number; moduler: number; lektioner: number; ovningar: number; timmar: number };
+  tenta: { slug: string; title: string; pass_pct: number; uppgifter: number;
+           delar: { title: string; n: number; weight: number }[] } | null;
+};
+
+const NIVA: Record<string, string> = { grund: "Grund", fortsattning: "Fortsättning", avancerad: "Avancerad" };
 
 /* ---------- katalogen ---------- */
 
@@ -20,22 +37,73 @@ export default function EducationPage() {
   const prog = useProgress(false);
   const lessons = FLAT.length;
   const minutes = MODULES.reduce((n, m) => n + courseMinutes(m), 0);
+  // Utbildningen räknad ur tjänsten. Faller anropet får sidan stå kvar på föreläsningarna - den är fortfarande
+  // sann om dem - i stället för att visa ett fel om något besökaren inte frågat efter.
+  const [kat, setKat] = useState<Katalog | null>(null);
+  useEffect(() => { ac.catalogue().then(setKat).catch(() => setKat(null)); }, []);
+  const T = kat?.totalt;
   return (
     <PublicFrame
-      kicker="VVS-akademin"
+      kicker="FutureCalc Academy"
       title={<>Lär dig läsa ritningen —<br />inte bara mängda den</>}
-      lede="Från vad ett VVS-system är till att mängda ett övningsblad själv och få det rättat. Varje föreläsning har en egen sida, en levande figur och en kontrollfråga."
-      anchors={[{ href: "#kurser", label: "Kurserna" }, { href: "#sa", label: "Så är den upplagd" }, { href: "#kontor", label: "För kontor" }]}
+      lede="Från vad ett VVS-system är till att mängda ett riktigt blad, få det rättat mot ritningens egen geometri och skriva en sluttenta som rättas på servern."
+      anchors={[{ href: "#utbildningen", label: "Utbildningen" }, { href: "#tentan", label: "Tentan" },
+                { href: "#kurser", label: "Fria föreläsningar" }, { href: "#kontor", label: "För kontor" }]}
       aside={
         <div className="pub-keys">
-          <div className="pub-key"><div className="n">{MODULES.length}</div><div className="l">kurser</div></div>
-          <div className="pub-key"><div className="n">{lessons}</div><div className="l">föreläsningar</div></div>
-          <div className="pub-key"><div className="n">{Math.round(minutes / 60)} h</div><div className="l">sammanlagt</div></div>
+          <div className="pub-key"><div className="n">{T ? T.kurser : MODULES.length}</div><div className="l">kurser</div></div>
+          <div className="pub-key"><div className="n">{T ? T.lektioner : lessons}</div><div className="l">lektioner</div></div>
+          <div className="pub-key"><div className="n">{T ? T.ovningar : Math.round(minutes / 60)}</div><div className="l">{T ? "övningar" : "timmar"}</div></div>
         </div>
       }>
 
-      <PubSection id="kurser" kicker="Kursplanen" title={`${MODULES.length} kurser, i den ordning de bygger på varandra`}
-        lede="Man läser inte en beteckning innan man vet vad ett system är. Ordningen är innehållets egen — men ingenting är låst, och du kan börja var du vill.">
+      {kat && (
+        <PubSection id="utbildningen" kicker="Utbildningen"
+          title={`${kat.totalt.kurser} kurser, ${kat.totalt.moduler} moduler, ${kat.totalt.ovningar} övningar som rättas`}
+          lede="Kurserna bygger på varandra, men ingenting är låst — du kan börja var du vill. Varje övning rättas mot ritningens egen geometri, inte mot ett tal i en fil, så ett svar kan inte bli fel för att någon glömt uppdatera facit.">
+          <ol className="pub-courselist">
+            {kat.kurser.map((k, i) => (
+              <li key={k.slug}>
+                <AppLink to={`/academy/${k.slug}`}>
+                  <span className="pub-cno">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="pub-cbody">
+                    <span className="pub-clevel">{NIVA[k.level] ?? k.level} · {k.hours} h</span>
+                    <strong>{k.title}</strong>
+                    <span className="pub-cblurb">{k.blurb}</span>
+                    <span className="pub-cmeta">
+                      {k.moduler} moduler · {k.lektioner} lektioner{k.ovningar ? ` · ${k.ovningar} övningar` : ""}
+                    </span>
+                    {k.modulnamn.length > 0 && <span className="pub-cmods">{k.modulnamn.join(" · ")}</span>}
+                  </span>
+                  <span className="pub-carrow" aria-hidden="true">→</span>
+                </AppLink>
+              </li>
+            ))}
+          </ol>
+        </PubSection>
+      )}
+
+      {kat?.tenta && (
+        <PubSection id="tentan" kicker="Sluttentan" title={kat.tenta.title}
+          lede={`${kat.tenta.uppgifter} uppgifter i ${kat.tenta.delar.length} delar. ${kat.tenta.pass_pct} % totalt och minst 60 % i varje del — en del går inte att lämna tom och räkna upp med de andra. Rättningen sker på servern; facit lämnar den aldrig.`}>
+          <div className="pub-grid pub-three">
+            {kat.tenta.delar.map((d) => (
+              <div className="pub-card" key={d.title}>
+                <span className="no">{d.weight} %</span>
+                <h3>{d.title}</h3>
+                <p>{d.n} uppgifter</p>
+              </div>
+            ))}
+          </div>
+          <p className="pub-cta">
+            <AppLink className="lp-btn primary lg" to="/academy">Till utbildningen</AppLink>
+          </p>
+        </PubSection>
+      )}
+
+      <PubSection id="kurser" kicker="Fria föreläsningar"
+        title={`${MODULES.length} föreläsningar du får läsa utan konto`}
+        lede="Kortare texter med en levande figur och en kontrollfråga. De är inte utbildningen ovan — de rättas inte och de ger inget certifikat — men de går att läsa, spara och dela direkt.">
         <CourseGrid base={BASE} prog={prog} />
       </PubSection>
 

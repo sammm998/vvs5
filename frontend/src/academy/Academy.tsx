@@ -70,7 +70,8 @@ export function AcademyHome() {
               {me.fortsatt.kurs_titel} — nästa lektion är <b>{me.fortsatt.titel}</b>.
             </p>
           ) : (
-            <p className="acx-lead">Fem utbildningar i VVS-kalkyl, mängdning och ritningsläsning. Börja med grunderna.</p>
+            <p className="acx-lead">{(me.kurser || []).length} utbildningar i VVS-kalkyl, mängdning, ventilation,
+              entreprenadjuridik och ritningsläsning. Börja med grunderna.</p>
           )}
           {me.fortsatt && (
             <Link className="fc-btn solid" to={`/academy/lektion/${me.fortsatt.lektion}`}>
