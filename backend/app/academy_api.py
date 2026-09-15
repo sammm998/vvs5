@@ -133,6 +133,16 @@ def _course_out(c: Course) -> dict:
     return {"slug": c.slug, "title": c.title, "blurb": c.blurb, "level": c.level, "hours": c.hours}
 
 
+@router.get("/plan/{slug}")
+def plan(slug: str, _: User = Depends(current_user)):
+    """Ett övningsblad som geometri. Bladet är det man ska läsa - det är inget facit, det är ritningen."""
+    from .academy_plans import PLANS
+    p = PLANS.get(slug)
+    if not p:
+        raise HTTPException(404, "Ritningen finns inte")
+    return p.data()
+
+
 # ---------------------------------------------------------------- kurser och lektioner
 
 @router.get("/courses")

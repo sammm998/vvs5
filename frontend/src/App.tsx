@@ -3,6 +3,9 @@ import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } fr
 import { api, getToken, setToken, currentEmail, flushEvents, track } from "./api";
 import Landing from "./pages/Landing";
 import Home from "./fc/Home";
+import { AcademyCourse, AcademyHome, AcademyLesson } from "./academy/Academy";
+import { ExamPage, QuizPage } from "./academy/Exam";
+import { CertificatePage, VerifyPage } from "./academy/Certificate";
 import Login from "./pages/Login";
 import Docs from "./pages/Docs";
 import Projects from "./pages/Projects";
@@ -157,6 +160,15 @@ const ROUTES = (
     <Route path="/utbildning/:modul" element={<EducationCoursePage />} />
     <Route path="/utbildning/:modul/:lektion" element={<EducationLessonPage />} />
     <Route path="/kontakt" element={<ContactPage />} />
+    {/* FutureCalc Academy. Verifieringen är öppen med flit: ett certifikat som bara innehavaren kan visa
+        bevisar ingenting. Allt annat kräver konto. */}
+    <Route path="/verifiera" element={<VerifyPage />} />
+    <Route path="/academy" element={<Guard><AcademyHome /></Guard>} />
+    <Route path="/academy/lektion/:id" element={<Guard><AcademyLesson /></Guard>} />
+    <Route path="/academy/tenta/:slug" element={<Guard><ExamPage /></Guard>} />
+    <Route path="/academy/:kurs" element={<Guard><AcademyCourse /></Guard>} />
+    <Route path="/academy/:kurs/:modul/quiz" element={<Guard><QuizPage /></Guard>} />
+    <Route path="/certifikat/:code" element={<Guard><CertificatePage /></Guard>} />
     <Route path="/projekt" element={<Guard><Projects /></Guard>} />
     <Route path="/projects/:id" element={<Guard><ProjectPage /></Guard>} />
     <Route path="/projects/:id/analys" element={<Guard><ProjectAnalysisPage /></Guard>} />
