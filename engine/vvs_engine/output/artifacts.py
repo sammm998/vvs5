@@ -369,6 +369,7 @@ DECLINED_WHY = {
     "NO_LEADER_EVER_CAME_NEAR_IT": "ingen ledare kom i närheten - läsningen vägde den aldrig",
     "ON_A_LAYER_THE_READING_TREATS_AS_ANNOTATION": "på ett lager läsningen behandlar som text och ramar",
     "A_LABEL_POINTED_AT_IT_AND_IT_WAS_NOT_TAKEN": "en etikett pekade hit, men pennan togs inte som rör",
+    "IT_RUNS_FROM_A_LABEL_BLOCK": "hänvisningslinjer - strecken går från bladets egna etiketter, inte genom byggnaden",
 }
 
 

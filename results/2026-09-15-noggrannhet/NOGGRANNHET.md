@@ -129,3 +129,13 @@ ritat: en dimensionsändring ritas som en del, och där ingen del står ritad ha
 Kvar i trädet: `system_letters` (`S1` *är* ett självfallssystem - sant oberoende av referensen) och
 `water_level`/`flows_downhill` med sina prov, eftersom de hör till `choose_segment`, där ramen stämmer.
 Ägandeguarden och rördragningen genom `pipeline.py` är backade.
+
+**Hela korpusen sa samma sak.** Grind 68 mot grind 67, 59 blad, 11 399 m i referensen:
+
+| mått | grind 67 | grind 68 (vattengång) |
+|---|---|---|
+| täckning | **79,25 %** | 78,96 % |
+| falskt ägande | **15,82 %** | 16,14 % |
+| FULL / PARTIAL / OVER / MISSED / WRONG | **171** / 200 / 179 / 150 / 88 | 166 / 203 / 180 / 152 / 88 |
+
+Sämre på varje mått. Backat.

@@ -153,8 +153,21 @@ def label_reach_fails(families, anchors, pipe_labels: set[str]) -> bool:
     return reach_is_poor(families, anchors, pipe_labels)
 
 
+LEADER_INK_SHARE = 0.6      # så stor del av en pennas streck måste börja eller sluta vid en etikett
+
+
+def _runs_from_a_block(pth, boxes: list[tuple[float, float, float, float]], tol: float = 14.0) -> bool:
+    """Börjar eller slutar strecket vid en beteckningsruta? Då är det en hänvisningslinje, inte en ledning."""
+    for sg in pth.segs:
+        for x, y in ((sg.x0, sg.y0), (sg.x1, sg.y1)):
+            for x0, y0, x1, y1 in boxes:
+                if x0 - tol <= x <= x1 + tol and y0 - tol <= y <= y1 + tol:
+                    return True
+    return False
+
+
 def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_layers: dict, glyph_pids: set,
-                  leaders: list) -> dict:
+                  leaders: list, blocks: list | None = None) -> dict:
     """Every drawn stroke the reading did not weigh as a candidate for pipe, and which of two things it was.
 
     Ink lands here for one of two reasons. Either no label's leader ever came near it, or it sits on a layer this
@@ -174,6 +187,13 @@ def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_l
     # actually happened is that the sheet's own labels found this ink and the reading refused it anyway.
     pointed = (set(contact_stats.get("votes") or {}) - seen_fams) - ann
     lead_pids = {pid for ld in leaders for pid in ld.path_ids}
+    # Var bladet skriver sina beteckningar. Ett streck som börjar eller slutar där är en hänvisningslinje, och
+    # att kalla det "aldrig vägd som rör" är sant men vilseledande: det ser ut som en tappad ledning för den som
+    # läser, och skickar hen att leta efter ett lagerfel som inte finns. Ritningen säger vad strecket är, och
+    # läsningen ska säga det vidare.
+    boxes = [(min(r.line.bbox[0] for r in b.rows), min(r.line.bbox[1] for r in b.rows),
+              max(r.line.bbox[2] for r in b.rows), max(r.line.bbox[3] for r in b.rows))
+             for b in (blocks or []) if b.rows]
     fams: dict[str, dict] = {}
     for pth in page.paths:
         if pth.kind != "s" or pth.pid in glyph_pids or pth.pid in lead_pids:
@@ -185,11 +205,18 @@ def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_l
                "A_LABEL_POINTED_AT_IT_AND_IT_WAS_NOT_TAKEN" if fk in pointed else
                "NO_LEADER_EVER_CAME_NEAR_IT")
         r = fams.setdefault(fk, {"family": fk, "why": why, "width": round(pth.width, 2),
-                                 "total_length_pt": 0.0, "n_segments": 0, "paths": []})
+                                 "total_length_pt": 0.0, "n_segments": 0, "paths": [],
+                                 "n_strokes": 0, "n_from_a_block": 0})
         r["total_length_pt"] += pth.length
         r["n_segments"] += len(pth.segs)
+        r["n_strokes"] += 1
+        if boxes and _runs_from_a_block(pth, boxes):
+            r["n_from_a_block"] += 1
         if len(r["paths"]) < UNCONSIDERED_PATHS_PER_FAMILY:
             r["paths"].append(pth)
+    for r in fams.values():
+        if r["n_strokes"] and r["n_from_a_block"] >= LEADER_INK_SHARE * r["n_strokes"]:
+            r["why"] = "IT_RUNS_FROM_A_LABEL_BLOCK"
     # A family drawn on a layer named the way this drawing names its pipe layers is the one worth a second look:
     # it is where the sheet puts pipes, and nothing pointed at it. It still cannot be measured - a run with no
     # label has no identity - but "this looks like a pipe layer and no leader reached it" is a different sentence
@@ -1471,7 +1498,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # a family taken after the passes ran is not a declined one, whatever the pass that looked at it decided
     if contact_stats.get("declined_families"):
         contact_stats["declined_families"] = {k: v for k, v in contact_stats["declined_families"].items() if k not in pipe_families}
-    contact_stats["unconsidered_families"] = _unconsidered(page, pipe_families, contact_stats, ann_layers, glyph_pids, leaders)
+    contact_stats["unconsidered_families"] = _unconsidered(page, pipe_families, contact_stats, ann_layers, glyph_pids, leaders, blocks)
     # where the drawing drew the same line twice. Said, not subtracted: see duplicate_overlaps for the measurement
     # that settles which of the two is the smaller error.
     dup_pt, dup_places = 0.0, []

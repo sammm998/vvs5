@@ -707,7 +707,8 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
       for (const g of f.segments) {
         take(segDist(pt, [g[0], g[1]], [g[2], g[3]]), {
           at: pt, kind: "bortvald",
-          title: f.kind === "not_examined" ? "Aldrig vägd som rör" : "Bortvald: inte rör",
+          title: f.why === "IT_RUNS_FROM_A_LABEL_BLOCK" ? "Hänvisningslinje, inte rör"
+            : f.kind === "not_examined" ? "Aldrig vägd som rör" : "Bortvald: inte rör",
           // the layer name is what a draughtsman recognises; the stroke style is an internal key and only noise here
           detail: `${f.why_sv || f.why || "inget skäl noterat"}${f.layer ? ` · lager ${f.layer}` : ""}`,
         });
