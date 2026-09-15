@@ -340,3 +340,25 @@ medlemmarna var för sig**. Gör den det - och på just det bladet gör den det 
 namn och namnet ensamt kan inte skilja dem åt. Då vägs ingenting ihop: hellre en rad som inte går att
 poängsätta än en poäng som ser bra ut. Över korpusen är ändringen därför en nolla i dag, och den ligger där
 för de blad där referensen skriver ihop utan att också skriva isär.
+
+## Fungerar det oavsett stil? Mätt per stil, grind 72
+
+| stil | blad | facit m | täckning | falskt ägande | beteckningar funna | av våra finns i facit |
+|---|---:|---:|---:|---:|---:|---:|
+| **W** (konturglyfer) | 30 | 5 549 | 78,2 % | **10,6 %** | **94,4 %** | 78,1 % |
+| **V** (textlager) | 29 | 5 850 | 80,2 % | **20,6 %** | **80,5 %** | 78,5 % |
+
+Svaret är nej, inte likvärdigt. Bladen med konturglyfer läser sina beteckningar nästan perfekt och äger nästan
+inget falskt; bladen med textlager tappar var femte beteckning och har dubbelt så mycket falskt ägande. Det är
+inte en gradskillnad utan två olika problem.
+
+Och V-bladens svaghet har en adress. Av allt läsningen kallar beteckning saknar 41,5 % en hänvisningslinje -
+men de flesta av dem *ska* sakna den: `EI60` är en brandklass, `TS101` en komponent, `RAD102-10-400X2300` en
+radiator, `AV611-10` en ventil. De är märkning, inte rörnamn. Kvar blir de som är rörnamn:
+
+    V-50-1-A0123    SF01-P5 × 11   (facit vill ha SF1-P5-110, 26,5 m)
+    V-50-1-B0122    S01-P3 × 8, S01-P5 × 3
+    V-50-1-A0422    S01-P5 × 5
+
+Elva etiketter för samma stam på ett blad, ingen av dem når ett rör. Det är nästa lever, och det är den
+additiva sorten: fler placerade etiketter ger täckning utan att ta ifrån någon annan rad.
