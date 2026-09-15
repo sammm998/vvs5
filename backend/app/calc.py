@@ -475,7 +475,7 @@ def tender_meta(calc: dict, meta: dict) -> dict:
     A = calc["assumptions"]
     today = dt.date.today()
     return {
-        "company": A.get("company") or meta.get("company") or "VVS Mängdning",
+        "company": A.get("company") or meta.get("company") or "FutureCalc",
         "customer": A.get("customer") or "–",
         "project": meta.get("project") or "–",
         "drawing": meta.get("drawing") or "",

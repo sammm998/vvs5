@@ -63,7 +63,7 @@ export default function PublicFrame({ kicker, title, lede, children, wide = fals
                 <path d="M3 15 H8 V7 H14 V15 H19" stroke="#6ee7a5" strokeWidth="2.3" fill="none"
                   strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              VVS Mängdning
+              FutureCalc
             </span>
             <p>Mängden som ritningen redan säger. Varje meter med sitt belägg kvar.</p>
           </div>

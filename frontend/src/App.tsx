@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import { api, getToken, setToken, currentEmail, flushEvents, track } from "./api";
 import Landing from "./pages/Landing";
+import Home from "./fc/Home";
 import Login from "./pages/Login";
 import Docs from "./pages/Docs";
 import Projects from "./pages/Projects";
@@ -142,7 +143,10 @@ function IconOut() {
 const ROUTES = (
   <Boundary what="sidan">
   <Routes>
-    <Route path="/" element={<Landing />} />
+    <Route path="/" element={<Home />} />
+    {/* Den förra startsidan ligger kvar under eget namn tills varje avsnitt som är värt att
+        behålla flyttat in i den nya. Ingen länk pekar hit; den är för jämförelse. */}
+    <Route path="/klassisk" element={<Landing />} />
     <Route path="/login" element={<Login />} />
     <Route path="/dokumentation" element={<Docs />} />
     <Route path="/priser" element={<PricingPage />} />
@@ -247,7 +251,7 @@ export default function App() {
           title={rail ? "Visa sidopanelen" : "Fäll ihop sidopanelen"}
           aria-label={rail ? "Visa sidopanelen" : "Fäll ihop sidopanelen"}><IconRail /></button>
         <div>
-          <Link to="/projekt" className="brand"><Mark /> <span className="wide">VVS Mängdning</span></Link>
+          <Link to="/projekt" className="brand"><Mark /> <span className="wide">FutureCalc</span></Link>
           <div className="org wide" style={{ marginTop: 10 }}>Mängdning ur ren vektor</div>
         </div>
         <nav>

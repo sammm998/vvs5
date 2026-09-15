@@ -7,7 +7,7 @@ DEV_SECRET = "change-me-in-production"
 
 
 class Settings(BaseSettings):
-    app_name: str = "VVS Mängdning"
+    app_name: str = "FutureCalc"
     database_url: str = "sqlite:///./data/vvs.db"
     storage_root: str = "./data/storage"
     # Nyckeln varje inloggningsbevis undertecknas med. Standardvärdet står i källkoden, och en tjänst som
