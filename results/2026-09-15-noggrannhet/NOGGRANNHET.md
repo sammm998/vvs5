@@ -139,3 +139,30 @@ Kvar i trädet: `system_letters` (`S1` *är* ett självfallssystem - sant oberoe
 | FULL / PARTIAL / OVER / MISSED / WRONG | **171** / 200 / 179 / 150 / 88 | 166 / 203 / 180 / 152 / 88 |
 
 Sämre på varje mått. Backat.
+
+## Staplingskonventionen: mätt, och korpusen kan inte avgöra
+
+Användaren gav regeln: staplas flera beteckningar vid en hänvisningslinje är det översta röret det som ligger
+längst bort, och det nedersta det närmaste. Den lades in som **sista** ledet i en kedja som redan fanns -
+uteslutning (en linje som namnges för sig någon annanstans pinnar bunten) går före, och bladets egen vana
+(ordningen läst ur de buntar bladet själv avgjort) går före den. Konventionen svarar bara när bladet inte sagt
+någonting alls, och skälet heter då `multi_row_bundle_read_by_the_stacking_convention`.
+
+Grind 69 mot grind 67, 59 blad:
+
+| mått | grind 67 | grind 69 (konventionen) |
+|---|---|---|
+| täckning | 79,25 % | 79,23 % |
+| falskt ägande | 15,82 % | 15,85 % |
+| FULL / PARTIAL / OVER / MISSED / WRONG | 171 / 200 / 179 / 150 / 88 | **174** / 200 / **176** / 151 / 89 |
+| beteckningar funna | 87,72 % | **87,87 %** |
+
+**Två blad av 59 ändrades.** På det ena (V-50-1-A0123) blir en MISSED en OVER - röret hittas men dras för
+långt - och täckningen stiger 0,2 procentenheter. På det andra (V-50-1-A0521) faller täckningen 4,3
+procentenheter, och det bladet har redan 188 % falskt ägande: dess referens mäter en halvmeter där läsningen
+äger femtiofem, så ingenting på det bladet väger något.
+
+Slutsatsen är inte att regeln är fel. Slutsatsen är att **korpusen inte kan avgöra den**: den får svara på två
+blad, och det ena är trasigt av andra skäl. Den ligger därför utanför trädet tills det finns ett blad där en
+staplad etikett står över en bunt och referensen skiljer raderna åt. Att lägga in den på det här underlaget
+vore att göra läsningen säkrare på en fråga mätningen inte har svarat på.

@@ -756,10 +756,36 @@ def bundle_at(contacts: list[Contact], gidx: GeometryIndex, want: int, skip: set
     return [[found[k]] for k in sorted(found)]
 
 
+def the_run_the_leader_ends_on(rows: list, ld: Leader, contacts: list[Contact]) -> list[Contact]:
+    """En hänvisningslinje slutar vid det den menar.
+
+    Drar ritaren linjen från etiketten förbi ett rör och fram till ett annat sätter hon ett streck där linjen
+    korsar och ett streck där den slutar. Det senare är beteckningens rör; det förra säger bara var linjen gick
+    fram. Läsningen tog båda som fäste, och då fick stammen radiatoranslutningens dimension: fyra
+    DN15-etiketter streckade stammen i förbifarten på väg till sitt eget stråk, och stammen blev DN15 i hela
+    sin längd.
+
+    Regeln gäller en etikett med en enda rad som namnger ett enda rör. Staplar bladet flera rader över en bunt,
+    eller säger raden själv att den gäller flera rör, är korsstrecken själva fästet - linjen korsar varje rör
+    den namnger och streckar det - och då rörs ingenting här.
+
+    Vad som skiljer de två fallen åt är ritarens eget slutstreck. Har hon markerat var linjen slutar har hon
+    sagt vad den pekar på, och då är korsstrecken bara vägen dit - även när läsningen inte hittar något rör vid
+    slutet; då är svaret att etiketten inte nådde fram, vilket är ärligare än att ge den stammen den passerade.
+    Slutar linjen omarkerad strax bortom de rör den streckat är strecken allt hon skrivit, och de får stå.
+    """
+    if len(rows) != 1 or getattr(rows[0], "multiplier", 1) > 1:
+        return contacts
+    if not ld.end_marks:
+        return contacts
+    return [c for c in contacts if c.kind != "crossing_tick"]
+
+
 def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, contacts: list[Contact],
                   system_tokens_in_drawing: set[str], spelled_out: frozenset[str] = frozenset(),
                   paths: dict | None = None, gidx: GeometryIndex | None = None) -> list[PipeCodeAnchor]:
     """Map designation rows of a block to contacted vector-family groups (bijection required)."""
+    contacts = the_run_the_leader_ends_on(rows, ld, contacts)
     groups: dict[str, list[Contact]] = defaultdict(list)
     for c in contacts:
         groups[c.family].append(c)

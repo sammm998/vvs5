@@ -153,7 +153,7 @@ def label_reach_fails(families, anchors, pipe_labels: set[str]) -> bool:
     return reach_is_poor(families, anchors, pipe_labels)
 
 
-LEADER_INK_SHARE = 0.6      # så stor del av en pennas streck måste börja eller sluta vid en etikett
+BLOCK_INK_SHARE = 0.6       # så stor del av en pennas streck måste börja eller sluta vid en beteckningsruta
 
 
 def _runs_from_a_block(pth, boxes: list[tuple[float, float, float, float]], tol: float = 14.0) -> bool:
@@ -215,7 +215,7 @@ def _unconsidered(page: RawPage, pipe_families: dict, contact_stats: dict, ann_l
         if len(r["paths"]) < UNCONSIDERED_PATHS_PER_FAMILY:
             r["paths"].append(pth)
     for r in fams.values():
-        if r["n_strokes"] and r["n_from_a_block"] >= LEADER_INK_SHARE * r["n_strokes"]:
+        if r["n_strokes"] and r["n_from_a_block"] >= BLOCK_INK_SHARE * r["n_strokes"]:
             r["why"] = "IT_RUNS_FROM_A_LABEL_BLOCK"
     # A family drawn on a layer named the way this drawing names its pipe layers is the one worth a second look:
     # it is where the sheet puts pipes, and nothing pointed at it. It still cannot be measured - a run with no
