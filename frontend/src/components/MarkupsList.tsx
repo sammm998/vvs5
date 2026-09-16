@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { t as tr } from "../i18n";
 import { markupColor } from "./PdfViewer";
 
 /* Markeringslistan: allt någon ritat på handlingen, som en lista att arbeta i.
@@ -155,21 +156,21 @@ export default function MarkupsList({ rows, selected, onSelect, onPatch, onPatch
   return (
     <div className="mk-list">
       <div className="mk-filters">
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Sök i ämne, kommentar, beteckning" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tr("Sök i ämne, kommentar, beteckning")} />
         <select value={fPage} onChange={(e) => setFPage(e.target.value)} aria-label="Sida">
-          <option value="">Alla sidor</option>
+          <option value="">{tr("Alla sidor")}</option>
           {pages.map((p) => <option key={p} value={String(p)}>Sida {p + 1}</option>)}
         </select>
         <select value={fLayer} onChange={(e) => setFLayer(e.target.value)} aria-label="Lager">
-          <option value="">Alla lager</option>
+          <option value="">{tr("Alla lager")}</option>
           {layers.map((l) => <option key={l} value={l}>{l}</option>)}
         </select>
         <select value={fTool} onChange={(e) => setFTool(e.target.value)} aria-label="Verktyg">
-          <option value="">Alla verktyg</option>
+          <option value="">{tr("Alla verktyg")}</option>
           {tools.map((t) => <option key={t} value={t}>{TOOL_LABEL[t] ?? t}</option>)}
         </select>
         <select value={fStatus} onChange={(e) => setFStatus(e.target.value)} aria-label="Status">
-          <option value="">Alla status</option>
+          <option value="">{tr("Alla status")}</option>
           {STATUSES.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
         </select>
         <span className="muted small">{shown.length} av {rows.length}</span>
@@ -186,7 +187,7 @@ export default function MarkupsList({ rows, selected, onSelect, onPatch, onPatch
           <button className="secondary small" disabled={busy} onClick={() => {
             const to = window.prompt("Flytta de markerade till vilket lager?", chosen.length ? (shown.find((r) => r.id === chosen[0])?.layer ?? "") : "");
             if (to && to.trim()) { onPatchMany(chosen, { layer: to.trim() }); setChecked(new Set()); }
-          }}>Byt lager…</button>
+          }}>{tr("Byt lager…")}</button>
           <button className="ghost small" onClick={() => setChecked(new Set())}>Avmarkera</button>
         </div>
       )}
@@ -195,7 +196,7 @@ export default function MarkupsList({ rows, selected, onSelect, onPatch, onPatch
         <table className="qty mk-table">
           <thead>
             <tr>
-              <th><input type="checkbox" checked={allShown} onChange={toggleAll} aria-label="Markera alla" /></th>
+              <th><input type="checkbox" checked={allShown} onChange={toggleAll} aria-label={tr("Markera alla")} /></th>
               <th className="sortable" onClick={() => pick("page")}>Sida{arrow("page")}</th>
               <th className="sortable" onClick={() => pick("tool")}>Verktyg{arrow("tool")}</th>
               <th className="sortable" onClick={() => pick("subject")}>Ämne{arrow("subject")}</th>
@@ -228,7 +229,7 @@ export default function MarkupsList({ rows, selected, onSelect, onPatch, onPatch
                   </select>
                 </td>
                 <td onClick={(e) => e.stopPropagation()}>
-                  <button className="ghost small" disabled={busy} title="Ta bort markeringen"
+                  <button className="ghost small" disabled={busy} title={tr("Ta bort markeringen")}
                     onClick={() => { if (window.confirm("Ta bort markeringen?")) onDelete(r.id); }}>✕</button>
                 </td>
               </tr>

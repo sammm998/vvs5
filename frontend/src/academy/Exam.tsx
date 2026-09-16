@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import Exercise from "./Exercise";
 import { ac } from "./api";
@@ -59,7 +60,7 @@ export function ExamPage() {
 
   if (err) return <Frame title="Sluttenta"><p className="acx-err">{err}</p>
     <p><Link className="fc-btn sm" to="/academy">Tillbaka</Link></p></Frame>;
-  if (!att) return <Frame title="Sluttenta"><p className="acx-load">Förbereder tentan…</p></Frame>;
+  if (!att) return <Frame title="Sluttenta"><p className="acx-load">{tr("Förbereder tentan…")}</p></Frame>;
 
   if (result) return <ExamResult att={att} result={result} />;
 
@@ -77,7 +78,7 @@ export function ExamPage() {
         <div className="acx-exam-prog">
           <span className="fc-label">{answered} av {items.length} besvarade</span>
           <div className="acx-bar"><i style={{ width: `${(answered / items.length) * 100}%` }} /></div>
-          <span className="fc-label">Svaren sparas automatiskt</span>
+          <span className="fc-label">{tr("Svaren sparas automatiskt")}</span>
         </div>
       </div>
 
@@ -102,9 +103,9 @@ export function ExamPage() {
       </section>
 
       <footer className="acx-exam-foot">
-        <button className="fc-btn sm" onClick={() => setAt((i) => Math.max(0, i - 1))} disabled={at === 0}>← Föregående</button>
+        <button className="fc-btn sm" onClick={() => setAt((i) => Math.max(0, i - 1))} disabled={at === 0}>{tr("← Föregående")}</button>
         <button className="fc-btn sm" onClick={() => setAt((i) => Math.min(items.length - 1, i + 1))}
-          disabled={at === items.length - 1}>Nästa →</button>
+          disabled={at === items.length - 1}>{tr("Nästa →")}</button>
         <button className="fc-btn solid" disabled={sending}
           onClick={async () => {
             if (!window.confirm(`Lämna in tentan? ${items.length - answered} uppgifter är obesvarade och räknas som fel.`)) return;
@@ -130,7 +131,7 @@ function ExamResult({ att, result }: { att: any; result: any }) {
         <p className="acx-result-n">{Math.round(result.score * 100)} %</p>
 
         <table className="acx-areas">
-          <thead><tr><th>Område</th><th className="num">Vikt</th><th className="num">Resultat</th><th /></tr></thead>
+          <thead><tr><th>{tr("Område")}</th><th className="num">Vikt</th><th className="num">Resultat</th><th /></tr></thead>
           <tbody>
             {Object.entries(areas).map(([a, v]: [string, any]) => (
               <tr key={a} className={v.godkand ? "ok" : "no"}>
@@ -145,8 +146,8 @@ function ExamResult({ att, result }: { att: any; result: any }) {
 
         {result.passed ? (
           <div className="acx-result-cta">
-            <p>Du är FutureCalc Certified. Certifikatet är utfärdat och går att verifiera med sitt id.</p>
-            <Link className="fc-btn solid" to={`/certifikat/${result.certifikat}`}>Öppna certifikatet <span aria-hidden="true">→</span></Link>
+            <p>{tr("Du är FutureCalc Certified. Certifikatet är utfärdat och går att verifiera med sitt id.")}</p>
+            <Link className="fc-btn solid" to={`/certifikat/${result.certifikat}`}>{tr("Öppna certifikatet")} <span aria-hidden="true">→</span></Link>
           </div>
         ) : (
           <div className="acx-result-cta">
@@ -154,7 +155,7 @@ function ExamResult({ att, result }: { att: any; result: any }) {
               Godkänt kräver {att.pass_pct} % totalt och minst {att.section_min_pct} % i varje del.
               {result.svaga?.length ? ` Repetera: ${result.svaga.map(areaName).join(", ")}.` : ""}
             </p>
-            <Link className="fc-btn solid" to="/academy">Tillbaka till utbildningarna</Link>
+            <Link className="fc-btn solid" to="/academy">{tr("Tillbaka till utbildningarna")}</Link>
           </div>
         )}
       </section>
@@ -210,7 +211,7 @@ export function QuestionView(
       )}
       {q.kind === "numeric" && (
         <label className="ex-num">
-          <span>Ditt svar</span>
+          <span>{tr("Ditt svar")}</span>
           <input inputMode="decimal" value={num}
             onChange={(e) => {
               setNum(e.target.value);
@@ -246,7 +247,7 @@ export function QuizPage() {
   useEffect(load, [load]);
 
   if (err) return <Frame title="Quiz"><p className="acx-err">{err}</p></Frame>;
-  if (!q) return <Frame title="Quiz"><p className="acx-load">Hämtar frågor…</p></Frame>;
+  if (!q) return <Frame title="Quiz"><p className="acx-load">{tr("Hämtar frågor…")}</p></Frame>;
 
   return (
     <Frame title={`Quiz — ${q.modul}`}>
@@ -286,7 +287,7 @@ export function QuizPage() {
               ))}
             </ul>
             <div className="acx-quiz-cta">
-              <button className="fc-btn sm" onClick={load}>Gör ett nytt quiz</button>
+              <button className="fc-btn sm" onClick={load}>{tr("Gör ett nytt quiz")}</button>
               <Link className="fc-btn sm" to={`/academy/${kurs}`}>Tillbaka</Link>
             </div>
           </div>

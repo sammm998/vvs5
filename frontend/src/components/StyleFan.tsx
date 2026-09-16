@@ -1,4 +1,5 @@
 import { useSectionProgress } from "./lp-motion";
+import { t as tr } from "../i18n";
 import { usePointerParallax } from "./tilt";
 
 /* One method, not one template.
@@ -92,7 +93,7 @@ export default function StyleFan() {
       <div className="lp-fan-pin">
         <div className="lp-sec-head">
           <div className="lp-kicker">Stilar</div>
-          <h2 className="lp-h2">En metodik, inte en mall</h2>
+          <h2 className="lp-h2">{tr("En metodik, inte en mall")}</h2>
           <p>
             Varje kontor ritar rör på sitt sätt. Ingenting av det är inställt någonstans — läsningen kommer fram
             till hur just det här bladets rör ser ut genom att se var bladets egna etiketter landar.

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ac } from "./api";
 import "./academy.css";
@@ -27,12 +28,12 @@ function Sheet({ c }: { c: { holder: string; title: string; code: string; issued
             </svg>
             FutureCalc
           </span>
-          <span className="cert-label">Certificate of Competence</span>
+          <span className="cert-label">{tr("Certificate of Competence")}</span>
         </header>
 
-        <p className="cert-pre">Härmed intygas att</p>
+        <p className="cert-pre">{tr("Härmed intygas att")}</p>
         <p className="cert-name">{c.holder}</p>
-        <p className="cert-for">har genomfört och godkänts i</p>
+        <p className="cert-for">{tr("har genomfört och godkänts i")}</p>
         <p className="cert-title">
           FutureCalc Certified<br />
           <i>VVS Kalkyl &amp; Mängdning</i>
@@ -41,7 +42,7 @@ function Sheet({ c }: { c: { holder: string; title: string; code: string; issued
         <div className="cert-grid">
           <div><span className="cert-label">Utbildning</span><b>{c.title}</b></div>
           {c.score !== undefined && <div><span className="cert-label">Resultat</span><b>{c.score} %</b></div>}
-          <div><span className="cert-label">Utfärdat</span><b>{String(c.issued).slice(0, 10)}</b></div>
+          <div><span className="cert-label">{tr("Utfärdat")}</span><b>{String(c.issued).slice(0, 10)}</b></div>
           <div><span className="cert-label">Certifikat-ID</span><b className="cert-code">{c.code}</b></div>
         </div>
 
@@ -74,8 +75,8 @@ export function CertificatePage() {
   }, [code]);
 
   if (err) return <div className="acx"><p className="acx-err">{err}</p>
-    <p><Link className="fc-btn sm" to="/academy">Tillbaka till Academy</Link></p></div>;
-  if (!c) return <div className="acx"><p className="acx-load">Hämtar certifikatet…</p></div>;
+    <p><Link className="fc-btn sm" to="/academy">{tr("Tillbaka till Academy")}</Link></p></div>;
+  if (!c) return <div className="acx"><p className="acx-load">{tr("Hämtar certifikatet…")}</p></div>;
 
   return (
     <div className="acx cert-page">
@@ -83,14 +84,14 @@ export function CertificatePage() {
         <Link className="acx-brand" to="/academy">FutureCalc <span>Academy</span></Link>
         <nav className="acx-crumb"><span>Certifikat</span></nav>
         <div className="cert-acts">
-          <button className="fc-btn sm" onClick={() => window.print()}>Skriv ut / spara som PDF</button>
-          <button className="fc-btn sm" onClick={() => navigator.clipboard?.writeText(c.code)}>Kopiera ID</button>
+          <button className="fc-btn sm" onClick={() => window.print()}>{tr("Skriv ut / spara som PDF")}</button>
+          <button className="fc-btn sm" onClick={() => navigator.clipboard?.writeText(c.code)}>{tr("Kopiera ID")}</button>
           <Link className="fc-btn sm" to={`/verifiera?id=${c.code}`}>Verifiera</Link>
         </div>
       </header>
       <Sheet c={c} />
       <p className="cert-note no-print">
-        Utskriften blir ett A4-ark utan menyer. Välj <b>Spara som PDF</b> i utskriftsdialogen för en fil.
+        Utskriften blir ett A4-ark utan menyer. Välj <b>{tr("Spara som PDF")}</b> i utskriftsdialogen för en fil.
       </p>
     </div>
   );
@@ -125,7 +126,7 @@ export function VerifyPage() {
 
       <section className="vfy">
         <p className="fc-label">Certifikatkontroll</p>
-        <h1 className="fc-display fc-display-md">Verifiera ett FutureCalc-certifikat</h1>
+        <h1 className="fc-display fc-display-md">{tr("Verifiera ett FutureCalc-certifikat")}</h1>
         <p className="acx-lead">
           Skriv in certifikat-ID:t som står på certifikatet. Kontrollen kräver ingen inloggning.
         </p>
@@ -148,9 +149,9 @@ export function VerifyPage() {
               <dl className="vfy-dl">
                 <div><dt>Innehavare</dt><dd>{out.holder}</dd></div>
                 <div><dt>Utbildning</dt><dd>{out.title}</dd></div>
-                <div><dt>Utfärdat</dt><dd>{out.issued}</dd></div>
+                <div><dt>{tr("Utfärdat")}</dt><dd>{out.issued}</dd></div>
                 <div><dt>Certifikat-ID</dt><dd className="cert-code">{out.code}</dd></div>
-                {out.expires && <div><dt>Giltigt till</dt><dd>{out.expires}</dd></div>}
+                {out.expires && <div><dt>{tr("Giltigt till")}</dt><dd>{out.expires}</dd></div>}
               </dl>
             ) : (
               <p>{out.skal}</p>

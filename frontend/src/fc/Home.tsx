@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { t as tr } from "../i18n";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import Nav, { Logo } from "./Nav";
@@ -79,10 +80,10 @@ function Hero() {
       <div className="fc-hero-plan" aria-hidden="true"><Blueprint /></div>
 
       <div className="fc-hero-in">
-        <p className="fc-label fc-hero-eyebrow">FutureCalc — VVS / Estimation / Intelligence</p>
+        <p className="fc-label fc-hero-eyebrow">{tr("FutureCalc — VVS / Estimation / Intelligence")}</p>
         <h1 className="fc-hero-l fc-display fc-display-xl">
-          <span className="fc-line"><span className="fc-line-in">THE FUTURE</span></span>
-          <span className="fc-line"><span className="fc-line-in">OF VVS</span></span>
+          <span className="fc-line"><span className="fc-line-in">{tr("THE FUTURE")}</span></span>
+          <span className="fc-line"><span className="fc-line-in">{tr("OF VVS")}</span></span>
           <span className="fc-line"><span className="fc-line-in"><i className="fc-italic">calculation</i></span></span>
         </h1>
       </div>
@@ -96,10 +97,10 @@ function Hero() {
       </div>
 
       <div className="fc-hero-foot">
-        <p className="fc-lead">Från ritning till färdig kalkyl. Varje meter läst ur bladets egna beteckningar.</p>
+        <p className="fc-lead">{tr("Från ritning till färdig kalkyl. Varje meter läst ur bladets egna beteckningar.")}</p>
         <div className="fc-hero-cta">
-          <MagneticButton className="solid" href="/login">Enter FutureCalc <span aria-hidden="true">→</span></MagneticButton>
-          <MagneticButton href="#kap-2">Se hur den läser</MagneticButton>
+          <MagneticButton className="solid" href="/login">{tr("Enter FutureCalc")} <span aria-hidden="true">→</span></MagneticButton>
+          <MagneticButton href="#kap-2">{tr("Se hur den läser")}</MagneticButton>
         </div>
       </div>
     </section>
@@ -135,9 +136,9 @@ function RiseScene() {
         <Scene3D className="fc-rise-3d" />
         <div className="fc-rise-over">
           <div className="fc-rise-t">
-            <p className="fc-label">Samma geometri, två representationer</p>
+            <p className="fc-label">{tr("Samma geometri, två representationer")}</p>
             <h2 className="fc-display fc-display-lg">
-              ETT PLATT BLAD<br /><i className="fc-italic">blir en byggnad</i>
+              ETT PLATT BLAD<br /><i className="fc-italic">{tr("blir en byggnad")}</i>
             </h2>
           </div>
           <div className="fc-rise-meta">
@@ -175,7 +176,7 @@ function StickyStatement() {
       }}
     >
       <div ref={ref} className="fc-state-in">
-        <p className="fc-label">02 — Problemet</p>
+        <p className="fc-label">{tr("02 — Problemet")}</p>
         <p className="fc-state-t fc-display fc-display-lg">
           {words.map((w) => <span key={w} className="fc-state-w">{w} </span>)}
         </p>
@@ -235,8 +236,8 @@ function TakeoffScene() {
     >
       <div ref={ref} className="fc-take-in">
         <header className="fc-take-head">
-          <p className="fc-label">Chapter II — From Drawing to Quantity</p>
-          <h2 className="fc-display fc-display-md">Den läser bladet <i className="fc-italic">rad för rad</i></h2>
+          <p className="fc-label">{tr("Chapter II — From Drawing to Quantity")}</p>
+          <h2 className="fc-display fc-display-md">{tr("Den läser bladet")} <i className="fc-italic">{tr("rad för rad")}</i></h2>
         </header>
 
         <div className="fc-take-stage">
@@ -259,12 +260,12 @@ function TakeoffScene() {
           </div>
 
           <div className="fc-take-out">
-            <p className="fc-label">In i kalkylen</p>
+            <p className="fc-label">{tr("In i kalkylen")}</p>
             <div className="fc-take-rows">
               <div className="fc-take-row"><span>KV1-X31-25</span><span>DN25</span><span>12,48 m</span></div>
-              <div className="fc-take-row"><span>Rör, koppar</span><span>85 kr/m</span><span>1 061 kr</span></div>
+              <div className="fc-take-row"><span>{tr("Rör, koppar")}</span><span>{tr("85 kr/m")}</span><span>{tr("1 061 kr")}</span></div>
               <div className="fc-take-row"><span>Montage</span><span>0,18 h/m</span><span>2,25 h</span></div>
-              <div className="fc-take-row tot"><span>Summa</span><span /><span>2 229 kr</span></div>
+              <div className="fc-take-row tot"><span>Summa</span><span /><span>{tr("2 229 kr")}</span></div>
             </div>
           </div>
         </aside>
@@ -310,7 +311,7 @@ const PRODUCTS = [
 function ProductShowcase() {
   return (
     <>
-      <ChapterOpener n="III" id="kap-3" title="Intelligence built for VVS"
+      <ChapterOpener n="III" id="kap-3" title={tr("Intelligence built for VVS")}
         sub="Fem delar, en produkt. Läsningen ger mängden, mängden ger kalkylen, kalkylen ger anbudet — och akademin gör att den som läser förstår vad den ser." />
       <HorizontalGallery className="fc-show">
         {PRODUCTS.map((p) => (
@@ -321,7 +322,7 @@ function ProductShowcase() {
             </header>
             <p className="fc-body">{p.d}</p>
             <ul className="fc-show-tags">{p.tags.map((t) => <li key={t} className="fc-label">{t}</li>)}</ul>
-            <Link className="fc-link" to={p.to}>Läs mer <span aria-hidden="true">→</span></Link>
+            <Link className="fc-link" to={p.to}>{tr("Läs mer")} <span aria-hidden="true">→</span></Link>
           </article>
         ))}
       </HorizontalGallery>
@@ -335,7 +336,7 @@ function AcademyChapter() {
   return (
     <section className="fc-ac" id="kap-4">
       <div className="fc-ac-l">
-        <p className="fc-label">Chapter IV — FutureCalc Academy</p>
+        <p className="fc-label">{tr("Chapter IV — FutureCalc Academy")}</p>
         <LineReveal as="h2" className="fc-display fc-display-lg" text="KNOWLEDGE BECOMES PRECISION." />
         <p className="fc-body">
           En mängdare som inte förstår bladet kan inte granska en maskin som läst det. Academy lär ut
@@ -352,7 +353,7 @@ function AcademyChapter() {
             <li key={t}><b>{t}</b><span>{d}</span></li>
           ))}
         </ul>
-        <MagneticButton className="solid" href="/utbildning">Explore education <span aria-hidden="true">→</span></MagneticButton>
+        <MagneticButton className="solid" href="/utbildning">{tr("Explore education")} <span aria-hidden="true">→</span></MagneticButton>
       </div>
       <div className="fc-ac-r">
         <RevealMedia className="fc-ac-cert">
@@ -361,8 +362,8 @@ function AcademyChapter() {
               <span className="fc-cert-mark"><Logo size={16} /> FutureCalc</span>
               <span className="fc-label">Certificate</span>
             </div>
-            <p className="fc-cert-name fc-serif">Anna Lindqvist</p>
-            <p className="fc-cert-title">FutureCalc Certified<br /><i className="fc-italic">VVS Kalkyl &amp; Mängdning</i></p>
+            <p className="fc-cert-name fc-serif">{tr("Anna Lindqvist")}</p>
+            <p className="fc-cert-title">{tr("FutureCalc Certified")}<br /><i className="fc-italic">VVS Kalkyl &amp; Mängdning</i></p>
             <div className="fc-cert-grid">
               <TechnicalLabel k="Resultat" v="87 %" on />
               <TechnicalLabel k="Utfärdat" v="2026-03-14" />
@@ -374,7 +375,7 @@ function AcademyChapter() {
         <div className="fc-ac-nums">
           <div><span className="fc-display fc-display-md"><CountUp to={5} /></span><p className="fc-label">Utbildningar</p></div>
           <div><span className="fc-display fc-display-md"><CountUp to={24} /></span><p className="fc-label">Moduler</p></div>
-          <div><span className="fc-display fc-display-md"><CountUp to={18} /></span><p className="fc-label">Övningstyper</p></div>
+          <div><span className="fc-display fc-display-md"><CountUp to={18} /></span><p className="fc-label">{tr("Övningstyper")}</p></div>
         </div>
       </div>
     </section>
@@ -387,11 +388,11 @@ function FinalChapter() {
   return (
     <section className="fc-end" id="kap-5">
       <div className="fc-grid" aria-hidden="true" />
-      <p className="fc-label">Chapter V</p>
+      <p className="fc-label">{tr("Chapter V")}</p>
       <WordReveal as="h2" className="fc-display fc-display-xl fc-end-t" text="READY TO CALCULATE DIFFERENTLY?" />
       <div className="fc-end-cta">
-        <MagneticButton className="solid" href="/login">Enter FutureCalc <span aria-hidden="true">→</span></MagneticButton>
-        <MagneticButton href="/kontakt">Boka en genomgång</MagneticButton>
+        <MagneticButton className="solid" href="/login">{tr("Enter FutureCalc")} <span aria-hidden="true">→</span></MagneticButton>
+        <MagneticButton href="/kontakt">{tr("Boka en genomgång")}</MagneticButton>
       </div>
     </section>
   );
@@ -403,27 +404,27 @@ function Footer() {
       <div className="fc-foot-links">
         <div>
           <p className="fc-label">Plattformen</p>
-          <Link className="fc-link" to="/plattformen">Översikt</Link>
+          <Link className="fc-link" to="/plattformen">{tr("Översikt")}</Link>
           <Link className="fc-link" to="/vpr">VPR</Link>
           <Link className="fc-link" to="/utbildning">Academy</Link>
           <Link className="fc-link" to="/priser">Priser</Link>
         </div>
         <div>
-          <p className="fc-label">Företaget</p>
-          <Link className="fc-link" to="/om-oss">Om oss</Link>
+          <p className="fc-label">{tr("Företaget")}</p>
+          <Link className="fc-link" to="/om-oss">{tr("Om oss")}</Link>
           <Link className="fc-link" to="/kontakt">Kontakt</Link>
           <Link className="fc-link" to="/dokumentation">Dokumentation</Link>
         </div>
         <div>
           <p className="fc-label">Konto</p>
-          <Link className="fc-link" to="/login">Logga in</Link>
+          <Link className="fc-link" to="/login">{tr("Logga in")}</Link>
           <AppLink className="fc-link" to="/projekt">Projekt</AppLink>
         </div>
       </div>
-      <div className="fc-foot-mark" aria-hidden="true">FUTURECALC®</div>
+      <div className="fc-foot-mark" aria-hidden="true">{tr("FUTURECALC®")}</div>
       <div className="fc-foot-base">
-        <span className="fc-label">VPR System / 2026</span>
-        <span className="fc-label">Byggd i Sverige</span>
+        <span className="fc-label">{tr("VPR System / 2026")}</span>
+        <span className="fc-label">{tr("Byggd i Sverige")}</span>
       </div>
     </footer>
   );
@@ -442,12 +443,12 @@ export default function Home() {
       <ChapterIndicator chapters={CHAPTERS} />
 
       <Hero />
-      <ChapterOpener n="I" title="The future of calculation"
+      <ChapterOpener n="I" title={tr("The future of calculation")}
         sub="FutureCalc läser en VVS-ritning som en mängdare gör det: via beteckningarna och deras hänvisningslinjer, aldrig via närmaste streck. Det som inte går att avgöra får heta tvetydigt." />
       <RiseScene />
       <StickyStatement />
 
-      <ChapterOpener n="II" id="kap-2" title="From drawing to quantity"
+      <ChapterOpener n="II" id="kap-2" title={tr("From drawing to quantity")}
         sub="Ritningen in, mängdförteckningen ut — med varje meter spårbar tillbaka till det bläck den kom ur." />
       <TakeoffScene />
       <Marquee words={["MÄT", "BERÄKNA", "KONTROLLERA", "LEVERERA"]} />

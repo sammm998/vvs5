@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { t as tr } from "../i18n";
 import { MODULES, markDone, readProgress, type Block, type Lesson, type Quiz } from "../learn";
 import LearnFigure from "./LearnFigures";
 import LearnExercise from "./LearnExercises";
@@ -133,7 +134,7 @@ export default function LearnWizard({ open, onClose, start }: {
           </div>
           <div className="wz-headr">
             <span className="wz-count">{done}/{s.n} klara</span>
-            <button className="ghost small" onClick={onClose} aria-label="Stäng">✕</button>
+            <button className="ghost small" onClick={onClose} aria-label={tr("Stäng")}>✕</button>
           </div>
         </header>
 
@@ -177,10 +178,10 @@ export default function LearnWizard({ open, onClose, start }: {
         </div>
 
         <footer className="wz-foot">
-          <button className="secondary" onClick={() => go(-1)} disabled={at === 0}>← Tillbaka</button>
+          <button className="secondary" onClick={() => go(-1)} disabled={at === 0}>{tr("← Tillbaka")}</button>
           <div className="wz-prog"><div style={{ width: `${((at + 1) / s.n) * 100}%` }} /></div>
           {at < s.n - 1
-            ? <button onClick={() => { finish(); go(1); }}>Nästa →</button>
+            ? <button onClick={() => { finish(); go(1); }}>{tr("Nästa →")}</button>
             : <button onClick={() => { finish(); onClose(); }}>Klart</button>}
         </footer>
       </div>

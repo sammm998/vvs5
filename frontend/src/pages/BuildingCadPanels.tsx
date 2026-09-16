@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 import { type CadDocument, type Entity, type Level, type Sheet, type Viewport, type Pt, uid } from "../cad/building";
 import { Tx } from "../cad/commands";
@@ -108,7 +109,7 @@ export function FileMenu({ sheetId, name, doc, viewId, scaleRatio, level, centre
 
   return (
     <span className="bcad-file" ref={box}>
-      <button className="ghost small" onClick={() => { setOpen((o) => !o); if (!open) loadDrawings(); }}>Fil ▾</button>
+      <button className="ghost small" onClick={() => { setOpen((o) => !o); if (!open) loadDrawings(); }}>{tr("Fil ▾")}</button>
       {open && (
         <div className="bcad-menu">
           <div className="bcad-h">Exportera</div>
@@ -119,7 +120,7 @@ export function FileMenu({ sheetId, name, doc, viewId, scaleRatio, level, centre
             <button className="secondary small" disabled={!!busy} onClick={() => importRef.current?.click()}>{busy === "import" ? "Läser…" : "DXF / SVG / IFC / GLB / OBJ / STL"}</button>
             <input ref={importRef} type="file" accept=".dxf,.svg,.ifc,.glb,.gltf,.obj,.stl" hidden onChange={(ev) => { const f = ev.target.files?.[0]; if (f) importFile(f); ev.target.value = ""; }} />
           </div>
-          <p className="muted small">Det som går att förstå blir byggobjekt, resten streck. DWG stöds inte - spara som DXF eller IFC.</p>
+          <p className="muted small">{tr("Det som går att förstå blir byggobjekt, resten streck. DWG stöds inte - spara som DXF eller IFC.")}</p>
           <div className="bcad-h">Underlag</div>
           <div className="bcad-menu-row">
             <button className="secondary small" disabled={!!busy} onClick={() => underlayRef.current?.click()}>{busy === "underlag" ? "Laddar…" : "PDF eller bild"}</button>
@@ -128,11 +129,11 @@ export function FileMenu({ sheetId, name, doc, viewId, scaleRatio, level, centre
           {drawings && drawings.length > 0 && (
             <div className="bcad-menu-row">
               <select value={pick?.drawing_id ?? ""} onChange={(ev) => setPick(ev.target.value ? { drawing_id: ev.target.value, page: 0 } : null)}>
-                <option value="">Ur en läst handling…</option>
+                <option value="">{tr("Ur en läst handling…")}</option>
                 {drawings.map((d) => <option key={d.id} value={d.id}>{String(d.filename).replace(/\.pdf$/i, "")}{d.latest_job?.status === "COMPLETED" ? " (läst)" : ""}</option>)}
               </select>
               {pick && <input className="bcad-num" type="number" min={1} value={pick.page + 1} onChange={(ev) => setPick({ ...pick, page: Math.max(0, Number(ev.target.value) - 1) })} title="sida" />}
-              {pick && <button className="secondary small" disabled={!!busy} onClick={() => addUnderlay(pick)}>Lägg in</button>}
+              {pick && <button className="secondary small" disabled={!!busy} onClick={() => addUnderlay(pick)}>{tr("Lägg in")}</button>}
             </div>
           )}
           <p className="muted small">Ett underlag ur en läst handling får läsningens skala; en fil utan skala kalibreras med två punkter.</p>
@@ -171,7 +172,7 @@ export function SheetsPanel({ sheetId, doc, apply, onError }: { sheetId: string;
     <div className="bcad-list">
       <div className="bcad-row">
         <select value={sheet?.id ?? ""} onChange={(ev) => setCur(ev.target.value)}>{doc.sheets.map((s) => <option key={s.id} value={s.id}>{s.title.number} {s.name}</option>)}</select>
-        <button className="secondary small" onClick={add}>+ Blad</button>
+        <button className="secondary small" onClick={add}>{tr("+ Blad")}</button>
       </div>
       {!sheet && <p className="muted">Inget ritningsblad än. Ett blad är ett papper med vyportar och namnruta; PDF:en ritas ur modellen.</p>}
       {sheet && (
@@ -193,7 +194,7 @@ export function SheetsPanel({ sheetId, doc, apply, onError }: { sheetId: string;
             </div>
           ))}
           <div className="bcad-row">
-            <button className="secondary small" onClick={() => openAuthed(api.cadSheetPdfUrl(sheetId, sheet.id)).catch((e) => onError(e.message))}>Visa PDF</button>
+            <button className="secondary small" onClick={() => openAuthed(api.cadSheetPdfUrl(sheetId, sheet.id)).catch((e) => onError(e.message))}>{tr("Visa PDF")}</button>
             <span className="muted small">Spara först - PDF:en ritas ur det sparade bladet.</span>
           </div>
         </>
@@ -257,20 +258,20 @@ export function AgentPanel({ sheetId, selection, proposals, setProposals, onAppr
           <b>{proposals.length} förslag</b>
           <ul className="small">{proposals.map((p, i) => <li key={i}>{p.why}</li>)}</ul>
           <div className="bcad-menu-row">
-            <button className="small" onClick={() => { onApprove(proposals); setProposals([]); }}>Godkänn alla</button>
+            <button className="small" onClick={() => { onApprove(proposals); setProposals([]); }}>{tr("Godkänn alla")}</button>
             <button className="secondary small" onClick={() => setProposals([])}>Avvisa</button>
           </div>
         </div>
       )}
       <div className="bcad-msgs">
         {msgs.map((m, i) => <div key={i} className={`bcad-msg ${m.role}`}><pre>{m.text}</pre>{m.tools && m.tools.length > 0 && m.role === "agent" && <div className="muted small">verktyg: {m.tools.map((t: any) => t.namn).join(", ")}</div>}</div>)}
-        {busy && <p className="muted small">Frågar…</p>}
+        {busy && <p className="muted small">{tr("Frågar…")}</p>}
         {err && <p className="error small">{err}</p>}
         <div ref={end} />
       </div>
       <div className="bcad-row">
-        <input value={text} placeholder="t.ex. rita en vägg från (0,0) till (0,6000), 200 tjock, på Plan 0" onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") ask(text); }} disabled={busy} style={{ flex: 1 }} />
-        <button className="small" onClick={() => ask(text)} disabled={busy || !text.trim()}>Fråga</button>
+        <input value={text} placeholder={tr("t.ex. rita en vägg från (0,0) till (0,6000), 200 tjock, på Plan 0")} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") ask(text); }} disabled={busy} style={{ flex: 1 }} />
+        <button className="small" onClick={() => ask(text)} disabled={busy || !text.trim()}>{tr("Fråga")}</button>
       </div>
     </div>
   );

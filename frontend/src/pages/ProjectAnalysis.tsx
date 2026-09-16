@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import ProjectAgentChat from "../components/ProjectAgentChat";
@@ -54,14 +55,14 @@ export function ModeChooser({ projectId, onPicked }: { projectId: string; onPick
   return (
     <>
       <div className="head"><div>
-        <h1>Välj analys</h1>
+        <h1>{tr("Välj analys")}</h1>
         <p className="lead">Vad ska läsas: en ritning, eller hela handlingen?</p>
       </div></div>
       {err && <p className="error">{err}</p>}
       <div className="pa-choice">
         <div className="card">
-          <h3>Enkel analys</h3>
-          <p>Analysera en eller flera ritningar direkt.</p>
+          <h3>{tr("Enkel analys")}</h3>
+          <p>{tr("Analysera en eller flera ritningar direkt.")}</p>
           <p className="muted">
             Bra för mängdning, röranalys, frågor och kontroll av en handling. Varje ritning läses för sig och
             svarar med meter, stigare och beteckningar.
@@ -72,7 +73,7 @@ export function ModeChooser({ projectId, onPicked }: { projectId: string; onPick
         </div>
         <div className="card">
           <h3>Projektanalys</h3>
-          <p>Analysera hela projektet som en sammanhängande handling.</p>
+          <p>{tr("Analysera hela projektet som en sammanhängande handling.")}</p>
           <p className="muted">
             Läser varje blads namnruta, bygger handlingsförteckningen, håller husen isär och parar ihop
             versioner — men bara där handlingarna själva säger vilken som kom först.
@@ -120,9 +121,9 @@ function Fix({ projectId, doc, fixed, onSaved }:
         </span>
       </div>
       <div className="row">
-        <input value={v} placeholder="ska vara…" onChange={(e) => setV(e.target.value)}
+        <input value={v} placeholder={tr("ska vara…")} onChange={(e) => setV(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter") save(); }} />
-        <input value={note} placeholder="varför (valfritt)" onChange={(e) => setNote(e.target.value)} />
+        <input value={note} placeholder={tr("varför (valfritt)")} onChange={(e) => setNote(e.target.value)} />
         <button className="small" disabled={busy} onClick={save}>{busy ? "Sparar…" : "Rätta"}</button>
       </div>
       {err && <p className="error small" style={{ margin: 0 }}>{err}</p>}
@@ -166,7 +167,7 @@ function Tree({ tree, projectId, fixes, onFixed }:
                           <td className="muted">{val(d.revision)}</td>
                           <td className="muted">{val(d.document_date)}</td>
                           <td className="row" style={{ gap: 6 }}>
-                            {d.drawing_id && <Link className="ghost small" to={`/drawings/${d.drawing_id}`}>Öppna</Link>}
+                            {d.drawing_id && <Link className="ghost small" to={`/drawings/${d.drawing_id}`}>{tr("Öppna")}</Link>}
                             {d.drawing_id && (
                               <button className="ghost small"
                                 onClick={() => setFixing(fixing === d.drawing_id ? "" : d.drawing_id)}>
@@ -211,12 +212,12 @@ function Changes({ projectId, pairKey }: { projectId: string; pairKey: string })
   const [err, setErr] = useState("");
   useEffect(() => { api.changes(projectId, pairKey).then(setD).catch((e) => setErr(e.message)); }, [projectId, pairKey]);
   if (err) return <p className="error">{err}</p>;
-  if (!d) return <p className="muted">Jämför…</p>;
+  if (!d) return <p className="muted">{tr("Jämför…")}</p>;
   const c = d.changes;
   if (c.state !== "JÄMFÖRD") {
     return (
       <div className="pa-unread">
-        <b>Går inte att jämföra ännu.</b>
+        <b>{tr("Går inte att jämföra ännu.")}</b>
         <p className="muted" style={{ margin: "6px 0 0" }}>{c.why}</p>
         <p className="muted small" style={{ margin: "6px 0 0" }}>
           Saknas: {c.missing.map((m: string) => (m === "before" ? "före-bladet" : "efter-bladet")).join(" och ")}.
@@ -238,8 +239,8 @@ function Changes({ projectId, pairKey }: { projectId: string; pairKey: string })
       {moved.length ? (
         <div className="tablewrap" style={{ marginTop: 10 }}>
           <table className="qty">
-            <thead><tr><th>Beteckning</th><th>Vad</th><th className="num">Före</th><th className="num">Efter</th>
-              <th className="num">Skillnad</th><th>Styrka</th><th>Skäl</th></tr></thead>
+            <thead><tr><th>Beteckning</th><th>Vad</th><th className="num">{tr("Före")}</th><th className="num">Efter</th>
+              <th className="num">Skillnad</th><th>Styrka</th><th>{tr("Skäl")}</th></tr></thead>
             <tbody>
               {moved.map((r: any) => (
                 <tr key={r.designation}>
@@ -255,7 +256,7 @@ function Changes({ projectId, pairKey }: { projectId: string; pairKey: string })
             </tbody>
           </table>
         </div>
-      ) : <p className="muted" style={{ marginBottom: 0 }}>Ingenting skiljer de två läsningarna åt.</p>}
+      ) : <p className="muted" style={{ marginBottom: 0 }}>{tr("Ingenting skiljer de två läsningarna åt.")}</p>}
       <p className="muted small" style={{ margin: "10px 0 0" }}>{c.caveat}</p>
     </div>
   );
@@ -268,7 +269,7 @@ function Versions({ report, projectId }: { report: any; projectId: string }) {
   return (
     <>
       <div className="card">
-        <h3 style={{ marginTop: 0 }}>Före och efter</h3>
+        <h3 style={{ marginTop: 0 }}>{tr("Före och efter")}</h3>
         <p className="muted">
           Ett par påstås bara när handlingarna själva bär ordningen: en revisionsbeteckning, ett revisionsdatum,
           ett handlingsdatum eller ett skede som skiljer dem åt. Ett tal i filnamnet är ingen revision, och två
@@ -291,7 +292,7 @@ function Versions({ report, projectId }: { report: any; projectId: string }) {
                 <div className="lf-mono">{val(d.number)}</div>
                 <div className="muted small">{val(d.title)}</div>
                 <div className="muted small">{val(d.status)} · rev {val(d.revision)} · {val(d.document_date)}</div>
-                {d.drawing_id && <Link className="ghost small" to={`/drawings/${d.drawing_id}`}>Öppna</Link>}
+                {d.drawing_id && <Link className="ghost small" to={`/drawings/${d.drawing_id}`}>{tr("Öppna")}</Link>}
               </div>
             ))}
           </div>
@@ -303,13 +304,13 @@ function Versions({ report, projectId }: { report: any; projectId: string }) {
         </section>
       )) : (
         <div className="card" style={{ marginTop: 14 }}>
-          <p className="empty">Inga säkra revisionspar hittades.</p>
+          <p className="empty">{tr("Inga säkra revisionspar hittades.")}</p>
         </div>
       )}
 
       {unclear.length > 0 && (
         <section className="card" style={{ marginTop: 14 }}>
-          <h3 style={{ marginTop: 0 }}>Det som inte gick att ordna</h3>
+          <h3 style={{ marginTop: 0 }}>{tr("Det som inte gick att ordna")}</h3>
           {unclear.map((u: any, i: number) => (
             <div key={i} className="pa-unclear">
               <div className="row" style={{ justifyContent: "space-between" }}>
@@ -421,26 +422,26 @@ export default function ProjectAnalysisPage() {
   const rep = run?.report;
   const t = rep?.totals;
 
-  if (!mode) return <main><p className="muted">Laddar…</p></main>;
+  if (!mode) return <main><p className="muted">{tr("Laddar…")}</p></main>;
   if (!mode.chosen) {
     return <main>
-      <p className="crumb"><Link to={`/projects/${id}`}>Projektet</Link> · Analys</p>
+      <p className="crumb"><Link to={`/projects/${id}`}>Projektet</Link> {tr("· Analys")}</p>
       <ModeChooser projectId={id!} onPicked={() => loadMode()} />
     </main>;
   }
   if (mode.effective === "simple") {
     return <main>
-      <p className="crumb"><Link to={`/projects/${id}`}>Projektet</Link> · Analys</p>
+      <p className="crumb"><Link to={`/projects/${id}`}>Projektet</Link> {tr("· Analys")}</p>
       <div className="head"><div>
-        <h1>Enkel analys</h1>
-        <p className="lead">Projektet läses en ritning i taget. Öppna en ritning och kör analysen på den.</p>
+        <h1>{tr("Enkel analys")}</h1>
+        <p className="lead">{tr("Projektet läses en ritning i taget. Öppna en ritning och kör analysen på den.")}</p>
       </div></div>
       <div className="card">
         <p className="muted">
           {mode.drawings} handlingar, {mode.readings} läsningar körda.
         </p>
         <div className="row">
-          <Link to={`/projects/${id}`}><button>Till ritningarna</button></Link>
+          <Link to={`/projects/${id}`}><button>{tr("Till ritningarna")}</button></Link>
           <button className="secondary" onClick={async () => { await api.setMode(id!, "project"); loadMode(); }}>
             Byt till projektanalys
           </button>
@@ -451,7 +452,7 @@ export default function ProjectAnalysisPage() {
 
   return (
     <main>
-      <p className="crumb"><Link to={`/projects/${id}`}>Projektet</Link> · Projektanalys</p>
+      <p className="crumb"><Link to={`/projects/${id}`}>Projektet</Link> {tr("· Projektanalys")}</p>
       <div className="head">
         <div>
           <h1>Projektanalys</h1>
@@ -471,10 +472,10 @@ export default function ProjectAnalysisPage() {
       {stale && run?.status === "DONE" && (
         <div className="card pa-stale">
           <p style={{ margin: 0 }}>
-            <b>Rättelsen är sparad, men modellen på skärmen är läst innan den.</b> Husindelningen och parningen
+            <b>{tr("Rättelsen är sparad, men modellen på skärmen är läst innan den.")}</b> Husindelningen och parningen
             bygger på de fälten, så de räknas om först när handlingen läses om.
           </p>
-          <button className="small" onClick={start} disabled={busy}>Läs om handlingen</button>
+          <button className="small" onClick={start} disabled={busy}>{tr("Läs om handlingen")}</button>
         </div>
       )}
 
@@ -498,9 +499,9 @@ export default function ProjectAnalysisPage() {
             <div className="adm-stat"><div className="k">Versionspar</div><div className="v">{t.pairs}</div></div>
             <div className={`adm-stat${t.unclear ? " bad" : ""}`}>
               <div className="k">Oklara</div><div className="v">{t.unclear}</div>
-              <div className="s">gick inte att ordna</div></div>
+              <div className="s">{tr("gick inte att ordna")}</div></div>
             <div className={`adm-stat${rep.unreadable.length ? " bad" : ""}`}>
-              <div className="k">Olästa</div><div className="v">{rep.unreadable.length}</div></div>
+              <div className="k">{tr("Olästa")}</div><div className="v">{rep.unreadable.length}</div></div>
           </div>
 
           <div className="tabs" style={{ marginTop: 18 }}>
@@ -514,7 +515,7 @@ export default function ProjectAnalysisPage() {
             {tab === "oversikt" && (
               <>
                 <div className="card">
-                  <h3 style={{ marginTop: 0 }}>Vad handlingen består av</h3>
+                  <h3 style={{ marginTop: 0 }}>{tr("Vad handlingen består av")}</h3>
                   <p className="muted">
                     Läst ur bladens egna namnrutor. Ett filnamn används bara när bladet inte bär något nummer,
                     och då syns det på säkerheten.
@@ -529,7 +530,7 @@ export default function ProjectAnalysisPage() {
                 </div>
                 {rep.unreadable.length > 0 && (
                   <div className="card" style={{ marginTop: 14 }}>
-                    <h3 style={{ marginTop: 0 }}>Gick inte att läsa</h3>
+                    <h3 style={{ marginTop: 0 }}>{tr("Gick inte att läsa")}</h3>
                     <p className="muted">{rep.unreadable.join(" · ")}</p>
                   </div>
                 )}

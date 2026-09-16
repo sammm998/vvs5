@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 import { tiltStyle, useTilt } from "./tilt";
 import { AGENTS, AGENT_SV, frameSays } from "../agents";
@@ -59,7 +60,7 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
   return (
     <div className="sheetview">
       <div className="card reasoning">
-        <h3>Vilka läsare som användes</h3>
+        <h3>{tr("Vilka läsare som användes")}</h3>
         <p className="muted">
           En läsning som tyst använde en modell, eller tyst klarade sig utan en, är ingen läsning någon kan
           kontrollera. Här står vad som faktiskt kördes på det här jobbet.
@@ -68,7 +69,7 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
           {AGENTS.map((a) => (
             <div key={a.stage} className={`rosteritem${byStage[a.stage] ? " on" : ""}`}>
               <span className="rname">{a.who}</span>
-              <span className="rwhat">i motorn, ur ritningens vektorer</span>
+              <span className="rwhat">{tr("i motorn, ur ritningens vektorer")}</span>
               <span className={`badge ${byStage[a.stage] ? "ok" : "warn"}`}>{byStage[a.stage] ? "kördes" : "inget att visa"}</span>
             </div>
           ))}
@@ -106,16 +107,16 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
               tittar på sidan som bild och namnger rutor att granska; flyttar aldrig en meter. Körs på begäran
               från fliken Analys, aldrig som en del av mätningen.
             </span>
-            <span className="badge ok">på begäran</span>
+            <span className="badge ok">{tr("på begäran")}</span>
           </div>
         </div>
 
         {dom && (
           <>
-            <h3>Domarens utslag</h3>
+            <h3>{tr("Domarens utslag")}</h3>
             <p className="muted">{dom.regel}</p>
             <div className="verdicts">
-              {(dom.utslag ?? []).length === 0 && <p className="muted">Ingenting återstod att avgöra på det här bladet.</p>}
+              {(dom.utslag ?? []).length === 0 && <p className="muted">{tr("Ingenting återstod att avgöra på det här bladet.")}</p>}
               {(dom.utslag ?? []).map((v: any, i: number) => (
                 <div key={i} className={`verdict ${v.beslut}`} onClick={() => v.bbox && onZoom?.(v.bbox)}>
                   <div className="vhead">
@@ -130,14 +131,14 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
                   {v.delar_linje_med && v.delar_linje_med.length > 0 && (
                     <p className="muted">Delar den ritade linjen med: {v.delar_linje_med.join(", ")}</p>
                   )}
-                  {v.kostar_m === 0 && <p className="muted">Kostar mängden 0 m — kontakten är noterad, linjen är ägd.</p>}
+                  {v.kostar_m === 0 && <p className="muted">{tr("Kostar mängden 0 m — kontakten är noterad, linjen är ägd.")}</p>}
                 </div>
               ))}
             </div>
           </>
         )}
 
-        <h3>Så kom läsningen fram till svaret</h3>
+        <h3>{tr("Så kom läsningen fram till svaret")}</h3>
         <p className="muted">
           Varje steg lämnar sitt fynd vidare till nästa. Granskarna längst ned rör aldrig mätningen — de säger
           bara om de tror på den, så att en oenighet syns istället för att jämnas ut.
@@ -157,7 +158,7 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
                   <p className="asks">”{s.asks}”</p>
                   {lines.length
                     ? lines.map((l, j) => <p key={j} className="says">{l}</p>)
-                    : <p className="says muted">Steget lämnade inget att visa på det här bladet.</p>}
+                    : <p className="says muted">{tr("Steget lämnade inget att visa på det här bladet.")}</p>}
                   {i < AGENTS.length - 1 && <div className="handoff">lämnar vidare till {AGENTS[i + 1].who}</div>}
                 </div>
               </li>
@@ -166,7 +167,7 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
         </ol>
 
         <h3>Granskarna</h3>
-        {byAgent.size === 0 && <p className="muted">Ingen granskning finns sparad för det här jobbet.</p>}
+        {byAgent.size === 0 && <p className="muted">{tr("Ingen granskning finns sparad för det här jobbet.")}</p>}
         {[...byAgent.entries()].map(([agent, fs]) => (
           <AgentCard key={agent}>
             <div className="agenthead">
@@ -183,7 +184,7 @@ export default function Reasoning({ jobId, result, onZoom }: { jobId: string; re
 
         <AgentCard>
           <div className="agenthead">
-            <b>Andraläsaren</b>
+            <b>{tr("Andraläsaren")}</b>
             <span className={`badge ${sr?.consulted ? "warn" : "ok"}`}>{sr?.consulted ? "tillfrågad" : "ej tillfrågad"}</span>
           </div>
           <p className="says">

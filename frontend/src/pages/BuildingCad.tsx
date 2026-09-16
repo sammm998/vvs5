@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import {
@@ -425,7 +426,7 @@ export default function BuildingCadPage() {
           {/* Vilken disciplin man ritar i bestämmer vilka verktyg som finns. Den låg bara i vänsterpanelen
               bland genomskinlighetsreglagen, så "rita ett rör" krävde att man först hittade VVS i en lista
               som ser ut att handla om vad som syns i 3D. Nu står den först i verktygsraden. */}
-          <select className="bcad-disc" value={discipline} aria-label="Disciplin att rita i"
+          <select className="bcad-disc" value={discipline} aria-label={tr("Disciplin att rita i")}
             onChange={(e) => { setDiscipline(e.target.value as Discipline); setTool("valj"); setDraft([]); }}>
             {DISCIPLINES.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}
           </select>
@@ -433,10 +434,10 @@ export default function BuildingCadPage() {
         </div>
         <div className="bcad-right">
           <FileMenu sheetId={sheetId} name={meta.name} doc={doc} viewId={view.id} scaleRatio={view.scale_ratio ?? 100} level={level} centre={() => { const r = wrap.current?.getBoundingClientRect(); return r ? toWorld(cam, r.width / 2, r.height / 2) : [0, 0]; }} apply={apply} onError={setErr} onUnderlayAdded={(uid_, cal) => { setSel([uid_]); if (cal) setCalib({ id: uid_, pts: [] }); }} />
-          <button className="ghost small" onClick={undo} disabled={!hist.past.length} title="Ångra (Ctrl+Z)">↶</button>
-          <button className="ghost small" onClick={redo} disabled={!hist.future.length} title="Gör om (Ctrl+Y)">↷</button>
-          <button className={`ghost small${snaps.on ? " on" : ""}`} onClick={() => setSnaps((s) => ({ ...s, on: !s.on }))} title="Fångst (F3)">Fångst</button>
-          <button className={`ghost small${ortho ? " on" : ""}`} onClick={() => setOrtho((o) => (o === 90 ? 0 : 90))} title="Ortho (F8)">Ortho</button>
+          <button className="ghost small" onClick={undo} disabled={!hist.past.length} title={tr("Ångra (Ctrl+Z)")}>↶</button>
+          <button className="ghost small" onClick={redo} disabled={!hist.future.length} title={tr("Gör om (Ctrl+Y)")}>↷</button>
+          <button className={`ghost small${snaps.on ? " on" : ""}`} onClick={() => setSnaps((s) => ({ ...s, on: !s.on }))} title={tr("Fångst (F3)")}>{tr("Fångst")}</button>
+          <button className={`ghost small${ortho ? " on" : ""}`} onClick={() => setOrtho((o) => (o === 90 ? 0 : 90))} title={tr("Ortho (F8)")}>Ortho</button>
           <span className="bcad-modes">
             {(["2d", "split", "3d"] as Mode[]).map((m) => <button key={m} className={mode === m ? "on" : ""} onClick={() => setMode(m)}>{m === "2d" ? "2D" : m === "3d" ? "3D" : "Delad"}</button>)}
           </span>
@@ -454,24 +455,24 @@ export default function BuildingCadPage() {
           {DISCIPLINES.map((d) => (
             <div key={d.id} className={`bcad-row${discipline === d.id ? " on" : ""}`}>
               <button className="bcad-link" onClick={() => { setDiscipline(d.id); setTool("valj"); }}>{d.label}</button>
-              <input type="range" min={0} max={100} value={Math.round((transp[d.id] ?? 1) * 100)} title="Genomskinlighet i 3D" onChange={(e) => setTransp((t) => ({ ...t, [d.id]: Number(e.target.value) / 100 }))} />
+              <input type="range" min={0} max={100} value={Math.round((transp[d.id] ?? 1) * 100)} title={tr("Genomskinlighet i 3D")} onChange={(e) => setTransp((t) => ({ ...t, [d.id]: Number(e.target.value) / 100 }))} />
             </div>
           ))}
         </div>
         <div className="bcad-sec">
-          <div className="bcad-h">Nivåer <button className="ghost small" onClick={addLevel}>+</button></div>
+          <div className="bcad-h">{tr("Nivåer")} <button className="ghost small" onClick={addLevel}>+</button></div>
           {[...doc.levels].sort((a, b) => b.elevation_mm - a.elevation_mm).map((lv) => (
             <div key={lv.id} className={`bcad-row${level === lv.id ? " on" : ""}`}>
               <button className="bcad-link" onClick={() => setActiveLevel(lv)}>{lv.name}</button>
-              <input className="bcad-num" type="number" step={100} value={lv.elevation_mm} onChange={(e) => setLevelElevation(lv, Number(e.target.value))} title="höjd i mm" />
-              <button className="ghost small" title="Kopiera nivåns objekt till nivån ovanför" onClick={() => copyLevel(lv)}>⧉</button>
+              <input className="bcad-num" type="number" step={100} value={lv.elevation_mm} onChange={(e) => setLevelElevation(lv, Number(e.target.value))} title={tr("höjd i mm")} />
+              <button className="ghost small" title={tr("Kopiera nivåns objekt till nivån ovanför")} onClick={() => copyLevel(lv)}>⧉</button>
             </div>
           ))}
         </div>
         <div className="bcad-sec">
           <div className="bcad-h">Vyer</div>
           {doc.views.map((v) => <div key={v.id} className={`bcad-row${doc.settings.active_view === v.id ? " on" : ""}`}><button className="bcad-link" onClick={() => { if (v.kind === "plan" && v.level) { setDoc((d) => ({ ...d, settings: { ...d.settings, active_view: v.id, active_level: v.level! } })); setMode("2d"); } else if (v.kind === "3d") setMode("3d"); }}>{v.name} <span className="muted small">{v.kind}</span></button></div>)}
-          <div className="bcad-row"><button className="bcad-link" onClick={() => { setPanel("snitt"); setSectionLine(null); }}>Fasad</button><button className="bcad-link" onClick={() => { setPanel("snitt"); setTool("valj"); setSectionLine(sectionLine ?? [[0, 7500], [12000, 7500]]); }}>Sektion A-A</button></div>
+          <div className="bcad-row"><button className="bcad-link" onClick={() => { setPanel("snitt"); setSectionLine(null); }}>Fasad</button><button className="bcad-link" onClick={() => { setPanel("snitt"); setTool("valj"); setSectionLine(sectionLine ?? [[0, 7500], [12000, 7500]]); }}>{tr("Sektion A-A")}</button></div>
         </div>
         <div className="bcad-sec">
           <div className="bcad-h">Lager</div>
@@ -517,7 +518,7 @@ export default function BuildingCadPage() {
               {(["iso", "top", "front", "back", "left", "right"] as ViewName[]).map((v) => <button key={v} className={view3d === v ? "on" : ""} onClick={() => { setView3d(null); setTimeout(() => setView3d(v), 0); }}>{{ iso: "Iso", top: "Ovan", front: "Fram", back: "Bak", left: "Vänster", right: "Höger", bottom: "Under" }[v]}</button>)}
               <button className={ortho3d ? "on" : ""} onClick={() => setOrtho3d((o) => !o)}>Orto</button>
               <button className={sectionBoxOn ? "on" : ""} onClick={() => setSectionBoxOn((o) => !o)}>Sektionsbox</button>
-              <button className={wire ? "on" : ""} onClick={() => setWire((w) => !w)}>Tråd</button>
+              <button className={wire ? "on" : ""} onClick={() => setWire((w) => !w)}>{tr("Tråd")}</button>
             </div>
           </div>
         )}
@@ -538,33 +539,33 @@ export default function BuildingCadPage() {
             <h4>Material</h4>
             <table className="qty"><thead><tr><th>Material</th><th>m²</th><th>m³</th><th>kg</th></tr></thead>
               <tbody>{mats!.map((m) => <tr key={m.material.id}><td>{m.material.name}</td><td className="num">{m.area_m2.toFixed(1)}</td><td className="num">{m.volume_m3.toFixed(2)}</td><td className="num">{m.mass_kg == null ? "ingen densitet" : m.mass_kg.toFixed(0)}</td></tr>)}</tbody></table>
-            <p className="muted small">Ur modellens egna mått. Servern räknar samma tal för exporten och kalkylen.</p>
+            <p className="muted small">{tr("Ur modellens egna mått. Servern räknar samma tal för exporten och kalkylen.")}</p>
           </div>
         )}
         {panel === "kollisioner" && (
           <div className="bcad-list">
-            <button className="secondary small" onClick={runClashes}>Sök igen</button>
-            {clashes && clashes.length === 0 && <p className="muted">Inga kollisioner.</p>}
+            <button className="secondary small" onClick={runClashes}>{tr("Sök igen")}</button>
+            {clashes && clashes.length === 0 && <p className="muted">{tr("Inga kollisioner.")}</p>}
             {clashes?.map((c) => <div key={c.id} className={`bcad-clash ${c.severity}`} onClick={() => setSel([c.a, c.b])}><b>{c.severity}</b> {c.note}<div className="muted small">{DISC_LABEL[c.a_discipline]} × {DISC_LABEL[c.b_discipline]} · vid ({c.at[0]}, {c.at[1]}, {c.at[2]})</div></div>)}
             {clashes && proposeOpenings(doc, clashes).map((p, i) => (
               <div key={i} className="bcad-proposal">{p.note}
-                <div><button className="secondary small" onClick={() => { const host = doc.entities.find((e) => e.id === p.host) as Wall | undefined; if (!host || host.type !== "wall") return; const L = Math.hypot(host.p[1][0] - host.p[0][0], host.p[1][1] - host.p[0][1]) || 1; const t = ((p.at[0] - host.p[0][0]) * (host.p[1][0] - host.p[0][0]) + (p.at[1] - host.p[0][1]) * (host.p[1][1] - host.p[0][1])) / (L * L); const z0 = levelOf(doc, host.base_level)?.elevation_mm ?? 0; apply(new Tx("Godkänt hål").add("entities", { id: uid(), type: "opening", layer: host.layer, discipline: "KONSTR", level: host.base_level, phase: "NEW", provenance: "AGENT_CREATED_APPROVED", version: 1, host: host.id, t: Math.max(0, Math.min(1, t)), width: p.size_mm, height: p.size_mm, sill: p.at[2] - z0 - p.size_mm / 2, host_kind: "wall" } as Entity)); setClashes(null); }}>Godkänn</button></div>
+                <div><button className="secondary small" onClick={() => { const host = doc.entities.find((e) => e.id === p.host) as Wall | undefined; if (!host || host.type !== "wall") return; const L = Math.hypot(host.p[1][0] - host.p[0][0], host.p[1][1] - host.p[0][1]) || 1; const t = ((p.at[0] - host.p[0][0]) * (host.p[1][0] - host.p[0][0]) + (p.at[1] - host.p[0][1]) * (host.p[1][1] - host.p[0][1])) / (L * L); const z0 = levelOf(doc, host.base_level)?.elevation_mm ?? 0; apply(new Tx("Godkänt hål").add("entities", { id: uid(), type: "opening", layer: host.layer, discipline: "KONSTR", level: host.base_level, phase: "NEW", provenance: "AGENT_CREATED_APPROVED", version: 1, host: host.id, t: Math.max(0, Math.min(1, t)), width: p.size_mm, height: p.size_mm, sill: p.at[2] - z0 - p.size_mm / 2, host_kind: "wall" } as Entity)); setClashes(null); }}>{tr("Godkänn")}</button></div>
               </div>
             ))}
           </div>
         )}
         {panel === "revisioner" && (
           <div className="bcad-list">
-            {revisions.map((r) => <div key={r.id} className="bcad-rev"><b>Revision {r.revision}</b> <span className="muted small">{new Date(r.created_at).toLocaleString("sv-SE")}</span><div>{r.label}</div><div className="muted small">{(r.touched || []).slice(0, 6).join(", ")}{(r.touched || []).length > 6 ? "…" : ""}</div>{r.revision !== doc.revision && <button className="ghost small" onClick={async () => { const s = await api.cadRestore(sheetId, r.revision); const d = migrate(s.content); setDoc(d); savedRevision.current = d.revision; setHist(emptyHistory()); loadRevisions(); }}>Återställ</button>}</div>)}
-            {!revisions.length && <p className="muted">Inga revisioner än.</p>}
+            {revisions.map((r) => <div key={r.id} className="bcad-rev"><b>Revision {r.revision}</b> <span className="muted small">{new Date(r.created_at).toLocaleString("sv-SE")}</span><div>{r.label}</div><div className="muted small">{(r.touched || []).slice(0, 6).join(", ")}{(r.touched || []).length > 6 ? "…" : ""}</div>{r.revision !== doc.revision && <button className="ghost small" onClick={async () => { const s = await api.cadRestore(sheetId, r.revision); const d = migrate(s.content); setDoc(d); savedRevision.current = d.revision; setHist(emptyHistory()); loadRevisions(); }}>{tr("Återställ")}</button>}</div>)}
+            {!revisions.length && <p className="muted">{tr("Inga revisioner än.")}</p>}
           </div>
         )}
         {panel === "snitt" && (
           <div className="bcad-list">
-            {sectionLine ? <p className="muted small">Sektion A-A genom ({Math.round(sectionLine[0][0])}, {Math.round(sectionLine[0][1])}) – ({Math.round(sectionLine[1][0])}, {Math.round(sectionLine[1][1])}). <button className="ghost small" onClick={() => setSectionLine(null)}>Fasad i stället</button></p>
+            {sectionLine ? <p className="muted small">Sektion A-A genom ({Math.round(sectionLine[0][0])}, {Math.round(sectionLine[0][1])}) – ({Math.round(sectionLine[1][0])}, {Math.round(sectionLine[1][1])}). <button className="ghost small" onClick={() => setSectionLine(null)}>{tr("Fasad i stället")}</button></p>
               : <p className="muted small">Fasad {(["N", "S", "E", "W"] as const).map((d) => <button key={d} className={`ghost small${elevDir === d ? " on" : ""}`} onClick={() => setElevDir(d)}>{d}</button>)}</p>}
             <SectionSvg shapes={section ?? elevation ?? []} />
-            {sectionLine && <div className="bcad-row"><label>Snittlinje y <input className="bcad-num" type="number" step={500} value={sectionLine[0][1]} onChange={(e) => setSectionLine([[sectionLine[0][0], Number(e.target.value)], [sectionLine[1][0], Number(e.target.value)]])} /></label></div>}
+            {sectionLine && <div className="bcad-row"><label>{tr("Snittlinje y")} <input className="bcad-num" type="number" step={500} value={sectionLine[0][1]} onChange={(e) => setSectionLine([[sectionLine[0][0], Number(e.target.value)], [sectionLine[1][0], Number(e.target.value)]])} /></label></div>}
           </div>
         )}
       </aside>
@@ -612,10 +613,10 @@ function Properties({ doc, e, onChange, onCalibrate }: { doc: CadDocument; e: En
   let specific: any = null;
   switch (e.type) {
     case "wall": case "curtain_wall":
-      specific = <>{F("Tjocklek", <Num v={e.thickness} onChange={(n) => onChange({ thickness: n }, "Tjocklek")} />)}{F("Undre nivå", LevelSel("base_level", e.base_level))}{F("Övre nivå", LevelSel("top_level", e.top_level, true))}{!e.top_level && F("Höjd", <Num v={e.height ?? null} step={100} onChange={(n) => onChange({ height: n }, "Höjd")} />)}{F("Justering", <select value={e.alignment ?? "centre"} onChange={(ev) => onChange({ alignment: ev.target.value }, "Justering")}><option value="centre">Centrum</option><option value="left">Vänster</option><option value="right">Höger</option></select>)}{F("Brandklass", <input value={e.fire_rating ?? ""} onChange={(ev) => onChange({ fire_rating: ev.target.value }, "Brandklass")} placeholder="EI 60" />)}{F("Ljudklass", <input value={e.sound_rating ?? ""} onChange={(ev) => onChange({ sound_rating: ev.target.value }, "Ljudklass")} placeholder="R'w 52" />)}{F("Bärande", <input type="checkbox" checked={!!e.structural} onChange={(ev) => onChange({ structural: ev.target.checked }, "Bärande")} />)}{F("Längd", <span className="muted">{fmtMm(Math.hypot(e.p[1][0] - e.p[0][0], e.p[1][1] - e.p[0][1]))}</span>)}</>;
+      specific = <>{F("Tjocklek", <Num v={e.thickness} onChange={(n) => onChange({ thickness: n }, "Tjocklek")} />)}{F("Undre nivå", LevelSel("base_level", e.base_level))}{F("Övre nivå", LevelSel("top_level", e.top_level, true))}{!e.top_level && F("Höjd", <Num v={e.height ?? null} step={100} onChange={(n) => onChange({ height: n }, "Höjd")} />)}{F("Justering", <select value={e.alignment ?? "centre"} onChange={(ev) => onChange({ alignment: ev.target.value }, "Justering")}><option value="centre">Centrum</option><option value="left">{tr("Vänster")}</option><option value="right">{tr("Höger")}</option></select>)}{F("Brandklass", <input value={e.fire_rating ?? ""} onChange={(ev) => onChange({ fire_rating: ev.target.value }, "Brandklass")} placeholder={tr("EI 60")} />)}{F("Ljudklass", <input value={e.sound_rating ?? ""} onChange={(ev) => onChange({ sound_rating: ev.target.value }, "Ljudklass")} placeholder="R'w 52" />)}{F("Bärande", <input type="checkbox" checked={!!e.structural} onChange={(ev) => onChange({ structural: ev.target.checked }, "Bärande")} />)}{F("Längd", <span className="muted">{fmtMm(Math.hypot(e.p[1][0] - e.p[0][0], e.p[1][1] - e.p[0][1]))}</span>)}</>;
       break;
     case "door":
-      specific = <>{F("Bredd", <Num v={e.width} onChange={(n) => onChange({ width: n }, "Dörrbredd")} />)}{F("Höjd", <Num v={e.height} onChange={(n) => onChange({ height: n }, "Dörrhöjd")} />)}{F("Slag", <select value={e.swing ?? "left"} onChange={(ev) => onChange({ swing: ev.target.value }, "Slag")}><option value="left">Vänster</option><option value="right">Höger</option><option value="double">Par</option><option value="sliding">Skjut</option></select>)}{F("Läge på väggen", <Num v={Math.round(e.t * 1000) / 1000} step={0.01} onChange={(n) => onChange({ t: Math.max(0, Math.min(1, n)) }, "Läge")} />)}{F("Brandklass", <input value={e.fire_rating ?? ""} onChange={(ev) => onChange({ fire_rating: ev.target.value }, "Brandklass")} />)}{F("Typ", <input value={e.door_type ?? ""} onChange={(ev) => onChange({ door_type: ev.target.value }, "Typ")} />)}</>;
+      specific = <>{F("Bredd", <Num v={e.width} onChange={(n) => onChange({ width: n }, "Dörrbredd")} />)}{F("Höjd", <Num v={e.height} onChange={(n) => onChange({ height: n }, "Dörrhöjd")} />)}{F("Slag", <select value={e.swing ?? "left"} onChange={(ev) => onChange({ swing: ev.target.value }, "Slag")}><option value="left">{tr("Vänster")}</option><option value="right">{tr("Höger")}</option><option value="double">Par</option><option value="sliding">Skjut</option></select>)}{F("Läge på väggen", <Num v={Math.round(e.t * 1000) / 1000} step={0.01} onChange={(n) => onChange({ t: Math.max(0, Math.min(1, n)) }, "Läge")} />)}{F("Brandklass", <input value={e.fire_rating ?? ""} onChange={(ev) => onChange({ fire_rating: ev.target.value }, "Brandklass")} />)}{F("Typ", <input value={e.door_type ?? ""} onChange={(ev) => onChange({ door_type: ev.target.value }, "Typ")} />)}</>;
       break;
     case "window": case "opening":
       specific = <>{F("Bredd", <Num v={e.width} onChange={(n) => onChange({ width: n }, "Bredd")} />)}{F("Höjd", <Num v={e.height} onChange={(n) => onChange({ height: n }, "Höjd")} />)}{F("Bröstning", <Num v={e.sill ?? 0} onChange={(n) => onChange({ sill: n }, "Bröstning")} />)}{F("Läge på väggen", <Num v={Math.round(e.t * 1000) / 1000} step={0.01} onChange={(n) => onChange({ t: Math.max(0, Math.min(1, n)) }, "Läge")} />)}</>;
@@ -645,7 +646,7 @@ function Properties({ doc, e, onChange, onCalibrate }: { doc: CadDocument; e: En
       specific = <>{F("System", <input value={e.system} onChange={(ev) => onChange({ system: ev.target.value }, "System")} />)}{F("DN", <Num v={e.dn} step={1} onChange={(n) => onChange({ dn: n }, "DN")} />)}{F("Beteckning", <input value={e.designation ?? ""} onChange={(ev) => onChange({ designation: ev.target.value }, "Beteckning")} />)}{F("Höjd över nivå", <Num v={e.elevation ?? 0} step={100} onChange={(n) => onChange({ elevation: n }, "Rörhöjd")} />)}{F("Isolering", <Num v={e.insulation ?? 0} onChange={(n) => onChange({ insulation: n }, "Isolering")} />)}</>;
       break;
     case "duct":
-      specific = <>{F("System", <input value={e.system} onChange={(ev) => onChange({ system: ev.target.value }, "System")} />)}{F("Form", <select value={e.shape} onChange={(ev) => onChange({ shape: ev.target.value }, "Kanalform")}><option value="rect">Rektangulär</option><option value="round">Cirkulär</option></select>)}{e.shape === "rect" ? <>{F("Bredd", <Num v={e.w ?? 400} onChange={(n) => onChange({ w: n }, "Kanalbredd")} />)}{F("Höjd", <Num v={e.h ?? 200} onChange={(n) => onChange({ h: n }, "Kanalhöjd")} />)}</> : F("Diameter", <Num v={e.d ?? 250} onChange={(n) => onChange({ d: n }, "Diameter")} />)}{F("Höjd över nivå", <Num v={e.elevation ?? 0} step={100} onChange={(n) => onChange({ elevation: n }, "Kanalhöjd")} />)}</>;
+      specific = <>{F("System", <input value={e.system} onChange={(ev) => onChange({ system: ev.target.value }, "System")} />)}{F("Form", <select value={e.shape} onChange={(ev) => onChange({ shape: ev.target.value }, "Kanalform")}><option value="rect">{tr("Rektangulär")}</option><option value="round">{tr("Cirkulär")}</option></select>)}{e.shape === "rect" ? <>{F("Bredd", <Num v={e.w ?? 400} onChange={(n) => onChange({ w: n }, "Kanalbredd")} />)}{F("Höjd", <Num v={e.h ?? 200} onChange={(n) => onChange({ h: n }, "Kanalhöjd")} />)}</> : F("Diameter", <Num v={e.d ?? 250} onChange={(n) => onChange({ d: n }, "Diameter")} />)}{F("Höjd över nivå", <Num v={e.elevation ?? 0} step={100} onChange={(n) => onChange({ elevation: n }, "Kanalhöjd")} />)}</>;
       break;
     case "cable_tray": case "conduit":
       specific = <>{F("System", <input value={e.system} onChange={(ev) => onChange({ system: ev.target.value }, "System")} />)}{e.type === "cable_tray" ? <>{F("Bredd", <Num v={e.w} onChange={(n) => onChange({ w: n }, "Bredd")} />)}{F("Höjd", <Num v={e.h} onChange={(n) => onChange({ h: n }, "Höjd")} />)}</> : F("Diameter", <Num v={e.d} onChange={(n) => onChange({ d: n }, "Diameter")} />)}{F("Höjd över nivå", <Num v={e.elevation ?? 0} step={100} onChange={(n) => onChange({ elevation: n }, "Höjd")} />)}</>;
@@ -658,7 +659,7 @@ function Properties({ doc, e, onChange, onCalibrate }: { doc: CadDocument; e: En
       break;
     case "text": case "mtext":
       specific = <>{<>{F("Text", <input value={e.text} onChange={(ev) => onChange({ text: ev.target.value }, "Text")} />)}{F("Höjd (mm på papper)", <Num v={e.h} step={0.5} onChange={(n) => onChange({ h: n }, "Texthöjd")} />)}{F("Vridning °", <Num v={e.rot ?? 0} step={15} onChange={(n) => onChange({ rot: n }, "Vridning")} />)}</>}{e.type === "text" && <>
-        {F("Hänger på", <select value={e.ref?.id ?? ""} onChange={(ev) => onChange({ ref: ev.target.value ? { id: ev.target.value, field: e.ref?.field ?? "name" } : null }, "Text hänger på")}><option value="">– fri text –</option>{doc.entities.filter((x) => x.id !== e.id && x.type !== "text" && x.type !== "underlay").map((x) => <option key={x.id} value={x.id}>{qLabel(x.type)} {x.name ?? x.id}</option>)}</select>)}
+        {F("Hänger på", <select value={e.ref?.id ?? ""} onChange={(ev) => onChange({ ref: ev.target.value ? { id: ev.target.value, field: e.ref?.field ?? "name" } : null }, "Text hänger på")}><option value="">{tr("– fri text –")}</option>{doc.entities.filter((x) => x.id !== e.id && x.type !== "text" && x.type !== "underlay").map((x) => <option key={x.id} value={x.id}>{qLabel(x.type)} {x.name ?? x.id}</option>)}</select>)}
         {e.ref && F("Visar", <select value={e.ref.field} onChange={(ev) => onChange({ ref: { ...e.ref, field: ev.target.value as TagField } }, "Text visar")}>{(["name", "number", "area", "length", "system", "dn", "level", "id"] as TagField[]).map((f) => <option key={f} value={f}>{{ name: "namn", number: "nummer", area: "area", length: "längd", system: "system", dn: "DN", level: "nivå", id: "id" }[f]}</option>)}</select>)}
       </>}</>;
       break;
@@ -677,7 +678,7 @@ function Properties({ doc, e, onChange, onCalibrate }: { doc: CadDocument; e: En
         {F("mm per pixel", <Num v={e.mm_per_px ?? null} step={0.01} onChange={(n) => onChange({ mm_per_px: n, scale_state: "CALIBRATED" }, "Underlagets skala")} />)}
         {F("Genomskinlighet", <Num v={Math.round((e.opacity ?? 0.6) * 100)} step={5} min={0} onChange={(n) => onChange({ opacity: Math.max(0, Math.min(1, n / 100)) }, "Underlag")} />)}
         {F("Vridning", <Num v={e.rot ?? 0} step={1} onChange={(n) => onChange({ rot: n }, "Underlag")} />)}
-        {F("Kalibrera", <button className="secondary small" onClick={onCalibrate}>Två punkter</button>)}
+        {F("Kalibrera", <button className="secondary small" onClick={onCalibrate}>{tr("Två punkter")}</button>)}
         {e.source?.filename && F("Källa", <span className="muted small">{e.source.filename}{e.source.page != null ? ` s. ${e.source.page + 1}` : ""}</span>)}
       </>;
       break;
@@ -712,8 +713,8 @@ function ToolDefaultsPanel({ tool, defaults, setDefaults, materials }: { tool: T
   const MatSel = (k: keyof ToolDefaults, v: string) => <select value={v} onChange={(ev) => set(k, { material: ev.target.value })}>{materials.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}</select>;
   const head = <p className="muted small">Inget valt. Det här är vad nästa {TOOLS.find((t) => t.id === tool)?.label.toLowerCase() ?? "objekt"} får.</p>;
   switch (tool) {
-    case "vagg": case "glasfasad": return <div className="bcad-list">{head}{F("Tjocklek", <Num v={defaults.wall.thickness} onChange={(n) => set("wall", { thickness: n })} />)}{F("Höjd (tom = till nivån ovanför)", <Num v={defaults.wall.height} step={100} onChange={(n) => set("wall", { height: n || null })} />)}{F("Material", MatSel("wall", defaults.wall.material))}{F("Justering", <select value={defaults.wall.alignment} onChange={(ev) => set("wall", { alignment: ev.target.value })}><option value="centre">Centrum</option><option value="left">Vänster</option><option value="right">Höger</option></select>)}</div>;
-    case "dorr": return <div className="bcad-list">{head}{F("Bredd", <Num v={defaults.door.width} onChange={(n) => set("door", { width: n })} />)}{F("Höjd", <Num v={defaults.door.height} onChange={(n) => set("door", { height: n })} />)}{F("Slag", <select value={defaults.door.swing} onChange={(ev) => set("door", { swing: ev.target.value })}><option value="left">Vänster</option><option value="right">Höger</option><option value="double">Par</option><option value="sliding">Skjut</option></select>)}</div>;
+    case "vagg": case "glasfasad": return <div className="bcad-list">{head}{F("Tjocklek", <Num v={defaults.wall.thickness} onChange={(n) => set("wall", { thickness: n })} />)}{F("Höjd (tom = till nivån ovanför)", <Num v={defaults.wall.height} step={100} onChange={(n) => set("wall", { height: n || null })} />)}{F("Material", MatSel("wall", defaults.wall.material))}{F("Justering", <select value={defaults.wall.alignment} onChange={(ev) => set("wall", { alignment: ev.target.value })}><option value="centre">Centrum</option><option value="left">{tr("Vänster")}</option><option value="right">{tr("Höger")}</option></select>)}</div>;
+    case "dorr": return <div className="bcad-list">{head}{F("Bredd", <Num v={defaults.door.width} onChange={(n) => set("door", { width: n })} />)}{F("Höjd", <Num v={defaults.door.height} onChange={(n) => set("door", { height: n })} />)}{F("Slag", <select value={defaults.door.swing} onChange={(ev) => set("door", { swing: ev.target.value })}><option value="left">{tr("Vänster")}</option><option value="right">{tr("Höger")}</option><option value="double">Par</option><option value="sliding">Skjut</option></select>)}</div>;
     case "fonster": return <div className="bcad-list">{head}{F("Bredd", <Num v={defaults.window.width} onChange={(n) => set("window", { width: n })} />)}{F("Höjd", <Num v={defaults.window.height} onChange={(n) => set("window", { height: n })} />)}{F("Bröstning", <Num v={defaults.window.sill} onChange={(n) => set("window", { sill: n })} />)}</div>;
     case "oppning": return <div className="bcad-list">{head}{F("Bredd", <Num v={defaults.opening.width} onChange={(n) => set("opening", { width: n })} />)}{F("Höjd", <Num v={defaults.opening.height} onChange={(n) => set("opening", { height: n })} />)}{F("Underkant", <Num v={defaults.opening.sill} onChange={(n) => set("opening", { sill: n })} />)}</div>;
     case "bjalklag": case "platta": return <div className="bcad-list">{head}{F("Tjocklek", <Num v={defaults.floor.thickness} onChange={(n) => set("floor", { thickness: n })} />)}{F("Material", MatSel("floor", defaults.floor.material))}</div>;
@@ -725,10 +726,10 @@ function ToolDefaultsPanel({ tool, defaults, setDefaults, materials }: { tool: T
     case "balk": return <div className="bcad-list">{head}{F("Bredd", <Num v={(defaults.beam.profile as any).w ?? 300} onChange={(n) => set("beam", { profile: { kind: "rect", w: n, d: (defaults.beam.profile as any).d ?? 500 } })} />)}{F("Höjd", <Num v={(defaults.beam.profile as any).d ?? 500} onChange={(n) => set("beam", { profile: { kind: "rect", w: (defaults.beam.profile as any).w ?? 300, d: n } })} />)}{F("Material", MatSel("beam", defaults.beam.material))}</div>;
     case "grund": return <div className="bcad-list">{head}{F("Typ", <select value={defaults.foundation.kind} onChange={(ev) => set("foundation", { kind: ev.target.value })}><option value="strip">Sula</option><option value="isolated">Punktplint</option><option value="slab">Platta</option></select>)}{F("Bredd", <Num v={defaults.foundation.w} onChange={(n) => set("foundation", { w: n })} />)}{F("Höjd", <Num v={defaults.foundation.h} onChange={(n) => set("foundation", { h: n })} />)}</div>;
     case "ror": return <div className="bcad-list">{head}{F("System", <input value={defaults.pipe.system} onChange={(ev) => set("pipe", { system: ev.target.value })} />)}{F("DN", <Num v={defaults.pipe.dn} step={1} onChange={(n) => set("pipe", { dn: n })} />)}{F("Höjd över nivå", <Num v={defaults.pipe.elevation} step={100} onChange={(n) => set("pipe", { elevation: n })} />)}{F("Material", MatSel("pipe", defaults.pipe.material))}</div>;
-    case "kanal": return <div className="bcad-list">{head}{F("System", <input value={defaults.duct.system} onChange={(ev) => set("duct", { system: ev.target.value })} />)}{F("Form", <select value={defaults.duct.shape} onChange={(ev) => set("duct", { shape: ev.target.value })}><option value="rect">Rektangulär</option><option value="round">Cirkulär</option></select>)}{defaults.duct.shape === "rect" ? <>{F("Bredd", <Num v={defaults.duct.w} onChange={(n) => set("duct", { w: n })} />)}{F("Höjd", <Num v={defaults.duct.h} onChange={(n) => set("duct", { h: n })} />)}</> : F("Diameter", <Num v={defaults.duct.d} onChange={(n) => set("duct", { d: n })} />)}{F("Höjd över nivå", <Num v={defaults.duct.elevation} step={100} onChange={(n) => set("duct", { elevation: n })} />)}</div>;
+    case "kanal": return <div className="bcad-list">{head}{F("System", <input value={defaults.duct.system} onChange={(ev) => set("duct", { system: ev.target.value })} />)}{F("Form", <select value={defaults.duct.shape} onChange={(ev) => set("duct", { shape: ev.target.value })}><option value="rect">{tr("Rektangulär")}</option><option value="round">{tr("Cirkulär")}</option></select>)}{defaults.duct.shape === "rect" ? <>{F("Bredd", <Num v={defaults.duct.w} onChange={(n) => set("duct", { w: n })} />)}{F("Höjd", <Num v={defaults.duct.h} onChange={(n) => set("duct", { h: n })} />)}</> : F("Diameter", <Num v={defaults.duct.d} onChange={(n) => set("duct", { d: n })} />)}{F("Höjd över nivå", <Num v={defaults.duct.elevation} step={100} onChange={(n) => set("duct", { elevation: n })} />)}</div>;
     case "kabelstege": return <div className="bcad-list">{head}{F("Bredd", <Num v={defaults.cable_tray.w} onChange={(n) => set("cable_tray", { w: n })} />)}{F("Höjd", <Num v={defaults.cable_tray.h} onChange={(n) => set("cable_tray", { h: n })} />)}{F("Höjd över nivå", <Num v={defaults.cable_tray.elevation} step={100} onChange={(n) => set("cable_tray", { elevation: n })} />)}</div>;
     case "elror": return <div className="bcad-list">{head}{F("Diameter", <Num v={defaults.conduit.d} onChange={(n) => set("conduit", { d: n })} />)}{F("Höjd över nivå", <Num v={defaults.conduit.elevation} step={100} onChange={(n) => set("conduit", { elevation: n })} />)}</div>;
-    case "utrustning": return <div className="bcad-list">{head}{F("Slag", <input value={defaults.equipment.kind} onChange={(ev) => set("equipment", { kind: ev.target.value })} placeholder="pump, LA, WC…" />)}{F("System", <input value={defaults.equipment.system} onChange={(ev) => set("equipment", { system: ev.target.value })} />)}{F("Bredd", <Num v={defaults.equipment.size[0]} onChange={(n) => set("equipment", { size: [n, defaults.equipment.size[1], defaults.equipment.size[2]] })} />)}{F("Djup", <Num v={defaults.equipment.size[1]} onChange={(n) => set("equipment", { size: [defaults.equipment.size[0], n, defaults.equipment.size[2]] })} />)}{F("Höjd", <Num v={defaults.equipment.size[2]} onChange={(n) => set("equipment", { size: [defaults.equipment.size[0], defaults.equipment.size[1], n] })} />)}</div>;
+    case "utrustning": return <div className="bcad-list">{head}{F("Slag", <input value={defaults.equipment.kind} onChange={(ev) => set("equipment", { kind: ev.target.value })} placeholder={tr("pump, LA, WC…")} />)}{F("System", <input value={defaults.equipment.system} onChange={(ev) => set("equipment", { system: ev.target.value })} />)}{F("Bredd", <Num v={defaults.equipment.size[0]} onChange={(n) => set("equipment", { size: [n, defaults.equipment.size[1], defaults.equipment.size[2]] })} />)}{F("Djup", <Num v={defaults.equipment.size[1]} onChange={(n) => set("equipment", { size: [defaults.equipment.size[0], n, defaults.equipment.size[2]] })} />)}{F("Höjd", <Num v={defaults.equipment.size[2]} onChange={(n) => set("equipment", { size: [defaults.equipment.size[0], defaults.equipment.size[1], n] })} />)}</div>;
     case "apparat": return <div className="bcad-list">{head}{F("Slag", <select value={defaults.device.kind} onChange={(ev) => set("device", { kind: ev.target.value })}>{["light", "outlet", "switch", "panel", "air_terminal", "sprinkler_head", "sensor", "other"].map((k) => <option key={k} value={k}>{k}</option>)}</select>)}{F("Höjd", <Num v={defaults.device.elevation} step={100} onChange={(n) => set("device", { elevation: n })} />)}</div>;
     case "text": return <div className="bcad-list">{head}{F("Text", <input value={defaults.text.text} onChange={(ev) => set("text", { text: ev.target.value })} />)}{F("Höjd (mm på papper)", <Num v={defaults.text.h} step={0.5} onChange={(n) => set("text", { h: n })} />)}</div>;
     case "hanvisning": return <div className="bcad-list">{head}{F("Text", <input value={defaults.leader.text} onChange={(ev) => set("leader", { text: ev.target.value })} />)}</div>;
@@ -739,7 +740,7 @@ function ToolDefaultsPanel({ tool, defaults, setDefaults, materials }: { tool: T
 }
 
 function SectionSvg({ shapes }: { shapes: SectionShape[] }) {
-  if (!shapes.length) return <p className="muted small">Ingenting i snittet.</p>;
+  if (!shapes.length) return <p className="muted small">{tr("Ingenting i snittet.")}</p>;
   let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
   for (const s of shapes) for (const [x, y] of s.poly) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); }
   const pad = 500; const w = x1 - x0 + 2 * pad, h = y1 - y0 + 2 * pad;

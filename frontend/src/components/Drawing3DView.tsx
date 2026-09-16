@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { buildModel, type BuildingModel, type ModelPipe, type ModelWall } from "../three/model";
@@ -756,7 +757,7 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
   useEffect(() => { api.current?.setWalking(walking); }, [walking]);
 
   return (
-    <div className="d3-wrap" role="dialog" aria-label="Ritningen i tre dimensioner">
+    <div className="d3-wrap" role="dialog" aria-label={tr("Ritningen i tre dimensioner")}>
       <div ref={host} className="d3-canvas" />
       <div className="d3-top">
         <div className="d3-title">
@@ -766,7 +767,7 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
             {model.scaled ? "" : " · bladet saknar skala, måtten är ritningens punkter"}
           </span>
         </div>
-        <button className="secondary small" onClick={() => { setWalking(false); onClose(); }}>Tillbaka till 2D</button>
+        <button className="secondary small" onClick={() => { setWalking(false); onClose(); }}>{tr("Tillbaka till 2D")}</button>
       </div>
       {walking && <div className="d3-cross" aria-hidden="true" />}
       <Drawing3DControls
@@ -786,7 +787,7 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
         <aside className="d3-info">
           <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
             <b>{picked.kind === "ror" ? (picked.pipe.designation || "Rör") : "Vägg"}</b>
-            <button className="ghost small" onClick={() => setPicked(null)}>Stäng</button>
+            <button className="ghost small" onClick={() => setPicked(null)}>{tr("Stäng")}</button>
           </div>
           {picked.kind === "ror" ? (
             <>
@@ -794,14 +795,14 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
                 <tr><td>Typ</td><td className="num">{picked.pipe.inWall ? "Rör genom vägg" : "Rör"}</td></tr>
                 {picked.pipe.system && <tr><td>System</td><td className="num">{picked.pipe.system}</td></tr>}
                 <tr><td>Dimension</td><td className="num">DN{picked.pipe.dn ?? "?"}</td></tr>
-                <tr><td>Denna sträcka</td><td className="num">{picked.pipe.meters.toFixed(2)} m</td></tr>
-                <tr><td>Antaget material</td><td className="num">{MEDIUM_TEXT[mediumOf(picked.pipe.system)]}</td></tr>
-                <tr><td>Ritad höjd</td><td className="num">
+                <tr><td>{tr("Denna sträcka")}</td><td className="num">{picked.pipe.meters.toFixed(2)} m</td></tr>
+                <tr><td>{tr("Antaget material")}</td><td className="num">{MEDIUM_TEXT[mediumOf(picked.pipe.system)]}</td></tr>
+                <tr><td>{tr("Ritad höjd")}</td><td className="num">
                   {bandOf(picked.pipe.system, systems, model.floorHeight).toFixed(2)} m
                 </td></tr>
                 {picked.qty && <>
-                  <tr><td>Hela beteckningen</td><td className="num">{Number(picked.qty.confirmed_total_m ?? 0).toFixed(2)} m</td></tr>
-                  <tr><td>Sträckor</td><td className="num">{picked.qty.physical_pipe_count}</td></tr>
+                  <tr><td>{tr("Hela beteckningen")}</td><td className="num">{Number(picked.qty.confirmed_total_m ?? 0).toFixed(2)} m</td></tr>
+                  <tr><td>{tr("Sträckor")}</td><td className="num">{picked.qty.physical_pipe_count}</td></tr>
                   <tr><td>Etiketter</td><td className="num">{picked.qty.label_count ?? 0}</td></tr>
                   {picked.qty.riser_count > 0 && <tr><td>Stigare</td><td className="num">{picked.qty.riser_count}</td></tr>}
                 </>}
@@ -817,13 +818,13 @@ export default function Drawing3DView({ result, title, onClose }: Props) {
           ) : (
             <>
               <table className="qty"><tbody>
-                <tr><td>Typ</td><td className="num">Vägg</td></tr>
-                <tr><td>Längd</td><td className="num">
+                <tr><td>Typ</td><td className="num">{tr("Vägg")}</td></tr>
+                <tr><td>{tr("Längd")}</td><td className="num">
                   {Math.hypot(picked.wall.b[0] - picked.wall.a[0], picked.wall.b[1] - picked.wall.a[1]).toFixed(2)} m
                 </td></tr>
                 <tr><td>Tjocklek</td><td className="num">{(picked.wall.thickness * 1000).toFixed(0)} mm</td></tr>
-                <tr><td>Höjd</td><td className="num">{picked.wall.height.toFixed(2)} m</td></tr>
-                <tr><td>Yta, en sida</td><td className="num">
+                <tr><td>{tr("Höjd")}</td><td className="num">{picked.wall.height.toFixed(2)} m</td></tr>
+                <tr><td>{tr("Yta, en sida")}</td><td className="num">
                   {(Math.hypot(picked.wall.b[0] - picked.wall.a[0], picked.wall.b[1] - picked.wall.a[1])
                     * picked.wall.height).toFixed(2)} m²
                 </td></tr>

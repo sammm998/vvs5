@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 
@@ -104,7 +105,7 @@ export default function CalcPage() {
   if (!A) {
     return (
       <main>
-        <p className="crumb"><Link to="/projekt">Projekt</Link> · Kalkyl</p>
+        <p className="crumb"><Link to="/projekt">Projekt</Link> {tr("· Kalkyl")}</p>
         <h1>Kalkyl</h1>
         <p className="lead">{err || "Laddar underlaget…"}</p>
       </main>
@@ -133,8 +134,8 @@ export default function CalcPage() {
         </div>
         <div className="row calc-actions">
           <button onClick={() => run(false)} disabled={busy}>{busy ? "Räknar…" : calc ? "Räkna om" : "Kalkylera"}</button>
-          {calc && <button className="secondary" onClick={() => run(true)} disabled={busy}>Spara kalkyl</button>}
-          {saved && !dirty && <button className="secondary" onClick={showAnbud}>Visa anbudet</button>}
+          {calc && <button className="secondary" onClick={() => run(true)} disabled={busy}>{tr("Spara kalkyl")}</button>}
+          {saved && !dirty && <button className="secondary" onClick={showAnbud}>{tr("Visa anbudet")}</button>}
         </div>
       </div>
       <div className="rule" style={{ marginBottom: 22 }} />
@@ -144,10 +145,10 @@ export default function CalcPage() {
         <div className="adm-stats calc-stats">
           <div className="adm-stat"><div className="k">Material</div><div className="v">{kr(T.material_kr)}</div><div className="s">{T.rader} poster</div></div>
           <div className="adm-stat"><div className="k">Arbete</div><div className="v">{kr(T.arbete_kr)}</div><div className="s">{num(T.timmar, 1)} timmar · {kr(A.timpris)}/h</div></div>
-          <div className="adm-stat"><div className="k">Anbudssumma exkl. moms</div><div className="v">{kr(T.netto_kr)}</div><div className="s">påslag {kr(T.paslag_material_kr + T.paslag_arbete_kr)}</div></div>
-          <div className="adm-stat good"><div className="k">Att betala inkl. moms</div><div className="v">{kr(T.brutto_kr)}</div><div className="s">moms {kr(T.moms_kr)}</div></div>
+          <div className="adm-stat"><div className="k">{tr("Anbudssumma exkl. moms")}</div><div className="v">{kr(T.netto_kr)}</div><div className="s">påslag {kr(T.paslag_material_kr + T.paslag_arbete_kr)}</div></div>
+          <div className="adm-stat good"><div className="k">{tr("Att betala inkl. moms")}</div><div className="v">{kr(T.brutto_kr)}</div><div className="s">moms {kr(T.moms_kr)}</div></div>
           {(T.utan_artikel > 0 || T.utan_normtid > 0) && (
-            <div className="adm-stat bad"><div className="k">Att välja</div><div className="v">{T.utan_artikel + T.utan_normtid}</div>
+            <div className="adm-stat bad"><div className="k">{tr("Att välja")}</div><div className="v">{T.utan_artikel + T.utan_normtid}</div>
               <div className="s">{T.utan_artikel} utan artikel · {T.utan_normtid} utan normtid</div></div>
           )}
         </div>
@@ -157,12 +158,12 @@ export default function CalcPage() {
         <aside className="card calc-side">
           <h3>Antaganden</h3>
           <div className="calc-fields">
-            <label className="adm-field"><span>Timpris kr/h</span><input type="number" value={A.timpris} onChange={(e) => set("timpris", Number(e.target.value))} /></label>
-            <label className="adm-field"><span>Spill %</span><input type="number" value={A.spill_pct} onChange={(e) => set("spill_pct", Number(e.target.value))} /></label>
-            <label className="adm-field"><span>Påslag material %</span><input type="number" value={A.paslag_material_pct} onChange={(e) => set("paslag_material_pct", Number(e.target.value))} /></label>
-            <label className="adm-field"><span>Påslag arbete %</span><input type="number" value={A.paslag_arbete_pct} onChange={(e) => set("paslag_arbete_pct", Number(e.target.value))} /></label>
-            <label className="adm-field"><span>Moms %</span><input type="number" value={A.moms_pct} onChange={(e) => set("moms_pct", Number(e.target.value))} /></label>
-            <label className="adm-field"><span>Våningshöjd m</span><input type="number" step="0.1" value={A.floor_height_m} onChange={(e) => set("floor_height_m", Number(e.target.value))} /></label>
+            <label className="adm-field"><span>{tr("Timpris kr/h")}</span><input type="number" value={A.timpris} onChange={(e) => set("timpris", Number(e.target.value))} /></label>
+            <label className="adm-field"><span>{tr("Spill %")}</span><input type="number" value={A.spill_pct} onChange={(e) => set("spill_pct", Number(e.target.value))} /></label>
+            <label className="adm-field"><span>{tr("Påslag material %")}</span><input type="number" value={A.paslag_material_pct} onChange={(e) => set("paslag_material_pct", Number(e.target.value))} /></label>
+            <label className="adm-field"><span>{tr("Påslag arbete %")}</span><input type="number" value={A.paslag_arbete_pct} onChange={(e) => set("paslag_arbete_pct", Number(e.target.value))} /></label>
+            <label className="adm-field"><span>{tr("Moms %")}</span><input type="number" value={A.moms_pct} onChange={(e) => set("moms_pct", Number(e.target.value))} /></label>
+            <label className="adm-field"><span>{tr("Våningshöjd m")}</span><input type="number" step="0.1" value={A.floor_height_m} onChange={(e) => set("floor_height_m", Number(e.target.value))} /></label>
           </div>
 
           <h3 style={{ marginTop: 18 }}>Tillägg (Normtid VVS)</h3>
@@ -192,19 +193,19 @@ export default function CalcPage() {
 
           <h3 style={{ marginTop: 18 }}>Anbudet</h3>
           <div className="calc-fields one">
-            <label className="adm-field"><span>Vårt företag</span><input value={A.company ?? ""} onChange={(e) => set("company", e.target.value)} /></label>
-            <label className="adm-field"><span>Beställare</span><input value={A.customer ?? ""} onChange={(e) => set("customer", e.target.value)} /></label>
+            <label className="adm-field"><span>{tr("Vårt företag")}</span><input value={A.company ?? ""} onChange={(e) => set("company", e.target.value)} /></label>
+            <label className="adm-field"><span>{tr("Beställare")}</span><input value={A.customer ?? ""} onChange={(e) => set("customer", e.target.value)} /></label>
             <label className="adm-field"><span>Referens</span><input value={A.reference ?? ""} onChange={(e) => set("reference", e.target.value)} /></label>
             <label className="adm-field"><span>Avtalsvillkor</span>
               <select value={A.regelverk ?? ""} onChange={(e) => set("regelverk", e.target.value)}>
-                <option value="">Inget standardavtal</option>
+                <option value="">{tr("Inget standardavtal")}</option>
                 {regelverk.map((r: any) => <option key={r.id} value={r.id}>{r.label}</option>)}
               </select>
             </label>
             <label className="adm-field"><span>Betalning</span><input value={A.betalning ?? ""} onChange={(e) => set("betalning", e.target.value)} /></label>
-            <label className="adm-field"><span>Giltigt i dagar</span><input type="number" value={A.valid_days} onChange={(e) => set("valid_days", Number(e.target.value))} /></label>
+            <label className="adm-field"><span>{tr("Giltigt i dagar")}</span><input type="number" value={A.valid_days} onChange={(e) => set("valid_days", Number(e.target.value))} /></label>
             <label className="adm-field"><span>Inledning</span>
-              <textarea rows={3} value={A.intro ?? ""} onChange={(e) => set("intro", e.target.value)} placeholder="Lämnas tom för standardtexten" /></label>
+              <textarea rows={3} value={A.intro ?? ""} onChange={(e) => set("intro", e.target.value)} placeholder={tr("Lämnas tom för standardtexten")} /></label>
           </div>
           {A.regelverk && regelverk.find((r: any) => r.id === A.regelverk) && (
             <ul className="calc-clauses">
@@ -216,8 +217,8 @@ export default function CalcPage() {
         <section className="calc-main">
           {!calc && (
             <div className="card calc-empty">
-              <h3>Inget räknat ännu</h3>
-              <p className="muted">Tryck <b>Kalkylera</b> så matchas varje beteckning mot materialboken och får sin normtid. Du väljer sedan artikel och rättar timmar rad för rad.</p>
+              <h3>{tr("Inget räknat ännu")}</h3>
+              <p className="muted">Tryck <b>Kalkylera</b> {tr("så matchas varje beteckning mot materialboken och får sin normtid. Du väljer sedan artikel och rättar timmar rad för rad.")}</p>
             </div>
           )}
           {calc && (
@@ -228,7 +229,7 @@ export default function CalcPage() {
               </div>
               <div className="tablewrap" style={{ marginTop: 10 }}>
                 <table className="qty calc-table">
-                  <thead><tr><th>Beteckning</th><th>Artikel (nettopris/m)</th><th className="num">Kalkylmängd</th>
+                  <thead><tr><th>Beteckning</th><th>Artikel (nettopris/m)</th><th className="num">{tr("Kalkylmängd")}</th>
                     <th className="num">Material</th><th>Normtid</th><th className="num">Timmar</th>
                     <th className="num">Arbete</th><th className="num">Summa</th></tr></thead>
                   <tbody>
@@ -261,11 +262,11 @@ export default function CalcPage() {
               </div>
               {calc.caveats?.length > 0 && (
                 <div className="pa-unread" style={{ marginTop: 12 }}>
-                  <b>Förbehåll som följer med anbudet</b>
+                  <b>{tr("Förbehåll som följer med anbudet")}</b>
                   <ul style={{ margin: "6px 0 0 16px" }}>{calc.caveats.map((c: string) => <li key={c} className="small">{c}</li>)}</ul>
                 </div>
               )}
-              <p className="muted small" style={{ marginBottom: 0 }}>Ändrade artiklar eller timmar räknas in när du trycker Räkna om eller Spara kalkyl.</p>
+              <p className="muted small" style={{ marginBottom: 0 }}>{tr("Ändrade artiklar eller timmar räknas in när du trycker Räkna om eller Spara kalkyl.")}</p>
             </div>
           )}
 
@@ -286,7 +287,7 @@ export default function CalcPage() {
                   </button>
                 </div>
               </div>
-              {loadingPages && !pages && <p className="muted small" style={{ marginBottom: 0 }}>Sätter anbudet…</p>}
+              {loadingPages && !pages && <p className="muted small" style={{ marginBottom: 0 }}>{tr("Sätter anbudet…")}</p>}
               {pages && (
                 <>
                   <div className="anbud-pages">
@@ -294,7 +295,7 @@ export default function CalcPage() {
                   </div>
                   {/* nedladdningen står under sidorna: filen hämtas av den som har läst den */}
                   <div className="row" style={{ justifyContent: "flex-end", marginTop: 12 }}>
-                    <button className="small" onClick={openPdf} disabled={dirty}>Ladda ner som PDF</button>
+                    <button className="small" onClick={openPdf} disabled={dirty}>{tr("Ladda ner som PDF")}</button>
                   </div>
                 </>
               )}

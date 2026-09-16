@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 
+import { t as tr } from "../i18n";
 /* En vit sida är det sämsta ett fel kan göra.
  *
  * Ett fel i en enda komponent tar med sig hela trädet: skärmen blir tom, adressen ser rätt ut, och det finns
@@ -34,8 +35,8 @@ export default class Boundary extends Component<Props, State> {
           </p>
           <pre className="boom-why">{String(this.state.err?.message || this.state.err)}</pre>
           <div className="row">
-            <button onClick={() => this.setState({ err: null })}>Försök igen</button>
-            <button className="secondary" onClick={() => window.location.reload()}>Ladda om sidan</button>
+            <button onClick={() => this.setState({ err: null })}>{tr("Försök igen")}</button>
+            <button className="secondary" onClick={() => window.location.reload()}>{tr("Ladda om sidan")}</button>
           </div>
         </div>
       </div>

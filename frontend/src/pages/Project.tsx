@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api, fileSize } from "../api";
 import { StatusBadge } from "../components/Status";
@@ -51,7 +52,7 @@ export default function ProjectPage() {
           <label className="pick" htmlFor="pdf">{picked || "Välj PDF…"}</label>
           <button onClick={upload} disabled={busy || !picked}>{busy ? "Laddar upp…" : "Ladda upp"}</button>
           {/* En ritning i taget svarar med meter. Hela handlingen svarar med vad den består av. */}
-          <Link to={`/projects/${project.id}/analys`}><button className="secondary">Analysera projektet</button></Link>
+          <Link to={`/projects/${project.id}/analys`}><button className="secondary">{tr("Analysera projektet")}</button></Link>
         </div>
       </div>
       {err && <p className="error" style={{ marginTop: 18 }}>{err}</p>}
@@ -69,7 +70,7 @@ export default function ProjectPage() {
               </div>
             </div>
             <div className="meta">
-              {d.latest_job ? <StatusBadge job={d.latest_job} /> : <span className="badge">Ej analyserad</span>}
+              {d.latest_job ? <StatusBadge job={d.latest_job} /> : <span className="badge">{tr("Ej analyserad")}</span>}
               <PriceTag drawingId={d.id} />
               <button className="secondary small" onClick={async () => {
                 setErr("");
@@ -79,7 +80,7 @@ export default function ProjectPage() {
             </div>
           </Tilted>
         ))}
-        {project.drawings.length === 0 && <div className="empty">Inga ritningar ännu — ladda upp den första.</div>}
+        {project.drawings.length === 0 && <div className="empty">{tr("Inga ritningar ännu — ladda upp den första.")}</div>}
       </div>
     </main>
   );

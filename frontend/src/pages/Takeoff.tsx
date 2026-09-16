@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import PdfViewer, { type ViewerHandle } from "../components/PdfViewer";
@@ -237,12 +238,12 @@ export default function TakeoffPage() {
   return (
     <main className="takeoff">
       <p className="crumb">
-        <Link to="/mangda">Mängda</Link>
+        <Link to="/mangda">{tr("Mängda")}</Link>
         {drawing && <> · <Link to={`/drawings/${drawingId}`}>{drawing.filename.replace(/\.pdf$/i, "")}</Link></>}
       </p>
       <div className="head">
         <div>
-          <h1>Mängda</h1>
+          <h1>{tr("Mängda")}</h1>
           <p className="lead">
             Mät, räkna, dra av och märk upp för hand direkt på bladet. Måtten räknas på servern ur punkterna och
             bladets skala. {list?.scale_source === "UPPMÄTT" ? "Skalan är uppmätt av dig."
@@ -259,7 +260,7 @@ export default function TakeoffPage() {
             const b = await api.fetchBlob(api.markupsCsvUrl(drawingId, page, tab === "lista"));
             const u = URL.createObjectURL(b); const a = document.createElement("a");
             a.href = u; a.download = "markeringar.csv"; a.click(); URL.revokeObjectURL(u);
-          }}>Lista som CSV</button>
+          }}>{tr("Lista som CSV")}</button>
         </div>
       </div>
       <div className="rule" style={{ marginBottom: 18 }} />
@@ -275,7 +276,7 @@ export default function TakeoffPage() {
             <button className="secondary small" onClick={() => viewer.current?.zoomIn()}>+</button>
             <button className="secondary small" onClick={() => viewer.current?.fitPage()}>Sida</button>
             <button className="secondary small" onClick={() => viewer.current?.fitWidth()}>Bredd</button>
-            <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>Helskärm</button>
+            <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>{tr("Helskärm")}</button>
             {nPages > 1 && (
               <select value={page} onChange={(e) => setPage(Number(e.target.value))}>
                 {Array.from({ length: nPages }, (_, i) => <option key={i} value={i}>Sida {i + 1}</option>)}
@@ -289,9 +290,9 @@ export default function TakeoffPage() {
                     onClick={() => setSnaps({ ...snaps, on: !snaps.on })}>
               Fångst{inkState === "laser" ? " …" : ""}
             </button>
-            <button className={ortho === 90 ? "small" : "secondary small"} title="Lås till vågrätt och lodrätt"
+            <button className={ortho === 90 ? "small" : "secondary small"} title={tr("Lås till vågrätt och lodrätt")}
                     onClick={() => setOrtho(ortho === 90 ? 0 : 90)}>Ortho</button>
-            <button className={ortho === 45 ? "small" : "secondary small"} title="Lås till 45 grader"
+            <button className={ortho === 45 ? "small" : "secondary small"} title={tr("Lås till 45 grader")}
                     onClick={() => setOrtho(ortho === 45 ? 0 : 45)}>45°</button>
             <span className="spacer" />
             <span className="muted small">
@@ -318,7 +319,7 @@ export default function TakeoffPage() {
 
         <aside className="tk-side">
           <div className="tk-tabs">
-            <button className={tab === "matt" ? "small" : "secondary small"} onClick={() => setTab("matt")}>Mängda</button>
+            <button className={tab === "matt" ? "small" : "secondary small"} onClick={() => setTab("matt")}>{tr("Mängda")}</button>
             <button className={tab === "lista" ? "small" : "secondary small"} onClick={() => setTab("lista")}>
               Markeringar{all?.rows?.length ? ` (${all.rows.length})` : ""}
             </button>
@@ -334,10 +335,10 @@ export default function TakeoffPage() {
                       Dra en linje över något vars längd du vet – en dörr, ett modulmått, skalstocken – och skriv
                       vad den är i meter. Alla mått på sidan räknas om.
                     </p>
-                    <label className="adm-field"><span>Sträckans längd i meter</span>
-                      <input value={calLength} onChange={(e) => setCalLength(e.target.value)} placeholder="t.ex. 1,0" /></label>
+                    <label className="adm-field"><span>{tr("Sträckans längd i meter")}</span>
+                      <input value={calLength} onChange={(e) => setCalLength(e.target.value)} placeholder={tr("t.ex. 1,0")} /></label>
                     <div className="row" style={{ marginTop: 10 }}>
-                      <button disabled={!draft || busy} onClick={calibrate}>Spara skalan</button>
+                      <button disabled={!draft || busy} onClick={calibrate}>{tr("Spara skalan")}</button>
                       {list?.calibration && (
                         <button className="ghost small" disabled={busy}
                           onClick={async () => { await api.clearCalibration(drawingId, page); load(); }}>
@@ -353,33 +354,33 @@ export default function TakeoffPage() {
                       rad; kvadratmetrarna räknas om utan hålet.
                     </p>
                     <div className="row">
-                      <button disabled={!draft || busy} onClick={saveCut}>Spara avdraget</button>
+                      <button disabled={!draft || busy} onClick={saveCut}>{tr("Spara avdraget")}</button>
                       <button className="ghost small" onClick={() => { setCutting(false); setDraft(null); }}>Avbryt</button>
                       {preview && <span className="muted small">{preview}</span>}
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="tk-step"><b>1</b> Vad du mäter</div>
+                    <div className="tk-step"><b>1</b> {tr("Vad du mäter")}</div>
                     <div className="tk-fields">
                       <label className="adm-field"><span>Lager</span>
                         <input value={layer} onChange={(e) => setLayer(e.target.value)} list="tk-layers" />
                         <datalist id="tk-layers">{(list?.layers ?? []).map((l: string) => <option key={l} value={l} />)}</datalist>
                       </label>
                       <label className="adm-field"><span>Beteckning</span>
-                        <input value={designation} onChange={(e) => setDesignation(e.target.value)} placeholder="t.ex. VS21-S13-22" /></label>
-                      <label className="adm-field"><span>Ämne</span>
-                        <input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="vad raden gäller" /></label>
+                        <input value={designation} onChange={(e) => setDesignation(e.target.value)} placeholder={tr("t.ex. VS21-S13-22")} /></label>
+                      <label className="adm-field"><span>{tr("Ämne")}</span>
+                        <input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder={tr("vad raden gäller")} /></label>
                       <label className="adm-field"><span>Multiplikator</span>
                         <input type="number" step="0.1" value={props.multiplikator ?? ""} placeholder="1"
                           onChange={(e) => setProps({ ...props, multiplikator: e.target.value === "" ? undefined : Number(e.target.value) })} /></label>
                       {kind === "langd" && (
-                        <label className="adm-field"><span>Tillägg m</span>
+                        <label className="adm-field"><span>{tr("Tillägg m")}</span>
                           <input type="number" step="0.1" value={props.tillagg_m ?? ""} placeholder="0"
                             onChange={(e) => setProps({ ...props, tillagg_m: e.target.value === "" ? undefined : Number(e.target.value) })} /></label>
                       )}
                       {kind === "yta" && (
-                        <label className="adm-field"><span>Djup m</span>
+                        <label className="adm-field"><span>{tr("Djup m")}</span>
                           <input type="number" step="0.1" value={props.djup_m ?? ""} placeholder="0"
                             onChange={(e) => setProps({ ...props, djup_m: e.target.value === "" ? undefined : Number(e.target.value) })} /></label>
                       )}
@@ -394,7 +395,7 @@ export default function TakeoffPage() {
                           finns - för att ändra den, dra av ur den eller ta bort den. Utan den kan ett armerat
                           ritverktyg aldrig släppa taget om bladet, och en sparad yta går inte att välja. */}
                       <button className={tool === null ? "" : "secondary"}
-                              onClick={() => { setTool(null); setDraft(null); }}>Välj</button>
+                              onClick={() => { setTool(null); setDraft(null); }}>{tr("Välj")}</button>
                       {TOOLS.map((t) => (
                         <button key={t.id} className={tool === t.id ? "" : "secondary"}
                                 onClick={() => { setTool(t.id); setDraft(null); }}>{t.label}</button>
@@ -407,7 +408,7 @@ export default function TakeoffPage() {
                     <div className="row" style={{ marginTop: 10 }}>
                       <button disabled={!draft || busy} onClick={save}>{busy ? "Sparar…" : "Spara markering"}</button>
                       {draft && <button className="ghost small" onClick={() => setDraft(null)}>Rensa</button>}
-                      <button className="ghost small" onClick={savePreset}>Spara som verktyg</button>
+                      <button className="ghost small" onClick={savePreset}>{tr("Spara som verktyg")}</button>
                       {preview && <span className="muted small">{preview}</span>}
                     </div>
                     {presets.length > 0 && (
@@ -415,7 +416,7 @@ export default function TakeoffPage() {
                         {presets.map((p) => (
                           <span key={p.id} className="tk-preset">
                             <button className="ghost small" onClick={() => applyPreset(p)}>{p.name}</button>
-                            <button className="ghost small x" title="Ta bort"
+                            <button className="ghost small x" title={tr("Ta bort")}
                               onClick={async () => { await api.deleteToolPreset(p.id); setPresets((await api.toolPresets()).rows); }}>✕</button>
                           </span>
                         ))}
@@ -437,7 +438,7 @@ export default function TakeoffPage() {
                       <input defaultValue={sel.layer} onBlur={(e) => e.target.value !== sel.layer && patch(sel.id, { layer: e.target.value })} /></label>
                     <label className="adm-field"><span>Beteckning</span>
                       <input defaultValue={sel.designation ?? ""} onBlur={(e) => patch(sel.id, { designation: e.target.value })} /></label>
-                    <label className="adm-field"><span>Ämne</span>
+                    <label className="adm-field"><span>{tr("Ämne")}</span>
                       <input defaultValue={sel.subject ?? ""} onBlur={(e) => patch(sel.id, { subject: e.target.value })} /></label>
                     <label className="adm-field"><span>Status</span>
                       <select value={sel.status ?? "oppen"} onChange={(e) => patch(sel.id, { status: e.target.value })}>
@@ -451,14 +452,14 @@ export default function TakeoffPage() {
                       </button>
                     )}
                     {((sel as any).props?.avdrag?.length ?? 0) > 0 && (
-                      <button className="ghost small" disabled={busy} onClick={dropCuts}>Ta bort avdragen</button>
+                      <button className="ghost small" disabled={busy} onClick={dropCuts}>{tr("Ta bort avdragen")}</button>
                     )}
                     <button className="secondary small" disabled={!draft || busy} onClick={redraw}
-                            title="Rita formen på nytt på bladet och tryck här - raden behåller sitt namn och sin status">
+                            title={tr("Rita formen på nytt på bladet och tryck här - raden behåller sitt namn och sin status")}>
                       Ersätt formen
                     </button>
-                    <button className="ghost small" onClick={() => remove(sel.id)}>Ta bort</button>
-                    <button className="ghost small" onClick={() => setSelected(null)}>Stäng</button>
+                    <button className="ghost small" onClick={() => remove(sel.id)}>{tr("Ta bort")}</button>
+                    <button className="ghost small" onClick={() => setSelected(null)}>{tr("Stäng")}</button>
                   </div>
                 </section>
               )}
@@ -466,7 +467,7 @@ export default function TakeoffPage() {
               <section className="card">
                 <h3 style={{ marginTop: 0 }}>Summor</h3>
                 <div className="adm-stats">
-                  <div className="adm-stat"><div className="k">Längd</div><div className="v">{n2(list?.totals?.m)}</div><div className="s">meter</div></div>
+                  <div className="adm-stat"><div className="k">{tr("Längd")}</div><div className="v">{n2(list?.totals?.m)}</div><div className="s">meter</div></div>
                   <div className="adm-stat"><div className="k">Yta</div><div className="v">{n2(list?.totals?.kvm)}</div><div className="s">m²</div></div>
                   <div className="adm-stat"><div className="k">Volym</div><div className="v">{n2(list?.totals?.m3, 3)}</div><div className="s">m³</div></div>
                   <div className="adm-stat"><div className="k">Antal</div><div className="v">{list?.totals?.antal ?? 0}</div><div className="s">stycken</div></div>
@@ -479,8 +480,8 @@ export default function TakeoffPage() {
               </section>
 
               <section className="card">
-                <h3 style={{ marginTop: 0 }}>Den här sidan</h3>
-                {!rows.length && <p className="muted" style={{ marginBottom: 0 }}>Inga ännu. Välj ett verktyg och rita på bladet.</p>}
+                <h3 style={{ marginTop: 0 }}>{tr("Den här sidan")}</h3>
+                {!rows.length && <p className="muted" style={{ marginBottom: 0 }}>{tr("Inga ännu. Välj ett verktyg och rita på bladet.")}</p>}
                 {byLayer.map(([lay, items]) => (
                   <div key={lay} className="tk-layer">
                     <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
@@ -509,7 +510,7 @@ export default function TakeoffPage() {
 
           {tab === "lista" && (
             <section className="card tk-listcard">
-              <h3 style={{ marginTop: 0 }}>Markeringar i hela handlingen</h3>
+              <h3 style={{ marginTop: 0 }}>{tr("Markeringar i hela handlingen")}</h3>
               <MarkupsList rows={allRows} selected={selected} busy={busy}
                 onSelect={(mid) => {
                   setSelected(mid);

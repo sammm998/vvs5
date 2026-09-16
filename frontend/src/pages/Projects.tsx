@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import Tilted from "../components/Tilted";
@@ -34,11 +35,11 @@ export default function Projects() {
 
   return (
     <main>
-      <p className="crumb">/ Projekt</p>
+      <p className="crumb">{tr("/ Projekt")}</p>
       <div className="head">
         <div>
           <h1>Projekt</h1>
-          <p className="lead">Mängder ur ritningen, med belägg för varje meter</p>
+          <p className="lead">{tr("Mängder ur ritningen, med belägg för varje meter")}</p>
         </div>
         <button onClick={() => setOpen(!open)}>{open ? "Avbryt" : "+ Nytt projekt"}</button>
       </div>
@@ -47,7 +48,7 @@ export default function Projects() {
         <form className="card" style={{ marginTop: 28, maxWidth: 560 }} onSubmit={create}>
           <div className="field">
             <label htmlFor="p-name">Projektnamn</label>
-            <input id="p-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Kv. Badhuset, etapp 2" required autoFocus />
+            <input id="p-name" value={name} onChange={(e) => setName(e.target.value)} placeholder={tr("Kv. Badhuset, etapp 2")} required autoFocus />
           </div>
           <div className="field">
             <label htmlFor="p-desc">Beskrivning</label>
@@ -61,7 +62,7 @@ export default function Projects() {
 
       <div className="rule" />
       <div className="row" style={{ margin: "22px 0 6px" }}>
-        <input style={{ flex: 1, minWidth: 260 }} placeholder="Sök projekt eller beskrivning" value={q} onChange={(e) => setQ(e.target.value)} />
+        <input style={{ flex: 1, minWidth: 260 }} placeholder={tr("Sök projekt eller beskrivning")} value={q} onChange={(e) => setQ(e.target.value)} />
         <span className="badge">{shown.length} {shown.length === 1 ? "projekt" : "projekt"}</span>
       </div>
       <div className="rule" style={{ margin: 0 }} />
@@ -77,7 +78,7 @@ export default function Projects() {
             <div className="meta">
               <button className="ghost act" onClick={async () => {
                 if (confirm(`Ta bort ${p.name}?`)) { await api.deleteProject(p.id); load(); }
-              }}>Ta bort</button>
+              }}>{tr("Ta bort")}</button>
               <span className="badge">{p.n_drawings} {p.n_drawings === 1 ? "ritning" : "ritningar"}</span>
               <span className="when">{DATE.format(new Date(p.created_at))}</span>
             </div>

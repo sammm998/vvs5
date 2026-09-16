@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { t as tr } from "../i18n";
 import TrainingDrawing, { Symbol, type Run } from "./TrainingDrawing";
 import { ac, type AttemptOut, type ExerciseOut, type PlanData } from "./api";
 
@@ -70,7 +71,7 @@ export default function Exercise({ ex, onDone, exam = false, onExam }: Props) {
               {showHint ? "Dölj ledtråd" : "Visa ledtråd"}
             </button>
           )}
-          {out && !out.passed && <button className="fc-btn sm" onClick={() => { setGiven(empty(ex.kind)); setOut(null); }}>Försök igen</button>}
+          {out && !out.passed && <button className="fc-btn sm" onClick={() => { setGiven(empty(ex.kind)); setOut(null); }}>{tr("Försök igen")}</button>}
           {left !== null && <span className="fc-label">{left} försök kvar</span>}
         </div>
       )}
@@ -123,8 +124,8 @@ function Result({ out }: { out: AttemptOut }) {
       )}
       {f.din_mangd !== undefined && (
         <dl className="ex-nums">
-          <div><dt>Din mängd</dt><dd>{fmt(f.din_mangd)} m</dd></div>
-          <div><dt>Rätt mängd</dt><dd>{fmt(f.ratt_mangd)} m</dd></div>
+          <div><dt>{tr("Din mängd")}</dt><dd>{fmt(f.din_mangd)} m</dd></div>
+          <div><dt>{tr("Rätt mängd")}</dt><dd>{fmt(f.ratt_mangd)} m</dd></div>
           <div><dt>Avvikelse</dt><dd>{fmt(f.avvikelse_pct, 1)} %</dd></div>
         </dl>
       )}
@@ -181,7 +182,7 @@ function Body({ ex, given, set }: { ex: ExerciseOut; given: any; set: (v: any) =
     case "numerisk":
       return (
         <label className="ex-num">
-          <span>Ditt svar</span>
+          <span>{tr("Ditt svar")}</span>
           <input inputMode="decimal" value={given.value ?? ""} onChange={(e) => set({ value: e.target.value })} />
           <span className="fc-label">{ex.data.unit}</span>
         </label>
@@ -191,7 +192,7 @@ function Body({ ex, given, set }: { ex: ExerciseOut; given: any; set: (v: any) =
     case "rum":
       return <Room ex={ex} given={given} set={set} plan={plan} />;
     default:
-      return <p className="ex-inst">Den här övningstypen kan inte visas här.</p>;
+      return <p className="ex-inst">{tr("Den här övningstypen kan inte visas här.")}</p>;
   }
 }
 
@@ -287,7 +288,7 @@ function Match({ ex, given, set }: { ex: ExerciseOut; given: any; set: (v: any) 
           );
         })}
       </div>
-      <p className="td-hint">Klicka en symbol, klicka sedan dess namn. Klicka krysset för att lossa ett par.</p>
+      <p className="td-hint">{tr("Klicka en symbol, klicka sedan dess namn. Klicka krysset för att lossa ett par.")}</p>
     </div>
   );
 }
@@ -330,7 +331,7 @@ function Buckets({ ex, given, set }: { ex: ExerciseOut; given: any; set: (v: any
           <button key={i.id} className={`ex-chip${held === i.id ? " held" : ""}`}
             onClick={() => setHeld(held === i.id ? null : i.id)} aria-pressed={held === i.id}>{i.text}</button>
         ))}
-        {items.every((i: any) => b[i.id]) && <span className="td-hint">Alla utplacerade.</span>}
+        {items.every((i: any) => b[i.id]) && <span className="td-hint">{tr("Alla utplacerade.")}</span>}
       </div>
       <div className="ex-bucket-row">
         {(ex.data.buckets || []).map((k: any) => (
@@ -357,7 +358,7 @@ function FindErrors({ ex, given, set }: { ex: ExerciseOut; given: any; set: (v: 
   const picked: string[] = given.picked || [];
   return (
     <table className="ex-rows">
-      <thead><tr><th>Post</th><th className="num">Mängd</th><th className="num">Pris</th><th className="num">Tid</th><th /></tr></thead>
+      <thead><tr><th>Post</th><th className="num">{tr("Mängd")}</th><th className="num">Pris</th><th className="num">Tid</th><th /></tr></thead>
       <tbody>
         {(ex.data.rows || []).map((r: any) => {
           const on = picked.includes(r.id);

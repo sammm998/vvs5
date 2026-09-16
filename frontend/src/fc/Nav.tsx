@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LangSwitch } from "../components/SiteHeader";
-import { t } from "../i18n";
+import { t as tr } from "../i18n";
 
 import { getToken } from "../api";
 import gsap from "gsap";
@@ -92,13 +92,13 @@ export default function Nav({ light = false }: { light?: boolean }) {
   return (
     <>
       <header className={`fc-nav${light ? " light" : ""}`}>
-        <Link className="fc-nav-mark" to="/" aria-label="FutureCalc, till startsidan">
+        <Link className="fc-nav-mark" to="/" aria-label={tr("FutureCalc, till startsidan")}>
           <Logo />
           <span>FutureCalc</span>
         </Link>
         <nav className="fc-nav-links" aria-label="Huvudmeny">
           {NAV_LINKS.slice(0, 4).map((l) => (
-            <Link key={l.to} to={l.to} className={pathname.startsWith(l.to) ? "on" : ""} data-cursor="cta">{t(l.label)}</Link>
+            <Link key={l.to} to={l.to} className={pathname.startsWith(l.to) ? "on" : ""} data-cursor="cta">{tr(l.label)}</Link>
           ))}
         </nav>
         <div className="fc-nav-right">
@@ -117,7 +117,7 @@ export default function Nav({ light = false }: { light?: boolean }) {
       {open && (
         <div ref={panel} className="fc-menu" role="dialog" aria-modal="true" aria-label="Meny">
           <div className="fc-menu-top">
-            <span className="fc-label">FutureCalc / Meny</span>
+            <span className="fc-label">{tr("FutureCalc / Meny")}</span>
             <button className="fc-menu-x" onClick={() => { setOpen(false); opener.current?.focus(); }}>
               Stäng <span aria-hidden="true">✕</span>
             </button>
@@ -140,27 +140,27 @@ export default function Nav({ light = false }: { light?: boolean }) {
                 utbildningssidan och dokumentationen, med inloggningen först. Inloggad pekar den in i
                 verktyget, där det ljusa läget är väntat. */}
             <div className="fc-menu-side">
-              <p className="fc-label">Direkt in</p>
+              <p className="fc-label">{tr("Direkt in")}</p>
               {inne ? (
                 <>
                   <Link className="fc-link" to="/projekt">Projekt</Link>
-                  <Link className="fc-link" to="/academy">FutureCalc Academy</Link>
-                  <Link className="fc-link" to="/mangda">Mängda ett blad</Link>
+                  <Link className="fc-link" to="/academy">{tr("FutureCalc Academy")}</Link>
+                  <Link className="fc-link" to="/mangda">{tr("Mängda ett blad")}</Link>
                 </>
               ) : (
                 <>
-                  <Link className="fc-link" to="/login">Logga in</Link>
+                  <Link className="fc-link" to="/login">{tr("Logga in")}</Link>
                   <Link className="fc-link" to="/utbildning">VVS-akademin</Link>
                   <Link className="fc-link" to="/priser">Priser</Link>
                 </>
               )}
               <Link className="fc-link" to="/dokumentation">Dokumentation</Link>
               <p className="fc-label" style={{ marginTop: 28 }}>Kontakt</p>
-              <a className="fc-link" href="mailto:hej@futurecalc.se">hej@futurecalc.se</a>
+              <a className="fc-link" href="mailto:hej@futurecalc.se">{tr("hej@futurecalc.se")}</a>
             </div>
           </div>
           <div className="fc-menu-foot">
-            <span className="fc-label">FutureCalc® / VPR System / 2026</span>
+            <span className="fc-label">{tr("FutureCalc® / VPR System / 2026")}</span>
           </div>
         </div>
       )}

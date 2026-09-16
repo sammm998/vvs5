@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { t as tr } from "../i18n";
 import SiteHeader from "../components/SiteHeader";
 
 
@@ -15,7 +16,7 @@ const SECTIONS: Sec[] = [
           en identitet utifrån närhet. Ett rör får ett namn bara när en riktig ledarlinje går från en beteckning
           till just den geometrin — annars redovisas det som oidentifierat eller tvetydigt.
         </p>
-        <p className="pull">Tvetydigt är ett giltigt svar. Fel säkerhet är det inte.</p>
+        <p className="pull">{tr("Tvetydigt är ett giltigt svar. Fel säkerhet är det inte.")}</p>
         <p>
           Det betyder att en siffra som står i mängden alltid har ett belägg bakom sig, och att det som saknas
           syns i stället för att fyllas i. En mängdning som ser komplett ut men är gissad är värre än en som säger
@@ -49,40 +50,40 @@ const SECTIONS: Sec[] = [
       <>
         <ol className="steps">
           <li>
-            <b>Läser vektorn.</b> Varje väg, dess penna, färg, lager och ordning tas ur PDF:en. Sidramen känns
+            <b>{tr("Läser vektorn.")}</b> Varje väg, dess penna, färg, lager och ordning tas ur PDF:en. Sidramen känns
             igen på sin form och räknas aldrig som rör.
           </li>
           <li>
-            <b>Bygger tillbaka texten.</b> Streck grupperas till tecken, tecken till rader. Ett tecken namnges
+            <b>{tr("Bygger tillbaka texten.")}</b> Streck grupperas till tecken, tecken till rader. Ett tecken namnges
             genom att dess form jämförs med referensalfabet — det egna inbäddade typsnittet först, när ritningen
             har ett.
           </li>
           <li>
-            <b>Läser beteckningslistan.</b> Sidans egen lista säger vilka koder som är system, vilka som är
+            <b>{tr("Läser beteckningslistan.")}</b> Sidans egen lista säger vilka koder som är system, vilka som är
             material och vilka som är komponenter. Listan skriver komponentfamiljer med platshållare —
-            <code>BXXX GOLVBRUNN</code> — så <code>B1</code> och <code>B221BL</code> känns igen som just den
+            <code>{tr("BXXX GOLVBRUNN")}</code> {tr("— så")} <code>B1</code> och <code>B221BL</code> känns igen som just den
             posten och aldrig som rör.
           </li>
           <li>
-            <b>Läser beteckningarna.</b> Grammatiken lärs per ritning:
+            <b>{tr("Läser beteckningarna.")}</b> Grammatiken lärs per ritning:
             <code>SYSTEM+löpnummer – MATERIAL – DIMENSION [/ISOLERING]</code>. Dimensionen kan stå inline eller på
             raden under, understruken; båda formerna viks in i samma identitet.
           </li>
           <li>
-            <b>Hittar ledarlinjerna.</b> Från etikettens understrykning, ram eller radbas ut till den geometri
+            <b>{tr("Hittar ledarlinjerna.")}</b> Från etikettens understrykning, ram eller radbas ut till den geometri
             linjen faktiskt rör, eller till symbolen den slutar i. Linjer som bara är ramstumpar sorteras bort.
           </li>
           <li>
-            <b>Väljer rörfamiljer.</b> Geometri grupperas på (lager, pennbredd, färg) — inte på streckmönster,
-            eftersom linjetypen på svenska ritningar säger <i>var röret ligger i höjdled</i>, inte vilket system
+            <b>{tr("Väljer rörfamiljer.")}</b> Geometri grupperas på (lager, pennbredd, färg) — inte på streckmönster,
+            eftersom linjetypen på svenska ritningar säger <i>{tr("var röret ligger i höjdled")}</i>, inte vilket system
             det är. Vilka familjer som är rör avgörs av var ritningens egna ledarlinjer slutar.
           </li>
           <li>
-            <b>Bygger topologi och äger rören.</b> Identiteten bärs längs nätet från den etikett som pekar på det,
+            <b>{tr("Bygger topologi och äger rören.")}</b> Identiteten bärs längs nätet från den etikett som pekar på det,
             till den gräns ritningen själv sätter: en dimensionsändring, en systemgräns, en gren utan stöd.
           </li>
           <li>
-            <b>Mäter.</b> I skalstockens egen skala, verifierad mot skaltexten. Stigare räknas som antal; deras
+            <b>{tr("Mäter.")}</b> I skalstockens egen skala, verifierad mot skaltexten. Stigare räknas som antal; deras
             meter kräver en våningshöjd, och den frågar systemet efter i stället för att anta en.
           </li>
         </ol>
@@ -104,7 +105,7 @@ const SECTIONS: Sec[] = [
           <li><b>closure</b> — läser genom nätets slutenhet: en sträcka som bara kan höra till en identitet därför att allt annat runt den redan är namngivet.</li>
         </ul>
         <p>
-          Sedan en <b>korsläsning</b> som ställer svaren mot varandra, och en <b>granskning</b> som listar varje
+          Sedan en <b>{tr("korsläsning")}</b> {tr("som ställer svaren mot varandra, och en")} <b>granskning</b> som listar varje
           sträcka utan namn och varje etikett som inte nådde ett rör, med skäl. En andra väg får lägga till det
           den första missade — men aldrig döpa om något den första redan avgjort.
         </p>
@@ -121,10 +122,10 @@ const SECTIONS: Sec[] = [
     h: "Reglerna som vägrar",
     body: (
       <>
-        <p>Det mesta av arbetet ligger i att inte mäta fel saker. Varje regel är mätt fram, inte antagen.</p>
+        <p>{tr("Det mesta av arbetet ligger i att inte mäta fel saker. Varje regel är mätt fram, inte antagen.")}</p>
         <ul className="defs">
           <li>
-            <b>Ritade föremål.</b> Ett rör ritas som en linje i mitten; en radiator eller en luftvärmare ritas som
+            <b>{tr("Ritade föremål.")}</b> Ett rör ritas som en linje i mitten; en radiator eller en luftvärmare ritas som
             sina två långsidor. Två linjer en läsare ska skilja åt kan inte ritas närmare än ungefär en millimeter
             papper — ett stråk som skuggas hela vägen av sin egen familj därifrån är en kontur, inte ett rör.
           </li>
@@ -133,12 +134,12 @@ const SECTIONS: Sec[] = [
             12–28 % av geometrin dubbelritad.
           </li>
           <li>
-            <b>Etiketterna måste nå fram.</b> Saknar de accepterade familjerna lagernamn och ritningens egna
+            <b>{tr("Etiketterna måste nå fram.")}</b> Saknar de accepterade familjerna lagernamn och ritningens egna
             rörbeteckningar ändå inte når dem, är det fel geometri som accepterats — hade det varit rören hade
             etiketterna hittat dem.
           </li>
           <li>
-            <b>Identitet som rinner för långt.</b> En identitet får löpa vidare genom en korsning, men bara inom
+            <b>{tr("Identitet som rinner för långt.")}</b> En identitet får löpa vidare genom en korsning, men bara inom
             räckhåll för vad etiketterna själva avgränsar.
           </li>
           <li>
@@ -158,12 +159,12 @@ const SECTIONS: Sec[] = [
         <p>
           Fem saker går att ändra på en färdig läsning: rita ett rör motorn inte såg, förlänga ett förbi där det
           slutade, sudda det som mätts men inte är rör, flytta meter mellan beteckningar, eller sätta längden för
-          hand. Rättelser läggs <i>ovanpå</i> läsningen — varje rad behåller motorns egen siffra, så det syns
+          hand. Rättelser läggs <i>{tr("ovanpå")}</i> läsningen — varje rad behåller motorns egen siffra, så det syns
           alltid vad som lästes och vad som ändrades.
         </p>
         <p>
           Vad en rättelse får lära ut är medvetet smalt. En läxa får bara avgöra ett fall som motorn själv kallat
-          tvetydigt, till förmån för det svar en människa gav <i>i samma situation</i>. Den får aldrig skapa en
+          tvetydigt, till förmån för det svar en människa gav <i>{tr("i samma situation")}</i>. Den får aldrig skapa en
           sträcka, aldrig namnge geometri ingen ledarlinje nådde, aldrig röra något motorn är säker på, och aldrig
           erbjuda ett svar ritningens egna kandidater inte innehåller.
         </p>
@@ -199,7 +200,7 @@ const SECTIONS: Sec[] = [
     h: "Hur det valideras",
     body: (
       <>
-        <p>Tre nivåer, och de körs om vid varje ändring som kan röra en siffra.</p>
+        <p>{tr("Tre nivåer, och de körs om vid varje ändring som kan röra en siffra.")}</p>
         <ul className="defs">
           <li>
             <b>Facit.</b> Fyra ritningar handmängdade av en människa, med längd per beteckning. Systemet körs
@@ -210,7 +211,7 @@ const SECTIONS: Sec[] = [
             mot förra körningen, så att en förbättring på ett ark inte tyst förstör ett annat.
           </li>
           <li>
-            <b>Annoterade ark.</b> Handmarkerade masker per beteckning på fler ark, som oberoende svar på om
+            <b>{tr("Annoterade ark.")}</b> Handmarkerade masker per beteckning på fler ark, som oberoende svar på om
             rätt rör hittades på rätt plats.
           </li>
         </ul>
@@ -225,7 +226,7 @@ const SECTIONS: Sec[] = [
         </p>
         <table className="docs-metrics">
           <thead>
-            <tr><th>Ritning</th><th>Bet. P</th><th>Bet. R</th><th>Facit m</th><th>Ägda m</th><th>Falska m</th><th>Missade m</th></tr>
+            <tr><th>Ritning</th><th>{tr("Bet. P")}</th><th>{tr("Bet. R")}</th><th>{tr("Facit m")}</th><th>{tr("Ägda m")}</th><th>{tr("Falska m")}</th><th>{tr("Missade m")}</th></tr>
           </thead>
           <tbody>
             <tr><td>A</td><td>100 %</td><td>100 %</td><td>213,70</td><td>211,29</td><td>0,05</td><td>2,41</td></tr>
@@ -242,7 +243,7 @@ const SECTIONS: Sec[] = [
           <code>results/validation/metrics.py</code>, som körs på en blind körning och aldrig av motorn.
         </p>
         <p className="note">
-          Tabellen mäts mot facits <b>Längd</b> — den utritade sträckan, som är det motorn tar fram. Facit har
+          Tabellen mäts mot facits <b>{tr("Längd")}</b> — den utritade sträckan, som är det motorn tar fram. Facit har
           därutöver 268,40 m i en egen kolumn för stigare: antal gånger en våningshöjd som mängdaren antagit.
           Motorn räknar inte fram dem utan att få höjden, så de ingår varken i täckningen eller i felet. De står
           här för att inte försvinna ur en siffra som annars såg fullständig ut.
@@ -277,7 +278,7 @@ const SECTIONS: Sec[] = [
             ritningen själv använder om och om igen.
           </li>
           <li>
-            <b>Hur nära två linjer får ligga</b> innan de läses som två sidor av ett ritat föremål sätts av
+            <b>{tr("Hur nära två linjer får ligga")}</b> innan de läses som två sidor av ett ritat föremål sätts av
             ritningens egen penna, inte av millimeter på papper.
           </li>
           <li>
@@ -301,24 +302,24 @@ const SECTIONS: Sec[] = [
     body: (
       <>
         <ul className="defs">
-          <li>Läser inte skannade ritningar. Utan vektorkoder finns inget att mäta.</li>
+          <li>{tr("Läser inte skannade ritningar. Utan vektorkoder finns inget att mäta.")}</li>
           <li>
             Antar ingen våningshöjd. Stigare räknas som antal tills du anger en höjd — och anger du en, följer
             det med i exporten att metrarna är antagna och inte mätta.
           </li>
-          <li>Fördelar inte längden i en delad sträcka mellan systemen som delar den.</li>
-          <li>Namnger inte geometri utifrån närhet, hur nära den än ligger.</li>
-          <li>Låter inte en rättelse på en ritning bli en gissning på en annan.</li>
+          <li>{tr("Fördelar inte längden i en delad sträcka mellan systemen som delar den.")}</li>
+          <li>{tr("Namnger inte geometri utifrån närhet, hur nära den än ligger.")}</li>
+          <li>{tr("Låter inte en rättelse på en ritning bli en gissning på en annan.")}</li>
           <li>
-            <b>Har en skala per sida, inte per ritningsdel.</b> Ett detaljutsnitt i egen skala mäts i planens
+            <b>{tr("Har en skala per sida, inte per ritningsdel.")}</b> Ett detaljutsnitt i egen skala mäts i planens
             skala. Motstridiga skaluppgifter redovisas som konflikt, men delas inte upp per område.
           </li>
           <li>
-            <b>Överbryggar inte glapp i en böjd streckad linje.</b> Kurvor läses och mäts, men ett avbrott i en
+            <b>{tr("Överbryggar inte glapp i en böjd streckad linje.")}</b> Kurvor läses och mäts, men ett avbrott i en
             streckad kurva sluts bara där bitarna ligger på linje eller möts i ett hörn.
           </li>
           <li>
-            <b>Delar inte en knippeetikett som räknar upp fler koder än ritningen ritar linjer.</b> Där räcker
+            <b>{tr("Delar inte en knippeetikett som räknar upp fler koder än ritningen ritar linjer.")}</b> Där räcker
             eliminering inte till, och fallet lämnas tvetydigt i stället för att fördelas.
           </li>
         </ul>
@@ -337,7 +338,7 @@ const SECTIONS: Sec[] = [
           kabelstegar, utrustning med anslutningar. Planen och 3D-vyn är samma objekt: det som flyttas i den ena
           flyttar i den andra, och varje ändring är en transaktion som går att ångra.
         </p>
-        <p className="pull">Ingen påhittad dimension. Det som inte står i modellen finns inte i filen.</p>
+        <p className="pull">{tr("Ingen påhittad dimension. Det som inte står i modellen finns inte i filen.")}</p>
         <p>
           Mängderna räknas ur samma mått som ritar — en väggs yta är längd gånger höjd minus öppningarna, aldrig
           summan av trianglar — och servern räknar samma tal som webbläsaren, grupp för grupp. Ett material utan
@@ -370,7 +371,7 @@ const SECTIONS: Sec[] = [
           exporterna kostar inga credits. En andra blick med syn på en färdig läsning kostar en credit per sida, och
           begärs bara när du ber om den.
         </p>
-        <p className="pull">En läsning som inte kunde ge en enda meter kostar ingenting.</p>
+        <p className="pull">{tr("En läsning som inte kunde ge en enda meter kostar ingenting.")}</p>
         <p>
           Saknar bladet skala, eller går läsningen fel, betalas priset tillbaka av sig självt — med skälet i din
           reskontra. Skriver du in skalan för hand och läser om, är det en ny läsning under den skalan och kostar
@@ -412,7 +413,7 @@ export default function Docs() {
         <div className="pub-hero-in">
           <div>
             <p className="lp-eyebrow"><span className="dot" />Dokumentation</p>
-            <h1 className="pub-h1">Hur systemet läser en ritning</h1>
+            <h1 className="pub-h1">{tr("Hur systemet läser en ritning")}</h1>
             <p className="pub-lede">
               Vad som läses, i vilken ordning, vad som får bli en siffra och vad som aldrig får det.
             </p>

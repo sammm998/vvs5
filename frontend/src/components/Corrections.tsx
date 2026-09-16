@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 import { identityColor } from "../palette";
 
@@ -66,7 +67,7 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
     <>
       {proposals.length > 0 && (
         <div className="card">
-          <h3>Från tidigare rättelser <span className="badge">{proposals.length}</span></h3>
+          <h3>{tr("Från tidigare rättelser")} <span className="badge">{proposals.length}</span></h3>
           <p className="muted" style={{ marginTop: 0 }}>
             Förslag, inte beslut. En läxa får bara tala där motorn själv kallade fallet tvetydigt, och bara med ett
             svar ritningen erbjuder. Mängden flyttar sig först när du säger till.
@@ -83,14 +84,14 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
                   situation: pr.situation, note: "godtaget förslag från en tidigare rättelse",
                 });
                 onChanged();
-              }}>Använd</button>
+              }}>{tr("Använd")}</button>
             </div>
           ))}
         </div>
       )}
 
       <div className="card">
-        <h3>Rätta läsningen</h3>
+        <h3>{tr("Rätta läsningen")}</h3>
         {!subject && (
           <p className="muted" style={{ marginTop: 0 }}>
             Klicka på ett rör i ritningen. Då gäller rättelsen den sträckan, och beteckningen behöver inte skrivas.
@@ -131,20 +132,20 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
                     ? ` från ${(draft.hits ?? [subject]).filter(Boolean).join(", ") || "mängden"}`
                     : ` på ${designation || "vald beteckning"}`}
                 </span>
-                <button className="ghost small" onClick={onDraftClear}>Gör om</button>
+                <button className="ghost small" onClick={onDraftClear}>{tr("Gör om")}</button>
               </div>
             )}
 
             {kind === "draw" && (
               <div className="field">
                 <label htmlFor="c-des">Beteckning</label>
-                <input id="c-des" list="c-des-list" value={to} onChange={(e) => setTo(e.target.value)} placeholder="t.ex. S3-R8-110" />
+                <input id="c-des" list="c-des-list" value={to} onChange={(e) => setTo(e.target.value)} placeholder={tr("t.ex. S3-R8-110")} />
               </div>
             )}
             {kind === "retag" && (
               <div className="field">
-                <label htmlFor="c-to">Till beteckning</label>
-                <input id="c-to" list="c-des-list" value={to} onChange={(e) => setTo(e.target.value)} placeholder="t.ex. VV1-X31-16" />
+                <label htmlFor="c-to">{tr("Till beteckning")}</label>
+                <input id="c-to" list="c-des-list" value={to} onChange={(e) => setTo(e.target.value)} placeholder={tr("t.ex. VV1-X31-16")} />
               </div>
             )}
             {(kind === "quantity" || kind === "retag" || (kind === "erase" && !draft)) && (
@@ -157,9 +158,9 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
             )}
             <datalist id="c-des-list">{quantities.map((q) => <option key={q.designation} value={q.designation} />)}</datalist>
             <div className="field">
-              <label htmlFor="c-note">Varför</label>
+              <label htmlFor="c-note">{tr("Varför")}</label>
               <input id="c-note" value={note} onChange={(e) => setNote(e.target.value)}
-                placeholder="Valfritt, men det är detta som gör rättelsen begriplig sen" />
+                placeholder={tr("Valfritt, men det är detta som gör rättelsen begriplig sen")} />
             </div>
             {err && <p className="error">{err}</p>}
             <button onClick={save} disabled={!ready || busy}>{busy ? "Sparar…" : "Spara rättelse"}</button>
@@ -168,8 +169,8 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
       </div>
 
       <div className="card">
-        <h3>Rättelser <span className="badge">{live.length}</span></h3>
-        {live.length === 0 && <p className="muted">Inga ännu. Motorns läsning står som den är.</p>}
+        <h3>{tr("Rättelser")} <span className="badge">{live.length}</span></h3>
+        {live.length === 0 && <p className="muted">{tr("Inga ännu. Motorns läsning står som den är.")}</p>}
         {live.map((c) => (
           <div key={c.id} className="issue done-row">
             <div>
@@ -179,7 +180,7 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
               {c.note && <div className="muted">{c.note}</div>}
             </div>
             <button className="ghost small"
-              onClick={async () => { await api.undoCorrection(drawingId, c.id); onChanged(); }}>Ångra</button>
+              onClick={async () => { await api.undoCorrection(drawingId, c.id); onChanged(); }}>{tr("Ångra")}</button>
           </div>
         ))}
       </div>

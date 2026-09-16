@@ -1,4 +1,5 @@
 import { useInView } from "./lp-motion";
+import { t as tr } from "../i18n";
 import { tiltStyle, useTilt } from "./tilt";
 
 /* The agent, shown as what it is: a conversation whose every number came out of the drawing.
@@ -32,7 +33,7 @@ export default function AgentShowcase() {
     <section className="lp-sec lp-wrap" id="agent">
       <div className="lp-sec-head">
         <div className="lp-kicker">Agenten</div>
-        <h2>Fråga ritningen, och se var svaret kom ifrån</h2>
+        <h2>{tr("Fråga ritningen, och se var svaret kom ifrån")}</h2>
         <p>
           Modellen väljer vilken fråga som ska ställas. Motorn svarar. Varje siffra i chatten kommer ur ett
           verktygsanrop mot läsningens egna artefakter, så chatten och mängdtabellen kan inte säga emot varandra.
@@ -64,9 +65,9 @@ export default function AgentShowcase() {
                 {m.ids && <button className="lp-agent-show" type="button" tabIndex={-1}>Visa {m.ids} sträckor på ritningen</button>}
                 {m.proposal && (
                   <div className="lp-agent-prop">
-                    <div className="ph"><span className="ptag">Förslag</span>{m.proposal.head}</div>
+                    <div className="ph"><span className="ptag">{tr("Förslag")}</span>{m.proposal.head}</div>
                     <ul><li>{m.proposal.row}</li></ul>
-                    <div className="pb"><span className="go">Genomför</span><span className="muted">Inget är ändrat än.</span></div>
+                    <div className="pb"><span className="go">{tr("Genomför")}</span><span className="muted">{tr("Inget är ändrat än.")}</span></div>
                   </div>
                 )}
               </div>
@@ -74,10 +75,10 @@ export default function AgentShowcase() {
           </div>
         </div>
         <ul className="lp-agent-facts">
-          <li><b>Räknar aldrig själv.</b> Varje tal kommer ur ett verktyg som läser artefakterna mätningen skrev.</li>
-          <li><b>Hittar aldrig på en beteckning.</b> En kod bladet inte mängdar på avvisas, med de som finns.</li>
-          <li><b>Ändrar ingenting.</b> Ett förslag visar vad som skulle skrivas; du godkänner, och det kan ångras.</li>
-          <li><b>Pekar på ritningen.</b> Varje påstående bär rör-id:n, så det går att trycka fram och se.</li>
+          <li><b>{tr("Räknar aldrig själv.")}</b> {tr("Varje tal kommer ur ett verktyg som läser artefakterna mätningen skrev.")}</li>
+          <li><b>{tr("Hittar aldrig på en beteckning.")}</b> {tr("En kod bladet inte mängdar på avvisas, med de som finns.")}</li>
+          <li><b>{tr("Ändrar ingenting.")}</b> Ett förslag visar vad som skulle skrivas; du godkänner, och det kan ångras.</li>
+          <li><b>{tr("Pekar på ritningen.")}</b> Varje påstående bär rör-id:n, så det går att trycka fram och se.</li>
         </ul>
       </div>
     </section>

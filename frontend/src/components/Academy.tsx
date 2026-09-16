@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link } from "react-router-dom";
 import { MODULES, readProgress, syncProgress, type Module } from "../learn";
 import { FLAT, lessonHref } from "./Lecture";
@@ -116,7 +117,7 @@ export function CourseView({ m, mi, base, prog }:
   const nextC = mi < MODULES.length - 1 ? MODULES[mi + 1] : null;
   return (
     <div className="ac-coursepage">
-      <nav className="ac-crumbs" aria-label="Var du är">
+      <nav className="ac-crumbs" aria-label={tr("Var du är")}>
         <Link to={base}>Akademin</Link>
         <span aria-hidden="true">/</span>
         <span className="here">{m.title}</span>
@@ -150,15 +151,15 @@ export function CourseView({ m, mi, base, prog }:
         ))}
       </ol>
 
-      <nav className="ac-coursenav" aria-label="Andra kurser">
+      <nav className="ac-coursenav" aria-label={tr("Andra kurser")}>
         {prevC
           ? <Link className="ac-step prev" to={`${base}/${prevC.id}`}>
-              <span className="lp-mono">Föregående kurs</span><b>{prevC.title}</b>
+              <span className="lp-mono">{tr("Föregående kurs")}</span><b>{prevC.title}</b>
             </Link>
           : <span />}
         {nextC
           ? <Link className="ac-step next" to={`${base}/${nextC.id}`}>
-              <span className="lp-mono">Nästa kurs</span><b>{nextC.title}</b>
+              <span className="lp-mono">{tr("Nästa kurs")}</span><b>{nextC.title}</b>
             </Link>
           : <span />}
       </nav>

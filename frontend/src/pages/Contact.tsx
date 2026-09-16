@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { t as tr } from "../i18n";
 import { Link } from "react-router-dom";
 import PublicFrame from "../components/PublicFrame";
 import { api } from "../api";
@@ -25,9 +26,9 @@ export default function ContactPage() {
       <section className="pub-sec pub-contact">
         {done ? (
           <div className="pub-card flat pub-thanks">
-            <h3>Tack. Vi hör av oss.</h3>
+            <h3>{tr("Tack. Vi hör av oss.")}</h3>
             <p>Meddelandet är framme. Vill du inte vänta: skapa ett konto och prova på en egen ritning redan nu.</p>
-            <p className="pub-cta"><Link className="lp-btn primary" to="/login">Kom igång</Link></p>
+            <p className="pub-cta"><Link className="lp-btn primary" to="/login">{tr("Kom igång")}</Link></p>
           </div>
         ) : (
           <form className="pub-form" onSubmit={send}>
@@ -36,37 +37,37 @@ export default function ContactPage() {
               <label>E-post<input required type="email" value={f.email} onChange={set("email")} autoComplete="email" /></label>
             </div>
             <div className="pub-form-row">
-              <label>Företag<input value={f.company} onChange={set("company")} autoComplete="organization" /></label>
+              <label>{tr("Företag")}<input value={f.company} onChange={set("company")} autoComplete="organization" /></label>
               <label>Ämne
                 <select value={f.subject} onChange={set("subject")}>
-                  <option>Demo på egen ritning</option>
-                  <option>Priser och större konto</option>
-                  <option>Utbildning för kontoret</option>
-                  <option>En ritning lästes fel</option>
+                  <option>{tr("Demo på egen ritning")}</option>
+                  <option>{tr("Priser och större konto")}</option>
+                  <option>{tr("Utbildning för kontoret")}</option>
+                  <option>{tr("En ritning lästes fel")}</option>
                   <option>Annat</option>
                 </select>
               </label>
             </div>
-            <label>Meddelande<textarea required rows={7} value={f.message} onChange={set("message")} placeholder="Vilken slags handlingar, hur många blad, vad ni mängdar i dag…" /></label>
+            <label>Meddelande<textarea required rows={7} value={f.message} onChange={set("message")} placeholder={tr("Vilken slags handlingar, hur många blad, vad ni mängdar i dag…")} /></label>
             {err && <p className="pub-err">{err}</p>}
             <p className="pub-cta">
               <button className="lp-btn primary lg" type="submit" disabled={busy}>{busy ? "Skickar…" : "Skicka"}</button>
-              <span className="pub-fine">Vi använder uppgifterna bara för att svara dig.</span>
+              <span className="pub-fine">{tr("Vi använder uppgifterna bara för att svara dig.")}</span>
             </p>
           </form>
         )}
         <aside className="pub-side">
           <div className="pub-card flat">
-            <h3>Vad vi behöver för en demo</h3>
-            <p>En ren vektor-PDF - exporterad ur CAD, inte skannad - och gärna er egen handmängdning av samma blad att jämföra med. Det är den enda rimliga första körningen.</p>
+            <h3>{tr("Vad vi behöver för en demo")}</h3>
+            <p>{tr("En ren vektor-PDF - exporterad ur CAD, inte skannad - och gärna er egen handmängdning av samma blad att jämföra med. Det är den enda rimliga första körningen.")}</p>
           </div>
           <div className="pub-card flat">
             <h3>Fel i en läsning?</h3>
-            <p>Skriv vilket blad och vilken beteckning. Varje meter i tjänsten bär sitt belägg, så en felläsning går att spåra till ett steg - och rättas generellt, inte bara på ert blad.</p>
+            <p>{tr("Skriv vilket blad och vilken beteckning. Varje meter i tjänsten bär sitt belägg, så en felläsning går att spåra till ett steg - och rättas generellt, inte bara på ert blad.")}</p>
           </div>
           <div className="pub-card flat">
             <h3>Redan kund?</h3>
-            <p>Logga in och skriv i agenten på din analys - den ser samma belägg som du och svarar ur dem.</p>
+            <p>{tr("Logga in och skriv i agenten på din analys - den ser samma belägg som du och svarar ur dem.")}</p>
           </div>
         </aside>
       </section>

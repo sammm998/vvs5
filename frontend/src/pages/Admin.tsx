@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 import { Accounts, Content, Crm, Experiments, Heatmap, Partners } from "../components/AdminBusiness";
 import { Messages, Pricing } from "../components/AdminPricing";
@@ -62,14 +63,14 @@ function Stat({ label, value, sub, tone }: { label: string; value: string; sub?:
  * så många läsningar och sjunkande täckning är en månad då något gick sönder. */
 function Trend({ rows }: { rows: any[] }) {
   const W = 720, H = 190, P = 30;
-  if (!rows.length) return <p className="muted">Inga läsningar i perioden.</p>;
+  if (!rows.length) return <p className="muted">{tr("Inga läsningar i perioden.")}</p>;
   const maxR = Math.max(1, ...rows.map((r) => r.readings));
   const x = (i: number) => P + (i * (W - 2 * P)) / Math.max(1, rows.length - 1);
   const bw = Math.max(2, (W - 2 * P) / rows.length - 2);
   const withCov = rows.map((r, i) => [i, r.coverage] as const).filter(([, c]) => c != null);
   const line = withCov.map(([i, c], k) => `${k ? "L" : "M"}${x(i).toFixed(1)},${(H - P - (c as number) * (H - 2 * P)).toFixed(1)}`).join(" ");
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="adm-trend" role="img" aria-label="Läsningar och täckning per dygn">
+    <svg viewBox={`0 0 ${W} ${H}`} className="adm-trend" role="img" aria-label={tr("Läsningar och täckning per dygn")}>
       {[0, 0.5, 1].map((f) => (
         <g key={f}>
           <line x1={P} x2={W - P} y1={H - P - f * (H - 2 * P)} y2={H - P - f * (H - 2 * P)} className="grid" />
@@ -99,7 +100,7 @@ function Attention({ items, go }: { items: any[]; go: (s: Section) => void }) {
   return (
     <section className="card adm-attn">
       <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
-        <h3 style={{ margin: 0 }}>Att ta hand om</h3>
+        <h3 style={{ margin: 0 }}>{tr("Att ta hand om")}</h3>
         <span className="muted small">{items.length ? `${items.length} ${items.length === 1 ? "sak" : "saker"}` : "inget väntar"}</span>
       </div>
       {items.length ? (
@@ -108,12 +109,12 @@ function Attention({ items, go }: { items: any[]; go: (s: Section) => void }) {
             <li key={it.kind} className={it.tone}>
               <span className="dot" />
               <span className="txt">{it.text}</span>
-              <button className="ghost small" onClick={() => go(it.go as Section)}>Gå dit →</button>
+              <button className="ghost small" onClick={() => go(it.go as Section)}>{tr("Gå dit →")}</button>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="muted" style={{ margin: "8px 0 0" }}>Inga misslyckade läsningar, ingen kö, inga öppna utbetalningar. Bra dag.</p>
+        <p className="muted" style={{ margin: "8px 0 0" }}>{tr("Inga misslyckade läsningar, ingen kö, inga öppna utbetalningar. Bra dag.")}</p>
       )}
     </section>
   );
@@ -121,15 +122,15 @@ function Attention({ items, go }: { items: any[]; go: (s: Section) => void }) {
 
 function Overview({ attention, go }: { attention: any[]; go: (s: Section) => void }) {
   const [o, setO] = useState<any>(null);
-  const [t, setT] = useState<any>(null);
+  const [timeline, setTimeline] = useState<any>(null);
   const [days, setDays] = useState(30);
   const [err, setErr] = useState("");
   useEffect(() => {
     api.adm(`overview?days=${days}`).then(setO).catch((e) => setErr(e.message));
-    api.adm(`timeline?days=${Math.max(days, 30)}`).then(setT).catch(() => { /* kurvan är inte livsviktig */ });
+    api.adm(`timeline?days=${Math.max(days, 30)}`).then(setTimeline).catch(() => { /* kurvan är inte livsviktig */ });
   }, [days]);
   if (err) return <p className="error">{err}</p>;
-  if (!o) return <p className="muted">Laddar…</p>;
+  if (!o) return <p className="muted">{tr("Laddar…")}</p>;
   const r = o.readings, a = o.accounts;
   return (
     <>
@@ -139,39 +140,39 @@ function Overview({ attention, go }: { attention: any[]; go: (s: Section) => voi
         </div>
       </div>
       <div className="adm-stats">
-        <Stat label="Läsningar" value={num(r.total)} sub={`${num(r.done)} klara · ${num(r.failed)} misslyckade`}
+        <Stat label={tr("Läsningar")} value={num(r.total)} sub={`${num(r.done)} klara · ${num(r.failed)} misslyckade`}
           tone={r.failed > r.done * 0.1 ? "bad" : ""} />
-        <Stat label="Täckning i snitt" value={pct(r.mean_coverage)}
+        <Stat label={tr("Täckning i snitt")} value={pct(r.mean_coverage)}
           sub="andel rörnamn på bladet som fick meter" tone={(r.mean_coverage ?? 1) < 0.6 ? "bad" : "good"} />
-        <Stat label="Onämnt rör" value={pct(r.mean_unowned_share)} sub="ritat rör som ingen beteckning nådde" />
-        <Stat label="Median­tid" value={r.median_seconds ? `${num(r.median_seconds, 1)} s` : "–"} sub="per blad" />
+        <Stat label={tr("Onämnt rör")} value={pct(r.mean_unowned_share)} sub="ritat rör som ingen beteckning nådde" />
+        <Stat label={tr("Median­tid")} value={r.median_seconds ? `${num(r.median_seconds, 1)} s` : "–"} sub="per blad" />
         <Stat label="Konton" value={num(a.total)} sub={`${num(o.users.active)} har läst i perioden`} />
-        <Stat label="Månadsintäkt" value={`${num(a.mrr_kr, 0)} kr`} sub="aktiva konton" tone="good" />
-        <Stat label="Rättelser" value={num(o.corrections.total)} sub={`av ${num(o.corrections.people)} personer`} />
+        <Stat label={tr("Månadsintäkt")} value={`${num(a.mrr_kr, 0)} kr`} sub="aktiva konton" tone="good" />
+        <Stat label={tr("Rättelser")} value={num(o.corrections.total)} sub={`av ${num(o.corrections.people)} personer`} />
         <Stat label="Ritningar" value={num(o.drawings)} sub={`${num(o.projects)} projekt`} />
       </div>
 
       <div className="adm-two" style={{ marginTop: 16 }}>
         <Attention items={attention} go={go} />
         <section className="card">
-          <h3 style={{ marginTop: 0 }}>Rättelser efter slag</h3>
+          <h3 style={{ marginTop: 0 }}>{tr("Rättelser efter slag")}</h3>
           <table className="qty"><tbody>
             {Object.entries(o.corrections.by_kind).map(([k, v]: any) => (
               <tr key={k}><td>{k}</td><td className="num">{num(v)}</td></tr>
             ))}
-            {!Object.keys(o.corrections.by_kind).length && <tr><td className="empty">Ingen har rättat något ännu.</td></tr>}
+            {!Object.keys(o.corrections.by_kind).length && <tr><td className="empty">{tr("Ingen har rättat något ännu.")}</td></tr>}
           </tbody></table>
         </section>
       </div>
 
       <section className="card" style={{ marginTop: 16 }}>
-        <h3 style={{ marginTop: 0 }}>Läsningar och täckning per dygn</h3>
+        <h3 style={{ marginTop: 0 }}>{tr("Läsningar och täckning per dygn")}</h3>
         <p className="muted">
           Staplarna är hur mycket som lästs, den röda delen är det som misslyckades, linjen är hur långt
           läsningen kom. Att staplarna växer säger något om marknadsföringen. Att linjen sjunker säger att
           något gått sönder, och det är den enda av de två som är brådskande.
         </p>
-        {t && <Trend rows={t.rows} />}
+        {timeline && <Trend rows={timeline.rows} />}
       </section>
 
       <section className="card" style={{ marginTop: 16 }}>
@@ -180,7 +181,7 @@ function Overview({ attention, go }: { attention: any[]; go: (s: Section) => voi
           {Object.entries(a.by_plan).map(([k, v]: any) => (
             <tr key={k}><td>{k}</td><td className="num">{num(v)}</td></tr>
           ))}
-          {!Object.keys(a.by_plan).length && <tr><td className="empty">Inga konton upplagda ännu.</td></tr>}
+          {!Object.keys(a.by_plan).length && <tr><td className="empty">{tr("Inga konton upplagda ännu.")}</td></tr>}
         </tbody></table>
       </section>
     </>
@@ -194,7 +195,7 @@ function RulesSection() {
       <div className="adm-toolbar">
         <div className="seg">
           <button className={view === "katalog" ? "on" : ""} onClick={() => setView("katalog")}>Katalogen</button>
-          <button className={view === "kunder" ? "on" : ""} onClick={() => setView("kunder")}>Vad kunderna flyttat</button>
+          <button className={view === "kunder" ? "on" : ""} onClick={() => setView("kunder")}>{tr("Vad kunderna flyttat")}</button>
         </div>
       </div>
       {view === "katalog" ? <RulesCatalogue /> : <RulesMoved />}
@@ -222,12 +223,12 @@ export default function AdminPage() {
   const pick = (t: Section) => { setSec(t); try { localStorage.setItem("vvs.admtab", t); } catch { /* privat läge */ } };
   const current = SECTIONS.find((s) => s.id === sec) ?? SECTIONS[0];
 
-  if (role === null) return <main><p className="muted">Laddar…</p></main>;
+  if (role === null) return <main><p className="muted">{tr("Laddar…")}</p></main>;
   if (role !== "admin") {
     return (
       <main>
         <p className="crumb">Administration</p>
-        <h1>Det här är administratörens sidor</h1>
+        <h1>{tr("Det här är administratörens sidor")}</h1>
         <p className="lead">
           Ditt konto är {role === "partner" ? "en partner" : "en medlem"}. Partners når sin egen provision under
           Partners; resten kräver administratörsbehörighet.
@@ -261,7 +262,7 @@ export default function AdminPage() {
             })}
           </div>
         ))}
-        <p className="muted small adm-note">Ingenting på företagssidan når läsningen. Reglerna gäller varje ny läsning.</p>
+        <p className="muted small adm-note">{tr("Ingenting på företagssidan når läsningen. Reglerna gäller varje ny läsning.")}</p>
       </aside>
 
       <div className="adm-main">

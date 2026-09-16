@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState, forwardRef } from "react";
+import { t as tr } from "../i18n";
 import * as pdfjsLib from "pdfjs-dist";
 import { ROLE_COLOR, ROLE_LABEL, legendOwner } from "../legend";
 import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
@@ -1051,7 +1052,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                   <circle cx={props.ink.at[0]} cy={props.ink.at[1]} r={sw(6)} fill="none" stroke={hue} strokeWidth={sw(2)} />
                   <foreignObject x={x} y={y} width={W} height={H}>
                     <div className="inkcard" style={{ borderLeftColor: hue, fontSize: sw(12.5) }}>
-                      <button type="button" className="x" onClick={() => props.onInkClick?.(null)} aria-label="Stäng">✕</button>
+                      <button type="button" className="x" onClick={() => props.onInkClick?.(null)} aria-label={tr("Stäng")}>✕</button>
                       <b style={{ color: hue }}>{props.ink.title}</b>
                       <p>{props.ink.detail}</p>
                     </div>

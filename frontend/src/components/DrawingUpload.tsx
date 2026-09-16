@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 
 /* Lägg upp en ritning där man står.
@@ -61,7 +62,7 @@ export default function DrawingUpload({ onDone, verb = "Öppna" }: {
 
   return (
     <section className="card up-card">
-      <h3 style={{ marginTop: 0 }}>Lägg upp en ritning</h3>
+      <h3 style={{ marginTop: 0 }}>{tr("Lägg upp en ritning")}</h3>
       <p className="muted small" style={{ marginTop: -4 }}>
         Vektor-PDF, exporterad ur CAD. En skannad ritning går inte att mäta på – systemet läser ritningens egna
         vektorkoder och gissar aldrig ur bildpunkter.
@@ -71,13 +72,13 @@ export default function DrawingUpload({ onDone, verb = "Öppna" }: {
           <span>Projekt</span>
           <select value={project} onChange={(e) => setProject(e.target.value)} disabled={!!busy}>
             {(projects ?? []).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-            <option value="nytt">Nytt projekt…</option>
+            <option value="nytt">{tr("Nytt projekt…")}</option>
           </select>
         </label>
         {project === "nytt" && (
           <label className="adm-field">
-            <span>Projektets namn</span>
-            <input value={namn} onChange={(e) => setNamn(e.target.value)} placeholder="Kv Björken, hus A"
+            <span>{tr("Projektets namn")}</span>
+            <input value={namn} onChange={(e) => setNamn(e.target.value)} placeholder={tr("Kv Björken, hus A")}
               disabled={!!busy} />
           </label>
         )}

@@ -1,3 +1,4 @@
+import { t as tr } from "../i18n";
 /* Figurerna som visar vad varje funktion gör.
  *
  * Ingen av dem är en dekoration och ingen är ett fotografi. De ritar det systemet faktiskt gör, i systemets
@@ -31,7 +32,7 @@ function Frame({ children, label }: { children: any; label?: string }) {
 
 function Read({ accent }: P) {
   return (
-    <Frame label="En hänvisningslinje går från beteckningen till röret den namnger">
+    <Frame label={tr("En hänvisningslinje går från beteckningen till röret den namnger")}>
       <g stroke="#3a4049" strokeWidth="1.6" fill="none">
         <path d="M120 120 H700 V620 H120 Z M420 120 V620 M120 380 H420" />
         <path d="M760 120 H1080 V360 H760 Z M760 420 H1080 V620 H760 Z" />
@@ -57,7 +58,7 @@ function Read({ accent }: P) {
       </g>
       <g>
         <path d="M800 660 H1060" stroke="#565d6a" strokeWidth="3.6" strokeDasharray="20 7 3 7" fill="none" />
-        <text x="800" y="644" fill="#6a7280" fontSize="16" fontFamily="ui-monospace, monospace">onämnd — redovisas, mäts inte</text>
+        <text x="800" y="644" fill="#6a7280" fontSize="16" fontFamily="ui-monospace, monospace">{tr("onämnd — redovisas, mäts inte")}</text>
       </g>
     </Frame>
   );
@@ -65,7 +66,7 @@ function Read({ accent }: P) {
 
 function Leader({ accent }: P) {
   return (
-    <Frame label="Den närmaste linjen är inte den som namnger">
+    <Frame label={tr("Den närmaste linjen är inte den som namnger")}>
       <g fill="none" strokeWidth="4" strokeLinecap="round">
         <path d="M200 300 H1000" stroke={accent} />
         <path d="M200 470 H1000" stroke="#565d6a" strokeDasharray="18 10" />
@@ -75,7 +76,7 @@ function Leader({ accent }: P) {
       <text x="430" y="198" fill="#f4f5f7" fontSize="22" fontFamily="ui-monospace, monospace">VS21-S13-15</text>
       <g opacity="0.75">
         <path d="M700 430 L700 466" stroke="#f6a5a5" strokeWidth="1.8" strokeDasharray="5 5" fill="none" />
-        <text x="716" y="446" fill="#f6a5a5" fontSize="17" fontFamily="ui-monospace, monospace">närmast — men ingen linje går hit</text>
+        <text x="716" y="446" fill="#f6a5a5" fontSize="17" fontFamily="ui-monospace, monospace">{tr("närmast — men ingen linje går hit")}</text>
       </g>
       <text x="200" y="560" fill="#6a7280" fontSize="17" fontFamily="ui-monospace, monospace">
         identitet kommer ur linjen, inte ur avståndet
@@ -91,7 +92,7 @@ function Frontier({ accent }: P) {
     [790, "SYMBOL"],
   ];
   return (
-    <Frame label="Varje ställe ett rör slutar har ett skäl">
+    <Frame label={tr("Varje ställe ett rör slutar har ett skäl")}>
       <path d="M150 380 H1050" stroke={accent} strokeWidth="4.5" fill="none" />
       {stops.map(([x, t], i) => (
         <g key={t}>
@@ -110,7 +111,7 @@ function Frontier({ accent }: P) {
 
 function Scale({ accent }: P) {
   return (
-    <Frame label="Skalan tas ur bladets egen skalstock">
+    <Frame label={tr("Skalan tas ur bladets egen skalstock")}>
       <g stroke="#3a4049" strokeWidth="1.6" fill="none">
         <path d="M140 150 H700 V560 H140 Z" />
       </g>
@@ -119,7 +120,7 @@ function Scale({ accent }: P) {
         {Array.from({ length: 22 }, (_, i) => <path key={i} d={`M${560 + i * 9} 150 L${600 + i * 9} 560`} />)}
       </g>
       <path d="M180 360 H1020" stroke={accent} strokeWidth="4.5" fill="none" />
-      <text x="620" y="620" fill="#6a7280" fontSize="16" fontFamily="ui-monospace, monospace">rör i vägg — redovisas för sig</text>
+      <text x="620" y="620" fill="#6a7280" fontSize="16" fontFamily="ui-monospace, monospace">{tr("rör i vägg — redovisas för sig")}</text>
       <g>
         <path d="M760 200 H1060" stroke="#f4f5f7" strokeWidth="2.4" />
         {[0, 1, 2, 3, 4, 5].map((i) => (
@@ -139,7 +140,7 @@ function Scale({ accent }: P) {
 
 function Cad({ accent }: P) {
   return (
-    <Frame label="Väggar, stomme och installationer i en modell">
+    <Frame label={tr("Väggar, stomme och installationer i en modell")}>
       <g stroke="#3a4049" strokeWidth="2.2" fill="none">
         <path d="M160 180 H1040 V600 H160 Z" />
         <path d="M520 180 V600 M160 400 H520 M760 400 H1040" />
@@ -169,7 +170,7 @@ function Cad({ accent }: P) {
 
 function CadModel({ accent }: P) {
   return (
-    <Frame label="En vägg vet att den är en vägg">
+    <Frame label={tr("En vägg vet att den är en vägg")}>
       {[0, 1, 2].map((i) => (
         <g key={i} transform={`translate(${i * 40} ${i * 120})`} opacity={1 - i * 0.22}>
           <path d="M240 200 L760 120 L960 240 L440 330 Z" fill="rgba(255,255,255,0.03)"
@@ -177,9 +178,9 @@ function CadModel({ accent }: P) {
         </g>
       ))}
       <g fill="#8b929e" fontSize="17" fontFamily="ui-monospace, monospace">
-        <text x="1000" y="200">plan 3</text>
-        <text x="1000" y="320">plan 2</text>
-        <text x="1000" y="440">plan 1</text>
+        <text x="1000" y="200">{tr("plan 3")}</text>
+        <text x="1000" y="320">{tr("plan 2")}</text>
+        <text x="1000" y="440">{tr("plan 1")}</text>
       </g>
       <text x="240" y="660" fill="#6a7280" fontSize="17" fontFamily="ui-monospace, monospace">
         mängderna räknas ur modellen, inte av den
@@ -191,7 +192,7 @@ function CadModel({ accent }: P) {
 function Views({ accent }: P) {
   const boxes = [["PLAN", 150], ["SEKTION", 420], ["FASAD", 690], ["3D", 960]];
   return (
-    <Frame label="Plan, sektion, fasad och 3D ur samma modell">
+    <Frame label={tr("Plan, sektion, fasad och 3D ur samma modell")}>
       {boxes.map(([t, x], i) => (
         <g key={t as string}>
           <rect x={x as number} y="230" width="200" height="300" rx="10"
@@ -216,7 +217,7 @@ function Views({ accent }: P) {
 
 function Three({ accent }: P) {
   return (
-    <Frame label="Planen reser sig till en modell">
+    <Frame label={tr("Planen reser sig till en modell")}>
       <g opacity="0.35">
         <path d="M200 520 L740 400 L1000 520 L460 650 Z" fill="none" stroke="#3a4049" strokeWidth="2" />
       </g>
@@ -233,8 +234,8 @@ function Three({ accent }: P) {
       ))}
       <path d="M200 300 L740 180 L1000 300 L460 430 Z" fill="none" stroke="#3a4049" strokeWidth="2" opacity="0.6" />
       <g fill="#8b929e" fontSize="16" fontFamily="ui-monospace, monospace">
-        <text x="580" y="250">stigare · 2 st</text>
-        <text x="300" y="594">VS1-S13-22 · 61,9 m</text>
+        <text x="580" y="250">{tr("stigare · 2 st")}</text>
+        <text x="300" y="594">{tr("VS1-S13-22 · 61,9 m")}</text>
       </g>
     </Frame>
   );
@@ -242,7 +243,7 @@ function Three({ accent }: P) {
 
 function Link3d({ accent }: P) {
   return (
-    <Frame label="Samma rör i tabellen och i modellen">
+    <Frame label={tr("Samma rör i tabellen och i modellen")}>
       <g>
         {["KV1-X31-16", "VV1-X31-16", "S3-R8-110", "VS1-S13-22"].map((t, i) => (
           <g key={t}>
@@ -269,7 +270,7 @@ function Link3d({ accent }: P) {
 
 function Measure({ accent }: P) {
   return (
-    <Frame label="Mätverktyget: kalibrering, fångst och avdrag">
+    <Frame label={tr("Mätverktyget: kalibrering, fångst och avdrag")}>
       <g stroke="#3a4049" strokeWidth="1.6" fill="none">
         <path d="M140 160 H820 V600 H140 Z M480 160 V600" />
       </g>
@@ -299,7 +300,7 @@ function Measure({ accent }: P) {
 
 function Bench({ accent }: P) {
   return (
-    <Frame label="Ritningen är sidan, verktygen i kanten">
+    <Frame label={tr("Ritningen är sidan, verktygen i kanten")}>
       <rect x="120" y="150" width="760" height="470" rx="12" fill="rgba(255,255,255,0.02)" stroke="#2a2f37" />
       <g stroke="#3a4049" strokeWidth="1.6" fill="none">
         <path d="M180 220 H820 V560 H180 Z M480 220 V560" />
@@ -311,7 +312,7 @@ function Bench({ accent }: P) {
             fill={i === 1 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.03)"} stroke="#2a2f37" />
         ))}
       </g>
-      <text x="1020" y="238" fill={accent} fontSize="17" fontFamily="ui-monospace, monospace">längd</text>
+      <text x="1020" y="238" fill={accent} fontSize="17" fontFamily="ui-monospace, monospace">{tr("längd")}</text>
     </Frame>
   );
 }
@@ -320,7 +321,7 @@ function Bench({ accent }: P) {
 
 function Agent({ accent }: P) {
   return (
-    <Frame label="Ett samtal om ritningen">
+    <Frame label={tr("Ett samtal om ritningen")}>
       <g>
         <rect x="560" y="170" width="520" height="86" rx="16" fill="rgba(255,255,255,0.07)" stroke="#2a2f37" />
         <text x="588" y="222" fill="#f4f5f7" fontSize="20" fontFamily="ui-monospace, monospace">Vad kunde inte avgöras?</text>
@@ -328,12 +329,12 @@ function Agent({ accent }: P) {
       <g>
         <rect x="120" y="300" width="760" height="180" rx="16" fill="rgba(255,255,255,0.025)" stroke="#2a2f37" />
         <text x="150" y="350" fill="#e8ecf1" fontSize="20" fontFamily="ui-monospace, monospace">Två sträckor står som tvetydiga:</text>
-        <text x="150" y="392" fill={accent} fontSize="19" fontFamily="ui-monospace, monospace">S1-P2 · DN110 eller DN160 · 1,7 m</text>
+        <text x="150" y="392" fill={accent} fontSize="19" fontFamily="ui-monospace, monospace">{tr("S1-P2 · DN110 eller DN160 · 1,7 m")}</text>
         <text x="150" y="434" fill="#8b929e" fontSize="18" fontFamily="ui-monospace, monospace">Skäl: AMBIGUOUS_BRANCH</text>
       </g>
       <g opacity="0.85">
         <rect x="120" y="520" width="420" height="64" rx="10" fill="rgba(255,255,255,0.02)" stroke="#2a2f37" strokeDasharray="6 6" />
-        <text x="148" y="560" fill="#6a7280" fontSize="17" fontFamily="ui-monospace, monospace">3 verktygsanrop ▸</text>
+        <text x="148" y="560" fill="#6a7280" fontSize="17" fontFamily="ui-monospace, monospace">{tr("3 verktygsanrop ▸")}</text>
       </g>
     </Frame>
   );
@@ -341,24 +342,24 @@ function Agent({ accent }: P) {
 
 function Chat({ accent }: P) {
   return (
-    <Frame label="Modellen väljer frågan, ritningen ger svaret">
+    <Frame label={tr("Modellen väljer frågan, ritningen ger svaret")}>
       <g fill="none" stroke="#2a2f37" strokeWidth="2">
         <rect x="140" y="250" width="280" height="260" rx="14" />
         <rect x="470" y="250" width="280" height="260" rx="14" />
         <rect x="800" y="250" width="280" height="260" rx="14" />
       </g>
       <g fill="#8b929e" fontSize="18" fontFamily="ui-monospace, monospace" textAnchor="middle">
-        <text x="280" y="310">fråga</text>
+        <text x="280" y="310">{tr("fråga")}</text>
         <text x="610" y="310">verktyg</text>
         <text x="940" y="310">svar</text>
       </g>
       <g fill="#e8ecf1" fontSize="17" fontFamily="ui-monospace, monospace" textAnchor="middle">
         <text x="280" y="390">modellen</text>
         <text x="280" y="420">formulerar</text>
-        <text x="610" y="390">läsningen</text>
+        <text x="610" y="390">{tr("läsningen")}</text>
         <text x="610" y="420">svarar</text>
-        <text x="940" y="390">med belägg</text>
-        <text x="940" y="420">eller inte alls</text>
+        <text x="940" y="390">{tr("med belägg")}</text>
+        <text x="940" y="420">{tr("eller inte alls")}</text>
       </g>
       <g stroke={accent} strokeWidth="2.4" fill="none">
         <path d="M420 380 H470" /><path d="M750 380 H800" />
@@ -381,7 +382,7 @@ function Calc({ accent }: P) {
     ["VS1-S13-22", "61,9 m", "11 420 kr"],
   ];
   return (
-    <Frame label="Mängden blir ett anbud">
+    <Frame label={tr("Mängden blir ett anbud")}>
       {rows.map(([a, b, c], i) => (
         <g key={a}>
           <path d={`M140 ${290 + i * 70} H1060`} stroke="#22262d" strokeWidth="1.4" />
@@ -391,16 +392,16 @@ function Calc({ accent }: P) {
         </g>
       ))}
       <text x="150" y="200" fill="#6a7280" fontSize="16" fontFamily="ui-monospace, monospace">BETECKNING</text>
-      <text x="700" y="200" fill="#6a7280" fontSize="16" textAnchor="end" fontFamily="ui-monospace, monospace">MÄNGD</text>
+      <text x="700" y="200" fill="#6a7280" fontSize="16" textAnchor="end" fontFamily="ui-monospace, monospace">{tr("MÄNGD")}</text>
       <text x="1050" y="200" fill="#6a7280" fontSize="16" textAnchor="end" fontFamily="ui-monospace, monospace">MATERIAL</text>
-      <text x="1050" y="640" fill="#fff" fontSize="26" textAnchor="end" fontFamily="ui-monospace, monospace">34 370 kr</text>
+      <text x="1050" y="640" fill="#fff" fontSize="26" textAnchor="end" fontFamily="ui-monospace, monospace">{tr("34 370 kr")}</text>
     </Frame>
   );
 }
 
 function Tender({ accent }: P) {
   return (
-    <Frame label="Anbudet granskas på skärmen innan det lämnar huset">
+    <Frame label={tr("Anbudet granskas på skärmen innan det lämnar huset")}>
       {[0, 1, 2].map((i) => (
         <g key={i} transform={`translate(${i * 60} ${i * 26})`}>
           <rect x="260" y="150" width="440" height="520" rx="10"
@@ -408,9 +409,9 @@ function Tender({ accent }: P) {
         </g>
       ))}
       <g fill="#8b929e" fontSize="17" fontFamily="ui-monospace, monospace">
-        <text x="820" y="300">sida 1 · sammanställning</text>
-        <text x="820" y="350">sida 2 · mängdförteckning</text>
-        <text x="820" y="400">sida 3 · villkor</text>
+        <text x="820" y="300">{tr("sida 1 · sammanställning")}</text>
+        <text x="820" y="350">{tr("sida 2 · mängdförteckning")}</text>
+        <text x="820" y="400">{tr("sida 3 · villkor")}</text>
       </g>
       <text x="380" y="720" fill="#6a7280" fontSize="17" fontFamily="ui-monospace, monospace">
         AB 04 och ABT 06 — men aldrig i geometrin
@@ -423,7 +424,7 @@ function Tender({ accent }: P) {
 
 function Learn({ accent }: P) {
   return (
-    <Frame label="Kurserna i akademin">
+    <Frame label={tr("Kurserna i akademin")}>
       {[0, 1, 2, 3, 4, 5].map((i) => {
         const x = 140 + (i % 3) * 320;
         const y = 200 + Math.floor(i / 3) * 250;
@@ -448,10 +449,10 @@ function Learn({ accent }: P) {
 
 function Academy({ accent }: P) {
   return (
-    <Frame label="En föreläsning med sin figur och sin kontrollfråga">
+    <Frame label={tr("En föreläsning med sin figur och sin kontrollfråga")}>
       <rect x="140" y="170" width="520" height="440" rx="14" fill="rgba(255,255,255,0.02)" stroke="#2a2f37" />
       <g fill="#c7cdd7" fontSize="19" fontFamily="ui-monospace, monospace">
-        <text x="172" y="230">KV, VV och VVC</text>
+        <text x="172" y="230">{tr("KV, VV och VVC")}</text>
       </g>
       <g stroke="#22262d" strokeWidth="6" strokeLinecap="round">
         {[0, 1, 2, 3, 4].map((i) => <path key={i} d={`M172 ${280 + i * 44} H${560 - (i % 2) * 90}`} />)}
@@ -463,7 +464,7 @@ function Academy({ accent }: P) {
         <path d="M1040 350 H740" stroke={accent} strokeDasharray="14 8" />
       </g>
       <g fill="#8b929e" fontSize="16" fontFamily="ui-monospace, monospace">
-        <text x="700" y="470">KONTROLLFRÅGA</text>
+        <text x="700" y="470">{tr("KONTROLLFRÅGA")}</text>
       </g>
       {[0, 1, 2].map((i) => (
         <rect key={i} x="700" y={496 + i * 52} width="380" height="42" rx="8"

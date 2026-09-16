@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api, fileSize } from "../api";
 import { StatusBadge, stageText } from "../components/Status";
@@ -27,7 +28,7 @@ export default function DrawingPage() {
   if (!d) return <main>{err ? <p className="error">{err}</p> : "Laddar…"}</main>;
   return (
     <main>
-      <p className="crumb"><Link to={`/projects/${d.project_id}`}>Projekt</Link> / Ritning</p>
+      <p className="crumb"><Link to={`/projects/${d.project_id}`}>Projekt</Link> {tr("/ Ritning")}</p>
       <div className="head">
         <div>
           <h1>{d.filename.replace(/\.pdf$/i, "")}</h1>
@@ -36,13 +37,13 @@ export default function DrawingPage() {
           </p>
         </div>
         <div className="row">
-          <button className="secondary" onClick={async () => { const b = await api.fetchBlob(api.fileUrl(d.id)); window.open(URL.createObjectURL(b)); }}>Öppna PDF</button>
+          <button className="secondary" onClick={async () => { const b = await api.fetchBlob(api.fileUrl(d.id)); window.open(URL.createObjectURL(b)); }}>{tr("Öppna PDF")}</button>
           <PriceTag drawingId={d.id} />
           <button onClick={async () => {
             setErr("");
             try { await api.analyze(d.id); load(); }
             catch (ex: any) { setErr(/402/.test(ex.message) ? `${ex.message.replace(/\s*\(402\)$/, "")} Fyll på under Credits.` : ex.message); }
-          }}>Ny analys</button>
+          }}>{tr("Ny analys")}</button>
         </div>
       </div>
 
@@ -67,11 +68,11 @@ export default function DrawingPage() {
             <div className="meta">
               <StatusBadge job={j} />
               <Link className="when" to={`/jobs/${j.id}`}>{j.status === "COMPLETED" ? "Visa resultat →" : "Följ →"}</Link>
-              {j.status === "COMPLETED" && <Link className="when" to={`/jobs/${j.id}/kalkyl`}>Kalkylera →</Link>}
+              {j.status === "COMPLETED" && <Link className="when" to={`/jobs/${j.id}/kalkyl`}>{tr("Kalkylera →")}</Link>}
             </div>
           </Tilted>
         ))}
-        {d.jobs.length === 0 && <div className="empty">Ingen analys körd ännu.</div>}
+        {d.jobs.length === 0 && <div className="empty">{tr("Ingen analys körd ännu.")}</div>}
       </div>
     </main>
   );

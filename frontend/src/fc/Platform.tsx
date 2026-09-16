@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { t as tr } from "../i18n";
 import { FEATURES } from "../features";
 import Nav from "./Nav";
 import { AppLink, CustomCursor, LineReveal, MagneticButton, ScrollProgress, TechnicalLabel } from "./primitives";
@@ -70,8 +71,8 @@ export function PlatformPage() {
           det kom ur.
         </p>
         <div className="fc-plat-cta">
-          <MagneticButton className="solid" href="/login">Enter FutureCalc <span aria-hidden="true">↗</span></MagneticButton>
-          <Link className="fc-link" to="/hur-det-funkar">Hur det funkar <span aria-hidden="true">→</span></Link>
+          <MagneticButton className="solid" href="/login">{tr("Enter FutureCalc")} <span aria-hidden="true">↗</span></MagneticButton>
+          <Link className="fc-link" to="/hur-det-funkar">{tr("Hur det funkar")} <span aria-hidden="true">→</span></Link>
         </div>
       </header>
 
@@ -90,19 +91,19 @@ export function PlatformPage() {
         </ol>
       </section>
 
-      <section className="fc-plat-open" aria-label="Vägen in">
+      <section className="fc-plat-open" aria-label={tr("Vägen in")}>
         <div>
-          <p className="fc-label">Vägen in</p>
-          <h2 className="fc-display fc-display-md">Börja med ett blad du redan mängdat</h2>
+          <p className="fc-label">{tr("Vägen in")}</p>
+          <h2 className="fc-display fc-display-md">{tr("Börja med ett blad du redan mängdat")}</h2>
           <p className="fc-body">
             Då ser du skillnaden mot din egen siffra direkt, rad för rad, med bladets streck bakom varje meter.
           </p>
         </div>
         <div className="fc-plat-open-links">
-          <AppLink className="fc-link" to="/mangda">Mängda ett blad <span aria-hidden="true">→</span></AppLink>
-          <AppLink className="fc-link" to="/cad">Rita i CAD <span aria-hidden="true">→</span></AppLink>
-          <AppLink className="fc-link" to="/projekt">Dina projekt <span aria-hidden="true">→</span></AppLink>
-          <Link className="fc-link" to="/utbildning">Lär dig mängda <span aria-hidden="true">→</span></Link>
+          <AppLink className="fc-link" to="/mangda">{tr("Mängda ett blad")} <span aria-hidden="true">→</span></AppLink>
+          <AppLink className="fc-link" to="/cad">{tr("Rita i CAD")} <span aria-hidden="true">→</span></AppLink>
+          <AppLink className="fc-link" to="/projekt">{tr("Dina projekt")} <span aria-hidden="true">→</span></AppLink>
+          <Link className="fc-link" to="/utbildning">{tr("Lär dig mängda")} <span aria-hidden="true">→</span></Link>
         </div>
       </section>
     </Chrome>
@@ -113,7 +114,7 @@ export function VprPage() {
   return (
     <Chrome>
       <header className="fc-plat-head">
-        <p className="fc-label">VPR — Vector Pipe Reading</p>
+        <p className="fc-label">{tr("VPR — Vector Pipe Reading")}</p>
         <LineReveal as="h1" className="fc-display fc-display-lg"
           text={"Varje meter\nspårbar till bläcket"} />
         <p className="fc-body fc-plat-lede">
@@ -129,7 +130,7 @@ export function VprPage() {
       </header>
 
       <section className="fc-plat-steps" aria-label="Kedjan">
-        <p className="fc-label">Från streck till meter</p>
+        <p className="fc-label">{tr("Från streck till meter")}</p>
         <ol>
           {STEG.map((s) => (
             <li key={s.n}>
@@ -141,26 +142,26 @@ export function VprPage() {
         </ol>
       </section>
 
-      <section className="fc-plat-refuse" aria-label="Det läsningen vägrar">
+      <section className="fc-plat-refuse" aria-label={tr("Det läsningen vägrar")}>
         <div>
-          <p className="fc-label">Vad den vägrar</p>
-          <h2 className="fc-display fc-display-md">Ett tvetydigt svar är ett svar. Ett gissat är det inte.</h2>
+          <p className="fc-label">{tr("Vad den vägrar")}</p>
+          <h2 className="fc-display fc-display-md">{tr("Ett tvetydigt svar är ett svar. Ett gissat är det inte.")}</h2>
         </div>
         <ul>
           {VAGRAR.map((v) => <li key={v} className="fc-body">{v}</li>)}
         </ul>
       </section>
 
-      <section className="fc-plat-open" aria-label="Vägen in">
+      <section className="fc-plat-open" aria-label={tr("Vägen in")}>
         <div>
-          <p className="fc-label">Pröva den</p>
-          <h2 className="fc-display fc-display-md">Ta ett blad du redan mängdat</h2>
-          <p className="fc-body">Läsningen säger vad den fann, vad den inte kunde avgöra, och varför.</p>
+          <p className="fc-label">{tr("Pröva den")}</p>
+          <h2 className="fc-display fc-display-md">{tr("Ta ett blad du redan mängdat")}</h2>
+          <p className="fc-body">{tr("Läsningen säger vad den fann, vad den inte kunde avgöra, och varför.")}</p>
         </div>
         <div className="fc-plat-open-links">
-          <AppLink className="fc-link" to="/mangda">Läs ett blad <span aria-hidden="true">→</span></AppLink>
-          <Link className="fc-link" to="/funktioner/mangdning">Hur läsningen fungerar <span aria-hidden="true">→</span></Link>
-          <Link className="fc-link" to="/plattformen">Hela plattformen <span aria-hidden="true">→</span></Link>
+          <AppLink className="fc-link" to="/mangda">{tr("Läs ett blad")} <span aria-hidden="true">→</span></AppLink>
+          <Link className="fc-link" to="/funktioner/mangdning">{tr("Hur läsningen fungerar")} <span aria-hidden="true">→</span></Link>
+          <Link className="fc-link" to="/plattformen">{tr("Hela plattformen")} <span aria-hidden="true">→</span></Link>
         </div>
       </section>
     </Chrome>

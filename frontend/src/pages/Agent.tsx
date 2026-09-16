@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 
@@ -135,10 +136,10 @@ export default function AgentPage() {
 
       <header className="deskbar">
         <span className="org">Agenten</span>
-        <span className="muted small">fristående · läser med samma motor som analysen</span>
+        <span className="muted small">{tr("fristående · läser med samma motor som analysen")}</span>
         <div className="sp" />
         {!!files.length && (
-          <button className="ghost small" onClick={() => setMsgs([])} disabled={busy || tomt}>Nytt samtal</button>
+          <button className="ghost small" onClick={() => setMsgs([])} disabled={busy || tomt}>{tr("Nytt samtal")}</button>
         )}
       </header>
 
@@ -172,7 +173,7 @@ export default function AgentPage() {
                 <div className="answered">
                   <div className="txt">{m.text}</div>
                   {!!m.jobs?.length && (
-                    <p className="small muted">Läsningen är startad. Filen säger till här nedanför när den är klar.</p>
+                    <p className="small muted">{tr("Läsningen är startad. Filen säger till här nedanför när den är klar.")}</p>
                   )}
                   {!!m.tools?.length && (
                     <details className="tools">
@@ -206,22 +207,22 @@ export default function AgentPage() {
                       <Papper />
                       <span className="nm">{f.filnamn}</span>
                       <span className="st">{l.txt}</span>
-                      {f.jobb?.status === "COMPLETED" && <Link to={`/jobs/${f.jobb.id}`} className="op">öppna</Link>}
+                      {f.jobb?.status === "COMPLETED" && <Link to={`/jobs/${f.jobb.id}`} className="op">{tr("öppna")}</Link>}
                     </span>
                   );
                 })}
               </div>
             )}
             <div className="row">
-              <button type="button" className="round" title="Bifoga PDF" onClick={() => pick.current?.click()} disabled={busy}>+</button>
-              <textarea ref={box} rows={1} value={text} placeholder="Fråga om ritningen…"
+              <button type="button" className="round" title={tr("Bifoga PDF")} onClick={() => pick.current?.click()} disabled={busy}>+</button>
+              <textarea ref={box} rows={1} value={text} placeholder={tr("Fråga om ritningen…")}
                         onChange={(e) => setText(e.target.value)} onKeyDown={onKey} disabled={busy} />
-              <button type="submit" className="round send" disabled={busy || !text.trim()} title="Fråga">↑</button>
+              <button type="submit" className="round send" disabled={busy || !text.trim()} title={tr("Fråga")}>↑</button>
             </div>
           </form>
           <p className="deskhint small muted">
             {laste.length > 1
-              ? <>Enter skickar, Shift+Enter ny rad. Du kan be den <button className="linky" onClick={() => send(`Jämför ${laste[0].filnamn} med ${laste[1].filnamn}`)}>jämföra två blad</button>.</>
+              ? <>Enter skickar, Shift+Enter ny rad. Du kan be den <button className="linky" onClick={() => send(`Jämför ${laste[0].filnamn} med ${laste[1].filnamn}`)}>{tr("jämföra två blad")}</button>.</>
               : <>Enter skickar, Shift+Enter ny rad. En läsning kostar credits, precis som i analysen.</>}
           </p>
         </div>
@@ -230,7 +231,7 @@ export default function AgentPage() {
       <input ref={pick} type="file" accept="application/pdf" multiple hidden
              onChange={(e) => { if (e.target.files) take(e.target.files); e.currentTarget.value = ""; }} />
 
-      {over && <div className="deskdrop"><div>Släpp ritningen här</div></div>}
+      {over && <div className="deskdrop"><div>{tr("Släpp ritningen här")}</div></div>}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 import LearnFigure from "./LearnFigures";
 
@@ -70,7 +71,7 @@ function RuleRow({ r, onSave }: { r: Rule; onSave: (id: string, body: any) => Pr
                     {bool ? (
                       <select value={r.value ? "1" : "0"} disabled={busy}
                         onChange={(e) => save({ value: e.target.value === "1", note })}>
-                        <option value="0">av</option><option value="1">på</option>
+                        <option value="0">av</option><option value="1">{tr("på")}</option>
                       </select>
                     ) : (
                       <input value={draft} disabled={busy} style={{ width: 96 }}
@@ -83,7 +84,7 @@ function RuleRow({ r, onSave }: { r: Rule; onSave: (id: string, body: any) => Pr
                   </span>
                   <label className="grow">
                     Varför flyttad
-                    <input value={note} placeholder="t.ex. det här kontoret drar linjerna en aning kort"
+                    <input value={note} placeholder={tr("t.ex. det här kontoret drar linjerna en aning kort")}
                       onChange={(e) => setNote(e.target.value)} />
                   </label>
                   <div className="row">
@@ -99,10 +100,10 @@ function RuleRow({ r, onSave }: { r: Rule; onSave: (id: string, body: any) => Pr
                     </button>
                     {r.changed && (
                       <button type="button" className="ghost small" disabled={busy}
-                        onClick={() => save({ reset: true })}>Återställ</button>
+                        onClick={() => save({ reset: true })}>{tr("Återställ")}</button>
                     )}
                   </div>
-                  {r.shot && <img className="rl-shot" src={r.shot} alt="Fallet som fick regeln att flyttas" />}
+                  {r.shot && <img className="rl-shot" src={r.shot} alt={tr("Fallet som fick regeln att flyttas")} />}
                 </>
               ) : (
                 <p className="lf-note">{r.fixed_why}</p>
@@ -140,7 +141,7 @@ export function RulesCatalogue() {
     <>
       {err && <p className="error">{err}</p>}
       <div className="adm-toolbar">
-        <input value={q} placeholder="Sök regel…" onChange={(e) => setQ(e.target.value)} />
+        <input value={q} placeholder={tr("Sök regel…")} onChange={(e) => setQ(e.target.value)} />
         <div className="seg">
           {(["alla", "flyttade", "flyttbara"] as const).map((k) => (
             <button key={k} className={only === k ? "on" : ""} onClick={() => setOnly(k)}>
@@ -160,7 +161,7 @@ export function RulesCatalogue() {
           </div>
         </section>
       ))}
-      {cat && !groups.length && <p className="muted">Ingen regel matchar.</p>}
+      {cat && !groups.length && <p className="muted">{tr("Ingen regel matchar.")}</p>}
     </>
   );
 }

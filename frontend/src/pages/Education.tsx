@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import PublicFrame, { PubSection } from "../components/PublicFrame";
 import { MODULES } from "../learn";
@@ -96,7 +97,7 @@ export default function EducationPage() {
             ))}
           </div>
           <p className="pub-cta">
-            <AppLink className="lp-btn primary lg" to="/academy">Till utbildningen</AppLink>
+            <AppLink className="lp-btn primary lg" to="/academy">{tr("Till utbildningen")}</AppLink>
           </p>
         </PubSection>
       )}
@@ -107,33 +108,33 @@ export default function EducationPage() {
         <CourseGrid base={BASE} prog={prog} />
       </PubSection>
 
-      <PubSection id="sa" kicker="Så är den upplagd" title="Byggd för att göras, inte bläddras i">
+      <PubSection id="sa" kicker="Så är den upplagd" title={tr("Byggd för att göras, inte bläddras i")}>
         <div className="pub-grid pub-three">
           <div className="pub-card">
             <span className="no">01</span>
-            <h3>En figur som rör sig</h3>
-            <p>Varje föreläsning visar det den handlar om som en levande ritning — en ledarlinje som hittar sitt rör, en stigare som blir meter — i stället för att beskriva det i ord.</p>
+            <h3>{tr("En figur som rör sig")}</h3>
+            <p>{tr("Varje föreläsning visar det den handlar om som en levande ritning — en ledarlinje som hittar sitt rör, en stigare som blir meter — i stället för att beskriva det i ord.")}</p>
           </div>
           <div className="pub-card">
             <span className="no">02</span>
-            <h3>En kontrollfråga</h3>
-            <p>Inte ett prov. En fråga som går att svara fel på, med förklaringen efteråt — för det är den man minns.</p>
+            <h3>{tr("En kontrollfråga")}</h3>
+            <p>{tr("Inte ett prov. En fråga som går att svara fel på, med förklaringen efteråt — för det är den man minns.")}</p>
           </div>
           <div className="pub-card">
             <span className="no">03</span>
-            <h3>Övningar på riktiga blad</h3>
+            <h3>{tr("Övningar på riktiga blad")}</h3>
             <p>Samma slags ritningar som tjänsten läser: förklaringslistor, beteckningar, ledare, streckade rör. Ingen övning går att klara genom att gissa på det som ligger närmast.</p>
           </div>
         </div>
       </PubSection>
 
-      <PubSection id="kontor" kicker="För kontor" title="Samma kurs för hela laget"
+      <PubSection id="kontor" kicker="För kontor" title={tr("Samma kurs för hela laget")}
         lede="Varje inloggning på ett konto har sin egen kursgång och sina egna utmärkelser. Den som driver kontoret ser vilka moment som gåtts.">
         <p className="pub-cta">
           <Link className="lp-btn primary lg" to={`${BASE}/${MODULES[0].id}/${MODULES[0].lessons[0].id}`}>
             Läs första föreläsningen
           </Link>
-          <Link className="lp-btn ghost lg" to="/kontakt">Utbildning för kontoret</Link>
+          <Link className="lp-btn ghost lg" to="/kontakt">{tr("Utbildning för kontoret")}</Link>
         </p>
       </PubSection>
     </PublicFrame>
@@ -169,10 +170,10 @@ export function EducationLessonPage() {
 
 function NotFound() {
   return (
-    <PublicFrame kicker="VVS-akademin" title="Den föreläsningen finns inte"
+    <PublicFrame kicker="VVS-akademin" title={tr("Den föreläsningen finns inte")}
       lede="Adressen pekar på något akademin inte har. Kurserna står kvar där de var.">
       <PubSection tight>
-        <p className="pub-cta"><Link className="lp-btn primary lg" to={BASE}>Till kurserna</Link></p>
+        <p className="pub-cta"><Link className="lp-btn primary lg" to={BASE}>{tr("Till kurserna")}</Link></p>
       </PubSection>
     </PublicFrame>
   );

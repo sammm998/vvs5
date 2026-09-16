@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 
 /* Egna markeringar: mät, markera och anteckna direkt på ritningen.
@@ -68,7 +69,7 @@ export default function Markups({ drawingId, page, tool, draft, meterPerPt, onTo
       : meterPerPt ? `${kr2(draft.meters)} m` : `${draft.points.length} punkter · ingen skala`
   ) : null;
 
-  const t = data?.totals;
+  const totals = data?.totals;
   return (
     <div className="card corr">
       <p className="muted" style={{ marginTop: 0 }}>
@@ -95,11 +96,11 @@ export default function Markups({ drawingId, page, tool, draft, meterPerPt, onTo
         <div className="draftbox pos" style={{ marginTop: 10 }}>
           <b>{preview}</b>
           {tool === "text" && (
-            <input value={text} placeholder="Texten…" onChange={(e) => setText(e.target.value)} style={{ marginTop: 6, width: "100%" }} />
+            <input value={text} placeholder={tr("Texten…")} onChange={(e) => setText(e.target.value)} style={{ marginTop: 6, width: "100%" }} />
           )}
           <div className="row" style={{ marginTop: 8 }}>
             <button onClick={save} disabled={busy || (tool === "text" && !text.trim())}>{busy ? "Sparar…" : "Spara markering"}</button>
-            <button className="ghost small" onClick={onDraftClear}>Gör om</button>
+            <button className="ghost small" onClick={onDraftClear}>{tr("Gör om")}</button>
           </div>
         </div>
       )}
@@ -108,15 +109,15 @@ export default function Markups({ drawingId, page, tool, draft, meterPerPt, onTo
       {data && (
         <>
           <div className="row" style={{ marginTop: 14, gap: 8 }}>
-            <span className="badge small">{kr2(t.m)} m</span>
-            <span className="badge small">{kr2(t.kvm)} m²</span>
-            <span className="badge small">{t.antal} st</span>
+            <span className="badge small">{kr2(totals.m)} m</span>
+            <span className="badge small">{kr2(totals.kvm)} m²</span>
+            <span className="badge small">{totals.antal} st</span>
             {data.unscaled > 0 && <span className="badge warn small">{data.unscaled} utan skala</span>}
-            {!data.meters_per_pdf_point && <span className="muted small">kör en analys så får markeringarna meter</span>}
+            {!data.meters_per_pdf_point && <span className="muted small">{tr("kör en analys så får markeringarna meter")}</span>}
           </div>
           <div className="tablewrap" style={{ marginTop: 8 }}>
             <table className="qty">
-              <thead><tr><th>Verktyg</th><th>Lager</th><th>Beteckning</th><th className="num">Mått</th><th></th></tr></thead>
+              <thead><tr><th>Verktyg</th><th>Lager</th><th>Beteckning</th><th className="num">{tr("Mått")}</th><th></th></tr></thead>
               <tbody>
                 {data.rows.map((r: any) => (
                   <tr key={r.id}>
@@ -124,10 +125,10 @@ export default function Markups({ drawingId, page, tool, draft, meterPerPt, onTo
                     <td className="muted">{r.layer}</td>
                     <td className="lf-mono">{r.designation ?? "–"}</td>
                     <td className="num">{measureText(r.measure)}</td>
-                    <td><button className="ghost small" onClick={() => remove(r.id)}>Ta bort</button></td>
+                    <td><button className="ghost small" onClick={() => remove(r.id)}>{tr("Ta bort")}</button></td>
                   </tr>
                 ))}
-                {!data.rows.length && <tr><td colSpan={5} className="empty">Inga markeringar på den här sidan.</td></tr>}
+                {!data.rows.length && <tr><td colSpan={5} className="empty">{tr("Inga markeringar på den här sidan.")}</td></tr>}
               </tbody>
             </table>
           </div>

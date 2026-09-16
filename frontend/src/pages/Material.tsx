@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 
 /* Materialboken.
@@ -59,7 +60,7 @@ export default function MaterialPage() {
           <h1>Material</h1>
           <p className="lead">
             {data ? <>{data.book.n.toLocaleString("sv-SE")} artiklar ur {data.book.source ?? "materialboken"}</>
-              : "Laddar…"} · sök på några ord i valfri ordning, till exempel <code>110 pp mark</code>.
+              : "Laddar…"} · sök på några ord i valfri ordning, till exempel <code>{tr("110 pp mark")}</code>.
           </p>
         </div>
       </div>
@@ -68,14 +69,14 @@ export default function MaterialPage() {
 
       <div className="card" style={{ marginTop: 14 }}>
         <div className="matbar">
-          <input className="grow" value={q} placeholder="Sök benämning eller artikelnummer…"
+          <input className="grow" value={q} placeholder={tr("Sök benämning eller artikelnummer…")}
             onChange={(e) => setQ(e.target.value)} />
           <select value={unit} onChange={(e) => setUnit(e.target.value)}>
-            <option value="">alla enheter</option>
+            <option value="">{tr("alla enheter")}</option>
             {(data?.units ?? []).map((u: string) => <option key={u} value={u}>{u}</option>)}
           </select>
           <select value={group} onChange={(e) => setGroup(e.target.value)}>
-            <option value="">alla grupper</option>
+            <option value="">{tr("alla grupper")}</option>
             {(data?.groups ?? []).map((g: string) => <option key={g} value={g}>{g}</option>)}
           </select>
           <label className="check">
@@ -93,9 +94,9 @@ export default function MaterialPage() {
           <table className="qty">
             <thead>
               <tr>
-                <th>Artikel</th><th>Benämning</th><th>Enh</th>
+                <th>Artikel</th><th>{tr("Benämning")}</th><th>Enh</th>
                 <th className="num">Pris</th><th className="num">Rabatt</th>
-                <th className="num">Vikt</th><th className="num">kg CO₂e</th><th>Grupp</th>
+                <th className="num">Vikt</th><th className="num">{tr("kg CO₂e")}</th><th>Grupp</th>
               </tr>
             </thead>
             <tbody>
@@ -112,13 +113,13 @@ export default function MaterialPage() {
                 </tr>
               ))}
               {!rows.length && !busy && (
-                <tr><td colSpan={8} className="empty">Inga artiklar matchar sökningen.</td></tr>
+                <tr><td colSpan={8} className="empty">{tr("Inga artiklar matchar sökningen.")}</td></tr>
               )}
             </tbody>
             {rows.length > 0 && (
               <tfoot>
                 <tr>
-                  <th colSpan={3}>Summa på sidan</th>
+                  <th colSpan={3}>{tr("Summa på sidan")}</th>
                   <th className="num">{kr(sum)}</th>
                   <th colSpan={4}></th>
                 </tr>
@@ -128,9 +129,9 @@ export default function MaterialPage() {
         </div>
         {pages > 1 && (
           <div className="row" style={{ marginTop: 12, alignItems: "center" }}>
-            <button className="secondary small" disabled={page === 0 || busy} onClick={() => setPage(page - 1)}>← Föregående</button>
+            <button className="secondary small" disabled={page === 0 || busy} onClick={() => setPage(page - 1)}>{tr("← Föregående")}</button>
             <span className="muted">sida {page + 1} av {pages}</span>
-            <button className="secondary small" disabled={page + 1 >= pages || busy} onClick={() => setPage(page + 1)}>Nästa →</button>
+            <button className="secondary small" disabled={page + 1 >= pages || busy} onClick={() => setPage(page + 1)}>{tr("Nästa →")}</button>
           </div>
         )}
       </div>

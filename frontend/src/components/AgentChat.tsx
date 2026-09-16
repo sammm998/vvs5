@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 
 /* The agent, working against the reading rather than against a picture of it.
@@ -212,7 +213,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
         <span className="dotlive" />
         <span>Sida {page + 1}</span>
         {nSel > 0 && <span className="sel">{nSel} markerade rör</span>}
-        {selection.bbox && !nSel && <span className="sel">markerat område</span>}
+        {selection.bbox && !nSel && <span className="sel">{tr("markerat område")}</span>}
         {msgs.length > 0 && (
           <button className="ghost small clear" onClick={() => { setMsgs([]); setErr(""); }}>Rensa</button>
         )}
@@ -221,7 +222,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
       <div className="agentlog">
         {msgs.length === 0 && (
           <div className="agentintro">
-            <h4>Fråga ritningen</h4>
+            <h4>{tr("Fråga ritningen")}</h4>
             <p>
               Knapparna nedan går rakt in i läsningen och svarar utan modell — de kan inte hitta på ett tal.
               Fri text behöver en modell som väljer verktyg åt dig. Markera något i ritningen först, så vet
@@ -237,14 +238,14 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
             {m.role === "agent" && proposalsIn(m.tools || []).map((p, k) => (
               <div key={`p${k}`} className={`proposal${m.done ? " done" : ""}`}>
                 <div className="phead">
-                  <span className="ptag">Förslag</span>
+                  <span className="ptag">{tr("Förslag")}</span>
                   <span>{p.resultat.sammanfattning}</span>
                 </div>
                 <ul>
                   {(p.resultat.forslag || []).map((f: any, q: number) => <li key={q}>{f.text}</li>)}
                 </ul>
                 {p.resultat.stor_andring && (
-                  <p className="pwarn">Ändringen rör mer än 50 m. Kontrollera att den är menad så.</p>
+                  <p className="pwarn">{tr("Ändringen rör mer än 50 m. Kontrollera att den är menad så.")}</p>
                 )}
                 {m.done ? (
                   <p className="pdone">{m.done} Rättelsen kan ångras under Rättelser.</p>
@@ -253,7 +254,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
                     <button className="ask" disabled={!!writing} onClick={() => accept(i, p)}>
                       {writing === `${i}:${p.namn}` ? "Skriver…" : "Genomför"}
                     </button>
-                    <span className="muted">Inget är ändrat än.</span>
+                    <span className="muted">{tr("Inget är ändrat än.")}</span>
                   </div>
                 )}
               </div>
@@ -282,7 +283,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
       </div>
 
       <div className="agentbar">
-        <textarea rows={2} value={text} placeholder="Skriv en fråga, eller tryck på Tala…"
+        <textarea rows={2} value={text} placeholder={tr("Skriv en fråga, eller tryck på Tala…")}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(text); } }} />
         <div className="agentbtns">
@@ -292,8 +293,8 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
             {listening ? "Lyssnar" : "Tala"}
           </button>
           <button className={`pillbtn${speak ? " on" : ""}`} onClick={() => setSpeak(!speak)}
-            title={speak ? "Svaren läses upp" : "Läs upp svaren"}>Röst</button>
-          <button className="ask" onClick={() => send(text)} disabled={busy || !text.trim()}>Fråga</button>
+            title={speak ? "Svaren läses upp" : "Läs upp svaren"}>{tr("Röst")}</button>
+          <button className="ask" onClick={() => send(text)} disabled={busy || !text.trim()}>{tr("Fråga")}</button>
         </div>
       </div>
     </div>

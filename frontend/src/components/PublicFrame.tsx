@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useLocation } from "react-router-dom";
 import "../landing.css";
 import "../fc/fc.css";
@@ -79,20 +80,20 @@ export default function PublicFrame({ kicker, title, lede, children, wide = fals
               </svg>
               FutureCalc
             </span>
-            <p>Mängden som ritningen redan säger. Varje meter med sitt belägg kvar.</p>
+            <p>{tr("Mängden som ritningen redan säger. Varje meter med sitt belägg kvar.")}</p>
           </div>
           <nav aria-label="Sidor">
             <p className="lp-mono">Sidor</p>
             {PUBLIC_LINKS.map((l) => <Link key={l.to} to={l.to}>{l.label}</Link>)}
           </nav>
-          <nav aria-label="Kom igång">
-            <p className="lp-mono">Kom igång</p>
-            <Link to="/login">Logga in</Link>
+          <nav aria-label={tr("Kom igång")}>
+            <p className="lp-mono">{tr("Kom igång")}</p>
+            <Link to="/login">{tr("Logga in")}</Link>
             <Link to="/utbildning">VVS-akademin</Link>
-            <Link to="/kontakt">Kontakta oss</Link>
+            <Link to="/kontakt">{tr("Kontakta oss")}</Link>
           </nav>
         </div>
-        <div className="fc-foot-mark" aria-hidden="true">FUTURECALC®</div>
+        <div className="fc-foot-mark" aria-hidden="true">{tr("FUTURECALC®")}</div>
       </footer>
     </div>
   );

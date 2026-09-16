@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 
 /* Projektagenten: frågor till hela handlingen.
@@ -98,15 +99,15 @@ export default function ProjectAgentChat({ projectId }: { projectId: string }) {
             )}
           </div>
         ))}
-        {busy && <p className="muted small">Frågar…</p>}
+        {busy && <p className="muted small">{tr("Frågar…")}</p>}
         {err && <p className="error">{err}</p>}
         <div ref={end} />
       </div>
       <div className="row" style={{ marginTop: 10 }}>
-        <input value={text} placeholder="Fråga hela handlingen… t.ex. hur många meter KV01 finns i hus A?"
+        <input value={text} placeholder={tr("Fråga hela handlingen… t.ex. hur många meter KV01 finns i hus A?")}
           onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") ask(text); }}
           style={{ flex: 1 }} disabled={busy} />
-        <button onClick={() => ask(text)} disabled={busy || !text.trim()}>Fråga</button>
+        <button onClick={() => ask(text)} disabled={busy || !text.trim()}>{tr("Fråga")}</button>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { t as tr } from "../i18n";
 import { MODULES } from "../learn";
 import { useInView } from "./lp-motion";
 import { tiltStyle, useTilt } from "./tilt";
@@ -28,7 +29,7 @@ export default function AcademySection() {
     <section className="lp-sec lp-wrap" id="akademin">
       <div className="lp-sec-head">
         <div className="lp-kicker">VVS-akademin</div>
-        <h2>Lär dig läsa ritningen medan den läses</h2>
+        <h2>{tr("Lär dig läsa ritningen medan den läses")}</h2>
         <p>
           En läsning tar ett par minuter. Under tiden kan du gå ett delmoment: systemen, beteckningen, bladet,
           hur en ritning ritas och hur en mängd tas fram — och till sist mängda ett övningsblad själv och få
@@ -62,12 +63,12 @@ export default function AcademySection() {
         </div>
         <div className="lp-acad-say">
           <ul className="lp-beats">
-            <li className="on"><span className="no">01</span><span><b>Sex moduler</b><em>{lessons} delmoment, {minutes} minuter totalt</em></span></li>
-            <li className="on"><span className="no">02</span><span><b>Kontrollfrågor</b><em>varje moment slutar med en fråga och ett svar som förklarar varför</em></span></li>
-            <li className="on"><span className="no">03</span><span><b>Ett övningsblad</b><em>para ihop beteckning och sträcka, och få rättat direkt</em></span></li>
-            <li className="on"><span className="no">04</span><span><b>Sparas där du är</b><em>fortsätt nästa gång en ritning läses</em></span></li>
+            <li className="on"><span className="no">01</span><span><b>{tr("Sex moduler")}</b><em>{lessons} delmoment, {minutes} minuter totalt</em></span></li>
+            <li className="on"><span className="no">02</span><span><b>{tr("Kontrollfrågor")}</b><em>{tr("varje moment slutar med en fråga och ett svar som förklarar varför")}</em></span></li>
+            <li className="on"><span className="no">03</span><span><b>{tr("Ett övningsblad")}</b><em>{tr("para ihop beteckning och sträcka, och få rättat direkt")}</em></span></li>
+            <li className="on"><span className="no">04</span><span><b>{tr("Sparas där du är")}</b><em>{tr("fortsätt nästa gång en ritning läses")}</em></span></li>
           </ul>
-          <Link className="lp-btn primary lg" to="/lar">Öppna akademin</Link>
+          <Link className="lp-btn primary lg" to="/lar">{tr("Öppna akademin")}</Link>
         </div>
       </div>
     </section>

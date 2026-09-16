@@ -1,5 +1,6 @@
 import { Fragment, useMemo, useState } from "react";
 
+import { t as tr } from "../i18n";
 /* The drawing's own designation list, and what the reading made of every line in it.
  *
  * A sheet says what its codes mean before it says anything else, and every identity in the takeoff rests on that
@@ -85,7 +86,7 @@ export default function LegendView({ legend, designations, quantities, onZoom }:
     return (
       <div className="sheetview">
         <div className="card">
-          <h3>Ingen förklaringslista hittades</h3>
+          <h3>{tr("Ingen förklaringslista hittades")}</h3>
           <p className="muted">
             Varken det här bladet eller något annat blad i handlingen bär en kolumn av koder med förklaringar
             som läsningen kunde hitta. Utan listan gör läsningen inga anspråk på vad koderna betyder: varje
@@ -116,13 +117,13 @@ export default function LegendView({ legend, designations, quantities, onZoom }:
             )}
           </div>
           <div className="legendfilters">
-            <input placeholder="Sök kod eller ord…" value={q} onChange={(e) => setQ(e.target.value)} />
+            <input placeholder={tr("Sök kod eller ord…")} value={q} onChange={(e) => setQ(e.target.value)} />
             <select value={only} onChange={(e) => setOnly(e.target.value)}>
-              <option value="alla">Alla roller</option>
-              <option value="system">Rörsystem</option>
+              <option value="alla">{tr("Alla roller")}</option>
+              <option value="system">{tr("Rörsystem")}</option>
               <option value="component">Komponenter</option>
               <option value="material">Material</option>
-              <option value="unused">Oanvända</option>
+              <option value="unused">{tr("Oanvända")}</option>
             </select>
           </div>
         </div>
@@ -131,8 +132,8 @@ export default function LegendView({ legend, designations, quantities, onZoom }:
           <table className="legendtable">
             <thead>
               <tr>
-                <th>Kod</th><th>Ritningens förklaring</th><th>Läsningen tog det för</th>
-                <th>Varifrån</th><th className="num">Etiketter</th><th className="num">Meter</th>
+                <th>Kod</th><th>{tr("Ritningens förklaring")}</th><th>{tr("Läsningen tog det för")}</th>
+                <th>{tr("Varifrån")}</th><th className="num">Etiketter</th><th className="num">Meter</th>
               </tr>
             </thead>
             <tbody>
@@ -162,7 +163,7 @@ export default function LegendView({ legend, designations, quantities, onZoom }:
 
         {uncovered.length > 0 && (
           <div className="legendsection">
-            <h4>Beteckningar bladet skriver som listan inte förklarar</h4>
+            <h4>{tr("Beteckningar bladet skriver som listan inte förklarar")}</h4>
             <p className="muted">
               Texten står på ritningen men ingen rad i listan öppnar den. Läsningen påstår ingenting om vad de är.
             </p>

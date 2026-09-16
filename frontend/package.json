@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "eslint src --max-warnings=0 && tsc --noEmit && vite build",
+    "build": "node tools/i18n_check.mjs && eslint src --max-warnings=0 && tsc --noEmit && vite build",
     "preview": "vite preview --host",
-    "lint": "eslint src --max-warnings=0"
+    "lint": "eslint src --max-warnings=0",
+    "i18n": "node tools/i18n_check.mjs"
   },
   "dependencies": {
     "gsap": "^3.15.0",

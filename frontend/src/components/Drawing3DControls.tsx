@@ -1,3 +1,4 @@
+import { t as tr } from "../i18n";
 /* Kamerans knappar. Egen komponent, för vyn ska kunna byta renderare utan att knapparna skrivs om. */
 export type ViewName = "perspektiv" | "topp" | "front" | "sida";
 
@@ -32,13 +33,13 @@ export default function Drawing3DControls({
       </div>
       {/* Vyn ovanifrån går att vrida: en plan som bara kan ses åt ett håll är en bild, inte en modell. */}
       <div className="seg">
-        <button onClick={() => onSpin(-1)} disabled={walking} title="Vrid planen moturs" aria-label="Vrid moturs">⟲</button>
-        <button onClick={() => onSpin(1)} disabled={walking} title="Vrid planen medurs" aria-label="Vrid medurs">⟳</button>
+        <button onClick={() => onSpin(-1)} disabled={walking} title={tr("Vrid planen moturs")} aria-label={tr("Vrid moturs")}>⟲</button>
+        <button onClick={() => onSpin(1)} disabled={walking} title={tr("Vrid planen medurs")} aria-label={tr("Vrid medurs")}>⟳</button>
       </div>
       <button className={walking ? "" : "secondary"} onClick={() => onWalk(!walking)}>
         {walking ? "Sluta gå" : "Gå in i modellen"}
       </button>
-      <button className="secondary small" onClick={onReset} disabled={walking}>Återställ kameran</button>
+      <button className="secondary small" onClick={onReset} disabled={walking}>{tr("Återställ kameran")}</button>
       <label className="small check">
         <input type="checkbox" checked={labels} onChange={(e) => onLabels(e.target.checked)} />
         {" "}Beteckningar

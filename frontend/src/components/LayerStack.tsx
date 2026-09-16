@@ -1,4 +1,5 @@
 import { useSectionProgress } from "./lp-motion";
+import { t as tr } from "../i18n";
 import { usePointerParallax } from "./tilt";
 
 /* The three layers a reading actually works in, as three planes that come apart.
@@ -93,8 +94,8 @@ function Plate({ kind, k }: { kind: string; k: number }) {
       </g>
       <g fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace" fontSize="9.5" opacity={draw}>
         <text x="44" y="62" fill="#6ee7a5">S3-R8-110 · 24,8 m</text>
-        <text x="44" y="134" fill="#60a5fa">KV1-X31-16 · 12,1 m</text>
-        <text x="112" y="166" fill="#f0abfc">VV1-X31-16 · 18,2 m</text>
+        <text x="44" y="134" fill="#60a5fa">{tr("KV1-X31-16 · 12,1 m")}</text>
+        <text x="112" y="166" fill="#f0abfc">{tr("VV1-X31-16 · 18,2 m")}</text>
       </g>
     </svg>
   );
@@ -111,8 +112,8 @@ export default function LayerStack() {
     <section className="lp-layers" ref={ref} id="lager">
       <div className="lp-layers-pin">
         <div className="lp-sec-head">
-          <div className="lp-kicker">Tre lager</div>
-          <h2 className="lp-h2">Varje meter vet vilket lager den kom ur</h2>
+          <div className="lp-kicker">{tr("Tre lager")}</div>
+          <h2 className="lp-h2">{tr("Varje meter vet vilket lager den kom ur")}</h2>
         </div>
         <div className="lp-layers-grid">
           <div className="lp-stack" style={{

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import gsap from "gsap";
 import { EASE_EXIT, EASE_REVEAL, prefersStill } from "./motion";
 
@@ -72,11 +73,11 @@ export default function Preloader({ onDone }: { onDone?: () => void }) {
 
   if (gone) return null;
   return (
-    <div ref={root} className="fc-pre" role="status" aria-label="Laddar FutureCalc">
+    <div ref={root} className="fc-pre" role="status" aria-label={tr("Laddar FutureCalc")}>
       <div className="fc-pre-in">
         <div className="fc-pre-row"><span className="fc-pre-mark">FutureCalc</span></div>
         <div className="fc-pre-row fc-pre-meta">
-          <span className="fc-label">VVS / ESTIMATION / INTELLIGENCE</span>
+          <span className="fc-label">{tr("VVS / ESTIMATION / INTELLIGENCE")}</span>
           <span className="fc-pre-num"><span ref={num}>000</span></span>
         </div>
         <div className="fc-pre-row fc-pre-track"><div ref={bar} className="fc-pre-bar" /></div>

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import type { PlanData } from "./api";
 
 /* Övningsritningen.
@@ -259,7 +260,7 @@ export default function TrainingDrawing({
         <div className="td-bar-l">
           {mode === "matt" && (
             <>
-              <span className="fc-label">Mätt</span>
+              <span className="fc-label">{tr("Mätt")}</span>
               <b className="td-m">{live.toFixed(2).replace(".", ",")} m</b>
               <span className="td-hint">
                 Klicka punkter · dubbelklick eller Esc avslutar stråket · Backsteg ångrar · Skift+dra panorerar
@@ -270,7 +271,7 @@ export default function TrainingDrawing({
             <>
               <span className="fc-label">Markerat</span>
               <b className="td-m">{picked.length} st</b>
-              <span className="td-hint">Klicka på symbolerna · Tabb och Enter fungerar också</span>
+              <span className="td-hint">{tr("Klicka på symbolerna · Tabb och Enter fungerar också")}</span>
             </>
           )}
         </div>
@@ -283,7 +284,7 @@ export default function TrainingDrawing({
               <button className="fc-btn sm" onClick={() => onRuns?.(runs.slice(0, -1))} disabled={!runs.length}>
                 Ångra stråk
               </button>
-              <button className="fc-btn sm" onClick={() => { setDraft([]); onRuns?.([]); }}>Börja om</button>
+              <button className="fc-btn sm" onClick={() => { setDraft([]); onRuns?.([]); }}>{tr("Börja om")}</button>
             </>
           )}
           {mode === "val" && (

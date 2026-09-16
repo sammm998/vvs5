@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
 
@@ -64,7 +65,7 @@ export default function CadPickPage() {
       <div className="rule" style={{ marginBottom: 20 }} />
 
       <div className="card cad-new">
-        <h3 style={{ marginTop: 0 }}>Nytt blad</h3>
+        <h3 style={{ marginTop: 0 }}>{tr("Nytt blad")}</h3>
         <div className="row" style={{ gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
           <label className="small" style={{ minWidth: 200 }}>Namn
             <input value={name} onChange={(e) => setName(e.target.value)} style={{ width: "100%" }} />
@@ -87,13 +88,13 @@ export default function CadPickPage() {
           <button onClick={create} disabled={busy}>{busy ? "Skapar…" : "Börja rita"}</button>
         </div>
         {!projects.length && <p className="muted small" style={{ marginBottom: 0 }}>
-          Du har inget projekt ännu. <Link to="/projekt">Skapa ett</Link> så hamnar bladet där.
+          Du har inget projekt ännu. <Link to="/projekt">{tr("Skapa ett")}</Link> så hamnar bladet där.
         </p>}
       </div>
 
       {err && <p className="error">{err}</p>}
-      {!rows && <p className="muted">Laddar…</p>}
-      {rows && !rows.length && <p className="muted">Inga egna blad ännu. Börja med ett tomt här ovanför.</p>}
+      {!rows && <p className="muted">{tr("Laddar…")}</p>}
+      {rows && !rows.length && <p className="muted">{tr("Inga egna blad ännu. Börja med ett tomt här ovanför.")}</p>}
       <div className="list">
         {(rows ?? []).map((s) => (
           <article className="item" key={s.id}>
@@ -102,12 +103,12 @@ export default function CadPickPage() {
               <Link className="ttl" to={`/cad/${s.id}`} style={{ fontSize: 18 }}>{s.name}</Link>
               <div className="sub">
                 {s.paper} · 1:{s.scale_ratio} · {s.entities} objekt
-                {s.drawing_id && <> · <Link to={`/mangda/${s.drawing_id}`}>utskriven ritning</Link></>}
+                {s.drawing_id && <> · <Link to={`/mangda/${s.drawing_id}`}>{tr("utskriven ritning")}</Link></>}
               </div>
             </div>
             <div className="meta">
-              <Link className="when" to={`/cad/${s.id}`}>Öppna →</Link>
-              <button className="ghost small" onClick={() => remove(s.id)}>Ta bort</button>
+              <Link className="when" to={`/cad/${s.id}`}>{tr("Öppna →")}</Link>
+              <button className="ghost small" onClick={() => remove(s.id)}>{tr("Ta bort")}</button>
             </div>
           </article>
         ))}

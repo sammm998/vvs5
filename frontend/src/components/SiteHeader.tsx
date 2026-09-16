@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { lang, setLang, t } from "../i18n";
+import { lang, setLang, t as tr } from "../i18n";
 
 /* En meny, överallt.
  *
@@ -27,11 +27,11 @@ export const PUBLIC_LINKS: { to: string; label: string }[] = [
    sträng i appen kommer tillbaka på rätt språk i stället för hälften av dem. */
 export function LangSwitch({ className = "" }: { className?: string }) {
   return (
-    <div className={`lp-pill sh-lang ${className}`.trim()} role="group" aria-label={t("Språk")}>
+    <div className={`lp-pill sh-lang ${className}`.trim()} role="group" aria-label={tr("Språk")}>
       <button type="button" aria-pressed={lang === "sv"} className={lang === "sv" ? "on" : ""}
-        onClick={() => setLang("sv")} title={t("Svenska")}>SV</button>
+        onClick={() => setLang("sv")} title={tr("Svenska")}>SV</button>
       <button type="button" aria-pressed={lang === "en"} className={lang === "en" ? "on" : ""}
-        onClick={() => setLang("en")} title={t("Engelska")}>EN</button>
+        onClick={() => setLang("en")} title={tr("Engelska")}>EN</button>
     </div>
   );
 }
@@ -58,7 +58,7 @@ export default function SiteHeader({ anchors, cta }:
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
-  const start = cta ?? { to: "/login", label: t("Logga in") };
+  const start = cta ?? { to: "/login", label: tr("Logga in") };
   return (
     <>
       <div className={`lp-corners${lifted ? " lifted" : ""}`}>
@@ -72,7 +72,7 @@ export default function SiteHeader({ anchors, cta }:
           <span className="sh-burger-t">Meny</span>
         </button>
 
-        <Link className="lp-logo lp-pill" to="/" aria-label="Till startsidan">
+        <Link className="lp-logo lp-pill" to="/" aria-label={tr("Till startsidan")}>
           <Mark color="#6ee7a5" />
           {/* Ordmärket i ett eget element, så den smalaste skärmen kan behålla märket och släppa orden utan att
               släppa ikonen med dem. Namnet finns kvar för uppläsning via aria-label på länken. */}
@@ -85,7 +85,7 @@ export default function SiteHeader({ anchors, cta }:
           {PUBLIC_LINKS.map((l) => (
             <Link key={l.to} to={l.to}
               className={pathname === l.to || pathname.startsWith(`${l.to}/`) ? "on" : ""}>
-              {t(l.label)}
+              {tr(l.label)}
             </Link>
           ))}
         </nav>
@@ -106,15 +106,15 @@ export default function SiteHeader({ anchors, cta }:
             </div>
             {!!anchors?.length && (
               <div className="sh-menu-col">
-                <p className="lp-mono">På den här sidan</p>
+                <p className="lp-mono">{tr("På den här sidan")}</p>
                 {anchors.map((a) => <a key={a.href} href={a.href} onClick={() => setMenu(false)}>{a.label}</a>)}
               </div>
             )}
             <div className="sh-menu-col">
-              <p className="lp-mono">Kom igång</p>
-              <Link to="/login" className="go">Logga in</Link>
-              <Link to="/utbildning">Lär dig läsa ritningen</Link>
-              <Link to="/kontakt">Kontakta oss</Link>
+              <p className="lp-mono">{tr("Kom igång")}</p>
+              <Link to="/login" className="go">{tr("Logga in")}</Link>
+              <Link to="/utbildning">{tr("Lär dig läsa ritningen")}</Link>
+              <Link to="/kontakt">{tr("Kontakta oss")}</Link>
             </div>
           </div>
         </div>

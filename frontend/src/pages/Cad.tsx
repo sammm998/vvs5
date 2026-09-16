@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import PdfViewer, { type ViewerHandle } from "../components/PdfViewer";
@@ -134,8 +135,8 @@ export default function CadPage() {
             const b = await api.fetchBlob(api.markupsCsvUrl(drawingId, page, true));
             const u = URL.createObjectURL(b); const a = document.createElement("a");
             a.href = u; a.download = "cad-markeringar.csv"; a.click(); URL.revokeObjectURL(u);
-          }}>Listan som CSV</button>
-          <Link className="secondary" to={`/mangda/${drawingId}`} style={{ textDecoration: "none" }}>Mängda bladet →</Link>
+          }}>{tr("Listan som CSV")}</button>
+          <Link className="secondary" to={`/mangda/${drawingId}`} style={{ textDecoration: "none" }}>{tr("Mängda bladet →")}</Link>
         </div>
       </div>
 
@@ -159,7 +160,7 @@ export default function CadPage() {
             <button className="secondary small" onClick={() => viewer.current?.zoomIn()}>+</button>
             <button className="secondary small" onClick={() => viewer.current?.fitPage()}>Sida</button>
             <button className="secondary small" onClick={() => viewer.current?.fitWidth()}>Bredd</button>
-            <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>Helskärm</button>
+            <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>{tr("Helskärm")}</button>
             {nPages > 1 && (
               <select value={page} onChange={(e) => setPage(Number(e.target.value))} aria-label="Sida">
                 {Array.from({ length: nPages }, (_, i) => <option key={i} value={i}>Sida {i + 1}</option>)}
@@ -185,7 +186,7 @@ export default function CadPage() {
 
         <aside className="rv-side">
           <section className="card">
-            <h3 style={{ marginTop: 0 }}>Rita en fråga</h3>
+            <h3 style={{ marginTop: 0 }}>{tr("Rita en fråga")}</h3>
             <div className="tk-tools">
               {TOOLS.map((t) => (
                 <button key={t.id} className={tool === t.id ? "" : "secondary"} title={t.hint}
@@ -195,7 +196,7 @@ export default function CadPage() {
             <p className="muted small" style={{ marginTop: 10 }}>{hint}</p>
             <div className="tk-fields">
               <label>Ämne
-                <input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Vad gäller frågan?" />
+                <input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder={tr("Vad gäller frågan?")} />
               </label>
               <label>Lager
                 <input value={layer} onChange={(e) => setLayer(e.target.value)} />
@@ -210,7 +211,7 @@ export default function CadPage() {
               <button disabled={!draft || busy || (tool === "text" && !note.trim())} onClick={save}>
                 Spara markering
               </button>
-              {draft && <button className="ghost small" onClick={() => setDraft(null)}>Ångra ritningen</button>}
+              {draft && <button className="ghost small" onClick={() => setDraft(null)}>{tr("Ångra ritningen")}</button>}
             </div>
             {draft && <p className="muted small" style={{ marginBottom: 0 }}>
               {draft.points.length} punkter ritade{list?.meters_per_pdf_point && draft.meters
@@ -222,14 +223,14 @@ export default function CadPage() {
             <section className="card">
               <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
                 <h3 style={{ margin: 0 }}>{chosen.subject || TOOL_LABEL[chosen.tool] || "Markering"}</h3>
-                <button className="ghost small" onClick={() => setSelected(null)}>Stäng</button>
+                <button className="ghost small" onClick={() => setSelected(null)}>{tr("Stäng")}</button>
               </div>
               <table className="qty"><tbody>
                 <tr><td>Sida</td><td className="num">{chosen.page + 1}</td></tr>
                 <tr><td>Verktyg</td><td className="num">{TOOL_LABEL[chosen.tool] ?? chosen.tool}</td></tr>
                 <tr><td>Lager</td><td className="num">{chosen.layer}</td></tr>
-                {measureText(chosen.measure) && <tr><td>Mått</td><td className="num">{measureText(chosen.measure)}</td></tr>}
-                <tr><td>Källa</td><td className="num">{sourceLabel(chosen.source)}</td></tr>
+                {measureText(chosen.measure) && <tr><td>{tr("Mått")}</td><td className="num">{measureText(chosen.measure)}</td></tr>}
+                <tr><td>{tr("Källa")}</td><td className="num">{sourceLabel(chosen.source)}</td></tr>
                 <tr><td>Skapad</td><td className="num">{(chosen.created_at ?? "").slice(0, 16).replace("T", " ")}</td></tr>
               </tbody></table>
               <label style={{ display: "block", marginTop: 10 }}>Ämne

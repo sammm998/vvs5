@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom";
+import { t as tr } from "../i18n";
 import PublicFrame from "../components/PublicFrame";
 import FeatureArt from "../components/FeatureArt";
 import FeatureFilm from "../components/FeatureFilm";
@@ -73,7 +74,7 @@ export default function FeaturePage() {
             <p className="ft-lede">{f.lede}</p>
             <div className="ft-cta">
               <Link className="lp-btn primary lg" to={f.to}>{f.toLabel} <span aria-hidden="true">→</span></Link>
-              <a className="lp-btn ghost lg" href="#film">Se filmen</a>
+              <a className="lp-btn ghost lg" href="#film">{tr("Se filmen")}</a>
             </div>
           </div>
         </header>
@@ -125,19 +126,19 @@ export default function FeaturePage() {
         <section className="ft-close">
           <Reveal>
             <RevealLines text={f.toLabel} />
-            <p className="ft-p">Det kostar ingenting att prova — ett nytt konto får credits att läsa ett par ritningar med.</p>
+            <p className="ft-p">{tr("Det kostar ingenting att prova — ett nytt konto får credits att läsa ett par ritningar med.")}</p>
             <div className="ft-cta">
               <Link className="lp-btn primary lg" to={f.to}>{f.toLabel} <span aria-hidden="true">→</span></Link>
-              <Link className="lp-btn ghost lg" to="/priser">Se vad det kostar</Link>
+              <Link className="lp-btn ghost lg" to="/priser">{tr("Se vad det kostar")}</Link>
             </div>
           </Reveal>
         </section>
 
         <section className="ft-more">
           <div className="ft-more-head">
-            <p className="lp-kicker">Resten av plattformen</p>
+            <p className="lp-kicker">{tr("Resten av plattformen")}</p>
             <Link className="ft-next" to={`/funktioner/${next.slug}`}>
-              <span className="lp-mono">Nästa funktion</span><b>{next.nav} <span aria-hidden="true">→</span></b>
+              <span className="lp-mono">{tr("Nästa funktion")}</span><b>{next.nav} <span aria-hidden="true">→</span></b>
             </Link>
           </div>
           <div className="ft-more-grid">
@@ -161,10 +162,10 @@ export default function FeaturePage() {
 
 function Missing() {
   return (
-    <PublicFrame kicker="Funktioner" title="Den funktionen finns inte"
+    <PublicFrame kicker="Funktioner" title={tr("Den funktionen finns inte")}
       lede="Adressen pekar på något plattformen inte har.">
       <section className="pub-sec tight">
-        <p className="pub-cta"><Link className="lp-btn primary lg" to="/">Till startsidan</Link></p>
+        <p className="pub-cta"><Link className="lp-btn primary lg" to="/">{tr("Till startsidan")}</Link></p>
       </section>
     </PublicFrame>
   );

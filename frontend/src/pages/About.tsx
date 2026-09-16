@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { t as tr } from "../i18n";
 import PublicFrame, { Prose, usePublished } from "../components/PublicFrame";
 
 /* Om oss: varför tjänsten finns, vad den lovar och vad den vägrar. Texten kan skrivas om av en administratör
@@ -36,13 +37,13 @@ export default function AboutPage() {
       </section>
       <section className="pub-sec">
         <div className="pub-grid pub-three">
-          <div className="pub-card flat"><h3>Evidens först</h3><p>Ingen meter utan belägg. Varje rad i mängden går att spåra till bladet.</p></div>
-          <div className="pub-card flat"><h3>Blint mätt</h3><p>Motorn körs innan facit öppnas. Varje ändring grindas mot hela korpusen.</p></div>
-          <div className="pub-card flat"><h3>Kontraktsneutralt</h3><p>Samma ritning ger samma rör oavsett AB 04 eller ABT 06. Avtalsformen bor i kalkylen, aldrig i geometrin.</p></div>
+          <div className="pub-card flat"><h3>{tr("Evidens först")}</h3><p>{tr("Ingen meter utan belägg. Varje rad i mängden går att spåra till bladet.")}</p></div>
+          <div className="pub-card flat"><h3>{tr("Blint mätt")}</h3><p>{tr("Motorn körs innan facit öppnas. Varje ändring grindas mot hela korpusen.")}</p></div>
+          <div className="pub-card flat"><h3>Kontraktsneutralt</h3><p>{tr("Samma ritning ger samma rör oavsett AB 04 eller ABT 06. Avtalsformen bor i kalkylen, aldrig i geometrin.")}</p></div>
         </div>
         <p className="pub-cta">
-          <Link className="lp-btn primary lg" to="/hur-det-funkar">Se hur läsningen går till</Link>
-          <Link className="lp-btn ghost lg" to="/kontakt">Kontakta oss</Link>
+          <Link className="lp-btn primary lg" to="/hur-det-funkar">{tr("Se hur läsningen går till")}</Link>
+          <Link className="lp-btn ghost lg" to="/kontakt">{tr("Kontakta oss")}</Link>
         </p>
       </section>
     </PublicFrame>

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { t as tr } from "../i18n";
 /* Övningarna.
  *
  * Att läsa om en regel och att tillämpa den är två olika saker, och det är den andra som fastnar. Var övning är
@@ -11,7 +12,7 @@ function Verdict({ right, of, again }: { right: number; of: number; again: () =>
   return (
     <div className="lx-verdict">
       <div className={`badge ${right === of ? "ok" : "warn"}`}>{right} av {of} rätt</div>
-      <button type="button" className="ghost small" onClick={again}>Börja om</button>
+      <button type="button" className="ghost small" onClick={again}>{tr("Börja om")}</button>
     </div>
   );
 }
@@ -54,7 +55,7 @@ function RowsExercise() {
               </div>
               <div className="lx-choose">
                 <button type="button" className={`secondary small${g === false ? " on" : ""}`}
-                  onClick={() => { setGiven({ ...given, [c.id]: false }); setChecked(false); }}>Sträcka</button>
+                  onClick={() => { setGiven({ ...given, [c.id]: false }); setChecked(false); }}>{tr("Sträcka")}</button>
                 <button type="button" className={`secondary small${g === true ? " on" : ""}`}
                   onClick={() => { setGiven({ ...given, [c.id]: true }); setChecked(false); }}>Stigare</button>
               </div>
@@ -64,7 +65,7 @@ function RowsExercise() {
         })}
       </div>
       <div className="row">
-        <button type="button" disabled={!all} onClick={() => setChecked(true)}>Rätta</button>
+        <button type="button" disabled={!all} onClick={() => setChecked(true)}>{tr("Rätta")}</button>
         {checked && <Verdict right={right} of={CARDS.length} again={() => { setGiven({}); setChecked(false); }} />}
       </div>
     </div>
@@ -92,7 +93,7 @@ function LeaderExercise() {
           Klicka på det rör linjen faktiskt slutar på.</p>
       </div>
       <div className="lx-sheet">
-        <svg viewBox="0 0 620 300" role="img" aria-label="Tre parallella rör och en etikett med hänvisningslinje">
+        <svg viewBox="0 0 620 300" role="img" aria-label={tr("Tre parallella rör och en etikett med hänvisningslinje")}>
           <rect x="6" y="6" width="608" height="288" rx="6" fill="#fff" stroke="var(--line-2)" />
           <g stroke="#e6e6e6" strokeWidth="1.6" fill="none"><path d="M40 40 H580 V270 H40 Z M330 40 V270" /></g>
           {BUNDLE.map((p) => {
@@ -124,7 +125,7 @@ function LeaderExercise() {
           {pick === answer
             ? "Rätt. Linjen slutar på det mittersta röret, och det är det enda som avgör saken."
             : "Nej. Det rör du valde ligger närmare etiketten, men hänvisningslinjen slutar på det mittersta. Närhet är inget bevis — i en bunt hör grannröret till ett annat system."}
-          {" "}<button type="button" className="ghost small" onClick={() => setPick(null)}>Försök igen</button>
+          {" "}<button type="button" className="ghost small" onClick={() => setPick(null)}>{tr("Försök igen")}</button>
         </p>
       )}
     </div>
@@ -148,12 +149,12 @@ function ScaleExercise() {
   return (
     <div className="lx">
       <div className="lx-head">
-        <h4>Läs av sträckan</h4>
+        <h4>{tr("Läs av sträckan")}</h4>
         <p className="muted">Bladet är i skala 1:50. Skalstocken under visar hur långt fem meter är på pappret.
           Hur lång är var sträcka i verkligheten?</p>
       </div>
       <div className="lx-sheet">
-        <svg viewBox="0 0 400 292" role="img" aria-label="Tre sträckor och en skalstock">
+        <svg viewBox="0 0 400 292" role="img" aria-label={tr("Tre sträckor och en skalstock")}>
           <rect x="6" y="6" width="388" height="280" rx="6" fill="#fff" stroke="var(--line-2)" />
           {SCALE_Q.map((q, i) => (
             <g key={q.id} transform={`translate(60 ${58 + i * 56})`}>
@@ -170,7 +171,7 @@ function ScaleExercise() {
             </g>
           ))}
           <g transform="translate(48 240)">
-            <text x="0" y="-12" className="lf-mono" fontSize="10.5" fill="var(--faint)">SKALSTOCK · 5 M</text>
+            <text x="0" y="-12" className="lf-mono" fontSize="10.5" fill="var(--faint)">{tr("SKALSTOCK · 5 M")}</text>
             <rect x="0" y="0" width="50" height="10" fill="#0d0d0d" />
             <rect x="50" y="0" width="50" height="10" fill="#fff" stroke="#0d0d0d" />
             <text x="106" y="9" className="lf-mono" fontSize="10.5" fill="var(--faint)">0 — 5 m</text>
@@ -194,7 +195,7 @@ function ScaleExercise() {
         ))}
       </div>
       <div className="row">
-        <button type="button" disabled={!all} onClick={() => setChecked(true)}>Rätta</button>
+        <button type="button" disabled={!all} onClick={() => setChecked(true)}>{tr("Rätta")}</button>
         {checked && <Verdict right={right} of={SCALE_Q.length} again={() => { setGiven({}); setChecked(false); }} />}
       </div>
       {checked && (

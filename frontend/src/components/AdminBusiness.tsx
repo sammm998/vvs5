@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 
 /* Företagets halva av administrationen: konton, partners, provision, kundvård, innehåll, prov och heatmaps.
@@ -45,8 +46,8 @@ export function Accounts() {
     <>
       <div className="card">
         <div className="matbar">
-          <input className="grow" value={q} placeholder="Sök konto, orgnr eller e-post…" onChange={(e) => setQ(e.target.value)} />
-          <button onClick={() => setEdit({ ...blank, mrr_kr: 0 })}>Nytt konto</button>
+          <input className="grow" value={q} placeholder={tr("Sök konto, orgnr eller e-post…")} onChange={(e) => setQ(e.target.value)} />
+          <button onClick={() => setEdit({ ...blank, mrr_kr: 0 })}>{tr("Nytt konto")}</button>
         </div>
         {err && <p className="error">{err}</p>}
         <p className="muted" style={{ margin: 0 }}>
@@ -65,13 +66,13 @@ export function Accounts() {
               <select value={edit.plan} onChange={(e) => setEdit({ ...edit, plan: e.target.value })}>
                 {PLANS.map((p) => <option key={p} value={p}>{p}</option>)}
               </select></Field>
-            <Field label="Läge">
+            <Field label={tr("Läge")}>
               <select value={edit.status} onChange={(e) => setEdit({ ...edit, status: e.target.value })}>
                 {STATUSES.map((p) => <option key={p} value={p}>{p}</option>)}
               </select></Field>
-            <Field label="Rabatt %"><input type="number" value={edit.discount_pct}
+            <Field label={tr("Rabatt %")}><input type="number" value={edit.discount_pct}
               onChange={(e) => setEdit({ ...edit, discount_pct: Number(e.target.value) })} /></Field>
-            <Field label="Månadsintäkt kr"><input type="number" value={edit.mrr_kr ?? 0}
+            <Field label={tr("Månadsintäkt kr")}><input type="number" value={edit.mrr_kr ?? 0}
               onChange={(e) => setEdit({ ...edit, mrr_kr: Number(e.target.value) })} /></Field>
             <Field label="Partner">
               <select value={edit.partner_id ?? ""} onChange={(e) => setEdit({ ...edit, partner_id: e.target.value || null })}>
@@ -90,8 +91,8 @@ export function Accounts() {
       <div className="card" style={{ marginTop: 14, paddingTop: 6 }}>
         <div className="tablewrap">
           <table className="qty">
-            <thead><tr><th>Konto</th><th>Plan</th><th>Läge</th><th className="num">Rabatt</th>
-              <th className="num">Intäkt/mån</th><th>Partner</th><th className="num">Läsningar</th>
+            <thead><tr><th>Konto</th><th>Plan</th><th>{tr("Läge")}</th><th className="num">Rabatt</th>
+              <th className="num">{tr("Intäkt/mån")}</th><th>Partner</th><th className="num">{tr("Läsningar")}</th>
               <th>Inloggningar</th><th></th></tr></thead>
             <tbody>
               {(d?.rows ?? []).map((r: any) => (
@@ -106,10 +107,10 @@ export function Accounts() {
                   <td className="num">{r.readings}</td>
                   <td className="muted small">{r.members.map((m: any) => m.email).join(", ") || "–"}</td>
                   <td><button className="ghost small"
-                    onClick={() => setEdit({ ...r, mrr_kr: r.mrr_kr })}>Ändra</button></td>
+                    onClick={() => setEdit({ ...r, mrr_kr: r.mrr_kr })}>{tr("Ändra")}</button></td>
                 </tr>
               ))}
-              {d && !d.rows.length && <tr><td colSpan={9} className="empty">Inga konton upplagda.</td></tr>}
+              {d && !d.rows.length && <tr><td colSpan={9} className="empty">{tr("Inga konton upplagda.")}</td></tr>}
             </tbody>
           </table>
         </div>
@@ -117,14 +118,14 @@ export function Accounts() {
 
       {d?.without_account?.length > 0 && (
         <div className="card" style={{ marginTop: 14 }}>
-          <h3 style={{ marginTop: 0 }}>Inloggningar utan konto</h3>
+          <h3 style={{ marginTop: 0 }}>{tr("Inloggningar utan konto")}</h3>
           <p className="muted">
             De har registrerat sig men hör inte till någon kund ännu. Antalet läsningar säger vilka som är värda
             ett samtal.
           </p>
           <div className="tablewrap">
             <table className="qty">
-              <thead><tr><th>E-post</th><th>Roll</th><th className="num">Läsningar</th><th>Sedan</th><th></th></tr></thead>
+              <thead><tr><th>E-post</th><th>Roll</th><th className="num">{tr("Läsningar")}</th><th>Sedan</th><th></th></tr></thead>
               <tbody>
                 {d.without_account.map((u: any) => (
                   <tr key={u.id}>
@@ -134,7 +135,7 @@ export function Accounts() {
                         await api.admPut(`users/${u.id}`, { role: e.target.value }); load();
                       }}>
                         <option value="member">medlem</option><option value="partner">partner</option>
-                        <option value="admin">administratör</option>
+                        <option value="admin">{tr("administratör")}</option>
                       </select>
                     </td>
                     <td className="num">{u.readings}</td>
@@ -144,7 +145,7 @@ export function Accounts() {
                         if (!e.target.value) return;
                         await api.admPut(`users/${u.id}`, { account_id: e.target.value }); load();
                       }}>
-                        <option value="">koppla till konto…</option>
+                        <option value="">{tr("koppla till konto…")}</option>
                         {(d.rows ?? []).map((a: any) => <option key={a.id} value={a.id}>{a.name || a.id}</option>)}
                       </select>
                     </td>
@@ -211,13 +212,13 @@ export function Partners() {
   return (
     <>
       <div className="card">
-        <h3 style={{ marginTop: 0 }}>Partners och ambassadörer</h3>
+        <h3 style={{ marginTop: 0 }}>{tr("Partners och ambassadörer")}</h3>
         <p className="muted">
           Två procenttal, aldrig ett. <b>Rabatten</b> är kundens skäl att komma; <b>provisionen</b> är partnerns
           skäl att värva. De betalas av olika sidor av samma affär och sätts därför var för sig. Provisionen
           löper det antal månader som står i raden - noll betyder så länge kunden är kvar.
         </p>
-        {d?.is_admin && <button onClick={() => setEdit({ ...blank })}>Ny partner</button>}
+        {d?.is_admin && <button onClick={() => setEdit({ ...blank })}>{tr("Ny partner")}</button>}
         {err && <p className="error">{err}</p>}
       </div>
 
@@ -231,15 +232,15 @@ export function Partners() {
               <select value={edit.kind} onChange={(e) => setEdit({ ...edit, kind: e.target.value })}>
                 {KINDS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
               </select></Field>
-            <Field label="Värvningskod"><input value={edit.code} placeholder="ANNA10"
+            <Field label={tr("Värvningskod")}><input value={edit.code} placeholder="ANNA10"
               onChange={(e) => setEdit({ ...edit, code: e.target.value.toUpperCase() })} /></Field>
-            <Field label="Rabatt till kund %"><input type="number" value={edit.discount_pct}
+            <Field label={tr("Rabatt till kund %")}><input type="number" value={edit.discount_pct}
               onChange={(e) => setEdit({ ...edit, discount_pct: Number(e.target.value) })} /></Field>
-            <Field label="Provision %"><input type="number" value={edit.commission_pct}
+            <Field label={tr("Provision %")}><input type="number" value={edit.commission_pct}
               onChange={(e) => setEdit({ ...edit, commission_pct: Number(e.target.value) })} /></Field>
-            <Field label="Provision i månader"><input type="number" value={edit.commission_months}
+            <Field label={tr("Provision i månader")}><input type="number" value={edit.commission_months}
               onChange={(e) => setEdit({ ...edit, commission_months: Number(e.target.value) })} /></Field>
-            <Field label="Utbetalning till"><input value={edit.payout_ref} placeholder="bankgiro"
+            <Field label={tr("Utbetalning till")}><input value={edit.payout_ref} placeholder="bankgiro"
               onChange={(e) => setEdit({ ...edit, payout_ref: e.target.value })} /></Field>
           </div>
           <div className="row" style={{ marginTop: 12 }}>
@@ -254,7 +255,7 @@ export function Partners() {
           <table className="qty">
             <thead><tr><th>Partner</th><th>Kod</th><th>Slag</th><th className="num">Rabatt</th>
               <th className="num">Provision</th><th className="num">Kunder</th>
-              <th className="num">Per månad</th><th className="num">Utbetalt</th><th></th></tr></thead>
+              <th className="num">{tr("Per månad")}</th><th className="num">Utbetalt</th><th></th></tr></thead>
             <tbody>
               {(d?.rows ?? []).map((p: any) => (
                 /* nyckeln hör hemma på det yttersta elementet raden ger tillbaka - ligger den på den inre
@@ -272,17 +273,17 @@ export function Partners() {
                     <td className="num muted">{kr(p.paid_total_kr)}</td>
                     <td>
                       <button className="ghost small" onClick={() => setOpen(open === p.id ? null : p.id)}>Kunder</button>
-                      {d.is_admin && <button className="ghost small" onClick={() => setEdit({ ...p })}>Ändra</button>}
+                      {d.is_admin && <button className="ghost small" onClick={() => setEdit({ ...p })}>{tr("Ändra")}</button>}
                       {d.is_admin && p.monthly_commission_kr > 0 && (
-                        <button className="ghost small" onClick={() => draft(p)}>Betala ut</button>
+                        <button className="ghost small" onClick={() => draft(p)}>{tr("Betala ut")}</button>
                       )}
                     </td>
                   </tr>
                   {open === p.id && (
                     <tr><td colSpan={9}>
                       <table className="qty">
-                        <thead><tr><th>Kund</th><th>Plan</th><th>Läge</th><th className="num">Intäkt</th>
-                          <th className="num">Månader</th><th className="num">Provision</th></tr></thead>
+                        <thead><tr><th>Kund</th><th>Plan</th><th>{tr("Läge")}</th><th className="num">{tr("Intäkt")}</th>
+                          <th className="num">{tr("Månader")}</th><th className="num">Provision</th></tr></thead>
                         <tbody>
                           {p.accounts.map((a: any) => (
                             <tr key={a.account_id} className={a.within_window ? "" : "muted"}>
@@ -292,14 +293,14 @@ export function Partners() {
                               <td className="num">{kr(a.commission_kr)}</td>
                             </tr>
                           ))}
-                          {!p.accounts.length && <tr><td colSpan={6} className="empty">Inga värvade kunder ännu.</td></tr>}
+                          {!p.accounts.length && <tr><td colSpan={6} className="empty">{tr("Inga värvade kunder ännu.")}</td></tr>}
                         </tbody>
                       </table>
                     </td></tr>
                   )}
                 </Fragment>
               ))}
-              {d && !d.rows.length && <tr><td colSpan={9} className="empty">Inga partners upplagda.</td></tr>}
+              {d && !d.rows.length && <tr><td colSpan={9} className="empty">{tr("Inga partners upplagda.")}</td></tr>}
             </tbody>
           </table>
         </div>
@@ -310,7 +311,7 @@ export function Partners() {
           <h3>Utbetalningar</h3>
           <div className="tablewrap">
             <table className="qty">
-              <thead><tr><th>Period</th><th>Partner</th><th className="num">Belopp</th><th>Läge</th><th></th></tr></thead>
+              <thead><tr><th>Period</th><th>Partner</th><th className="num">Belopp</th><th>{tr("Läge")}</th><th></th></tr></thead>
               <tbody>
                 {payouts.rows.map((p: any) => (
                   <tr key={p.id}>
@@ -321,11 +322,11 @@ export function Partners() {
                     <td>{d?.is_admin && p.status === "oppen" && (
                       <button className="ghost small" onClick={async () => {
                         await api.admPut(`payouts/${p.id}?status=utbetald`); load();
-                      }}>Markera utbetald</button>
+                      }}>{tr("Markera utbetald")}</button>
                     )}</td>
                   </tr>
                 ))}
-                {!payouts.rows.length && <tr><td colSpan={5} className="empty">Inga utbetalningar registrerade.</td></tr>}
+                {!payouts.rows.length && <tr><td colSpan={5} className="empty">{tr("Inga utbetalningar registrerade.")}</td></tr>}
               </tbody>
             </table>
           </div>
@@ -349,12 +350,12 @@ export function Crm() {
   return (
     <>
       <div className="card">
-        <h3 style={{ marginTop: 0 }}>Kundvård</h3>
+        <h3 style={{ marginTop: 0 }}>{tr("Kundvård")}</h3>
         <p className="muted">Vad som hänt med en kund: ett samtal, ett mejl, ett löfte, ett problem.</p>
         <div className="adm-form">
           <Field label="Konto">
             <select value={n.account_id} onChange={(e) => setN({ ...n, account_id: e.target.value })}>
-              <option value="">välj…</option>
+              <option value="">{tr("välj…")}</option>
               {accounts.map((a) => <option key={a.id} value={a.id}>{a.name || a.id}</option>)}
             </select></Field>
           <Field label="Slag">
@@ -363,7 +364,7 @@ export function Crm() {
             </select></Field>
           <Field label="Rubrik"><input value={n.subject} onChange={(e) => setN({ ...n, subject: e.target.value })} /></Field>
         </div>
-        <textarea style={{ marginTop: 10 }} rows={3} value={n.body} placeholder="Vad hände?"
+        <textarea style={{ marginTop: 10 }} rows={3} value={n.body} placeholder={tr("Vad hände?")}
           onChange={(e) => setN({ ...n, body: e.target.value })} />
         <div className="row" style={{ marginTop: 10 }}>
           <button disabled={!n.account_id} onClick={async () => {
@@ -378,7 +379,7 @@ export function Crm() {
       <div className="card" style={{ marginTop: 14, paddingTop: 6 }}>
         <div className="tablewrap">
           <table className="qty">
-            <thead><tr><th>När</th><th>Konto</th><th>Slag</th><th>Rubrik</th><th>Text</th><th></th></tr></thead>
+            <thead><tr><th>{tr("När")}</th><th>Konto</th><th>Slag</th><th>Rubrik</th><th>Text</th><th></th></tr></thead>
             <tbody>
               {(d?.rows ?? []).map((r: any) => (
                 <tr key={r.id} className={r.done ? "muted" : ""}>
@@ -389,7 +390,7 @@ export function Crm() {
                     onClick={async () => { await api.admPut(`crm/${r.id}?done=true`); load(); }}>Klar</button>}</td>
                 </tr>
               ))}
-              {d && !d.rows.length && <tr><td colSpan={6} className="empty">Inga anteckningar.</td></tr>}
+              {d && !d.rows.length && <tr><td colSpan={6} className="empty">{tr("Inga anteckningar.")}</td></tr>}
             </tbody>
           </table>
         </div>
@@ -420,15 +421,15 @@ export function Content() {
   return (
     <>
       <div className="card">
-        <h3 style={{ marginTop: 0 }}>Innehåll</h3>
+        <h3 style={{ marginTop: 0 }}>{tr("Innehåll")}</h3>
         <p className="muted">
           Att spara och att publicera är två handlingar och inte en. Ett utkast som publicerar sig självt är hur
           en halvskriven mening hamnar på förstasidan.
         </p>
         <div className="matbar">
-          <input className="grow" value={slug} placeholder="sidans namn, t.ex. landning-rubrik"
+          <input className="grow" value={slug} placeholder={tr("sidans namn, t.ex. landning-rubrik")}
             onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "-"))} />
-          <button disabled={!slug} onClick={() => open(slug)}>Öppna</button>
+          <button disabled={!slug} onClick={() => open(slug)}>{tr("Öppna")}</button>
         </div>
         {err && <p className="error">{err}</p>}
       </div>
@@ -443,12 +444,12 @@ export function Content() {
           <textarea rows={10} style={{ marginTop: 10 }} value={doc.draft ?? ""}
             onChange={(e) => setDoc({ ...doc, draft: e.target.value })} />
           <div className="row" style={{ marginTop: 10 }}>
-            <button className="secondary" onClick={() => put(false)}>Spara utkast</button>
+            <button className="secondary" onClick={() => put(false)}>{tr("Spara utkast")}</button>
             <button onClick={() => put(true)}>Publicera</button>
           </div>
           {doc.body && doc.draft !== doc.body && (
             <details className="settings" style={{ marginTop: 12 }}>
-              <summary>Vad som ligger ute nu</summary>
+              <summary>{tr("Vad som ligger ute nu")}</summary>
               <div className="body"><pre className="lf-pre">{doc.body}</pre></div>
             </details>
           )}
@@ -458,17 +459,17 @@ export function Content() {
       <div className="card" style={{ marginTop: 14, paddingTop: 6 }}>
         <div className="tablewrap">
           <table className="qty">
-            <thead><tr><th>Sida</th><th>Rubrik</th><th>Läge</th><th className="num">Tecken</th><th>Ändrad</th></tr></thead>
+            <thead><tr><th>Sida</th><th>Rubrik</th><th>{tr("Läge")}</th><th className="num">Tecken</th><th>{tr("Ändrad")}</th></tr></thead>
             <tbody>
               {rows.map((r) => (
                 <tr key={r.id} onClick={() => open(r.slug)} style={{ cursor: "pointer" }}>
                   <td className="lf-mono">{r.slug}</td><td>{r.title}</td>
                   <td>{r.published ? <span className="badge ok small">publicerad</span> : <span className="badge small">utkast</span>}
-                    {r.has_draft && <span className="badge warn small" style={{ marginLeft: 6 }}>osparat utkast</span>}</td>
+                    {r.has_draft && <span className="badge warn small" style={{ marginLeft: 6 }}>{tr("osparat utkast")}</span>}</td>
                   <td className="num muted">{r.chars}</td><td className="muted">{when(r.updated_at)}</td>
                 </tr>
               ))}
-              {!rows.length && <tr><td colSpan={5} className="empty">Inget innehåll ännu.</td></tr>}
+              {!rows.length && <tr><td colSpan={5} className="empty">{tr("Inget innehåll ännu.")}</td></tr>}
             </tbody>
           </table>
         </div>
@@ -496,7 +497,7 @@ export function Experiments() {
           att låta någon läsa en vinnare ur brus. Besökaren hamnar på samma sida av provet vid varje
           sidladdning, annars mäter provet ingenting.
         </p>
-        <button onClick={() => setN({ ...blank })}>Nytt prov</button>
+        <button onClick={() => setN({ ...blank })}>{tr("Nytt prov")}</button>
         {err && <p className="error">{err}</p>}
       </div>
 
@@ -506,14 +507,14 @@ export function Experiments() {
             <Field label="Nyckel"><input value={n.key} placeholder="landning-rubrik"
               onChange={(e) => setN({ ...n, key: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "-") })} /></Field>
             <Field label="Rubrik"><input value={n.title} onChange={(e) => setN({ ...n, title: e.target.value })} /></Field>
-            <Field label="Målhändelse">
+            <Field label={tr("Målhändelse")}>
               <select value={n.goal_event} onChange={(e) => setN({ ...n, goal_event: e.target.value })}>
-                <option value="mal">mål</option><option value="klick">klick</option>
+                <option value="mal">{tr("mål")}</option><option value="klick">klick</option>
               </select></Field>
-            <Field label="Andel som ser B"><input type="number" step="0.05" min="0" max="1" value={n.split_b}
+            <Field label={tr("Andel som ser B")}><input type="number" step="0.05" min="0" max="1" value={n.split_b}
               onChange={(e) => setN({ ...n, split_b: Number(e.target.value) })} /></Field>
           </div>
-          <textarea rows={2} style={{ marginTop: 10 }} value={n.hypothesis} placeholder="Vad tror du händer, och varför?"
+          <textarea rows={2} style={{ marginTop: 10 }} value={n.hypothesis} placeholder={tr("Vad tror du händer, och varför?")}
             onChange={(e) => setN({ ...n, hypothesis: e.target.value })} />
           <div className="row" style={{ marginTop: 10 }}>
             <button disabled={!n.key} onClick={async () => {
@@ -535,7 +536,7 @@ export function Experiments() {
               <select value={e.status} onChange={async (ev) => {
                 await api.admPut(`experiments/${e.key}?status=${ev.target.value}`); load();
               }}>
-                <option value="utkast">utkast</option><option value="igang">igång</option>
+                <option value="utkast">utkast</option><option value="igang">{tr("igång")}</option>
                 <option value="avslutad">avslutad</option>
               </select>
             </div>
@@ -560,7 +561,7 @@ export function Experiments() {
         </div>
       ))}
       {d && !d.rows.length && <div className="card" style={{ marginTop: 14 }}>
-        <p className="empty">Inga prov upplagda.</p></div>}
+        <p className="empty">{tr("Inga prov upplagda.")}</p></div>}
     </>
   );
 }
@@ -582,7 +583,7 @@ export function Heatmap() {
   return (
     <>
       <div className="card">
-        <h3 style={{ marginTop: 0 }}>Var folk klickar</h3>
+        <h3 style={{ marginTop: 0 }}>{tr("Var folk klickar")}</h3>
         <p className="muted">
           Punkterna sparas som andelar av fönstret och inte som bildpunkter, så bilden gäller alla
           skärmstorlekar på en gång. Det som sparas är rutan och inte punkten: en heatmap som går att spåra
@@ -591,10 +592,10 @@ export function Heatmap() {
         <div className="matbar">
           <select className="grow" value={path} onChange={(e) => setPath(e.target.value)}>
             {paths.map((p) => <option key={p.path} value={p.path}>{p.path} ({p.clicks})</option>)}
-            {!paths.length && <option value="">inga klick registrerade</option>}
+            {!paths.length && <option value="">{tr("inga klick registrerade")}</option>}
           </select>
           <select value={days} onChange={(e) => setDays(Number(e.target.value))}>
-            <option value={7}>7 dygn</option><option value={30}>30 dygn</option><option value={90}>90 dygn</option>
+            <option value={7}>{tr("7 dygn")}</option><option value={30}>{tr("30 dygn")}</option><option value={90}>{tr("90 dygn")}</option>
           </select>
         </div>
         {err && <p className="error">{err}</p>}
@@ -614,12 +615,12 @@ export function Heatmap() {
           </svg>
         </section>
         <section className="card">
-          <h3 style={{ marginTop: 0 }}>Mest klickade</h3>
+          <h3 style={{ marginTop: 0 }}>{tr("Mest klickade")}</h3>
           <table className="qty"><tbody>
             {Object.entries(d?.targets ?? {}).map(([k, v]: any) => (
               <tr key={k}><td className="muted small">{k}</td><td className="num">{v}</td></tr>
             ))}
-            {!Object.keys(d?.targets ?? {}).length && <tr><td className="empty">Inget registrerat.</td></tr>}
+            {!Object.keys(d?.targets ?? {}).length && <tr><td className="empty">{tr("Inget registrerat.")}</td></tr>}
           </tbody></table>
         </section>
       </div>

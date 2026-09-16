@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Exercise from "./Exercise";
 import TrainingDrawing from "./TrainingDrawing";
@@ -26,7 +27,7 @@ function Shell({ children, crumb }: { children: React.ReactNode; crumb?: React.R
           FutureCalc <span>Academy</span>
         </Link>
         <nav className="acx-crumb">{crumb}</nav>
-        <Link className="fc-btn sm" to="/projekt">Till verktyget</Link>
+        <Link className="fc-btn sm" to="/projekt">{tr("Till verktyget")}</Link>
       </header>
       {children}
     </div>
@@ -54,14 +55,14 @@ export function AcademyHome() {
   useEffect(() => { ac.me().then(setMe).catch((e) => setErr(String(e.message || e))); }, []);
 
   if (err) return <Shell><p className="acx-err">{err}</p></Shell>;
-  if (!me) return <Shell><p className="acx-load">Hämtar ditt läge…</p></Shell>;
+  if (!me) return <Shell><p className="acx-load">{tr("Hämtar ditt läge…")}</p></Shell>;
 
   const niva = me.niva;
   return (
     <Shell>
       <section className="acx-hero">
         <div>
-          <p className="fc-label">FutureCalc Academy</p>
+          <p className="fc-label">{tr("FutureCalc Academy")}</p>
           <h1 className="fc-display fc-display-md">
             {me.fortsatt ? "Fortsätt där du slutade" : "Börja lära dig mängda"}
           </h1>
@@ -80,7 +81,7 @@ export function AcademyHome() {
           )}
         </div>
         <aside className="acx-level">
-          <p className="fc-label">Din nivå</p>
+          <p className="fc-label">{tr("Din nivå")}</p>
           <p className="acx-level-n">{niva.namn}</p>
           <p className="acx-xp"><b>{me.xp}</b> XP</p>
           {niva.nasta && (
@@ -93,8 +94,8 @@ export function AcademyHome() {
       </section>
 
       <section className="acx-stats">
-        <div><b>{me.ovningar.gjorda}</b><span className="fc-label">Övningar gjorda</span></div>
-        <div><b>{me.ovningar.godkanda}</b><span className="fc-label">Godkända</span></div>
+        <div><b>{me.ovningar.gjorda}</b><span className="fc-label">{tr("Övningar gjorda")}</span></div>
+        <div><b>{me.ovningar.godkanda}</b><span className="fc-label">{tr("Godkända")}</span></div>
         <div><b>{Math.round(me.ovningar.snitt * 100)} %</b><span className="fc-label">Snittresultat</span></div>
         <div><b>{me.certifikat.length}</b><span className="fc-label">Certifikat</span></div>
       </section>
@@ -119,11 +120,11 @@ export function AcademyHome() {
 
       {!!me.certifikat.length && (
         <section className="acx-sec">
-          <h2 className="fc-display fc-display-md">Dina certifikat</h2>
+          <h2 className="fc-display fc-display-md">{tr("Dina certifikat")}</h2>
           <div className="acx-certs">
             {me.certifikat.map((c: any) => (
               <Link key={c.code} className="acx-cert" to={`/certifikat/${c.code}`}>
-                <p className="fc-label">FutureCalc Certified</p>
+                <p className="fc-label">{tr("FutureCalc Certified")}</p>
                 <b>{c.title}</b>
                 <p className="fc-label">{c.code} · {c.score} % · {c.issued.slice(0, 10)}</p>
               </Link>
@@ -134,7 +135,7 @@ export function AcademyHome() {
 
       {!!me.aktivitet.length && (
         <section className="acx-sec">
-          <h2 className="fc-display fc-display-md">Senaste aktivitet</h2>
+          <h2 className="fc-display fc-display-md">{tr("Senaste aktivitet")}</h2>
           <ul className="acx-act">
             {me.aktivitet.map((a: any, i: number) => (
               <li key={i}><span>{a.why}</span><b>+{a.points} XP</b>
@@ -156,7 +157,7 @@ export function AcademyCourse() {
   useEffect(() => { ac.course(kurs!).then(setC).catch((e) => setErr(String(e.message || e))); }, [kurs]);
 
   if (err) return <Shell><p className="acx-err">{err}</p></Shell>;
-  if (!c) return <Shell><p className="acx-load">Hämtar utbildningen…</p></Shell>;
+  if (!c) return <Shell><p className="acx-load">{tr("Hämtar utbildningen…")}</p></Shell>;
 
   return (
     <Shell crumb={<Link to="/academy">Academy</Link>}>
@@ -174,7 +175,7 @@ export function AcademyCourse() {
             <div className="acx-mod-h">
               <span className="acx-mod-n fc-label">{String(i + 1).padStart(2, "0")}</span>
               <div>
-                <h3>{m.title}{!m.open && <span className="acx-lock" title="Låst"> · låst</span>}</h3>
+                <h3>{m.title}{!m.open && <span className="acx-lock" title={tr("Låst")}> {tr("· låst")}</span>}</h3>
                 <p>{m.blurb}</p>
                 <p className="fc-label">
                   {m.lektioner.length} lektioner
@@ -203,7 +204,7 @@ export function AcademyCourse() {
                   <li><Link to={`/academy/${c.slug}/${m.slug}/quiz`} className="acx-quizlink">
                     <span className="acx-dot" aria-hidden="true" />
                     <span className="acx-l-t">Quiz — {m.quiz} frågor i banken</span>
-                    <span className="fc-label">upp till 50 XP</span>
+                    <span className="fc-label">{tr("upp till 50 XP")}</span>
                   </Link></li>
                 )}
               </ul>
@@ -223,7 +224,7 @@ export function AcademyCourse() {
               FutureCalc-certifikat.
             </p>
           </div>
-          <Link className="fc-btn solid" to={`/academy/tenta/${c.tenta.slug}`}>Skriv sluttentan <span aria-hidden="true">→</span></Link>
+          <Link className="fc-btn solid" to={`/academy/tenta/${c.tenta.slug}`}>{tr("Skriv sluttentan")} <span aria-hidden="true">→</span></Link>
         </section>
       )}
     </Shell>
@@ -248,7 +249,7 @@ export function AcademyLesson() {
   }, [id]);
 
   if (err) return <Shell><p className="acx-err">{err}</p></Shell>;
-  if (!l) return <Shell><p className="acx-load">Hämtar lektionen…</p></Shell>;
+  if (!l) return <Shell><p className="acx-load">{tr("Hämtar lektionen…")}</p></Shell>;
 
   const markDone = async () => {
     const r = await ac.lessonDone(l.id);
@@ -278,7 +279,7 @@ export function AcademyLesson() {
 
         {!!l.ovningar.length && (
           <section className="acx-ex">
-            <h2 className="fc-display fc-display-md">Öva</h2>
+            <h2 className="fc-display fc-display-md">{tr("Öva")}</h2>
             {l.ovningar.map((e: ExerciseOut) => (
               <Exercise key={e.slug} ex={e} onDone={(r) => setXp((x) => x + r.xp)} />
             ))}
@@ -290,14 +291,14 @@ export function AcademyLesson() {
             {done ? (
               <p className="acx-done"><span aria-hidden="true">✓</span> Lektionen är klar{xp > 0 && ` · +${xp} XP`}</p>
             ) : (
-              <button className="fc-btn solid" onClick={markDone}>Markera som läst</button>
+              <button className="fc-btn solid" onClick={markDone}>{tr("Markera som läst")}</button>
             )}
           </div>
           <div className="acx-lnav">
-            {l.forra && <button className="fc-btn sm" onClick={() => nav(`/academy/lektion/${l.forra}`)}>← Föregående</button>}
+            {l.forra && <button className="fc-btn sm" onClick={() => nav(`/academy/lektion/${l.forra}`)}>{tr("← Föregående")}</button>}
             {l.nasta
-              ? <button className="fc-btn sm" onClick={() => nav(`/academy/lektion/${l.nasta}`)}>Nästa lektion →</button>
-              : <Link className="fc-btn sm" to={`/academy/${l.kurs.slug}`}>Tillbaka till utbildningen</Link>}
+              ? <button className="fc-btn sm" onClick={() => nav(`/academy/lektion/${l.nasta}`)}>{tr("Nästa lektion →")}</button>
+              : <Link className="fc-btn sm" to={`/academy/${l.kurs.slug}`}>{tr("Tillbaka till utbildningen")}</Link>}
           </div>
         </footer>
       </article>
@@ -316,7 +317,7 @@ function BlockView({ b }: { b: Block }) {
           {b.t.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
         </dl>
       );
-    case "note": return <aside className="acx-note"><span className="fc-label">Att veta</span><p>{b.t}</p></aside>;
+    case "note": return <aside className="acx-note"><span className="fc-label">{tr("Att veta")}</span><p>{b.t}</p></aside>;
     case "warn": return <aside className="acx-warn"><span className="fc-label">Varning</span><p>{b.t}</p></aside>;
     case "formula":
       return (

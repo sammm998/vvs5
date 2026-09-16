@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { MODULES } from "../learn";
 import Lecture, { findLesson, findModule, FLAT } from "../components/Lecture";
@@ -99,9 +100,9 @@ function Missing() {
   return (
     <Shell>
       <div className="ac-missing">
-        <h1>Den sidan finns inte i akademin</h1>
-        <p className="ac-lede">Adressen pekar på en kurs eller en föreläsning som inte finns. Kurserna står kvar där de var.</p>
-        <Link className="lp-btn primary lg" to={BASE}>Till kurserna</Link>
+        <h1>{tr("Den sidan finns inte i akademin")}</h1>
+        <p className="ac-lede">{tr("Adressen pekar på en kurs eller en föreläsning som inte finns. Kurserna står kvar där de var.")}</p>
+        <Link className="lp-btn primary lg" to={BASE}>{tr("Till kurserna")}</Link>
       </div>
     </Shell>
   );

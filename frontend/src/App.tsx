@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "./i18n";
 import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import { api, getToken, setToken, currentEmail, flushEvents, track } from "./api";
 import Landing from "./pages/Landing";
@@ -272,17 +273,17 @@ export default function App() {
           aria-label={rail ? "Visa sidopanelen" : "Fäll ihop sidopanelen"}><IconRail /></button>
         <div>
           <Link to="/projekt" className="brand"><Mark /> <span className="wide">FutureCalc</span></Link>
-          <div className="org wide" style={{ marginTop: 10 }}>Mängdning ur ren vektor</div>
+          <div className="org wide" style={{ marginTop: 10 }}>{tr("Mängdning ur ren vektor")}</div>
         </div>
         <nav>
           <Link to="/projekt" className={path.startsWith("/projekt") || path.startsWith("/projects") ? "on" : ""}>
             <IconProjects /> <span className="wide">Projekt</span>
           </Link>
           <Link to="/lar" className={path.startsWith("/lar") ? "on" : ""}>
-            <IconLearn /> <span className="wide">Lär dig VVS</span>
+            <IconLearn /> <span className="wide">{tr("Lär dig VVS")}</span>
           </Link>
           <Link to="/mangda" className={path.startsWith("/mangda") ? "on" : ""}>
-            <IconRuler /> <span className="wide">Mängda</span>
+            <IconRuler /> <span className="wide">{tr("Mängda")}</span>
           </Link>
           <Link to="/cad" className={path.startsWith("/cad") || path.startsWith("/granska") ? "on" : ""}>
             <IconCad /> <span className="wide">CAD</span>
@@ -306,7 +307,7 @@ export default function App() {
           {email && <div className="who wide">{email}</div>}
           <button className="secondary small" style={{ alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8 }}
             onClick={() => { setToken(null); nav("/"); }}>
-            <IconOut /> <span className="wide">Logga ut</span>
+            <IconOut /> <span className="wide">{tr("Logga ut")}</span>
           </button>
         </div>
       </aside>

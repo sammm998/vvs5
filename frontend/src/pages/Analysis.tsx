@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../api";
 import AnalysisCompletionReveal from "../components/AnalysisCompletionReveal";
@@ -268,21 +269,21 @@ export default function AnalysisPage() {
   const dl = async (path: string, name: string) => { const b = await api.fetchBlob(path); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = name; a.click(); };
 
   if (err) return <main><p className="error">{err}</p></main>;
-  if (!job) return <main>Laddar…</main>;
+  if (!job) return <main>{tr("Laddar…")}</main>;
   if (job.status !== "COMPLETED") {
     /* The reading takes a minute or two, and it is one of the few times somebody sits still in front of the
        tool. So the wait is offered as something else - but as a guide laid over the reading, not instead of it:
        the film keeps running behind the panel, and closing it costs nothing. */
     return (
       <main>
-        <p className="crumb"><Link to={`/drawings/${job.drawing_id}`}>Ritning</Link> / Analys</p>
+        <p className="crumb"><Link to={`/drawings/${job.drawing_id}`}>Ritning</Link> {tr("/ Analys")}</p>
         <div className="head">
           <div>
-            <h1>Läser ritningen</h1>
+            <h1>{tr("Läser ritningen")}</h1>
             <p className="lead">{stageText(job.stage) || job.stage}</p>
           </div>
           <div className="row">
-            <button onClick={() => setLearn(true)}>Lär mig om VVS</button>
+            <button onClick={() => setLearn(true)}>{tr("Lär mig om VVS")}</button>
             <StatusBadge job={job} />
           </div>
         </div>
@@ -294,7 +295,7 @@ export default function AnalysisPage() {
       </main>
     );
   }
-  if (!result) return <main>Laddar resultat…</main>;
+  if (!result) return <main>{tr("Laddar resultat…")}</main>;
   const c = result.coverage;
   const pipesOnPage = result.pipes.filter((p: any) => p.page === page);
   /* How much of what the drawing names ended up with a metre.
@@ -323,7 +324,7 @@ export default function AnalysisPage() {
         Förklaringslista{result.legend?.entries?.length ? ` (${result.legend.entries.length})` : ""}
       </button>
       <button className={view === "analys" ? "active" : ""} onClick={() => setView("analys")}>Analys</button>
-      <button className={view === "resonemang" ? "active" : ""} onClick={() => setView("resonemang")}>Agenternas resonemang</button>
+      <button className={view === "resonemang" ? "active" : ""} onClick={() => setView("resonemang")}>{tr("Agenternas resonemang")}</button>
       <span className="spacer" />
       <StatusBadge job={job} />
     </div>
@@ -362,23 +363,23 @@ export default function AnalysisPage() {
       style={{ gridTemplateColumns: `minmax(0, 1fr) 6px ${panel}px` }}>
       <div className="left">
         {!panelOpen && (
-          <button className="secondary small reopen" onClick={() => setOpen(true)}>Visa mängder</button>
+          <button className="secondary small reopen" onClick={() => setOpen(true)}>{tr("Visa mängder")}</button>
         )}
         {/* One line of controls, because every line here is a line the drawing does not get. The eight layer
             switches used to wrap onto a second row and push the sheet down the page; they live behind one
             control now, which says how many are on. */}
         <div className="toolbar">
-          <Link to={`/drawings/${job.drawing_id}`} className="back">← Ritning</Link>
+          <Link to={`/drawings/${job.drawing_id}`} className="back">{tr("← Ritning")}</Link>
           <span className="seg zoomseg">
-            <button onClick={() => viewer.current?.zoomOut()} title="Zooma ut">−</button>
-            <button onClick={() => viewer.current?.zoomIn()} title="Zooma in">+</button>
-            <button onClick={() => viewer.current?.fitPage()} title="Hela sidan">Sida</button>
-            <button onClick={() => viewer.current?.fitWidth()} title="Full bredd">Bredd</button>
+            <button onClick={() => viewer.current?.zoomOut()} title={tr("Zooma ut")}>−</button>
+            <button onClick={() => viewer.current?.zoomIn()} title={tr("Zooma in")}>+</button>
+            <button onClick={() => viewer.current?.fitPage()} title={tr("Hela sidan")}>Sida</button>
+            <button onClick={() => viewer.current?.fitWidth()} title={tr("Full bredd")}>Bredd</button>
           </span>
-          <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>Helskärm</button>
-          <button className="small d3-open" title="Res ritningen till en byggnad"
-            onClick={() => { setRising(true); setShow3d(true); }}>Visa i 3D</button>
-          {sheetBusy && <span className="muted small">Läser bladet…</span>}
+          <button className="secondary small" onClick={() => viewer.current?.fullscreen()}>{tr("Helskärm")}</button>
+          <button className="small d3-open" title={tr("Res ritningen till en byggnad")}
+            onClick={() => { setRising(true); setShow3d(true); }}>{tr("Visa i 3D")}</button>
+          {sheetBusy && <span className="muted small">{tr("Läser bladet…")}</span>}
           {nPages > 1 && <select value={page} disabled={sheetBusy} onChange={(e) => {
             // the selected run belongs to the page it was found on; carrying it across would put its ends,
             // and any correction dragged from them, on geometry that is not it
@@ -416,7 +417,7 @@ export default function AnalysisPage() {
             : setDraft({ points: d.points, meters: d.meters, hits: d.hits })}
           corrections={corrections.filter((c: any) => !c.undone && c.page === page)} /></Boundary>
       </div>
-      <div className="splitter" role="separator" aria-orientation="vertical" aria-label="Dra för att ändra bredd"
+      <div className="splitter" role="separator" aria-orientation="vertical" aria-label={tr("Dra för att ändra bredd")}
         onMouseDown={() => { dragging.current = true; document.body.classList.add("resizing"); }}
         onDoubleClick={() => setPanel(380)} />
       {/* the chat is a conversation, so it fills its column and scrolls inside itself; every other tab is a
@@ -427,20 +428,20 @@ export default function AnalysisPage() {
             title="Smalare">−</button>
           <button className="ghost small" onClick={() => setPanel(Math.min(Math.max(window.innerWidth - 420, 300), panel + 120))}
             title="Bredare">+</button>
-          <button className="ghost small" onClick={() => setPanel(380)} title="Återställ bredden">Återställ</button>
+          <button className="ghost small" onClick={() => setPanel(380)} title={tr("Återställ bredden")}>{tr("Återställ")}</button>
           <span className="spacer" />
-          <button className="ghost small" onClick={() => setOpen(false)} title="Stäng fältet">Stäng ✕</button>
+          <button className="ghost small" onClick={() => setOpen(false)} title={tr("Stäng fältet")}>{tr("Stäng ✕")}</button>
         </div>
         <div className="tabs">
-          <button className={tab === "mangder" ? "active" : ""} onClick={() => setTab("mangder")}>Mängder</button>
+          <button className={tab === "mangder" ? "active" : ""} onClick={() => setTab("mangder")}>{tr("Mängder")}</button>
           <button className={tab === "agent" ? "active" : ""} onClick={() => setTab("agent")}>Agent</button>
           <button className={tab === "rattelser" ? "active" : ""} onClick={() => setTab("rattelser")}>
             Rätta{corrections.filter((c: any) => !c.undone).length ? ` (${corrections.filter((c: any) => !c.undone).length})` : ""}
           </button>
           <button className={tab === "markera" ? "active" : ""} onClick={() => setTab("markera")}>Markera</button>
-          <button className={tab === "oversikt" ? "active" : ""} onClick={() => setTab("oversikt")}>Översikt</button>
+          <button className={tab === "oversikt" ? "active" : ""} onClick={() => setTab("oversikt")}>{tr("Översikt")}</button>
           <button className={tab === "artefakter" ? "active" : ""} onClick={() => setTab("artefakter")}>Export</button>
-          <Link className="tabs-cta" to={`/jobs/${id}/kalkyl`} title="Kalkylera mängderna: material, normtid, pris och anbud">Kalkylera →</Link>
+          <Link className="tabs-cta" to={`/jobs/${id}/kalkyl`} title={tr("Kalkylera mängderna: material, normtid, pris och anbud")}>{tr("Kalkylera →")}</Link>
         </div>
         {tab === "mangder" && (
           <div className="card">
@@ -517,7 +518,7 @@ export default function AnalysisPage() {
                       <thead>
                         <tr><th>Beteckning</th><th>DN</th><th className="num">Horisontellt</th>
                           <th className="num">Stigare</th><th className="num">Vertikalt</th>
-                          <th className="num">Rör</th><th>Blad</th></tr>
+                          <th className="num">{tr("Rör")}</th><th>Blad</th></tr>
                       </thead>
                       <tbody>
                         {setDoc.rows.map((r: any) => (
@@ -557,12 +558,12 @@ export default function AnalysisPage() {
               </summary>
               <div className="body">
                 <label>Våningshöjd för stigare (m)
-                  <input style={{ width: 84 }} value={floorHeight} placeholder="t.ex. 2,8"
+                  <input style={{ width: 84 }} value={floorHeight} placeholder={tr("t.ex. 2,8")}
                     onChange={(e) => { setFloorHeight(e.target.value); try { localStorage.setItem("vvs.floorHeight", e.target.value); } catch { /* private window: the setting just does not persist */ } }} /></label>
                 <label>Stigare räknas från
                   <select value={riserSource} onChange={(e) => { setRiserSource(e.target.value); try { localStorage.setItem("vvs.riserSource", e.target.value); } catch { /* private window: the setting just does not persist */ } }}>
-                    <option value="labels">etiketter med dimension på raden under</option>
-                    <option value="symbols">ritade stigarsymboler</option>
+                    <option value="labels">{tr("etiketter med dimension på raden under")}</option>
+                    <option value="symbols">{tr("ritade stigarsymboler")}</option>
                   </select></label>
                 <p className="muted">Vertikalt = antal stigare × våningshöjd; ritningen anger ingen höjd. Rör i
                   skrafferade ytor mäts alltid men räknas in bara om du kryssar i rutan nedan.</p>
@@ -593,7 +594,7 @@ export default function AnalysisPage() {
                 </div>
                 {(why.pipe.frontiers ?? []).length > 0 && (
                   <div className="frontiers">
-                    <h5>Var röret slutar</h5>
+                    <h5>{tr("Var röret slutar")}</h5>
                     <ul>
                       {why.pipe.frontiers.map((f: any, i: number) => (
                         <li key={i}>
@@ -660,20 +661,20 @@ export default function AnalysisPage() {
               <div className="card"><div className="v">{c.designations}</div><div className="l">Vektorbeteckningar</div></div>
               <div className="card"><div className="v">{c.with_dn}</div><div className="l">DN</div></div>
               <div className="card"><div className="v">{c.leaders}</div><div className="l">CAD-leaders</div></div>
-              <div className="card"><div className="v">{c.verified_attachments}</div><div className="l">Verifierade röranslutningar</div></div>
+              <div className="card"><div className="v">{c.verified_attachments}</div><div className="l">{tr("Verifierade röranslutningar")}</div></div>
               <div className="card"><div className="v">{c.physical_pipes}</div><div className="l">PhysicalPipes</div></div>
               <div className="card"><div className="v">{sum("horizontal_calc").toFixed(1)} m</div><div className="l">Horisontellt</div></div>
               {/* Vertical metres are risers times a floor height nobody has stated yet. Until someone does, the
                   honest figure is the count - "0,0 m" reads as "the drawing has no stacks", which is a lie. */}
               {floorH
                 ? <div className="card"><div className="v">{sum("vertical_calc").toFixed(1)} m</div><div className="l">Vertikalt · {risers} st × {String(floorH).replace(".", ",")} m</div></div>
-                : <div className="card"><div className="v">{risers} st</div><div className="l">Stigare · ange våningshöjd för meter</div></div>}
+                : <div className="card"><div className="v">{risers} st</div><div className="l">{tr("Stigare · ange våningshöjd för meter")}</div></div>}
               <div className="card"><div className="v">{sum("total_calc").toFixed(1)} m</div><div className="l">Totalt</div></div>
               <div className="card"><div className="v">{result.totals.ambiguous_m.toFixed(1)} m</div><div className="l">Tvetydigt</div></div>
-              <div className="card"><div className="v">{c.claimed_m ?? "?"} m</div><div className="l">Påpekad men onämnd</div></div>
-              <div className="card"><div className="v">{c.unowned_m ?? "?"} m</div><div className="l">Oidentifierad geometri</div></div>
-              <div className="card"><div className="v">{c.unsupported_families}</div><div className="l">Unsupported styles</div></div>
-              <div className="card"><div className="v">{c.ambiguous_attachments + c.no_attachments}</div><div className="l">Ej anslutna beteckningar</div></div>
+              <div className="card"><div className="v">{c.claimed_m ?? "?"} m</div><div className="l">{tr("Påpekad men onämnd")}</div></div>
+              <div className="card"><div className="v">{c.unowned_m ?? "?"} m</div><div className="l">{tr("Oidentifierad geometri")}</div></div>
+              <div className="card"><div className="v">{c.unsupported_families}</div><div className="l">{tr("Unsupported styles")}</div></div>
+              <div className="card"><div className="v">{c.ambiguous_attachments + c.no_attachments}</div><div className="l">{tr("Ej anslutna beteckningar")}</div></div>
               {(() => {
                 // length the drawing puts inside walls: drawn, measured, and outside the horizontal quantity by
                 // design. Stated rather than hidden, because a number that is left out silently is a number a
@@ -704,7 +705,7 @@ export default function AnalysisPage() {
           <div className="card">
             <h4>Export</h4>
             <div className="row">
-              <button onClick={() => dl(api.exportUrl(id!, "pdf"), "markerad.pdf")}>Markerad PDF</button>
+              <button onClick={() => dl(api.exportUrl(id!, "pdf"), "markerad.pdf")}>{tr("Markerad PDF")}</button>
               <button onClick={() => dl(api.exportUrl(id!, "xlsx") + (exportQuery ? `?${exportQuery}` : ""), "mangder.xlsx")}>Excel</button>
               <button onClick={() => dl(api.exportUrl(id!, "csv") + (exportQuery ? `?${exportQuery}` : ""), "mangder.csv")}>CSV</button>
               <button onClick={() => dl(api.exportUrl(id!, "json"), "quantities.json")}>JSON</button>

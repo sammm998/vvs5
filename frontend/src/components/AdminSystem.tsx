@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 
 const bytes = (v: number | null | undefined) => {
@@ -19,7 +20,7 @@ export function SystemHealth() {
     api.version().then(setV).catch(() => { /* versionen är inte livsviktig */ });
   }, []);
   if (err) return <p className="error">{err}</p>;
-  if (!h) return <p className="muted">Laddar…</p>;
+  if (!h) return <p className="muted">{tr("Laddar…")}</p>;
   const up = h.started_at ? Math.round((Date.now() - new Date(h.started_at).getTime()) / 3600000) : null;
   const tiles = [
     { k: "Byggning", v: h.build ?? v?.version ?? "okänd", s: `Python ${h.python} · PyMuPDF ${h.pymupdf ?? "?"}` },
@@ -41,7 +42,7 @@ export function SystemHealth() {
         ))}
       </div>
       <section className="card" style={{ marginTop: 16 }}>
-        <h3 style={{ marginTop: 0 }}>Vad som styr en läsning</h3>
+        <h3 style={{ marginTop: 0 }}>{tr("Vad som styr en läsning")}</h3>
         <p className="muted" style={{ marginBottom: 0 }}>
           Motorn läser ritningens egna vektorer; reglerna under <b>Regler</b> är de enda ratten som finns, och varje
           flyttad regel står med skäl och bild. Ingenting på företagssidan - planer, rabatter, partners - når

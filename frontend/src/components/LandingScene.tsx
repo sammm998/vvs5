@@ -1,5 +1,6 @@
 import { useSectionProgress } from "./lp-motion";
 
+import { t as tr } from "../i18n";
 /** The stages the scene walks through as the reader scrolls, in the order the engine does them. */
 const BEATS = [
   ["Läser vektorn", "Varje streck, dess penna, färg och lager tas direkt ur PDF:en."],
@@ -53,7 +54,7 @@ export default function LandingScene() {
           <div className="lp-scene-art" style={{
             transform: `rotateX(${(1 - p) * 13}deg) translateZ(${p * 18}px) scale(${0.97 + 0.03 * p})`,
           }}>
-            <svg viewBox="0 0 940 520" role="img" aria-label="Ritningen läses steg för steg medan sidan skrollas">
+            <svg viewBox="0 0 940 520" role="img" aria-label={tr("Ritningen läses steg för steg medan sidan skrollas")}>
               {/* the sheet */}
               <g stroke="#232830" strokeWidth="1.6" fill="none" opacity={0.75 + 0.25 * text}>
                 <path d="M60 90 H880 V470 H60 Z M60 250 H520 M520 90 V470 M700 250 H880 M700 340 H880" />
@@ -103,7 +104,7 @@ export default function LandingScene() {
               <path d="M700 434 H860" stroke="#4b5160" strokeWidth="3" strokeDasharray="9 6"
                 opacity={0.25 + 0.55 * pipes} fill="none" />
               <text x="700" y="422" fill="#5b616c" fontSize="13" opacity={0.3 + 0.7 * pipes}
-                fontFamily="ui-monospace, SFMono-Regular, monospace">onämnd — redovisas, mäts inte</text>
+                fontFamily="ui-monospace, SFMono-Regular, monospace">{tr("onämnd — redovisas, mäts inte")}</text>
             </svg>
           </div>
 

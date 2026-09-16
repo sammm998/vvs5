@@ -1,3 +1,4 @@
+import { t as tr } from "../i18n";
 /* Ritningen som webbplatsen är byggd av.
  *
  * Det som gör att en sida om VVS-kalkyl ser ut som VVS-kalkyl är inte en bild på ett rör. Det är bladets egen
@@ -95,7 +96,7 @@ export default function Blueprint(
 ) {
   return (
     <svg className={`bp ${className}`.trim()} viewBox={`0 0 ${PLAN_W} ${PLAN_H}`} role="img"
-      aria-label="Planritning med tappvatten, spillvatten och värme">
+      aria-label={tr("Planritning med tappvatten, spillvatten och värme")}>
       <g className="bp-wall">{WALLS.map((d, i) => <path key={i} d={d} />)}</g>
 
       {/* fasta installationer: wc, tvättställ, golvbrunn, radiatorer */}

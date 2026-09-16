@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link, useNavigate } from "react-router-dom";
 import { MODULES, markDone, readProgress, type Block, type Lesson, type Module, type Quiz } from "../learn";
 import LearnFigure from "./LearnFigures";
@@ -77,7 +78,7 @@ function QuizCard({ q, onPass }: { q: Quiz; onPass: (tries: number) => void }) {
   const right = pick !== null && pick === q.answer;
   return (
     <section className="ac-quiz">
-      <p className="lp-mono">Kontrollfråga</p>
+      <p className="lp-mono">{tr("Kontrollfråga")}</p>
       <h3>{q.q}</h3>
       <div className="ac-opts">
         {q.options.map((o, i) => {
@@ -129,7 +130,7 @@ export default function Lecture({ at, base, locked }: { at: LessonAt; base: stri
 
   return (
     <article className="ac-lecture">
-      <nav className="ac-crumbs" aria-label="Var du är">
+      <nav className="ac-crumbs" aria-label={tr("Var du är")}>
         <Link to={base}>Akademin</Link>
         <span aria-hidden="true">/</span>
         <Link to={`${base}/${module.id}`}>{module.title}</Link>
@@ -151,7 +152,7 @@ export default function Lecture({ at, base, locked }: { at: LessonAt; base: stri
           {lesson.quiz && <QuizCard q={lesson.quiz} onPass={(tries) => { setPassed(true); finish({ right: true, tries }); }} />}
           {drill && (
             <section className="ac-drill">
-              <p className="lp-mono">Öva själv</p>
+              <p className="lp-mono">{tr("Öva själv")}</p>
               <LearnExercise id={drill as any} />
             </section>
           )}
@@ -178,12 +179,12 @@ export default function Lecture({ at, base, locked }: { at: LessonAt; base: stri
               Markera som läst
             </button>
           )}
-          {locked && <span className="pub-note">Logga in för att spara var du är.</span>}
+          {locked && <span className="pub-note">{tr("Logga in för att spara var du är.")}</span>}
         </div>
         <div className="ac-steps">
           {prev
             ? <Link className="ac-step prev" to={lessonHref(base, prev.m.id, prev.l.id)}>
-                <span className="lp-mono">Föregående</span><b>{prev.l.title}</b>
+                <span className="lp-mono">{tr("Föregående")}</span><b>{prev.l.title}</b>
               </Link>
             : <span />}
           {next
@@ -193,7 +194,7 @@ export default function Lecture({ at, base, locked }: { at: LessonAt; base: stri
                 <b>{next.l.title}</b>
               </Link>
             : <button className="ac-step next" onClick={() => { finish(); nav(base); }}>
-                <span className="lp-mono">Sista föreläsningen</span><b>Tillbaka till akademin</b>
+                <span className="lp-mono">{tr("Sista föreläsningen")}</span><b>{tr("Tillbaka till akademin")}</b>
               </button>}
         </div>
       </footer>

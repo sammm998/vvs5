@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { t } from "../i18n";
+import { t as tr } from "../i18n";
 import { Link } from "react-router-dom";
 import "../landing.css";
 import LandingScene from "../components/LandingScene";
@@ -21,7 +21,7 @@ import { tiltStyle, usePointerParallax, useTilt } from "../components/tilt";
    leaders, and the marks the engine puts back on the paper. It draws itself in once, then the labels land. */
 function Drawing() {
   return (
-    <svg viewBox="0 0 1040 380" role="img" aria-label="Planritning där rören markerats och mätts">
+    <svg viewBox="0 0 1040 380" role="img" aria-label={tr("Planritning där rören markerats och mätts")}>
       <defs>
         <linearGradient id="lpFade" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#6ee7a5" stopOpacity="0.95" />
@@ -124,10 +124,10 @@ function Figures() {
   return (
     <section className="lp-wrap">
       <div className="lp-figures">
-        <Figure to={15.46} decimals={2} suffix=" m" label="samlad avvikelse mot facit över fyra referensritningar" />
-        <Figure to={377} label="sidor i stilbiblioteket, körda sida för sida vid varje ändring" />
-        <Figure to={180} label="tester som måste hålla innan en siffra får ändras" />
-        <Figure to={0} label="gissningar — identitet endast via riktiga ledarlinjer, aldrig närmaste rör" />
+        <Figure to={15.46} decimals={2} suffix=" m" label={tr("samlad avvikelse mot facit över fyra referensritningar")} />
+        <Figure to={377} label={tr("sidor i stilbiblioteket, körda sida för sida vid varje ändring")} />
+        <Figure to={180} label={tr("tester som måste hålla innan en siffra får ändras")} />
+        <Figure to={0} label={tr("gissningar — identitet endast via riktiga ledarlinjer, aldrig närmaste rör")} />
       </div>
     </section>
   );
@@ -208,7 +208,7 @@ function Funktioner() {
               <span className="lp-mono">{f.kicker}</span>
               <b>{f.nav}</b>
               <i>{f.card}</i>
-              <span className="lf-go">Läs mer <span aria-hidden="true">→</span></span>
+              <span className="lf-go">{tr("Läs mer")} <span aria-hidden="true">→</span></span>
             </span>
           </Link>
         ))}
@@ -255,7 +255,7 @@ export default function Landing() {
             AI-plattform för VVS-mängdning ur ren vektor.<br />
             Ingen OCR i mätvägen — identitet endast via ledarlinjer.
           </p>
-          <a className="lp-mono lp-arrow" href="#hur">Se hur det läser <span>→</span></a>
+          <a className="lp-mono lp-arrow" href="#hur">{tr("Se hur det läser")} <span>→</span></a>
         </div>
       </header>
 
@@ -265,12 +265,12 @@ export default function Landing() {
           rör den pekar på, och mäter i ritningens egen skala.
         </p>
         <div className="lp-screens lp-bench">
-          <Screen turn={9} caption={<><b>Mängdning</b> beteckningsdriven tolkning direkt på ritningen</>}>
+          <Screen turn={9} caption={<><b>{tr("Mängdning")}</b> {tr("beteckningsdriven tolkning direkt på ritningen")}</>}>
             <div className="lp-screen"><Drawing /></div>
           </Screen>
-          <Screen turn={0} caption={<><b>Mängder</b> varje meter med sitt belägg kvar</>}>
+          <Screen turn={0} caption={<><b>{tr("Mängder")}</b> {tr("varje meter med sitt belägg kvar")}</>}>
             <div className="lp-screen lp-screen-table">
-              <div className="lp-row head"><span>Beteckning</span><span>Sträckor</span><span>Totalt</span></div>
+              <div className="lp-row head"><span>Beteckning</span><span>{tr("Sträckor")}</span><span>Totalt</span></div>
               {[["S3-R8-110", "5", "46,39"], ["KV1-X31-16", "3", "17,11"], ["VV1-X31-16", "5", "33,92"],
                 ["S3-R8-75", "20", "22,42"], ["S1-P2-110", "1", "9,64"]].map((r) => (
                 <div className="lp-row" key={r[0]}><span>{r[0]}</span><span>{r[1]}</span><span>{r[2]}</span></div>
@@ -278,14 +278,14 @@ export default function Landing() {
               <div className="lp-row sum"><span>Summa</span><span>34</span><span>212,57</span></div>
             </div>
           </Screen>
-          <Screen turn={-9} caption={<><b>Facitkontroll</b> varje körning mäts mot handmängdad ritning</>}>
+          <Screen turn={-9} caption={<><b>Facitkontroll</b> {tr("varje körning mäts mot handmängdad ritning")}</>}>
             <div className="lp-screen lp-screen-check">
-              <div className="lp-row head"><span>Beteckning</span><span>Facit</span><span>Vårt</span><span>Avvikelse</span></div>
+              <div className="lp-row head"><span>Beteckning</span><span>Facit</span><span>{tr("Vårt")}</span><span>Avvikelse</span></div>
               {[["KV1-X31-16", "17,40", "17,10", "−0,30"], ["S3-R8-160", "16,30", "16,43", "+0,13"],
                 ["VV1-X31-16", "34,10", "33,92", "−0,18"]].map((r) => (
                 <div className="lp-row" key={r[0]}><span>{r[0]}</span><span>{r[1]}</span><span>{r[2]}</span><span>{r[3]}</span></div>
               ))}
-              <div className="lp-ok">3,69 m samlad avvikelse på 213,70 m</div>
+              <div className="lp-ok">{tr("3,69 m samlad avvikelse på 213,70 m")}</div>
             </div>
           </Screen>
         </div>
@@ -303,7 +303,7 @@ export default function Landing() {
 
       <section className="lp-sec lp-wrap lp-light" id="ror">
         <div className="lp-sec-head">
-          <div className="lp-kicker">Rörtyper</div>
+          <div className="lp-kicker">{tr("Rörtyper")}</div>
           <RevealLines text="Alla system på sidan, var för sig" />
           <p>
             Svensk ritstandard låter linjetypen berätta var röret ligger och beteckningen vilket system det är.
@@ -316,7 +316,7 @@ export default function Landing() {
               <tr>
                 <th>Linje</th>
                 <th>Beteckning</th>
-                <th>System och hur det ritas</th>
+                <th>{tr("System och hur det ritas")}</th>
               </tr>
             </thead>
             <tbody>
@@ -353,13 +353,13 @@ export default function Landing() {
             “Tvetydigt är ett giltigt svar. Fel säkerhet är det inte. Där ritningen inte säger vilket rör en
             etikett menar får du frågan — inte en siffra som ser rätt ut.”
           </p>
-          <p className="who">Principen hela motorn är byggd kring</p>
+          <p className="who">{tr("Principen hela motorn är byggd kring")}</p>
         </div>
       </section>
 
       <section className="lp-close lp-wrap">
         <RevealLines text="Ladda upp en ritning och se vad den säger" />
-        <p>Ta en sida du redan mängdat för hand. Jämför. Det är den enda rimliga första körningen.</p>
+        <p>{tr("Ta en sida du redan mängdat för hand. Jämför. Det är den enda rimliga första körningen.")}</p>
         <div className="lp-cta">
           <Link className="lp-btn primary lg" to="/login">
             Kom igång
@@ -376,14 +376,14 @@ export default function Landing() {
             FutureCalc
           </span>
           <span className="sp" />
-          <Link to="/hur-det-funkar">{t("Hur det funkar")}</Link>
-          <Link to="/architecture">{t("Architecture")}</Link>
-          <Link to="/priser">{t("Priser")}</Link>
-          <Link to="/utbildning">{t("Utbildning")}</Link>
-          <Link to="/om-oss">{t("Om oss")}</Link>
-          <Link to="/dokumentation">{t("Dokumentation")}</Link>
-          <Link to="/kontakt">{t("Kontakta oss")}</Link>
-          <Link to="/login">{t("Logga in")}</Link>
+          <Link to="/hur-det-funkar">{tr("Hur det funkar")}</Link>
+          <Link to="/architecture">{tr("Architecture")}</Link>
+          <Link to="/priser">{tr("Priser")}</Link>
+          <Link to="/utbildning">{tr("Utbildning")}</Link>
+          <Link to="/om-oss">{tr("Om oss")}</Link>
+          <Link to="/dokumentation">{tr("Dokumentation")}</Link>
+          <Link to="/kontakt">{tr("Kontakta oss")}</Link>
+          <Link to="/login">{tr("Logga in")}</Link>
         </div>
       </footer>
     </div>

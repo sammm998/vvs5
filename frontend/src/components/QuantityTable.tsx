@@ -2,11 +2,11 @@ import { useMemo, useState } from "react";
 import { identityColor } from "../palette";
 
 export const identityKey = (r: any) => `${r.base}|DN${r.dn ?? "?"}`;
-import { t } from "../i18n";
+import { t as tr } from "../i18n";
 
-const STATE_LABELS: Record<string, string> = { CONFIRMED: t("BEKRÄFTAD"), AMBIGUOUS: t("TVETYDIG"), NO_SCALE: t("INGEN SKALA"),
+const STATE_LABELS: Record<string, string> = { CONFIRMED: tr("BEKRÄFTAD"), AMBIGUOUS: tr("TVETYDIG"), NO_SCALE: tr("INGEN SKALA"),
   SCALE_UNSETTLED: "OAVGJORD SKALA", SCALE_FROM_THE_SET: "SKALA UR OMGÅNGEN", SCALE_GIVEN_BY_HAND: "ANGIVEN SKALA",
-  UNSUPPORTED_STYLE: t("EJ STÖDD STIL"), RISER_LABELS_ONLY: t("ENDAST STIGARE"), IN_HATCHED_AREA: t("I SKRAFFERAD YTA") };
+  UNSUPPORTED_STYLE: tr("EJ STÖDD STIL"), RISER_LABELS_ONLY: tr("ENDAST STIGARE"), IN_HATCHED_AREA: tr("I SKRAFFERAD YTA") };
 
 /* En rad utan skala har ingen meter - och noll är inte samma sak som okänt. Tabellen skrev 0,00 i varje
    meterkolumn på ett blad vars skala aldrig blev fastställd, vilket läses som "röret är noll meter långt"
@@ -64,18 +64,18 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
   return (
     <div>
       <div className="row" style={{ marginBottom: 8 }}>
-        <input placeholder={t("Sök beteckning/DN")} value={q} onChange={(e) => setQ(e.target.value)} />
+        <input placeholder={tr("Sök beteckning/DN")} value={q} onChange={(e) => setQ(e.target.value)} />
         <select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="">{t("Alla status")}</option><option value="CONFIRMED">CONFIRMED</option><option value="AMBIGUOUS">AMBIGUOUS</option><option value="NO_SCALE">NO_SCALE</option>
+          <option value="">{tr("Alla status")}</option><option value="CONFIRMED">CONFIRMED</option><option value="AMBIGUOUS">AMBIGUOUS</option><option value="NO_SCALE">NO_SCALE</option>
         </select>
         {hatchedTotal > 0 && (
-          <label title="Rör som är ritade inuti skrafferade ytor (väggsnitt, angränsande ritningsdel). Mäts alltid, men räknas normalt inte in i mängden.">
+          <label title={tr("Rör som är ritade inuti skrafferade ytor (väggsnitt, angränsande ritningsdel). Mäts alltid, men räknas normalt inte in i mängden.")}>
             <input type="checkbox" checked={includeHatched} onChange={(e) => onIncludeHatched(e.target.checked)} />
             {` Räkna med skrafferade ytor (${hatchedTotal.toFixed(2)} m)`}
           </label>
         )}
         {declaredTotal > 0 && onIncludeDeclared && (
-          <label title="Rör som ingen etikett pekar ut, men som bladet namnger i ord: kopplingsledningar från fördelare till apparat enligt tabell. Ritningen säger att de är där, så de räknas med - men en förteckning som prissätter dem per apparat kan räkna bort dem här.">
+          <label title={tr("Rör som ingen etikett pekar ut, men som bladet namnger i ord: kopplingsledningar från fördelare till apparat enligt tabell. Ritningen säger att de är där, så de räknas med - men en förteckning som prissätter dem per apparat kan räkna bort dem här.")}>
             <input type="checkbox" checked={includeDeclared} onChange={(e) => onIncludeDeclared(e.target.checked)} />
             {` Räkna med förklarade kopplingsledningar (${declaredTotal.toFixed(2)} m)`}
           </label>
@@ -85,7 +85,7 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
           frame, with the designation pinned, rather than pushing the panel sideways under the reader */}
       <div className="tablewrap">
       <table>
-        <thead><tr>{th("designation", t("Beteckning"))}{th("dn", "DN")}{th("label_count", t("Etiketter"))}{th("physical_pipe_count", t("Sträckor"))}{th("confirmed_horizontal_m", t("Horisontellt"), "m")}{th("vertical_calc", t("Vertikalt"), "m")}{th("total_calc", t("Totalt"), "m")}{th("ambiguous_m", t("Tvetydigt"), "m")}{th("in_hatched_area_m", t("Skrafferat"), "m")}{th("risers_calc", t("Stigare"))}{th("state", t("Status"))}</tr></thead>
+        <thead><tr>{th("designation", tr("Beteckning"))}{th("dn", "DN")}{th("label_count", tr("Etiketter"))}{th("physical_pipe_count", tr("Sträckor"))}{th("confirmed_horizontal_m", tr("Horisontellt"), "m")}{th("vertical_calc", tr("Vertikalt"), "m")}{th("total_calc", tr("Totalt"), "m")}{th("ambiguous_m", tr("Tvetydigt"), "m")}{th("in_hatched_area_m", tr("Skrafferat"), "m")}{th("risers_calc", tr("Stigare"))}{th("state", tr("Status"))}</tr></thead>
         <tbody>
           {list.flatMap((r) => [
             <tr key={identityKey(r)} className={`selectable ${selected === identityKey(r) ? "selected" : ""}`} onClick={() => onSelect(selected === identityKey(r) ? null : identityKey(r))}>
@@ -96,7 +96,7 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
               </td>
               <td className="num">
                 {r.physical_pipe_count > 0 ? (
-                  <button className="ghost small drill" title="Visa varje sträcka för sig"
+                  <button className="ghost small drill" title={tr("Visa varje sträcka för sig")}
                     onClick={(e) => { e.stopPropagation(); setOpen(open === identityKey(r) ? null : identityKey(r)); }}>
                     {r.physical_pipe_count} {open === identityKey(r) ? "▾" : "▸"}
                   </button>
@@ -111,12 +111,12 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
               <td className="num">{r.state === "IN_HATCHED_AREA" && !(r.horizontal_calc > 0)
                 ? <span className="muted" title={`Hela stråket är ritat inne i en skrafferad yta (${Number(r.in_hatched_area_m ?? 0).toFixed(2)} m). Skrafferingen är hur ritningen säger att en del inte redovisas här - en angränsande byggnadsdel eller ett annat skede - och mängden räknar inte i den. Bocka i "Räkna med skrafferade ytor" om den här ritningen menar något annat med sin skraffering.`}>–</span>
                 : r.state === "RISER_LABELS_ONLY" && !(r.horizontal_calc > 0)
-                ? <span className="muted" title="Ingen vågrät sträcka hittad för den här etiketten. Den märker ett rör som går genom bjälklaget: antingen slutar det där (en vask, en golvbrunn) och det finns ingen ledning i planet, eller så fortsätter det längs väggen och läsningen har inte hittat den. Ritningen avgör det med strecket vid dimensionssiffran.">–</span>
+                ? <span className="muted" title={tr("Ingen vågrät sträcka hittad för den här etiketten. Den märker ett rör som går genom bjälklaget: antingen slutar det där (en vask, en golvbrunn) och det finns ingen ledning i planet, eller så fortsätter det längs väggen och läsningen har inte hittat den. Ritningen avgör det med strecket vid dimensionssiffran.")}>–</span>
                 : M(r.horizontal_calc, noScale)}</td>
               <td className="num">{noScale || r.vertical_calc == null
                 ? (r.risers_calc > 0
-                  ? <span className="muted" title="Stigarna är hittade; ange våningshöjd för att räkna om dem till meter">{`${r.risers_calc} st × höjd`}</span>
-                  : <span className="muted" title="Ritningen anger ingen höjd och inga stigare hittades">okänt</span>)
+                  ? <span className="muted" title={tr("Stigarna är hittade; ange våningshöjd för att räkna om dem till meter")}>{`${r.risers_calc} st × höjd`}</span>
+                  : <span className="muted" title={tr("Ritningen anger ingen höjd och inga stigare hittades")}>{tr("okänt")}</span>)
                 : <>
                     {Number(r.vertical_calc).toFixed(2)}
                     {/* a height the reader typed is an assumption about the building, not something the sheet

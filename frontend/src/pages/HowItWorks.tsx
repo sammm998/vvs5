@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { t as tr } from "../i18n";
 import PublicFrame from "../components/PublicFrame";
 import EvidenceSection from "../components/EvidenceSection";
 
@@ -36,9 +37,9 @@ export default function HowItWorksPage() {
       anchors={[{ href: "#steg", label: "De tolv stegen" }, { href: "#skal", label: "Varför ett rör slutar" }]}
       aside={
         <div className="pub-keys">
-          <div className="pub-key"><div className="n">{STEPS.length}</div><div className="l">steg i läsningen</div></div>
-          <div className="pub-key"><div className="n">{REASONS.length}</div><div className="l">skäl ett rör kan sluta av</div></div>
-          <div className="pub-key"><div className="n">0</div><div className="l">meter utan belägg</div></div>
+          <div className="pub-key"><div className="n">{STEPS.length}</div><div className="l">{tr("steg i läsningen")}</div></div>
+          <div className="pub-key"><div className="n">{REASONS.length}</div><div className="l">{tr("skäl ett rör kan sluta av")}</div></div>
+          <div className="pub-key"><div className="n">0</div><div className="l">{tr("meter utan belägg")}</div></div>
         </div>
       } wide>
       <section className="pub-sec">
@@ -57,8 +58,8 @@ export default function HowItWorksPage() {
       </section>
 
       <section className="pub-sec">
-        <div className="lp-kicker">Där röret slutar</div>
-        <h2>Inget rör slutar tyst</h2>
+        <div className="lp-kicker">{tr("Där röret slutar")}</div>
+        <h2>{tr("Inget rör slutar tyst")}</h2>
         <p className="pub-p">
           Varje gång läsningen slutar följa ett rör skriver den ned var och varför, med de vektorer den tittade på.
           Det är skillnaden mellan en mängd man kan granska och en man får tro på. Skälen är dessa:
@@ -71,15 +72,15 @@ export default function HowItWorksPage() {
       <div className="pub-embed"><EvidenceSection /></div>
 
       <section className="pub-sec">
-        <div className="lp-kicker">Vad som aldrig händer</div>
+        <div className="lp-kicker">{tr("Vad som aldrig händer")}</div>
         <div className="pub-grid pub-three">
-          <div className="pub-card flat"><h3>Ingen närhetsgissning</h3><p>Ett rör får aldrig ett namn för att en etikett råkar ligga bredvid. Bara en riktig ledare ger identitet.</p></div>
-          <div className="pub-card flat"><h3>Ingen gissad skala</h3><p>Ingen ritning antas vara 1:50. Saknas skalan står det, och du kan skriva in den - då står det också.</p></div>
-          <div className="pub-card flat"><h3>Ingen modell som ritar</h3><p>En språkmodell får välja mellan kandidater ritningen erbjuder. Den får aldrig skapa geometri, DN eller meter.</p></div>
+          <div className="pub-card flat"><h3>{tr("Ingen närhetsgissning")}</h3><p>{tr("Ett rör får aldrig ett namn för att en etikett råkar ligga bredvid. Bara en riktig ledare ger identitet.")}</p></div>
+          <div className="pub-card flat"><h3>{tr("Ingen gissad skala")}</h3><p>Ingen ritning antas vara 1:50. Saknas skalan står det, och du kan skriva in den - då står det också.</p></div>
+          <div className="pub-card flat"><h3>{tr("Ingen modell som ritar")}</h3><p>{tr("En språkmodell får välja mellan kandidater ritningen erbjuder. Den får aldrig skapa geometri, DN eller meter.")}</p></div>
         </div>
         <p className="pub-cta">
-          <Link className="lp-btn primary lg" to="/login">Ladda upp en ritning</Link>
-          <Link className="lp-btn ghost lg" to="/dokumentation">Läs dokumentationen</Link>
+          <Link className="lp-btn primary lg" to="/login">{tr("Ladda upp en ritning")}</Link>
+          <Link className="lp-btn ghost lg" to="/dokumentation">{tr("Läs dokumentationen")}</Link>
         </p>
       </section>
     </PublicFrame>

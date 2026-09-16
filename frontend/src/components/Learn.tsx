@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { t as tr } from "../i18n";
 import { MODULES, readProgress, syncProgress, type Module } from "../learn";
 import { api } from "../api";
 import LearnWizard from "./LearnWizard";
@@ -50,14 +51,14 @@ export function Exercise() {
   return (
     <div className="lf-ex">
       <div className="lf-ex-sheet">
-        <svg viewBox="0 0 620 400" role="img" aria-label="Övningsblad med fyra sträckor">
+        <svg viewBox="0 0 620 400" role="img" aria-label={tr("Övningsblad med fyra sträckor")}>
           <rect x="6" y="6" width="608" height="388" rx="6" fill="#fff" stroke="var(--line-2)" />
           <g stroke="#e0e0e0" strokeWidth="1.6" fill="none">
             <path d="M60 50 H560 V360 H60 Z M300 50 V360 M60 210 H300 M420 50 V210 M420 210 H560" />
           </g>
           <g className="lf-mono" fontSize="10" fill="var(--faint)">
             <text x="62" y="38">ÖVNINGSBLAD · SKALA 1:50</text>
-            <text x="470" y="38">4 STRÄCKOR</text>
+            <text x="470" y="38">{tr("4 STRÄCKOR")}</text>
           </g>
           {RUNS.map((r) => {
             const g = given[r.id];
@@ -106,7 +107,7 @@ export function Exercise() {
             Rätta
           </button>
           <button type="button" className="ghost small"
-            onClick={() => { setGiven({}); setChecked(false); setPicked(null); }}>Börja om</button>
+            onClick={() => { setGiven({}); setChecked(false); setPicked(null); }}>{tr("Börja om")}</button>
         </div>
         {checked && (
           <>
@@ -143,7 +144,7 @@ export function Awards() {
   return (
     <section className="lf-awards">
       <div className="row" style={{ justifyContent: "space-between" }}>
-        <h3 style={{ margin: 0 }}>Utmärkelser</h3>
+        <h3 style={{ margin: 0 }}>{tr("Utmärkelser")}</h3>
         <span className="muted small">{taken} av {rows.length}</span>
       </div>
       <div className="lf-award-grid">
@@ -186,7 +187,7 @@ export default function Learn({ compact }: { compact?: boolean }) {
     <div className="lf-hero">
       <div>
         <div className="lf-kicker">VVS-akademin</div>
-        <h2>Lär dig läsa och mängda en rörritning</h2>
+        <h2>{tr("Lär dig läsa och mängda en rörritning")}</h2>
         <p className="muted">
           {flat.length} steg i {MODULES.length} kurser, ett i taget, vart och ett med en levande figur som visar
           vad det handlar om — och övningar där du svarar själv och ser facit. Stegen sparas på ditt konto, så du
@@ -310,7 +311,7 @@ export default function Learn({ compact }: { compact?: boolean }) {
                   Låst tills kurs {currentIdx + 1} är klar. Ordningen är innehållets egen — man läser inte en
                   beteckning innan man vet vad ett system är — men ett lås som inte går att öppna är en fälla.
                 </span>
-                <button className="ghost small" onClick={() => setSkipTo(shown.id)}>Öppna ändå</button>
+                <button className="ghost small" onClick={() => setSkipTo(shown.id)}>{tr("Öppna ändå")}</button>
               </div>
             ) : (
               <ol className="lf-less lf-steps">

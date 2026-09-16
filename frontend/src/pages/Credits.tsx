@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t as tr } from "../i18n";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import Tilted from "../components/Tilted";
@@ -32,7 +33,7 @@ export default function CreditsPage() {
   const p = me.prices;
   return (
     <main>
-      <p className="crumb"><Link to="/projekt">Projekt</Link> / Credits</p>
+      <p className="crumb"><Link to="/projekt">Projekt</Link> {tr("/ Credits")}</p>
       <div className="head">
         <div>
           <h1>Credits</h1>
@@ -57,7 +58,7 @@ export default function CreditsPage() {
       )}
 
       <div className="rule" />
-      <h2>Vad en läsning kostar</h2>
+      <h2>{tr("Vad en läsning kostar")}</h2>
       <p className="muted">
         Priset följer bladet: formatet och mängden bläck. Ett blad med fler än {Number(p.ink_step_paths).toLocaleString("sv-SE")} banor
         kostar {fmtCredits(p.ink_step_credits)} credit mer per påbörjat sådant steg, upp till {fmtCredits(p.ink_cap_credits)} credits.
@@ -65,10 +66,10 @@ export default function CreditsPage() {
       </p>
       <div className="tablewrap">
         <table className="qty">
-          <thead><tr><th>Format</th><th>A3 och mindre</th><th>A2</th><th>A1</th><th>A0</th><th>Större än A0</th><th>Andra blick (syn)</th></tr></thead>
+          <thead><tr><th>Format</th><th>{tr("A3 och mindre")}</th><th>A2</th><th>A1</th><th>A0</th><th>{tr("Större än A0")}</th><th>Andra blick (syn)</th></tr></thead>
           <tbody>
             <tr>
-              <td>Credits per sida</td>
+              <td>{tr("Credits per sida")}</td>
               {["A3", "A2", "A1", "A0", "A0+"].map((k) => <td key={k}>{fmtCredits(p.sheet[k])}</td>)}
               <td>{fmtCredits(p.vision_page)} per sida</td>
             </tr>
@@ -77,7 +78,7 @@ export default function CreditsPage() {
       </div>
 
       <div className="rule" />
-      <h2>Fyll på</h2>
+      <h2>{tr("Fyll på")}</h2>
       <p className="muted">Priser exklusive moms. Köpet faktureras; credits finns på kontot direkt.</p>
       <div className="grid4">
         {(p.packages || []).map((pk: any) => (
@@ -95,18 +96,18 @@ export default function CreditsPage() {
       <h2>Reskontra</h2>
       <div className="tablewrap">
         <table className="qty">
-          <thead><tr><th>När</th><th>Vad</th><th>Credits</th><th>Skäl</th><th>Status</th></tr></thead>
+          <thead><tr><th>{tr("När")}</th><th>Vad</th><th>Credits</th><th>{tr("Skäl")}</th><th>Status</th></tr></thead>
           <tbody>
             {me.entries.map((e: any) => (
               <tr key={e.id}>
                 <td>{DATE.format(new Date(e.created_at))}</td>
                 <td>{KIND[e.kind] || e.kind}</td>
                 <td style={{ color: e.credits < 0 ? "var(--red, #c0392b)" : "var(--green, #1b7f4b)" }}>{e.credits > 0 ? "+" : ""}{fmtCredits(e.credits)}</td>
-                <td className="muted">{e.note}{e.ref && e.kind === "lasning" ? <> · <Link to={`/jobs/${e.ref}`}>läsningen</Link></> : null}</td>
+                <td className="muted">{e.note}{e.ref && e.kind === "lasning" ? <> · <Link to={`/jobs/${e.ref}`}>{tr("läsningen")}</Link></> : null}</td>
                 <td>{e.status || ""}</td>
               </tr>
             ))}
-            {me.entries.length === 0 && <tr><td colSpan={5} className="empty">Ingenting har hänt än.</td></tr>}
+            {me.entries.length === 0 && <tr><td colSpan={5} className="empty">{tr("Ingenting har hänt än.")}</td></tr>}
           </tbody>
         </table>
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { t as tr } from "../i18n";
 import { api } from "../api";
 import { STAGE_LABELS, stageText } from "./Status";
 import { usePointerParallax } from "./tilt";
@@ -135,7 +136,7 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
             + `translateZ(${progress * 14}px)`,
         }}>
         <svg width={page.w * scale} height={H} viewBox={`0 0 ${page.w} ${page.h}`} role="img"
-          aria-label="Ritningen fylls i medan den läses">
+          aria-label={tr("Ritningen fylls i medan den läses")}>
           <rect x="0" y="0" width={page.w} height={page.h} fill="#fff" stroke="#e6e6e6" />
           {/* the sheet itself, thinned: it arrives as soon as the PDF is read, so the reading is watched
               filling in a drawing rather than an empty rectangle */}
@@ -201,14 +202,14 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
       <div className="film-side">
         <div className="film-total">
           <div className="v">{total ? `${total.toFixed(1).replace(".", ",")} m` : "—"}</div>
-          <div className="l">mätt hittills</div>
+          <div className="l">{tr("mätt hittills")}</div>
         </div>
 
         {/* what the readers are saying to each other while it runs: each stage reports what it found from its own
             frame, then hands the sheet to the next. Nothing here is written for the screen - the numbers are the
             ones the reading is working from. */}
         <div className="film-talk" ref={talkBox}>
-        {talk.length === 0 && <p className="muted">Läser in bladet…</p>}
+        {talk.length === 0 && <p className="muted">{tr("Läser in bladet…")}</p>}
         {talk.map((t, i) => (
           <div key={`${t.stage}-${i}`} className={`bubble${i === talk.length - 1 ? " fresh" : ""}`}>
             <div className="who">{t.who}</div>

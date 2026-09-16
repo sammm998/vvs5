@@ -1,4 +1,5 @@
 import { useInView } from "./lp-motion";
+import { t as tr } from "../i18n";
 import { tiltStyle, useTilt } from "./tilt";
 
 /* What the reading leaves behind, drawn rather than listed.
@@ -29,7 +30,7 @@ function Card({ span, title, body, figure, tall, wide }: {
 function Chain({ on }: { on: boolean }) {
   const d = (s: number) => ({ animationDelay: `${s}s`, animationPlayState: on ? "running" : "paused" as const });
   return (
-    <svg viewBox="0 0 460 168" role="img" aria-label="Från etikett till meter, steg för steg" className="lp-chain">
+    <svg viewBox="0 0 460 168" role="img" aria-label={tr("Från etikett till meter, steg för steg")} className="lp-chain">
       {/* the label the sheet writes */}
       <g className="lp-ci" style={d(0)}>
         <rect x="14" y="24" width="118" height="26" rx="4" className="lp-ev-box" />
@@ -54,7 +55,7 @@ function Chain({ on }: { on: boolean }) {
         <text x="73" y="150" className="lp-ev-cap">etikett</text>
         <text x="172" y="150" className="lp-ev-cap">ledarlinje</text>
         <text x="266" y="150" className="lp-ev-cap">kontaktpunkt</text>
-        <text x="400" y="150" className="lp-ev-cap">mängd</text>
+        <text x="400" y="150" className="lp-ev-cap">{tr("mängd")}</text>
       </g>
     </svg>
   );
@@ -104,7 +105,7 @@ function AgreeFig() {
       <path d="M42 34 C 42 78, 100 88, 156 62" className="lp-ev-leader alt" />
       <circle cx="160" cy="57" r="5.5" className="lp-ev-hit" />
       <path d="M160 57 H230" className="lp-ev-run on" />
-      <text x="8" y="98" className="lp-ev-cap">två vägar · samma svar</text>
+      <text x="8" y="98" className="lp-ev-cap">{tr("två vägar · samma svar")}</text>
     </svg>
   );
 }
@@ -154,27 +155,27 @@ export default function EvidenceSection() {
   return (
     <section className="lp-sec lp-wrap" id="belagg">
       <div className="lp-sec-head">
-        <div className="lp-kicker">Beläggen</div>
-        <h2>Varje meter går att spåra tillbaka</h2>
-        <p>Klicka på en rad i mängden och se exakt vilken etikett, vilken ledarlinje och vilka streck som gav den.</p>
+        <div className="lp-kicker">{tr("Beläggen")}</div>
+        <h2>{tr("Varje meter går att spåra tillbaka")}</h2>
+        <p>{tr("Klicka på en rad i mängden och se exakt vilken etikett, vilken ledarlinje och vilka streck som gav den.")}</p>
       </div>
       <div className="lp-bento" ref={ref}>
-        <Card span={4} tall title="Bevis per rad"
+        <Card span={4} tall title={tr("Bevis per rad")}
           body="Etikett, ledarlinje, kontaktpunkt och varje streck som räknades — med sidkoordinater."
           figure={<Chain on={seen} />} />
-        <Card span={2} tall title="Skalan verifierad"
+        <Card span={2} tall title={tr("Skalan verifierad")}
           body="Utskriven skala kontrolleras mot skalstocken på pappret innan en enda meter räknas."
           figure={<ScaleFig />} />
-        <Card span={2} title="Markerad PDF"
+        <Card span={2} title={tr("Markerad PDF")}
           body="Samma ritning tillbaka med varje rör färgat efter identitet och det onämnda i grått."
           figure={<MarkedFig />} />
-        <Card span={2} title="Flera läsningar"
+        <Card span={2} title={tr("Flera läsningar")}
           body="Sidan läses om längs vägar med andra bevis. Där de säger emot varandra lämnar röret mängden."
           figure={<AgreeFig />} />
         <Card span={2} title="Granskningslista"
           body="Rör ingen väg namngav och etiketter ingen väg placerade, var och en med sitt skäl."
           figure={<ListFig />} />
-        <Card span={6} wide title="Excel och CSV"
+        <Card span={6} wide title={tr("Excel och CSV")}
           body="Mängden ut i det format kalkylen redan använder, med beläggen kvar i filen."
           figure={<ExportFig />} />
       </div>
