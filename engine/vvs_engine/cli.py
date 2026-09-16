@@ -85,6 +85,20 @@ def scale_of_the_set(sheets: list[dict]) -> tuple[float, list[int]] | None:
     return mid, sorted(pg for pg, _ in got if pg is not None)
 
 
+def _scope_counts(quantities) -> dict:
+    from collections import Counter
+    return dict(Counter((q.get("scope") or "NY") for q in quantities))
+
+
+def _scope_metres(quantities) -> dict:
+    """Meter per omfattning. Summan är densamma som förut - det här delar upp den, det tar inte bort något."""
+    out: dict[str, float] = {}
+    for q in quantities:
+        k = q.get("scope") or "NY"
+        out[k] = round(out.get(k, 0.0) + (q.get("confirmed_total_m") or 0.0), 2)
+    return out
+
+
 def sheet_record(pa) -> dict:
     """One sheet of the set, as the takeoff for the whole set needs it.
 
@@ -108,8 +122,12 @@ def sheet_record(pa) -> dict:
         "quantities": [{k: q.get(k) for k in ("designation", "base", "dn", "state", "label_count",
                                               "physical_pipe_count", "confirmed_horizontal_m",
                                               "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
-                                              "in_hatched_area_m", "riser_count", "pipe_ids")}
+                                              "in_hatched_area_m", "riser_count", "pipe_ids", "scope")}
                        for q in pa.quantities],
+        # Vad bladet sade om omfattning. En rad utan markering är ny installation; en markering förklaringen
+        # inte definierat står som OKAND_MARKERING och ska granskas, inte tolkas åt någon.
+        "scope": {"per_scope": _scope_counts(pa.quantities),
+                  "metres": _scope_metres(pa.quantities)},
         "second_reader": pa.second_reader,
     }
 

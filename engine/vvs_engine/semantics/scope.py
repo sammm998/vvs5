@@ -143,3 +143,26 @@ def strip_marker(text: str) -> str:
     if b:
         raw = raw[:b.start()].strip(" -")
     return raw
+
+
+def read_designations(designations, legend) -> dict[str, ScopeReading]:
+    """Varje beteckning på bladet, med sin omfattning läst mot bladets egen förklaring.
+
+    Nyckeln är beteckningens id, inte dess text: två rader kan skriva samma kod och bära olika markering, och
+    det är raden som har en omfattning - inte namnet.
+    """
+    markers = markers_from_legend(legend)
+    out: dict[str, ScopeReading] = {}
+    for d in designations or ():
+        raw = getattr(d, "raw_text", None) or getattr(d, "text", "") or ""
+        out[getattr(d, "did", "")] = scope_of(raw, markers)
+    return out
+
+
+def summary(readings: dict[str, ScopeReading]) -> dict:
+    """Vad bladet sade om omfattning, i klartext för den som läser mängden."""
+    from collections import Counter
+    n = Counter(r.scope for r in readings.values())
+    review = sorted({r.marker or "?" for r in readings.values() if r.review})
+    return {"per_scope": dict(n), "markers_not_explained": review,
+            "n_marked": sum(v for k, v in n.items() if k != NY)}

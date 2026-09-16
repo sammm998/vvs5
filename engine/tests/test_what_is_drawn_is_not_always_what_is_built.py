@@ -86,3 +86,47 @@ def test_a_legend_that_says_nothing_about_scope_yields_no_markers():
 def test_no_legend_at_all_is_not_an_error():
     assert markers_from_legend(None) == {}
     assert scope_of("KV1-25", None).scope == NY
+
+
+# --------------------------------------------------------------------------------------------------------
+# Inkopplingen: att modulen kan klassificera hjälper ingen om mängdraden inte bär svaret.
+
+def test_every_designation_on_a_sheet_gets_a_scope_keyed_by_its_own_row():
+    """Två rader kan skriva samma kod och bära olika markering. Det är RADEN som har en omfattning."""
+    from vvs_engine.semantics.scope import read_designations, summary
+
+    class _Des:
+        def __init__(self, did, raw):
+            self.did, self.raw_text = did, raw
+
+    des = [_Des("d1", "(S1)"), _Des("d2", "S1"), _Des("d3", "S-STAM (PB)")]
+    r = read_designations(des, _Forklaring(("( )", "AVSER BEFINTLIGT")))
+    assert r["d1"].scope == BEFINTLIG
+    assert r["d2"].scope == NY                       # samma kod, ingen markering, annan omfattning
+    assert r["d3"].scope == OKAND and r["d3"].review is True
+    s = summary(r)
+    assert s["per_scope"] == {BEFINTLIG: 1, NY: 1, OKAND: 1}
+    assert s["markers_not_explained"] == ["(PB)"]
+    assert s["n_marked"] == 2
+
+
+def test_the_reading_carries_scope_onto_the_quantity_row_without_moving_a_metre():
+    """Kärnan i inkopplingen: raden får en omfattning, och summan är densamma som förut.
+
+    Metrarna mäts och tillhör samma rad. Det som tillkommer är att raden säger vilken omfattning den hör till,
+    så att den som läser mängden kan skilja det som ska byggas från det som bara står på ritningen.
+    """
+    from vvs_engine.cli import _scope_counts, _scope_metres
+
+    rader = [{"designation": "KV1-25", "confirmed_total_m": 10.0, "scope": NY},
+             {"designation": "(S1)", "confirmed_total_m": 4.0, "scope": BEFINTLIG},
+             {"designation": "S-STAM", "confirmed_total_m": 2.0, "scope": OKAND}]
+    assert _scope_counts(rader) == {NY: 1, BEFINTLIG: 1, OKAND: 1}
+    assert _scope_metres(rader) == {NY: 10.0, BEFINTLIG: 4.0, OKAND: 2.0}
+    # summan rörs inte: uppdelningen är en uppdelning, inte ett avdrag
+    assert sum(_scope_metres(rader).values()) == sum(r["confirmed_total_m"] for r in rader)
+
+
+def test_a_row_with_no_marker_anywhere_on_the_sheet_is_plain_new_build():
+    from vvs_engine.cli import _scope_counts
+    assert _scope_counts([{"confirmed_total_m": 5.0}]) == {"NY": 1}

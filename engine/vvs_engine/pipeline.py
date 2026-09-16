@@ -15,6 +15,8 @@ from typing import Any, Callable
 
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
+from .semantics.scope import NY as SCOPE_NY
+from .semantics.scope import read_designations as scope_read_designations
 from .geometry.core import GridIndex, dist, point_seg_distance
 from .pipes.representation import (Prim, RepresentationFamily, build_graph, chains, collect_prims, describe_family, page_symbols,
                                    duplicate_overlaps, family_key,
@@ -1743,7 +1745,26 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     for a in anchors:
         if a.state == "VERIFIED_PIPE_ATTACHMENT" and a.anchor_id in identities:
             label_counts[identities[a.anchor_id].key] += 1
+    # ...and vilken omfattning bladets egen förklaring ger raden: ny installation, befintlig, riven, prefab.
+    # Metrarna flyttas inte av det här - de mäts och tillhör samma rad som förut. Det som tillkommer är att
+    # raden säger vilken omfattning den hör till, så att den som läser mängden kan skilja det som ska byggas
+    # från det som bara står på ritningen. En markering bladet inte förklarat blir OKAND_MARKERING, och det
+    # är ett svar att granska - inte ett skäl att räkna bort raden.
+    scope_readings = scope_read_designations(designations, legend)
+    label_scopes: dict[str, str] = {}
+    for a in anchors:
+        if a.state != "VERIFIED_PIPE_ATTACHMENT" or a.anchor_id not in identities:
+            continue
+        sr = scope_readings.get(getattr(a, "designation_id", "") or "")
+        if sr is None or sr.scope == SCOPE_NY:
+            continue
+        key = identities[a.anchor_id].key
+        # en rad som bär flera omfattningar är i sig något att granska, och den strängaste får stå
+        prev = label_scopes.get(key)
+        label_scopes[key] = sr.scope if prev in (None, SCOPE_NY) else prev
     quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers, dict(label_counts), label_risers)
+    for r in quantities:
+        r["scope"] = label_scopes.get(r.get("base", "") + f"|DN{r.get('dn') if r.get('dn') is not None else '?'}", SCOPE_NY)
     film.measured(quantities, scale)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
