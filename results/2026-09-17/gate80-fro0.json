@@ -3,7 +3,7 @@
   "state": "OK",
   "input": "validation_A/clean.pdf",
   "input_sha256": "c2884f3007f3764a",
-  "seconds": 16.5,
+  "seconds": 17.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -3370,7 +3370,7 @@
   "state": "OK",
   "input": "validation_C/clean.pdf",
   "input_sha256": "c6a4a7e8e2f5d78c",
-  "seconds": 10.0,
+  "seconds": 10.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -3748,7 +3748,7 @@
   "state": "OK",
   "input": "validation_D/clean.pdf",
   "input_sha256": "a5c6493c92fb2a2e",
-  "seconds": 14.2,
+  "seconds": 14.5,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -5972,7 +5972,7 @@
   "state": "OK",
   "input": "validation_E/clean.pdf",
   "input_sha256": "d0242e5f34c3be17",
-  "seconds": 12.1,
+  "seconds": 14.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -7525,7 +7525,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0111/clean.pdf",
   "input_sha256": "1a4dbfd8ac3fac25",
-  "seconds": 10.6,
+  "seconds": 10.5,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -9125,7 +9125,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0112/clean.pdf",
   "input_sha256": "57975e37c6062be2",
-  "seconds": 14.9,
+  "seconds": 14.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -13906,7 +13906,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0121/clean.pdf",
   "input_sha256": "4ecc369de69487b7",
-  "seconds": 10.7,
+  "seconds": 10.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -14693,7 +14693,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0122/clean.pdf",
   "input_sha256": "7a4d549c4841fda1",
-  "seconds": 20.5,
+  "seconds": 21.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -14704,12 +14704,12 @@
    "designations": 25,
    "with_dn": null,
    "leaders": 83,
-   "verified_attachments": 55,
-   "ambiguous_attachments": 20,
+   "verified_attachments": 56,
+   "ambiguous_attachments": 19,
    "no_attachments": 8,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 55,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 20,
+    "VERIFIED_PIPE_ATTACHMENT": 56,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 19,
     "NO_PIPE_ATTACHMENT": 8
    },
    "pipe_names": 25,
@@ -19242,14 +19242,14 @@
    {
     "id": "anc_524a75b95395",
     "designation": "AV201-22",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 3,
-    "n_primitives": 3,
-    "n_pids": 3,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 2
    },
@@ -20097,7 +20097,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0123/clean.pdf",
   "input_sha256": "f3af362ab82b6623",
-  "seconds": 15.0,
+  "seconds": 17.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -24830,7 +24830,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0124/clean.pdf",
   "input_sha256": "b3b7b1df765bb650",
-  "seconds": 14.8,
+  "seconds": 14.5,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -29721,7 +29721,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0211/clean.pdf",
   "input_sha256": "e872025eacb08a62",
-  "seconds": 9.5,
+  "seconds": 9.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -30299,7 +30299,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0212/clean.pdf",
   "input_sha256": "2a0caed528287327",
-  "seconds": 15.0,
+  "seconds": 14.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -33932,7 +33932,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0221/clean.pdf",
   "input_sha256": "916af1ba537580a1",
-  "seconds": 9.1,
+  "seconds": 8.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -35683,7 +35683,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0223/clean.pdf",
   "input_sha256": "3c4342246e9008a1",
-  "seconds": 10.2,
+  "seconds": 9.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -36309,7 +36309,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0311/clean.pdf",
   "input_sha256": "4c918dc42c8563f8",
-  "seconds": 10.5,
+  "seconds": 9.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -37358,7 +37358,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0312/clean.pdf",
   "input_sha256": "3909a1620fd36293",
-  "seconds": 13.8,
+  "seconds": 13.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -40255,7 +40255,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0322/clean.pdf",
   "input_sha256": "ea982c7f61efdcfa",
-  "seconds": 13.5,
+  "seconds": 13.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -42365,7 +42365,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0323/clean.pdf",
   "input_sha256": "4fe83ad595f20439",
-  "seconds": 9.7,
+  "seconds": 9.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -43154,7 +43154,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0411/clean.pdf",
   "input_sha256": "356e77c82ceb2ad3",
-  "seconds": 11.6,
+  "seconds": 11.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -45169,7 +45169,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0412/clean.pdf",
   "input_sha256": "bdb60455ceac6754",
-  "seconds": 17.6,
+  "seconds": 16.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -49466,7 +49466,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0421/clean.pdf",
   "input_sha256": "2e83cb9872fe92f7",
-  "seconds": 11.2,
+  "seconds": 11.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -51367,7 +51367,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0422/clean.pdf",
   "input_sha256": "4607b9fbe93b64e7",
-  "seconds": 11.7,
+  "seconds": 11.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -53552,7 +53552,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0423/clean.pdf",
   "input_sha256": "9f9cf698b707e533",
-  "seconds": 9.5,
+  "seconds": 9.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -54634,7 +54634,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0511/clean.pdf",
   "input_sha256": "12604a79e10db874",
-  "seconds": 9.5,
+  "seconds": 9.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -55754,7 +55754,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0512/clean.pdf",
   "input_sha256": "0753dd06811638da",
-  "seconds": 16.2,
+  "seconds": 15.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -60513,7 +60513,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0521/clean.pdf",
   "input_sha256": "9f56253c5986a0b2",
-  "seconds": 9.9,
+  "seconds": 14.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -63569,7 +63569,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0522/clean.pdf",
   "input_sha256": "38f2c35a2b7334ae",
-  "seconds": 14.2,
+  "seconds": 22.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -67385,7 +67385,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-A0523/clean.pdf",
   "input_sha256": "fce9242066972b41",
-  "seconds": 8.8,
+  "seconds": 12.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -68854,7 +68854,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-B0112/clean.pdf",
   "input_sha256": "7ee67c1356bd83ba",
-  "seconds": 8.3,
+  "seconds": 8.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -69791,7 +69791,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-B0114/clean.pdf",
   "input_sha256": "77b0ac1f87e3053a",
-  "seconds": 9.3,
+  "seconds": 9.2,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -71222,7 +71222,7 @@
   "state": "OK",
   "input": "validation_set3/V-50-1-B0122/clean.pdf",
   "input_sha256": "07d1319d70aa000d",
-  "seconds": 17.7,
+  "seconds": 16.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -76761,7 +76761,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0011/clean.pdf",
   "input_sha256": "c2884f3007f3764a",
-  "seconds": 19.2,
+  "seconds": 17.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -80128,7 +80128,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0021/clean.pdf",
   "input_sha256": "3f245a29bf30e845",
-  "seconds": 12.8,
+  "seconds": 11.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -81256,7 +81256,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0022/clean.pdf",
   "input_sha256": "d938b6b23232e40e",
-  "seconds": 12.0,
+  "seconds": 11.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -82061,7 +82061,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0023/clean.pdf",
   "input_sha256": "19a08f7c6753a5d2",
-  "seconds": 12.1,
+  "seconds": 11.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -83063,7 +83063,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0024/clean.pdf",
   "input_sha256": "f52aae17d88a11c8",
-  "seconds": 11.9,
+  "seconds": 11.5,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -84370,7 +84370,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0031/clean.pdf",
   "input_sha256": "2e8196ba551e1e9d",
-  "seconds": 11.9,
+  "seconds": 11.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -85605,7 +85605,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0032/clean.pdf",
   "input_sha256": "6a1bd88d64046512",
-  "seconds": 11.4,
+  "seconds": 10.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -86756,7 +86756,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0033/clean.pdf",
   "input_sha256": "6d3727568126772c",
-  "seconds": 10.7,
+  "seconds": 9.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -87644,7 +87644,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0034/clean.pdf",
   "input_sha256": "d58e8dc68fc0605b",
-  "seconds": 12.4,
+  "seconds": 11.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -88504,7 +88504,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0111/clean.pdf",
   "input_sha256": "9e825bc058e30454",
-  "seconds": 41.4,
+  "seconds": 39.5,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -88515,16 +88515,16 @@
    "designations": 50,
    "with_dn": null,
    "leaders": 276,
-   "verified_attachments": 157,
-   "ambiguous_attachments": 62,
+   "verified_attachments": 163,
+   "ambiguous_attachments": 56,
    "no_attachments": 57,
    "anchor_states": {
-    "AMBIGUOUS_PIPE_ATTACHMENT": 62,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 56,
     "NO_PIPE_ATTACHMENT": 57,
-    "VERIFIED_PIPE_ATTACHMENT": 157
+    "VERIFIED_PIPE_ATTACHMENT": 163
    },
    "pipe_names": 50,
-   "pipe_names_with_metres": 38,
+   "pipe_names_with_metres": 39,
    "without_metres": [
     "S2",
     "S2-P2",
@@ -88535,11 +88535,10 @@
     "VS1-S13-22/W",
     "VS1-S13-42/W",
     "VS2",
-    "VV1-X7-32/W",
     "VV1-X7-50/W",
     "VVC1-X7-32/W"
    ],
-   "physical_pipes": 144,
+   "physical_pipes": 145,
    "unowned_m": 54.28,
    "ambiguous_m": 42.67,
    "claimed_m": 4.04,
@@ -88628,11 +88627,12 @@
    "VV1-X7-16/W",
    "VV1-X7-20/W",
    "VV1-X7-25/W",
+   "VV1-X7-32/W",
    "VVC1-X7-16/W"
   ],
   "frontiers": {
-   "frontiers": 339,
-   "pipes": 144,
+   "frontiers": 341,
+   "pipes": 145,
    "silent_pipes": [],
    "by_reason": {
     "AMBIGUOUS_JUNCTION": 30,
@@ -88641,13 +88641,13 @@
     "FLOW_BUDGET": 3,
     "FREE_END": 9,
     "REAL_DESIGNATION_BOUNDARY": 42,
-    "REAL_DN_BOUNDARY": 14,
+    "REAL_DN_BOUNDARY": 16,
     "REAL_SYSTEM_BOUNDARY": 2,
     "SYMBOL": 131,
     "UNOWNED_CONTINUATION": 33,
     "VERTICAL": 56
    },
-   "real_boundaries": 272,
+   "real_boundaries": 274,
    "lossy_boundaries": 34,
    "open_boundaries": 33,
    "unowned_beyond_pt": 2764.94,
@@ -89557,10 +89557,10 @@
     "dn": 20,
     "system": "VV1",
     "physical_pipe_count": 4,
-    "confirmed_horizontal_m": 19.663,
+    "confirmed_horizontal_m": 12.393,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 19.663,
-    "horizontal_pdf_units": 1114.727,
+    "confirmed_total_m": 12.393,
+    "horizontal_pdf_units": 702.572,
     "ambiguous_m": 0.101,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -89571,7 +89571,7 @@
      "pp_53160887ce90",
      "pp_bb53e137e233",
      "pp_c13bc4a5e029",
-     "pp_ce3c862a6880"
+     "pp_cef0daaac6ac"
     ],
     "ambiguous_pdf_units": 5.73,
     "label_count": 6,
@@ -89585,13 +89585,13 @@
     "dn": 25,
     "system": "VV1",
     "physical_pipe_count": 4,
-    "confirmed_horizontal_m": 12.137,
+    "confirmed_horizontal_m": 17.647,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 12.137,
-    "horizontal_pdf_units": 688.082,
+    "confirmed_total_m": 17.647,
+    "horizontal_pdf_units": 1000.46,
     "ambiguous_m": 5.015,
     "vertical_known": false,
-    "in_hatched_area_m": 2.52,
+    "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
@@ -89599,7 +89599,7 @@
      "pp_0b7a497b6393",
      "pp_5ff1b753dc6d",
      "pp_89c48e9ba2d3",
-     "pp_9189d7f451c0"
+     "pp_957c64ae1531"
     ],
     "ambiguous_pdf_units": 284.295,
     "label_count": 5,
@@ -89608,24 +89608,27 @@
     "vertical_m": "UNKNOWN"
    },
    {
-    "designation": "VV1-X7-W",
+    "designation": "VV1-X7-32/W",
     "base": "VV1-X7-W",
     "dn": 32,
-    "system": "",
-    "physical_pipe_count": 0,
-    "confirmed_horizontal_m": 0.0,
+    "system": "VV1",
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 1.724,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 0.0,
-    "horizontal_pdf_units": 0.0,
+    "confirmed_total_m": 1.724,
+    "horizontal_pdf_units": 97.714,
     "ambiguous_m": 0.0,
     "vertical_known": false,
-    "in_hatched_area_m": 0.0,
-    "state": "RISER_LABELS_ONLY",
-    "pipe_ids": [],
+    "in_hatched_area_m": 2.507,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_d4406c018990"
+    ],
+    "label_count": 2,
     "riser_count_from_labels": 1,
     "riser_count": 0,
-    "label_count": 0,
-    "double_line_m": 0.0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
@@ -89656,12 +89659,12 @@
    }
   ],
   "totals": {
-   "physical_pipes": 144,
-   "confirmed_horizontal_m": 368.667,
+   "physical_pipes": 145,
+   "confirmed_horizontal_m": 368.631,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 368.667,
+   "confirmed_total_m": 368.631,
    "ambiguous_m": 42.674,
-   "in_hatched_area_m": 45.143,
+   "in_hatched_area_m": 45.13,
    "riser_labels": 65
   },
   "pipes": [
@@ -91914,28 +91917,27 @@
     ]
    },
    {
-    "id": "pp_9189d7f451c0",
+    "id": "pp_957c64ae1531",
     "designation": "VV1-X7-25/W",
     "identity": "VV1-X7-W|DN25",
     "system": "VV1",
     "dn": 25,
-    "horizontal_m": 3.235,
-    "total_m": 3.235,
-    "horizontal_pdf_units": 183.417,
-    "bridged_gap_pt": 82.32,
+    "horizontal_m": 8.745,
+    "total_m": 8.745,
+    "horizontal_pdf_units": 495.795,
+    "bridged_gap_pt": 136.24,
     "state": "CONFIRMED",
     "anchors": 1,
     "family": "268140-W-50-P-A-01|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
     "frontier_reasons": [
-     "FREE_END",
      "REAL_DN_BOUNDARY"
     ],
     "n_frontiers": 2,
     "bbox": [
-     989.8,
-     141.0,
+     1009.6,
+     345.4,
      1026.4,
-     431.8
+     837.2
     ]
    },
    {
@@ -92713,15 +92715,15 @@
     ]
    },
    {
-    "id": "pp_ce3c862a6880",
+    "id": "pp_cef0daaac6ac",
     "designation": "VV1-X7-20/W",
     "identity": "VV1-X7-W|DN20",
     "system": "VV1",
     "dn": 20,
-    "horizontal_m": 7.314,
-    "total_m": 7.314,
-    "horizontal_pdf_units": 414.675,
-    "bridged_gap_pt": 116.32,
+    "horizontal_m": 0.044,
+    "total_m": 0.044,
+    "horizontal_pdf_units": 2.52,
+    "bridged_gap_pt": 0,
     "state": "CONFIRMED",
     "anchors": 1,
     "family": "268140-W-50-P-A-01|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
@@ -92733,8 +92735,8 @@
     "n_frontiers": 3,
     "bbox": [
      1009.6,
-     431.8,
-     1026.4,
+     837.2,
+     1009.6,
      839.7
     ]
    },
@@ -92810,6 +92812,31 @@
      821.0,
      1078.8,
      832.0
+    ]
+   },
+   {
+    "id": "pp_d4406c018990",
+    "designation": "VV1-X7-32/W",
+    "identity": "VV1-X7-W|DN32",
+    "system": "VV1",
+    "dn": 32,
+    "horizontal_m": 1.724,
+    "total_m": 1.724,
+    "horizontal_pdf_units": 97.714,
+    "bridged_gap_pt": 59.64,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-01|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "FREE_END",
+     "REAL_DN_BOUNDARY"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     989.8,
+     141.0,
+     1026.4,
+     345.4
     ]
    },
    {
@@ -94434,15 +94461,14 @@
    {
     "id": "anc_5c63172e02e7",
     "designation": "VV1-X7-32/W",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
-     "crossing_tick",
-     "end_tick"
+     "crossing_tick"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 3
    },
@@ -94543,14 +94569,14 @@
    {
     "id": "anc_5eedf0b6e102",
     "designation": "SV611-10",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -94895,14 +94921,14 @@
    {
     "id": "anc_7a29eb9f8e4b",
     "designation": "AV611-15",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -95231,14 +95257,14 @@
    {
     "id": "anc_8e14be9931c5",
     "designation": "AV611-10",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -95966,14 +95992,14 @@
    {
     "id": "anc_c1a0dabd39d2",
     "designation": "SV611-10",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -96959,14 +96985,14 @@
    {
     "id": "anc_fc77b2fc4926",
     "designation": "VV1-X7",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 3,
-    "n_primitives": 3,
-    "n_pids": 3,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -97021,7 +97047,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0112/clean.pdf",
   "input_sha256": "d1f1ab42ab978562",
-  "seconds": 14.2,
+  "seconds": 14.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -97032,13 +97058,13 @@
    "designations": 24,
    "with_dn": null,
    "leaders": 60,
-   "verified_attachments": 23,
-   "ambiguous_attachments": 19,
+   "verified_attachments": 24,
+   "ambiguous_attachments": 18,
    "no_attachments": 18,
    "anchor_states": {
     "NO_PIPE_ATTACHMENT": 18,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 19,
-    "VERIFIED_PIPE_ATTACHMENT": 23
+    "AMBIGUOUS_PIPE_ATTACHMENT": 18,
+    "VERIFIED_PIPE_ATTACHMENT": 24
    },
    "pipe_names": 24,
    "pipe_names_with_metres": 5,
@@ -98245,14 +98271,14 @@
    {
     "id": "anc_943f16d32e92",
     "designation": "AV611-15",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -98611,7 +98637,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0113/clean.pdf",
   "input_sha256": "c52ff45a537a3a54",
-  "seconds": 34.0,
+  "seconds": 30.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -98622,12 +98648,12 @@
    "designations": 64,
    "with_dn": null,
    "leaders": 237,
-   "verified_attachments": 154,
-   "ambiguous_attachments": 50,
+   "verified_attachments": 156,
+   "ambiguous_attachments": 48,
    "no_attachments": 33,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 154,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 50,
+    "VERIFIED_PIPE_ATTACHMENT": 156,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 48,
     "NO_PIPE_ATTACHMENT": 33
    },
    "pipe_names": 64,
@@ -99969,7 +99995,7 @@
      "pp_4365c5f15d5a"
     ],
     "ambiguous_pdf_units": 82.92,
-    "label_count": 2,
+    "label_count": 4,
     "riser_count_from_labels": 2,
     "riser_count": 1,
     "vertical_m": "UNKNOWN"
@@ -101161,7 +101187,7 @@
     "horizontal_pdf_units": 834.06,
     "bridged_gap_pt": 263.28,
     "state": "CONFIRMED",
-    "anchors": 1,
+    "anchors": 2,
     "family": "268140-W-50-P-A-01|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
     "frontier_reasons": [
      "REAL_DN_BOUNDARY",
@@ -104425,14 +104451,14 @@
    {
     "id": "anc_662ee483f5e7",
     "designation": "VV1-X7",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 3,
-    "n_primitives": 3,
-    "n_pids": 3,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -105674,15 +105700,14 @@
    {
     "id": "anc_ca128f6f42b0",
     "designation": "VV1-X7-32/W",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
-     "crossing_tick",
-     "end_tick"
+     "crossing_tick"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 3
    },
@@ -106413,7 +106438,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0114/clean.pdf",
   "input_sha256": "61e5d07b2e3a7136",
-  "seconds": 31.2,
+  "seconds": 28.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -113624,7 +113649,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0121/clean.pdf",
   "input_sha256": "f7c27df64d1eb788",
-  "seconds": 25.3,
+  "seconds": 23.0,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -118251,7 +118276,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0122/clean.pdf",
   "input_sha256": "7e34264b8725fd9f",
-  "seconds": 27.9,
+  "seconds": 24.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -118262,20 +118287,21 @@
    "designations": 33,
    "with_dn": null,
    "leaders": 174,
-   "verified_attachments": 128,
-   "ambiguous_attachments": 34,
+   "verified_attachments": 131,
+   "ambiguous_attachments": 31,
    "no_attachments": 12,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 128,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 34,
+    "VERIFIED_PIPE_ATTACHMENT": 131,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 31,
     "NO_PIPE_ATTACHMENT": 12
    },
    "pipe_names": 33,
-   "pipe_names_with_metres": 30,
+   "pipe_names_with_metres": 29,
    "without_metres": [
     "KV2",
     "S2-P2",
-    "S2-P3"
+    "S2-P3",
+    "VVC1-X7-16/W"
    ],
    "physical_pipes": 76,
    "unowned_m": 11.91,
@@ -118338,7 +118364,6 @@
    "VV1-X7-16/W",
    "VV1-X7-20/W",
    "VV1-X7-40/W",
-   "VVC1-X7-16/W",
    "VVC1-X7-32/W"
   ],
   "frontiers": {
@@ -118351,9 +118376,8 @@
     "DECLARED_BOUNDARY": 3,
     "FLOW_BUDGET": 11,
     "FREE_END": 1,
-    "REAL_DESIGNATION_BOUNDARY": 11,
+    "REAL_DESIGNATION_BOUNDARY": 13,
     "REAL_DN_BOUNDARY": 10,
-    "REAL_SYSTEM_BOUNDARY": 2,
     "SYMBOL": 54,
     "UNOWNED_CONTINUATION": 25,
     "VERTICAL": 46
@@ -118855,7 +118879,7 @@
      "pp_b313f6ab1dcf",
      "pp_e69b23301fbb"
     ],
-    "label_count": 3,
+    "label_count": 5,
     "riser_count_from_labels": 3,
     "riser_count": 0,
     "ambiguous_pdf_units": 0.0,
@@ -118866,11 +118890,11 @@
     "base": "VV1-X7-W",
     "dn": 20,
     "system": "VV1",
-    "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 3.684,
+    "physical_pipe_count": 2,
+    "confirmed_horizontal_m": 10.021,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 3.684,
-    "horizontal_pdf_units": 208.835,
+    "confirmed_total_m": 10.021,
+    "horizontal_pdf_units": 568.115,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -118878,9 +118902,10 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
+     "pp_01127b365d8b",
      "pp_84e1f7436449"
     ],
-    "label_count": 3,
+    "label_count": 4,
     "riser_count_from_labels": 2,
     "riser_count": 0,
     "ambiguous_pdf_units": 0.0,
@@ -118938,27 +118963,24 @@
     "vertical_m": "UNKNOWN"
    },
    {
-    "designation": "VVC1-X7-16/W",
+    "designation": "VVC1-X7-W",
     "base": "VVC1-X7-W",
     "dn": 16,
-    "system": "VVC1",
-    "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 6.337,
+    "system": "",
+    "physical_pipe_count": 0,
+    "confirmed_horizontal_m": 0.0,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 6.337,
-    "horizontal_pdf_units": 359.28,
+    "confirmed_total_m": 0.0,
+    "horizontal_pdf_units": 0.0,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
-    "declared_m": 0.0,
-    "double_line_m": 0.0,
-    "state": "CONFIRMED",
-    "pipe_ids": [
-     "pp_95041f919356"
-    ],
-    "label_count": 2,
+    "state": "RISER_LABELS_ONLY",
+    "pipe_ids": [],
     "riser_count_from_labels": 3,
     "riser_count": 0,
+    "label_count": 2,
+    "double_line_m": 0.0,
     "ambiguous_pdf_units": 0.0,
     "vertical_m": "UNKNOWN"
    },
@@ -118998,6 +119020,31 @@
    "riser_labels": 53
   },
   "pipes": [
+   {
+    "id": "pp_01127b365d8b",
+    "designation": "VV1-X7-20/W",
+    "identity": "VV1-X7-W|DN20",
+    "system": "VV1",
+    "dn": 20,
+    "horizontal_m": 6.337,
+    "total_m": 6.337,
+    "horizontal_pdf_units": 359.28,
+    "bridged_gap_pt": 107.52,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-01|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DESIGNATION_BOUNDARY",
+     "SYMBOL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1023.0,
+     737.3,
+     1376.2,
+     743.4
+    ]
+   },
    {
     "id": "pp_01e6c1125562",
     "designation": "VS1-S13-12/W",
@@ -120038,31 +120085,6 @@
     ]
    },
    {
-    "id": "pp_95041f919356",
-    "designation": "VVC1-X7-16/W",
-    "identity": "VVC1-X7-W|DN16",
-    "system": "VVC1",
-    "dn": 16,
-    "horizontal_m": 6.337,
-    "total_m": 6.337,
-    "horizontal_pdf_units": 359.28,
-    "bridged_gap_pt": 107.52,
-    "state": "CONFIRMED",
-    "anchors": 1,
-    "family": "268140-W-50-P-A-01|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
-    "frontier_reasons": [
-     "REAL_SYSTEM_BOUNDARY",
-     "SYMBOL"
-    ],
-    "n_frontiers": 2,
-    "bbox": [
-     1023.0,
-     737.3,
-     1376.2,
-     743.4
-    ]
-   },
-   {
     "id": "pp_9c6640d6a0ec",
     "designation": "KV1-X31-16",
     "identity": "KV1-X31|DN16",
@@ -120397,7 +120419,7 @@
     "horizontal_pdf_units": 224.365,
     "bridged_gap_pt": 58.2,
     "state": "CONFIRMED",
-    "anchors": 1,
+    "anchors": 3,
     "family": "268140-W-50-P-A-01|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
     "frontier_reasons": [
      "SYMBOL"
@@ -120449,7 +120471,7 @@
     "anchors": 1,
     "family": "268140-W-50-P-A-01|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
     "frontier_reasons": [
-     "REAL_SYSTEM_BOUNDARY",
+     "REAL_DESIGNATION_BOUNDARY",
      "VERTICAL"
     ],
     "n_frontiers": 2,
@@ -121168,15 +121190,14 @@
    {
     "id": "anc_1b2b760b9c05",
     "designation": "VV1-X7-16/W",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
-     "crossing_tick",
-     "end_tick"
+     "crossing_tick"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 2
    },
@@ -122240,15 +122261,14 @@
    {
     "id": "anc_8b26c6a31079",
     "designation": "VV1-X7-20/W",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
-     "crossing_tick",
      "end_tick"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 2
    },
@@ -123240,14 +123260,14 @@
    {
     "id": "anc_f3130c18409d",
     "designation": "VV1-X7",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -123314,7 +123334,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0123/clean.pdf",
   "input_sha256": "ae64e35d1490cdc1",
-  "seconds": 22.0,
+  "seconds": 20.4,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -127571,7 +127591,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0124/clean.pdf",
   "input_sha256": "799af38a8835ae86",
-  "seconds": 27.0,
+  "seconds": 24.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -127582,12 +127602,12 @@
    "designations": 43,
    "with_dn": null,
    "leaders": 195,
-   "verified_attachments": 124,
-   "ambiguous_attachments": 42,
+   "verified_attachments": 125,
+   "ambiguous_attachments": 41,
    "no_attachments": 29,
    "anchor_states": {
-    "AMBIGUOUS_PIPE_ATTACHMENT": 42,
-    "VERIFIED_PIPE_ATTACHMENT": 124,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 41,
+    "VERIFIED_PIPE_ATTACHMENT": 125,
     "NO_PIPE_ATTACHMENT": 29
    },
    "pipe_names": 43,
@@ -128375,7 +128395,7 @@
      "pp_d1de874e78cc"
     ],
     "ambiguous_pdf_units": 242.66,
-    "label_count": 3,
+    "label_count": 4,
     "riser_count_from_labels": 2,
     "riser_count": 1,
     "vertical_m": "UNKNOWN"
@@ -132208,14 +132228,14 @@
    {
     "id": "anc_6a1ed5dfa4ab",
     "designation": "VV1-X7",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -133819,7 +133839,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0131/clean.pdf",
   "input_sha256": "2a0ec2a4e5e53f65",
-  "seconds": 30.1,
+  "seconds": 26.7,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -139756,7 +139776,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0132/clean.pdf",
   "input_sha256": "f0e1619a4557c6c0",
-  "seconds": 35.2,
+  "seconds": 32.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -147302,7 +147322,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0133/clean.pdf",
   "input_sha256": "aae9ab15830c08ab",
-  "seconds": 18.4,
+  "seconds": 17.8,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -151463,7 +151483,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0134/clean.pdf",
   "input_sha256": "9b68e885ca816fd1",
-  "seconds": 20.3,
+  "seconds": 19.3,
   "n_pages": 1,
   "scale": {
    "state": "CONFLICT",
@@ -156847,7 +156867,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0211/clean.pdf",
   "input_sha256": "c990d3489422a9ad",
-  "seconds": 15.6,
+  "seconds": 14.6,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -158252,7 +158272,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0213/clean.pdf",
   "input_sha256": "c5f7db233d2ab642",
-  "seconds": 20.0,
+  "seconds": 19.3,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -158263,13 +158283,13 @@
    "designations": 22,
    "with_dn": null,
    "leaders": 98,
-   "verified_attachments": 63,
-   "ambiguous_attachments": 26,
+   "verified_attachments": 64,
+   "ambiguous_attachments": 25,
    "no_attachments": 9,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 63,
+    "VERIFIED_PIPE_ATTACHMENT": 64,
     "NO_PIPE_ATTACHMENT": 9,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 26
+    "AMBIGUOUS_PIPE_ATTACHMENT": 25
    },
    "pipe_names": 22,
    "pipe_names_with_metres": 16,
@@ -161490,14 +161510,14 @@
    {
     "id": "anc_da8772f32035",
     "designation": "AV611-20",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -161690,7 +161710,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0214/clean.pdf",
   "input_sha256": "d0a69e2560cc6b0a",
-  "seconds": 20.2,
+  "seconds": 19.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -161701,13 +161721,13 @@
    "designations": 17,
    "with_dn": null,
    "leaders": 100,
-   "verified_attachments": 36,
-   "ambiguous_attachments": 14,
+   "verified_attachments": 37,
+   "ambiguous_attachments": 13,
    "no_attachments": 50,
    "anchor_states": {
     "NO_PIPE_ATTACHMENT": 50,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 14,
-    "VERIFIED_PIPE_ATTACHMENT": 36
+    "AMBIGUOUS_PIPE_ATTACHMENT": 13,
+    "VERIFIED_PIPE_ATTACHMENT": 37
    },
    "pipe_names": 17,
    "pipe_names_with_metres": 8,
@@ -163152,14 +163172,14 @@
    {
     "id": "anc_248745693c8f",
     "designation": "AV611-20",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -164232,7 +164252,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0221/clean.pdf",
   "input_sha256": "efc2337d63677305",
-  "seconds": 19.3,
+  "seconds": 19.1,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -166518,7 +166538,7 @@
   "state": "OK",
   "input": "validation_W/W-50-1-A0222/clean.pdf",
   "input_sha256": "01b00dc107315d85",
-  "seconds": 19.8,
+  "seconds": 19.9,
   "n_pages": 1,
   "scale": {
    "state": "VERIFIED",
@@ -166529,12 +166549,12 @@
    "designations": 25,
    "with_dn": null,
    "leaders": 95,
-   "verified_attachments": 68,
-   "ambiguous_attachments": 23,
+   "verified_attachments": 76,
+   "ambiguous_attachments": 15,
    "no_attachments": 4,
    "anchor_states": {
-    "VERIFIED_PIPE_ATTACHMENT": 68,
-    "AMBIGUOUS_PIPE_ATTACHMENT": 23,
+    "VERIFIED_PIPE_ATTACHMENT": 76,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 15,
     "NO_PIPE_ATTACHMENT": 4
    },
    "pipe_names": 25,
@@ -166542,9 +166562,9 @@
    "without_metres": [
     "KV2"
    ],
-   "physical_pipes": 56,
+   "physical_pipes": 59,
    "unowned_m": 69.8,
-   "ambiguous_m": 1.69,
+   "ambiguous_m": 1.73,
    "claimed_m": 1.59,
    "reconciliation": "VALID",
    "named_vs_measured": 65.7
@@ -166577,6 +166597,8 @@
    "VVC1-X7-16/W"
   ],
   "names_with_metres": [
+   "AV611-10",
+   "AV611-15",
    "KV1-X31-16",
    "KV1-X7-16/W",
    "KV1-X7-20/W",
@@ -166591,28 +166613,79 @@
    "VVC1-X7-16/W"
   ],
   "frontiers": {
-   "frontiers": 119,
-   "pipes": 56,
+   "frontiers": 130,
+   "pipes": 59,
    "silent_pipes": [],
    "by_reason": {
-    "AMBIGUOUS_JUNCTION": 6,
-    "DECLARED_BOUNDARY": 3,
+    "AMBIGUOUS_JUNCTION": 11,
+    "DECLARED_BOUNDARY": 5,
     "FLOW_BUDGET": 3,
     "FREE_END": 2,
-    "REAL_DESIGNATION_BOUNDARY": 6,
+    "REAL_DESIGNATION_BOUNDARY": 7,
     "REAL_DN_BOUNDARY": 6,
-    "REAL_SYSTEM_BOUNDARY": 1,
+    "REAL_SYSTEM_BOUNDARY": 4,
     "SYMBOL": 52,
     "UNOWNED_CONTINUATION": 5,
     "VERTICAL": 35
    },
-   "real_boundaries": 105,
+   "real_boundaries": 111,
    "lossy_boundaries": 5,
-   "open_boundaries": 9,
+   "open_boundaries": 14,
    "unowned_beyond_pt": 270.08,
    "unowned_beyond_m": 4.76
   },
   "quantities": [
+   {
+    "designation": "AV611-10",
+    "base": "AV611",
+    "dn": 10,
+    "system": "AV611",
+    "physical_pipe_count": 2,
+    "confirmed_horizontal_m": 3.034,
+    "confirmed_vertical_m": 0.0,
+    "confirmed_total_m": 3.034,
+    "horizontal_pdf_units": 172.023,
+    "ambiguous_m": 0.0,
+    "vertical_known": false,
+    "in_hatched_area_m": 0.0,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_44fd9538bb7f",
+     "pp_a00542df1aee"
+    ],
+    "label_count": 2,
+    "riser_count": 0,
+    "riser_count_from_labels": 0,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": "UNKNOWN"
+   },
+   {
+    "designation": "AV611-15",
+    "base": "AV611",
+    "dn": 15,
+    "system": "AV611",
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 1.16,
+    "confirmed_vertical_m": 0.0,
+    "confirmed_total_m": 1.16,
+    "horizontal_pdf_units": 65.76,
+    "ambiguous_m": 0.0,
+    "vertical_known": false,
+    "in_hatched_area_m": 0.0,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_b5fc7a285ec6"
+    ],
+    "label_count": 2,
+    "riser_count": 0,
+    "riser_count_from_labels": 0,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": "UNKNOWN"
+   },
    {
     "designation": "KV1-X31-16",
     "base": "KV1-X31",
@@ -166757,11 +166830,11 @@
     "base": "VS1-S13-W",
     "dn": 12,
     "system": "VS1",
-    "physical_pipe_count": 20,
-    "confirmed_horizontal_m": 40.469,
+    "physical_pipe_count": 18,
+    "confirmed_horizontal_m": 37.434,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 40.469,
-    "horizontal_pdf_units": 2294.288,
+    "confirmed_total_m": 37.434,
+    "horizontal_pdf_units": 2122.265,
     "ambiguous_m": 1.607,
     "vertical_known": false,
     "in_hatched_area_m": 4.989,
@@ -166785,10 +166858,8 @@
      "pp_bbc063d2c8d6",
      "pp_c939582b569f",
      "pp_d62aa7b93ba7",
-     "pp_ed66a2839ce4",
      "pp_eefb377cf599",
-     "pp_f6f5b5650e27",
-     "pp_fe153f3ebc08"
+     "pp_f6f5b5650e27"
     ],
     "ambiguous_pdf_units": 91.13,
     "label_count": 21,
@@ -166802,10 +166873,10 @@
     "dn": 15,
     "system": "VS1",
     "physical_pipe_count": 2,
-    "confirmed_horizontal_m": 3.444,
+    "confirmed_horizontal_m": 2.284,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 3.444,
-    "horizontal_pdf_units": 195.249,
+    "confirmed_total_m": 2.284,
+    "horizontal_pdf_units": 129.489,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
@@ -166813,7 +166884,7 @@
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
-     "pp_527e7a811f56",
+     "pp_8cd819dbc1dd",
      "pp_c283ff65498c"
     ],
     "label_count": 2,
@@ -166878,27 +166949,27 @@
     "dn": 16,
     "system": "VV1",
     "physical_pipe_count": 10,
-    "confirmed_horizontal_m": 17.192,
+    "confirmed_horizontal_m": 14.231,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 17.192,
-    "horizontal_pdf_units": 974.646,
+    "confirmed_total_m": 14.231,
+    "horizontal_pdf_units": 806.822,
     "ambiguous_m": 0.0,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
-    "declared_m": 15.76899457516552,
+    "declared_m": 12.808768786973465,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
      "pp_0ec6d016577c",
      "pp_165284760b15",
      "pp_3f7770a8ca45",
+     "pp_4ae1435dcc0e",
      "pp_62b32841e5ba",
      "pp_7112b00531ed",
      "pp_7887e1f27d7c",
      "pp_a8f22cfdc201",
      "pp_c0f0f35ff76a",
-     "pp_c9cb2107a4c6",
-     "pp_d357ff6962bd"
+     "pp_c9cb2107a4c6"
     ],
     "label_count": 6,
     "riser_count_from_labels": 3,
@@ -166911,12 +166982,12 @@
     "base": "VV1-X7-W",
     "dn": 16,
     "system": "VV1",
-    "physical_pipe_count": 2,
-    "confirmed_horizontal_m": 14.354,
+    "physical_pipe_count": 3,
+    "confirmed_horizontal_m": 15.91,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 14.354,
-    "horizontal_pdf_units": 813.756,
-    "ambiguous_m": 0.05,
+    "confirmed_total_m": 15.91,
+    "horizontal_pdf_units": 901.966,
+    "ambiguous_m": 0.079,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
@@ -166924,10 +166995,11 @@
     "state": "CONFIRMED",
     "pipe_ids": [
      "pp_1db06c5bf68b",
-     "pp_8920b8414cfb"
+     "pp_8920b8414cfb",
+     "pp_99c47a0a7d56"
     ],
-    "ambiguous_pdf_units": 2.861,
-    "label_count": 5,
+    "ambiguous_pdf_units": 4.465,
+    "label_count": 6,
     "riser_count_from_labels": 2,
     "riser_count": 1,
     "vertical_m": "UNKNOWN"
@@ -166937,33 +167009,34 @@
     "base": "VVC1-X7-W",
     "dn": 16,
     "system": "VVC1",
-    "physical_pipe_count": 1,
-    "confirmed_horizontal_m": 9.562,
+    "physical_pipe_count": 2,
+    "confirmed_horizontal_m": 10.93,
     "confirmed_vertical_m": 0.0,
-    "confirmed_total_m": 9.562,
-    "horizontal_pdf_units": 542.114,
-    "ambiguous_m": 0.03,
+    "confirmed_total_m": 10.93,
+    "horizontal_pdf_units": 619.629,
+    "ambiguous_m": 0.039,
     "vertical_known": false,
     "in_hatched_area_m": 0.0,
     "declared_m": 0.0,
     "double_line_m": 0.0,
     "state": "CONFIRMED",
     "pipe_ids": [
+     "pp_95a34b59d111",
      "pp_f10e7d8b4d2e"
     ],
-    "ambiguous_pdf_units": 1.724,
-    "label_count": 2,
+    "ambiguous_pdf_units": 2.218,
+    "label_count": 3,
     "riser_count_from_labels": 2,
     "riser_count": 1,
     "vertical_m": "UNKNOWN"
    }
   ],
   "totals": {
-   "physical_pipes": 56,
-   "confirmed_horizontal_m": 169.937,
+   "physical_pipes": 59,
+   "confirmed_horizontal_m": 169.899,
    "confirmed_vertical_m": 0.0,
-   "confirmed_total_m": 169.937,
-   "ambiguous_m": 1.687,
+   "confirmed_total_m": 169.899,
+   "ambiguous_m": 1.725,
    "in_hatched_area_m": 12.717,
    "riser_labels": 29
   },
@@ -167392,6 +167465,31 @@
     ]
    },
    {
+    "id": "pp_44fd9538bb7f",
+    "designation": "AV611-10",
+    "identity": "AV611|DN10",
+    "system": "AV611",
+    "dn": 10,
+    "horizontal_m": 1.513,
+    "total_m": 1.513,
+    "horizontal_pdf_units": 85.798,
+    "bridged_gap_pt": 24.96,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-02|V-56B--FE--VS1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     434.4,
+     1261.2,
+     439.4,
+     1344.9
+    ]
+   },
+   {
     "id": "pp_450ecee0c3ab",
     "designation": "KV1-X31-16",
     "identity": "KV1-X31|DN16",
@@ -167413,6 +167511,33 @@
      960.8,
      480.5,
      1025.6
+    ]
+   },
+   {
+    "id": "pp_4ae1435dcc0e",
+    "designation": "VV1-X31-16",
+    "identity": "VV1-X31|DN16",
+    "system": "VV1",
+    "dn": 16,
+    "horizontal_m": 0.252,
+    "total_m": 0.252,
+    "horizontal_pdf_units": 14.276,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 0,
+    "family": "268140-W-50-P-A-02|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "AMBIGUOUS_JUNCTION",
+     "REAL_DESIGNATION_BOUNDARY",
+     "REAL_SYSTEM_BOUNDARY",
+     "SYMBOL"
+    ],
+    "n_frontiers": 6,
+    "bbox": [
+     434.8,
+     1034.3,
+     443.5,
+     1035.8
     ]
    },
    {
@@ -167439,31 +167564,6 @@
      1144.1,
      1463.0,
      1313.8
-    ]
-   },
-   {
-    "id": "pp_527e7a811f56",
-    "designation": "VS1-S13-15/W",
-    "identity": "VS1-S13-W|DN15",
-    "system": "VS1",
-    "dn": 15,
-    "horizontal_m": 1.501,
-    "total_m": 1.501,
-    "horizontal_pdf_units": 85.08,
-    "bridged_gap_pt": 27.84,
-    "state": "CONFIRMED",
-    "anchors": 1,
-    "family": "268140-W-50-P-A-02|V-56B--FE--VS1-|s|w1.44|c(0.0, 0.0, 0.0)",
-    "frontier_reasons": [
-     "SYMBOL",
-     "UNOWNED_CONTINUATION"
-    ],
-    "n_frontiers": 2,
-    "bbox": [
-     1348.2,
-     581.3,
-     1433.3,
-     581.3
     ]
    },
    {
@@ -167691,6 +167791,31 @@
     ]
    },
    {
+    "id": "pp_8cd819dbc1dd",
+    "designation": "VS1-S13-15/W",
+    "identity": "VS1-S13-W|DN15",
+    "system": "VS1",
+    "dn": 15,
+    "horizontal_m": 0.341,
+    "total_m": 0.341,
+    "horizontal_pdf_units": 19.32,
+    "bridged_gap_pt": 5.64,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-02|V-56B--FE--VS1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_SYSTEM_BOUNDARY",
+     "SYMBOL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1348.2,
+     581.3,
+     1367.5,
+     581.3
+    ]
+   },
+   {
     "id": "pp_944a5464c536",
     "designation": "VS1-S13-12/W",
     "identity": "VS1-S13-W|DN12",
@@ -167716,6 +167841,58 @@
     ]
    },
    {
+    "id": "pp_95a34b59d111",
+    "designation": "VVC1-X7-16/W",
+    "identity": "VVC1-X7-W|DN16",
+    "system": "VVC1",
+    "dn": 16,
+    "horizontal_m": 1.367,
+    "total_m": 1.367,
+    "horizontal_pdf_units": 77.515,
+    "bridged_gap_pt": 16.92,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-02|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "AMBIGUOUS_JUNCTION",
+     "DECLARED_BOUNDARY",
+     "SYMBOL"
+    ],
+    "n_frontiers": 3,
+    "bbox": [
+     443.5,
+     1011.2,
+     498.2,
+     1035.0
+    ]
+   },
+   {
+    "id": "pp_99c47a0a7d56",
+    "designation": "VV1-X7-16/W",
+    "identity": "VV1-X7-W|DN16",
+    "system": "VV1",
+    "dn": 16,
+    "horizontal_m": 1.556,
+    "total_m": 1.556,
+    "horizontal_pdf_units": 88.211,
+    "bridged_gap_pt": 17.04,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-02|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "AMBIGUOUS_JUNCTION",
+     "DECLARED_BOUNDARY",
+     "SYMBOL"
+    ],
+    "n_frontiers": 3,
+    "bbox": [
+     442.9,
+     1019.6,
+     498.2,
+     1044.9
+    ]
+   },
+   {
     "id": "pp_9bbef4999495",
     "designation": "KV1-X31-16",
     "identity": "KV1-X31|DN16",
@@ -167737,6 +167914,31 @@
      996.5,
      422.3,
      1025.6
+    ]
+   },
+   {
+    "id": "pp_a00542df1aee",
+    "designation": "AV611-10",
+    "identity": "AV611|DN10",
+    "system": "AV611",
+    "dn": 10,
+    "horizontal_m": 1.521,
+    "total_m": 1.521,
+    "horizontal_pdf_units": 86.225,
+    "bridged_gap_pt": 25.08,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-02|V-56B--FE--VS1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     704.3,
+     1261.2,
+     710.5,
+     1344.9
     ]
    },
    {
@@ -167836,6 +168038,31 @@
      299.3,
      1167.1,
      316.5
+    ]
+   },
+   {
+    "id": "pp_b5fc7a285ec6",
+    "designation": "AV611-15",
+    "identity": "AV611|DN15",
+    "system": "AV611",
+    "dn": 15,
+    "horizontal_m": 1.16,
+    "total_m": 1.16,
+    "horizontal_pdf_units": 65.76,
+    "bridged_gap_pt": 22.2,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-02|V-56B--FE--VS1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_SYSTEM_BOUNDARY",
+     "UNOWNED_CONTINUATION"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1367.5,
+     581.3,
+     1433.3,
+     581.3
     ]
    },
    {
@@ -168060,30 +168287,6 @@
     ]
    },
    {
-    "id": "pp_d357ff6962bd",
-    "designation": "VV1-X31-16",
-    "identity": "VV1-X31|DN16",
-    "system": "VV1",
-    "dn": 16,
-    "horizontal_m": 3.212,
-    "total_m": 3.212,
-    "horizontal_pdf_units": 182.1,
-    "bridged_gap_pt": 33.96,
-    "state": "CONFIRMED",
-    "anchors": 0,
-    "family": "268140-W-50-P-A-02|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
-    "frontier_reasons": [
-     "SYMBOL"
-    ],
-    "n_frontiers": 3,
-    "bbox": [
-     434.8,
-     1011.2,
-     498.2,
-     1044.9
-    ]
-   },
-   {
     "id": "pp_d62aa7b93ba7",
     "designation": "VS1-S13-12/W",
     "identity": "VS1-S13-W|DN12",
@@ -168179,31 +168382,6 @@
      1026.9,
      490.6,
      1065.0
-    ]
-   },
-   {
-    "id": "pp_ed66a2839ce4",
-    "designation": "VS1-S13-12/W",
-    "identity": "VS1-S13-W|DN12",
-    "system": "VS1",
-    "dn": 12,
-    "horizontal_m": 1.521,
-    "total_m": 1.521,
-    "horizontal_pdf_units": 86.225,
-    "bridged_gap_pt": 25.08,
-    "state": "CONFIRMED",
-    "anchors": 1,
-    "family": "268140-W-50-P-A-02|V-56B--FE--VS1-|s|w1.44|c(0.0, 0.0, 0.0)",
-    "frontier_reasons": [
-     "SYMBOL",
-     "VERTICAL"
-    ],
-    "n_frontiers": 2,
-    "bbox": [
-     704.3,
-     1261.2,
-     710.5,
-     1344.9
     ]
    },
    {
@@ -168329,31 +168507,6 @@
      977.9,
      858.4
     ]
-   },
-   {
-    "id": "pp_fe153f3ebc08",
-    "designation": "VS1-S13-12/W",
-    "identity": "VS1-S13-W|DN12",
-    "system": "VS1",
-    "dn": 12,
-    "horizontal_m": 1.513,
-    "total_m": 1.513,
-    "horizontal_pdf_units": 85.798,
-    "bridged_gap_pt": 24.96,
-    "state": "CONFIRMED",
-    "anchors": 1,
-    "family": "268140-W-50-P-A-02|V-56B--FE--VS1-|s|w1.44|c(0.0, 0.0, 0.0)",
-    "frontier_reasons": [
-     "SYMBOL",
-     "VERTICAL"
-    ],
-    "n_frontiers": 2,
-    "bbox": [
-     434.4,
-     1261.2,
-     439.4,
-     1344.9
-    ]
    }
   ],
   "anchors": [
@@ -168470,14 +168623,14 @@
    {
     "id": "anc_1b6308936195",
     "designation": "AV611-10",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -168540,14 +168693,14 @@
    {
     "id": "anc_2cb5c9b7e5df",
     "designation": "AV611-15",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -168636,14 +168789,14 @@
    {
     "id": "anc_3ca2ccfe46a8",
     "designation": "AV611-15",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -168998,14 +169151,14 @@
    {
     "id": "anc_83184a3f84d9",
     "designation": "AV611-10",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_sheet_consistency",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -169068,14 +169221,14 @@
    {
     "id": "anc_8f3c1a3cd7a3",
     "designation": "VVC1-X7-16/W",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "crossing_tick"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 2
    },
@@ -169461,14 +169614,14 @@
    {
     "id": "anc_e597e0942780",
     "designation": "VV1-X7-16/W",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "crossing_tick"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 2
    },
@@ -169489,14 +169642,14 @@
    {
     "id": "anc_ef5407058bb7",
     "designation": "SV611-10",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
@@ -169655,14 +169808,14 @@
    {
     "id": "anc_fee733d949da",
     "designation": "SV611-10",
-    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
-    "reason": "multi_row_bundle_awaiting_elimination",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_bundle_settled_by_the_sheets_own_row_order",
     "kinds": [
      "bundle_partner"
     ],
-    "n_contacts": 2,
-    "n_primitives": 2,
-    "n_pids": 2,
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
     "weak_only": false,
     "n_families": 1
    },
