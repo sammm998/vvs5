@@ -9,7 +9,9 @@ avgörs av vilka attribut som läses (title, placeholder, aria-label, alt, label
 varken får innehålla klammer, taggar eller radbrytning.
 
     python3 frontend/tools/i18n_wrap.py --report          vad som återstår, fil för fil
+    python3 frontend/tools/i18n_wrap.py --areas           ordbokens delar och vad som återstår i varje
     python3 frontend/tools/i18n_wrap.py --keys            varje nyckel som saknar engelsk rad
+    python3 frontend/tools/i18n_wrap.py --keys admin      ...bara de som hör till en del
     python3 frontend/tools/i18n_wrap.py --rename          döp om den importerade bindningen till tr
     python3 frontend/tools/i18n_wrap.py src/pages/X.tsx   skriv om en fil (eller flera)
 
@@ -30,7 +32,7 @@ SRC = os.path.join(ROOT, "src")
 BIND = "tr"                                       # namnet den importerade funktionen har i koden
 PROPS = ("title", "placeholder", "aria-label", "alt", "label")
 # filer som inte är gränssnitt: ordboken själv, ritmotorn, testfixturer
-SKIP = ("i18n.ts", ".test.", ".fixture.", "/cad/geom", "vite-env")
+SKIP = ("/i18n/", ".test.", ".fixture.", "/cad/geom", "vite-env")
 
 TEXT = re.compile(r'([^=!<>+\-*/%&|,])(>)([^<>{}\n]+)(<[A-Za-z/])')
 # JS-uttryck ser ut som JSX-text för ett reguljärt uttryck: `{m > 0 ? a : <span>` har ett `>`, text, och ett `<`.
@@ -100,6 +102,43 @@ def files() -> list[str]:
     return out
 
 
+# Ordboken ligger i delar, en per område, och en nyckel hör till det första område vars filer använder den.
+# Ordningen är därför inte alfabetisk utan den ordning ett område ska översättas i: ramen först, för header,
+# meny och inloggning syns på varje sida, och sedan det publika, som är det en engelsktalande besökare ser
+# innan hon loggat in.
+AREAS: list[tuple[str, tuple[str, ...]]] = [
+    ("ram",       ("src/App.tsx", "src/components/SiteHeader", "src/components/Boundary", "src/components/PublicFrame",
+                   "src/components/Status", "src/fc/Nav", "src/pages/Login", "src/pages/Register")),
+    ("publikt",   ("src/fc/", "src/pages/Landing", "src/pages/HowItWorks", "src/pages/Pricing", "src/pages/About",
+                   "src/pages/Contact", "src/pages/Docs", "src/pages/Architecture", "src/pages/Feature",
+                   "src/pages/Education", "src/pages/LearnPage", "src/components/Landing", "src/components/Feature",
+                   "src/components/AgentShowcase", "src/components/AcademySection", "src/components/Evidence",
+                   "src/components/StyleFan", "src/components/LayerStack", "src/components/Tilted",
+                   "src/components/Reveal", "src/components/ChapterBar", "src/components/PageCurtain")),
+    ("mangd",     ("src/components/QuantityTable", "src/components/PdfViewer", "src/components/LegendView",
+                   "src/components/Corrections", "src/components/Markups", "src/components/Reasoning",
+                   "src/components/Analysis", "src/components/Drawing3D", "src/components/DrawingTo3D",
+                   "src/components/DrawingUpload", "src/pages/Analysis", "src/pages/Takeoff")),
+    ("projekt",   ("src/pages/Project", "src/pages/Drawing", "src/pages/Calc", "src/pages/Material",
+                   "src/pages/Credits", "src/pages/Agent", "src/components/ProjectAgentChat",
+                   "src/components/AgentChat")),
+    ("admin",     ("src/pages/Admin", "src/components/Admin")),
+    ("cad",       ("src/pages/Cad", "src/pages/BuildingCad", "src/cad/", "src/components/BuildingView3D")),
+    ("akademi",   ("src/academy/", "src/components/Academy", "src/components/Learn", "src/components/Lecture")),
+    ("innehall",  ("src/learn.ts", "src/features.ts", "src/agents.ts", "src/frontier.ts", "src/legend.ts")),
+    ("server",    ("src/api.ts",)),
+]
+OVRIGT = "ovrigt"                                 # allt som inte pekats ut: ska vara tomt, och syns om det inte är det
+
+
+def area_of(path: str) -> str:
+    rp = os.path.relpath(path, ROOT).replace("\\", "/")
+    for name, heads in AREAS:
+        if any(rp.startswith(h) for h in heads):
+            return name
+    return OVRIGT
+
+
 IMPORT = re.compile(r'import\s*\{([^}]*)\}\s*from\s*"([^"]*\bi18n)"')
 CALL = re.compile(r'(?<![\w$.])t\("')
 
@@ -142,7 +181,7 @@ def every_file() -> list[str]:
         dirs[:] = [d for d in dirs if d != "node_modules"]
         for f in sorted(fs):
             p = os.path.join(dp, f)
-            if f.endswith((".ts", ".tsx")) and "i18n.ts" not in p.replace("\\", "/"):
+            if f.endswith((".ts", ".tsx")) and "/i18n/" not in p.replace("\\", "/"):
                 out.append(p)
     return out
 
@@ -152,40 +191,75 @@ def keys_in(src: str) -> set[str]:
 
 
 def dictionary() -> set[str]:
-    s = open(os.path.join(SRC, "i18n.ts"), encoding="utf-8").read()
-    body = s[s.index("const EN"):]
-    return set(re.findall(r'\n  "((?:[^"\\]|\\.)*)":', body))
+    """Varje nyckel som har en engelsk rad, ur ordbokens alla delar."""
+    have: set[str] = set()
+    d = os.path.join(SRC, "i18n", "en")
+    for f in sorted(os.listdir(d)):
+        if f.endswith(".ts"):
+            have |= set(re.findall(r'\n  "((?:[^"\\]|\\.)*)":',
+                                   open(os.path.join(d, f), encoding="utf-8").read()))
+    return have
 
 
-def report() -> None:
+def report(only: str = "") -> None:
+    """Vad som återstår, fil för fil - och i summan som unika nycklar, inte som en summa per fil.
+
+    Skillnaden är inte kosmetisk: samma sträng står på tio sidor, och en summa per fil räknar den tio gånger.
+    Det talet går inte att jämföra med antalet rader i ordboken, och det är just den jämförelsen man vill göra.
+    """
     have = dictionary()
-    rows, total, missing = [], 0, 0
+    rows, alla, saknade = [], set(), set()
     for p in files():
+        if only and area_of(p) != only:
+            continue
         src = open(p, encoding="utf-8").read()
         ks = keys_in(src)
-        raw, n = wrap(src)
-        total += len(ks)
+        _, n = wrap(src)
+        alla |= ks
         miss = {k for k in ks if k not in have}
-        missing += len(miss)
+        saknade |= miss
         if n or miss:
             rows.append((n, len(miss), len(ks), os.path.relpath(p, ROOT)))
     rows.sort(reverse=True)
     print(f"{'oomslutna':>10} {'utan engelska':>14} {'nycklar':>8}  fil")
     for n, miss, ks, p in rows[:40]:
         print(f"{n:10d} {miss:14d} {ks:8d}  {p}")
-    print(f"\nsumma: {sum(r[0] for r in rows)} strängar utan t(), {missing} nycklar utan engelsk rad, "
-          f"{total} nycklar totalt")
+    print(f"\nsumma: {sum(r[0] for r in rows)} strängar utan t(), {len(saknade)} unika nycklar utan engelsk rad, "
+          f"{len(alla)} unika nycklar" + (f" i {only}" if only else ""))
+
+
+def areas_report() -> None:
+    """Ordbokens delar, i den ordning de ska översättas, med det som återstår i varje."""
+    have = dictionary()
+    per: dict[str, set[str]] = {}
+    for p in every_file():
+        ks = keys_in(open(p, encoding="utf-8").read())
+        if ks:
+            per.setdefault(area_of(p), set()).update(ks)
+    seen: set[str] = set()
+    print(f"{'del':10} {'egna':>7} {'utan engelska':>14}")
+    for name, _ in AREAS + [(OVRIGT, ())]:
+        own = per.get(name, set()) - seen
+        seen |= per.get(name, set())
+        print(f"{name:10} {len(own):7d} {len(own - have):14d}")
+    print(f"{'summa':10} {len(seen):7d} {len(seen - have):14d}")
 
 
 def main(argv: list[str]) -> None:
     if "--rename" in argv:
         return rename()
+    if "--areas" in argv:
+        return areas_report()
+    named = [a for a in argv if not a.startswith("--")]
+    only = named[0] if named and named[0] in {n for n, _ in AREAS} else ""
     if "--report" in argv:
-        return report()
+        return report(only)
     if "--keys" in argv:
         have = dictionary()
         seen: set[str] = set()
-        for p in files():
+        for p in every_file():
+            if only and area_of(p) != only:
+                continue
             seen |= keys_in(open(p, encoding="utf-8").read())
         for k in sorted(seen - have):
             print(k)
