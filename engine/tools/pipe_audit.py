@@ -37,8 +37,9 @@ from facit_metrics import canon, combine_map, facit_rows_for, style_of, system  
 
 TOL_REL = 0.10          # en dragning och ett rör är samma sträcka inom tio procent...
 TOL_ABS = 0.2           # ...eller inom två decimeter, vilket som är mest generöst: under det ritar ingen
-MAX_PARTS = 4           # så många dragningar en hopslagning eller uppdelning får omfatta
-SUBSET_POOL = 12        # så många bitar en delmängdssökning tittar på: de längsta först
+MAX_PARTS = 4           # så många dragningar en delmängdssökning provar alla kombinationer av
+SUBSET_POOL = 12        # så många bitar den sökningen tittar på: de längsta först
+GREEDY_PARTS = 24       # och så många en hopslagning får omfatta när den byggs längsta biten först
 
 
 def same(a: float, b: float) -> bool:
@@ -57,6 +58,26 @@ def _subset(target: float, pool: list[tuple[int, float]]) -> list[int] | None:
             if best is None or d < best[0]:
                 best = (d, [i for i, _ in combo])
     return best[1] if best else None
+
+
+def _greedy(target: float, pool: list[tuple[int, float]]) -> list[int] | None:
+    """Hopslagningen byggd längsta biten först, för de stråk mängdaren delade i fler bitar än en sökning hinner med.
+
+    En mängdare drar sällan ett långt stråk i ett enda drag - hon klickar sig fram rum för rum, och ett rör vi
+    äger som en sammanhängande sträcka kan möta tio, tjugo mätlinjer i facit. Utan det här paras bara de fyra
+    längsta ihop och resten står som saknade dragningar på ett stråk vi faktiskt äger hela.
+    """
+    got: list[int] = []
+    tot = 0.0
+    room = max(TOL_ABS, TOL_REL * target)
+    for i, v in sorted(pool, key=lambda t: (-t[1], t[0]))[:GREEDY_PARTS * 2]:
+        if len(got) >= GREEDY_PARTS or tot + v > target + room:
+            continue
+        got.append(i)
+        tot += v
+        if len(got) >= 2 and same(tot, target):
+            return got
+    return None
 
 
 def pair_runs(fac: list[float], ours: list[dict]) -> list[dict]:
@@ -87,14 +108,16 @@ def pair_runs(fac: list[float], ours: list[dict]) -> list[dict]:
     free_o = [j for j in free_o if j not in taken_o]
 
     for j in list(free_o):                                   # ett rör = flera dragningar
-        pick = _subset(ov[j], [(i, fv[i]) for i in free_f])
+        pool = [(i, fv[i]) for i in free_f]
+        pick = _subset(ov[j], pool) or _greedy(ov[j], pool)
         if pick:
             free_f = [i for i in free_f if i not in pick]
             free_o.remove(j)
             out.append({"class": "MERGED", "reference": [round(fv[i], 2) for i in pick], "ours": [j]})
 
     for i in list(free_f):                                   # flera rör = en dragning
-        pick = _subset(fv[i], [(j, ov[j]) for j in free_o])
+        pool = [(j, ov[j]) for j in free_o]
+        pick = _subset(fv[i], pool) or _greedy(fv[i], pool)
         if pick:
             free_o = [j for j in free_o if j not in pick]
             free_f.remove(i)
