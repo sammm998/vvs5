@@ -287,6 +287,11 @@ RULES: tuple[Rule, ...] = (
          "Hur säker igenkänningen måste vara på ett tecken. Under det skrivs ett frågetecken i stället för en "
          "gissning - en felläst siffra i en dimension är dyrare än en oläst.",
          "andel", 0.14, 0.0, 1.0, "code", True),
+    Rule("text.vector_text.MARK_MAX_PT", G_TEXT, "Hur stort ett bockmärke får vara",
+         "Ett ensamt rakt streck bland texten är ett bockmärke - ett pilstreck vid en hänvisningslinjes ände, "
+         "ett kryss över den. Större än så är strecket en linje, och linjer hör till geometrin: tas de för "
+         "märken försvinner de ur den, och en etikett vars hänvisningslinje försvann pekar inte på något.",
+         "pt", 12.0, 2.0, 40.0, "leader", True),
     Rule("text.recognize.MAX_ASPECT", G_TEXT, "Hur avlångt ett tecken får vara",
          "Ett streck som är mycket längre än det är högt är en linje, inte en bokstav.",
          "andel", 12.0, 2.0, 50.0, None, True),

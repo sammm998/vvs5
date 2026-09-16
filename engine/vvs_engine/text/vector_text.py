@@ -18,6 +18,9 @@ from .postprocess import resolve_twins
 from .strokes import GlyphCandidate, RowCluster, StrokeComponent, build_components, cluster_rows, size_families
 
 
+MARK_MAX_PT = 12.0    # ett märke är litet; ett streck som är längre än så är en linje, och linjer hör till geometrin
+
+
 @dataclass
 class Mark:
     """An isolated straight stroke (1-2 segments) on a glyph-carrying layer: a tick/marker candidate, not text."""
@@ -212,13 +215,21 @@ def _is_junk_row(row: TextRow) -> bool:
 
 
 def _is_mark(rc: RowCluster) -> bool:
+    """Ett ensamt rakt streck bland texten: ett bockmärke, inte ett tecken - och inte heller en linje.
+
+    Storleken hör till frågan. Läsningen ställde den på tre ställen och svarade på två av dem att ett märke är
+    högst MARK_MAX_PT stort, men här inte alls, och ett streck som var för långt för att vara ett märke blev
+    ändå ett. Det är inte ofarligt: ett märke plockas ur geometrin, och var det i själva verket etikettens
+    hänvisningslinje står etiketten sedan utan linje och röret utan namn - metrarna hamnar då hos grannröret.
+    Samma gräns på alla tre ställena.
+    """
     if len(rc.glyphs) != 1:
         return False
     g = rc.glyphs[0]
     if len(g.comps) != 1:
         return False
     c = g.comps[0]
-    return len(c.segs) <= 2 and all(p.n_curves == 0 for p in c.paths)
+    return len(c.segs) <= 2 and all(p.n_curves == 0 for p in c.paths) and max(c.w, c.h) <= MARK_MAX_PT
 
 
 def _glyph_image(g: GlyphCandidate, angle: float):
@@ -281,7 +292,7 @@ def vector_text_rows(page: RawPage, timing: dict | None = None, say=None) -> Vec
     for c in comps:
         if c.cid in used_comp:
             continue
-        if len(c.segs) <= 2 and all(p.n_curves == 0 for p in c.paths) and max(c.w, c.h) <= 12.0:
+        if len(c.segs) <= 2 and all(p.n_curves == 0 for p in c.paths) and max(c.w, c.h) <= MARK_MAX_PT:
             marks.append(Mark(mid=stable_id("mark", page.info.index, c.cid), layer=c.layer, style=c.style, bbox=c.bbox,
                               segs=c.segs, path_ids=[p.pid for p in c.paths]))
             used_comp.add(c.cid)
@@ -349,7 +360,7 @@ def vector_text_rows(page: RawPage, timing: dict | None = None, say=None) -> Vec
             # its components are geometry after all: small straight ones are marker candidates (ticks, dots)
             for g in rc.glyphs:
                 for c in g.comps:
-                    if len(c.segs) <= 2 and all(p.n_curves == 0 for p in c.paths) and max(c.w, c.h) <= 12.0:
+                    if len(c.segs) <= 2 and all(p.n_curves == 0 for p in c.paths) and max(c.w, c.h) <= MARK_MAX_PT:
                         marks.append(Mark(mid=stable_id("mark", page.info.index, c.cid), layer=c.layer, style=c.style, bbox=c.bbox,
                                           segs=c.segs, path_ids=[p.pid for p in c.paths]))
             continue
