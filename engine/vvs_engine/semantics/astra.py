@@ -139,6 +139,13 @@ ASKABLE = ("several_vector_families_at_leader_no_token_discrimination",
            "system_conflict", "multi_row_equal_counts_no_discrimination",
            "multi_row_label_shares_one_run", "multi_row_no_compatible_layer_group")
 
+# En stapel etiketter över ett knippe parallella rör. Här är kandidaterna inte pennor utan *stråk* - de ligger
+# i samma penna, på samma lager, och skiljer sig bara i läge. Läsningen har redan försökt para ihop dem efter
+# bladets egen radordning och misslyckats; det som står kvar är den mest ordrika sortens tvetydighet vi har,
+# och den enda där en läsare har något att titta på som läsningen inte redan vägt.
+BUNDLE_ASKABLE = "multi_row_bundle_awaiting_elimination"
+RUN = "stråk"                       # kandidatens namn: RUN + mellanslag + ordningsnummer, räknat från 1
+
 
 def questions_for(anchors: list) -> list[Question]:
     """One question per open attachment case, carrying only families the leader actually touched.
@@ -165,7 +172,44 @@ def questions_for(anchors: list) -> list[Question]:
         ] + [f"  - {f}  ({sum(1 for c in a.contacts if c.family == f)} kontaktpunkt(er), "
              f"kontakttyp {sorted({c.kind for c in a.contacts if c.family == f})})" for f in fams])
         out.append(Question(case_id=a.anchor_id, kind="attachment", evidence=ev, candidates=tuple(fams)))
+    out.extend(q for q in (_bundle_question(a) for a in anchors) if q is not None)
+    out.sort(key=lambda q: (q.kind, q.case_id))
     return out
+
+
+def _bundle_question(a) -> "Question | None":
+    """Vilket av knippets stråk den här etiketten i stapeln namnger, beskrivet i läge och inget annat.
+
+    Konventionen - att stapelns rader följer stråkens ordning tvärs knippet - prövas redan av läsningen, och de
+    fall som kommer hit är de där den inte räckte. Därför står den inte i frågan: det som står är var etiketten
+    sitter i stapeln och var varje stråk går. Säger geometrin ingenting som skiljer stråken åt är OKLART rätt
+    svar, och frågan säger det.
+    """
+    if a.state != "AMBIGUOUS_PIPE_ATTACHMENT" or not (a.reason or "").startswith(BUNDLE_ASKABLE):
+        return None
+    b = ((a.evidence or {}).get("bundle") or {})
+    runs = b.get("runs") or []
+    if len(runs) < 2 or b.get("all_rows_agree"):
+        return None
+    where = {(c.pid, c.seg_index): c.point for c in a.contacts}
+    lines = [
+        f"beteckning: {a.designation_display or a.designation}",
+        f"system enligt etiketten: {a.system_token or '-'}   DN: {a.dn if a.dn is not None else '-'}",
+        f"etiketten är rad {int(b.get('pos', 0)) + 1} av {int(b.get('n', len(runs)))} i en stapel över ett knippe",
+        f"varför läsningen stannade: {a.reason}",
+        f"ledarlinjens familj: {(a.evidence or {}).get('leader_family', '-')}",
+        f"ledarlinjen slutar i punkten {[round(v, 1) for v in a.endpoint]}",
+        "stråken i knippet, i den ordning de ligger:",
+    ]
+    for i, r in enumerate(runs):
+        pts = [where.get((pid, seg)) for pid, seg in r]
+        pts = [p for p in pts if p]
+        span = (f"från {[round(v, 1) for v in pts[0]]} till {[round(v, 1) for v in pts[-1]]}" if pts
+                else "utan kontaktpunkt vid ledaren")
+        lines.append(f"  {RUN} {i + 1}: {len(r)} bit(ar), {span}")
+    lines.append("Svara OKLART om läget inte skiljer stråken åt.")
+    return Question(case_id=a.anchor_id, kind="bundle", evidence="\n".join(lines),
+                    candidates=tuple(f"{RUN} {i + 1}" for i in range(len(runs))))
 
 
 def apply_answers(anchors: list, answers: list[Answer]) -> list[dict]:
@@ -184,6 +228,9 @@ def apply_answers(anchors: list, answers: list[Answer]) -> list[dict]:
         a = by_id.get(ans.case_id)
         if a is None or a.state != "AMBIGUOUS_PIPE_ATTACHMENT":
             continue
+        if ans.choice.startswith(RUN + " "):
+            applied.extend(_apply_bundle(a, ans))
+            continue
         keep = [c for c in a.contacts if c.family == ans.choice]
         if not keep:
             continue                # the chosen family is not one this leader touched: refuse at the door too
@@ -194,3 +241,24 @@ def apply_answers(anchors: list, answers: list[Answer]) -> list[dict]:
         a.evidence = dict(a.evidence or {}, second_reader={"chose": ans.choice, "why": ans.why[:200]})
         applied.append({"anchor": a.anchor_id, "chose": ans.choice, "why": ans.why[:200]})
     return applied
+
+
+def _apply_bundle(a, ans) -> list[dict]:
+    """Ett valt stråk smalnar av ankaret till just det stråkets kontakter - och bara om de finns kvar här."""
+    runs = ((a.evidence or {}).get("bundle") or {}).get("runs") or []
+    try:
+        i = int(ans.choice.split()[-1]) - 1
+    except ValueError:
+        return []
+    if not (0 <= i < len(runs)):
+        return []
+    want = {(pid, seg) for pid, seg in runs[i]}
+    keep = [c for c in a.contacts if (c.pid, c.seg_index) in want]
+    if not keep:
+        return []                   # stråket är inget den här ledaren rörde: neka vid dörren också
+    a.contacts = keep
+    a.candidate_families = sorted({c.family for c in keep})
+    a.state = "VERIFIED_PIPE_ATTACHMENT"
+    a.reason = "settled_by_second_reader_among_the_drawings_own_candidates"
+    a.evidence = dict(a.evidence or {}, second_reader={"chose": ans.choice, "why": ans.why[:200]})
+    return [{"anchor": a.anchor_id, "chose": ans.choice, "why": ans.why[:200]}]
