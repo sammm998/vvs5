@@ -95,10 +95,21 @@ Den gjorde det inte; den utsåg en vinnare i tysthet.
 men alla fyra omläsningarna sker i SAMMA process, med samma hashfrö. Provet frågade "spelar ordningen på
 bladets objekt någon roll?" och svarade ärligt nej. Det frågade aldrig om processen spelar roll.
 
-**Vad det betyder för den här grinden.** gate79 och gate80 kördes var för sig, i var sin process, med var sitt
-godtyckliga frö. Skillnaden mellan dem innehåller alltså både klippningen och det här bruset, och raden
-`W-50-1-A0122` i bladtabellen ovan förklaras av bruset, inte av klippning. Hur stort bruset är mäts separat
-(två körningar av den orättade motorn under frö 0 och frö 3) och redovisas i grind 81.
+**Hur stort bruset är, mätt.** Korpusen kördes om med exakt samma motorkod som gate80, i en isolerad kopia,
+under `PYTHONHASHSEED=0`. Allt utom fröet är identiskt, så skillnaden ÄR bruset:
+
+| | gate80 | frö 0 | skillnad |
+|---|---:|---:|---:|
+| COVERAGE | 78,02 | 78,04 | **+0,02** |
+| FALSE_OWNERSHIP | 10,95 | 10,93 | **-0,02** |
+| ägda meter | 8 893,4 | 8 895,9 | +2,5 |
+| falska meter | 1 248,3 | 1 245,8 | -2,5 |
+
+**Ett enda blad av 59 skiljer sig: W-50-1-A0122, med 2,5 m.** Alla övriga 58 är identiska.
+
+Det avgör grinden. Klippningen flyttade falskt ägande **4,27 procentenheter**; bruset är **0,02**. Förbättringen
+är ungefär tvåhundra gånger bruset, och ACCEPT står. Och raden `W-50-1-A0122` i bladtabellen ovan var helt och
+hållet brus - precis det blad som skiljer, med precis de metrarna - inte klippning.
 
 ## Beslut
 
@@ -109,4 +120,4 @@ ritats förbi planens ram.
 
 ## Prov
 
-826 gröna (808 tidigare + 8 klippgeometri + 6 mätetal + 4 projektprior). Kontamineringsskannern PASS.
+833 gröna (808 tidigare + 8 klippgeometri + 6 mätetal + 4 projektprior + 7 processoberoende). Kontamineringsskannern PASS.

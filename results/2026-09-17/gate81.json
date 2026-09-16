@@ -1,0 +1,3747 @@
+{
+ "A": {
+  "state": "OK",
+  "input": "validation_A/clean.pdf",
+  "input_sha256": "c2884f3007f3764a",
+  "seconds": 16.5,
+  "n_pages": 1,
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree",
+   "meters_per_pt": 0.017638888888888885
+  },
+  "coverage": {
+   "designations": 22,
+   "with_dn": null,
+   "leaders": 140,
+   "verified_attachments": 131,
+   "ambiguous_attachments": 6,
+   "no_attachments": 3,
+   "anchor_states": {
+    "VERIFIED_PIPE_ATTACHMENT": 131,
+    "AMBIGUOUS_PIPE_ATTACHMENT": 6,
+    "NO_PIPE_ATTACHMENT": 3
+   },
+   "pipe_names": 22,
+   "pipe_names_with_metres": 19,
+   "without_metres": [
+    "D1",
+    "S2",
+    "VVC1"
+   ],
+   "physical_pipes": 42,
+   "unowned_m": 0.0,
+   "ambiguous_m": 1.25,
+   "claimed_m": 30.82,
+   "reconciliation": "VALID",
+   "named_vs_measured": 99.3
+  },
+  "names_read": [
+   "D1",
+   "KV1",
+   "KV1-X31",
+   "KV2",
+   "KV2-X31",
+   "KV2-X31-16",
+   "S1",
+   "S1-P2",
+   "S1-P2-110",
+   "S1-P2-75",
+   "S2",
+   "S3",
+   "S3-P2",
+   "S3-P2-160",
+   "S3-R8",
+   "S3-R8-110",
+   "S3-R8-160",
+   "S3-R8-75",
+   "VV1",
+   "VV1-X31",
+   "VV1-X31-16",
+   "VVC1"
+  ],
+  "names_with_metres": [
+   "KV1-X31-16",
+   "KV2-X31-16",
+   "S1-P2-110",
+   "S1-P2-75",
+   "S3-P2-160",
+   "S3-R8-110",
+   "S3-R8-160",
+   "S3-R8-75",
+   "VV1-X31-16"
+  ],
+  "frontiers": {
+   "frontiers": 115,
+   "pipes": 42,
+   "silent_pipes": [],
+   "by_reason": {
+    "AMBIGUOUS_JUNCTION": 2,
+    "FLOW_BUDGET": 1,
+    "FREE_END": 4,
+    "REAL_DN_BOUNDARY": 48,
+    "SYMBOL": 12,
+    "VERTICAL": 48
+   },
+   "real_boundaries": 112,
+   "lossy_boundaries": 0,
+   "open_boundaries": 3,
+   "unowned_beyond_pt": 0.0,
+   "unowned_beyond_m": 0.0
+  },
+  "quantities": [
+   {
+    "designation": "KV1-X31-16",
+    "base": "KV1-X31",
+    "dn": 16,
+    "system": "KV1",
+    "physical_pipe_count": 2,
+    "confirmed_horizontal_m": 17.222,
+    "confirmed_vertical_m": 0.0,
+    "confirmed_total_m": 17.222,
+    "horizontal_pdf_units": 976.386,
+    "ambiguous_m": 0.0,
+    "vertical_known": false,
+    "in_hatched_area_m": 3.367,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_52d83106bd6d",
+     "pp_969f9806b41d"
+    ],
+    "label_count": 1,
+    "riser_count": 2,
+    "riser_count_from_labels": 0,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": "UNKNOWN"
+   },
+   {
+    "designation": "KV2-X31-16",
+    "base": "KV2-X31",
+    "dn": 16,
+    "system": "KV2",
+    "physical_pipe_count": 5,
+    "confirmed_horizontal_m": 33.107,
+    "confirmed_vertical_m": 0.0,
+    "confirmed_total_m": 33.107,
+    "horizontal_pdf_units": 1876.955,
+    "ambiguous_m": 0.0,
+    "vertical_known": false,
+    "in_hatched_area_m": 0.0,
+    "declared_m": 6.238655524232345,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_05d71aa3eadf",
+     "pp_6b193f3ebe3d",
+     "pp_c8f98188f33c",
+     "pp_d17365fc7f06",
+     "pp_dbf2ee243156"
+    ],
+    "label_count": 5,
+    "riser_count_from_labels": 5,
+    "riser_count": 8,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": "UNKNOWN"
+   },
+   {
+    "designation": "S1-P2-110",
+    "base": "S1-P2",
+    "dn": 110,
+    "system": "S1",
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 10.042,
+    "confirmed_vertical_m": 0.11,
+    "confirmed_total_m": 10.152,
+    "horizontal_pdf_units": 569.318,
+    "ambiguous_m": 0.0,
+    "vertical_known": true,
+    "in_hatched_area_m": 2.483,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_711d143a0dba"
+    ],
+    "label_count": 5,
+    "riser_count_from_labels": 1,
+    "riser_count": 1,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": 0.11
+   },
+   {
+    "designation": "S1-P2-75",
+    "base": "S1-P2",
+    "dn": 75,
+    "system": "S1",
+    "physical_pipe_count": 4,
+    "confirmed_horizontal_m": 3.74,
+    "confirmed_vertical_m": 0.01,
+    "confirmed_total_m": 3.75,
+    "horizontal_pdf_units": 212.04,
+    "ambiguous_m": 0.633,
+    "vertical_known": true,
+    "in_hatched_area_m": 4.617,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_06062bb09fd2",
+     "pp_5068c748c0e2",
+     "pp_7854eb844139",
+     "pp_c998756e9c67"
+    ],
+    "ambiguous_pdf_units": 35.88,
+    "label_count": 9,
+    "riser_count_from_labels": 5,
+    "riser_count": 6,
+    "vertical_m": 0.01
+   },
+   {
+    "designation": "S3-P2-160",
+    "base": "S3-P2",
+    "dn": 160,
+    "system": "S3",
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 16.832,
+    "confirmed_vertical_m": 0.0,
+    "confirmed_total_m": 16.832,
+    "horizontal_pdf_units": 954.265,
+    "ambiguous_m": 0.0,
+    "vertical_known": false,
+    "in_hatched_area_m": 0.0,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_cf90ed9a9821"
+    ],
+    "label_count": 5,
+    "riser_count_from_labels": 1,
+    "riser_count": 1,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": "UNKNOWN"
+   },
+   {
+    "designation": "S3-R8-110",
+    "base": "S3-R8",
+    "dn": 110,
+    "system": "S3",
+    "physical_pipe_count": 5,
+    "confirmed_horizontal_m": 56.269,
+    "confirmed_vertical_m": 0.47,
+    "confirmed_total_m": 56.739,
+    "horizontal_pdf_units": 3190.06,
+    "ambiguous_m": 0.307,
+    "vertical_known": true,
+    "in_hatched_area_m": 0.0,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_6bf2a6d67866",
+     "pp_7f538bc84c69",
+     "pp_8538c7d85742",
+     "pp_bc655b83b619",
+     "pp_d921de7b1990"
+    ],
+    "ambiguous_pdf_units": 17.395,
+    "label_count": 34,
+    "riser_count_from_labels": 6,
+    "riser_count": 6,
+    "vertical_m": 0.47
+   },
+   {
+    "designation": "S3-R8-160",
+    "base": "S3-R8",
+    "dn": 160,
+    "system": "S3",
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 16.994,
+    "confirmed_vertical_m": 0.19,
+    "confirmed_total_m": 17.184,
+    "horizontal_pdf_units": 963.465,
+    "ambiguous_m": 0.0,
+    "vertical_known": true,
+    "in_hatched_area_m": 0.0,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_304f64862dc4"
+    ],
+    "label_count": 5,
+    "riser_count": 1,
+    "riser_count_from_labels": 0,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": 0.19
+   },
+   {
+    "designation": "S3-R8-75",
+    "base": "S3-R8",
+    "dn": 75,
+    "system": "S3",
+    "physical_pipe_count": 18,
+    "confirmed_horizontal_m": 22.507,
+    "confirmed_vertical_m": 0.12,
+    "confirmed_total_m": 22.627,
+    "horizontal_pdf_units": 1275.977,
+    "ambiguous_m": 0.307,
+    "vertical_known": true,
+    "in_hatched_area_m": 1.633,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_0d9c36479fcf",
+     "pp_2875684cd14a",
+     "pp_36e4a08a9111",
+     "pp_3c8cef2a0af6",
+     "pp_4ffe683d8e91",
+     "pp_5e8187ac550c",
+     "pp_84cc3e193ce3",
+     "pp_84db44138b56",
+     "pp_918747699cb6",
+     "pp_9788ef9b7394",
+     "pp_9df97cbdff1f",
+     "pp_a55403c840eb",
+     "pp_b3b8c3e0cfbf",
+     "pp_befc7ce04bfb",
+     "pp_c17ca2061590",
+     "pp_c5a8561090f5",
+     "pp_cbba5d1d3ec6",
+     "pp_e7d2ddb58154"
+    ],
+    "ambiguous_pdf_units": 17.395,
+    "label_count": 62,
+    "riser_count_from_labels": 35,
+    "riser_count": 31,
+    "vertical_m": 0.12
+   },
+   {
+    "designation": "VV1-X31-16",
+    "base": "VV1-X31",
+    "dn": 16,
+    "system": "VV1",
+    "physical_pipe_count": 5,
+    "confirmed_horizontal_m": 33.916,
+    "confirmed_vertical_m": 0.0,
+    "confirmed_total_m": 33.916,
+    "horizontal_pdf_units": 1922.809,
+    "ambiguous_m": 0.0,
+    "vertical_known": false,
+    "in_hatched_area_m": 0.0,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_1390c73396c1",
+     "pp_1e96b7ba3047",
+     "pp_284bc1069134",
+     "pp_4ca9f49c774b",
+     "pp_9c645556d709"
+    ],
+    "label_count": 5,
+    "riser_count_from_labels": 5,
+    "riser_count": 3,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": "UNKNOWN"
+   }
+  ],
+  "totals": {
+   "physical_pipes": 42,
+   "confirmed_horizontal_m": 210.629,
+   "confirmed_vertical_m": 0.9,
+   "confirmed_total_m": 211.529,
+   "ambiguous_m": 1.247,
+   "in_hatched_area_m": 12.1,
+   "riser_labels": 59
+  },
+  "pipes": [
+   {
+    "id": "pp_05d71aa3eadf",
+    "designation": "KV2-X31-16",
+    "identity": "KV2-X31|DN16",
+    "system": "KV2",
+    "dn": 16,
+    "horizontal_m": 5.739,
+    "total_m": 5.739,
+    "horizontal_pdf_units": 325.361,
+    "bridged_gap_pt": 46.92,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1081.7,
+     796.2,
+     1346.0,
+     840.6
+    ]
+   },
+   {
+    "id": "pp_06062bb09fd2",
+    "designation": "S1-P2-75",
+    "identity": "S1-P2|DN75",
+    "system": "S1",
+    "dn": 75,
+    "horizontal_m": 0.008,
+    "total_m": 0.008,
+    "horizontal_pdf_units": 0.48,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S1-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "FLOW_BUDGET"
+    ],
+    "n_frontiers": 1,
+    "bbox": [
+     655.9,
+     448.2,
+     655.9,
+     448.5
+    ]
+   },
+   {
+    "id": "pp_0d9c36479fcf",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.254,
+    "total_m": 0.254,
+    "horizontal_pdf_units": 14.427,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     933.7,
+     1286.1,
+     943.9,
+     1296.3
+    ]
+   },
+   {
+    "id": "pp_1390c73396c1",
+    "designation": "VV1-X31-16",
+    "identity": "VV1-X31|DN16",
+    "system": "VV1",
+    "dn": 16,
+    "horizontal_m": 5.741,
+    "total_m": 5.741,
+    "horizontal_pdf_units": 325.446,
+    "bridged_gap_pt": 46.44,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1081.7,
+     783.4,
+     1340.4,
+     827.3
+    ]
+   },
+   {
+    "id": "pp_1e96b7ba3047",
+    "designation": "VV1-X31-16",
+    "identity": "VV1-X31|DN16",
+    "system": "VV1",
+    "dn": 16,
+    "horizontal_m": 8.214,
+    "total_m": 8.214,
+    "horizontal_pdf_units": 465.649,
+    "bridged_gap_pt": 76.32,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     915.7,
+     822.6,
+     1074.8,
+     1142.4
+    ]
+   },
+   {
+    "id": "pp_284bc1069134",
+    "designation": "VV1-X31-16",
+    "identity": "VV1-X31|DN16",
+    "system": "VV1",
+    "dn": 16,
+    "horizontal_m": 6.709,
+    "total_m": 6.709,
+    "horizontal_pdf_units": 380.356,
+    "bridged_gap_pt": 51.09,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1081.7,
+     824.4,
+     1345.1,
+     995.1
+    ]
+   },
+   {
+    "id": "pp_2875684cd14a",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 1.0,
+    "total_m": 1.0,
+    "horizontal_pdf_units": 56.697,
+    "bridged_gap_pt": 29.64,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "SYMBOL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1487.5,
+     906.8,
+     1636.8,
+     906.8
+    ]
+   },
+   {
+    "id": "pp_304f64862dc4",
+    "designation": "S3-R8-160",
+    "identity": "S3-R8|DN160",
+    "system": "S3",
+    "dn": 160,
+    "horizontal_m": 16.994,
+    "total_m": 17.184,
+    "horizontal_pdf_units": 963.465,
+    "bridged_gap_pt": 161.21,
+    "state": "CONFIRMED",
+    "anchors": 7,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "SYMBOL"
+    ],
+    "n_frontiers": 7,
+    "bbox": [
+     373.4,
+     906.8,
+     1250.6,
+     956.0
+    ]
+   },
+   {
+    "id": "pp_36e4a08a9111",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 2.794,
+    "total_m": 2.824,
+    "horizontal_pdf_units": 158.385,
+    "bridged_gap_pt": 12.72,
+    "state": "CONFIRMED",
+    "anchors": 5,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 3,
+    "bbox": [
+     852.0,
+     717.9,
+     972.7,
+     752.8
+    ]
+   },
+   {
+    "id": "pp_3c8cef2a0af6",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.523,
+    "total_m": 0.523,
+    "horizontal_pdf_units": 29.64,
+    "bridged_gap_pt": 3.96,
+    "state": "CONFIRMED",
+    "anchors": 4,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1041.7,
+     590.2,
+     1071.4,
+     590.2
+    ]
+   },
+   {
+    "id": "pp_4ca9f49c774b",
+    "designation": "VV1-X31-16",
+    "identity": "VV1-X31|DN16",
+    "system": "VV1",
+    "dn": 16,
+    "horizontal_m": 7.259,
+    "total_m": 7.259,
+    "horizontal_pdf_units": 411.508,
+    "bridged_gap_pt": 68.16,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     905.2,
+     819.2,
+     1074.8,
+     1074.2
+    ]
+   },
+   {
+    "id": "pp_4ffe683d8e91",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 3.346,
+    "total_m": 3.366,
+    "horizontal_pdf_units": 189.719,
+    "bridged_gap_pt": 25.32,
+    "state": "CONFIRMED",
+    "anchors": 6,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 3,
+    "bbox": [
+     472.3,
+     1195.0,
+     554.0,
+     1298.6
+    ]
+   },
+   {
+    "id": "pp_5068c748c0e2",
+    "designation": "S1-P2-75",
+    "identity": "S1-P2|DN75",
+    "system": "S1",
+    "dn": 75,
+    "horizontal_m": 0.0,
+    "total_m": 0.0,
+    "horizontal_pdf_units": 0.0,
+    "bridged_gap_pt": 46.77,
+    "state": "IN_HATCHED_AREA",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S1-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "FREE_END",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     611.5,
+     141.0,
+     853.4,
+     189.3
+    ]
+   },
+   {
+    "id": "pp_52d83106bd6d",
+    "designation": "KV1-X31-16",
+    "identity": "KV1-X31|DN16",
+    "system": "KV1",
+    "dn": 16,
+    "horizontal_m": 8.637,
+    "total_m": 8.637,
+    "horizontal_pdf_units": 489.641,
+    "bridged_gap_pt": 110.65,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1081.7,
+     847.7,
+     1636.8,
+     922.8
+    ]
+   },
+   {
+    "id": "pp_5e8187ac550c",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.307,
+    "total_m": 0.307,
+    "horizontal_pdf_units": 17.4,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1344.4,
+     946.8,
+     1344.4,
+     964.2
+    ]
+   },
+   {
+    "id": "pp_6b193f3ebe3d",
+    "designation": "KV2-X31-16",
+    "identity": "KV2-X31|DN16",
+    "system": "KV2",
+    "dn": 16,
+    "horizontal_m": 6.963,
+    "total_m": 6.963,
+    "horizontal_pdf_units": 394.741,
+    "bridged_gap_pt": 68.16,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     909.1,
+     838.8,
+     1074.8,
+     1075.2
+    ]
+   },
+   {
+    "id": "pp_6bf2a6d67866",
+    "designation": "S3-R8-110",
+    "identity": "S3-R8|DN110",
+    "system": "S3",
+    "dn": 110,
+    "horizontal_m": 6.77,
+    "total_m": 6.85,
+    "horizontal_pdf_units": 383.797,
+    "bridged_gap_pt": 50.96,
+    "state": "CONFIRMED",
+    "anchors": 9,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY"
+    ],
+    "n_frontiers": 5,
+    "bbox": [
+     457.0,
+     906.8,
+     500.4,
+     1195.0
+    ]
+   },
+   {
+    "id": "pp_711d143a0dba",
+    "designation": "S1-P2-110",
+    "identity": "S1-P2|DN110",
+    "system": "S1",
+    "dn": 110,
+    "horizontal_m": 10.042,
+    "total_m": 10.152,
+    "horizontal_pdf_units": 569.318,
+    "bridged_gap_pt": 110.4,
+    "state": "CONFIRMED",
+    "anchors": 10,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S1-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "FREE_END",
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 5,
+    "bbox": [
+     721.8,
+     141.0,
+     883.0,
+     536.6
+    ]
+   },
+   {
+    "id": "pp_7854eb844139",
+    "designation": "S1-P2-75",
+    "identity": "S1-P2|DN75",
+    "system": "S1",
+    "dn": 75,
+    "horizontal_m": 3.442,
+    "total_m": 3.452,
+    "horizontal_pdf_units": 195.12,
+    "bridged_gap_pt": 29.64,
+    "state": "CONFIRMED",
+    "anchors": 3,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S1-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     536.2,
+     490.6,
+     721.8,
+     490.6
+    ]
+   },
+   {
+    "id": "pp_7f538bc84c69",
+    "designation": "S3-R8-110",
+    "identity": "S3-R8|DN110",
+    "system": "S3",
+    "dn": 110,
+    "horizontal_m": 2.233,
+    "total_m": 2.273,
+    "horizontal_pdf_units": 126.619,
+    "bridged_gap_pt": 12.6,
+    "state": "CONFIRMED",
+    "anchors": 4,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 3,
+    "bbox": [
+     519.7,
+     818.9,
+     557.3,
+     906.8
+    ]
+   },
+   {
+    "id": "pp_84cc3e193ce3",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.287,
+    "total_m": 0.287,
+    "horizontal_pdf_units": 16.293,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     493.5,
+     1079.1,
+     505.0,
+     1090.6
+    ]
+   },
+   {
+    "id": "pp_84db44138b56",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.246,
+    "total_m": 0.246,
+    "horizontal_pdf_units": 13.92,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 3,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1297.8,
+     701.8,
+     1297.8,
+     715.7
+    ]
+   },
+   {
+    "id": "pp_8538c7d85742",
+    "designation": "S3-R8-110",
+    "identity": "S3-R8|DN110",
+    "system": "S3",
+    "dn": 110,
+    "horizontal_m": 13.308,
+    "total_m": 13.428,
+    "horizontal_pdf_units": 754.493,
+    "bridged_gap_pt": 98.02,
+    "state": "CONFIRMED",
+    "anchors": 17,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "AMBIGUOUS_JUNCTION",
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 8,
+    "bbox": [
+     892.2,
+     401.3,
+     1041.7,
+     906.8
+    ]
+   },
+   {
+    "id": "pp_918747699cb6",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.256,
+    "total_m": 0.256,
+    "horizontal_pdf_units": 14.52,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     773.8,
+     1226.3,
+     788.3,
+     1226.3
+    ]
+   },
+   {
+    "id": "pp_969f9806b41d",
+    "designation": "KV1-X31-16",
+    "identity": "KV1-X31|DN16",
+    "system": "KV1",
+    "dn": 16,
+    "horizontal_m": 8.586,
+    "total_m": 8.586,
+    "horizontal_pdf_units": 486.745,
+    "bridged_gap_pt": 106.45,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "FREE_END",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1081.7,
+     844.1,
+     1633.0,
+     918.9
+    ]
+   },
+   {
+    "id": "pp_9788ef9b7394",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.756,
+    "total_m": 0.756,
+    "horizontal_pdf_units": 42.84,
+    "bridged_gap_pt": 3.96,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "SYMBOL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1019.5,
+     448.0,
+     1035.4,
+     475.0
+    ]
+   },
+   {
+    "id": "pp_9c645556d709",
+    "designation": "VV1-X31-16",
+    "identity": "VV1-X31|DN16",
+    "system": "VV1",
+    "dn": 16,
+    "horizontal_m": 5.995,
+    "total_m": 5.995,
+    "horizontal_pdf_units": 339.85,
+    "bridged_gap_pt": 51.12,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BC-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1081.7,
+     731.0,
+     1346.0,
+     817.4
+    ]
+   },
+   {
+    "id": "pp_9df97cbdff1f",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.226,
+    "total_m": 0.226,
+    "horizontal_pdf_units": 12.84,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     909.1,
+     1039.6,
+     922.0,
+     1039.6
+    ]
+   },
+   {
+    "id": "pp_a55403c840eb",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.233,
+    "total_m": 0.233,
+    "horizontal_pdf_units": 13.2,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 3,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1384.7,
+     701.8,
+     1384.7,
+     715.0
+    ]
+   },
+   {
+    "id": "pp_b3b8c3e0cfbf",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 2.875,
+    "total_m": 2.905,
+    "horizontal_pdf_units": 163.015,
+    "bridged_gap_pt": 16.8,
+    "state": "CONFIRMED",
+    "anchors": 7,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 3,
+    "bbox": [
+     972.7,
+     657.2,
+     1075.6,
+     689.0
+    ]
+   },
+   {
+    "id": "pp_bc655b83b619",
+    "designation": "S3-R8-110",
+    "identity": "S3-R8|DN110",
+    "system": "S3",
+    "dn": 110,
+    "horizontal_m": 17.17,
+    "total_m": 17.28,
+    "horizontal_pdf_units": 973.433,
+    "bridged_gap_pt": 136.25,
+    "state": "CONFIRMED",
+    "anchors": 17,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY"
+    ],
+    "n_frontiers": 5,
+    "bbox": [
+     1058.5,
+     715.0,
+     1487.5,
+     946.8
+    ]
+   },
+   {
+    "id": "pp_befc7ce04bfb",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 3.029,
+    "total_m": 3.039,
+    "horizontal_pdf_units": 171.717,
+    "bridged_gap_pt": 25.0,
+    "state": "CONFIRMED",
+    "anchors": 7,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "AMBIGUOUS_JUNCTION",
+     "VERTICAL"
+    ],
+    "n_frontiers": 3,
+    "bbox": [
+     1000.3,
+     719.3,
+     1075.6,
+     780.6
+    ]
+   },
+   {
+    "id": "pp_c17ca2061590",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.32,
+    "total_m": 0.32,
+    "horizontal_pdf_units": 18.12,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     769.6,
+     1067.6,
+     787.7,
+     1067.6
+    ]
+   },
+   {
+    "id": "pp_c5a8561090f5",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.322,
+    "total_m": 0.322,
+    "horizontal_pdf_units": 18.244,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     500.4,
+     1126.8,
+     516.4,
+     1142.7
+    ]
+   },
+   {
+    "id": "pp_c8f98188f33c",
+    "designation": "KV2-X31-16",
+    "identity": "KV2-X31|DN16",
+    "system": "KV2",
+    "dn": 16,
+    "horizontal_m": 7.924,
+    "total_m": 7.924,
+    "horizontal_pdf_units": 449.223,
+    "bridged_gap_pt": 81.24,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     919.3,
+     842.4,
+     1074.8,
+     1143.4
+    ]
+   },
+   {
+    "id": "pp_c998756e9c67",
+    "designation": "S1-P2-75",
+    "identity": "S1-P2|DN75",
+    "system": "S1",
+    "dn": 75,
+    "horizontal_m": 0.29,
+    "total_m": 0.29,
+    "horizontal_pdf_units": 16.44,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S1-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     731.9,
+     536.6,
+     731.9,
+     553.0
+    ]
+   },
+   {
+    "id": "pp_cbba5d1d3ec6",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 5.572,
+    "total_m": 5.602,
+    "horizontal_pdf_units": 315.879,
+    "bridged_gap_pt": 46.29,
+    "state": "CONFIRMED",
+    "anchors": 4,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 3,
+    "bbox": [
+     438.4,
+     620.4,
+     606.2,
+     826.7
+    ]
+   },
+   {
+    "id": "pp_cf90ed9a9821",
+    "designation": "S3-P2-160",
+    "identity": "S3-P2|DN160",
+    "system": "S3",
+    "dn": 160,
+    "horizontal_m": 16.832,
+    "total_m": 16.832,
+    "horizontal_pdf_units": 954.265,
+    "bridged_gap_pt": 169.84,
+    "state": "CONFIRMED",
+    "anchors": 4,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "FREE_END",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     372.5,
+     325.8,
+     792.1,
+     886.8
+    ]
+   },
+   {
+    "id": "pp_d17365fc7f06",
+    "designation": "KV2-X31-16",
+    "identity": "KV2-X31|DN16",
+    "system": "KV2",
+    "dn": 16,
+    "horizontal_m": 6.239,
+    "total_m": 6.239,
+    "horizontal_pdf_units": 353.688,
+    "bridged_gap_pt": 50.8,
+    "state": "CONFIRMED",
+    "anchors": 0,
+    "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1076.9,
+     847.1,
+     1339.4,
+     995.1
+    ]
+   },
+   {
+    "id": "pp_d921de7b1990",
+    "designation": "S3-R8-110",
+    "identity": "S3-R8|DN110",
+    "system": "S3",
+    "dn": 110,
+    "horizontal_m": 16.787,
+    "total_m": 16.907,
+    "horizontal_pdf_units": 951.718,
+    "bridged_gap_pt": 123.57,
+    "state": "CONFIRMED",
+    "anchors": 20,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 8,
+    "bbox": [
+     773.8,
+     906.8,
+     958.0,
+     1286.1
+    ]
+   },
+   {
+    "id": "pp_dbf2ee243156",
+    "designation": "KV2-X31-16",
+    "identity": "KV2-X31|DN16",
+    "system": "KV2",
+    "dn": 16,
+    "horizontal_m": 6.243,
+    "total_m": 6.243,
+    "horizontal_pdf_units": 353.943,
+    "bridged_gap_pt": 55.2,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-52BB-FE--V2-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     1081.7,
+     731.0,
+     1340.4,
+     837.2
+    ]
+   },
+   {
+    "id": "pp_e7d2ddb58154",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 0.161,
+    "total_m": 0.161,
+    "horizontal_pdf_units": 9.12,
+    "bridged_gap_pt": 0,
+    "state": "CONFIRMED",
+    "anchors": 2,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "REAL_DN_BOUNDARY",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     447.8,
+     1131.5,
+     457.0,
+     1131.5
+    ]
+   }
+  ],
+  "anchors": [
+   {
+    "id": "anc_00108d6e4ee0",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_00e9441e6d65",
+    "designation": "S3-P2-160",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_016e1ff65b4b",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_layer_token_match",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 3
+   },
+   {
+    "id": "anc_03094c50c335",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_054793c6c14d",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_0741268c0e16",
+    "designation": "S1-P2-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_collector"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_07d83fcbf4cf",
+    "designation": "VV1-X31",
+    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
+    "reason": "multi_row_label_shares_one_run",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_089b354f2e1a",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_0959f22d7903",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_09be117a3174",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_0a34ca457c64",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_0d443def8e76",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_13dd66b27c45",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_14e94550a76f",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_1726e680a31f",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_17bcf01e37dd",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_18a06f1f8d8f",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_18a7288186f8",
+    "designation": "S3-R8-160",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_19cc95b45bb0",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_19f08ec0bb94",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_1a94a92423fe",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_1aec50563f69",
+    "designation": "KV2-X31-16",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_1c1f57ba4e5d",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_1f7d4b086b72",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_2083f80067ff",
+    "designation": "S3-R8",
+    "state": "NO_PIPE_ATTACHMENT",
+    "reason": "leader_endpoint_touches_no_pipe_geometry",
+    "kinds": [],
+    "n_contacts": 0,
+    "n_primitives": 0,
+    "n_pids": 0,
+    "weak_only": false,
+    "n_families": 0
+   },
+   {
+    "id": "anc_20aa05836e81",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_20d80ce66a1b",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_219517f25304",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_2673feee6d3e",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_27b080f3adb0",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_27cc40f3dac3",
+    "designation": "S1-P2",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_2854c9488610",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_29a589543511",
+    "designation": "S3-P2-160",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_2afc9fe03f42",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_2c4e77b4aa44",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_2eaabe4b9ff4",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_311ead44971e",
+    "designation": "S3-R8-160",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_3159e25fbe5b",
+    "designation": "KV2-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_layer_token_bijection",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 2
+   },
+   {
+    "id": "anc_334e18064744",
+    "designation": "S1-P2-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_33cd2c921a5d",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_370760e5da1a",
+    "designation": "S1-P2",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_374c3986c70e",
+    "designation": "S3-R8-160",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_3866d05d862d",
+    "designation": "S3-P2",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_3dcd44f4fdb0",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_3fbaff5b5e4f",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_collector"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_401e8af3e542",
+    "designation": "S1-P2-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_4517f3012751",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_463031497f81",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_4a4dd33f5b06",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_50a07360e6e1",
+    "designation": "S1-P2-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_51e9e84cd80c",
+    "designation": "VV1-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_layer_token_bijection",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 2
+   },
+   {
+    "id": "anc_531fa774d32c",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_54075a70bfc9",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_collector"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_56d39093c8d5",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_5b0e099f1597",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_5ed68fb8cf2d",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_5ee03bdf21e9",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_6062bef5f8e2",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_61b4ad6a4a97",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_696a9d418157",
+    "designation": "S3-P2-160",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_6ca6d7ccddac",
+    "designation": "S1-P2",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_6cdf038f66dd",
+    "designation": "S3-R8-160",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_layer_token_match",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 2
+   },
+   {
+    "id": "anc_6d71f0125786",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_6de6de17948c",
+    "designation": "S1-P2-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_6e8b9495a47a",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_6fbb66579d7e",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 3,
+    "n_primitives": 3,
+    "n_pids": 3,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_7116e4007d03",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_76883544d9e2",
+    "designation": "VV1-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_layer_token_bijection",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_777806de4231",
+    "designation": "S1-P2",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_77c95270ae1b",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_780079571e7d",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_796da9e7b53f",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_79887d9b59b7",
+    "designation": "S1-P2-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_7a15ecfe83b1",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_7bfe50322890",
+    "designation": "KV1-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_layer_token_match",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 2
+   },
+   {
+    "id": "anc_7e8034ca49da",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_802e61ded709",
+    "designation": "VV1-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_layer_token_bijection",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 2
+   },
+   {
+    "id": "anc_803ec2abcf39",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_8195c4458ea2",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_84477ba14539",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_882bbd601768",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_895edbc0b893",
+    "designation": "KV2-X31",
+    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
+    "reason": "multi_row_label_shares_one_run",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_8a3b4abac732",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_8b665c296396",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_902bad555d8e",
+    "designation": "VV1-X31-16",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_95d14b695512",
+    "designation": "KV2-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_layer_token_bijection",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_95ed33e25cdd",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_9a206b436c6c",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_9f9330d73cca",
+    "designation": "S3-R8-110",
+    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
+    "reason": "system_conflict:layer_class_52BC_is_VV_not_S",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_a1b4f5bdfde0",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_a451f3f0aedf",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_a744b0a36959",
+    "designation": "S3-R8-75",
+    "state": "NO_PIPE_ATTACHMENT",
+    "reason": "leader_endpoint_touches_no_pipe_geometry",
+    "kinds": [],
+    "n_contacts": 0,
+    "n_primitives": 0,
+    "n_pids": 0,
+    "weak_only": false,
+    "n_families": 0
+   },
+   {
+    "id": "anc_a908816e92e3",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_ac6bf45c6a25",
+    "designation": "KV2-X31",
+    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
+    "reason": "multi_row_label_shares_one_run",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_acb38219fb6d",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_b3b6cc90657c",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_b4d6e1032d86",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_baf822512528",
+    "designation": "S1-P2-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_bcc24f8cc180",
+    "designation": "B10",
+    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
+    "reason": "system_conflict:layer_matches_S3_not_B10",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_c0c5cab32708",
+    "designation": "B10",
+    "state": "NO_PIPE_ATTACHMENT",
+    "reason": "leader_endpoint_touches_no_pipe_geometry",
+    "kinds": [],
+    "n_contacts": 0,
+    "n_primitives": 0,
+    "n_pids": 0,
+    "weak_only": false,
+    "n_families": 0
+   },
+   {
+    "id": "anc_c52490437f09",
+    "designation": "VV1-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_layer_token_bijection",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_c5efd385d27b",
+    "designation": "VV1-X31",
+    "state": "AMBIGUOUS_PIPE_ATTACHMENT",
+    "reason": "weak_bridge_reaches_several_pipes",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 3,
+    "n_primitives": 3,
+    "n_pids": 3,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_c63f562d8f3c",
+    "designation": "KV2-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "multi_row_layer_token_bijection",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 2
+   },
+   {
+    "id": "anc_c9fcbec28d8c",
+    "designation": "S1-P2",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_ccdf0d214924",
+    "designation": "S1-P2",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_ce29914dafc9",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_cf5c079b9e6c",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_d203e93de074",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_d2f5281d8962",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_d4986939359e",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_d4db9e5856ec",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_d5471b138aee",
+    "designation": "S3-R8-160",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_d5d4248e5d35",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_d865dfb4672c",
+    "designation": "S3-P2-160",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_d8dfbe4e0f9e",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_dc3570b5b608",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_dc589b2b80be",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_dce65ea1dab2",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_dd616ce36e26",
+    "designation": "KV2-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_layer_token_match",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 2
+   },
+   {
+    "id": "anc_ddf315354ad5",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_e2fcbb4eac6f",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_e488795974d1",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_e6159ea484e7",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 3,
+    "n_primitives": 3,
+    "n_pids": 3,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_e9f0c64730df",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_eb8e24ef0aa9",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_ec952a0f8e9f",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_ed904f0c2f79",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_edf42687755e",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_eed7fea748e0",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_efa0e0ce9ed0",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_f0cfbf24bb6b",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_f15b1fc2622f",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_f1d4ce5ed41e",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_f249977699c2",
+    "designation": "S1-P2-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_f2c4e7931187",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_f3c0334d4733",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_f49215e889ad",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_f80b84ec2708",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_fa320804b372",
+    "designation": "S3-R8-110",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_fe63c5f841b5",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   }
+  ],
+  "n_issues": 0,
+  "blocking": 0,
+  "advisory": 0
+ },
+ "C": {
+  "state": "OK",
+  "input": "validation_C/clean.pdf",
+  "input_sha256": "c6a4a7e8e2f5d78c",
+  "seconds": 10.0,
+  "n_pages": 1,
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree",
+   "meters_per_pt": 0.017638888888888885
+  },
+  "coverage": {
+   "designations": 11,
+   "with_dn": null,
+   "leaders": 12,
+   "verified_attachments": 9,
+   "ambiguous_attachments": 0,
+   "no_attachments": 3,
+   "anchor_states": {
+    "VERIFIED_PIPE_ATTACHMENT": 9,
+    "NO_PIPE_ATTACHMENT": 3
+   },
+   "pipe_names": 11,
+   "pipe_names_with_metres": 5,
+   "without_metres": [
+    "KV2",
+    "KV2-X31",
+    "S3-R8-110",
+    "VV1",
+    "VV1-X31",
+    "VVC1"
+   ],
+   "physical_pipes": 3,
+   "unowned_m": 0.0,
+   "ambiguous_m": 0.0,
+   "claimed_m": 0.0,
+   "reconciliation": "VALID",
+   "named_vs_measured": 100.0
+  },
+  "names_read": [
+   "KV1",
+   "KV1-X31",
+   "KV2",
+   "KV2-X31",
+   "S3",
+   "S3-R8",
+   "S3-R8-110",
+   "S3-R8-75",
+   "VV1",
+   "VV1-X31",
+   "VVC1"
+  ],
+  "names_with_metres": [
+   "KV1-X31-16",
+   "S3-R8-75"
+  ],
+  "frontiers": {
+   "frontiers": 7,
+   "pipes": 3,
+   "silent_pipes": [],
+   "by_reason": {
+    "FREE_END": 2,
+    "SYMBOL": 1,
+    "VERTICAL": 4
+   },
+   "real_boundaries": 7,
+   "lossy_boundaries": 0,
+   "open_boundaries": 0,
+   "unowned_beyond_pt": 0.0,
+   "unowned_beyond_m": 0.0
+  },
+  "quantities": [
+   {
+    "designation": "KV1-X31-16",
+    "base": "KV1-X31",
+    "dn": 16,
+    "system": "KV1",
+    "physical_pipe_count": 2,
+    "confirmed_horizontal_m": 10.892,
+    "confirmed_vertical_m": 0.0,
+    "confirmed_total_m": 10.892,
+    "horizontal_pdf_units": 617.516,
+    "ambiguous_m": 0.0,
+    "vertical_known": false,
+    "in_hatched_area_m": 5.284,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_20d6fbcfca0f",
+     "pp_7b7b4a4a7969"
+    ],
+    "label_count": 2,
+    "riser_count_from_labels": 2,
+    "riser_count": 2,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": "UNKNOWN"
+   },
+   {
+    "designation": "S3-R8-75",
+    "base": "S3-R8",
+    "dn": 75,
+    "system": "S3",
+    "physical_pipe_count": 1,
+    "confirmed_horizontal_m": 6.688,
+    "confirmed_vertical_m": 0.12,
+    "confirmed_total_m": 6.808,
+    "horizontal_pdf_units": 379.175,
+    "ambiguous_m": 0.0,
+    "vertical_known": true,
+    "in_hatched_area_m": 2.599,
+    "declared_m": 0.0,
+    "double_line_m": 0.0,
+    "state": "CONFIRMED",
+    "pipe_ids": [
+     "pp_29c04e63bab8"
+    ],
+    "label_count": 7,
+    "riser_count_from_labels": 2,
+    "riser_count": 2,
+    "ambiguous_pdf_units": 0.0,
+    "vertical_m": 0.12
+   }
+  ],
+  "totals": {
+   "physical_pipes": 3,
+   "confirmed_horizontal_m": 17.58,
+   "confirmed_vertical_m": 0.12,
+   "confirmed_total_m": 17.7,
+   "ambiguous_m": 0.0,
+   "in_hatched_area_m": 7.883,
+   "riser_labels": 4
+  },
+  "pipes": [
+   {
+    "id": "pp_20d6fbcfca0f",
+    "designation": "KV1-X31-16",
+    "identity": "KV1-X31|DN16",
+    "system": "KV1",
+    "dn": 16,
+    "horizontal_m": 7.005,
+    "total_m": 7.005,
+    "horizontal_pdf_units": 397.131,
+    "bridged_gap_pt": 106.44,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "FREE_END",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     270.7,
+     931.6,
+     723.8,
+     1029.5
+    ]
+   },
+   {
+    "id": "pp_29c04e63bab8",
+    "designation": "S3-R8-75",
+    "identity": "S3-R8|DN75",
+    "system": "S3",
+    "dn": 75,
+    "horizontal_m": 6.688,
+    "total_m": 6.808,
+    "horizontal_pdf_units": 379.175,
+    "bridged_gap_pt": 93.4,
+    "state": "CONFIRMED",
+    "anchors": 7,
+    "family": "268140-W-50-P-A-00|V-53BB-FE--S3-|s|w2.04|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "FREE_END",
+     "VERTICAL"
+    ],
+    "n_frontiers": 3,
+    "bbox": [
+     270.7,
+     915.5,
+     722.6,
+     1040.1
+    ]
+   },
+   {
+    "id": "pp_7b7b4a4a7969",
+    "designation": "KV1-X31-16",
+    "identity": "KV1-X31|DN16",
+    "system": "KV1",
+    "dn": 16,
+    "horizontal_m": 3.887,
+    "total_m": 3.887,
+    "horizontal_pdf_units": 220.385,
+    "bridged_gap_pt": 68.04,
+    "state": "CONFIRMED",
+    "anchors": 1,
+    "family": "268140-W-50-P-A-00|V-52BB-FE--V1-|s|w1.44|c(0.0, 0.0, 0.0)",
+    "frontier_reasons": [
+     "SYMBOL",
+     "VERTICAL"
+    ],
+    "n_frontiers": 2,
+    "bbox": [
+     270.7,
+     916.6,
+     636.1,
+     927.6
+    ]
+   }
+  ],
+  "anchors": [
+   {
+    "id": "anc_02878fba6f8b",
+    "designation": "KV1-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_0fd9012d7593",
+    "designation": "KV1-X31",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_16f79bb474ad",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_557fa73eb710",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 2,
+    "n_primitives": 2,
+    "n_pids": 2,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_64f053b1ea5b",
+    "designation": "S3-R8-110",
+    "state": "NO_PIPE_ATTACHMENT",
+    "reason": "leader_endpoint_touches_no_pipe_geometry",
+    "kinds": [],
+    "n_contacts": 0,
+    "n_primitives": 0,
+    "n_pids": 0,
+    "weak_only": false,
+    "n_families": 0
+   },
+   {
+    "id": "anc_708d8552028a",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_721bfb8f427f",
+    "designation": "S3-R8",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_symbol"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_7c1ba1cc6ad8",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_layer_token_match",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 2
+   },
+   {
+    "id": "anc_8158025caf8b",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "via_collector"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": true,
+    "n_families": 1
+   },
+   {
+    "id": "anc_92c9cffbe847",
+    "designation": "S3-R8-75",
+    "state": "NO_PIPE_ATTACHMENT",
+    "reason": "leader_endpoint_touches_no_pipe_geometry",
+    "kinds": [],
+    "n_contacts": 0,
+    "n_primitives": 0,
+    "n_pids": 0,
+    "weak_only": false,
+    "n_families": 0
+   },
+   {
+    "id": "anc_97a6b38caa96",
+    "designation": "S3-R8-75",
+    "state": "VERIFIED_PIPE_ATTACHMENT",
+    "reason": "single_row_single_group",
+    "kinds": [
+     "end_tick"
+    ],
+    "n_contacts": 1,
+    "n_primitives": 1,
+    "n_pids": 1,
+    "weak_only": false,
+    "n_families": 1
+   },
+   {
+    "id": "anc_9c6c88a6d866",
+    "designation": "S3-R8-110",
+    "state": "NO_PIPE_ATTACHMENT",
+    "reason": "leader_endpoint_touches_no_pipe_geometry",
+    "kinds": [],
+    "n_contacts": 0,
+    "n_primitives": 0,
+    "n_pids": 0,
+    "weak_only": false,
+    "n_families": 0
+   }
+  ],
+  "n_issues": 0,
+  "blocking": 0,
+  "advisory": 0
+ }
+}
