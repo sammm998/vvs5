@@ -5,24 +5,26 @@
  * lämnat något öppet med flit. Färgerna är samma som i frontier-overlay.pdf, så bladet på skärmen och bladet
  * på papper säger samma sak.
  */
+import { t as tr } from "./i18n";
+
 export type FrontierClass = "REAL" | "LOSSY" | "OPEN";
 
 export const FRONTIER_LABELS: Record<string, string> = {
-  REAL_DN_BOUNDARY: "Samma ledning fortsätter med en annan dimension",
-  REAL_SYSTEM_BOUNDARY: "Geometrin fortsätter men tillhör ett annat system",
-  REAL_DESIGNATION_BOUNDARY: "Samma system, annat namn eller annan isolering",
-  DECLARED_BOUNDARY: "Fortsättningen ägs av bladets skrivna regel, inte av en etikett",
-  AMBIGUOUS_JUNCTION: "Fler än en identitet gör anspråk på fortsättningen",
-  FLOW_BUDGET: "Namnet hade runnit för långt förbi etiketterna och togs tillbaka",
-  UNOWNED_CONTINUATION: "Samma penna fortsätter och ingen etikett når den",
-  REPRESENTATION_CHANGE: "Ledningen fortsätter på en annan penna",
-  BROKEN_CONTINUITY: "Samma penna fortsätter i samma riktning efter ett gap som inte överbryggades",
-  VERTICAL: "Röret slutar i en stigarsymbol",
-  SYMBOL: "Röret slutar i en ritad komponent",
-  SHEET_EDGE: "Röret går ut ur bladet",
-  FREE_END: "Linjen slutar och ingenting finns intill",
-  CLOSED_LOOP: "En sluten slinga utan kant",
-  UNSUPPORTED_STRUCTURE: "Något läsningen inte kan sätta ord på",
+  REAL_DN_BOUNDARY: tr("Samma ledning fortsätter med en annan dimension"),
+  REAL_SYSTEM_BOUNDARY: tr("Geometrin fortsätter men tillhör ett annat system"),
+  REAL_DESIGNATION_BOUNDARY: tr("Samma system, annat namn eller annan isolering"),
+  DECLARED_BOUNDARY: tr("Fortsättningen ägs av bladets skrivna regel, inte av en etikett"),
+  AMBIGUOUS_JUNCTION: tr("Fler än en identitet gör anspråk på fortsättningen"),
+  FLOW_BUDGET: tr("Namnet hade runnit för långt förbi etiketterna och togs tillbaka"),
+  UNOWNED_CONTINUATION: tr("Samma penna fortsätter och ingen etikett når den"),
+  REPRESENTATION_CHANGE: tr("Ledningen fortsätter på en annan penna"),
+  BROKEN_CONTINUITY: tr("Samma penna fortsätter i samma riktning efter ett gap som inte överbryggades"),
+  VERTICAL: tr("Röret slutar i en stigarsymbol"),
+  SYMBOL: tr("Röret slutar i en ritad komponent"),
+  SHEET_EDGE: tr("Röret går ut ur bladet"),
+  FREE_END: tr("Linjen slutar och ingenting finns intill"),
+  CLOSED_LOOP: tr("En sluten slinga utan kant"),
+  UNSUPPORTED_STRUCTURE: tr("Något läsningen inte kan sätta ord på"),
 };
 
 const REAL = new Set(["REAL_DN_BOUNDARY", "REAL_SYSTEM_BOUNDARY", "REAL_DESIGNATION_BOUNDARY", "DECLARED_BOUNDARY",

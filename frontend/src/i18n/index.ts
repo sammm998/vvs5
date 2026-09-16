@@ -55,6 +55,19 @@ export function t(sv: string): string {
   return EN[sv] ?? sv;
 }
 
+/* En sträng med tal i sig. Nyckeln bär platshållare, inte delar:
+ *
+ *     trf("{0} beteckningar lästa, {1} av dem med en dimension.", n, medDn)
+ *
+ * Skälet är att en mening inte går att sätta ihop av bitar. "Läser ruta 3 av 12" och "Reading tile 3 of 12"
+ * har talen på samma ställen, men "3 av 12 rutor lästa" har dem inte - och den dagen en översättning vill
+ * flytta dem måste hela meningen vara nyckeln. Delar man i stället upp den i `t("Läser ruta") + i + t("av")`
+ * är ordföljden låst till svenskan för alltid.
+ */
+export function trf(sv: string, ...args: (string | number)[]): string {
+  return t(sv).replace(/\{(\d+)\}/g, (_, i) => String(args[Number(i)] ?? ""));
+}
+
 /** Ett tal som språket skriver det: 12,5 på svenska, 12.5 på engelska. */
 export function num(v: number, decimals = 2): string {
   return v.toLocaleString(lang === "sv" ? "sv-SE" : "en-GB",

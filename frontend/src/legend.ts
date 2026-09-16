@@ -5,6 +5,8 @@
  * B1, B10, men också B12ML och B21M, och en matchning som bara läser siffror missar dem.
  */
 
+import { t as tr } from "./i18n";
+
 export type LegendEntry = {
   code: string; description: string; heading: string; role: string; role_from: string;
   bbox: number[]; page?: number | null;
@@ -18,7 +20,7 @@ export const ROLE_COLOR: Record<string, string> = {
 };
 
 export const ROLE_LABEL: Record<string, string> = {
-  system: "rörsystem", component: "komponent", material: "material", unused: "oanvänd",
+  system: tr("rörsystem"), component: tr("komponent"), material: tr("material"), unused: tr("oanvänd"),
 };
 
 /** Whether a label is written in the shape of a legend code, placeholder letters and all. */

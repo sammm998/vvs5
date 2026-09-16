@@ -4,23 +4,25 @@
  * numbers quoted are the ones the reading actually worked from - a frame off the film, not a retelling.
  */
 
+import { num, t as tr, trf } from "./i18n";
+
 export type Agent = { stage: string; who: string; title: string; asks: string };
 
 export const AGENTS: Agent[] = [
-  { stage: "SEEING", who: "Synagenten", title: "Tittar på sidan som bild",
-    asks: "Står det något där vektorläsningen inte har någon text?" },
-  { stage: "READING_PDF", who: "Vektorläsaren", title: "Läser PDF:en", asks: "Vilka streck finns ritade, på vilka lager och med vilka pennor?" },
-  { stage: "RECONSTRUCTING_TEXT", who: "Textbyggaren", title: "Bygger texten ur streck", asks: "Vilka av strecken är bokstäver, och vilka rader bildar de?" },
-  { stage: "READING_DESIGNATIONS", who: "Beteckningsläsaren", title: "Läser beteckningarna", asks: "Vilka rader är beteckningar, och vilken dimension bär de?" },
-  { stage: "FINDING_LEADERS", who: "Hänvisningsspåraren", title: "Följer hänvisningslinjerna", asks: "Vilken ritad linje utgår från vilken etikett, och var slutar den?" },
-  { stage: "RESOLVING_PIPE_REPRESENTATION", who: "Familjeutredaren", title: "Avgör vad som är rör", asks: "Vilka pennor ritar rör på det här bladet, och vilka ritar byggnaden?" },
-  { stage: "BUILDING_PHYSICAL_PIPES", who: "Rörbyggaren", title: "Bygger de fysiska rören", asks: "Vilka sträckor hör ihop till ett rör, och vem äger dem?" },
-  { stage: "MEASURING", who: "Mätaren", title: "Mäter", asks: "Hur många meter blir det, i ritningens egen skala?" },
+  { stage: "SEEING", who: tr("Synagenten"), title: tr("Tittar på sidan som bild"),
+    asks: tr("Står det något där vektorläsningen inte har någon text?") },
+  { stage: "READING_PDF", who: tr("Vektorläsaren"), title: tr("Läser PDF:en"), asks: tr("Vilka streck finns ritade, på vilka lager och med vilka pennor?") },
+  { stage: "RECONSTRUCTING_TEXT", who: tr("Textbyggaren"), title: tr("Bygger texten ur streck"), asks: tr("Vilka av strecken är bokstäver, och vilka rader bildar de?") },
+  { stage: "READING_DESIGNATIONS", who: tr("Beteckningsläsaren"), title: tr("Läser beteckningarna"), asks: tr("Vilka rader är beteckningar, och vilken dimension bär de?") },
+  { stage: "FINDING_LEADERS", who: tr("Hänvisningsspåraren"), title: tr("Följer hänvisningslinjerna"), asks: tr("Vilken ritad linje utgår från vilken etikett, och var slutar den?") },
+  { stage: "RESOLVING_PIPE_REPRESENTATION", who: tr("Familjeutredaren"), title: tr("Avgör vad som är rör"), asks: tr("Vilka pennor ritar rör på det här bladet, och vilka ritar byggnaden?") },
+  { stage: "BUILDING_PHYSICAL_PIPES", who: tr("Rörbyggaren"), title: tr("Bygger de fysiska rören"), asks: tr("Vilka sträckor hör ihop till ett rör, och vem äger dem?") },
+  { stage: "MEASURING", who: tr("Mätaren"), title: tr("Mäter"), asks: tr("Hur många meter blir det, i ritningens egen skala?") },
 ];
 
 export const AGENT_SV: Record<string, string> = {
-  scale: "Skalagranskaren", coverage: "Täckningsgranskaren", plausibility: "Rimlighetsgranskaren",
-  topology: "Topologigranskaren", designation: "Beteckningsgranskaren", ocr_crosscheck: "Synagentens korsprov",
+  scale: tr("Skalagranskaren"), coverage: tr("Täckningsgranskaren"), plausibility: tr("Rimlighetsgranskaren"),
+  topology: tr("Topologigranskaren"), designation: tr("Beteckningsgranskaren"), ocr_crosscheck: tr("Synagentens korsprov"),
 };
 
 /* What a stage reports, from its own frame and - where the reading is finished - from the result it produced. */
@@ -29,36 +31,46 @@ export function frameSays(stage: string, f: any, result?: any): string[] {
   if (!f) return [];
   switch (stage) {
     case "SEEING":
-      return [`Läser ruta ${f.i} av ${f.n} och hittar ${(f.words ?? []).length} ord där.`,
-              "Den ser bilden, aldrig geometrin: ingenting den läser kan bli en meter."];
+      return [trf("Läser ruta {0} av {1} och hittar {2} ord där.", f.i, f.n, (f.words ?? []).length),
+              tr("Den ser bilden, aldrig geometrin: ingenting den läser kan bli en meter.")];
     case "READING_PDF":
-      return [`${f.n_paths} ritade objekt på sidan, ${Math.round(f.page?.w ?? 0)} × ${Math.round(f.page?.h ?? 0)} punkter.`,
-              "Inget är text ännu — en PDF från CAD skriver bokstäverna som streck."];
+      return [trf("{0} ritade objekt på sidan, {1} × {2} punkter.",
+                  f.n_paths, Math.round(f.page?.w ?? 0), Math.round(f.page?.h ?? 0)),
+              tr("Inget är text ännu — en PDF från CAD skriver bokstäverna som streck.")];
     case "RECONSTRUCTING_TEXT":
-      return [`${f.n} textrader byggda ur strecken.`];
+      return [trf("{0} textrader byggda ur strecken.", f.n)];
     case "READING_DESIGNATIONS":
-      return [`${f.n} beteckningar lästa${c.with_dn != null ? `, ${c.with_dn} av dem med en dimension på raden` : ""}.`,
-              "Vilka av dem som namnger rör avgör ritningens egen förklaringslista."];
+      return [c.with_dn != null
+                ? trf("{0} beteckningar lästa, {1} av dem med en dimension på raden.", f.n, c.with_dn)
+                : trf("{0} beteckningar lästa.", f.n),
+              tr("Vilka av dem som namnger rör avgör ritningens egen förklaringslista.")];
     case "FINDING_LEADERS":
-      return [`${f.n} hänvisningslinjer följda från etikett ut i ritningen.`,
-              "Ingen linje uppfinns: bara streck ritningen faktiskt drar räknas."];
+      return [trf("{0} hänvisningslinjer följda från etikett ut i ritningen.", f.n),
+              tr("Ingen linje uppfinns: bara streck ritningen faktiskt drar räknas.")];
     case "RESOLVING_PIPE_REPRESENTATION": {
       const fams = f.families ?? [];
-      return [`${fams.length} ritade familjer togs som rör${fams.length ? `: ${fams.map((x: any) => `penna ${x.width}`).join(", ")}` : ""}.`,
-              "En familj som ingen beteckning når tas inte — den ritar då något annat."];
+      return [fams.length
+                ? trf("{0} ritade familjer togs som rör: {1}.", fams.length,
+                      fams.map((x: any) => trf("penna {0}", x.width)).join(", "))
+                : trf("{0} ritade familjer togs som rör.", fams.length),
+              tr("En familj som ingen beteckning når tas inte — den ritar då något annat.")];
     }
     case "BUILDING_PHYSICAL_PIPES": {
-      const out = [`${f.n} fysiska rör byggda.`];
+      const out = [trf("{0} fysiska rör byggda.", f.n)];
       if (c.verified_attachments != null)
-        out.push(`${c.verified_attachments} beteckningar möter sitt rör, ${c.ambiguous_attachments} är tvetydiga, ${c.no_attachments} når inget.`);
+        out.push(trf("{0} beteckningar möter sitt rör, {1} är tvetydiga, {2} når inget.",
+                     c.verified_attachments, c.ambiguous_attachments, c.no_attachments));
       return out;
     }
     case "MEASURING": {
       const s = result?.scale ?? f.scale ?? {};
       const tot = result?.totals?.confirmed_total_m ?? f.total_m ?? 0;
       const n = result?.quantities?.length ?? (f.quantities ?? []).length;
-      return [`Skala ${s.state === "VERIFIED" ? "verifierad" : s.state ?? "okänd"}${s.meters_per_pdf_point ? ` — ${s.meters_per_pdf_point.toFixed(6)} m per punkt` : ""}.`,
-              `${Number(tot).toFixed(2)} m bekräftad längd fördelad på ${n} beteckningar.`];
+      const läge = s.state === "VERIFIED" ? tr("verifierad") : s.state ?? tr("okänd");
+      return [s.meters_per_pdf_point
+                ? trf("Skala {0} — {1} m per punkt.", läge, num(s.meters_per_pdf_point, 6))
+                : trf("Skala {0}.", läge),
+              trf("{0} m bekräftad längd fördelad på {1} beteckningar.", num(Number(tot), 2), n)];
     }
   }
   return [];

@@ -187,7 +187,8 @@ def every_file() -> list[str]:
 
 
 def keys_in(src: str) -> set[str]:
-    return set(re.findall(r'(?<![\w$.])(?:t|tr)\("((?:[^"\\]|\\.)*)"\)', src))
+    # trf() bär sina tal efter nyckeln, så avslutningen är antingen parentesen eller kommat före första talet
+    return set(re.findall(r'(?<![\w$.])(?:t|tr|trf)\("((?:[^"\\]|\\.)*)"\s*[,)]', src))
 
 
 def dictionary() -> set[str]:

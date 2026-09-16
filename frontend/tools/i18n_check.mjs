@@ -20,7 +20,12 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = path.join(ROOT, "src");
 const BIND = "tr";                     // namnet ordboken har i koden; se docs/SPRAK.md
-const NAMES = new Set(["t", BIND]);    // båda fångas: ett kvarglömt `t(` ska också falla ut
+const FMT = "trf";                     // samma ordbok, för en mening med tal i sig
+const NAMES = new Set(["t", BIND, FMT]);  // båda fångas: ett kvarglömt `t(` ska också falla ut
+// `trf` bär talen i nyckeln som {0}, {1}; `tr` får inte bära någon platshållare alls, för en sådan nyckel
+// skulle slås upp med talet redan isatt och aldrig kunna träffa en rad.
+const HOLE = /\$\{|\{\s*[A-Za-z_]/;
+const NUMBERED = /\{\s*\d+\s*\}/;
 
 const isDict = (f) => /[\\/]src[\\/]i18n(\.tsx?|[\\/])/.test(f);
 const rel = (f) => path.relative(ROOT, f).replace(/\\/g, "/");
@@ -55,7 +60,7 @@ for (const sf of program.getSourceFiles()) {
     // Namnet `tr` tillhör ordboken vad det än får för argument; ett bart `t` bara när argumentet är en
     // sträng, för `t` är också ett hederligt lokalt namn för en tidtagare eller en funktion.
     if (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && NAMES.has(n.expression.text)
-        && (n.expression.text === BIND || (n.arguments.length && ts.isStringLiteral(n.arguments[0])))) {
+        && (n.expression.text !== "t" || (n.arguments.length && ts.isStringLiteral(n.arguments[0])))) {
       anrop++;
       let sym = checker.getSymbolAtLocation(n.expression);
       if (sym && (sym.flags & ts.SymbolFlags.Alias)) { try { sym = checker.getAliasedSymbol(sym); } catch { /* ohittad */ } }
@@ -69,15 +74,18 @@ for (const sf of program.getSourceFiles()) {
       } else if (key !== null) {
         nycklar.add(key);
         // (d) en nyckel med en platshållare kan aldrig träffa en rad i ordboken
-        if (/\$\{|\{\s*\w/.test(key)) fel.push(`${at(n)}  nyckeln "${key.slice(0, 40)}" bär en platshållare och kan aldrig slås upp`);
+        const called = n.expression.text;
+        if (HOLE.test(key) || (called !== FMT && NUMBERED.test(key)))
+          fel.push(`${at(n)}  nyckeln "${key.slice(0, 40)}" bär en platshållare och kan aldrig slås upp`
+                 + (called !== FMT ? ` - använd ${FMT}() om talen ska in i meningen` : ""));
       }
     }
     // (b) skuggningen vid källan: ett lokalt `tr` i en fil som importerar ordboken
     if ((ts.isVariableDeclaration(n) || ts.isParameter(n) || ts.isBindingElement(n) || ts.isFunctionDeclaration(n))
-        && n.name && ts.isIdentifier(n.name) && n.name.text === BIND && importsDict) {
+        && n.name && ts.isIdentifier(n.name) && (n.name.text === BIND || n.name.text === FMT) && importsDict) {
       const sym = checker.getSymbolAtLocation(n.name);
       if (!sym?.declarations?.some((d) => isDict(d.getSourceFile().fileName))) {
-        fel.push(`${at(n)}  ett lokalt "${BIND}" i en fil som importerar ordboken: döp om det`);
+        fel.push(`${at(n)}  ett lokalt "${n.name.text}" i en fil som importerar ordboken: döp om det`);
       }
     }
     ts.forEachChild(n, visit);
@@ -88,9 +96,12 @@ for (const sf of program.getSourceFiles()) {
 // (c) samma nyckel definierad två gånger med olika engelska
 const rader = new Map();
 for (const f of modules(SRC).filter((f) => isDict(f))) {
-  const src = fs.readFileSync(f, "utf8");
+  // en rad som inte fick plats bryts efter kolonet; läs den som om den stod på en rad
+  const src = fs.readFileSync(f, "utf8").replace(/":\n\s+"/g, '": "');
   for (const m of src.matchAll(/^\s{2}"((?:[^"\\]|\\.)*)":\s*"((?:[^"\\]|\\.)*)",?\s*$/gm)) {
-    const [, k, v] = m;
+    // nyckeln i källan är en JS-sträng: `\\n` står som två tecken där och som en radbrytning i anropet
+    let k, v;
+    try { k = JSON.parse(`"${m[1]}"`); v = JSON.parse(`"${m[2]}"`); } catch { continue; }
     if (rader.has(k) && rader.get(k).v !== v) fel.push(`ordboken: "${k.slice(0, 40)}" står i både ${rader.get(k).f} och ${rel(f)} med olika engelska`);
     rader.set(k, { v, f: rel(f) });
   }
