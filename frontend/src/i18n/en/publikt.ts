@@ -154,4 +154,333 @@ export const publikt: Record<string, string> = {
     "So the cost is governed in practice by how much the drawing leaves open, not by how big it is. A sheet the reading can settle on its own costs pennies. Every limit tightened so that a case can be decided on the drawing's own geometry makes the reading both better and cheaper - it is the same work.",
   "Det finns en människa i slingan, på ett ställe: där läsningen säger TVETYDIGT. Det hon avgör sparas som en rättelse bredvid vad läsningen sa, och blir en lärdom som får avgöra samma sorts fall på ett annat blad - samma penna, samma ledarform, samma skäl, samma etikettform. Aldrig mer än så: en rättelse får aldrig skapa en sträcka eller ändra något motorn är säker på.":
     "There is a human in the loop, in one place: where the reading says AMBIGUOUS. What they decide is saved as a correction beside what the reading said, and becomes a lesson allowed to settle the same kind of case on another sheet - same pen, same leader shape, same reason, same label shape. Never more than that: a correction may never create a run or change something the engine is sure of.",
+
+  // --- startsidan: märket, löftet, kapitlen ---------------------------------------------------------------
+  "THE FUTURE": "THE FUTURE",
+  "The future of calculation": "The future of calculation",
+  "Intelligence built for VVS": "Intelligence built for HVAC",
+  "VVS / ESTIMATION / INTELLIGENCE": "HVAC / ESTIMATION / INTELLIGENCE",
+  "FutureCalc — VVS / Estimation / Intelligence": "FutureCalc — HVAC / Estimation / Intelligence",
+  "VPR — Vector Pipe Reading": "VPR — Vector Pipe Reading",
+  "VPR System / 2026": "VPR System / 2026",
+  "Architecture": "Architecture",
+  "Enter FutureCalc": "Enter FutureCalc",
+  "Explore education": "Explore education",
+  "From drawing to quantity": "From drawing to quantity",
+  "Chapter II — From Drawing to Quantity": "Chapter II — From Drawing to Quantity",
+  "Chapter IV — FutureCalc Academy": "Chapter IV — FutureCalc Academy",
+  "Chapter V": "Chapter V",
+  "02 — Problemet": "02 — The problem",
+  "Laddar FutureCalc": "Loading FutureCalc",
+  "Byggd i Sverige": "Built in Sweden",
+  "Vårt": "Our",
+  "— så": "— like this",
+
+  // --- vad läsningen gör ----------------------------------------------------------------------------------
+  "Hur läsningen fungerar": "How the reading works",
+  "Hur systemet läser en ritning": "How the system reads a drawing",
+  "Se hur läsningen går till": "See how the reading is done",
+  "Se hur den läser": "See how it reads",
+  "Se hur det läser": "See how it reads",
+  "Den läser bladet": "It reads the sheet",
+  "Läser vektorn.": "Reads the vector.",
+  "Bygger tillbaka texten.": "Rebuilds the text.",
+  "Läser beteckningarna.": "Reads the designations.",
+  "Läser beteckningslistan.": "Reads the designation list.",
+  "Hittar ledarlinjerna.": "Finds the leaders.",
+  "Väljer rörfamiljer.": "Picks pipe families.",
+  "Bygger topologi och äger rören.": "Builds topology and owns the pipes.",
+  "Mäter.": "Measures.",
+  "Pekar på ritningen.": "Points at the drawing.",
+  "Ritade föremål.": "Drawn objects.",
+  "Annoterade ark.": "Annotated sheets.",
+  "Andra blick.": "Second look.",
+  "Bläcktillägg.": "Ink surcharge.",
+  "Ingår.": "Included.",
+  "Återbetalning.": "Refund.",
+  "Ändrar ingenting.": "Changes nothing.",
+  "Räknar aldrig själv.": "Never counts on its own.",
+  "Etiketterna måste nå fram.": "The labels have to arrive.",
+  "Identitet som rinner för långt.": "Identity that runs too far.",
+  "Från streck till meter": "From stroke to metre",
+  "Från etikett till meter, steg för steg": "From label to metre, step by step",
+  "Från ritning till färdig kalkyl. Varje meter läst ur bladets egna beteckningar.":
+    "From drawing to finished costing. Every metre read from the sheet's own designations.",
+  "Ritningen läses steg för steg medan sidan skrollas":
+    "The drawing is read step by step as the page scrolls",
+  "Där röret slutar": "Where the pipe ends",
+  "Inget rör slutar tyst": "No pipe ends silently",
+  "Varje ställe ett rör slutar har ett skäl": "Every place a pipe ends has a reason",
+  "skäl ett rör kan sluta av": "reasons a pipe can stop for",
+  "steg i läsningen": "steps in the reading",
+  "meter utan belägg": "metres without evidence",
+  "En hänvisningslinje går från beteckningen till röret den namnger":
+    "A leader runs from the designation to the pipe it names",
+  "Den närmaste linjen är inte den som namnger": "The nearest line is not the one that names",
+  "närmast — men ingen linje går hit": "nearest — but no line runs here",
+  "onämnd — redovisas, mäts inte": "unnamed — reported, not measured",
+  "rör i vägg — redovisas för sig": "pipe in wall — reported separately",
+  "Skalan tas ur bladets egen skalstock": "The scale is taken from the sheet's own scale bar",
+  "Skalan verifierad": "Scale verified",
+  "Samma geometri, två representationer": "The same geometry, two representations",
+  "System och hur det ritas": "System and how it is drawn",
+  "Hur nära två linjer får ligga": "How close two lines may lie",
+  "var röret ligger i höjdled": "where the pipe sits vertically",
+  "Rör, koppar": "Pipe, copper",
+  "Rörtyper": "Pipe types",
+  "KV, VV och VVC": "KV, VV and VVC",
+  "beteckningsdriven tolkning direkt på ritningen": "designation-driven reading straight on the drawing",
+  "MÄNGD": "QUANTITY",
+  "mängd": "quantity",
+  "längd": "length",
+  "Längd": "Length",
+  "fråga": "question",
+  "läsningen": "the reading",
+  "med belägg": "with evidence",
+  "rad för rad": "row by row",
+  "stigare · 2 st": "risers · 2",
+  "korsläsning": "cross-reading",
+  "ovanpå": "on top",
+  "Tre lager": "Three layers",
+  "Varje meter vet vilket lager den kom ur": "Every metre knows which layer it came from",
+
+  // --- exempel ur en ritning ------------------------------------------------------------------------------
+  "KV1-X31-16 · 12,1 m": "KV1-X31-16 · 12.1 m",
+  "VV1-X31-16 · 18,2 m": "VV1-X31-16 · 18.2 m",
+  "VS1-S13-22 · 61,9 m": "VS1-S13-22 · 61.9 m",
+  "S1-P2 · DN110 eller DN160 · 1,7 m": "S1-P2 · DN110 or DN160 · 1.7 m",
+  "Bet. P": "Des. P",
+  "Bet. R": "Des. R",
+  "BXXX GOLVBRUNN": "BXXX GOLVBRUNN",
+  "OF VVS": "OF VVS",
+  "Planritning där rören markerats och mätts": "A floor plan with the pipes marked and measured",
+  "Planritning med tappvatten, spillvatten och värme": "A floor plan with tap water, waste water and heating",
+
+  // --- vad som aldrig händer ------------------------------------------------------------------------------
+  "Vad som aldrig händer": "What never happens",
+  "Vad den vägrar": "What it refuses",
+  "Det läsningen vägrar": "What the reading refuses",
+  "Ingen närhetsgissning": "No proximity guessing",
+  "Ingen gissad skala": "No guessed scale",
+  "Ingen modell som ritar": "No model that draws",
+  "Tvetydigt är ett giltigt svar. Fel säkerhet är det inte.":
+    "Ambiguous is a valid answer. Wrong certainty is not.",
+  "Ett tvetydigt svar är ett svar. Ett gissat är det inte.":
+    "An ambiguous answer is an answer. A guessed one is not.",
+  "Principen hela motorn är byggd kring": "The principle the whole engine is built around",
+  "Hittar aldrig på en beteckning.": "Never invents a designation.",
+  "Namnger inte geometri utifrån närhet, hur nära den än ligger.":
+    "Does not name geometry by proximity, however close it lies.",
+  "Ingen påhittad dimension. Det som inte står i modellen finns inte i filen.":
+    "No invented dimension. What the model does not state is not in the file.",
+  "Har en skala per sida, inte per ritningsdel.": "Has one scale per page, not per drawing part.",
+  "Läser inte skannade ritningar. Utan vektorkoder finns inget att mäta.":
+    "Does not read scanned drawings. Without vector codes there is nothing to measure.",
+  "Överbryggar inte glapp i en böjd streckad linje.": "Does not bridge gaps in a curved dashed line.",
+  "Delar inte en knippeetikett som räknar upp fler koder än ritningen ritar linjer.":
+    "Does not split a bundle label that lists more codes than the drawing draws lines.",
+  "Fördelar inte längden i en delad sträcka mellan systemen som delar den.":
+    "Does not divide the length of a shared stretch between the systems that share it.",
+  "En kod bladet inte mängdar på avvisas, med de som finns.":
+    "A code the sheet does not take off on is rejected, together with the ones that exist.",
+  "Låter inte en rättelse på en ritning bli en gissning på en annan.":
+    "Does not let a correction on one drawing become a guess on another.",
+  "Samma ritning ger samma rör oavsett AB 04 eller ABT 06. Avtalsformen bor i kalkylen, aldrig i geometrin.":
+    "The same drawing gives the same pipes under AB 04 or ABT 06. The contract form lives in the costing, never in the geometry.",
+  "Ett rör får aldrig ett namn för att en etikett råkar ligga bredvid. Bara en riktig ledare ger identitet.":
+    "A pipe is never given a name because a label happens to lie beside it. Only a real leader gives identity.",
+  "En språkmodell får välja mellan kandidater ritningen erbjuder. Den får aldrig skapa geometri, DN eller meter.":
+    "A language model may choose between candidates the drawing offers. It may never create geometry, DN or metres.",
+  "Modellen väljer frågan, ritningen ger svaret": "The model picks the question, the drawing gives the answer",
+  "Varje tal kommer ur ett verktyg som läser artefakterna mätningen skrev.":
+    "Every number comes from a tool that reads the artifacts the measurement wrote.",
+  "gissningar — identitet endast via riktiga ledarlinjer, aldrig närmaste rör":
+    "guesses — identity only through real leaders, never the nearest pipe",
+
+  // --- belägg och spårbarhet ------------------------------------------------------------------------------
+  "Beläggen": "The evidence",
+  "Evidens först": "Evidence first",
+  "Bevis per rad": "Evidence per row",
+  "Varje meter går att spåra tillbaka": "Every metre can be traced back",
+  "varje meter med sitt belägg kvar": "every metre with its evidence intact",
+  "Ingen meter utan belägg. Varje rad i mängden går att spåra till bladet.":
+    "No metre without evidence. Every row in the quantity can be traced to the sheet.",
+  "Mängden, beläggen, exporten. Var meter går att spåra tillbaka till bladet.":
+    "The quantity, the evidence, the export. Every metre can be traced back to the sheet.",
+  "Klicka på en rad i mängden och se exakt vilken etikett, vilken ledarlinje och vilka streck som gav den.":
+    "Click a row in the quantity and see exactly which label, which leader and which strokes produced it.",
+  "Läsningen säger vad den fann, vad den inte kunde avgöra, och varför.":
+    "The reading says what it found, what it could not decide, and why.",
+  "Inget är ändrat än.": "Nothing has been changed yet.",
+  "Sparas där du är": "Saved where you are",
+
+  // --- hur vi vet att det stämmer -------------------------------------------------------------------------
+  "Att jämföra med": "To compare against",
+  "Blint mätt": "Measured blind",
+  "Facit m": "Reference m",
+  "Ägda m": "Owned m",
+  "Missade m": "Missed m",
+  "Falska m": "False m",
+  "Markerad PDF": "Marked PDF",
+  "En ritning lästes fel": "A drawing was read wrong",
+  "Flera läsningar": "Several readings",
+  "Motorn körs innan facit öppnas. Varje ändring grindas mot hela korpusen.":
+    "The engine runs before the reference is opened. Every change is gated against the whole corpus.",
+  "Tre nivåer, och de körs om vid varje ändring som kan röra en siffra.":
+    "Three levels, and they are re-run on every change that could touch a number.",
+  "tester som måste hålla innan en siffra får ändras": "tests that must hold before a number may change",
+  "sidor i stilbiblioteket, körda sida för sida vid varje ändring":
+    "pages in the style library, run page by page on every change",
+  "samlad avvikelse mot facit över fyra referensritningar":
+    "total deviation from the reference across four reference drawings",
+  "3,69 m samlad avvikelse på 213,70 m": "3.69 m total deviation on 213.70 m",
+  "varje körning mäts mot handmängdad ritning": "every run is measured against a hand-taken-off drawing",
+  "två vägar · samma svar": "two paths · the same answer",
+  "som ställer svaren mot varandra, och en": "that sets the answers against each other, and one",
+  "i samma situation": "in the same situation",
+  "Det mesta av arbetet ligger i att inte mäta fel saker. Varje regel är mätt fram, inte antagen.":
+    "Most of the work is in not measuring the wrong things. Every rule is measured into place, not assumed.",
+
+  // --- vad plattformen mer är -----------------------------------------------------------------------------
+  "Hela plattformen": "The whole platform",
+  "Resten av plattformen": "The rest of the platform",
+  "Nästa funktion": "Next feature",
+  "Mängdning": "Take-off",
+  "Mätverktyget: kalibrering, fångst och avdrag": "The measuring tool: calibration, snap and deduction",
+  "Ritningen är sidan, verktygen i kanten": "The drawing is the page, the tools at the edge",
+  "Rita i CAD": "Draw in CAD",
+  "Plan, sektion, fasad och 3D ur samma modell": "Plan, section, elevation and 3D from one model",
+  "Planen reser sig till en modell": "The plan rises into a model",
+  "blir en byggnad": "becomes a building",
+  "Väggar, stomme och installationer i en modell": "Walls, frame and services in one model",
+  "En vägg vet att den är en vägg": "A wall knows that it is a wall",
+  "Samma rör i tabellen och i modellen": "The same pipe in the table and in the model",
+  "plan 1": "level 1",
+  "plan 2": "level 2",
+  "plan 3": "level 3",
+  "In i kalkylen": "Into the costing",
+  "Mängden blir ett anbud": "The quantity becomes a tender",
+  "Anbudet granskas på skärmen innan det lämnar huset":
+    "The tender is reviewed on screen before it leaves the building",
+  "sida 1 · sammanställning": "page 1 · summary",
+  "sida 2 · mängdförteckning": "page 2 · bill of quantities",
+  "sida 3 · villkor": "page 3 · terms",
+  "Excel och CSV": "Excel and CSV",
+  "Ett samtal om ritningen": "A conversation about the drawing",
+  "Fråga ritningen, och se var svaret kom ifrån": "Ask the drawing, and see where the answer came from",
+  "Logga in och skriv i agenten på din analys - den ser samma belägg som du och svarar ur dem.":
+    "Sign in and write to the agent on your reading - it sees the same evidence you do and answers from it.",
+  "3 verktygsanrop ▸": "3 tool calls ▸",
+  "Förslag": "Suggestions",
+  "Genomför": "Run",
+  "Översikt": "Overview",
+  "Dina projekt": "Your projects",
+  "Vägen in": "The way in",
+  "Läs ett blad": "Read a sheet",
+  "Läs mer": "Read more",
+  "Pröva den": "Try it",
+  "Se filmen": "Watch the film",
+  "Se vad det kostar": "See what it costs",
+  "Ladda upp en ritning": "Upload a drawing",
+  "En figur som rör sig": "A figure that moves",
+
+  // --- utbildningen ---------------------------------------------------------------------------------------
+  "Kurserna i akademin": "The courses in the academy",
+  "Sex moduler": "Six modules",
+  "Till kurserna": "To the courses",
+  "Till utbildningen": "To the training",
+  "Öppna akademin": "Open the academy",
+  "Utbildning för kontoret": "Training for the office",
+  "Samma kurs för hela laget": "The same course for the whole team",
+  "Lär dig mängda": "Learn to take off",
+  "Lär dig läsa ritningen medan den läses": "Learn to read the drawing while it is being read",
+  "Du ser läsningen steg för steg, och kan gå ett delmoment i akademin medan den kör.":
+    "You watch the reading step by step, and can take a module in the academy while it runs.",
+  "En föreläsning med sin figur och sin kontrollfråga": "A lecture with its figure and its check question",
+  "Varje föreläsning visar det den handlar om som en levande ritning — en ledarlinje som hittar sitt rör, en stigare som blir meter — i stället för att beskriva det i ord.":
+    "Every lecture shows what it is about as a living drawing — a leader finding its pipe, a riser becoming metres — instead of describing it in words.",
+  "En kontrollfråga": "A check question",
+  "Kontrollfrågor": "Check questions",
+  "KONTROLLFRÅGA": "CHECK QUESTION",
+  "Inte ett prov. En fråga som går att svara fel på, med förklaringen efteråt — för det är den man minns.":
+    "Not an exam. A question you can get wrong, with the explanation afterwards — because that is the one you remember.",
+  "varje moment slutar med en fråga och ett svar som förklarar varför":
+    "every module ends with a question and an answer that explains why",
+  "Övningar på riktiga blad": "Exercises on real sheets",
+  "Övningstyper": "Exercise types",
+  "Ett övningsblad": "A practice sheet",
+  "para ihop beteckning och sträcka, och få rättat direkt":
+    "match designation to run, and be marked straight away",
+  "FutureCalc Certified": "FutureCalc Certified",
+  "fortsätt nästa gång en ritning läses": "continue the next time a drawing is read",
+
+  // --- priser ---------------------------------------------------------------------------------------------
+  "Vad en läsning kostar": "What a reading costs",
+  "Priser och större konto": "Pricing and larger accounts",
+  "Priset står på ritningen. Inget dras förrän du trycker.":
+    "The price is on the drawing. Nothing is deducted until you press.",
+  "Credits köps i paket. Priser exklusive moms.": "Credits are bought in packages. Prices excluding VAT.",
+  "credits att prova med": "credits to try with",
+  "credits för ett A3-blad": "credits for an A3 sheet",
+  "A3 och mindre": "A3 and smaller",
+  "Större än A0": "Larger than A0",
+  "Bäst värde": "Best value",
+  "0,03 kr": "0.03 kr",
+  "0,31 kr": "0.31 kr",
+  "0,45 kr": "0.45 kr",
+  "6,36 kr": "6.36 kr",
+  "85 kr/m": "85 kr/m",
+  "1 061 kr": "1,061 kr",
+  "2 229 kr": "2,229 kr",
+  "34 370 kr": "34,370 kr",
+  "eller inte alls": "or not at all",
+  "Projektanalysen över hela handlingen, kalkylen och anbudet, mängdningsverktyget, CAD-rummet, exporter och akademin kostar inga credits.":
+    "The project reading across the whole document set, the costing and the tender, the measuring tool, the CAD room, exports and the academy cost no credits.",
+  "En läsning som inte kunde ge en enda meter kostar ingenting.":
+    "A reading that could not give a single metre costs nothing.",
+  "Varje läsning kostar sitt pris - men en läsning som inte kunde ge en meter betalas tillbaka, så en omläsning med en skala du skrev in för hand kostar bara en gång.":
+    "Every reading costs its price - but a reading that could not give a metre is refunded, so a re-read with a scale you entered by hand costs only once.",
+  "Saknar bladet skala, eller går läsningen fel, får du tillbaka priset utan att fråga. Skälet står i din reskontra.":
+    "If the sheet has no scale, or the reading goes wrong, you get the price back without asking. The reason is in your ledger.",
+  "Det kostar ingenting att prova — ett nytt konto får credits att läsa ett par ritningar med.":
+    "It costs nothing to try — a new account gets credits to read a couple of drawings with.",
+  "Ja. Credits hör till kontot, inte till inloggningen. En firma med fyra rörläggare har en pott och fyra inloggningar.":
+    "Yes. Credits belong to the account, not to the login. A firm with four plumbers has one pot and four logins.",
+  "Nej. De ligger kvar på kontot tills de används.": "No. They stay on the account until they are used.",
+  "Nej. Köp det paket som passar och fyll på när det behövs. Storkunder som vill ha en fast månadskostnad hör av sig.":
+    "No. Buy the package that fits and top up when needed. Large customers who want a fixed monthly cost are welcome to get in touch.",
+  "Köp faktureras till företaget med 30 dagars betalningstid. Credits finns på kontot i samma stund som köpet registreras.":
+    "Purchases are invoiced to the company with 30 days to pay. Credits are on the account the moment the purchase is registered.",
+  "Vanliga frågor": "Common questions",
+  "Fråga oss om priset": "Ask us about the price",
+
+  // --- kontakt och demo -----------------------------------------------------------------------------------
+  "Prata med oss": "Talk to us",
+  "Boka en genomgång": "Book a walkthrough",
+  "Demo på egen ritning": "Demo on your own drawing",
+  "Vad vi behöver för en demo": "What we need for a demo",
+  "En ren vektor-PDF - exporterad ur CAD, inte skannad - och gärna er egen handmängdning av samma blad att jämföra med. Det är den enda rimliga första körningen.":
+    "A clean vector PDF - exported from CAD, not scanned - and ideally your own hand take-off of the same sheet to compare against. That is the only sensible first run.",
+  "Ta en sida du redan mängdat för hand. Jämför. Det är den enda rimliga första körningen.":
+    "Take a page you have already taken off by hand. Compare. That is the only sensible first run.",
+  "Ta ett blad du redan mängdat": "Take a sheet you have already taken off",
+  "Börja med ett blad du redan mängdat": "Start with a sheet you have already taken off",
+  "Vilken slags handlingar, hur många blad, vad ni mängdar i dag…":
+    "What kind of documents, how many sheets, what you take off today…",
+  "Skriv vilket blad och vilken beteckning. Varje meter i tjänsten bär sitt belägg, så en felläsning går att spåra till ett steg - och rättas generellt, inte bara på ert blad.":
+    "Tell us which sheet and which designation. Every metre in the service carries its evidence, so a misreading can be traced to one step - and fixed generally, not just on your sheet.",
+  "Vi använder uppgifterna bara för att svara dig.": "We use the details only to reply to you.",
+  "Tack. Vi hör av oss.": "Thank you. We will be in touch.",
+  "Företag": "Company",
+  "Företaget": "The company",
+  "Anna Lindqvist": "Anna Lindqvist",
+  "Byggd för att göras, inte bläddras i": "Built to be done, not browsed",
+  "En metodik, inte en mall": "A method, not a template",
+
+  // --- när en sida inte finns -----------------------------------------------------------------------------
+  "Den funktionen finns inte": "That feature does not exist",
+  "Den föreläsningen finns inte": "That lecture does not exist",
+  "Den sidan finns inte i akademin": "That page does not exist in the academy",
+  "Adressen pekar på en kurs eller en föreläsning som inte finns. Kurserna står kvar där de var.":
+    "The address points at a course or a lecture that does not exist. The courses are still where they were.",
 };
