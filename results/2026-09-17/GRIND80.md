@@ -60,26 +60,45 @@ tolv V-blad; W-serien har en handfull skurna vägar var.
 
 ## Ett fel som grinden avslöjade, och som inte är mitt
 
+> **Rättelse, skriven efteråt.** Avsnittet nedan sa först att en ritnings läsning beror på vilka ritningar som
+> lästes före den i samma process. Det stämmer inte. Jag hade bara varierat processen, och tog sammanträffandet
+> för ett samband. Det verkliga felet står under rubriken efter, och det är värre.
+
 Elva blad ändrade tal. Tio är V-blad med verklig klippning. Det elfte, **W-50-1-A0122, har ingen klippning alls**
-— och flyttade ändå 2,5 m. Jag jagade det i stället för att skriva av det, och det är ett verkligt fel:
+— och flyttade ändå 2,5 m. Jag jagade det i stället för att skriva av det.
 
-* motorn är deterministisk när samma sekvens körs om (två körningar i rad ger identiska tal);
-* men **W-50-1-A0122 läst ensam ger ett annat svar än W-50-1-A0122 läst efter W-50-1-A0121 i samma process** —
-  ensam läses beteckningen `VVC1-X7-` (siffrorna faller bort), efter grannbladet `VVC1-X7-16`, och det senare är
-  exakt vad gate80 innehåller;
-* tömmer man teckenalfabetets cache mellan bladen återkommer ensam-svaret.
+## Samma ritning, olika process, olika meter
 
-Alltså: **en ritnings läsning beror på vilka ritningar som lästes före den i samma process.** Det bryter mot
-hela doktrinen — identiteten ska komma ur bladets egna bevis — och det gäller inte bara grinden: backendens
-jobb delar process och trådpool.
+`PYTHONHASHSEED=3` ensamt ger gate80:s läsning av W-50-1-A0122. Frö 0, 1, 2 och 4 ger en annan. Inget grannblad,
+ingen varm cache, samma fil och samma kod - bara vilken process läsningen råkade köra i.
 
-Jag har *inte* rotorsaken. Cachen är implicerad men dess egna räknare visar två skilda nycklar och noll träffar,
-så en ren nyckelkrock är utesluten; något annat delas eller muteras. Det är en egen utredning och den står som
-ogjord, inte som löst.
+Orsaken sitter i `pipeline.py`, i buntutjämningen som avgör vilken linje i en staplad etikett som är vilken:
 
-Konsekvensen för den här grinden är liten och ska ändå sägas: gate79 och gate80 körde samma 59 blad i samma
-ordning i var sin process, så läckaget är konstant i båda och jämförelsen står. Men raden `W-50-1-A0122` i
-bladtabellen är en andrahandseffekt av att ett *tidigare* blad ändrades, inte av klippning på det bladet.
+    for sysname in set(systems):          # ordningen = Pythons slumpade strängnycklar
+        takers = [pc for pc in pieces if sysname in domain.get(pc, ())]
+        if len(takers) == 1 and len(domain[takers[0]]) > 1:
+            domain[takers[0]] = {sysname}   # ...och det här ändrar vad nästa varv läser
+
+Domänerna lästes medan de ändrades, så vilken fixpunkt utjämningen landade på berodde på i vilken ordning
+villkoren råkade prövas - och den ordningen kom från processen. Funktionens egen beskrivning lovar motsatsen:
+*"Where all of it still leaves a choice, nothing is assigned. That is the ordinary outcome and it is honest."*
+Den gjorde det inte; den utsåg en vinnare i tysthet.
+
+Åtta frön på samma fall:
+
+    frö 0 -> VV1     frö 4 -> VV1
+    frö 1 -> VV1     frö 5 -> VVC1
+    frö 2 -> VV1     frö 6 -> VVC1
+    frö 3 -> VVC1    frö 7 -> VVC1
+
+**Varför determinismprovet aldrig såg det.** `run_determinism` läser om bladet med vägar och spann omkastade,
+men alla fyra omläsningarna sker i SAMMA process, med samma hashfrö. Provet frågade "spelar ordningen på
+bladets objekt någon roll?" och svarade ärligt nej. Det frågade aldrig om processen spelar roll.
+
+**Vad det betyder för den här grinden.** gate79 och gate80 kördes var för sig, i var sin process, med var sitt
+godtyckliga frö. Skillnaden mellan dem innehåller alltså både klippningen och det här bruset, och raden
+`W-50-1-A0122` i bladtabellen ovan förklaras av bruset, inte av klippning. Hur stort bruset är mäts separat
+(två körningar av den orättade motorn under frö 0 och frö 3) och redovisas i grind 81.
 
 ## Beslut
 

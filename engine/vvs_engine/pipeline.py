@@ -468,6 +468,70 @@ def pen_key(family: str) -> str:
     return f"{layer.rsplit('|', 1)[-1]}|s|{style}"
 
 
+def _bundle_domains(cases: list[tuple[list, list[str]]],
+                    pinned: dict[tuple[str, int], set[str]] | None = None) -> dict[tuple[str, int], set[str]]:
+    """Vilka system varje sammanhängande stycke kan vara, givet allt bladets egna etiketter säger.
+
+    Tre villkor, och inget mer: ett stycke kan bara vara ett system som VARJE block som når det namnger; två
+    stycken i samma bunt kan inte vara samma system; och ett system som bara ett enda stycke i bunten kan ta
+    tillhör det stycket. Där de tre lämnar ett stycke med ett möjligt system har bladet sagt vilket.
+
+    Utjämningen görs i RUNDOR mot en ögonblicksbild, inte löpande. Det är hela poängen med den här funktionen
+    och skälet till att den finns för sig: läser man domänerna medan man ändrar dem avgör den ordning man råkar
+    gå igenom villkoren i vilket av flera möjliga svar man landar på - och den ordningen kom från Pythons
+    slumpade strängnycklar, alltså från vilken process läsningen råkade köra i. Samma ritning, samma kod, samma
+    fil, två olika mängder. En runda som läser allt ur ögonblicksbilden och lägger ihop sina slutsatser med
+    mängdoperationer kan inte bero på ordningen, för union och differens bryr sig inte om i vilken följd de sker.
+
+    Domänerna kan bara krympa, så utjämningen når alltid ett läge där ingenting mer händer, och det läget är
+    detsamma oavsett ordning. Säger en runda emot sig själv - två system som vart för sig bara kan ligga på
+    samma stycke - då säger den ingenting om det stycket, och stycket blir tomt. Det är inte ett fel som göms
+    undan: ett tomt stycke avgör ingen rad, och raden förblir tvetydig.
+    """
+    from collections import defaultdict
+
+    domain: dict[tuple[str, int], set[str]] = {}
+    for pieces, systems in cases:
+        for pc in pieces:
+            want = set(systems)
+            domain[pc] = (domain[pc] & want) if pc in domain else set(want)
+    for pc, fixed in (pinned or {}).items():
+        if pc in domain:
+            domain[pc] = domain[pc] & fixed if (domain[pc] & fixed) else set()
+
+    for _ in range(64):                      # domänerna krymper monotont; taket är bara en spärr
+        snap = {pc: set(d) for pc, d in domain.items()}
+        strike: dict[tuple[str, int], set[str]] = defaultdict(set)
+        only_place: dict[tuple[str, int], set[str]] = defaultdict(set)
+        for pieces, systems in cases:
+            # ett stycke som bara kan vara ett system tar det systemet från buntens övriga stycken
+            for i, pc in enumerate(pieces):
+                d = snap.get(pc) or set()
+                if len(d) != 1:
+                    continue
+                only = next(iter(d))
+                for j, other in enumerate(pieces):
+                    if i != j and only in (snap.get(other) or ()):
+                        strike[other].add(only)
+            # och ett system som bara ett stycke i bunten kan ta tillhör det stycket
+            for sysname in sorted(set(systems)):
+                takers = [pc for pc in pieces if sysname in (snap.get(pc) or ())]
+                if len(takers) == 1 and len(snap.get(takers[0]) or ()) > 1:
+                    only_place[takers[0]].add(sysname)
+        changed = False
+        for pc in set(strike) | set(only_place):
+            d = (snap.get(pc) or set()) - strike.get(pc, set())
+            forced = only_place.get(pc) or set()
+            if forced:
+                d = (d & forced) if len(forced) == 1 else set()
+            if d != domain.get(pc):
+                domain[pc] = d
+                changed = True
+        if not changed:
+            break
+    return domain
+
+
 def settle_bundles_by_sheet_consistency(anchors, graphs, known: dict[str, str] | None = None) -> int:
     """The bundles a sheet cannot settle one at a time, settled by taking the sheet as a whole.
 
@@ -563,37 +627,7 @@ def settle_bundles_by_sheet_consistency(anchors, graphs, known: dict[str, str] |
     if not cases:
         return 0
 
-    # A piece can only be a system that every block reaching it names, and only one the reading has not already
-    # settled as something else.
-    domain: dict[tuple[str, int], set[str]] = {}
-    for _, _, pieces, systems in cases:
-        for pc in pieces:
-            want = set(systems)
-            domain[pc] = (domain[pc] & want) if pc in domain else set(want)
-    for pc, fixed in pinned.items():
-        if pc in domain:
-            domain[pc] = domain[pc] & fixed if (domain[pc] & fixed) else set()
-
-    # and no two pieces of one bundle are the same system: a system placed on one is off the others
-    for _ in range(8):
-        changed = False
-        for _, _, pieces, systems in cases:
-            for i, pc in enumerate(pieces):
-                if len(domain.get(pc, ())) != 1:
-                    continue
-                only = next(iter(domain[pc]))
-                for j, other in enumerate(pieces):
-                    if i != j and only in domain.get(other, ()):
-                        domain[other] = domain[other] - {only}
-                        changed = True
-            # a system only one piece of this bundle can take belongs to that piece
-            for sysname in set(systems):
-                takers = [pc for pc in pieces if sysname in domain.get(pc, ())]
-                if len(takers) == 1 and len(domain[takers[0]]) > 1:
-                    domain[takers[0]] = {sysname}
-                    changed = True
-        if not changed:
-            break
+    domain = _bundle_domains([(pieces, systems) for _, _, pieces, systems in cases], pinned)
 
     settled = 0
     for key, group, pieces, systems in cases:
