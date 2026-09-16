@@ -15,8 +15,7 @@ from typing import Any, Callable
 
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
-from .measure.journal import build as journal_build
-from .measure.journal import check as journal_check
+from .measure.commit import commit as commit_assignment
 from .semantics.scope import NY as SCOPE_NY
 from .semantics.scope import read_designations as scope_read_designations
 from .geometry.core import GridIndex, dist, point_seg_distance
@@ -1768,10 +1767,10 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         prev = label_scopes.get(key)
         label_scopes[key] = sr.scope if prev in (None, SCOPE_NY) else prev
     quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers, dict(label_counts), label_risers)
-    # mängdjournalen: varje meter tillbaka till sitt atomära intervall, och villkoren kontrollerade.
-    # Den ändrar ingen mängd - den skriver ned vad läsningen gjorde och säger till när det inte går ihop.
-    takeoff_journal = journal_build(measures, scale.meters_per_pt)
-    takeoff_journal["check"] = journal_check(takeoff_journal, quantities)
+    # Tilldelningen commit:as som en helhet: anspråken samlas, ett intervall två rör båda gör anspråk på
+    # räknas åt ingen av dem utan blir tvetydigt med sina alternativ, och först på det som blev kontrolleras
+    # villkoren. Journalen skriver ned varje meter tillbaka till det intervall den kom ur (measure/commit.py).
+    takeoff_journal = commit_assignment(measures, quantities, scale.meters_per_pt)
     for r in quantities:
         r["scope"] = label_scopes.get(r.get("base", "") + f"|DN{r.get('dn') if r.get('dn') is not None else '?'}", SCOPE_NY)
     film.measured(quantities, scale)

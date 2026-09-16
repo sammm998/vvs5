@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 from ..geometry.core import GridIndex, Seg, bbox_expand, dist, point_seg_distance
@@ -97,6 +97,24 @@ def ratio_to_meters_per_pt(ratio: float) -> float:
 
 
 def discover_scale(page: RawPage, lines: list[TextRow]) -> ScaleResult:
+    """Bladets skala, med sidans egen enhet inräknad.
+
+    Allt nedanför räknar i PDF-punkter och tar för givet att en punkt är 1/72 tum. `/UserUnit` är sidans rätt
+    att säga något annat, och biblioteket räknar inte om geometrin efter den - en ritning som skriver 2 mäts
+    alltså dubbelt fel utan att någon siffra ser konstig ut. Faktorn läggs på här, på ett ställe och efter att
+    skalan bestämts, och skrivs in i skälet så att den syns i läsningen i stället för att gömma sig i ett tal.
+
+    Ingen ritning i det lästa materialet skriver någon `/UserUnit`, så det här är en spärr mot en ritning som
+    ännu inte kommit - därför står den i ett eget prov med en syntetisk sida och inte på ett verkligt blad."""
+    r = _discover_scale(page, lines)
+    u = float(getattr(page.info, "user_unit", 1.0) or 1.0)
+    if u == 1.0 or r.meters_per_pt is None:
+        return r
+    return replace(r, meters_per_pt=r.meters_per_pt * u,
+                   reason=f"{r.reason}; sidans /UserUnit {u:g} inräknad")
+
+
+def _discover_scale(page: RawPage, lines: list[TextRow]) -> ScaleResult:
     ev: list[ScaleEvidence] = []
     # 1. scale text
     for ln in lines:
@@ -202,7 +220,10 @@ def _cell_formats(lines: list[TextRow], bbox: list[float]) -> list[str]:
 
 
 def _page_format(page: RawPage) -> str | None:
-    w, h = sorted([page.info.width * MM_PER_PT, page.info.height * MM_PER_PT])
+    # papperets verkliga mått, alltså med sidans egen enhet: en A1 som skriver /UserUnit 2 är ritad i
+    # halva talet och skulle annars läsas som en A3
+    u = float(getattr(page.info, "user_unit", 1.0) or 1.0)
+    w, h = sorted([page.info.width * u * MM_PER_PT, page.info.height * u * MM_PER_PT])
     fmts = {"A0": (841, 1189), "A1": (594, 841), "A2": (420, 594), "A3": (297, 420), "A4": (210, 297)}
     for k, (a, b) in fmts.items():
         if abs(w - a) <= 12 and abs(h - b) <= 12:

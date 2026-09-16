@@ -2,19 +2,26 @@
 
 En mängdrad är i dag en summa. Summan går att lita på precis så länge man litar på hela kedjan som byggde den,
 och när en rad ser fel ut finns det inget att öppna. Journalen är den öppningen: en post per **atomärt
-intervall** - ett ritat segment `pid#index`, eller en överbryggad lucka, eller en lodrät sträcka - med vem som
-äger det, hur långt det är och varför det räknades.
+intervall** - en bit ritat bläck, eller en överbryggad lucka, eller en lodrät sträcka - med vem som äger det,
+hur långt det är och varför det räknades.
+
+Vad som är atomärt är inte självklart, och att ta fel på det gör villkoret nedan obrukbart. Källsträckan
+`pid#index` är det inte: när ett T delas mitt på en dragen linje behåller båda bitarna sitt ursprungs namn, och
+en huvudledning och en gren som rättmätigt äger var sin halva ser då ut som två ägare till ett intervall. Det
+atomära är biten - `pipes.representation.interval_id` - och den bär både härkomsten och var på sträckan den
+börjar.
 
 Två saker gör den till mer än en logg.
 
 **Mängden ska gå att räkna om ur journalen.** Stämmer inte summan av posterna med mängdraden är en av dem fel,
 och det ska synas som ett brott mot ett villkor - inte som en siffra någon får upptäcka på en byggarbetsplats.
 
-**Ett intervall får ha en ägare.** Samma ritade segment under två rör är dubbelräkning, och det är det fel som
-är svårast att se i en summa: båda raderna ser rimliga ut var för sig. Journalen gör det till en kontroll.
+**Ett intervall får ha en ägare.** Samma bit under två rör är dubbelräkning, och det är det fel som är
+svårast att se i en summa: båda raderna ser rimliga ut var för sig. Journalen gör det till en kontroll.
 
-Journalen ÄNDRAR ingen mängd. Den skriver ned vad läsningen redan gjorde, och säger till när det inte går
-ihop. Det är avsiktligt: en journal som rättar tyst är ingen journal.
+Journalen själv ÄNDRAR ingen mängd. Den skriver ned vad läsningen gjorde och säger till när det inte går ihop.
+Att göra något åt en tvist är `measure.commit`:s sak, och den håller inne den omtvistade biten från båda
+anspråken i stället för att välja åt någon.
 """
 from __future__ import annotations
 
@@ -33,13 +40,15 @@ TWIN = "dubbellinjens_andra_kant"
 TOLERANCE_M = 0.005
 
 
-def build(measures, mpp: float | None) -> dict[str, Any]:
-    """Journalen över en sidas mängd, och kontrollen av att den går ihop."""
+def entries_of(measures, mpp: float | None) -> list[dict[str, Any]]:
+    """Journalens poster, en per atomärt intervall, med den ORUNDADE metern kvar under `_exact`.
+
+    Posterna skrivs innan någon vet om de får räknas: det är `commit` som avgör det, och den behöver se
+    anspråken som de är. `totals` tar sedan bort `_exact` när summan är dragen."""
     entries: list[dict[str, Any]] = []
     # Summan per identitet räknas på ORUNDADE tal. Rundar man varje post till fyra decimaler och adderar
     # tretusen av dem blir felet millimetrar som ser ut som ett brott mot ett villkor, och ett villkor som
     # larmar på sin egen avrundning slutar man snart att läsa.
-    exact: dict[str, float] = defaultdict(float)
     for m in measures:
         pipe = m.pipe
         key = pipe.identity.key
@@ -50,7 +59,9 @@ def build(measures, mpp: float | None) -> dict[str, Any]:
                             "metres": round(m.twin_pdf_units * mpp, 4) if mpp else None, "_exact": 0.0,
                             "counted": False, "why": f"andra kanten av {m.twin_of}"})
             continue
-        segs = list(pipe.source_segments or [])
+        # Det atomära intervallet, inte källsträckan: ett T mitt på en dragen linje ger två bitar med samma
+        # `pid#seg_index`, och skiljer man dem inte åt ser två rättmätiga ägare ut som dubbelräkning.
+        segs = list(pipe.source_intervals or pipe.source_segments or [])
         # Mätningens EGEN längd i meter är sanningen, inte rörets råa punkter: den drar redan bort det som
         # ligger i skraffering. Journalen fördelar just det talet, så att summan per rör är exakt vad
         # mängdraden fick. Ett villkor som bygger på en egen räkning prövar bara sin egen räkning.
@@ -83,11 +94,28 @@ def build(measures, mpp: float | None) -> dict[str, Any]:
                             "owner": pipe.physical_pipe_id, "identity": key, "pdf_units": None,
                             "metres": round(m.vertical_m, 4), "_exact": m.vertical_m, "counted": True,
                             "why": (m.vertical_evidence or {}).get("kind") or "lodrät sträcka"})
+    return entries
+
+
+def totals(entries: list[dict[str, Any]]) -> dict[str, float]:
+    """Summan per identitet över de poster som fick räknas, och `_exact` städas bort på vägen ut.
+
+    Summan räknas på orundade tal. Rundar man varje post till fyra decimaler och adderar tretusen av dem blir
+    felet millimetrar som ser ut som ett brott mot ett villkor, och ett villkor som larmar på sin egen
+    avrundning slutar man snart att läsa."""
+    exact: dict[str, float] = defaultdict(float)
     for e in entries:
         if e.get("counted") and e.get("metres") is not None:
             exact[e["identity"]] += e["_exact"]
         e.pop("_exact", None)
-    return {"entries": entries, "by_identity": {k: round(v, 4) for k, v in sorted(exact.items())}}
+    return {k: round(v, 4) for k, v in sorted(exact.items())}
+
+
+def build(measures, mpp: float | None) -> dict[str, Any]:
+    """Journalen över en sidas mängd, utan att något hålls inne. `measure.commit` är vägen in i produktion;
+    den här finns för den som vill se anspråken som de var innan tilldelningen avgjordes."""
+    entries = entries_of(measures, mpp)
+    return {"entries": entries, "by_identity": totals(entries)}
 
 
 def check(journal: dict, quantities: list[dict]) -> dict[str, Any]:
@@ -95,7 +123,9 @@ def check(journal: dict, quantities: list[dict]) -> dict[str, Any]:
     entries = journal.get("entries") or []
     breaches: list[dict] = []
 
-    # 1. ett ritat intervall får ha en ägare. Två rör på samma segment är dubbelräkning.
+    # 1. ett ritat intervall får ha en ägare bland de RÄKNADE posterna. Två rör som räknar samma bit är
+    #    dubbelräkning; att två rör gör anspråk på den är däremot bara en tvist, och den löser `commit` genom
+    #    att hålla inne biten från båda. Det som står kvar här efter en commit är alltså ett verkligt brott.
     owners: dict[str, set] = defaultdict(set)
     for e in entries:
         if e["kind"] == DRAWN and e.get("counted"):

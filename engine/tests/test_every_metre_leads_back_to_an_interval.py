@@ -7,8 +7,12 @@ längd och skäl.
 Två villkor gör den till mer än en logg:
 
 * **mängden ska gå att räkna om ur journalen** - annars är antingen raden eller journalen fel;
-* **ett intervall får ha en ägare** - samma ritade segment under två rör är dubbelräkning, och det är det fel
+* **ett intervall får ha en ägare** - samma bit ritat bläck under två rör är dubbelräkning, och det är det fel
   som är svårast att se i en summa, för båda raderna ser rimliga ut var för sig.
+
+Vad som är ett intervall avgör om det andra villkoret betyder något. Källsträckan `pid#seg_index` duger inte:
+delas ett T mitt på en dragen linje behåller båda bitarna sitt ursprungs namn, och två rättmätiga ägare till
+var sin halva ser då ut som dubbelräkning. Det atomära är biten.
 
 Journalen ändrar ingen mängd. Den skriver ned vad läsningen gjorde och säger till när det inte går ihop. En
 journal som rättar tyst vore ingen journal.
@@ -33,6 +37,7 @@ class _Pipe:
     physical_pipe_id: str
     identity: _Ident
     source_segments: list
+    source_intervals: list = field(default_factory=list)
     raw_length_pt: float = 0.0
     bridged_gap_pt: float = 0.0
     state: str = "CONFIRMED"

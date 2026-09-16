@@ -118,6 +118,22 @@ class Prim:
         return (self.seg.x1, self.seg.y1)
 
 
+def interval_id(q: "Prim") -> str:
+    """Det atomära intervallets namn: en bit ritat bläck som inte kan delas mellan två ägare.
+
+    `pid#seg_index` duger inte, och det är värt att säga varför, eftersom det ser ut att duga. När ett T
+    delas (`split_t_junctions`) behåller varje bit sitt ursprungs `pid` och `seg_index` - det är avsiktligt,
+    härkomsten ska inte gå förlorad - men det gör etiketten till namnet på *källsträckan*, inte på biten.
+    En huvudledning och en gren som möts mitt på en dragen linje äger då två skilda halvor med samma namn,
+    och ett villkor som säger "ett intervall, en ägare" larmar på en ritning där ingenting är fel.
+
+    Biten går att skilja på sin egen startpunkt: delningen skär längs sträckan och lägger bitarna i ordning,
+    så två bitar av samma källsträcka börjar aldrig på samma ställe. Namnet bär därför både härkomsten och
+    var på sträckan biten börjar. `prim_id` vore kortare men är ett löpnummer som flyttar sig när något annat
+    delas; det här namnet står still så länge geometrin gör det."""
+    return f"{q.pid}#{q.seg_index}@{q.seg.x0:.2f},{q.seg.y0:.2f}"
+
+
 @dataclass
 class Node:
     nid: int

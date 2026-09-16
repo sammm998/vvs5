@@ -110,6 +110,11 @@ class PageInfo:
     fonts: list[dict]
     annots: list[dict]
     markup_set_aside: dict | None = None   # påskrift som lades åt sidan: hur mycket och av vilket slag
+    # Sidans `/UserUnit`. Hela mätningen vilar på att en PDF-punkt är 1/72 tum; `/UserUnit` är sidans egen
+    # rätt att säga något annat, och en ritning som gör det mäts fel med just den faktorn utan att något
+    # ser konstigt ut. PyMuPDF räknar inte om geometrin efter den - `page.rect` är punkter rakt av - så
+    # talet bärs hit oförändrat och `measure.scale` får avgöra vad det betyder. Saknas nyckeln är den 1.
+    user_unit: float = 1.0
 
 
 @dataclass
@@ -202,7 +207,7 @@ class RawDocument:
                 n_curves += p.n_curves
             out["pages"].append({
                 "page": pg.info.index, "width": pg.info.width, "height": pg.info.height, "rotation": pg.info.rotation,
-                "mediabox": pg.info.mediabox, "cropbox": pg.info.cropbox,
+                "user_unit": pg.info.user_unit, "mediabox": pg.info.mediabox, "cropbox": pg.info.cropbox,
                 "n_paths": len(pg.paths), "n_segments": n_segs, "n_curve_items": n_curves,
                 "n_text_spans": len(pg.spans), "n_text_chars": sum(len(s.chars) for s in pg.spans),
                 "n_images": pg.info.n_images, "n_annotations": pg.info.n_annots, "n_xobjects": pg.info.n_xobjects,
@@ -698,7 +703,7 @@ def _read_page(doc, pno: int, pdf_path: str, keep_markup: bool = False, known: t
     info = PageInfo(index=pno, width=float(rect.width), height=float(rect.height), rotation=rot,
                     mediabox=[round(v, 2) for v in page.mediabox], cropbox=[round(v, 2) for v in page.cropbox],
                     n_images=len(page.get_images()), n_annots=len(annots), n_xobjects=len(xobjs), xobjects=xobjs,
-                    fonts=fonts, annots=annots, markup_set_aside=markup)
+                    fonts=fonts, annots=annots, markup_set_aside=markup, user_unit=_user_unit(doc, page))
     rp = RawPage(info=info, paths=paths, spans=spans)
     klass_d = klass.as_dict()
     if keep_markup and annots:
@@ -786,6 +791,25 @@ def _transform_items(items, M):
         elif op == "qu":
             out.append(("qu", it[1] * M))
     return out
+
+
+def _user_unit(doc, page) -> float:
+    """Sidans `/UserUnit`, eller 1 när den inte skriver någon.
+
+    Nyckeln ärvs inte och står på sidan själv, så den läses där. Ett värde som inte går att läsa som ett
+    positivt tal behandlas som frånvarande: att gissa på en faktor som hela mängden multipliceras med vore
+    värre än att inte veta, och att den saknas är det normala."""
+    try:
+        v = doc.xref_get_key(page.xref, "UserUnit")
+    except Exception:
+        return 1.0
+    if not v or v[0] not in ("int", "float", "xref"):
+        return 1.0
+    try:
+        u = float(str(v[1]).split()[0])
+    except (TypeError, ValueError, IndexError):
+        return 1.0
+    return u if u > 0 else 1.0
 
 
 def _dedupe_ids(paths: list[RawPath]) -> None:

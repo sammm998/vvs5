@@ -19,7 +19,7 @@ from typing import Any
 
 from ..geometry.core import GridIndex, angle_diff, dist, point_seg_distance, stable_id
 from ..semantics.attachment import PipeCodeAnchor, system_layer_match
-from .representation import PipeGraph, Prim, chains as graph_chains
+from .representation import PipeGraph, Prim, chains as graph_chains, interval_id
 from .frontier import BRANCH_END_EVIDENCE
 
 from .. import rules as _rules
@@ -90,6 +90,10 @@ class PhysicalPipe:
     evidence: list[str]
     state: str = "CONFIRMED"
     frontiers: list[dict] = field(default_factory=list)     # var röret slutar och varför (pipes/frontier.py)
+    # De atomära intervallen röret äger. `source_segments` säger vilka ritade sträckor röret ligger på och är
+    # härkomsten; det här säger vilka *bitar* av dem. Skillnaden syns först vid ett T mitt på en sträcka, där
+    # två rör äger var sin halva av en och samma dragna linje - samma källsträcka, skilda intervall.
+    source_intervals: list[str] = field(default_factory=list)
 
     @property
     def length_pt(self) -> float:
@@ -1491,6 +1495,7 @@ def _build_pipes(g: PipeGraph, st: dict[int, PrimState], fk: str, page: int) -> 
         pipes.append(PhysicalPipe(physical_pipe_id=ppid, page=page, family=fk, identity=s.identity, anchor_ids=anchors,
                                   prim_ids=comp, points=polylines, source_paths=sorted({q.pid for q in prims}),
                                   source_segments=[f"{q.pid}#{q.seg_index}" for q in prims], nodes=nodes,
+                                  source_intervals=[interval_id(q) for q in prims],
                                   raw_length_pt=raw, bridged_gap_pt=gap, frontier_reasons=[], evidence=evidence))
     return pipes
 
