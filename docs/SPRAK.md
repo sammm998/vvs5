@@ -129,8 +129,38 @@ Den går därför genom `locale()` som allt annat. Ändra den inte tillbaka.
 
 ## 7. Vad som med avsikt inte översätts
 
-*Fylls i när översättningen är klar.*
+Fyra saker står kvar på svenska, och skälet är i tre av fallen att en översättning vore sämre än ingen.
+
+**Akademins kursinnehåll.** `backend/app/academy_seed.py`, `academy_courses_2.py`, `academy_plans.py` och
+`frontend/src/learn.ts` - tillsammans omkring 1 380 strängar. Det är inte gränssnittstext utan undervisning om
+svensk VVS-praxis: EI30-isolering, AMA-konventioner, svenska beteckningssystem. Att översätta det kräver en
+fackgranskare, en `lang`-kolumn på kurs, modul, lektion och fråga, och sedan två läroplaner som glider isär.
+Akademins ram är översatt - menyer, knappar, figurernas terminologi - och en rad på sidan säger att kurstexten
+är på svenska. Ingen ska kunna ta en utelämning för ett fel.
+
+**Anbudstexten i `calc.py`.** Sextio strängar, och de är AB 04- och ABT 06-klausuler: "Garantitid enligt
+ABT 06 kap. 4 § 7". Det är standardavtalsvillkor med rättsverkan, i ett dokument en entreprenör skriver under.
+En engelsk återgivning av dem är en översättning av ett rättsligt instrument, inte av en knapptext, och den
+vore aktivt vilseledande. Anbudet är svenskt, permanent.
+
+**Exportens kolumnrubriker.** `exports.py` `HEADERS`, femton svenska namn som hamnar i XLSX och CSV som svenska
+mängdare klistrar in i svenska kalkylblad. Att byta dem efter webbläsarens språk vore att tyst och
+oåterkalleligt ändra en fil som inte bär någon uppgift om vilket språk som skapade den. Vill någon ha engelska
+exporter är rätt nyckel en uttrycklig `?lang=en` på exportvägen - ett val, inte en avläsning.
+
+**De 36 beskeden som är f-strängar.** Ett besked som bär sitt tal i sig - `f"Läsningen kostar {n} credits och
+kontot har {m}."` - kan inte slås upp på en svensk nyckel, för nyckeln är olika varje gång. De 108 beskeden som
+är hela strängar går genom ordboken; de här står kvar på svenska tills de skrivs om så talet läggs till i
+stället för att skjutas in. Två av dem träffar betalande kunder (`credits.py:203` och `:255`) och är värda att
+skriva om; de övriga 34 är admin- och CAD-vägar.
 
 ## 8. Hur det mäts
 
-*Fylls i när översättningen är klar.*
+```
+cd frontend && node tools/i18n_check.mjs      # varje anrop går till ordboken, och vad som saknar engelska
+python3 frontend/tools/i18n_wrap.py --areas   # samma sak, del för del
+python3 frontend/tools/i18n_wrap.py --keys admin   # nycklarna som återstår i en del
+```
+
+Provet ligger först i `npm run build`, så en sträng som inte når ordboken stoppar bygget i stället för att
+märkas i webbläsaren.

@@ -1,3 +1,5 @@
+import { t as tr, trf } from "./i18n";
+
 const TOKEN_KEY = "vvs_token";
 export function getToken(): string | null { return localStorage.getItem(TOKEN_KEY); }
 export function setToken(t: string | null) { if (t) localStorage.setItem(TOKEN_KEY, t); else localStorage.removeItem(TOKEN_KEY); }
@@ -17,8 +19,14 @@ export function currentEmail(): string | null {
 
 /** Vad servern sa om varför den sa nej. Delas av req och fetchBlob: ett fel utan innehåll ("Hämtning
  *  misslyckades") döljer sin egen orsak, och det var precis det anbudssidan visade i en vecka. */
+/* Tjänstens egna besked är skrivna på svenska, och de slås upp här - på samma svenska sträng som
+ * gränssnittet använder som nyckel. Det är enda stället de går genom: varje `.message` som visas i en
+ * komponent kommer härifrån. Alternativet, ett Accept-Language och en andra ordbok i Python, hade flyttat
+ * en presentationsfråga in i tjänsten och gett två ordböcker som glider isär.
+ *
+ * De 36 beskeden som är f-strängar går inte att slå upp - de bär sitt tal i sig och blir kvar på svenska. */
 async function failure(res: Response): Promise<Error> {
-  let msg = res.statusText || `Fel ${res.status}`;
+  let msg = res.statusText || trf("Fel {0}", res.status);
   try {
     const j = await res.json();
     const d = j.detail;
@@ -28,7 +36,7 @@ async function failure(res: Response): Promise<Error> {
       : Array.isArray(d) ? d.map((x: any) => x?.msg ? `${x.msg}${x.loc ? ` (${x.loc.slice(-1)})` : ""}` : JSON.stringify(x)).join("; ")
       : d ? JSON.stringify(d) : msg;
   } catch { /* a body that is not JSON leaves the status line, which is still a sentence */ }
-  return new Error(`${msg} (${res.status})`);
+  return new Error(`${tr(msg)} (${res.status})`);
 }
 
 async function req(path: string, init: RequestInit = {}): Promise<any> {
@@ -36,7 +44,7 @@ async function req(path: string, init: RequestInit = {}): Promise<any> {
   const tok = getToken();
   if (tok) headers["Authorization"] = `Bearer ${tok}`;
   const res = await fetch(path, { ...init, headers });
-  if (res.status === 401) { setToken(null); window.location.href = "/login"; throw new Error("Ej inloggad"); }
+  if (res.status === 401) { setToken(null); window.location.href = "/login"; throw new Error(tr("Ej inloggad")); }
   if (!res.ok) {
     throw await failure(res);
   }
@@ -50,7 +58,7 @@ export const api = {
   login: async (email: string, password: string) => {
     const body = new URLSearchParams({ username: email, password });
     const res = await fetch("/api/auth/login", { method: "POST", body });
-    if (!res.ok) throw new Error((await res.json()).detail || "Inloggning misslyckades");
+    if (!res.ok) throw new Error(tr((await res.json()).detail || "Inloggning misslyckades"));
     const j = await res.json(); setToken(j.access_token); return j;
   },
   register: async (email: string, password: string) => {
@@ -115,7 +123,7 @@ export const api = {
     req(`/api/rules/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   fetchBlob: async (path: string) => {
     const res = await fetch(path, { headers: { Authorization: `Bearer ${getToken()}` } });
-    if (res.status === 401) { setToken(null); window.location.href = "/login"; throw new Error("Ej inloggad"); }
+    if (res.status === 401) { setToken(null); window.location.href = "/login"; throw new Error(tr("Ej inloggad")); }
     if (!res.ok) throw await failure(res);
     return res.blob();
   },
@@ -233,7 +241,7 @@ export const api = {
   /** En tillgång (underlag, nät) som en blob-URL med inloggningen gjord: bilder och laddare kan inte skicka en token själva. */
   cadAssetUrl: async (key: string): Promise<string> => {
     const cached = assetUrls.get(key); if (cached) return cached;
-    const m = /^cad\/([^/]+)\/assets\/([^/]+)$/.exec(key); if (!m) throw new Error("Okänd tillgång");
+    const m = /^cad\/([^/]+)\/assets\/([^/]+)$/.exec(key); if (!m) throw new Error(tr("Okänd tillgång"));
     const b: Blob = await (api as any).fetchBlob(`/api/cad/assets/${m[1]}/${m[2]}`);
     const u = URL.createObjectURL(b); assetUrls.set(key, u); return u;
   },
