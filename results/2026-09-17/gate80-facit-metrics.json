@@ -1,99 +1,99 @@
 {
- "gate": "gate79.json",
+ "gate": "gate80.json",
  "fold_names": true,
  "sheets_without_reference": [],
  "totals": {
   "sheets": 59,
   "reference_m": 11399.2,
-  "owned_m": 8955.8,
-  "false_m": 1735.2,
-  "COVERAGE": 0.7856,
-  "FALSE_OWNERSHIP": 0.1522,
+  "owned_m": 8893.4,
+  "false_m": 1248.3,
+  "COVERAGE": 0.7802,
+  "FALSE_OWNERSHIP": 0.1095,
   "TEXT_RECALL": 0.8693,
-  "TEXT_PRECISION": 0.792,
+  "TEXT_PRECISION": 0.8058,
   "NAMED_AND_MEASURED_RECALL": 0.8535,
-  "missed_m": 2443.4,
-  "wrong_name_m": 302.5,
-  "over_extent_m": 1432.7,
+  "missed_m": 2505.8,
+  "wrong_name_m": 262.1,
+  "over_extent_m": 986.3,
   "DESIGNATION_RECALL": 0.8693,
-  "DESIGNATION_PRECISION": 0.792,
-  "LEADER_ATTACHMENT": 3.4283,
+  "DESIGNATION_PRECISION": 0.8058,
+  "LEADER_ATTACHMENT": 3.3128,
   "extent_classes": {
-   "FULL": 175,
-   "PARTIAL": 196,
-   "MISSED": 158,
-   "OVER": 171,
-   "WRONG": 80
+   "FULL": 187,
+   "PARTIAL": 202,
+   "MISSED": 161,
+   "OVER": 153,
+   "WRONG": 65
   },
   "failures": {
-   "PARTIAL_EXTENT_UNDER_PROPAGATED": 196,
-   "OVER_EXTENT_OVER_PROPAGATED": 171,
-   "MISSED_LABEL_READ_NO_METRES": 88,
-   "WRONG_NAME_NOT_IN_REFERENCE": 80,
-   "MISSED_LABEL_NOT_READ": 70
+   "PARTIAL_EXTENT_UNDER_PROPAGATED": 202,
+   "OVER_EXTENT_OVER_PROPAGATED": 153,
+   "MISSED_LABEL_READ_NO_METRES": 91,
+   "MISSED_LABEL_NOT_READ": 70,
+   "WRONG_NAME_NOT_IN_REFERENCE": 65
   }
  },
  "by_style": {
   "V (textlager)": {
    "sheets": 29,
    "reference_m": 5849.9,
-   "owned_m": 4673.9,
-   "false_m": 1177.5,
-   "COVERAGE": 0.799,
-   "FALSE_OWNERSHIP": 0.2013,
-   "TEXT_RECALL": 0.7987,
-   "TEXT_PRECISION": 0.7987,
-   "NAMED_AND_MEASURED_RECALL": 0.7891,
-   "missed_m": 1176.0,
-   "wrong_name_m": 197.7,
-   "over_extent_m": 979.9,
-   "DESIGNATION_RECALL": 0.7987,
-   "DESIGNATION_PRECISION": 0.7987,
-   "LEADER_ATTACHMENT": 2.38,
+   "owned_m": 4614.1,
+   "false_m": 688.1,
+   "COVERAGE": 0.7887,
+   "FALSE_OWNERSHIP": 0.1176,
+   "TEXT_RECALL": 0.7955,
+   "TEXT_PRECISION": 0.8272,
+   "NAMED_AND_MEASURED_RECALL": 0.7859,
+   "missed_m": 1235.8,
+   "wrong_name_m": 157.2,
+   "over_extent_m": 531.0,
+   "DESIGNATION_RECALL": 0.7955,
+   "DESIGNATION_PRECISION": 0.8272,
+   "LEADER_ATTACHMENT": 2.1449,
    "extent_classes": {
-    "MISSED": 77,
-    "WRONG": 52,
-    "FULL": 67,
-    "PARTIAL": 81,
-    "OVER": 99
+    "MISSED": 82,
+    "WRONG": 37,
+    "FULL": 80,
+    "PARTIAL": 86,
+    "OVER": 80
    },
    "failures": {
-    "OVER_EXTENT_OVER_PROPAGATED": 99,
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 81,
-    "WRONG_NAME_NOT_IN_REFERENCE": 52,
-    "MISSED_LABEL_NOT_READ": 42,
-    "MISSED_LABEL_READ_NO_METRES": 35
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 86,
+    "OVER_EXTENT_OVER_PROPAGATED": 80,
+    "MISSED_LABEL_NOT_READ": 43,
+    "MISSED_LABEL_READ_NO_METRES": 39,
+    "WRONG_NAME_NOT_IN_REFERENCE": 37
    }
   },
   "W (konturglyfer)": {
    "sheets": 30,
    "reference_m": 5549.3,
-   "owned_m": 4281.9,
-   "false_m": 557.7,
-   "COVERAGE": 0.7716,
-   "FALSE_OWNERSHIP": 0.1005,
-   "TEXT_RECALL": 0.9379,
-   "TEXT_PRECISION": 0.7865,
-   "NAMED_AND_MEASURED_RECALL": 0.9161,
-   "missed_m": 1267.5,
+   "owned_m": 4279.3,
+   "false_m": 560.2,
+   "COVERAGE": 0.7711,
+   "FALSE_OWNERSHIP": 0.1009,
+   "TEXT_RECALL": 0.941,
+   "TEXT_PRECISION": 0.7891,
+   "NAMED_AND_MEASURED_RECALL": 0.9193,
+   "missed_m": 1270.0,
    "wrong_name_m": 104.9,
-   "over_extent_m": 452.8,
-   "DESIGNATION_RECALL": 0.9379,
-   "DESIGNATION_PRECISION": 0.7865,
+   "over_extent_m": 455.3,
+   "DESIGNATION_RECALL": 0.941,
+   "DESIGNATION_PRECISION": 0.7891,
    "LEADER_ATTACHMENT": 4.4418,
    "extent_classes": {
-    "FULL": 108,
-    "PARTIAL": 115,
-    "MISSED": 81,
-    "OVER": 72,
+    "FULL": 107,
+    "PARTIAL": 116,
+    "MISSED": 79,
+    "OVER": 73,
     "WRONG": 28
    },
    "failures": {
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 115,
-    "OVER_EXTENT_OVER_PROPAGATED": 72,
-    "MISSED_LABEL_READ_NO_METRES": 53,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 116,
+    "OVER_EXTENT_OVER_PROPAGATED": 73,
+    "MISSED_LABEL_READ_NO_METRES": 52,
     "WRONG_NAME_NOT_IN_REFERENCE": 28,
-    "MISSED_LABEL_NOT_READ": 28
+    "MISSED_LABEL_NOT_READ": 27
    }
   }
  },
@@ -684,68 +684,69 @@
    "state": "OK",
    "designations": {
     "reference": 7,
-    "ours": 9,
+    "ours": 8,
     "found": 7,
     "found_with_metres": 7,
     "recall": 1.0,
-    "precision": 0.7778,
+    "precision": 0.875,
     "recall_with_metres": 1.0
    },
-   "leader_attachment": 1.5,
+   "leader_attachment": 0.7857,
    "metres": {
     "reference": 101.5,
-    "owned": 101.5,
-    "false": 61.44,
-    "missed": 0.0,
-    "wrong_name": 0.14,
-    "over_extent": 61.3,
-    "coverage": 1.0,
-    "false_ownership": 0.6053
+    "owned": 95.32,
+    "false": 0.64,
+    "missed": 6.18,
+    "wrong_name": 0.0,
+    "over_extent": 0.64,
+    "coverage": 0.9391,
+    "false_ownership": 0.0063
    },
    "extent_classes": {
-    "WRONG": 2,
-    "OVER": 7
+    "MISSED": 1,
+    "FULL": 5,
+    "PARTIAL": 1,
+    "OVER": 1
    },
    "failures": {
-    "WRONG_NAME_NOT_IN_REFERENCE": 2,
-    "OVER_EXTENT_OVER_PROPAGATED": 7
+    "MISSED_LABEL_NOT_READ": 1,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 1,
+    "OVER_EXTENT_OVER_PROPAGATED": 1
    },
    "outside_reference_systems": {
-    "systems": [
-     "S"
-    ],
-    "m": 1.75
+    "systems": [],
+    "m": 0
    },
    "extent": {
     "KV1-X31-16": {
      "reference_m": 0.0,
-     "ours_m": 0.07,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "ours_m": 0.0,
+     "class": "MISSED",
+     "failure": "MISSED_LABEL_NOT_READ"
     },
     "KV1-X7-40": {
      "reference_m": 12.5,
-     "ours_m": 18.56,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 12.5,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VP1-S2-65": {
      "reference_m": 25.9,
-     "ours_m": 37.18,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 25.63,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VS21-S13-15": {
      "reference_m": 15.4,
-     "ours_m": 35.55,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 9.55,
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VS31-S13-28": {
      "reference_m": 22.1,
-     "ours_m": 33.54,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 22.26,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VS31-X32-25": {
      "reference_m": 0.4,
@@ -753,23 +754,17 @@
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
-    "VV1-X31-16": {
-     "reference_m": 0.0,
-     "ours_m": 0.07,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
     "VV1-X7-40": {
      "reference_m": 12.6,
-     "ours_m": 18.56,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 12.62,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VVC1-X7-32": {
      "reference_m": 12.6,
-     "ours_m": 18.55,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 12.54,
+     "class": "FULL",
+     "failure": "OK"
     }
    }
   },
@@ -779,33 +774,33 @@
    "state": "OK",
    "designations": {
     "reference": 17,
-    "ours": 26,
+    "ours": 22,
     "found": 17,
     "found_with_metres": 17,
     "recall": 1.0,
-    "precision": 0.6538,
+    "precision": 0.7727,
     "recall_with_metres": 1.0
    },
-   "leader_attachment": 2.88,
+   "leader_attachment": 2.24,
    "metres": {
     "reference": 321.1,
-    "owned": 320.72,
-    "false": 200.4,
-    "missed": 0.38,
-    "wrong_name": 18.53,
-    "over_extent": 181.87,
-    "coverage": 0.9988,
-    "false_ownership": 0.6241
+    "owned": 309.08,
+    "false": 96.27,
+    "missed": 12.02,
+    "wrong_name": 8.69,
+    "over_extent": 87.58,
+    "coverage": 0.9626,
+    "false_ownership": 0.2998
    },
    "extent_classes": {
-    "FULL": 2,
-    "WRONG": 9,
-    "OVER": 14,
+    "FULL": 3,
+    "WRONG": 5,
+    "OVER": 13,
     "PARTIAL": 1
    },
    "failures": {
-    "WRONG_NAME_NOT_IN_REFERENCE": 9,
-    "OVER_EXTENT_OVER_PROPAGATED": 14,
+    "WRONG_NAME_NOT_IN_REFERENCE": 5,
+    "OVER_EXTENT_OVER_PROPAGATED": 13,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 1
    },
    "outside_reference_systems": {
@@ -815,7 +810,7 @@
    "extent": {
     "KV1-X31-16": {
      "reference_m": 31.9,
-     "ours_m": 34.23,
+     "ours_m": 31.26,
      "class": "FULL",
      "failure": "OK"
     },
@@ -825,27 +820,21 @@
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
-    "KV1-X7-20": {
-     "reference_m": 0.0,
-     "ours_m": 3.61,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
     "KV1-X7-25": {
      "reference_m": 3.6,
-     "ours_m": 4.59,
+     "ours_m": 10.68,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "KV1-X7-32": {
      "reference_m": 14.2,
-     "ours_m": 16.5,
+     "ours_m": 19.43,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "KV1-X7-40": {
      "reference_m": 16.4,
-     "ours_m": 38.82,
+     "ours_m": 18.95,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
@@ -857,13 +846,13 @@
     },
     "KV2-X7-25": {
      "reference_m": 0.9,
-     "ours_m": 11.01,
+     "ours_m": 10.89,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "S1-P5-160": {
      "reference_m": 10.3,
-     "ours_m": 10.51,
+     "ours_m": 10.36,
      "class": "FULL",
      "failure": "OK"
     },
@@ -875,61 +864,43 @@
     },
     "SF1-P5": {
      "reference_m": 0.0,
-     "ours_m": 0.43,
+     "ours_m": 2.56,
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
     "SF1-P5-110": {
      "reference_m": 14.5,
-     "ours_m": 33.15,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
-    },
-    "SF1-P5-160": {
-     "reference_m": 0.0,
-     "ours_m": 0.74,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "SF1-P5-75": {
-     "reference_m": 1.4,
-     "ours_m": 1.02,
+     "ours_m": 3.13,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "VP1-S13-42": {
-     "reference_m": 0.0,
-     "ours_m": 1.46,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+    "SF1-P5-75": {
+     "reference_m": 1.4,
+     "ours_m": 6.0,
+     "class": "OVER",
+     "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VP1-S2-65": {
      "reference_m": 33.4,
-     "ours_m": 55.73,
+     "ours_m": 42.69,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VS21-S13-15": {
      "reference_m": 63.4,
-     "ours_m": 81.76,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
-    },
-    "VS31-S13-22": {
-     "reference_m": 0.0,
-     "ours_m": 6.17,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "ours_m": 64.53,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VS31-S13-28": {
      "reference_m": 33.9,
-     "ours_m": 55.84,
+     "ours_m": 47.57,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VV1-X31-16": {
      "reference_m": 30.0,
-     "ours_m": 44.08,
+     "ours_m": 35.97,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
@@ -947,25 +918,25 @@
     },
     "VV1-X7-32": {
      "reference_m": 14.8,
-     "ours_m": 23.98,
+     "ours_m": 23.67,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VV1-X7-40": {
      "reference_m": 16.5,
-     "ours_m": 27.91,
+     "ours_m": 19.02,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VVC1-X7-20": {
      "reference_m": 14.7,
-     "ours_m": 30.16,
+     "ours_m": 28.09,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VVC1-X7-32": {
      "reference_m": 16.5,
-     "ours_m": 27.89,
+     "ours_m": 19.03,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     }
@@ -987,13 +958,13 @@
    "leader_attachment": 1.7333,
    "metres": {
     "reference": 404.0,
-    "owned": 308.46,
-    "false": 29.55,
-    "missed": 95.54,
+    "owned": 308.43,
+    "false": 29.56,
+    "missed": 95.58,
     "wrong_name": 4.51,
     "over_extent": 25.04,
-    "coverage": 0.7635,
-    "false_ownership": 0.0731
+    "coverage": 0.7634,
+    "false_ownership": 0.0732
    },
    "extent_classes": {
     "WRONG": 2,
@@ -1024,7 +995,7 @@
     },
     "KV1-X31-16": {
      "reference_m": 29.1,
-     "ours_m": 30.76,
+     "ours_m": 30.75,
      "class": "FULL",
      "failure": "OK"
     },
@@ -1054,7 +1025,7 @@
     },
     "KV2-X7-25": {
      "reference_m": 9.1,
-     "ours_m": 7.21,
+     "ours_m": 7.19,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
@@ -1108,7 +1079,7 @@
     },
     "VP1-S2-65": {
      "reference_m": 45.2,
-     "ours_m": 41.88,
+     "ours_m": 41.86,
      "class": "FULL",
      "failure": "OK"
     },
@@ -1132,7 +1103,7 @@
     },
     "VS21-S13-22": {
      "reference_m": 0.2,
-     "ours_m": 0.39,
+     "ours_m": 0.42,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
@@ -1168,7 +1139,7 @@
     },
     "VV1-X31-16": {
      "reference_m": 27.3,
-     "ours_m": 29.89,
+     "ours_m": 29.88,
      "class": "FULL",
      "failure": "OK"
     },
@@ -1647,35 +1618,31 @@
     "precision": 1.0,
     "recall_with_metres": 1.0
    },
-   "leader_attachment": 3.2857,
+   "leader_attachment": 1.1429,
    "metres": {
     "reference": 55.8,
-    "owned": 55.8,
-    "false": 5.94,
-    "missed": 0.0,
+    "owned": 55.4,
+    "false": 0.0,
+    "missed": 0.4,
     "wrong_name": 0,
-    "over_extent": 5.94,
-    "coverage": 1.0,
-    "false_ownership": 0.1065
+    "over_extent": 0.0,
+    "coverage": 0.9928,
+    "false_ownership": 0.0
    },
    "extent_classes": {
-    "OVER": 1
+    "FULL": 1
    },
-   "failures": {
-    "OVER_EXTENT_OVER_PROPAGATED": 1
-   },
+   "failures": {},
    "outside_reference_systems": {
-    "systems": [
-     "S"
-    ],
-    "m": 24.81
+    "systems": [],
+    "m": 0
    },
    "extent": {
     "VS21-S13-15": {
      "reference_m": 55.8,
-     "ours_m": 61.74,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 55.4,
+     "class": "FULL",
+     "failure": "OK"
     }
    }
   },
@@ -1692,29 +1659,27 @@
     "precision": 0.75,
     "recall_with_metres": 0.5
    },
-   "leader_attachment": 3.875,
+   "leader_attachment": 3.75,
    "metres": {
     "reference": 106.3,
-    "owned": 92.4,
-    "false": 36.76,
-    "missed": 13.9,
+    "owned": 88.01,
+    "false": 6.88,
+    "missed": 18.29,
     "wrong_name": 6.88,
-    "over_extent": 29.88,
-    "coverage": 0.8693,
-    "false_ownership": 0.3458
+    "over_extent": 0.0,
+    "coverage": 0.828,
+    "false_ownership": 0.0647
    },
    "extent_classes": {
     "MISSED": 3,
-    "FULL": 1,
+    "FULL": 2,
     "PARTIAL": 1,
-    "WRONG": 1,
-    "OVER": 1
+    "WRONG": 1
    },
    "failures": {
     "MISSED_LABEL_NOT_READ": 3,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 1,
-    "WRONG_NAME_NOT_IN_REFERENCE": 1,
-    "OVER_EXTENT_OVER_PROPAGATED": 1
+    "WRONG_NAME_NOT_IN_REFERENCE": 1
    },
    "outside_reference_systems": {
     "systems": [],
@@ -1753,9 +1718,9 @@
     },
     "VS21-S13-15": {
      "reference_m": 69.6,
-     "ours_m": 99.48,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 65.21,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VV1-X31-16": {
      "reference_m": 0.7,
@@ -2046,62 +2011,55 @@
    "state": "OK",
    "designations": {
     "reference": 2,
-    "ours": 4,
+    "ours": 3,
     "found": 2,
     "found_with_metres": 2,
     "recall": 1.0,
-    "precision": 0.5,
+    "precision": 0.6667,
     "recall_with_metres": 1.0
    },
-   "leader_attachment": 2.2727,
+   "leader_attachment": 1.4545,
    "metres": {
     "reference": 76.9,
-    "owned": 73.92,
-    "false": 2.41,
-    "missed": 2.98,
-    "wrong_name": 2.41,
+    "owned": 68.27,
+    "false": 0.0,
+    "missed": 8.63,
+    "wrong_name": 0.0,
     "over_extent": 0.0,
-    "coverage": 0.9612,
-    "false_ownership": 0.0313
+    "coverage": 0.8877,
+    "false_ownership": 0.0
    },
    "extent_classes": {
-    "FULL": 2,
-    "WRONG": 2
+    "FULL": 1,
+    "MISSED": 1,
+    "PARTIAL": 1
    },
    "failures": {
-    "WRONG_NAME_NOT_IN_REFERENCE": 2
+    "MISSED_LABEL_READ_NO_METRES": 1,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 1
    },
    "outside_reference_systems": {
-    "systems": [
-     "KV",
-     "VV"
-    ],
-    "m": 99.08
+    "systems": [],
+    "m": 0
    },
    "extent": {
     "S1-P5-110": {
      "reference_m": 3.6,
-     "ours_m": 3.6,
+     "ours_m": 3.51,
      "class": "FULL",
      "failure": "OK"
     },
     "S1-P5-160": {
      "reference_m": 0.0,
-     "ours_m": 2.4,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "S1-P5-75": {
-     "reference_m": 0.0,
-     "ours_m": 0.01,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "ours_m": 0.0,
+     "class": "MISSED",
+     "failure": "MISSED_LABEL_READ_NO_METRES"
     },
     "VS21-S13-15": {
      "reference_m": 73.3,
-     "ours_m": 70.32,
-     "class": "FULL",
-     "failure": "OK"
+     "ours_m": 64.76,
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     }
    }
   },
@@ -2111,36 +2069,36 @@
    "state": "OK",
    "designations": {
     "reference": 11,
-    "ours": 11,
-    "found": 9,
-    "found_with_metres": 9,
-    "recall": 0.8182,
-    "precision": 0.8182,
-    "recall_with_metres": 0.8182
+    "ours": 10,
+    "found": 8,
+    "found_with_metres": 8,
+    "recall": 0.7273,
+    "precision": 0.8,
+    "recall_with_metres": 0.7273
    },
-   "leader_attachment": 1.5333,
+   "leader_attachment": 1.4,
    "metres": {
     "reference": 255.4,
-    "owned": 232.49,
-    "false": 22.21,
-    "missed": 22.91,
-    "wrong_name": 7.54,
-    "over_extent": 14.68,
-    "coverage": 0.9103,
-    "false_ownership": 0.087
+    "owned": 212.56,
+    "false": 11.49,
+    "missed": 42.84,
+    "wrong_name": 0.55,
+    "over_extent": 10.94,
+    "coverage": 0.8322,
+    "false_ownership": 0.045
    },
    "extent_classes": {
-    "PARTIAL": 4,
+    "PARTIAL": 5,
     "OVER": 2,
     "WRONG": 2,
-    "FULL": 3,
-    "MISSED": 2
+    "FULL": 1,
+    "MISSED": 3
    },
    "failures": {
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 4,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 5,
     "OVER_EXTENT_OVER_PROPAGATED": 2,
     "WRONG_NAME_NOT_IN_REFERENCE": 2,
-    "MISSED_LABEL_READ_NO_METRES": 1,
+    "MISSED_LABEL_READ_NO_METRES": 2,
     "MISSED_LABEL_NOT_READ": 1
    },
    "outside_reference_systems": {
@@ -2192,19 +2150,19 @@
     },
     "VS21-S13-15": {
      "reference_m": 82.5,
-     "ours_m": 88.28,
-     "class": "FULL",
-     "failure": "OK"
+     "ours_m": 64.54,
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VS21-S13-22": {
      "reference_m": 0.0,
-     "ours_m": 7.51,
+     "ours_m": 0.52,
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
     "VV1-X31-16": {
      "reference_m": 50.2,
-     "ours_m": 49.88,
+     "ours_m": 52.26,
      "class": "FULL",
      "failure": "OK"
     },
@@ -2216,9 +2174,9 @@
     },
     "VV1-X7-25": {
      "reference_m": 2.3,
-     "ours_m": 2.3,
-     "class": "FULL",
-     "failure": "OK"
+     "ours_m": 0.0,
+     "class": "MISSED",
+     "failure": "MISSED_LABEL_READ_NO_METRES"
     },
     "VVC1-X7-25": {
      "reference_m": 0.4,
@@ -2537,35 +2495,34 @@
    "state": "OK",
    "designations": {
     "reference": 5,
-    "ours": 8,
+    "ours": 7,
     "found": 5,
     "found_with_metres": 5,
     "recall": 1.0,
-    "precision": 0.625,
+    "precision": 0.7143,
     "recall_with_metres": 1.0
    },
-   "leader_attachment": 3.0833,
+   "leader_attachment": 2.0,
    "metres": {
     "reference": 129.9,
-    "owned": 108.03,
-    "false": 76.44,
-    "missed": 21.87,
-    "wrong_name": 3.17,
-    "over_extent": 73.27,
-    "coverage": 0.8316,
-    "false_ownership": 0.5885
+    "owned": 101.52,
+    "false": 2.58,
+    "missed": 28.38,
+    "wrong_name": 0.0,
+    "over_extent": 2.58,
+    "coverage": 0.7815,
+    "false_ownership": 0.0199
    },
    "extent_classes": {
-    "OVER": 3,
-    "MISSED": 1,
+    "FULL": 2,
+    "MISSED": 2,
     "PARTIAL": 2,
-    "WRONG": 2
+    "OVER": 1
    },
    "failures": {
-    "OVER_EXTENT_OVER_PROPAGATED": 3,
-    "MISSED_LABEL_READ_NO_METRES": 1,
+    "MISSED_LABEL_READ_NO_METRES": 2,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 2,
-    "WRONG_NAME_NOT_IN_REFERENCE": 2
+    "OVER_EXTENT_OVER_PROPAGATED": 1
    },
    "outside_reference_systems": {
     "systems": [],
@@ -2574,9 +2531,9 @@
    "extent": {
     "KV1-X31-16": {
      "reference_m": 42.4,
-     "ours_m": 76.0,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 38.69,
+     "class": "FULL",
+     "failure": "OK"
     },
     "KV1-X7-25": {
      "reference_m": 0.0,
@@ -2586,39 +2543,33 @@
     },
     "S1-P5-110": {
      "reference_m": 27.4,
-     "ours_m": 10.58,
+     "ours_m": 8.6,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
-    "S1-P5-160": {
-     "reference_m": 0.0,
-     "ours_m": 2.38,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
     "S1-P5-75": {
      "reference_m": 0.4,
-     "ours_m": 23.04,
+     "ours_m": 2.98,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VS21-S13-15": {
      "reference_m": 21.9,
-     "ours_m": 16.85,
+     "ours_m": 16.77,
      "class": "PARTIAL",
      "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VV1-X31-16": {
      "reference_m": 37.8,
-     "ours_m": 54.84,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 37.07,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VV1-X7VVC01-X7": {
      "reference_m": 0.0,
-     "ours_m": 0.79,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "ours_m": 0.0,
+     "class": "MISSED",
+     "failure": "MISSED_LABEL_READ_NO_METRES"
     }
    }
   },
@@ -2628,36 +2579,36 @@
    "state": "OK",
    "designations": {
     "reference": 10,
-    "ours": 10,
+    "ours": 9,
     "found": 7,
     "found_with_metres": 7,
     "recall": 0.7,
-    "precision": 0.7,
+    "precision": 0.7778,
     "recall_with_metres": 0.7
    },
-   "leader_attachment": 3.0714,
+   "leader_attachment": 2.2857,
    "metres": {
     "reference": 175.2,
-    "owned": 131.85,
-    "false": 74.85,
-    "missed": 43.35,
-    "wrong_name": 35.38,
-    "over_extent": 39.48,
-    "coverage": 0.7525,
-    "false_ownership": 0.4272
+    "owned": 130.78,
+    "false": 35.41,
+    "missed": 44.42,
+    "wrong_name": 24.51,
+    "over_extent": 10.9,
+    "coverage": 0.7465,
+    "false_ownership": 0.2021
    },
    "extent_classes": {
-    "FULL": 2,
-    "OVER": 4,
+    "FULL": 3,
+    "OVER": 3,
     "MISSED": 3,
-    "WRONG": 3,
+    "WRONG": 2,
     "PARTIAL": 1
    },
    "failures": {
-    "OVER_EXTENT_OVER_PROPAGATED": 4,
+    "OVER_EXTENT_OVER_PROPAGATED": 3,
     "MISSED_LABEL_NOT_READ": 2,
-    "WRONG_NAME_NOT_IN_REFERENCE": 3,
     "MISSED_LABEL_READ_NO_METRES": 1,
+    "WRONG_NAME_NOT_IN_REFERENCE": 2,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 1
    },
    "outside_reference_systems": {
@@ -2667,7 +2618,7 @@
    "extent": {
     "KV1-X31-16": {
      "reference_m": 53.9,
-     "ours_m": 54.16,
+     "ours_m": 53.05,
      "class": "FULL",
      "failure": "OK"
     },
@@ -2683,12 +2634,6 @@
      "class": "MISSED",
      "failure": "MISSED_LABEL_NOT_READ"
     },
-    "S1-P5": {
-     "reference_m": 0.0,
-     "ours_m": 7.14,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
     "S1-P5-110": {
      "reference_m": 37.6,
      "ours_m": 0.0,
@@ -2697,7 +2642,7 @@
     },
     "S1-P5-110L": {
      "reference_m": 0.0,
-     "ours_m": 25.9,
+     "ours_m": 22.17,
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
@@ -2709,7 +2654,7 @@
     },
     "S1-P5-75": {
      "reference_m": 1.5,
-     "ours_m": 4.51,
+     "ours_m": 7.61,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
@@ -2721,13 +2666,13 @@
     },
     "VS21-S13-15": {
      "reference_m": 46.7,
-     "ours_m": 76.97,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 46.5,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VV1-X31-16": {
      "reference_m": 25.7,
-     "ours_m": 26.85,
+     "ours_m": 25.68,
      "class": "FULL",
      "failure": "OK"
     },
@@ -3099,35 +3044,32 @@
    "state": "OK",
    "designations": {
     "reference": 7,
-    "ours": 10,
+    "ours": 9,
     "found": 7,
     "found_with_metres": 7,
     "recall": 1.0,
-    "precision": 0.7,
+    "precision": 0.7778,
     "recall_with_metres": 1.0
    },
-   "leader_attachment": 1.5556,
+   "leader_attachment": 1.5,
    "metres": {
     "reference": 68.5,
-    "owned": 60.77,
-    "false": 128.82,
-    "missed": 7.73,
-    "wrong_name": 5.76,
-    "over_extent": 123.06,
-    "coverage": 0.8871,
-    "false_ownership": 1.8806
+    "owned": 60.24,
+    "false": 1.41,
+    "missed": 8.26,
+    "wrong_name": 0.0,
+    "over_extent": 1.41,
+    "coverage": 0.8794,
+    "false_ownership": 0.0206
    },
    "extent_classes": {
-    "OVER": 6,
-    "MISSED": 1,
-    "WRONG": 2,
-    "PARTIAL": 1
+    "PARTIAL": 3,
+    "MISSED": 2,
+    "FULL": 4
    },
    "failures": {
-    "OVER_EXTENT_OVER_PROPAGATED": 6,
-    "MISSED_LABEL_READ_NO_METRES": 1,
-    "WRONG_NAME_NOT_IN_REFERENCE": 2,
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 1
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 3,
+    "MISSED_LABEL_READ_NO_METRES": 2
    },
    "outside_reference_systems": {
     "systems": [],
@@ -3136,9 +3078,15 @@
    "extent": {
     "KV1-X31-16": {
      "reference_m": 0.5,
-     "ours_m": 55.25,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 0.36,
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
+    },
+    "KV1-X7-25": {
+     "reference_m": 0.0,
+     "ours_m": 0.0,
+     "class": "MISSED",
+     "failure": "MISSED_LABEL_READ_NO_METRES"
     },
     "KV1-X7-32": {
      "reference_m": 0.0,
@@ -3148,21 +3096,15 @@
     },
     "KV1-X7-40": {
      "reference_m": 9.7,
-     "ours_m": 18.12,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
-    },
-    "VS21-S13": {
-     "reference_m": 0.0,
-     "ours_m": 0.42,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "ours_m": 10.47,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VS21-S13-15": {
      "reference_m": 21.4,
-     "ours_m": 29.49,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 22.04,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VS21-S13-22": {
      "reference_m": 15.1,
@@ -3172,27 +3114,21 @@
     },
     "VV1-X31-16": {
      "reference_m": 0.5,
-     "ours_m": 31.73,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
-    },
-    "VV1-X7-32": {
-     "reference_m": 0.0,
-     "ours_m": 5.34,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
+     "ours_m": 0.36,
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VV1-X7-40": {
      "reference_m": 10.6,
-     "ours_m": 18.22,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 10.53,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VVC1-X7-32": {
      "reference_m": 10.7,
-     "ours_m": 23.64,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 10.53,
+     "class": "FULL",
+     "failure": "OK"
     }
    }
   },
@@ -3202,35 +3138,35 @@
    "state": "OK",
    "designations": {
     "reference": 15,
-    "ours": 17,
+    "ours": 15,
     "found": 14,
     "found_with_metres": 14,
     "recall": 0.9333,
-    "precision": 0.8235,
+    "precision": 0.9333,
     "recall_with_metres": 0.9333
    },
-   "leader_attachment": 1.8636,
+   "leader_attachment": 1.5455,
    "metres": {
     "reference": 263.3,
-    "owned": 233.17,
-    "false": 75.53,
-    "missed": 30.13,
-    "wrong_name": 1.35,
-    "over_extent": 74.18,
-    "coverage": 0.8856,
-    "false_ownership": 0.2868
+    "owned": 229.64,
+    "false": 40.74,
+    "missed": 33.66,
+    "wrong_name": 0.06,
+    "over_extent": 40.68,
+    "coverage": 0.8722,
+    "false_ownership": 0.1547
    },
    "extent_classes": {
-    "WRONG": 3,
-    "OVER": 8,
-    "FULL": 2,
+    "FULL": 3,
+    "OVER": 7,
     "PARTIAL": 4,
+    "WRONG": 1,
     "MISSED": 1
    },
    "failures": {
-    "WRONG_NAME_NOT_IN_REFERENCE": 3,
-    "OVER_EXTENT_OVER_PROPAGATED": 8,
+    "OVER_EXTENT_OVER_PROPAGATED": 7,
     "PARTIAL_EXTENT_UNDER_PROPAGATED": 4,
+    "WRONG_NAME_NOT_IN_REFERENCE": 1,
     "MISSED_LABEL_READ_NO_METRES": 1
    },
    "outside_reference_systems": {
@@ -3238,27 +3174,21 @@
     "m": 0
    },
    "extent": {
-    "KV1-K5": {
-     "reference_m": 0.0,
-     "ours_m": 0.69,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
     "KV1-X31-16": {
      "reference_m": 92.7,
-     "ours_m": 113.33,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
-    },
-    "KV1-X7-20": {
-     "reference_m": 1.2,
-     "ours_m": 1.16,
+     "ours_m": 89.13,
      "class": "FULL",
      "failure": "OK"
     },
+    "KV1-X7-20": {
+     "reference_m": 1.2,
+     "ours_m": 6.49,
+     "class": "OVER",
+     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+    },
     "KV1-X7-25": {
      "reference_m": 9.5,
-     "ours_m": 23.47,
+     "ours_m": 24.1,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
@@ -3277,12 +3207,6 @@
     "S1-G3-100L": {
      "reference_m": 0.0,
      "ours_m": 0.06,
-     "class": "WRONG",
-     "failure": "WRONG_NAME_NOT_IN_REFERENCE"
-    },
-    "S1-P5": {
-     "reference_m": 0.0,
-     "ours_m": 0.6,
      "class": "WRONG",
      "failure": "WRONG_NAME_NOT_IN_REFERENCE"
     },
@@ -3306,19 +3230,19 @@
     },
     "VV1-X31-16": {
      "reference_m": 54.5,
-     "ours_m": 65.12,
-     "class": "OVER",
-     "failure": "OVER_EXTENT_OVER_PROPAGATED"
+     "ours_m": 57.98,
+     "class": "FULL",
+     "failure": "OK"
     },
     "VV1-X7-20": {
      "reference_m": 1.2,
-     "ours_m": 11.67,
+     "ours_m": 2.31,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VV1-X7-25": {
      "reference_m": 9.4,
-     "ours_m": 11.1,
+     "ours_m": 13.97,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
@@ -3336,7 +3260,7 @@
     },
     "VVC1-X7-25": {
      "reference_m": 12.5,
-     "ours_m": 24.35,
+     "ours_m": 19.2,
      "class": "OVER",
      "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
@@ -5524,36 +5448,36 @@
    "designations": {
     "reference": 18,
     "ours": 23,
-    "found": 16,
-    "found_with_metres": 16,
-    "recall": 0.8889,
-    "precision": 0.6957,
-    "recall_with_metres": 0.8889
+    "found": 17,
+    "found_with_metres": 17,
+    "recall": 0.9444,
+    "precision": 0.7391,
+    "recall_with_metres": 0.9444
    },
    "leader_attachment": 3.9697,
    "metres": {
     "reference": 333.6,
-    "owned": 276.65,
-    "false": 29.89,
-    "missed": 56.95,
+    "owned": 274.11,
+    "false": 32.43,
+    "missed": 59.49,
     "wrong_name": 5.09,
-    "over_extent": 24.79,
-    "coverage": 0.8293,
-    "false_ownership": 0.0896
+    "over_extent": 27.33,
+    "coverage": 0.8217,
+    "false_ownership": 0.0972
    },
    "extent_classes": {
-    "PARTIAL": 5,
-    "FULL": 7,
-    "OVER": 4,
-    "MISSED": 6,
+    "PARTIAL": 6,
+    "FULL": 6,
+    "OVER": 5,
+    "MISSED": 4,
     "WRONG": 3
    },
    "failures": {
-    "PARTIAL_EXTENT_UNDER_PROPAGATED": 5,
-    "OVER_EXTENT_OVER_PROPAGATED": 4,
-    "MISSED_LABEL_READ_NO_METRES": 4,
+    "PARTIAL_EXTENT_UNDER_PROPAGATED": 6,
+    "OVER_EXTENT_OVER_PROPAGATED": 5,
+    "MISSED_LABEL_READ_NO_METRES": 3,
     "WRONG_NAME_NOT_IN_REFERENCE": 3,
-    "MISSED_LABEL_NOT_READ": 2
+    "MISSED_LABEL_NOT_READ": 1
    },
    "outside_reference_systems": {
     "systems": [],
@@ -5682,9 +5606,9 @@
     },
     "VV1-X7-20": {
      "reference_m": 10.7,
-     "ours_m": 10.02,
-     "class": "FULL",
-     "failure": "OK"
+     "ours_m": 3.68,
+     "class": "PARTIAL",
+     "failure": "PARTIAL_EXTENT_UNDER_PROPAGATED"
     },
     "VV1-X7-40": {
      "reference_m": 35.0,
@@ -5694,21 +5618,15 @@
     },
     "VVC1-X7-16": {
      "reference_m": 3.8,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_READ_NO_METRES"
+     "ours_m": 6.34,
+     "class": "OVER",
+     "failure": "OVER_EXTENT_OVER_PROPAGATED"
     },
     "VVC1-X7-32": {
      "reference_m": 35.5,
      "ours_m": 35.18,
      "class": "FULL",
      "failure": "OK"
-    },
-    "VVC1-X7-W": {
-     "reference_m": 0.0,
-     "ours_m": 0.0,
-     "class": "MISSED",
-     "failure": "MISSED_LABEL_NOT_READ"
     }
    }
   },
@@ -5881,7 +5799,7 @@
    "metres": {
     "reference": 246.7,
     "owned": 155.07,
-    "false": 61.86,
+    "false": 61.85,
     "missed": 91.63,
     "wrong_name": 5.92,
     "over_extent": 55.94,
