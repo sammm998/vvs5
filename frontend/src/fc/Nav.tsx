@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { LangSwitch } from "../components/SiteHeader";
+import { t } from "../i18n";
 
 import { getToken } from "../api";
 import gsap from "gsap";
@@ -96,10 +98,11 @@ export default function Nav({ light = false }: { light?: boolean }) {
         </Link>
         <nav className="fc-nav-links" aria-label="Huvudmeny">
           {NAV_LINKS.slice(0, 4).map((l) => (
-            <Link key={l.to} to={l.to} className={pathname.startsWith(l.to) ? "on" : ""} data-cursor="cta">{l.label}</Link>
+            <Link key={l.to} to={l.to} className={pathname.startsWith(l.to) ? "on" : ""} data-cursor="cta">{t(l.label)}</Link>
           ))}
         </nav>
         <div className="fc-nav-right">
+          <LangSwitch />
           <MagneticButton className="sm solid fc-nav-cta" href="/login">
             Enter FutureCalc <span aria-hidden="true">↗</span>
           </MagneticButton>

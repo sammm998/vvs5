@@ -1,3 +1,4 @@
+import { lang } from "./i18n";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -11,3 +12,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </BrowserRouter>
   </React.StrictMode>
 );
+
+// Sidans språk följer valet, så att uppläsning, stavningskontroll och avstavning gör rätt.
+try { document.documentElement.lang = lang; } catch { /* ingen dokumentrot: inget att sätta */ }

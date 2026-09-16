@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { t } from "../i18n";
 import { Link } from "react-router-dom";
 import "../landing.css";
 import LandingScene from "../components/LandingScene";
@@ -375,14 +376,14 @@ export default function Landing() {
             FutureCalc
           </span>
           <span className="sp" />
-          <Link to="/hur-det-funkar">Hur det funkar</Link>
-          <Link to="/architecture">Architecture</Link>
-          <Link to="/priser">Priser</Link>
-          <Link to="/utbildning">Utbildning</Link>
-          <Link to="/om-oss">Om oss</Link>
-          <Link to="/dokumentation">Dokumentation</Link>
-          <Link to="/kontakt">Kontakta oss</Link>
-          <Link to="/login">Logga in</Link>
+          <Link to="/hur-det-funkar">{t("Hur det funkar")}</Link>
+          <Link to="/architecture">{t("Architecture")}</Link>
+          <Link to="/priser">{t("Priser")}</Link>
+          <Link to="/utbildning">{t("Utbildning")}</Link>
+          <Link to="/om-oss">{t("Om oss")}</Link>
+          <Link to="/dokumentation">{t("Dokumentation")}</Link>
+          <Link to="/kontakt">{t("Kontakta oss")}</Link>
+          <Link to="/login">{t("Logga in")}</Link>
         </div>
       </footer>
     </div>

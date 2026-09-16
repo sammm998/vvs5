@@ -34,6 +34,13 @@ async def _lifespan(_app: FastAPI):
     # gå upp alls. Ett varningsmeddelande i en logg ingen läser är samma sak som ingenting.
     demand_a_real_secret()
     init_db()
+    # Var data bor, sagt i loggen vid varje uppstart. Den som letar efter försvunna ritningar hittar svaret här
+    # i stället för att gissa, och den som driftsätter ser det innan den första ritningen laddas upp.
+    try:
+        from .persistence import say_at_startup
+        say_at_startup()
+    except Exception as e:                                     # noqa: BLE001
+        print(f"[data] kunde inte avgöra var data ligger: {type(e).__name__}: {e}", flush=True)
     # Utbildningens innehåll hör till koden, inte till en handpåläggning efter driftsättning. Seedningen känner
     # igen allt på slug och uppdaterar i stället för att skapa dubbletter, så den kan köras vid varje uppstart.
     try:
@@ -122,7 +129,12 @@ def version():
     except Exception:                                           # noqa: BLE001
         who = []
     used = [r for r in who if r.get("in_use")]
-    return {**_build_stamp(),
+    try:
+        from .persistence import verdict
+        data = verdict()
+    except Exception as e:                                      # noqa: BLE001
+        data = {"persistent": None, "why": f"gick inte att avgöra: {type(e).__name__}"}
+    return {**_build_stamp(), "data": data,
             "second_reader": {"enabled": on, "reason": why,
                               "model": used[0]["model"] if len(used) == 1 else None,
                               "readers": who, "agreement_required": len(used) > 1,

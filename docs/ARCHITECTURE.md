@@ -74,3 +74,27 @@ these numbers: it is roughly 0.90 kr per page and is asked for by hand.
 
 Cost therefore follows how much a drawing leaves open, not how big it is. Every rule that lets a case be
 decided on the drawing's own geometry makes the reading both better and cheaper.
+
+## Language
+
+The interface is written in Swedish and the Swedish string is the translation key: `t("Mängder")` returns
+"Quantities" in English and "Mängder" in Swedish (`frontend/src/i18n.ts`). A string nobody has translated yet
+renders in Swedish rather than disappearing or showing a key, so translation is always additive and can never
+break the page. Switching language persists the choice and reloads, which guarantees every string in the app
+comes back in the new language rather than half of them.
+
+Covered so far: the site header and start-page navigation, the landing footer, the Architecture page in full,
+and the quantity table. To translate a page: wrap its user-visible strings in `t()` and add the rows to the
+dictionary in `i18n.ts`. Numbers go through `num()`, which writes 12,5 in Swedish and 12.5 in English - not a
+detail in a take-off.
+
+## Where the data lives
+
+`backend/app/persistence.py` answers, without a login and without leaking a credential, whether this deployment
+keeps what it is given: database kind and location, storage root, whether either sits on its own mounted
+device, and the row counts. The verdict is in `/api/version` under `data` and in one line of the startup log.
+A service writing SQLite into the container's own filesystem looks exactly like one that does not - until it
+restarts - so it says so itself. See `docs/RAILWAY.md`.
+
+When no database is configured for the service, the platform's own `DATABASE_URL` is used if it is present
+(Railway, Heroku, Fly), with the old `postgres://` form rewritten to the driver SQLAlchemy needs.

@@ -2146,3 +2146,16 @@ body.lp-dark { background: #100e0c; }
   .pub-carrow { display: none; }
   .pub-cbody strong { font-size: 17px; }
 }
+
+/* Språkväljaren i toppraden: två bokstäver, samma pillerform som resten av raden. Det aktiva språket är tänt,
+   det andra är dämpat men fullt läsbart - en väljare där bara ena halvan syns ser ut som en knapp. */
+.sh-lang { display: inline-flex; gap: 2px; padding: 3px 4px; }
+.sh-lang button {
+  border: 0; background: transparent; color: #6b7280; cursor: pointer;
+  font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11px; letter-spacing: 0.1em;
+  padding: 4px 7px; border-radius: 999px; line-height: 1;
+}
+.sh-lang button:hover { color: #e8ecf1; }
+.sh-lang button.on { color: #0b0f14; background: #6ee7a5; }
+@media (max-width: 720px) { .sh-lang { display: none; } }
+.sh-menu .sh-lang { display: inline-flex; margin-top: 10px; }

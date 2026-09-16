@@ -69,7 +69,42 @@ ritning, och det är därför talet står publikt.
 
 `engine/tests/test_the_service_says_which_readers_may_answer.py` håller formen på det svaret.
 
-## 4. Databasen
+## 4. Databasen, och varför den kan se tom ut
 
-SQLite på volymen räcker långt och körs i WAL-läge med väntetid. Behövs PostgreSQL: lägg till en Postgres-tjänst
-i projektet och sätt `VVS_DATABASE_URL` till dess anslutningssträng. Ingen annan ändring behövs.
+**Det vanligaste felet vid driftsättning här är att data ser ut att försvinna.** Imagen pekar på
+`sqlite:////data/vvs.db`. Finns ingen volym monterad på `/data` skrivs databasen i behållarens eget filsystem,
+och behållaren byts ut vid varje driftsättning. Ingenting kraschar, ingenting loggas, och gränssnittet ser
+likadant ut - tomt. Lägger man till en Postgres-tjänst i Railway men inte pekar appen på den händer samma sak:
+databasen finns, är tom, och appen tittar aldrig åt dess håll.
+
+Två uppsättningar fungerar:
+
+1. **Volym.** Montera en volym på `/data`. Då ligger både SQLite-filen och de uppladdade ritningarna på den, och
+   de överlever en driftsättning. SQLite körs i WAL-läge med väntetid och räcker långt.
+2. **Egen databastjänst.** Lägg till Postgres i projektet. Railway sätter då `DATABASE_URL` på tjänsten, och
+   appen tar den automatiskt om `VVS_DATABASE_URL` inte är satt - den gamla `postgres://`-formen översätts till
+   drivrutinen SQLAlchemy vill ha. **Ritningsfilerna ligger fortfarande på disk**, så en volym på
+   `VVS_STORAGE_ROOT` behövs ändå, eller ett objektlager.
+
+Tjänsten säger själv vad som gäller. Vid varje uppstart skriver den en rad i loggen:
+
+```
+[data] OK: postgresql som egen tjänst: data ligger utanför behållaren
+[data] rader: {'users': 12, 'projects': 4, 'drawings': 31, 'jobs': 33}
+```
+
+...eller, när något är fel:
+
+```
+[data] FLYKTIG: ligger i behållarens eget filsystem och försvinner vid nästa driftsättning: databasen
+       (/data/vvs.db) och ritningarna (/data/storage). Montera en volym på katalogen, eller lägg till en
+       databastjänst och peka VVS_DATABASE_URL på den.
+```
+
+Samma besked ligger i `/api/version` under `data`, med `persistent` (`true`/`false`/`null`), skälet i klartext,
+var filerna ligger, och hur många rader tjänsten faktiskt har. Ingen anslutningssträng, ingen användare och
+inget lösenord lämnar tjänsten - bara sorten, värden och databasnamnet.
+
+    curl -s https://<tjänsten>/api/version | python3 -m json.tool | head -40
+
+`engine/tests/test_the_service_says_where_its_data_lives.py` håller formen på det svaret.

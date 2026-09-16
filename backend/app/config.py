@@ -56,7 +56,29 @@ class Settings(BaseSettings):
     model_config = {"env_prefix": "VVS_", "env_file": ".env", "extra": "ignore"}
 
 
+def _from_the_platform(url: str) -> str:
+    """Databasen driftplattformen själv kopplade in, när ingen är angiven för tjänsten.
+
+    Railway, Heroku och Fly lägger anslutningssträngen i DATABASE_URL när en databastjänst knyts till appen.
+    Utan det här steget stod tjänsten kvar på sin SQLite-fil i behållaren: databasen fanns, var tom, och
+    ingenting sa varför - det gick inte att se att appen aldrig ens tittade åt dess håll.
+
+    Bara när VVS_DATABASE_URL inte är satt. Den som anger en databas för tjänsten menar den databasen.
+    """
+    if url != Settings.model_fields["database_url"].default:
+        return url
+    given = (os.environ.get("DATABASE_URL") or "").strip()
+    if not given:
+        return url
+    # SQLAlchemy 2 vill ha drivrutinen i schemat; plattformarna skriver den gamla formen utan.
+    for old, new in (("postgres://", "postgresql+psycopg://"), ("postgresql://", "postgresql+psycopg://")):
+        if given.startswith(old):
+            return new + given[len(old):]
+    return given
+
+
 settings = Settings()
+settings.database_url = _from_the_platform(settings.database_url)
 
 
 def demand_a_real_secret() -> None:

@@ -2,9 +2,11 @@ import { useMemo, useState } from "react";
 import { identityColor } from "../palette";
 
 export const identityKey = (r: any) => `${r.base}|DN${r.dn ?? "?"}`;
-const STATE_LABELS: Record<string, string> = { CONFIRMED: "BEKRÄFTAD", AMBIGUOUS: "TVETYDIG", NO_SCALE: "INGEN SKALA",
+import { t } from "../i18n";
+
+const STATE_LABELS: Record<string, string> = { CONFIRMED: t("BEKRÄFTAD"), AMBIGUOUS: t("TVETYDIG"), NO_SCALE: t("INGEN SKALA"),
   SCALE_UNSETTLED: "OAVGJORD SKALA", SCALE_FROM_THE_SET: "SKALA UR OMGÅNGEN", SCALE_GIVEN_BY_HAND: "ANGIVEN SKALA",
-  UNSUPPORTED_STYLE: "EJ STÖDD STIL", RISER_LABELS_ONLY: "ENDAST STIGARE", IN_HATCHED_AREA: "I SKRAFFERAD YTA" };
+  UNSUPPORTED_STYLE: t("EJ STÖDD STIL"), RISER_LABELS_ONLY: t("ENDAST STIGARE"), IN_HATCHED_AREA: t("I SKRAFFERAD YTA") };
 
 /* En rad utan skala har ingen meter - och noll är inte samma sak som okänt. Tabellen skrev 0,00 i varje
    meterkolumn på ett blad vars skala aldrig blev fastställd, vilket läses som "röret är noll meter långt"
@@ -62,9 +64,9 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
   return (
     <div>
       <div className="row" style={{ marginBottom: 8 }}>
-        <input placeholder="Sök beteckning/DN" value={q} onChange={(e) => setQ(e.target.value)} />
+        <input placeholder={t("Sök beteckning/DN")} value={q} onChange={(e) => setQ(e.target.value)} />
         <select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="">Alla status</option><option value="CONFIRMED">CONFIRMED</option><option value="AMBIGUOUS">AMBIGUOUS</option><option value="NO_SCALE">NO_SCALE</option>
+          <option value="">{t("Alla status")}</option><option value="CONFIRMED">CONFIRMED</option><option value="AMBIGUOUS">AMBIGUOUS</option><option value="NO_SCALE">NO_SCALE</option>
         </select>
         {hatchedTotal > 0 && (
           <label title="Rör som är ritade inuti skrafferade ytor (väggsnitt, angränsande ritningsdel). Mäts alltid, men räknas normalt inte in i mängden.">
@@ -83,7 +85,7 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
           frame, with the designation pinned, rather than pushing the panel sideways under the reader */}
       <div className="tablewrap">
       <table>
-        <thead><tr>{th("designation", "Beteckning")}{th("dn", "DN")}{th("label_count", "Etiketter")}{th("physical_pipe_count", "Sträckor")}{th("confirmed_horizontal_m", "Horisontellt", "m")}{th("vertical_calc", "Vertikalt", "m")}{th("total_calc", "Totalt", "m")}{th("ambiguous_m", "Tvetydigt", "m")}{th("in_hatched_area_m", "Skrafferat", "m")}{th("risers_calc", "Stigare")}{th("state", "Status")}</tr></thead>
+        <thead><tr>{th("designation", t("Beteckning"))}{th("dn", "DN")}{th("label_count", t("Etiketter"))}{th("physical_pipe_count", t("Sträckor"))}{th("confirmed_horizontal_m", t("Horisontellt"), "m")}{th("vertical_calc", t("Vertikalt"), "m")}{th("total_calc", t("Totalt"), "m")}{th("ambiguous_m", t("Tvetydigt"), "m")}{th("in_hatched_area_m", t("Skrafferat"), "m")}{th("risers_calc", t("Stigare"))}{th("state", t("Status"))}</tr></thead>
         <tbody>
           {list.flatMap((r) => [
             <tr key={identityKey(r)} className={`selectable ${selected === identityKey(r) ? "selected" : ""}`} onClick={() => onSelect(selected === identityKey(r) ? null : identityKey(r))}>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { lang, setLang, t } from "../i18n";
 
 /* En meny, överallt.
  *
@@ -21,6 +22,19 @@ export const PUBLIC_LINKS: { to: string; label: string }[] = [
   { to: "/dokumentation", label: "Dokumentation" },
   { to: "/kontakt", label: "Kontakta oss" },
 ];
+
+/* Språkväljaren. Två knappar, inte en meny: det finns två språk, och ett byte laddar om sidan så att varje
+   sträng i appen kommer tillbaka på rätt språk i stället för hälften av dem. */
+export function LangSwitch({ className = "" }: { className?: string }) {
+  return (
+    <div className={`lp-pill sh-lang ${className}`.trim()} role="group" aria-label={t("Språk")}>
+      <button type="button" aria-pressed={lang === "sv"} className={lang === "sv" ? "on" : ""}
+        onClick={() => setLang("sv")} title={t("Svenska")}>SV</button>
+      <button type="button" aria-pressed={lang === "en"} className={lang === "en" ? "on" : ""}
+        onClick={() => setLang("en")} title={t("Engelska")}>EN</button>
+    </div>
+  );
+}
 
 function Mark({ size = 17, color = "currentColor" }: { size?: number; color?: string }) {
   return (
@@ -44,7 +58,7 @@ export default function SiteHeader({ anchors, cta }:
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
-  const start = cta ?? { to: "/login", label: "Logga in" };
+  const start = cta ?? { to: "/login", label: t("Logga in") };
   return (
     <>
       <div className={`lp-corners${lifted ? " lifted" : ""}`}>
@@ -71,10 +85,12 @@ export default function SiteHeader({ anchors, cta }:
           {PUBLIC_LINKS.map((l) => (
             <Link key={l.to} to={l.to}
               className={pathname === l.to || pathname.startsWith(`${l.to}/`) ? "on" : ""}>
-              {l.label}
+              {t(l.label)}
             </Link>
           ))}
         </nav>
+
+        <LangSwitch />
 
         <Link className="lp-pill lp-start" to={start.to}>{start.label} <span className="plus">→</span></Link>
       </div>
