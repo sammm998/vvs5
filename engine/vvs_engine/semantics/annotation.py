@@ -31,7 +31,7 @@ SAME_PLACE_SHARE = 0.5
 # gånger närmare, och de fall där de ligger lika nära är fall ritningen inte har avgjort.
 UNIT_MARGIN = 1.5
 from ..text.model import Glyph, TextRow, make_row, project, row_axes
-from .grammar import DesignationGrammar, NOMINAL_SIZES, compress_pattern, dimension_figure, dn_plausible, is_code_like, split_tokens, strip_count_prefix, strip_row_separator, word_readings
+from .grammar import DesignationGrammar, NOMINAL_SIZES, compress_pattern, dimension_figure, dn_plausible, is_code_like, strip_vent, split_tokens, strip_count_prefix, strip_row_separator, word_readings
 
 
 # ----------------------------------------------------------------------------------------------------------------
@@ -683,17 +683,20 @@ def extract_designations(page: RawPage, blocks: list[AnnotationBlock]) -> tuple[
                 if word is None:
                     continue
                 mult, word = strip_count_prefix(word)
+                # luftningsbokstaven lyfts ur namnet innan något annat läses: den är en egenskap hos röret och
+                # ska inte dela raden från samma rör där siffran råkade stå bar
+                word, vent = strip_vent(word)
                 toks = split_tokens(word)
                 pat = compress_pattern(word)
                 fam = grammar.families.get(pat)
                 wbbox = bbox_union([g.bbox for g in gw]) if gw else br.line.bbox
-                dn, dn_src, dn_row, dn_row_text, vent = _find_dn(word, toks, fam, b, ri, wbbox if multi else None)
+                dn, dn_src, dn_row, dn_row_text, row_vent = _find_dn(word, toks, fam, b, ri, wbbox if multi else None)
                 gl = [g for g in (gw if gw else br.line.glyphs) if g.char != " "]
                 did = stable_id("des", page.info.index, word, f"{wbbox[0]:.1f}", f"{wbbox[1]:.1f}")
                 designations.append(Designation(
                     did=did, page=page.info.index, block_id=b.bid, row_index=ri, text=word,
                     raw_text="".join(g.char for g in gl), pattern=pat, tokens=toks, system_token=toks[0] if toks else "",
-                    dn=dn, dn_source=dn_src, dn_row_index=dn_row, dn_row_text=dn_row_text, multiplier=mult, vent=vent, bbox=wbbox,
+                    dn=dn, dn_source=dn_src, dn_row_index=dn_row, dn_row_text=dn_row_text, multiplier=mult, vent=vent or row_vent, bbox=wbbox,
                     angle=br.line.angle,
                     layer=br.line.layer, source=br.line.source, glyph_scores=[g.score for g in gl], unknown_chars=sum(1 for g in gl if g.char == "?"),
                     evidence={"pattern_count": fam.count if fam else 0, "underlined": bool(br.underline),

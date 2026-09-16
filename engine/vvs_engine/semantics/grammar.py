@@ -320,6 +320,24 @@ def dn_plausible(v: int) -> bool:
 _VENT_FIGURE = re.compile(r"^(\d{1,4})([LV])$")
 
 
+def strip_vent(word: str) -> tuple[str, str | None]:
+    """Beteckningen utan luftningsbokstaven, och bokstaven för sig.
+
+    `S1-P5-110L` är samma rör i mängden som `S1-P5-110`. Bokstaven säger att röret är en luftledning - det är
+    en EGENSKAP hos röret, inte en del av dess namn, precis som en not inom parentes efter dimensionen. Låter
+    man den stå kvar i namnet blir raden en beteckning mängdaren inte har, och metrarna hamnar under ett namn
+    som inte finns i mängdförteckningen samtidigt som det riktiga namnet står på noll. Grind 83 visade just
+    det: `S1-P5-110` saknade 21,1 m medan `S1-P5-110L` växte till 17,3 m som referensen inte känner.
+
+    Råtexten bevaras av den som anropar; det här är namnet att mängda under.
+    """
+    w = (word or "").strip()
+    m = re.search(r"(\d{1,4})([LlVv])$", w)
+    if not m:
+        return w, None
+    return w[:m.start(2)], m.group(2).upper()
+
+
 def dimension_figure(tok: str) -> tuple[int | None, str | None]:
     """Talet i en dimensionstoken, och luftningsbokstaven om den står kvar efter det.
 

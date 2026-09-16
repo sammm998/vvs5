@@ -163,3 +163,25 @@ def test_only_the_two_letters_the_drawing_language_uses_are_read_as_vent():
     from vvs_engine.semantics.grammar import dimension_figure
     for t in ("110W", "110K", "110A", "110S"):
         assert dimension_figure(t) == (None, None), t
+
+
+def test_the_vent_letter_leaves_the_name_but_stays_as_a_property():
+    """Grind 83 fällde den halva rättningen, och det här är vad den lärde.
+
+    Att läsa dimensionen ur `110L` räckte inte: bokstaven stod kvar i NAMNET, så metrarna hamnade under
+    `S1-P5-110L` - en beteckning mängdaren inte har - medan det riktiga `S1-P5-110` stod på noll mot 21,1 m i
+    referensen. Raden blev större och mer fel. Bokstaven hör till röret, inte till namnet.
+    """
+    from vvs_engine.semantics.grammar import strip_vent
+    assert strip_vent("S1-P5-110L") == ("S1-P5-110", "L")
+    assert strip_vent("S01-P5-100v") == ("S01-P5-100", "V")
+    # och en beteckning utan luftning rörs inte
+    for w in ("S1-P5-110", "KV1-X7-40", "VS1-S13-12/W", "VV1-X31-16"):
+        assert strip_vent(w) == (w, None), w
+
+
+def test_a_letter_that_is_not_after_a_digit_is_not_a_vent_mark():
+    """Bokstaven är luftning bara där den står direkt efter dimensionssiffran."""
+    from vvs_engine.semantics.grammar import strip_vent
+    for w in ("KV1-X7-L", "VS1-S13-V", "SL", "S1-P5"):
+        assert strip_vent(w)[1] is None, w
