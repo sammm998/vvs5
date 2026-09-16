@@ -1,0 +1,394 @@
+{
+ "01 - AutoCAD - pdfplot14-16 - Ghostscript 9.21 :: 10": {
+  "state": "OK",
+  "seconds": 12.6,
+  "structure": {
+   "paths": 13392,
+   "clips": 3,
+   "named_layers": 0,
+   "pens": 18,
+   "words": 411,
+   "fonts": 3,
+   "producer": "GPL Ghostscript 9.21",
+   "creator": "Bluebeam Revu x64",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 19,
+  "rows_with_metres": 15,
+  "total_m": 89.7
+ },
+ "01 - AutoCAD - pdfplot14-16 - Ghostscript 9.21 :: V-50-1-A0101": {
+  "state": "OK",
+  "seconds": 46.0,
+  "structure": {
+   "paths": 19894,
+   "clips": 353,
+   "named_layers": 50,
+   "pens": 6,
+   "words": 23,
+   "fonts": 4,
+   "producer": "pdfplot14.hdi 14.00.154.000",
+   "creator": "AutoCAD 2018 - English 2018 (22.0s (LMS Tech))",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "TEXT_ONLY",
+   "reason": "scale_text_only (no vector scale bar found)"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 9,
+  "rows_with_metres": 7,
+  "total_m": 122.9
+ },
+ "01 - AutoCAD - pdfplot14-16 - Ghostscript 9.21 :: W-50-1-A-0131": {
+  "state": "OK",
+  "seconds": 29.2,
+  "structure": {
+   "paths": 36718,
+   "clips": 5,
+   "named_layers": 52,
+   "pens": 20,
+   "words": 5,
+   "fonts": 1,
+   "producer": "pdfplot16.hdi 16.02.053.00000",
+   "creator": "AutoCAD 2023 - English 2023 (24.2s (LMS Tech))",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 25,
+  "rows_with_metres": 18,
+  "total_m": 155.9
+ },
+ "02 - Sweco - AutoCAD MEP 2020 - pdfplot15 :: V-50-1-A0122": {
+  "state": "OK",
+  "seconds": 22.2,
+  "structure": {
+   "paths": 24050,
+   "clips": 37,
+   "named_layers": 88,
+   "pens": 10,
+   "words": 643,
+   "fonts": 2,
+   "producer": "pdfplot15.hdi 15.01.070.000",
+   "creator": "AutoCAD MEP 2020 - English 2020 (23.1s (LMS Tech))",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 22,
+  "rows_with_metres": 22,
+  "total_m": 405.4
+ },
+ "03 - Sweco - AutoCAD 2023 - pdfplot16 - Hairline :: R9UHA10-CLB001-002": {
+  "state": "OK",
+  "seconds": 15.8,
+  "structure": {
+   "paths": 18901,
+   "clips": 79,
+   "named_layers": 38,
+   "pens": 3,
+   "words": 108,
+   "fonts": 3,
+   "producer": "pdfplot16.hdi 16.02.203.00000",
+   "creator": "AutoCAD 2023 - English 2023 (24.2s (LMS Tech))",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 12,
+  "rows_with_metres": 12,
+  "total_m": 106.2
+ },
+ "04 - VVS Konsulterna - Revit - Bluebeam Brewery 5.0 :: V50-1-0842 - Plan B2, Del 42, Värme & Sanitäranlägg-": {
+  "state": "OK",
+  "seconds": 3.9,
+  "structure": {
+   "paths": 15369,
+   "clips": 146,
+   "named_layers": 0,
+   "pens": 9,
+   "words": 740,
+   "fonts": 4,
+   "producer": "Bluebeam Brewery 5.0",
+   "creator": "Bluebeam Stapler 2016.5.2",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "CONFLICT",
+   "reason": "several_scale_texts_no_geometric_confirmation"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 0,
+  "rows_with_metres": 0,
+  "total_m": 0
+ },
+ "05 - Bengt Dahlgren - Ghostscript 9.21 :: 1760279_1": {
+  "state": "OK",
+  "seconds": 17.4,
+  "structure": {
+   "paths": 17189,
+   "clips": 2,
+   "named_layers": 0,
+   "pens": 13,
+   "words": 659,
+   "fonts": 4,
+   "producer": "GPL Ghostscript 9.21",
+   "creator": "",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 4,
+  "rows_with_metres": 4,
+  "total_m": 71.2
+ },
+ "05 - Bengt Dahlgren - Ghostscript 9.21 :: Löpöglan 2": {
+  "state": "OK",
+  "seconds": 40.8,
+  "structure": {
+   "paths": 27366,
+   "clips": 28,
+   "named_layers": 0,
+   "pens": 12,
+   "words": 788,
+   "fonts": 2,
+   "producer": "macOS Version 26.5.2 (Build 25F84) Quartz PDFContext",
+   "creator": "",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 8,
+  "rows_with_metres": 8,
+  "total_m": 116.7
+ },
+ "06 - PO Andersson - Ghostscript 9.21 :: Badskon 1": {
+  "state": "OK",
+  "seconds": 23.0,
+  "structure": {
+   "paths": 13783,
+   "clips": 7,
+   "named_layers": 0,
+   "pens": 11,
+   "words": 1878,
+   "fonts": 1,
+   "producer": "macOS Version 26.5.2 (Build 25F84) Quartz PDFContext",
+   "creator": "",
+   "page": [
+    1191,
+    842
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_for_A1_rescaled_to_A3_and_confirmed_by_scale_bar (5 m over 141.7 pt)"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 4,
+  "rows_with_metres": 3,
+  "total_m": 75.2
+ },
+ "07 - Arildssons Rör - Ghostscript 9.21 :: Bläckhornet": {
+  "state": "OK",
+  "seconds": 114.3,
+  "structure": {
+   "paths": 75164,
+   "clips": 3,
+   "named_layers": 0,
+   "pens": 20,
+   "words": 1668,
+   "fonts": 3,
+   "producer": "macOS Version 26.5.2 (Build 25F84) Quartz PDFContext",
+   "creator": "",
+   "page": [
+    7152,
+    3371
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 32,
+  "rows_with_metres": 29,
+  "total_m": 501.4
+ },
+ "08 - PQR Malmö - Bluebeam Revu - Ghostscript 9.21 :: 6": {
+  "state": "OK",
+  "seconds": 40.6,
+  "structure": {
+   "paths": 24599,
+   "clips": 4513,
+   "named_layers": 0,
+   "pens": 17,
+   "words": 343,
+   "fonts": 4,
+   "producer": "GPL Ghostscript 9.21",
+   "creator": "Bluebeam Revu x64",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 5,
+  "rows_with_metres": 5,
+  "total_m": 157.6
+ },
+ "09 - Rejlers - Bluebeam Revu - Ghostscript 9.21 :: 2": {
+  "state": "OK",
+  "seconds": 9.6,
+  "structure": {
+   "paths": 8554,
+   "clips": 3,
+   "named_layers": 0,
+   "pens": 7,
+   "words": 660,
+   "fonts": 4,
+   "producer": "GPL Ghostscript 9.21",
+   "creator": "Bluebeam Revu x64",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 2,
+  "rows_with_metres": 2,
+  "total_m": 17.6
+ },
+ "10 - Kjell Petersson - Bluebeam Revu - Ghostscript 9.21 :: 10": {
+  "state": "OK",
+  "seconds": 11.7,
+  "structure": {
+   "paths": 11976,
+   "clips": 4,
+   "named_layers": 0,
+   "pens": 9,
+   "words": 553,
+   "fonts": 4,
+   "producer": "GPL Ghostscript 9.21",
+   "creator": "Bluebeam Revu x64",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "VERIFIED",
+   "reason": "scale_text_and_scale_bar_agree"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 4,
+  "rows_with_metres": 3,
+  "total_m": 34.8
+ },
+ "11 - Sweco - Bluebeam Brewery 5.0 - Uniform Stroke :: R1502": {
+  "state": "OK",
+  "seconds": 61.7,
+  "structure": {
+   "paths": 25673,
+   "clips": 5,
+   "named_layers": 0,
+   "pens": 3,
+   "words": 0,
+   "fonts": 0,
+   "producer": "Bluebeam Brewery 5.0",
+   "creator": "Bluebeam Stapler 21.0.30.30",
+   "page": [
+    2384,
+    1684
+   ]
+  },
+  "scale": {
+   "state": "BAR_ONLY",
+   "reason": "vector_scale_bar_only"
+  },
+  "designations": null,
+  "verified_attachments": null,
+  "ambiguous_attachments": null,
+  "rows": 0,
+  "rows_with_metres": 0,
+  "total_m": 0
+ }
+}
