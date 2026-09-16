@@ -15,6 +15,8 @@ from typing import Any, Callable
 
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
+from .measure.journal import build as journal_build
+from .measure.journal import check as journal_check
 from .semantics.scope import NY as SCOPE_NY
 from .semantics.scope import read_designations as scope_read_designations
 from .geometry.core import GridIndex, dist, point_seg_distance
@@ -112,6 +114,9 @@ class PageAnalysis:
     second_reader: dict | None = None       # bounded cases put to a second reader, and what it did with them
     vision: dict | None = None              # what a look at the rendered page said the reading may have missed
     frontiers: list[dict] = field(default_factory=list)   # var varje rör slutar och varför (pipes/frontier.py)
+    # mängdjournalen för sidan: varje meter tillbaka till sitt atomära intervall, plus kontrollen
+    # av att mängdraden går att räkna om ur den
+    takeoff_journal: dict = field(default_factory=dict)
 
 
 # A label over a bundle has found its pipes - the leader landed on as many drawn parallel lines as the block has
@@ -1763,12 +1768,16 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
         prev = label_scopes.get(key)
         label_scopes[key] = sr.scope if prev in (None, SCOPE_NY) else prev
     quantities = aggregate(measures, dict(amb_pt), scale.meters_per_pt, risers, dict(label_counts), label_risers)
+    # mängdjournalen: varje meter tillbaka till sitt atomära intervall, och villkoren kontrollerade.
+    # Den ändrar ingen mängd - den skriver ned vad läsningen gjorde och säger till när det inte går ihop.
+    takeoff_journal = journal_build(measures, scale.meters_per_pt)
+    takeoff_journal["check"] = journal_check(takeoff_journal, quantities)
     for r in quantities:
         r["scope"] = label_scopes.get(r.get("base", "") + f"|DN{r.get('dn') if r.get('dn') is not None else '?'}", SCOPE_NY)
     film.measured(quantities, scale)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
-    return PageAnalysis(page=page, legend=legend, declarations=declarations, second_reader=second, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
+    return PageAnalysis(page=page, takeoff_journal=takeoff_journal, legend=legend, declarations=declarations, second_reader=second, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
                         designations=designations, grammar=grammar, ann_layers=ann_layers, leaders=leaders,
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,

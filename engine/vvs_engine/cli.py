@@ -129,6 +129,8 @@ def sheet_record(pa) -> dict:
         "scope": {"per_scope": _scope_counts(pa.quantities),
                   "metres": _scope_metres(pa.quantities)},
         "second_reader": pa.second_reader,
+        # mängdjournalens kontroll: gick mängden att räkna om ur intervallen, och hade varje intervall en ägare
+        "takeoff_journal": (pa.takeoff_journal or {}).get("check"),
     }
 
 

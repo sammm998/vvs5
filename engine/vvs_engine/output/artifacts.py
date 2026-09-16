@@ -631,6 +631,9 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     # How much of what the drawing names the reading carried through to a metre. It is the only figure that
     # tells a sheet the reading got through from a sheet it barely opened, so it is written down as its own
     # artifact rather than left to be worked out from a count of review rows.
+    # Mängdjournalen: varje meter tillbaka till det atomära intervall den kom ur, och kontrollen av att
+    # mängdraden går att räkna om ur dem. Den ändrar ingen mängd; den gör summan öppningsbar.
+    W("takeoff-journal.json", pa.takeoff_journal or {})
     W("reading-coverage.json", {"sheets": [{"page": sh.get("page"), **(sh.get("coverage") or {})}
                                            for sh in (sheets or [])]} if sheets
       else {"sheets": [{"page": pa.page.info.index, **reading_coverage(pa)}]})
