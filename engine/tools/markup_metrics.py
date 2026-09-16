@@ -40,6 +40,16 @@ STEP = 3.0         # pt mellan provpunkterna längs mätlinjen
 NOT_A_RUN = ("markera", "markering")     # ämnen som är överstrykning, inte en mätsträcka
 
 
+def sheet_paths(tag: str) -> tuple[str, str] | None:
+    """Den markerade och den rena ritningen för ett blad, i vilken av korpusens två kataloglägen den än ligger."""
+    for marked, clean in ((f"{DATA}/validation_{tag}/marked.pdf", f"{DATA}/validation_{tag}/clean.pdf"),
+                          (f"{DATA}/validation_W/{tag}/marked.pdf", f"{DATA}/validation_W/{tag}/clean.pdf"),
+                          (f"{DATA}/validation_set3/{tag}/marked.pdf", f"{DATA}/validation_set3/{tag}/clean.pdf")):
+        if os.path.isfile(marked) and os.path.isfile(clean):
+            return marked, clean
+    return None
+
+
 def measured_runs(path: str) -> list[dict]:
     """Mängdarens mätlinjer: beteckning, uttalad längd och sträckan i visat sidrum."""
     doc = pymupdf.open(path)
@@ -75,7 +85,7 @@ def owned_segments(pa) -> list[tuple]:
 
 
 def compare(tag: str) -> dict:
-    marked, clean = f"{DATA}/validation_{tag}/marked.pdf", f"{DATA}/validation_{tag}/clean.pdf"
+    marked, clean = sheet_paths(tag)
     their = measured_runs(marked)
     pa = analyze_page(extract_document(clean).pages[0])
     mpp = pa.scale.meters_per_pt or 0.0
@@ -128,13 +138,21 @@ def render(r: dict) -> None:
           f"   ({100 * SA / S:.0f} % samma namn, {100 * NO / S:.0f} % inget ägande)")
 
 
+def all_marked() -> list[str]:
+    tags = [t.split("_", 1)[1] for t in os.listdir(DATA)
+            if t.startswith("validation_") and os.path.isfile(f"{DATA}/{t}/marked.pdf")]
+    for sub in ("validation_W", "validation_set3"):
+        if os.path.isdir(f"{DATA}/{sub}"):
+            tags += [t for t in os.listdir(f"{DATA}/{sub}") if os.path.isfile(f"{DATA}/{sub}/{t}/marked.pdf")]
+    return sorted(set(tags))
+
+
 def main(tags: list[str]) -> None:
     if not tags:
-        tags = sorted(t.split("_", 1)[1] for t in os.listdir(DATA)
-                      if t.startswith("validation_") and os.path.isfile(f"{DATA}/{t}/marked.pdf"))
+        tags = all_marked()
         print(f"blad med markerad ritning: {', '.join(tags) or 'inga'}\n")
     for tag in tags:
-        if not os.path.isfile(f"{DATA}/validation_{tag}/marked.pdf"):
+        if sheet_paths(tag) is None:
             print(f"{tag}: ingen markerad ritning"); continue
         render(compare(tag))
 

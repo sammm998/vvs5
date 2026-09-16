@@ -13,6 +13,7 @@ tidigare grindar så att körningarna är jämförbara.
 import hashlib
 import json
 import os
+import shutil
 import sys
 import tempfile
 import time
@@ -56,6 +57,26 @@ def sheets(unmarked: bool) -> list[tuple[str, str]]:
     return out
 
 
+def pipe_note(pp: dict) -> dict:
+    """Ett rör sammanfattat till det som går att jämföra rad för rad: längden, var det slutar, och var det ligger.
+
+    Geometrin själv följer inte med - en grindkörning ska gå att läsa, och punkterna ligger kvar i bladets egna
+    artefakter. Det som behövs för att följa en enskild meter är längden, skälen vid kanterna och en ruta att
+    hitta röret i.
+    """
+    xs = [x for pl in (pp.get("geometry") or []) for x, _ in pl]
+    ys = [y for pl in (pp.get("geometry") or []) for _, y in pl]
+    return {"id": pp.get("physical_pipe_id"), "designation": pp.get("designation"), "identity": pp.get("identity"),
+            "system": pp.get("system"), "dn": pp.get("dn"),
+            "horizontal_m": pp.get("horizontal_m"), "total_m": pp.get("total_m"),
+            "horizontal_pdf_units": pp.get("horizontal_pdf_units"), "bridged_gap_pt": pp.get("bridged_gap_pt"),
+            "state": pp.get("evidence_state"), "anchors": len(pp.get("supporting_anchors") or []),
+            "family": pp.get("representation_family"),
+            "frontier_reasons": pp.get("frontier_reasons") or [],
+            "n_frontiers": len(pp.get("frontiers") or []),
+            "bbox": [round(min(xs), 1), round(min(ys), 1), round(max(xs), 1), round(max(ys), 1)] if xs else None}
+
+
 def run(out_path: str, unmarked: bool) -> None:
     res = {}
     for tag, pdf in sheets(unmarked):
@@ -71,6 +92,7 @@ def run(out_path: str, unmarked: bool) -> None:
             fr = json.load(open(f"{d}/pipe-extent-frontiers.json")) if os.path.exists(f"{d}/pipe-extent-frontiers.json") else {}
             issues = json.load(open(f"{d}/route-crosscheck.json")) if os.path.exists(f"{d}/route-crosscheck.json") else {}
             des = (json.load(open(f"{d}/vector-designations.json")).get("designations") or []) if os.path.exists(f"{d}/vector-designations.json") else []
+            pps = (json.load(open(f"{d}/physical-pipes.json")).get("physical_pipes") or []) if os.path.exists(f"{d}/physical-pipes.json") else []
             anc = (json.load(open(f"{d}/pipe-code-anchors.json")).get("anchors") or []) if os.path.exists(f"{d}/pipe-code-anchors.json") else []
             # vad bladet skriver, och vad som fick meter: det som skiljer "inte läst" från "läst men utan rör"
             names_read = sorted({(x.get("text") or "").strip().upper() for x in des
@@ -100,6 +122,7 @@ def run(out_path: str, unmarked: bool) -> None:
                 "names_with_metres": names_with_metres,
                 "frontiers": (fr.get("summary") or {}),
                 "quantities": q.get("rows") or [], "totals": q.get("totals") or {},
+                "pipes": [pipe_note(pp) for pp in pps],
                 "n_issues": 0, "blocking": 0, "advisory": 0,
             }
             if isinstance(issues, dict):
@@ -112,6 +135,9 @@ def run(out_path: str, unmarked: bool) -> None:
         except Exception as e:  # noqa: BLE001
             res[tag] = {"state": "ERROR", "error": f"{type(e).__name__}: {e}", "trace": traceback.format_exc()[-800:]}
             print(f"{tag:16} FEL {e}", flush=True)
+        finally:
+            # bladets artefakter är lästa och ligger i grindfilen; katalogen behövs inte, och 59 av dem fyller disken
+            shutil.rmtree(d, ignore_errors=True)
         json.dump(res, open(out_path, "w"), ensure_ascii=False, indent=1)
     print("klart:", out_path)
 

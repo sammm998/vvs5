@@ -39,11 +39,16 @@ def _num(v) -> float | None:
     return float(m.group(1).replace(",", ".")) if m else None
 
 
-def read_workbook(path: str) -> dict[str, float]:
-    """Meter per beteckning ur en Bluebeam-export: kolumnen Ämne är namnet, Längd är metrarna."""
+def read_workbook_rows(path: str) -> dict[str, list[float]]:
+    """Varje mätt sträcka för sig ur en Bluebeam-export: kolumnen Ämne är namnet, Längd är den sträckans meter.
+
+    En arbetsbok har en rad per dragning mängdaren gjorde, inte en rad per beteckning. Summan per namn döljer
+    det: två stråk på 8,7 m och ett på 17,4 m ger samma summa. Sträckorna var för sig går att ställa mot
+    läsningens enskilda rör, och det är den jämförelsen som säger *vilket* stråk som fattas.
+    """
     import openpyxl
     wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
-    out: dict[str, float] = defaultdict(float)
+    out: dict[str, list[float]] = defaultdict(list)
     for ws in wb.worksheets:
         head = None
         for i, row in enumerate(ws.iter_rows(values_only=True)):
@@ -62,15 +67,20 @@ def read_workbook(path: str) -> dict[str, float]:
                 length /= 1000.0
             elif unit in ("cm",):
                 length /= 100.0
-            out[str(name).strip()] += length
+            out[str(name).strip()].append(length)
     wb.close()
     return dict(out)
 
 
-def read_csv_facit(path: str) -> dict[str, float]:
-    """Samma svar som read_workbook, ur den CSV som drive_facit.py skriver (Ämne;Längd;unit)."""
+def read_workbook(path: str) -> dict[str, float]:
+    """Meter per beteckning: sträckorna ur read_workbook_rows lagda ihop."""
+    return {k: sum(v) for k, v in read_workbook_rows(path).items()}
+
+
+def read_csv_rows(path: str) -> dict[str, list[float]]:
+    """Samma svar som read_workbook_rows, ur den CSV som drive_facit.py skriver (Ämne;Längd;unit)."""
     import csv
-    out: dict[str, float] = defaultdict(float)
+    out: dict[str, list[float]] = defaultdict(list)
     with open(path, encoding="utf-8", newline="") as fh:
         for row in csv.DictReader(fh, delimiter=";"):
             name = (row.get("Ämne") or "").strip()
@@ -82,18 +92,28 @@ def read_csv_facit(path: str) -> dict[str, float]:
                 length /= 1000.0
             elif unit == "cm":
                 length /= 100.0
-            out[name] += length
+            out[name].append(length)
     return dict(out)
 
 
-def facit_for(tag: str) -> dict[str, float] | None:
+def read_csv_facit(path: str) -> dict[str, float]:
+    return {k: sum(v) for k, v in read_csv_rows(path).items()}
+
+
+def facit_rows_for(tag: str) -> dict[str, list[float]] | None:
+    """Bladets mätta sträckor per beteckning, eller None när bladet inte har någon referens alls."""
     for cand in (f"{DATA}/validation_{tag}/facit.xlsx", f"{DATA}/validation_set3/{tag}/facit.xlsx"):
         if os.path.isfile(cand):
-            return read_workbook(cand)
+            return read_workbook_rows(cand)
     cand = f"{DATA}/validation_W/{tag}/facit.csv"
     if os.path.isfile(cand):
-        return read_csv_facit(cand)
+        return read_csv_rows(cand)
     return None
+
+
+def facit_for(tag: str) -> dict[str, float] | None:
+    rows = facit_rows_for(tag)
+    return None if rows is None else {k: sum(v) for k, v in rows.items()}
 
 
 # ------------------------------------------------------------------ namn
@@ -136,6 +156,22 @@ def members_of(name: str) -> list[str]:
     return [f"{h}-{rest}" if rest else h for h in head.split("/") if h]
 
 
+def combine_map(fac: dict, fold: bool) -> dict[str, str]:
+    """Våra namn mappade till den ihopskrivna referensrad de hör hemma i, så att de jämförs som den mängdades.
+
+    ...men bara när referensen inte också mängdar medlemmarna var för sig. Gör den det finns det två slags
+    rader med samma namn - den ihopskrivna och den enskilda - och namnet ensamt kan inte skilja dem åt. Då
+    vägs ingenting ihop: hellre en rad som inte går att poängsätta än en poäng som ser bra ut.
+    """
+    combined: dict[str, str] = {}
+    for k in fac:
+        ms = [canon(mname, fold) for mname in members_of(k)]
+        if ms and not any(mm in fac for mm in ms):
+            for mm in ms:
+                combined[mm] = k
+    return combined
+
+
 def style_of(tag: str) -> str:
     if tag in ("A", "C", "D", "E") or tag.startswith("W-"):
         return "W (konturglyfer)"
@@ -154,16 +190,7 @@ def score_sheet(tag: str, run: dict, fac0: dict[str, float], fold: bool) -> dict
     ours_all: dict[str, float] = defaultdict(float)
     for q in run.get("quantities", []):
         ours_all[canon(q["designation"], fold)] += q.get("confirmed_total_m", 0.0)
-    # rader som referensen skriver ihop vägs ihop, så att de jämförs som referensen själv mängdade dem
-    combined: dict[str, str] = {}
-    for k in fac:
-        ms = [canon(mname, fold) for mname in members_of(k)]
-        # ...men bara när referensen inte också mängdar medlemmarna var för sig. Gör den det finns det två
-        # slags rader med samma namn - den ihopskrivna och den enskilda - och namnet ensamt kan inte skilja
-        # dem åt. Då vägs ingenting ihop: hellre en rad som inte går att poängsätta än en poäng som ser bra ut.
-        if ms and not any(mm in fac for mm in ms):
-            for mm in ms:
-                combined[mm] = k
+    combined = combine_map(fac, fold)
     if combined:
         merged: dict[str, float] = defaultdict(float)
         for k, v in ours_all.items():
