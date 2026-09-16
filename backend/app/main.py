@@ -115,14 +115,17 @@ def version():
     """
     from .jobs import second_reader_state
     on, why = second_reader_state()
-    model = None
-    if on:
-        try:
-            from tools.astra_transport import MODEL as model
-        except Exception:                                       # noqa: BLE001
-            model = None
+    who: list[dict] = []
+    try:
+        from tools.readers import state as reader_state
+        who = reader_state()
+    except Exception:                                           # noqa: BLE001
+        who = []
+    used = [r for r in who if r.get("in_use")]
     return {**_build_stamp(),
-            "second_reader": {"enabled": on, "reason": why, "model": model,
+            "second_reader": {"enabled": on, "reason": why,
+                              "model": used[0]["model"] if len(used) == 1 else None,
+                              "readers": who, "agreement_required": len(used) > 1,
                               "setting": settings.second_reader}}
 
 
@@ -1144,7 +1147,7 @@ def vision_check(job_id: str, page: int = 0, user: User = Depends(current_user),
         from vvs_engine.pdf.extract import extract_document
         from vvs_engine.pipeline import analyze_page
         from vvs_engine.review import vision as vz
-        from tools.astra_transport import vision_transport
+        from tools.readers import vision as vision_transport
     except Exception as e:
         raise HTTPException(503, f"Vision är inte tillgänglig i den här installationen: {type(e).__name__}")
     path = storage.path(j.drawing.storage_key)

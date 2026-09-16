@@ -21,6 +21,7 @@ import CreditsPage from "./pages/Credits";
 import PricingPage from "./pages/Pricing";
 import AboutPage from "./pages/About";
 import HowItWorksPage from "./pages/HowItWorks";
+import ArchitecturePage from "./pages/Architecture";
 import EducationPage, { EducationCoursePage, EducationLessonPage } from "./pages/Education";
 import FeaturePage from "./pages/Feature";
 import ContactPage from "./pages/Contact";
@@ -160,6 +161,7 @@ const ROUTES = (
     <Route path="/priser" element={<PricingPage />} />
     <Route path="/om-oss" element={<AboutPage />} />
     <Route path="/hur-det-funkar" element={<HowItWorksPage />} />
+    <Route path="/architecture" element={<ArchitecturePage />} />
     <Route path="/funktioner/:slug" element={<FeaturePage />} />
     <Route path="/utbildning" element={<EducationPage />} />
     <Route path="/utbildning/:modul" element={<EducationCoursePage />} />
@@ -252,7 +254,7 @@ export default function App() {
   // a trailing slash is the same page: without this, /dokumentation/ fell through and got the app's sidebar
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
   const PUBLIC = ["", "/", "/login", "/dokumentation", "/priser", "/om-oss", "/hur-det-funkar", "/utbildning",
-                  "/kontakt", "/plattformen", "/vpr"];
+                  "/kontakt", "/plattformen", "/vpr", "/architecture"];
   // Akademins kurser och föreläsningar ligger under /utbildning och bär sin egen ram, precis som katalogen.
   if (PUBLIC.includes(path) || path.startsWith("/utbildning/") || path.startsWith("/funktioner/"))
     return <><PageCurtain />{ROUTES}</>;

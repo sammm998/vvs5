@@ -447,10 +447,22 @@ i compose), `VVS_STORAGE_ROOT`, `VVS_WORKER_THREADS` (mängdningens kö), `VVS_A
 blad), `OPENAI_API_KEY` och `VVS_SECOND_READER` (§3), `VVS_RUN_REVIEW`/`VVS_REVIEW_OCR`/`VVS_OCR_ASSIST`
 (granskningen).
 
+**Andraläsarna.** `OPENAI_API_KEY` ger Astra-läsaren, `ANTHROPIC_API_KEY` ger Claude-läsaren. Är båda satta
+frågas båda om varje öppet fall, oberoende av varandra, och fallet avgörs **bara när de väljer samma kandidat**
+ur ritningens egen lista; är de oense, eller svarar bara den ena, står fallet kvar tvetydigt. `VVS_SECOND_READERS`
+väljer vilka som används (`auto`, `none`, `astra`, `claude`, `astra,claude`), och modellnamnen sätts med
+`VVS_SECOND_READER_MODEL` respektive `VVS_CLAUDE_MODEL`. En nyckel läses ur miljön i anropsögonblicket och
+skrivs aldrig ned, loggas aldrig och kommer aldrig tillbaka i ett resultat.
+
+I Railway sätts de som miljövariabler på tjänsten; ingen av dem hör hemma i en fil i repot. Behöver bara en
+läsare användas räcker det att sätta den ena nyckeln - panelen faller då tillbaka till den ensamma läsaren och
+beter sig som förut.
+
 SQLite körs i WAL-läge med väntetid, så att mätningens framsteg och API:ts läsningar samsas.
 
-`/api/version` säger vilken byggning som kör och om en andra läsare kan nås - utan inloggning, för en läsning är
-bara kontrollerbar om man kan säga vilken kod som gjorde den.
+`/api/version` säger vilken byggning som kör, vilka andraläsare som är konfigurerade, om de går att nå och om
+enighet krävs - utan inloggning, för en läsning är bara kontrollerbar om man kan säga vilken kod som gjorde den
+och vem som fick vara med och avgöra det öppna.
 
 ---
 

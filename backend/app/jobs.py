@@ -86,10 +86,10 @@ def _second_reader():
     if not on:
         return None
     try:
-        from tools.astra_transport import transport
+        from tools.readers import panel_transport
     except Exception:
         return None
-    return transport()
+    return panel_transport()
 
 
 def second_reader_state() -> tuple[bool, str]:
@@ -104,15 +104,28 @@ def second_reader_state() -> tuple[bool, str]:
     if settings.second_reader is False:
         return False, "avstängd i den här installationen (VVS_SECOND_READER=false)"
     try:
-        from tools.astra_transport import available
+        from tools.readers import state, wanted
     except Exception as e:                                      # noqa: BLE001
         return False, f"transporten kunde inte laddas: {type(e).__name__}"
-    has_key = bool(os.environ.get("OPENAI_API_KEY", "").strip())
+    keys = [k for k in ("OPENAI_API_KEY", "ANTHROPIC_API_KEY") if os.environ.get(k, "").strip()]
+    use = wanted()
     if settings.second_reader is None:
-        return (True, "OPENAI_API_KEY finns i miljön") if has_key else \
-            (False, "ingen OPENAI_API_KEY i miljön; sätt den, eller VVS_SECOND_READER=true bakom en proxy")
-    ok, why = available()
-    return (ok, why) if ok else (False, f"påslagen men inte nåbar: {why}")
+        if not keys:
+            return False, ("ingen OPENAI_API_KEY och ingen ANTHROPIC_API_KEY i miljön; sätt en av dem, "
+                           "eller VVS_SECOND_READER=true bakom en proxy")
+        return True, _panel_why(use, keys)
+    if not use:
+        return False, "påslagen men ingen läsare går att nå: " + "; ".join(
+            f"{r['name']}: {r['why']}" for r in state())
+    return True, _panel_why(use, keys)
+
+
+def _panel_why(use: tuple[str, ...], keys: list[str]) -> str:
+    """Vad en läsare av statussidan behöver veta: vilka som svarar, och vad två av dem innebär."""
+    who = ", ".join(use) if use else "ingen"
+    if len(use) > 1:
+        return f"{who} - ett fall avgörs bara när båda väljer samma kandidat ({', '.join(keys) or 'via proxy'})"
+    return f"{who} ({', '.join(keys) or 'via proxy'})"
 
 
 # A pen has to be stated this often, and this consistently, before another sheet may lean on it. One stray

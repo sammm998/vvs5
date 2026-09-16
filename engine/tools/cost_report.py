@@ -24,6 +24,8 @@ ASSUMPTIONS = {
     "llm_kr_per_1k_input": (0.02, "modellpris per tusen inmatade tecken/4 ≈ token, låg ansträngning; sätt efter avtalet"),
     "llm_kr_per_1k_output": (0.08, "modellpris per tusen utmatade token; ett svar är kort men resonemanget räknas"),
     "llm_output_tokens_per_question": (600, "uppmätt storleksordning för ett avgränsat flervalssvar med motivering"),
+    "readers_per_question": (2, "hur många andraläsare varje öppet fall går till; två som måste vara överens "
+                                "kostar två anrop och avgör bara det de är eniga om"),
     "storage_kr_per_gb_month": (0.25, "objektlagring, listpris"),
     "storage_months": (12, "hur länge en läsnings utdata sparas"),
     "vision_kr_per_page": (0.90, "en synfråga med två sidbilder, listpris för bildtoken"),
@@ -43,11 +45,13 @@ def cost_of(rec: dict) -> dict:
     cpu_kr = rec["cpu_s"] / 3600.0 * cpu_kr_per_hour()
     q = rec.get("second_reader_questions") or 0
     in_tok = (rec.get("second_reader_prompt_chars") or 0) / 4.0
-    llm_kr = in_tok / 1000.0 * A("llm_kr_per_1k_input") + q * A("llm_output_tokens_per_question") / 1000.0 * A("llm_kr_per_1k_output")
+    readers = max(1.0, A("readers_per_question"))
+    llm_kr = readers * (in_tok / 1000.0 * A("llm_kr_per_1k_input")
+                        + q * A("llm_output_tokens_per_question") / 1000.0 * A("llm_kr_per_1k_output"))
     storage_kr = (rec.get("output_bytes") or 0) / 1e9 * A("storage_kr_per_gb_month") * A("storage_months")
     return {"cpu_kr": cpu_kr, "llm_kr": llm_kr, "storage_kr": storage_kr, "kr": cpu_kr + llm_kr + storage_kr,
-            "llm_kr_per_question": (A("llm_output_tokens_per_question") / 1000.0 * A("llm_kr_per_1k_output")
-                                    + (in_tok / max(q, 1)) / 1000.0 * A("llm_kr_per_1k_input")) if q else None}
+            "llm_kr_per_question": (readers * (A("llm_output_tokens_per_question") / 1000.0 * A("llm_kr_per_1k_output")
+                                    + (in_tok / max(q, 1)) / 1000.0 * A("llm_kr_per_1k_input"))) if q else None}
 
 
 def size_class(area: float) -> str:

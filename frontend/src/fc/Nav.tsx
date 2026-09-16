@@ -23,9 +23,10 @@ export const NAV_LINKS = [
   // Den publika akademisidan, inte appens - /academy ligger bakom inloggningen, och en publik meny ska inte
   // skicka en besökare till en inloggningsruta när sidan den lovade faktiskt finns.
   { to: "/utbildning", label: "Academy", n: "03" },
-  { to: "/priser", label: "Priser", n: "04" },
-  { to: "/om-oss", label: "FutureCalc", n: "05" },
-  { to: "/kontakt", label: "Kontakt", n: "06" },
+  { to: "/architecture", label: "Architecture", n: "04" },
+  { to: "/priser", label: "Priser", n: "05" },
+  { to: "/om-oss", label: "FutureCalc", n: "06" },
+  { to: "/kontakt", label: "Kontakt", n: "07" },
 ];
 
 export default function Nav({ light = false }: { light?: boolean }) {

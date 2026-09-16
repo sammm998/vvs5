@@ -40,3 +40,37 @@ stage progress, artifact/why/export endpoints. Storage abstraction (`storage.py`
 interface maps to an object store. React/TypeScript (`frontend/src`): PDF.js viewer with an SVG overlay in PDF
 coordinates, quantity table (search/filter/sort, click-sync with pipes), "Ej lösta" issue list with zoom-to-location,
 overview KPIs, exports.
+
+## Second readers (a panel, not an oracle)
+
+Nothing a language model says can create geometry. It is handed a case the geometry itself declared open,
+together with the candidates the drawing offers, and `semantics/astra.py::verify` refuses any answer that is not
+one of them, character for character.
+
+Two readers may be configured (`tools/readers.py`): the Astra transport (`OPENAI_API_KEY`) and the Claude
+transport (`ANTHROPIC_API_KEY`). When both are configured they are asked independently and the case is settled
+**only when both name the same candidate**. Disagreement, an abstention, or a reader that cannot be reached
+leaves the case ambiguous - which is a valid answer. With a single reader configured the behaviour is what it
+always was. `VVS_SECOND_READERS` pins the selection (`auto`, `none`, `astra`, `claude`, `astra,claude`).
+
+`/api/version` reports which readers exist, whether they are reachable, and whether agreement is required.
+
+## What a sheet costs to run (operator, not customer)
+
+Measured over 305 sheets, one process each, two readers counted (`tools/cost_run.py`, `tools/cost_report.py`;
+the assumptions are named constants in the report and can be changed):
+
+| | kr |
+|---|---:|
+| median sheet | 0.03 |
+| sheet with open cases (39 % of them) | 0.45 |
+| mean over all sheets | 0.31 |
+| densest sheet measured | 6.36 |
+
+Share of the total: model calls 88 %, CPU 4 %, storage 8 %. CPU is 17 s of base time plus 1.5 s per thousand
+paths, billed at 1.03 kr/core-hour (4 vCPU at 40 % utilisation, idle carried by the sheets that do run).
+Storage is the artifacts (5.8 MB for the median sheet) kept for twelve months. The vision reader is not in
+these numbers: it is roughly 0.90 kr per page and is asked for by hand.
+
+Cost therefore follows how much a drawing leaves open, not how big it is. Every rule that lets a case be
+decided on the drawing's own geometry makes the reading both better and cheaper.

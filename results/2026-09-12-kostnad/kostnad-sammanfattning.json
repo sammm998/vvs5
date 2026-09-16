@@ -1,16 +1,16 @@
 {
  "sheets": 296,
  "cpu_fit": {
-  "base_s": 17.43057111654048,
-  "s_per_1000_paths": 1.4735044608311663
+  "base_s": 17.43057111654049,
+  "s_per_1000_paths": 1.473504460831166
  },
  "questions_fit": {
-  "base": 1.6849907700805862,
+  "base": 1.6849907700805857,
   "per_1000_paths": 0.04830138289692899
  },
  "cpu_kr_per_hour": 1.0273972602739725,
  "median_kr": 0.032,
- "max_kr": 3.544,
+ "max_kr": 6.355,
  "by_format": {
   "A1": {
    "n": 284,
@@ -24,7 +24,7 @@
   },
   "A0+": {
    "n": 1,
-   "median_kr": 0.961,
+   "median_kr": 1.744,
    "median_paths": 75164
   }
  },
@@ -35,6 +35,7 @@
   "llm_kr_per_1k_input": 0.02,
   "llm_kr_per_1k_output": 0.08,
   "llm_output_tokens_per_question": 600,
+  "readers_per_question": 2,
   "storage_kr_per_gb_month": 0.25,
   "storage_months": 12,
   "vision_kr_per_page": 0.9,

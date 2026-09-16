@@ -14,6 +14,7 @@ import { Link, useLocation } from "react-router-dom";
 
 export const PUBLIC_LINKS: { to: string; label: string }[] = [
   { to: "/hur-det-funkar", label: "Hur det funkar" },
+  { to: "/architecture", label: "Architecture" },
   { to: "/priser", label: "Priser" },
   { to: "/utbildning", label: "Utbildning" },
   { to: "/om-oss", label: "Om oss" },

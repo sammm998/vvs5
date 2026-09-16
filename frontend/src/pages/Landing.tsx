@@ -376,6 +376,7 @@ export default function Landing() {
           </span>
           <span className="sp" />
           <Link to="/hur-det-funkar">Hur det funkar</Link>
+          <Link to="/architecture">Architecture</Link>
           <Link to="/priser">Priser</Link>
           <Link to="/utbildning">Utbildning</Link>
           <Link to="/om-oss">Om oss</Link>
