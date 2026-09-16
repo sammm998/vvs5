@@ -375,8 +375,13 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
             else:
                 others.append((p, k, d))
         if symbol is not None and pt == ld.end:
-            through = [(p, k, d) for (p, k, d) in _symbol_hits(symbol, gidx, skip)
-                       if pipe_families is None or family_of(p) in pipe_families]
+            # Rör ledarens ände ett rör inne i symbolen är det röret det ritaren pekade ut, och då frågas
+            # symbolen inte om vad den mer håller ihop. Det som ytterligare går genom en kopplingscirkel, eller
+            # slutar vid den, är rör som kopplas mot varandra där - och en koppling mellan två rör är inte en
+            # hänvisning. Bara när änden inte rör något ritat alls är symbolen den enda vägen till ett rör, och
+            # då står kandidaterna kvar för att avgöras, inte för att tas allihop.
+            through = [] if direct else [(p, k, d) for (p, k, d) in _symbol_hits(symbol, gidx, skip)
+                                         if pipe_families is None or family_of(p) in pipe_families]
             for p, k, d in direct + [t for t in through if (t[0].pid, t[1]) not in {(q.pid, kk) for q, kk, _ in direct}]:
                 if (p.pid, k) in seen:
                     continue
@@ -385,7 +390,7 @@ def leader_contacts(ld: Leader, gidx: GeometryIndex, pipe_families: set[str] | N
             # a run drawn up to the symbol rather than through it: whatever ENDS at the marker is what the
             # leader points at. This has to hold while the pipe families are still being voted for, or a drawing
             # whose runs all stop at a connection circle never votes for the pen it draws them with.
-            for p in _marker_cluster([symbol], gidx, pipe_families, skip):
+            for p in ([] if direct else _marker_cluster([symbol], gidx, pipe_families, skip)):
                 for q, kk, de, ep in _pipe_ends_at_marker(p, gidx, pipe_families, skip):
                     if (q.pid, kk) not in seen:
                         seen.add((q.pid, kk))
@@ -756,6 +761,60 @@ def bundle_at(contacts: list[Contact], gidx: GeometryIndex, want: int, skip: set
     return [[found[k]] for k in sorted(found)]
 
 
+COLLINEAR_DEG = 6.0       # grader: två sträckor ligger på samma linje när de lutar likadant...
+COLLINEAR_OFF = 1.2       # pt: ...och ligger på samma ställe i sidled
+
+
+def _distinct_runs(cs: list[Contact], paths: dict | None) -> int:
+    """Hur många skilda rör kontakterna sitter på.
+
+    Två kontakter hör till samma rör när deras sträckor ligger på samma linje. En brygga mitt på ett stråk rör
+    samma rör två gånger, en gång åt vardera hållet, och det är ett rör. Lutar sträckorna åt olika håll, eller
+    ligger de bredvid varandra med ett mellanrum, är det flera rör som möts i punkten.
+    """
+    if not cs:
+        return 0
+    if paths is None:
+        return 1
+    lines: list[tuple[float, float]] = []
+    loose = 0
+    for c in cs:
+        p = paths.get(c.pid)
+        if p is None or c.seg_index >= len(p.segs):
+            loose += 1
+            continue
+        sg = p.segs[c.seg_index]
+        if sg.length < 1e-6:
+            continue
+        a = math.degrees(math.atan2(sg.y1 - sg.y0, sg.x1 - sg.x0)) % 180.0
+        th = math.radians(a)
+        off = (sg.x0 + sg.x1) / 2 * -math.sin(th) + (sg.y0 + sg.y1) / 2 * math.cos(th)
+        deg = _R("semantics.attachment.COLLINEAR_DEG", COLLINEAR_DEG)
+        gap = _R("semantics.attachment.COLLINEAR_OFF", COLLINEAR_OFF)
+        if not any(min(abs(a - a2), 180.0 - abs(a - a2)) <= deg and abs(off - o2) <= gap
+                   for a2, o2 in lines):
+            lines.append((a, off))
+    return (len(lines) + loose) or 1
+
+
+def _bridge_spread(cs: list[Contact], paths: dict | None) -> int:
+    """Antalet rör en SVAG brygga lämnar ifrån sig - 0 när kontakterna inte är en brygga alls.
+
+    En `end`- eller `crossing_tick`-kontakt är ledaren själv: den slutar på röret, och det röret är det ritaren
+    pekade ut. De svaga sorterna är bryggor - ledaren slutade i ett märke, en armatur, en symbol eller på en
+    samlingslinje, och läsningen gick vidare därifrån. Där flera rör kopplas ihop i just den punkten lämnar
+    bryggan dem allihop, och då är det rör-mot-rör-kontakten som ger namnet, inte hänvisningslinjen.
+    """
+    if not cs or not all(c.kind in WEAK_KINDS for c in cs):
+        return 0
+    n = _distinct_runs(cs, paths)
+    # Två sträckor som möts i punkten är en böj. Ett rör som svänger är ett rör, och ritningen säger ingenting
+    # annat: en vinkel med två armar ser likadan ut vare sig röret fortsätter runt hörnet eller två rör kopplas
+    # ihop där. Tre eller fler armar är något annat - där grenar sig eller möts ledningar, och vilken av dem
+    # etiketten menar går inte att läsa ur att de råkar röra varandra.
+    return n if n >= 3 else 1
+
+
 def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, contacts: list[Contact],
                   system_tokens_in_drawing: set[str], spelled_out: frozenset[str] = frozenset(),
                   paths: dict | None = None, gidx: GeometryIndex | None = None) -> list[PipeCodeAnchor]:
@@ -810,6 +869,20 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
                 for did, v in claims.items():
                     if v != best:
                         match[did] = [x for x in match[did] if x != g]
+    def bridge_question(d: Designation, cs: list[Contact]) -> PipeCodeAnchor | None:
+        """En ensam rad vars brygga lämnar flera rör är en fråga, inte ett svar.
+
+        Ritaren drog en linje till ETT rör. Slutade linjen i en kopplingspunkt där flera rör möts kan
+        läsningen inte veta vilket av dem raden menar - och att ta dem allihop är att låta rören namnge
+        varandra. Kandidaterna står kvar i ankaret, så den som granskar, en lärdom eller läsarpanelen kan
+        avgöra saken; det som inte får hända är att den avgörs tyst.
+        """
+        n = _bridge_spread(cs, paths)
+        if n <= 1:
+            return None
+        return mk(d, "AMBIGUOUS_PIPE_ATTACHMENT", "weak_bridge_reaches_several_pipes", cs,
+                  {"bridge_kinds": sorted({c.kind for c in cs}), "n_runs": n})
+
     if len(rows) == 1:
         d = rows[0]
         if len(gkeys) == 1:
@@ -817,9 +890,15 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
             conflict = _system_conflict(d, g, system_tokens_in_drawing, spelled_out)
             if conflict:
                 return [mk(d, "AMBIGUOUS_PIPE_ATTACHMENT", f"system_conflict:{conflict}", groups[g])]
+            q = bridge_question(d, groups[g])
+            if q is not None:
+                return [q]
             return [mk(d, "VERIFIED_PIPE_ATTACHMENT", "single_row_single_group", groups[g], {"layer_token": match[d.did][0].split('|s|')[0] if match[d.did] else None})]
         if len(match[d.did]) == 1:
             g = match[d.did][0]
+            q = bridge_question(d, groups[g])
+            if q is not None:
+                return [q]
             return [mk(d, "VERIFIED_PIPE_ATTACHMENT", "single_row_layer_token_match", groups[g], {"layer_token_match": g})]
         return [mk(d, "AMBIGUOUS_PIPE_ATTACHMENT", "several_vector_families_at_leader_no_token_discrimination", [c for g in gkeys for c in groups[g]])]
     # multi-row block: bijection through token matches; fallback: unique bijection by parallel-line count
@@ -886,7 +965,10 @@ def resolve_block(block: AnnotationBlock, rows: list[Designation], ld: Leader, c
                               {"bundle": {"pos": i, "n": len(order), "runs": [[[c.pid, c.seg_index] for c in r] for r in runs], "within_layer": ms[0].split("|s|")[0]}}))
             continue
         if len(ms) == 1 and len(owner[ms[0]]) == 1:
-            anchors.append(mk(d, "VERIFIED_PIPE_ATTACHMENT", "multi_row_layer_token_bijection", groups[ms[0]], {"layer_token_match": ms[0]}))
+            # samma fråga som för en ensam rad: lagret pekar ut gruppen, men gruppen kan vara en kopplingspunkt
+            q = bridge_question(d, groups[ms[0]])
+            anchors.append(q if q is not None else
+                           mk(d, "VERIFIED_PIPE_ATTACHMENT", "multi_row_layer_token_bijection", groups[ms[0]], {"layer_token_match": ms[0]}))
         elif len(ms) == 0:
             # The label names more systems than the drawing draws lines here: several pipes drawn as one run and
             # named together. Their lengths cannot be split between the codes without inventing a rule, so the

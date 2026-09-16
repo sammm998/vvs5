@@ -57,6 +57,28 @@ def sheets(unmarked: bool) -> list[tuple[str, str]]:
     return out
 
 
+WEAK_KINDS = ("via_symbol", "via_marker", "via_fitting", "via_collector")
+
+
+def anchor_note(a: dict) -> dict:
+    """Ett ankare sammanfattat till det som säger HUR ledaren nådde sitt rör, inte bara att den gjorde det.
+
+    Skälet är att kontaktens sort är skillnaden mellan två helt olika påståenden. En `end`-kontakt är ledaren
+    som slutar på röret - det ritaren faktiskt drog. En `via_marker` eller `via_fitting` är en brygga: ledaren
+    slutade i ett märke eller en armatur, och läsningen gick vidare därifrån till det som råkar röra samma
+    punkt. Där flera rör kopplas ihop i den punkten lämnar bryggan dem allihop, och då är det rör-mot-rör-
+    kontakten och inte ledaren som ger namnet. Utan sorterna i grindfilen syns det inte i en enda siffra.
+    """
+    cs = a.get("contacts") or []
+    kinds = sorted({c.get("kind") or "?" for c in cs})
+    return {"id": a.get("anchor_id"), "designation": a.get("designation"), "state": a.get("state"),
+            "reason": a.get("reason"), "kinds": kinds, "n_contacts": len(cs),
+            "n_primitives": len({(c.get("pid"), c.get("seg_index")) for c in cs}),
+            "n_pids": len({c.get("pid") for c in cs}),
+            "weak_only": bool(cs) and all(k in WEAK_KINDS for k in kinds),
+            "n_families": len(a.get("candidate_families") or [])}
+
+
 def pipe_note(pp: dict) -> dict:
     """Ett rör sammanfattat till det som går att jämföra rad för rad: längden, var det slutar, och var det ligger.
 
@@ -123,6 +145,7 @@ def run(out_path: str, unmarked: bool) -> None:
                 "frontiers": (fr.get("summary") or {}),
                 "quantities": q.get("rows") or [], "totals": q.get("totals") or {},
                 "pipes": [pipe_note(pp) for pp in pps],
+                "anchors": [anchor_note(a) for a in anc],
                 "n_issues": 0, "blocking": 0, "advisory": 0,
             }
             if isinstance(issues, dict):

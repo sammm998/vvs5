@@ -117,6 +117,15 @@ RULES: tuple[Rule, ...] = (
          "Hur långt isär parallella rör får ligga och ändå räknas som ett knippe som en etikettstapel namnger "
          "uppifrån och ned.",
          "pt", 34.0, 5.0, 120.0, "bundle", True),
+    Rule("semantics.attachment.COLLINEAR_DEG", G_LEADER, "Samma rör, eller två som möts",
+         "Hur mycket två sträckor får luta olika och ändå räknas som samma rör. Slutar en hänvisningslinje i "
+         "ett märke mitt på ett stråk rör den samma rör åt två håll; går sträckorna isär är det en koppling "
+         "där flera rör möts, och då säger linjen inte vilket av dem etiketten menar.",
+         "grader", 6.0, 1.0, 30.0, "leader", True),
+    Rule("semantics.attachment.COLLINEAR_OFF", G_LEADER, "...och att de ligger på samma linje",
+         "Hur långt isär i sidled två sträckor med samma lutning får ligga och ändå vara samma rör. Två "
+         "parallella rör i samma märke ligger bredvid varandra och är två rör, inte ett.",
+         "pt", 1.2, 0.2, 6.0, "leader", True),
     Rule("semantics.leaders.TOUCH_TOL", G_LEADER, "Delad ändpunkt",
          "Hur nära två ritade linjers ändar måste ligga för att vara samma punkt. Det här är exportens "
          "sifferprecision, inte en bedömning.",
