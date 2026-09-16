@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import ProjectAgentChat from "../components/ProjectAgentChat";
@@ -355,7 +355,7 @@ function Quantities({ q }: { q: any }) {
                   <tr key={r.designation}>
                     <td className="lf-mono"><b>{r.designation}</b></td>
                     <td className="num">{r.dn ?? "–"}</td>
-                    <td className="num">{r.horizontal_m.toLocaleString("sv-SE", { maximumFractionDigits: 2 })} m</td>
+                    <td className="num">{r.horizontal_m.toLocaleString(locale(), { maximumFractionDigits: 2 })} m</td>
                     <td className="num">{r.risers || "–"}</td>
                     <td className="num muted">{r.labels}</td>
                     <td className="muted small">{r.sheets.length} st</td>

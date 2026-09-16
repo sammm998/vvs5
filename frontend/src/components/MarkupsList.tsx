@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { markupColor } from "./PdfViewer";
 
 /* Markeringslistan: allt någon ritat på handlingen, som en lista att arbeta i.
@@ -47,7 +47,7 @@ const SOURCE_LABEL: Record<string, string> = {
 };
 
 const n2 = (v: number | null | undefined, d = 2) =>
-  v == null ? "" : v.toLocaleString("sv-SE", { minimumFractionDigits: d, maximumFractionDigits: d });
+  v == null ? "" : v.toLocaleString(locale(), { minimumFractionDigits: d, maximumFractionDigits: d });
 
 /** Vad raden mätte, i ord. Tomt när verktyget inte mäter något - en anteckning har ingen mängd. */
 export function measureText(m: any): string {

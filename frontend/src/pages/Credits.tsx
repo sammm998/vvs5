@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import Tilted from "../components/Tilted";
@@ -10,12 +10,12 @@ import Tilted from "../components/Tilted";
  * köp, varje återbetalning med sitt skäl. Den som undrar varför saldot hoppade upp ska kunna läsa det här, inte
  * behöva fråga. */
 
-const DATE = new Intl.DateTimeFormat("sv-SE", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+const DATE = new Intl.DateTimeFormat(locale(), { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 const KIND: Record<string, string> = {
   prov: "Provcredits", kop: "Köp", lasning: "Läsning", syn: "Andra blick", aterbetalning: "Återbetalning", tilldelning: "Tilldelning",
 };
 
-export const fmtCredits = (v: number) => v.toLocaleString("sv-SE", { maximumFractionDigits: 2 });
+export const fmtCredits = (v: number) => v.toLocaleString(locale(), { maximumFractionDigits: 2 });
 
 export default function CreditsPage() {
   const [me, setMe] = useState<any>(null);
@@ -60,7 +60,7 @@ export default function CreditsPage() {
       <div className="rule" />
       <h2>{tr("Vad en läsning kostar")}</h2>
       <p className="muted">
-        Priset följer bladet: formatet och mängden bläck. Ett blad med fler än {Number(p.ink_step_paths).toLocaleString("sv-SE")} banor
+        Priset följer bladet: formatet och mängden bläck. Ett blad med fler än {Number(p.ink_step_paths).toLocaleString(locale())} banor
         kostar {fmtCredits(p.ink_step_credits)} credit mer per påbörjat sådant steg, upp till {fmtCredits(p.ink_cap_credits)} credits.
         Priset står på ritningen innan du trycker på Analysera.
       </p>
@@ -84,8 +84,8 @@ export default function CreditsPage() {
         {(p.packages || []).map((pk: any) => (
           <Tilted as="article" deg={2} lift={5} className="card" key={pk.id}>
             <div className="ttl">{pk.name}</div>
-            <div className="big">{pk.credits.toLocaleString("sv-SE")} <span className="unit">credits</span></div>
-            <div className="sub">{pk.kr.toLocaleString("sv-SE")} kr · {(pk.kr / pk.credits).toLocaleString("sv-SE", { maximumFractionDigits: 2 })} kr per credit</div>
+            <div className="big">{pk.credits.toLocaleString(locale())} <span className="unit">credits</span></div>
+            <div className="sub">{pk.kr.toLocaleString(locale())} kr · {(pk.kr / pk.credits).toLocaleString(locale(), { maximumFractionDigits: 2 })} kr per credit</div>
             <p className="muted small">{pk.lead}</p>
             <button disabled={!!busy} onClick={() => buy(pk.id)}>{busy === pk.id ? "Registrerar…" : "Köp"}</button>
           </Tilted>

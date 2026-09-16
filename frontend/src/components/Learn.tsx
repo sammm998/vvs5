@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, num } from "../i18n";
 import { MODULES, readProgress, syncProgress, type Module } from "../learn";
 import { api } from "../api";
 import LearnWizard from "./LearnWizard";
@@ -118,7 +118,7 @@ export function Exercise() {
               {RUNS.map((r) => (
                 <li key={r.id}>
                   <b>{r.id.toUpperCase()}</b> {r.answer ?? "ingen beteckning"}
-                  <span className="muted"> · {r.answer ? `${r.m.toFixed(1).replace(".", ",")} m` : "mängdas inte"}</span>
+                  <span className="muted"> · {r.answer ? `${num(r.m, 1)} m` : "mängdas inte"}</span>
                 </li>
               ))}
             </ul>

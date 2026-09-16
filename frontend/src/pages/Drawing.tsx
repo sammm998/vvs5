@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api, fileSize } from "../api";
 import { StatusBadge, stageText } from "../components/Status";
@@ -55,7 +55,7 @@ export default function DrawingPage() {
             <div className="no">{String(i + 1).padStart(2, "0")}</div>
             <div>
               <Link className="ttl" to={`/jobs/${j.id}`} style={{ fontSize: 19 }}>
-                {new Date(j.created_at).toLocaleString("sv-SE")}
+                {new Date(j.created_at).toLocaleString(locale())}
               </Link>
               <div className="sub">{stageText(j.stage) || j.stage}</div>
               {j.status !== "COMPLETED" && j.status !== "FAILED" && (

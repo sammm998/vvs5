@@ -93,6 +93,16 @@ for (const sf of program.getSourceFiles()) {
   visit(sf);
 }
 
+// (e) ett hårdkodat språkband utanför språkmodulen: 12,5 m på en engelsk sida, eller 12.5 på en svensk
+for (const f of modules(SRC)) {
+  if (isDict(f)) continue;
+  const src = fs.readFileSync(f, "utf8");
+  for (const m of src.matchAll(/"(sv-SE|en-GB|en-US)"/g)) {
+    const line = src.slice(0, m.index).split("\n").length;
+    fel.push(`${rel(f)}:${line}  ${m[0]} står utanför språkmodulen - använd locale()`);
+  }
+}
+
 // (c) samma nyckel definierad två gånger med olika engelska
 const rader = new Map();
 for (const f of modules(SRC).filter((f) => isDict(f))) {

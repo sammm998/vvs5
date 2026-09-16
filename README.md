@@ -8,7 +8,7 @@ leader → endpoint → pipe attachment → topology → physical pipe → scale
 ```
 engine/          Python engine (vvs_engine) + CLI + tests
 backend/         FastAPI application (auth, projects, drawings, background analysis jobs, exports)
-frontend/        React + TypeScript (Vite) web UI in Swedish with a PDF.js viewer
+frontend/        React + TypeScript (Vite) web UI, Swedish or English, with a PDF.js viewer
 docker/          Dockerfiles + nginx config; docker-compose.yml at the root
 results/         Frozen artifacts for the development drawings (A, B, C) and the open-world drawing (D)
 data/dev/        The three clean development drawings (A, B, C)

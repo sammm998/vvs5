@@ -1,4 +1,4 @@
-import { t as tr, trf } from "./i18n";
+import { t as tr, trf, num } from "./i18n";
 
 const TOKEN_KEY = "vvs_token";
 export function getToken(): string | null { return localStorage.getItem(TOKEN_KEY); }
@@ -292,6 +292,6 @@ export function track(e: Ev) {
 
 /** File size the way a person reads it, not in raw kilobytes. */
 export function fileSize(bytes: number): string {
-  if (bytes >= 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1).replace(".", ",")} MB`;
+  if (bytes >= 1024 * 1024) return `${num(bytes / 1024 / 1024, 1)} MB`;
   return `${Math.round(bytes / 1024)} kB`;
 }

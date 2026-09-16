@@ -1,6 +1,6 @@
 import { useSectionProgress } from "./lp-motion";
 
-import { t as tr } from "../i18n";
+import { t as tr, num } from "../i18n";
 /** The stages the scene walks through as the reader scrolls, in the order the engine does them. */
 const BEATS = [
   ["Läser vektorn", "Varje streck, dess penna, färg och lager tas direkt ur PDF:en."],
@@ -127,13 +127,13 @@ export default function LandingScene() {
                   <div key={i} className="lp-tally-row">
                     <span className="sw" style={{ background: r.c, opacity: 0.25 + 0.75 * k }} />
                     <span className="dq">{["KV1-X31-16", "S1-P2-110", "VV1-X31-16", "S3-R8-75"][i]}</span>
-                    <span className="mq">{(r.m * k).toFixed(1).replace(".", ",")} m</span>
+                    <span className="mq">{num(r.m * k, 1)} m</span>
                   </div>
                 );
               })}
               <div className="lp-tally-row sum">
                 <span className="dq">Summa</span>
-                <span className="mq">{(RUNS.reduce((s, r) => s + r.m, 0) * measure).toFixed(1).replace(".", ",")} m</span>
+                <span className="mq">{num(RUNS.reduce((s, r) => s + r.m, 0) * measure, 1)} m</span>
               </div>
             </div>
           </div>

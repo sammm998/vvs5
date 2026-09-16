@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link } from "react-router-dom";
 import PublicFrame from "../components/PublicFrame";
 
@@ -9,7 +9,7 @@ import PublicFrame from "../components/PublicFrame";
  * här aldrig kan vara något annat än det som gäller. Två löften bär sidan: priset syns innan man trycker, och
  * en läsning som inte kunde ge en meter kostar ingenting. */
 
-const fmt = (v: number) => v.toLocaleString("sv-SE", { maximumFractionDigits: 2 });
+const fmt = (v: number) => v.toLocaleString(locale(), { maximumFractionDigits: 2 });
 
 export default function PricingPage() {
   const [p, setP] = useState<any>(null);
@@ -58,8 +58,8 @@ export default function PricingPage() {
                 <article key={pk.id} className={`pub-card${best && pk.id === best.id ? " best" : ""}`}>
                   {best && pk.id === best.id && <span className="pub-tag">{tr("Bäst värde")}</span>}
                   <h3>{pk.name}</h3>
-                  <div className="pub-big">{pk.credits.toLocaleString("sv-SE")} <span>credits</span></div>
-                  <div className="pub-price">{pk.kr.toLocaleString("sv-SE")} kr</div>
+                  <div className="pub-big">{pk.credits.toLocaleString(locale())} <span>credits</span></div>
+                  <div className="pub-price">{pk.kr.toLocaleString(locale())} kr</div>
                   <div className="pub-per">{fmt(pk.kr / pk.credits)} kr per credit</div>
                   <p>{pk.lead}</p>
                   <Link className="lp-btn primary" to="/login">{tr("Kom igång")}</Link>
@@ -94,7 +94,7 @@ export default function PricingPage() {
             </div>
             <ul className="pub-list">
               <li>
-                <b>{tr("Bläcktillägg.")}</b> Fler än {Number(p.ink_step_paths).toLocaleString("sv-SE")} banor på en sida ger {fmt(p.ink_step_credits)} credit
+                <b>{tr("Bläcktillägg.")}</b> Fler än {Number(p.ink_step_paths).toLocaleString(locale())} banor på en sida ger {fmt(p.ink_step_credits)} credit
                 extra per påbörjat sådant steg, upp till {fmt(p.ink_cap_credits)} credits. Det syns i priset innan läsningen.
               </li>
               <li><b>{tr("Andra blick.")}</b> En granskning med syn av en färdig läsning kostar {fmt(p.vision_page)} credit per sida, och begärs bara när du ber om den.</li>

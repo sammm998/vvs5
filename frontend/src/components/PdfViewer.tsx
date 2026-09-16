@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState, forwardRef } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, num } from "../i18n";
 import * as pdfjsLib from "pdfjs-dist";
 import { ROLE_COLOR, ROLE_LABEL, legendOwner } from "../legend";
 import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
@@ -524,7 +524,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
   const sw = (pt: number) => pt / scale;                     // a screen-constant width in page units
   const mpp = props.meterPerPt ?? 0;
   const metres = (pts: number[][]) => pathLen(pts) * mpp;
-  const fmt = (m: number) => `${m.toFixed(2).replace(".", ",")} m`;
+  const fmt = (m: number) => `${num(m, 2)} m`;
 
   /** The ends of the run being extended: where a drag may start. */
   const handles: number[][] = useMemo(() => {
@@ -667,7 +667,7 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
     let bestD = Infinity;
     let best: InkVerdict | null = null;
     const take = (d: number, v: InkVerdict) => { if (d <= tol && d < bestD) { bestD = d; best = v; } };
-    const m = (x: number) => `${x.toFixed(2).replace(".", ",")} m`;
+    const m = (x: number) => `${num(x, 2)} m`;
 
     for (const p of props.pipes) {
       for (const pl of p.geometry as number[][][]) {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, num } from "../i18n";
 import { api } from "../api";
 import { STAGE_LABELS, stageText } from "./Status";
 import { usePointerParallax } from "./tilt";
@@ -201,7 +201,7 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
 
       <div className="film-side">
         <div className="film-total">
-          <div className="v">{total ? `${total.toFixed(1).replace(".", ",")} m` : "—"}</div>
+          <div className="v">{total ? `${num(total, 1)} m` : "—"}</div>
           <div className="l">{tr("mätt hittills")}</div>
         </div>
 
@@ -254,7 +254,7 @@ export default function AnalysisFilm({ jobId, stage: rawStage, progress }: { job
               <li key={q.d}>
                 <span className="sw" style={{ background: `hsl(${hue(q.d)} 68% 42%)` }} />
                 <span className="dq">{q.d}</span>
-                <span className="mq">{q.m.toFixed(2).replace(".", ",")}</span>
+                <span className="mq">{num(q.m, 2)}</span>
               </li>
             ))}
           </ul>

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import PdfViewer, { type ViewerHandle } from "../components/PdfViewer";
@@ -41,7 +41,7 @@ const TOOLS: { id: Exclude<Tool, null>; label: string; hint: string; kind: "lang
 ];
 
 const n2 = (v: number | null | undefined, d = 2) =>
-  v == null ? "–" : v.toLocaleString("sv-SE", { minimumFractionDigits: d, maximumFractionDigits: d });
+  v == null ? "–" : v.toLocaleString(locale(), { minimumFractionDigits: d, maximumFractionDigits: d });
 
 const AREA_TOOLS = ["area", "rektangel", "moln", "volym"];
 

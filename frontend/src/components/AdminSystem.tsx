@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { api } from "../api";
 
 const bytes = (v: number | null | undefined) => {
   if (v == null) return "–";
   const u = ["B", "kB", "MB", "GB", "TB"]; let i = 0; let x = v;
   while (x >= 1024 && i < u.length - 1) { x /= 1024; i++; }
-  return `${x.toLocaleString("sv-SE", { maximumFractionDigits: i ? 1 : 0 })} ${u[i]}`;
+  return `${x.toLocaleString(locale(), { maximumFractionDigits: i ? 1 : 0 })} ${u[i]}`;
 };
 
 /* Vad som kör och hur det mår: bara fakta som går att kontrollera. En läsning är bara kontrollerbar om man kan

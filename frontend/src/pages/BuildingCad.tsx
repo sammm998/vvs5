@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import {
@@ -25,7 +25,7 @@ import { FileMenu, SheetsPanel, AgentPanel, ghostsOf, txOf, type Proposal } from
 
 type Mode = "2d" | "3d" | "split";
 const DISC_LABEL = Object.fromEntries(DISCIPLINES.map((d) => [d.id, d.label])) as Record<Discipline, string>;
-const fmtMm = (v: number) => `${Math.round(v).toLocaleString("sv-SE")} mm`;
+const fmtMm = (v: number) => `${Math.round(v).toLocaleString(locale())} mm`;
 
 /* Verktyg som ritar en sluten yta. Dubbelklick och högerklick sluter dem; en linje bara avslutas. */
 const AREA_TOOLS = new Set(["bjalklag", "platta", "tak", "undertak", "rum", "skraffering", "tomtgrans"]);
@@ -556,7 +556,7 @@ export default function BuildingCadPage() {
         )}
         {panel === "revisioner" && (
           <div className="bcad-list">
-            {revisions.map((r) => <div key={r.id} className="bcad-rev"><b>Revision {r.revision}</b> <span className="muted small">{new Date(r.created_at).toLocaleString("sv-SE")}</span><div>{r.label}</div><div className="muted small">{(r.touched || []).slice(0, 6).join(", ")}{(r.touched || []).length > 6 ? "…" : ""}</div>{r.revision !== doc.revision && <button className="ghost small" onClick={async () => { const s = await api.cadRestore(sheetId, r.revision); const d = migrate(s.content); setDoc(d); savedRevision.current = d.revision; setHist(emptyHistory()); loadRevisions(); }}>{tr("Återställ")}</button>}</div>)}
+            {revisions.map((r) => <div key={r.id} className="bcad-rev"><b>Revision {r.revision}</b> <span className="muted small">{new Date(r.created_at).toLocaleString(locale())}</span><div>{r.label}</div><div className="muted small">{(r.touched || []).slice(0, 6).join(", ")}{(r.touched || []).length > 6 ? "…" : ""}</div>{r.revision !== doc.revision && <button className="ghost small" onClick={async () => { const s = await api.cadRestore(sheetId, r.revision); const d = migrate(s.content); setDoc(d); savedRevision.current = d.revision; setHist(emptyHistory()); loadRevisions(); }}>{tr("Återställ")}</button>}</div>)}
             {!revisions.length && <p className="muted">{tr("Inga revisioner än.")}</p>}
           </div>
         )}
@@ -702,7 +702,7 @@ function Properties({ doc, e, onChange, onCalibrate }: { doc: CadDocument; e: En
       {specific}
       {isMep && F("Ansluter till", <span className="muted small">{conns.length ? conns.map((c) => `${other(c)}${c.via === "tee" ? " (T)" : c.via === "connector" ? " (anslutning)" : ""}`).join(", ") : "inget - änden sitter inte i något"}</span>)}
       {common}
-      <p className="muted small">Ursprung: {e.provenance} · version {e.version}{e.updated_at ? ` · ${new Date(e.updated_at).toLocaleString("sv-SE")}` : ""}</p>
+      <p className="muted small">Ursprung: {e.provenance} · version {e.version}{e.updated_at ? ` · ${new Date(e.updated_at).toLocaleString(locale())}` : ""}</p>
     </div>
   );
 }

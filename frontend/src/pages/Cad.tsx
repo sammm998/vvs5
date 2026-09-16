@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import PdfViewer, { type ViewerHandle } from "../components/PdfViewer";
@@ -215,7 +215,7 @@ export default function CadPage() {
             </div>
             {draft && <p className="muted small" style={{ marginBottom: 0 }}>
               {draft.points.length} punkter ritade{list?.meters_per_pdf_point && draft.meters
-                ? ` · ${draft.meters.toLocaleString("sv-SE", { maximumFractionDigits: 2 })} m` : ""}
+                ? ` · ${draft.meters.toLocaleString(locale(), { maximumFractionDigits: 2 })} m` : ""}
             </p>}
           </section>
 

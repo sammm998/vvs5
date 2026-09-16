@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { api } from "../api";
 
 /* Egna markeringar: mät, markera och anteckna direkt på ritningen.
@@ -23,7 +23,7 @@ const TOOLS: [Exclude<MarkTool, null>, string, string][] = [
   ["text", "Anteckning", "Klicka där anteckningen ska sitta, dubbelklicka, och skriv texten."],
 ];
 
-const kr2 = (v: number) => v.toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const kr2 = (v: number) => v.toLocaleString(locale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 function measureText(m: any): string {
   if (!m) return "";

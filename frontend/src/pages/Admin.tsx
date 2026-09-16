@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale, num as exakt } from "../i18n";
 import { api } from "../api";
 import { Accounts, Content, Crm, Experiments, Heatmap, Partners } from "../components/AdminBusiness";
 import { Messages, Pricing } from "../components/AdminPricing";
@@ -42,9 +42,9 @@ const SECTIONS: { id: Section; label: string; group: string; lead: string }[] = 
 ];
 
 const pct = (v: number | null | undefined) =>
-  v == null ? "–" : `${(v * 100).toFixed(1).replace(".", ",")} %`;
+  v == null ? "–" : `${exakt(v * 100, 1)} %`;
 const num = (v: number | null | undefined, d = 0) =>
-  v == null ? "–" : v.toLocaleString("sv-SE", { maximumFractionDigits: d });
+  v == null ? "–" : v.toLocaleString(locale(), { maximumFractionDigits: d });
 
 function Stat({ label, value, sub, tone }: { label: string; value: string; sub?: string; tone?: string }) {
   return (

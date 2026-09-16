@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { api } from "../api";
 
 /* Företagets halva av administrationen: konton, partners, provision, kundvård, innehåll, prov och heatmaps.
@@ -10,8 +10,8 @@ import { api } from "../api";
  */
 
 const kr = (v: number | null | undefined) =>
-  v == null ? "–" : `${v.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr`;
-const when = (s: string | null) => (s ? new Date(s).toLocaleDateString("sv-SE") : "–");
+  v == null ? "–" : `${v.toLocaleString(locale(), { maximumFractionDigits: 0 })} kr`;
+const when = (s: string | null) => (s ? new Date(s).toLocaleDateString(locale()) : "–");
 
 function Field({ label, children }: { label: string; children: any }) {
   return <label className="adm-field"><span>{label}</span>{children}</label>;

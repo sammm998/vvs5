@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { api } from "../api";
 
 /* Priser och credits: vad ett blad kostar kunden, vad det kostar tjänsten, och marginalen däremellan.
@@ -10,8 +10,8 @@ import { api } from "../api";
  * här sidan når läsningen: ett pris kan aldrig flytta en meter. */
 
 const num = (v: number | null | undefined, d = 2) =>
-  v == null ? "–" : v.toLocaleString("sv-SE", { maximumFractionDigits: d });
-const DATE = new Intl.DateTimeFormat("sv-SE", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+  v == null ? "–" : v.toLocaleString(locale(), { maximumFractionDigits: d });
+const DATE = new Intl.DateTimeFormat(locale(), { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
 
 function Num({ value, onChange, step = 0.5 }: { value: number; onChange: (v: number) => void; step?: number }) {
   return <input type="number" step={step} min={0} value={value} onChange={(e) => onChange(Number(e.target.value))} />;
@@ -116,7 +116,7 @@ export function Pricing() {
             <tbody>
               {d.margin.map((r: any) => (
                 <tr key={r.size_class}>
-                  <td>{r.size_class}</td><td>{r.paths.toLocaleString("sv-SE")}</td><td>{num(r.credits)}</td><td>{num(r.cost_kr, 3)}</td>
+                  <td>{r.size_class}</td><td>{r.paths.toLocaleString(locale())}</td><td>{num(r.credits)}</td><td>{num(r.cost_kr, 3)}</td>
                   {r.per_package.map((p: any) => <td key={p.id}>{num(p.margin_kr)} kr · {num(p.margin_pct, 1)} %</td>)}
                 </tr>
               ))}

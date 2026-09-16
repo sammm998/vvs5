@@ -1,4 +1,5 @@
 import { createElement, useEffect, useRef, useState, type ReactNode } from "react";
+import { locale } from "../i18n";
 import { useNavigate } from "react-router-dom";
 
 import { getToken } from "../api";
@@ -253,7 +254,7 @@ export function CountUp(
   { to: number; decimals?: number; suffix?: string; prefix?: string; duration?: number; className?: string },
 ) {
   const fmt = (v: number) =>
-    prefix + v.toLocaleString("sv-SE", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+    prefix + v.toLocaleString(locale(), { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
   const ref = useScene<HTMLSpanElement>(({ root, still }) => {
     if (still) { root.textContent = fmt(to); return; }
     const box = { v: 0 };

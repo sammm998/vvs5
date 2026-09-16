@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 
@@ -16,9 +16,9 @@ import { api } from "../api";
  */
 
 const kr = (v: number | null | undefined) =>
-  v == null ? "–" : `${v.toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kr`;
+  v == null ? "–" : `${v.toLocaleString(locale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kr`;
 const num = (v: number | null | undefined, d = 2) =>
-  v == null ? "–" : v.toLocaleString("sv-SE", { maximumFractionDigits: d });
+  v == null ? "–" : v.toLocaleString(locale(), { maximumFractionDigits: d });
 
 export default function CalcPage() {
   const { id } = useParams();
@@ -225,7 +225,7 @@ export default function CalcPage() {
             <div className="card">
               <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
                 <h3 style={{ margin: 0 }}>Poster</h3>
-                <span className="muted small">{dirty ? "ändrat · räkna om eller spara" : saved ? `sparad ${new Date(saved).toLocaleString("sv-SE")}` : "ej sparad"}</span>
+                <span className="muted small">{dirty ? "ändrat · räkna om eller spara" : saved ? `sparad ${new Date(saved).toLocaleString(locale())}` : "ej sparad"}</span>
               </div>
               <div className="tablewrap" style={{ marginTop: 10 }}>
                 <table className="qty calc-table">

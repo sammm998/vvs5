@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, num } from "../i18n";
 import { api } from "../api";
 import { identityColor } from "../palette";
 
@@ -105,7 +105,7 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
             <span className="sw" style={{ background: identityColor(pipe.identity ?? subject) }} />
             <b>{subject}</b>
             <span className="muted">
-              {pipe.total_m != null ? ` · ${Number(pipe.total_m).toFixed(2).replace(".", ",")} m` : ""}
+              {pipe.total_m != null ? ` · ${num(Number(pipe.total_m), 2)} m` : ""}
               {` · sida ${(pipe.page ?? 0) + 1}`}
             </span>
             <button className="ghost small" onClick={() => onKindChange(null)}>Avmarkera</button>
@@ -126,7 +126,7 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
             {draft && (
               <div className={`draftbox ${kind === "erase" ? "neg" : "pos"}`}>
                 {/* the same rounding the correction is stored with, so the panel and the list agree */}
-                <b>{kind === "erase" ? "−" : "+"} {Number(draft.meters.toFixed(3)).toFixed(2).replace(".", ",")} m</b>
+                <b>{kind === "erase" ? "−" : "+"} {num(Number(draft.meters.toFixed(3)), 2)} m</b>
                 <span className="muted">
                   {kind === "erase"
                     ? ` från ${(draft.hits ?? [subject]).filter(Boolean).join(", ") || "mängden"}`
@@ -153,7 +153,7 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
                 <label htmlFor="c-m">Meter</label>
                 <input id="c-m" value={meters} onChange={(e) => setMeters(e.target.value)}
                   placeholder={(kind === "retag" ? pipe?.horizontal_m : pipe?.total_m) != null
-                    ? Number(kind === "retag" ? pipe.horizontal_m : pipe.total_m).toFixed(2).replace(".", ",") : "0,00"} />
+                    ? num(Number(kind === "retag" ? pipe.horizontal_m : pipe.total_m), 2) : num(0, 2)} />
               </div>
             )}
             <datalist id="c-des-list">{quantities.map((q) => <option key={q.designation} value={q.designation} />)}</datalist>
@@ -175,7 +175,7 @@ export default function Corrections({ drawingId, jobId, page, quantities, correc
           <div key={c.id} className="issue done-row">
             <div>
               <b>{LABELS[c.kind] ?? c.kind}</b> · {c.designation}
-              {c.payload?.meters != null && <> · {Number(c.payload.meters).toFixed(2).replace(".", ",")} m</>}
+              {c.payload?.meters != null && <> · {num(Number(c.payload.meters), 2)} m</>}
               {c.payload?.from && <> · från {c.payload.from}</>}
               {c.note && <div className="muted">{c.note}</div>}
             </div>

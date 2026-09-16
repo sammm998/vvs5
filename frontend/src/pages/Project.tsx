@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link, useParams } from "react-router-dom";
 import { api, fileSize } from "../api";
 import { StatusBadge } from "../components/Status";
 import Tilted from "../components/Tilted";
 import { PriceTag } from "./Credits";
 
-const DATE = new Intl.DateTimeFormat("sv-SE", { day: "2-digit", month: "short", year: "numeric" });
+const DATE = new Intl.DateTimeFormat(locale(), { day: "2-digit", month: "short", year: "numeric" });
 
 export default function ProjectPage() {
   const { id } = useParams();

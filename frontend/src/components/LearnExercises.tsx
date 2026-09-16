@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { t as tr } from "../i18n";
+import { t as tr, num } from "../i18n";
 /* Övningarna.
  *
  * Att läsa om en regel och att tillämpa den är två olika saker, och det är den andra som fastnar. Var övning är
@@ -165,7 +165,7 @@ function ScaleExercise() {
               {checked && (
                 <text x={q.mm + 14} y="4" className="lf-mono" fontSize="11"
                   fill={given[q.id] === q.m ? "var(--ok)" : "var(--warn)"}>
-                  {q.m.toFixed(1).replace(".", ",")} m
+                  {num(q.m, 1)} m
                 </text>
               )}
             </g>
@@ -187,7 +187,7 @@ function ScaleExercise() {
                 <button key={o} type="button"
                   className={`secondary small${given[q.id] === o ? " on" : ""}${checked && o === q.m ? " right" : ""}`}
                   onClick={() => { setGiven({ ...given, [q.id]: o }); setChecked(false); }}>
-                  {o.toFixed(1).replace(".", ",")} m
+                  {num(o, 1)} m
                 </button>
               ))}
             </div>

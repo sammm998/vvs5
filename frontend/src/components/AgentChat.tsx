@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { api } from "../api";
 
 /* The agent, working against the reading rather than against a picture of it.
@@ -160,7 +160,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
       if (speak && r.svar) {
         try {
           const u = new SpeechSynthesisUtterance(r.svar);
-          u.lang = "sv-SE";
+          u.lang = locale();
           window.speechSynthesis.speak(u);
         } catch { /* a browser without speech simply stays quiet */ }
       }
@@ -193,7 +193,7 @@ export default function AgentChat({ jobId, page, selection, onHighlight, onChang
     if (!SR) { setErr("den här webbläsaren har ingen taligenkänning"); return; }
     if (listening) { rec.current?.stop(); setListening(false); return; }
     const r = new SR();
-    r.lang = "sv-SE"; r.interimResults = true; r.continuous = false;
+    r.lang = locale(); r.interimResults = true; r.continuous = false;
     r.onresult = (e: any) => {
       const said = Array.from(e.results).map((x: any) => x[0].transcript).join("");
       setText(said);

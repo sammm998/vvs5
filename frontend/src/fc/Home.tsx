@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, num } from "../i18n";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import Nav, { Logo } from "./Nav";
@@ -220,7 +220,7 @@ function TakeoffScene() {
           const drawn = step(0.2, 0.62);
           path.style.strokeDasharray = String(len);
           path.style.strokeDashoffset = String(len * (1 - drawn));
-          if (metre) metre.textContent = (run.m * drawn).toFixed(2).replace(".", ",");
+          if (metre) metre.textContent = num(run.m * drawn, 2);
         }
         dots.forEach((d, i) => {
           const on = p > 0.24 + i * 0.09;

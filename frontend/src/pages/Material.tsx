@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { api } from "../api";
 
 /* Materialboken.
@@ -18,9 +18,9 @@ type Row = {
 };
 
 const kr = (v: number | null) =>
-  v == null ? "–" : v.toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  v == null ? "–" : v.toLocaleString(locale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const num = (v: number | null, d = 2) =>
-  v == null ? "–" : v.toLocaleString("sv-SE", { maximumFractionDigits: d });
+  v == null ? "–" : v.toLocaleString(locale(), { maximumFractionDigits: d });
 
 export default function MaterialPage() {
   const [q, setQ] = useState("");
@@ -59,7 +59,7 @@ export default function MaterialPage() {
         <div>
           <h1>Material</h1>
           <p className="lead">
-            {data ? <>{data.book.n.toLocaleString("sv-SE")} artiklar ur {data.book.source ?? "materialboken"}</>
+            {data ? <>{data.book.n.toLocaleString(locale())} artiklar ur {data.book.source ?? "materialboken"}</>
               : "Laddar…"} · sök på några ord i valfri ordning, till exempel <code>{tr("110 pp mark")}</code>.
           </p>
         </div>
@@ -85,7 +85,7 @@ export default function MaterialPage() {
           </label>
         </div>
         <p className="muted" style={{ marginBottom: 0 }}>
-          {busy ? "Söker…" : data ? <>{data.total.toLocaleString("sv-SE")} träffar{data.total > LIMIT && <> · visar {page * LIMIT + 1}–{Math.min((page + 1) * LIMIT, data.total)}</>}</> : ""}
+          {busy ? "Söker…" : data ? <>{data.total.toLocaleString(locale())} träffar{data.total > LIMIT && <> · visar {page * LIMIT + 1}–{Math.min((page + 1) * LIMIT, data.total)}</>}</> : ""}
         </p>
       </div>
 

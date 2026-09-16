@@ -10,6 +10,7 @@ import {
 } from "./building";
 import { wallFootprint, profilePolygon } from "./solids";
 
+import { locale } from "../i18n";
 export type Seg = [Pt, Pt];
 export type Cam = { s: number; ox: number; oy: number };       // skärm = värld·s + o
 export const toScreen = (c: Cam, p: Pt): [number, number] => [p[0] * c.s + c.ox, p[1] * c.s + c.oy];
@@ -397,7 +398,7 @@ function drawEntity(g: CanvasRenderingContext2D, doc: CadDocument, e: Entity, st
       poly(e.p, true); g.fillStyle = ghost ? "rgba(31,111,235,0.08)" : "rgba(110,231,165,0.10)"; g.fill();
       let cx = 0, cy = 0; for (const p of e.p) { cx += p[0]; cy += p[1]; } const C = S([cx / e.p.length, cy / e.p.length]);
       const area = Math.abs(e.p.reduce((s, p, i) => { const q = e.p[(i + 1) % e.p.length]; return s + p[0] * q[1] - q[0] * p[1]; }, 0)) / 2 / 1e6;
-      g.fillStyle = "#1b4d33"; g.font = "12px system-ui, sans-serif"; g.textAlign = "center"; g.fillText(`${e.number ? e.number + " " : ""}${e.name || "Rum"}`, C[0], C[1] - 2); g.font = "11px ui-monospace, monospace"; g.fillText(`${area.toLocaleString("sv-SE", { maximumFractionDigits: 1 })} m²`, C[0], C[1] + 12); g.textAlign = "left";
+      g.fillStyle = "#1b4d33"; g.font = "12px system-ui, sans-serif"; g.textAlign = "center"; g.fillText(`${e.number ? e.number + " " : ""}${e.name || "Rum"}`, C[0], C[1] - 2); g.font = "11px ui-monospace, monospace"; g.fillText(`${area.toLocaleString(locale(), { maximumFractionDigits: 1 })} m²`, C[0], C[1] + 12); g.textAlign = "left";
       break;
     }
     case "column": { poly(profilePolygon(e.profile, e.p[0], e.rot ?? 0), true); g.fillStyle = ghost ? "rgba(31,111,235,0.3)" : "rgba(112,72,232,0.85)"; g.fill(); g.stroke(); break; }

@@ -1,3 +1,4 @@
+import { locale } from "../i18n";
 /* Ritbordets geometri: vad ett blad består av, och hur pekaren hittar rätt på det.
  *
  * Ritobjekten ligger i byggets egna millimeter. En vägg är 3 000 mm lång vare sig bladet skrivs ut i 1:50
@@ -229,7 +230,7 @@ export function gripsOf(e: Entity): Pt[] {
 // ---------------------------------------------------------------- text
 
 export const fmtM = (mm: number) =>
-  `${(mm / 1000).toLocaleString("sv-SE", { minimumFractionDigits: 3, maximumFractionDigits: 3 })} m`;
+  `${(mm / 1000).toLocaleString(locale(), { minimumFractionDigits: 3, maximumFractionDigits: 3 })} m`;
 
 export const SNAP_LABEL: Record<SnapKind, string> = {
   andpunkt: "ändpunkt", mittpunkt: "mittpunkt", centrum: "centrum", kvadrant: "kvadrant",

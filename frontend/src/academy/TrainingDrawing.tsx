@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, num } from "../i18n";
 import type { PlanData } from "./api";
 
 /* Övningsritningen.
@@ -261,7 +261,7 @@ export default function TrainingDrawing({
           {mode === "matt" && (
             <>
               <span className="fc-label">{tr("Mätt")}</span>
-              <b className="td-m">{live.toFixed(2).replace(".", ",")} m</b>
+              <b className="td-m">{num(live, 2)} m</b>
               <span className="td-hint">
                 Klicka punkter · dubbelklick eller Esc avslutar stråket · Backsteg ångrar · Skift+dra panorerar
               </span>

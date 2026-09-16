@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import Tilted from "../components/Tilted";
 
-const DATE = new Intl.DateTimeFormat("sv-SE", { day: "2-digit", month: "short", year: "numeric" });
+const DATE = new Intl.DateTimeFormat(locale(), { day: "2-digit", month: "short", year: "numeric" });
 
 export default function Projects() {
   const [projects, setProjects] = useState<any[]>([]);

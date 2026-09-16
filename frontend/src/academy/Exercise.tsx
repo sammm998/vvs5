@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import TrainingDrawing, { Symbol, type Run } from "./TrainingDrawing";
 import { ac, type AttemptOut, type ExerciseOut, type PlanData } from "./api";
 
@@ -136,7 +136,7 @@ function Result({ out }: { out: AttemptOut }) {
 }
 
 const fmt = (v: unknown, d = 2) =>
-  typeof v === "number" ? v.toLocaleString("sv-SE", { minimumFractionDigits: d, maximumFractionDigits: d }) : "—";
+  typeof v === "number" ? v.toLocaleString(locale(), { minimumFractionDigits: d, maximumFractionDigits: d }) : "—";
 
 /* ---------------------------------------------------------------- sorterna */
 

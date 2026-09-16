@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, locale } from "../i18n";
 import { api } from "../api";
 
 /* Läsningens halva av administrationen: vad som lästs, vad kunderna rättat, och vad rättelserna lärt.
@@ -12,8 +12,8 @@ import { api } from "../api";
 
 const pct = (v: number | null | undefined) => (v == null ? "–" : `${(v * 100).toFixed(0)} %`);
 const m = (v: number | null | undefined) =>
-  v == null ? "–" : `${v.toLocaleString("sv-SE", { maximumFractionDigits: 1 })} m`;
-const when = (s: string | null) => (s ? new Date(s).toLocaleString("sv-SE", { dateStyle: "short", timeStyle: "short" }) : "–");
+  v == null ? "–" : `${v.toLocaleString(locale(), { maximumFractionDigits: 1 })} m`;
+const when = (s: string | null) => (s ? new Date(s).toLocaleString(locale(), { dateStyle: "short", timeStyle: "short" }) : "–");
 
 export function Readings() {
   const [d, setD] = useState<any>(null);
