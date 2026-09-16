@@ -1,6 +1,10 @@
 # Facitmått - gate76.json
 
-59 blad, 11399.2 m i referensen. **COVERAGE 79.19%**, **FALSE_OWNERSHIP 15.70%**, DESIGNATION_RECALL 87.72%, DESIGNATION_PRECISION 78.45%, LEADER_ATTACHMENT 345.91%.
+59 blad, 11399.2 m i referensen. **COVERAGE 79.19%**, **FALSE_OWNERSHIP 15.70%**, LEADER_ATTACHMENT 345.91%.
+
+Namnen: TEXT_RECALL 87.72% (beteckningen läst, oavsett meter), varav med meter 86.30%, TEXT_PRECISION 78.45%. Längden: 2372.1 m saknad, 1477.4 m för lång på en riktig rad, 312.5 m under ett namn referensen inte har.
+
+> TEXT_RECALL säger att namnet lästes, inte att någon meter mättes. En rad som läste sin beteckning perfekt och gav noll meter räknas in där och i COVERAGE med noll.
 
 | Stil | Blad | Ref m | Ägt m | Falskt m | Täckning | Falskhet | Bet. recall | Bet. precision | FULL | PARTIAL | OVER | MISSED | WRONG |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|

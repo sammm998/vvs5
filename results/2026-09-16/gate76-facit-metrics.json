@@ -9,6 +9,12 @@
   "false_m": 1789.8,
   "COVERAGE": 0.7919,
   "FALSE_OWNERSHIP": 0.157,
+  "TEXT_RECALL": 0.8772,
+  "TEXT_PRECISION": 0.7845,
+  "NAMED_AND_MEASURED_RECALL": 0.863,
+  "missed_m": 2372.1,
+  "wrong_name_m": 312.5,
+  "over_extent_m": 1477.4,
   "DESIGNATION_RECALL": 0.8772,
   "DESIGNATION_PRECISION": 0.7845,
   "LEADER_ATTACHMENT": 3.4591,
@@ -35,6 +41,12 @@
    "false_m": 1206.5,
    "COVERAGE": 0.803,
    "FALSE_OWNERSHIP": 0.2062,
+   "TEXT_RECALL": 0.8083,
+   "TEXT_PRECISION": 0.7857,
+   "NAMED_AND_MEASURED_RECALL": 0.8019,
+   "missed_m": 1152.3,
+   "wrong_name_m": 201.7,
+   "over_extent_m": 1004.8,
    "DESIGNATION_RECALL": 0.8083,
    "DESIGNATION_PRECISION": 0.7857,
    "LEADER_ATTACHMENT": 2.4283,
@@ -60,6 +72,12 @@
    "false_m": 583.3,
    "COVERAGE": 0.7802,
    "FALSE_OWNERSHIP": 0.1051,
+   "TEXT_RECALL": 0.9441,
+   "TEXT_PRECISION": 0.7835,
+   "NAMED_AND_MEASURED_RECALL": 0.9224,
+   "missed_m": 1219.8,
+   "wrong_name_m": 110.7,
+   "over_extent_m": 472.6,
    "DESIGNATION_RECALL": 0.9441,
    "DESIGNATION_PRECISION": 0.7835,
    "LEADER_ATTACHMENT": 4.4557,
@@ -88,14 +106,19 @@
     "reference": 9,
     "ours": 9,
     "found": 9,
+    "found_with_metres": 9,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 6.0,
    "metres": {
     "reference": 213.7,
     "owned": 208.97,
     "false": 2.56,
+    "missed": 4.73,
+    "wrong_name": 0,
+    "over_extent": 2.56,
     "coverage": 0.9778,
     "false_ownership": 0.012
    },
@@ -175,14 +198,19 @@
     "reference": 2,
     "ours": 2,
     "found": 2,
+    "found_with_metres": 2,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 0.8182,
    "metres": {
     "reference": 17.6,
     "owned": 17.59,
     "false": 0.11,
+    "missed": 0.01,
+    "wrong_name": 0,
+    "over_extent": 0.11,
     "coverage": 0.9995,
     "false_ownership": 0.0061
    },
@@ -217,14 +245,19 @@
     "reference": 7,
     "ours": 9,
     "found": 7,
+    "found_with_metres": 7,
     "recall": 1.0,
-    "precision": 0.7778
+    "precision": 0.7778,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 3.4762,
    "metres": {
     "reference": 112.9,
     "owned": 106.12,
     "false": 4.17,
+    "missed": 6.78,
+    "wrong_name": 0.0,
+    "over_extent": 4.17,
     "coverage": 0.9399,
     "false_ownership": 0.0369
    },
@@ -306,14 +339,19 @@
     "reference": 3,
     "ours": 3,
     "found": 3,
+    "found_with_metres": 3,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 12.8,
    "metres": {
     "reference": 50.9,
     "owned": 49.54,
     "false": 0.93,
+    "missed": 1.36,
+    "wrong_name": 0,
+    "over_extent": 0.93,
     "coverage": 0.9733,
     "false_ownership": 0.0182
    },
@@ -357,14 +395,19 @@
     "reference": 5,
     "ours": 6,
     "found": 3,
+    "found_with_metres": 3,
     "recall": 0.6,
-    "precision": 0.5
+    "precision": 0.5,
+    "recall_with_metres": 0.6
    },
    "leader_attachment": 2.4286,
    "metres": {
     "reference": 165.8,
     "owned": 106.53,
     "false": 0.8,
+    "missed": 59.27,
+    "wrong_name": 0.8,
+    "over_extent": 0.0,
     "coverage": 0.6425,
     "false_ownership": 0.0048
    },
@@ -443,14 +486,19 @@
     "reference": 20,
     "ours": 26,
     "found": 20,
+    "found_with_metres": 20,
     "recall": 1.0,
-    "precision": 0.7692
+    "precision": 0.7692,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 2.3333,
    "metres": {
     "reference": 398.8,
     "owned": 326.36,
     "false": 33.45,
+    "missed": 72.44,
+    "wrong_name": 4.75,
+    "over_extent": 28.71,
     "coverage": 0.8184,
     "false_ownership": 0.0839
    },
@@ -638,14 +686,19 @@
     "reference": 7,
     "ours": 9,
     "found": 7,
+    "found_with_metres": 7,
     "recall": 1.0,
-    "precision": 0.7778
+    "precision": 0.7778,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 1.5,
    "metres": {
     "reference": 101.5,
     "owned": 101.5,
     "false": 61.44,
+    "missed": 0.0,
+    "wrong_name": 0.14,
+    "over_extent": 61.3,
     "coverage": 1.0,
     "false_ownership": 0.6053
    },
@@ -728,14 +781,19 @@
     "reference": 17,
     "ours": 26,
     "found": 17,
+    "found_with_metres": 17,
     "recall": 1.0,
-    "precision": 0.6538
+    "precision": 0.6538,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 2.92,
    "metres": {
     "reference": 321.1,
     "owned": 320.72,
     "false": 203.72,
+    "missed": 0.38,
+    "wrong_name": 18.53,
+    "over_extent": 185.19,
     "coverage": 0.9988,
     "false_ownership": 0.6345
    },
@@ -921,14 +979,19 @@
     "reference": 28,
     "ours": 27,
     "found": 23,
+    "found_with_metres": 23,
     "recall": 0.8214,
-    "precision": 0.8519
+    "precision": 0.8519,
+    "recall_with_metres": 0.8214
    },
    "leader_attachment": 1.6667,
    "metres": {
     "reference": 404.0,
     "owned": 318.04,
     "false": 31.14,
+    "missed": 85.96,
+    "wrong_name": 4.51,
+    "over_extent": 26.63,
     "coverage": 0.7872,
     "false_ownership": 0.0771
    },
@@ -1153,14 +1216,19 @@
     "reference": 25,
     "ours": 22,
     "found": 17,
+    "found_with_metres": 17,
     "recall": 0.68,
-    "precision": 0.7727
+    "precision": 0.7727,
+    "recall_with_metres": 0.68
    },
    "leader_attachment": 2.5417,
    "metres": {
     "reference": 252.2,
     "owned": 176.11,
     "false": 23.2,
+    "missed": 76.09,
+    "wrong_name": 2.47,
+    "over_extent": 20.74,
     "coverage": 0.6983,
     "false_ownership": 0.092
    },
@@ -1373,14 +1441,19 @@
     "reference": 1,
     "ours": 1,
     "found": 1,
+    "found_with_metres": 1,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 3.0,
    "metres": {
     "reference": 107.2,
     "owned": 107.2,
     "false": 1.12,
+    "missed": 0.0,
+    "wrong_name": 0,
+    "over_extent": 1.12,
     "coverage": 1.0,
     "false_ownership": 0.0104
    },
@@ -1409,14 +1482,19 @@
     "reference": 20,
     "ours": 17,
     "found": 15,
+    "found_with_metres": 15,
     "recall": 0.75,
-    "precision": 0.8824
+    "precision": 0.8824,
+    "recall_with_metres": 0.75
    },
    "leader_attachment": 2.2,
    "metres": {
     "reference": 366.1,
     "owned": 314.62,
     "false": 32.23,
+    "missed": 51.48,
+    "wrong_name": 17.42,
+    "over_extent": 14.81,
     "coverage": 0.8594,
     "false_ownership": 0.088
    },
@@ -1580,14 +1658,19 @@
     "reference": 1,
     "ours": 1,
     "found": 1,
+    "found_with_metres": 1,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 3.2857,
    "metres": {
     "reference": 55.8,
     "owned": 55.8,
     "false": 5.94,
+    "missed": 0.0,
+    "wrong_name": 0,
+    "over_extent": 5.94,
     "coverage": 1.0,
     "false_ownership": 0.1065
    },
@@ -1620,14 +1703,19 @@
     "reference": 6,
     "ours": 4,
     "found": 3,
+    "found_with_metres": 3,
     "recall": 0.5,
-    "precision": 0.75
+    "precision": 0.75,
+    "recall_with_metres": 0.5
    },
    "leader_attachment": 4.0,
    "metres": {
     "reference": 106.3,
     "owned": 92.4,
     "false": 38.17,
+    "missed": 13.9,
+    "wrong_name": 6.88,
+    "over_extent": 31.29,
     "coverage": 0.8693,
     "false_ownership": 0.359
    },
@@ -1701,14 +1789,19 @@
     "reference": 5,
     "ours": 2,
     "found": 2,
+    "found_with_metres": 2,
     "recall": 0.4,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 0.4
    },
    "leader_attachment": 1.4,
    "metres": {
     "reference": 92.7,
     "owned": 85.5,
     "false": 0.0,
+    "missed": 7.2,
+    "wrong_name": 0,
+    "over_extent": 0.0,
     "coverage": 0.9223,
     "false_ownership": 0.0
    },
@@ -1766,14 +1859,19 @@
     "reference": 2,
     "ours": 3,
     "found": 1,
+    "found_with_metres": 1,
     "recall": 0.5,
-    "precision": 0.3333
+    "precision": 0.3333,
+    "recall_with_metres": 0.5
    },
    "leader_attachment": 2.875,
    "metres": {
     "reference": 129.5,
     "owned": 106.6,
     "false": 13.33,
+    "missed": 22.9,
+    "wrong_name": 13.33,
+    "over_extent": 0.0,
     "coverage": 0.8232,
     "false_ownership": 0.1029
    },
@@ -1825,14 +1923,19 @@
     "reference": 15,
     "ours": 11,
     "found": 10,
+    "found_with_metres": 10,
     "recall": 0.6667,
-    "precision": 0.9091
+    "precision": 0.9091,
+    "recall_with_metres": 0.6667
    },
    "leader_attachment": 1.6111,
    "metres": {
     "reference": 262.6,
     "owned": 181.17,
     "false": 29.46,
+    "missed": 81.43,
+    "wrong_name": 6.16,
+    "over_extent": 23.31,
     "coverage": 0.6899,
     "false_ownership": 0.1122
    },
@@ -1961,14 +2064,19 @@
     "reference": 2,
     "ours": 4,
     "found": 2,
+    "found_with_metres": 2,
     "recall": 1.0,
-    "precision": 0.5
+    "precision": 0.5,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 2.1818,
    "metres": {
     "reference": 76.9,
     "owned": 73.98,
     "false": 2.7,
+    "missed": 2.92,
+    "wrong_name": 2.7,
+    "over_extent": 0.0,
     "coverage": 0.962,
     "false_ownership": 0.035
    },
@@ -2021,14 +2129,19 @@
     "reference": 11,
     "ours": 11,
     "found": 9,
+    "found_with_metres": 9,
     "recall": 0.8182,
-    "precision": 0.8182
+    "precision": 0.8182,
+    "recall_with_metres": 0.8182
    },
    "leader_attachment": 1.5333,
    "metres": {
     "reference": 255.4,
     "owned": 232.49,
     "false": 25.91,
+    "missed": 22.91,
+    "wrong_name": 10.03,
+    "over_extent": 15.89,
     "coverage": 0.9103,
     "false_ownership": 0.1015
    },
@@ -2139,14 +2252,19 @@
     "reference": 3,
     "ours": 3,
     "found": 2,
+    "found_with_metres": 2,
     "recall": 0.6667,
-    "precision": 0.6667
+    "precision": 0.6667,
+    "recall_with_metres": 0.6667
    },
    "leader_attachment": 2.5,
    "metres": {
     "reference": 123.9,
     "owned": 104.84,
     "false": 5.5,
+    "missed": 19.06,
+    "wrong_name": 0.0,
+    "over_extent": 5.5,
     "coverage": 0.8461,
     "false_ownership": 0.0444
    },
@@ -2199,14 +2317,19 @@
     "reference": 9,
     "ours": 9,
     "found": 9,
+    "found_with_metres": 9,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 2.4615,
    "metres": {
     "reference": 196.2,
     "owned": 175.24,
     "false": 8.65,
+    "missed": 20.96,
+    "wrong_name": 0,
+    "over_extent": 8.65,
     "coverage": 0.8931,
     "false_ownership": 0.0441
    },
@@ -2288,14 +2411,19 @@
     "reference": 17,
     "ours": 12,
     "found": 12,
+    "found_with_metres": 12,
     "recall": 0.7059,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 0.7059
    },
    "leader_attachment": 3.2105,
    "metres": {
     "reference": 473.6,
     "owned": 382.23,
     "false": 23.9,
+    "missed": 91.37,
+    "wrong_name": 0,
+    "over_extent": 23.9,
     "coverage": 0.8071,
     "false_ownership": 0.0505
    },
@@ -2427,14 +2555,19 @@
     "reference": 5,
     "ours": 8,
     "found": 5,
+    "found_with_metres": 5,
     "recall": 1.0,
-    "precision": 0.625
+    "precision": 0.625,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 3.1667,
    "metres": {
     "reference": 129.9,
     "owned": 109.04,
     "false": 76.44,
+    "missed": 20.86,
+    "wrong_name": 3.17,
+    "over_extent": 73.27,
     "coverage": 0.8394,
     "false_ownership": 0.5885
    },
@@ -2513,14 +2646,19 @@
     "reference": 10,
     "ours": 10,
     "found": 7,
+    "found_with_metres": 7,
     "recall": 0.7,
-    "precision": 0.7
+    "precision": 0.7,
+    "recall_with_metres": 0.7
    },
    "leader_attachment": 2.7143,
    "metres": {
     "reference": 175.2,
     "owned": 131.85,
     "false": 74.85,
+    "missed": 43.35,
+    "wrong_name": 35.38,
+    "over_extent": 39.48,
     "coverage": 0.7525,
     "false_ownership": 0.4272
    },
@@ -2631,14 +2769,19 @@
     "reference": 5,
     "ours": 6,
     "found": 5,
+    "found_with_metres": 5,
     "recall": 1.0,
-    "precision": 0.8333
+    "precision": 0.8333,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 3.7143,
    "metres": {
     "reference": 156.6,
     "owned": 67.87,
     "false": 75.14,
+    "missed": 88.73,
+    "wrong_name": 6.03,
+    "over_extent": 69.12,
     "coverage": 0.4334,
     "false_ownership": 0.4798
    },
@@ -2704,14 +2847,19 @@
     "reference": 7,
     "ours": 6,
     "found": 5,
+    "found_with_metres": 5,
     "recall": 0.7143,
-    "precision": 0.8333
+    "precision": 0.8333,
+    "recall_with_metres": 0.7143
    },
    "leader_attachment": 1.8182,
    "metres": {
     "reference": 62.7,
     "owned": 46.14,
     "false": 15.78,
+    "missed": 16.56,
+    "wrong_name": 3.66,
+    "over_extent": 12.12,
     "coverage": 0.7359,
     "false_ownership": 0.2517
    },
@@ -2792,14 +2940,19 @@
     "reference": 18,
     "ours": 20,
     "found": 16,
+    "found_with_metres": 16,
     "recall": 0.8889,
-    "precision": 0.8
+    "precision": 0.8,
+    "recall_with_metres": 0.8889
    },
    "leader_attachment": 2.0,
    "metres": {
     "reference": 286.5,
     "owned": 233.57,
     "false": 30.43,
+    "missed": 52.93,
+    "wrong_name": 1.75,
+    "over_extent": 28.67,
     "coverage": 0.8152,
     "false_ownership": 0.1062
    },
@@ -2963,14 +3116,19 @@
     "reference": 7,
     "ours": 11,
     "found": 7,
+    "found_with_metres": 7,
     "recall": 1.0,
-    "precision": 0.6364
+    "precision": 0.6364,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 1.8333,
    "metres": {
     "reference": 68.5,
     "owned": 60.77,
     "false": 128.82,
+    "missed": 7.73,
+    "wrong_name": 5.76,
+    "over_extent": 123.06,
     "coverage": 0.8871,
     "false_ownership": 1.8806
    },
@@ -3067,14 +3225,19 @@
     "reference": 15,
     "ours": 18,
     "found": 14,
+    "found_with_metres": 14,
     "recall": 0.9333,
-    "precision": 0.7778
+    "precision": 0.7778,
+    "recall_with_metres": 0.9333
    },
    "leader_attachment": 1.9545,
    "metres": {
     "reference": 263.3,
     "owned": 233.17,
     "false": 75.53,
+    "missed": 30.13,
+    "wrong_name": 1.42,
+    "over_extent": 74.11,
     "coverage": 0.8856,
     "false_ownership": 0.2868
    },
@@ -3220,14 +3383,19 @@
     "reference": 9,
     "ours": 9,
     "found": 7,
+    "found_with_metres": 5,
     "recall": 0.7778,
-    "precision": 0.7778
+    "precision": 0.7778,
+    "recall_with_metres": 0.5556
    },
    "leader_attachment": 2.0909,
    "metres": {
     "reference": 60.8,
     "owned": 49.29,
     "false": 12.77,
+    "missed": 11.51,
+    "wrong_name": 0.76,
+    "over_extent": 12.01,
     "coverage": 0.8107,
     "false_ownership": 0.2101
    },
@@ -3328,14 +3496,19 @@
     "reference": 4,
     "ours": 5,
     "found": 4,
+    "found_with_metres": 4,
     "recall": 1.0,
-    "precision": 0.8
+    "precision": 0.8,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 1.6667,
    "metres": {
     "reference": 84.0,
     "owned": 70.12,
     "false": 9.05,
+    "missed": 13.88,
+    "wrong_name": 0.3,
+    "over_extent": 8.75,
     "coverage": 0.8348,
     "false_ownership": 0.1077
    },
@@ -3395,14 +3568,19 @@
     "reference": 7,
     "ours": 8,
     "found": 6,
+    "found_with_metres": 6,
     "recall": 0.8571,
-    "precision": 0.75
+    "precision": 0.75,
+    "recall_with_metres": 0.8571
    },
    "leader_attachment": 3.4167,
    "metres": {
     "reference": 155.6,
     "owned": 106.74,
     "false": 62.05,
+    "missed": 48.86,
+    "wrong_name": 46.89,
+    "over_extent": 15.16,
     "coverage": 0.686,
     "false_ownership": 0.3988
    },
@@ -3488,14 +3666,19 @@
     "reference": 32,
     "ours": 27,
     "found": 23,
+    "found_with_metres": 23,
     "recall": 0.7188,
-    "precision": 0.8519
+    "precision": 0.8519,
+    "recall_with_metres": 0.7188
    },
    "leader_attachment": 2.3947,
    "metres": {
     "reference": 517.2,
     "owned": 327.75,
     "false": 104.98,
+    "missed": 189.45,
+    "wrong_name": 8.9,
+    "over_extent": 96.08,
     "coverage": 0.6337,
     "false_ownership": 0.203
    },
@@ -3744,14 +3927,19 @@
     "reference": 9,
     "ours": 9,
     "found": 9,
+    "found_with_metres": 9,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 6.0,
    "metres": {
     "reference": 213.7,
     "owned": 208.97,
     "false": 2.56,
+    "missed": 4.73,
+    "wrong_name": 0,
+    "over_extent": 2.56,
     "coverage": 0.9778,
     "false_ownership": 0.012
    },
@@ -3831,14 +4019,19 @@
     "reference": 3,
     "ours": 3,
     "found": 3,
+    "found_with_metres": 3,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 4.75,
    "metres": {
     "reference": 31.7,
     "owned": 31.52,
     "false": 0.08,
+    "missed": 0.18,
+    "wrong_name": 0,
+    "over_extent": 0.08,
     "coverage": 0.9944,
     "false_ownership": 0.0025
    },
@@ -3879,14 +4072,19 @@
     "reference": 3,
     "ours": 3,
     "found": 3,
+    "found_with_metres": 3,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 5.8,
    "metres": {
     "reference": 72.8,
     "owned": 68.04,
     "false": 3.54,
+    "missed": 4.76,
+    "wrong_name": 0,
+    "over_extent": 3.54,
     "coverage": 0.9347,
     "false_ownership": 0.0486
    },
@@ -3932,14 +4130,19 @@
     "reference": 2,
     "ours": 2,
     "found": 2,
+    "found_with_metres": 2,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 7.2,
    "metres": {
     "reference": 36.4,
     "owned": 34.9,
     "false": 1.28,
+    "missed": 1.5,
+    "wrong_name": 0,
+    "over_extent": 1.28,
     "coverage": 0.9589,
     "false_ownership": 0.0351
    },
@@ -3977,14 +4180,19 @@
     "reference": 3,
     "ours": 3,
     "found": 3,
+    "found_with_metres": 3,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 10.6,
    "metres": {
     "reference": 57.2,
     "owned": 53.48,
     "false": 4.25,
+    "missed": 3.72,
+    "wrong_name": 0,
+    "over_extent": 4.25,
     "coverage": 0.9349,
     "false_ownership": 0.0742
    },
@@ -4029,14 +4237,19 @@
     "reference": 2,
     "ours": 3,
     "found": 2,
+    "found_with_metres": 2,
     "recall": 1.0,
-    "precision": 0.6667
+    "precision": 0.6667,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 9.6,
    "metres": {
     "reference": 7.0,
     "owned": 7.0,
     "false": 0.39,
+    "missed": 0.0,
+    "wrong_name": 0.07,
+    "over_extent": 0.32,
     "coverage": 1.0,
     "false_ownership": 0.0559
    },
@@ -4080,14 +4293,19 @@
     "reference": 3,
     "ours": 3,
     "found": 3,
+    "found_with_metres": 3,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 8.6,
    "metres": {
     "reference": 56.0,
     "owned": 45.69,
     "false": 8.93,
+    "missed": 10.31,
+    "wrong_name": 0,
+    "over_extent": 8.93,
     "coverage": 0.816,
     "false_ownership": 0.1596
    },
@@ -4132,14 +4350,19 @@
     "reference": 3,
     "ours": 5,
     "found": 3,
+    "found_with_metres": 3,
     "recall": 1.0,
-    "precision": 0.6
+    "precision": 0.6,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 4.4286,
    "metres": {
     "reference": 35.1,
     "owned": 33.77,
     "false": 1.52,
+    "missed": 1.33,
+    "wrong_name": 0.01,
+    "over_extent": 1.51,
     "coverage": 0.9621,
     "false_ownership": 0.0434
    },
@@ -4201,14 +4424,19 @@
     "reference": 2,
     "ours": 3,
     "found": 2,
+    "found_with_metres": 2,
     "recall": 1.0,
-    "precision": 0.6667
+    "precision": 0.6667,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 6.6,
    "metres": {
     "reference": 44.6,
     "owned": 40.91,
     "false": 3.66,
+    "missed": 3.69,
+    "wrong_name": 0.02,
+    "over_extent": 3.64,
     "coverage": 0.9172,
     "false_ownership": 0.082
    },
@@ -4255,14 +4483,19 @@
     "reference": 31,
     "ours": 38,
     "found": 27,
+    "found_with_metres": 26,
     "recall": 0.871,
-    "precision": 0.7105
+    "precision": 0.7105,
+    "recall_with_metres": 0.8387
    },
    "leader_attachment": 3.44,
    "metres": {
     "reference": 519.5,
     "owned": 329.41,
     "false": 101.55,
+    "missed": 190.09,
+    "wrong_name": 28.82,
+    "over_extent": 72.73,
     "coverage": 0.6341,
     "false_ownership": 0.1955
    },
@@ -4547,14 +4780,19 @@
     "reference": 5,
     "ours": 6,
     "found": 5,
+    "found_with_metres": 4,
     "recall": 1.0,
-    "precision": 0.8333
+    "precision": 0.8333,
+    "recall_with_metres": 0.8
    },
    "leader_attachment": 1.0,
    "metres": {
     "reference": 130.1,
     "owned": 116.52,
     "false": 7.79,
+    "missed": 13.58,
+    "wrong_name": 0.0,
+    "over_extent": 7.79,
     "coverage": 0.8956,
     "false_ownership": 0.0599
    },
@@ -4620,14 +4858,19 @@
     "reference": 33,
     "ours": 45,
     "found": 31,
+    "found_with_metres": 31,
     "recall": 0.9394,
-    "precision": 0.6889
+    "precision": 0.6889,
+    "recall_with_metres": 0.9394
    },
    "leader_attachment": 2.4531,
    "metres": {
     "reference": 516.0,
     "owned": 361.74,
     "false": 92.0,
+    "missed": 154.26,
+    "wrong_name": 9.02,
+    "over_extent": 82.99,
     "coverage": 0.701,
     "false_ownership": 0.1783
    },
@@ -4944,14 +5187,19 @@
     "reference": 21,
     "ours": 28,
     "found": 20,
+    "found_with_metres": 18,
     "recall": 0.9524,
-    "precision": 0.7143
+    "precision": 0.7143,
+    "recall_with_metres": 0.8571
    },
    "leader_attachment": 2.64,
    "metres": {
     "reference": 325.7,
     "owned": 261.01,
     "false": 36.42,
+    "missed": 64.69,
+    "wrong_name": 5.29,
+    "over_extent": 31.13,
     "coverage": 0.8014,
     "false_ownership": 0.1118
    },
@@ -5158,14 +5406,19 @@
     "reference": 17,
     "ours": 19,
     "found": 17,
+    "found_with_metres": 16,
     "recall": 1.0,
-    "precision": 0.8947
+    "precision": 0.8947,
+    "recall_with_metres": 0.9412
    },
    "leader_attachment": 2.6857,
    "metres": {
     "reference": 171.4,
     "owned": 127.57,
     "false": 15.26,
+    "missed": 43.83,
+    "wrong_name": 0.0,
+    "over_extent": 15.26,
     "coverage": 0.7443,
     "false_ownership": 0.089
    },
@@ -5309,14 +5562,19 @@
     "reference": 18,
     "ours": 23,
     "found": 16,
+    "found_with_metres": 16,
     "recall": 0.8889,
-    "precision": 0.6957
+    "precision": 0.6957,
+    "recall_with_metres": 0.8889
    },
    "leader_attachment": 4.0606,
    "metres": {
     "reference": 333.6,
     "owned": 276.65,
     "false": 40.2,
+    "missed": 56.95,
+    "wrong_name": 7.09,
+    "over_extent": 33.11,
     "coverage": 0.8293,
     "false_ownership": 0.1205
    },
@@ -5499,14 +5757,19 @@
     "reference": 16,
     "ours": 18,
     "found": 16,
+    "found_with_metres": 16,
     "recall": 1.0,
-    "precision": 0.8889
+    "precision": 0.8889,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 3.0,
    "metres": {
     "reference": 294.1,
     "owned": 249.19,
     "false": 33.11,
+    "missed": 44.92,
+    "wrong_name": 0.0,
+    "over_extent": 33.1,
     "coverage": 0.8473,
     "false_ownership": 0.1126
    },
@@ -5646,14 +5909,19 @@
     "reference": 17,
     "ours": 27,
     "found": 14,
+    "found_with_metres": 14,
     "recall": 0.8235,
-    "precision": 0.5185
+    "precision": 0.5185,
+    "recall_with_metres": 0.8235
    },
    "leader_attachment": 2.814,
    "metres": {
     "reference": 246.7,
     "owned": 147.67,
     "false": 21.2,
+    "missed": 99.03,
+    "wrong_name": 5.92,
+    "over_extent": 15.28,
     "coverage": 0.5986,
     "false_ownership": 0.0859
    },
@@ -5866,14 +6134,19 @@
     "reference": 15,
     "ours": 24,
     "found": 15,
+    "found_with_metres": 15,
     "recall": 1.0,
-    "precision": 0.625
+    "precision": 0.625,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 2.619,
    "metres": {
     "reference": 201.0,
     "owned": 112.3,
     "false": 43.06,
+    "missed": 88.7,
+    "wrong_name": 41.54,
+    "over_extent": 1.52,
     "coverage": 0.5587,
     "false_ownership": 0.2142
    },
@@ -6049,14 +6322,19 @@
     "reference": 21,
     "ours": 22,
     "found": 21,
+    "found_with_metres": 21,
     "recall": 1.0,
-    "precision": 0.9545
+    "precision": 0.9545,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 3.9792,
    "metres": {
     "reference": 451.7,
     "owned": 365.98,
     "false": 62.63,
+    "missed": 85.72,
+    "wrong_name": 0.0,
+    "over_extent": 62.63,
     "coverage": 0.8102,
     "false_ownership": 0.1387
    },
@@ -6218,14 +6496,19 @@
     "reference": 19,
     "ours": 22,
     "found": 18,
+    "found_with_metres": 17,
     "recall": 0.9474,
-    "precision": 0.8182
+    "precision": 0.8182,
+    "recall_with_metres": 0.8947
    },
    "leader_attachment": 2.2051,
    "metres": {
     "reference": 305.1,
     "owned": 226.27,
     "false": 12.67,
+    "missed": 78.84,
+    "wrong_name": 1.16,
+    "over_extent": 11.51,
     "coverage": 0.7416,
     "false_ownership": 0.0415
    },
@@ -6395,14 +6678,19 @@
     "reference": 19,
     "ours": 20,
     "found": 16,
+    "found_with_metres": 16,
     "recall": 0.8421,
-    "precision": 0.8
+    "precision": 0.8,
+    "recall_with_metres": 0.8421
    },
    "leader_attachment": 4.0312,
    "metres": {
     "reference": 350.0,
     "owned": 233.87,
     "false": 36.02,
+    "missed": 116.13,
+    "wrong_name": 11.79,
+    "over_extent": 24.23,
     "coverage": 0.6682,
     "false_ownership": 0.1029
    },
@@ -6573,14 +6861,19 @@
     "reference": 4,
     "ours": 4,
     "found": 4,
+    "found_with_metres": 4,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 3.1538,
    "metres": {
     "reference": 111.3,
     "owned": 90.66,
     "false": 13.33,
+    "missed": 20.64,
+    "wrong_name": 0,
+    "over_extent": 13.33,
     "coverage": 0.8146,
     "false_ownership": 0.1198
    },
@@ -6632,14 +6925,19 @@
     "reference": 11,
     "ours": 11,
     "found": 11,
+    "found_with_metres": 10,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 0.9091
    },
    "leader_attachment": 2.9545,
    "metres": {
     "reference": 211.9,
     "owned": 160.79,
     "false": 29.8,
+    "missed": 51.11,
+    "wrong_name": 0,
+    "over_extent": 29.8,
     "coverage": 0.7588,
     "false_ownership": 0.1406
    },
@@ -6735,14 +7033,19 @@
     "reference": 5,
     "ours": 6,
     "found": 4,
+    "found_with_metres": 4,
     "recall": 0.8,
-    "precision": 0.6667
+    "precision": 0.6667,
+    "recall_with_metres": 0.8
    },
    "leader_attachment": 2.1765,
    "metres": {
     "reference": 101.8,
     "owned": 92.07,
     "false": 1.71,
+    "missed": 9.73,
+    "wrong_name": 0.0,
+    "over_extent": 1.71,
     "coverage": 0.9044,
     "false_ownership": 0.0168
    },
@@ -6815,14 +7118,19 @@
     "reference": 7,
     "ours": 6,
     "found": 6,
+    "found_with_metres": 6,
     "recall": 0.8571,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 0.8571
    },
    "leader_attachment": 1.0645,
    "metres": {
     "reference": 116.1,
     "owned": 100.7,
     "false": 0.0,
+    "missed": 15.4,
+    "wrong_name": 0,
+    "over_extent": 0.0,
     "coverage": 0.8673,
     "false_ownership": 0.0
    },
@@ -6894,14 +7202,19 @@
     "reference": 12,
     "ours": 12,
     "found": 12,
+    "found_with_metres": 12,
     "recall": 1.0,
-    "precision": 1.0
+    "precision": 1.0,
+    "recall_with_metres": 1.0
    },
    "leader_attachment": 2.72,
    "metres": {
     "reference": 213.7,
     "owned": 170.58,
     "false": 2.59,
+    "missed": 43.12,
+    "wrong_name": 0,
+    "over_extent": 2.59,
     "coverage": 0.7982,
     "false_ownership": 0.0121
    },

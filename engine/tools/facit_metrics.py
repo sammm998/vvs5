@@ -4,11 +4,17 @@ Det här verktyget är den enda platsen där referensarbetsböckerna öppnas fö
 grindkörning (engine/tools/gate_run.py: motorns egna mängder per blad, skrivna utan att något referensmått
 fanns i närheten) och arbetsböckerna i data/, och räknar:
 
-  DESIGNATION_RECALL      andel av referensens beteckningar som läsningen fann
-  DESIGNATION_PRECISION   andel av läsningens beteckningar som finns i referensen
+  TEXT_RECALL             andel av referensens beteckningar vars NAMN läsningen läste - ett textmått,
+                          sant även för en rad som gav noll meter (gamla DESIGNATION_RECALL står kvar
+                          oförändrat vid sidan om, så äldre grindar går att jämföra med)
+  NAMED_AND_MEASURED_RECALL  ...samma sak, men bara rader som också bar meter
+  TEXT_PRECISION          andel av läsningens beteckningar som finns i referensen (= DESIGNATION_PRECISION)
   LEADER_ATTACHMENT       andel etiketter vars hänvisning nådde ett rör (läsningens eget tal; ingen referens)
   COVERAGE                sum(min(vår, ref)) / sum(ref)     - metrar vi äger som referensen också äger
   FALSE_OWNERSHIP         sum(max(0, vår - ref)) / sum(ref) - metrar vi äger som referensen inte har
+  missed_m                referensmeter vi aldrig mätte
+  over_extent_m           meter för mycket på en rad referensen HAR (stråket drogs för långt)
+  wrong_name_m            meter under ett namn referensen inte känner alls (fel identitet)
   EXTENT per beteckning   FULL (0,9-1,1 av referensen), PARTIAL (< 0,9), OVER (> 1,1), MISSED (0), WRONG (finns inte i referensen)
   FAILURE                 för varje MISSED/PARTIAL/OVER/WRONG: var i kedjan det brast, så långt körningen kan säga
 
@@ -199,12 +205,23 @@ def score_sheet(tag: str, run: dict, fac0: dict[str, float], fold: bool) -> dict
     ours = {k: v for k, v in ours_all.items() if system(k) in scope}
     outside = {k: v for k, v in ours_all.items() if system(k) not in scope}
     read_names = {combined.get(canon(n, fold), canon(n, fold)) for n in (run.get("names_read") or [])}
-    named_with_metres = {combined.get(canon(n, fold), canon(n, fold)) for n in (run.get("names_with_metres") or [])}
 
+    # Två helt olika frågor, och de har blandats ihop: "läste vi namnet?" och "mätte vi rätt längd?".
+    # `found` är en ren namnmängdssnittsmängd - en rad som läste beteckningen perfekt och mätte NOLL meter
+    # räknas in, och gav 100 % recall mot en referensrad på tio meter. Det talet är ett TEXTMÅTT och heter så
+    # nu. Bredvid det står samma sak med kravet att raden också bar meter - räknat ur mängderna själva, inte
+    # ur körningens `names_with_metres`, för det senare är vad läsningen PÅSTÅR och det förra vad den mätte.
     found = set(fac) & set(ours)
+    found_with_metres = {k for k in found if ours.get(k, 0.0) > 0.0}
     f_tot = sum(fac.values())
     owned = sum(min(ours.get(k, 0.0), fac[k]) for k in fac)
     false = sum(max(0.0, ours.get(k, 0.0) - fac.get(k, 0.0)) for k in set(ours) | set(fac))
+    # Saknad längd och för mycket längd är olika fel och får inte ta ut varandra i en nettosiffra. Och den
+    # för mycket uppdelas: meter på en rad referensen HAR (för långt stråk) är något annat än meter under ett
+    # namn referensen inte känner alls (fel identitet).
+    missed_m = sum(max(0.0, fac[k] - ours.get(k, 0.0)) for k in fac)
+    wrong_name_m = sum(v for k, v in ours.items() if k not in fac)
+    over_extent_m = sum(max(0.0, ours[k] - fac[k]) for k in fac if k in ours)
     extent: dict[str, dict] = {}
     failures: Counter = Counter()
     for k in sorted(set(fac) | set(ours)):
@@ -229,10 +246,14 @@ def score_sheet(tag: str, run: dict, fac0: dict[str, float], fold: bool) -> dict
     return {
         "tag": tag, "style": style_of(tag), "state": run.get("state"),
         "designations": {"reference": len(fac), "ours": len(ours), "found": len(found),
+                         "found_with_metres": len(found_with_metres),
                          "recall": round(len(found) / len(fac), 4) if fac else None,
-                         "precision": round(len(found) / len(ours), 4) if ours else None},
+                         "precision": round(len(found) / len(ours), 4) if ours else None,
+                         "recall_with_metres": round(len(found_with_metres) / len(fac), 4) if fac else None},
         "leader_attachment": round(verified / labels, 4) if labels else None,
         "metres": {"reference": round(f_tot, 2), "owned": round(owned, 2), "false": round(false, 2),
+                   "missed": round(missed_m, 2), "wrong_name": round(wrong_name_m, 2),
+                   "over_extent": round(over_extent_m, 2),
                    "coverage": round(owned / f_tot, 4) if f_tot else None,
                    "false_ownership": round(false / f_tot, 4) if f_tot else None},
         "extent_classes": dict(Counter(e["class"] for e in extent.values())),
@@ -240,6 +261,15 @@ def score_sheet(tag: str, run: dict, fac0: dict[str, float], fold: bool) -> dict
         "outside_reference_systems": {"systems": sorted({system(k) for k in outside}), "m": round(sum(outside.values()), 2)},
         "extent": extent,
     }
+
+
+def pct(v, decimals: int = 1) -> str:
+    """Ett tal i procent, eller N/A när det inte är definierat.
+
+    En kvot utan nämnare är inte noll och inte hundra - den finns inte. Skriver man ut den som 0 % ser en
+    beteckning som ingen mätte ut som ett mätt fel, och som 100 % ser den ut som en fullträff. Båda ljuger.
+    """
+    return "N/A" if v is None else f"{v:.{decimals}%}"
 
 
 def score_gate(gate_path: str, fold: bool = True) -> dict:
@@ -265,12 +295,23 @@ def score_gate(gate_path: str, fold: bool = True) -> dict:
         dr = sum(r["designations"]["reference"] for r in rows)
         do = sum(r["designations"]["ours"] for r in rows)
         df = sum(r["designations"]["found"] for r in rows)
+        dfm = sum(r["designations"]["found_with_metres"] for r in rows)
+        miss_m = sum(r["metres"]["missed"] for r in rows)
+        wrong_m = sum(r["metres"]["wrong_name"] for r in rows)
+        over_m = sum(r["metres"]["over_extent"] for r in rows)
         ext = Counter()
         fail = Counter()
         for r in rows:
             ext.update(r["extent_classes"]); fail.update(r["failures"])
         return {"sheets": len(rows), "reference_m": round(f, 1), "owned_m": round(o, 1), "false_m": round(fo, 1),
                 "COVERAGE": round(o / f, 4) if f else None, "FALSE_OWNERSHIP": round(fo / f, 4) if f else None,
+                # Namnet läst - oavsett om raden bar en enda meter. Ett textmått, och inget annat.
+                "TEXT_RECALL": round(df / dr, 4) if dr else None,
+                "TEXT_PRECISION": round(df / do, 4) if do else None,
+                # Samma sak, men bara rader som också fick meter.
+                "NAMED_AND_MEASURED_RECALL": round(dfm / dr, 4) if dr else None,
+                "missed_m": round(miss_m, 1), "wrong_name_m": round(wrong_m, 1), "over_extent_m": round(over_m, 1),
+                # de gamla namnen står kvar oförändrade, så gate76-79 går att jämföra med
                 "DESIGNATION_RECALL": round(df / dr, 4) if dr else None,
                 "DESIGNATION_PRECISION": round(df / do, 4) if do else None,
                 "LEADER_ATTACHMENT": (round(sum(r["leader_attachment"] for r in rows if r["leader_attachment"] is not None)
@@ -286,16 +327,23 @@ def score_gate(gate_path: str, fold: bool = True) -> dict:
 def render_md(r: dict) -> str:
     L = [f"# Facitmått - {r['gate']}", ""]
     t = r["totals"]
-    L.append(f"{t['sheets']} blad, {t['reference_m']} m i referensen. **COVERAGE {t['COVERAGE']:.2%}**, "
-             f"**FALSE_OWNERSHIP {t['FALSE_OWNERSHIP']:.2%}**, DESIGNATION_RECALL {t['DESIGNATION_RECALL']:.2%}, "
-             f"DESIGNATION_PRECISION {t['DESIGNATION_PRECISION']:.2%}, LEADER_ATTACHMENT {t['LEADER_ATTACHMENT']:.2%}.")
+    L.append(f"{t['sheets']} blad, {t['reference_m']} m i referensen. **COVERAGE {pct(t['COVERAGE'], 2)}**, "
+             f"**FALSE_OWNERSHIP {pct(t['FALSE_OWNERSHIP'], 2)}**, LEADER_ATTACHMENT {pct(t['LEADER_ATTACHMENT'], 2)}.")
+    L.append("")
+    L.append(f"Namnen: TEXT_RECALL {pct(t['TEXT_RECALL'], 2)} (beteckningen läst, oavsett meter), "
+             f"varav med meter {pct(t['NAMED_AND_MEASURED_RECALL'], 2)}, TEXT_PRECISION {pct(t['TEXT_PRECISION'], 2)}. "
+             f"Längden: {t['missed_m']} m saknad, {t['over_extent_m']} m för lång på en riktig rad, "
+             f"{t['wrong_name_m']} m under ett namn referensen inte har.")
+    L.append("")
+    L.append("> TEXT_RECALL säger att namnet lästes, inte att någon meter mättes. En rad som läste sin "
+             "beteckning perfekt och gav noll meter räknas in där och i COVERAGE med noll.")
     L.append("")
     L.append("| Stil | Blad | Ref m | Ägt m | Falskt m | Täckning | Falskhet | Bet. recall | Bet. precision | FULL | PARTIAL | OVER | MISSED | WRONG |")
     L.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
     for st, a in r["by_style"].items():
         e = a["extent_classes"]
-        L.append(f"| {st} | {a['sheets']} | {a['reference_m']} | {a['owned_m']} | {a['false_m']} | {a['COVERAGE']:.1%} | "
-                 f"{a['FALSE_OWNERSHIP']:.1%} | {a['DESIGNATION_RECALL']:.1%} | {a['DESIGNATION_PRECISION']:.1%} | "
+        L.append(f"| {st} | {a['sheets']} | {a['reference_m']} | {a['owned_m']} | {a['false_m']} | {pct(a['COVERAGE'])} | "
+                 f"{pct(a['FALSE_OWNERSHIP'])} | {pct(a['TEXT_RECALL'])} | {pct(a['TEXT_PRECISION'])} | "
                  f"{e.get('FULL', 0)} | {e.get('PARTIAL', 0)} | {e.get('OVER', 0)} | {e.get('MISSED', 0)} | {e.get('WRONG', 0)} |")
     L.append("")
     L.append("## Felkatalog\n")
@@ -312,8 +360,8 @@ def render_md(r: dict) -> str:
             continue
         e = s["extent_classes"]; m = s["metres"]; d = s["designations"]
         la = s["leader_attachment"]
-        L.append(f"| {s['tag']} | {m['coverage']:.1%} | {m['false_ownership']:.1%} | {d['recall']:.0%} | "
-                 f"{(d['precision'] or 0):.0%} | {(la or 0):.0%} | "
+        L.append(f"| {s['tag']} | {pct(m['coverage'])} | {pct(m['false_ownership'])} | {pct(d['recall'], 0)} | "
+                 f"{pct(d['precision'], 0)} | {pct(la, 0)} | "
                  f"{e.get('FULL', 0)}/{e.get('PARTIAL', 0)}/{e.get('OVER', 0)}/{e.get('MISSED', 0)}/{e.get('WRONG', 0)} |")
     return "\n".join(L) + "\n"
 
@@ -327,6 +375,7 @@ if __name__ == "__main__":
         json.dump(r, open(base + "-facit-metrics.json", "w"), indent=1, ensure_ascii=False)
         open(base + "-facit-metrics.md", "w", encoding="utf-8").write(render_md(r))
         t = r["totals"]
-        print(f"{os.path.basename(p)}: {t['sheets']} blad | COVERAGE {t['COVERAGE']:.2%} | FALSE {t['FALSE_OWNERSHIP']:.2%} | "
-              f"recall {t['DESIGNATION_RECALL']:.2%} | precision {t['DESIGNATION_PRECISION']:.2%} | "
+        print(f"{os.path.basename(p)}: {t['sheets']} blad | COVERAGE {pct(t['COVERAGE'], 2)} | FALSE {pct(t['FALSE_OWNERSHIP'], 2)} | "
+              f"text-recall {pct(t['TEXT_RECALL'], 2)} (med meter {pct(t['NAMED_AND_MEASURED_RECALL'], 2)}) | "
+              f"precision {pct(t['TEXT_PRECISION'], 2)} | "
               f"extent {t['extent_classes']} | utan referens: {r['sheets_without_reference']}")
