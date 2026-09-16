@@ -49,5 +49,13 @@ färre falska meter än fler sanna - säg till, det är en rad.
 
 ## Ordning
 
-Blint kört, källan fryst (`results/hashmanifest.json`, manifest 4f759682a2605f6d), och först därefter öppnades
-referensen. 808 prov gröna. Kontamineringsskannern PASS: 67 filer, 0 fynd.
+Varje körning gjordes blind: motorn kördes färdigt på alla 59 blad innan `facit_metrics.py` fick läsa
+referensen, och ingen referenssiffra fanns i koden vid något tillfälle. 808 prov gröna, kontamineringsskannern
+PASS (67 filer, 0 fynd).
+
+En sak ska sägas om frysningen, för ordningen är hela poängen med den. Hashmanifestet togs efter grind 78 och
+före grind 79:s ändring, så det manifest som låg när 76-78 poängsattes täcker inte 79:s kod. Grind 79 kördes
+blint - ändringen skrevs, körningen startade, och referensen öppnades först när alla 59 blad var klara - men
+frysningen för just den körningen är tagen efteråt, mot det accepterade läget, inte före. Det är svagare än
+protokollet och det står här hellre än ingenstans. Manifestet i `results/hashmanifest.json` gäller det
+accepterade läget.
