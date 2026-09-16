@@ -46,10 +46,18 @@ class RawPath:
     n_curves: int
     n_subpaths: int
     xobject: str | None = None
+    # Sträckorna som de ritades, när klippningen skar bort en del av dem. `segs` är alltid det SYNLIGA - det
+    # är det som får mätas - men ursprunget följer med, så att en rad i mängden går att spåra till det objekt
+    # PDF:en faktiskt innehåller och inte bara till den bit av det som råkade hamna innanför ramen.
+    raw_segs: list[Seg] | None = None
 
     @property
     def length(self) -> float:
         return sum(s.length for s in self.segs)
+
+    @property
+    def clipped(self) -> bool:
+        return self.raw_segs is not None
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -207,6 +215,151 @@ class RawDocument:
 
 def _pt(p) -> tuple[float, float]:
     return (float(p.x), float(p.y))
+
+
+# ------------------------------------------------------------------------------------------------------------
+# Klippning: en PDF ritar mer än den visar
+# ------------------------------------------------------------------------------------------------------------
+# CAD-exporten lägger ut hela underlaget och klipper sedan bort det som ligger utanför planens ram. Det
+# bortklippta ligger kvar i filen som fullvärdig geometri, och läser man den utan att bry sig om klippbanan
+# mäter man rör som ingen någonsin ser. På ett av utvecklingsbladen är 15,8 % av bläcket sådant, och 324 av de
+# dolda vägarna ligger på ett rörlager.
+#
+# Bindningen väg -> klippbana är bevisad mot renderaren innan den skrevs här (engine/tools/clip_census.py):
+# klippposterna ligger på en egen nivå och den senast föregående gäller. Två saker kostade den bevisningen två
+# felmätningar och står därför utskrivna:
+#
+#   * En fyrhörning skrivs ul, ur, ll, lr. Läser man punkterna i den ordningen får man en rosett som korsar sig
+#     själv med area noll, och `buffer(0)` "lagar" den till en fjärdedel av den rätta ytan.
+#   * Varje delbana är en egen ring. Slår man ihop deras punkter till EN ring blir resultatet nonsens så snart
+#     klippet består av mer än en form.
+#
+# Klippgränsen är en stoppgräns för den här vyn. Fortsätter ledningen på andra sidan hanteras det genom
+# bladkoppling, aldrig genom att låta geometrin leva vidare. Och vi räknar synlig MITTLINJE: hur mycket bläck
+# som målas närmast en klippkant beror också på bredd, ändform och kantutjämning, och det är en annan fråga.
+
+
+class _Clip:
+    """Den klippbana som gäller, med de billiga proven först."""
+
+    __slots__ = ("bounds", "rect", "_rings", "_poly")
+
+    def __init__(self, rings: list[list[tuple[float, float]]]):
+        self._rings = rings
+        self._poly = None
+        xs = [x for r in rings for x, _ in r]
+        ys = [y for r in rings for _, y in r]
+        self.bounds = (min(xs), min(ys), max(xs), max(ys)) if xs else None
+        # en enda fyrhörning med axelparallella sidor är en rektangel, och då behövs ingen polygon alls
+        self.rect = None
+        if len(rings) == 1 and len(rings[0]) == 4:
+            x = sorted({round(p[0], 4) for p in rings[0]})
+            y = sorted({round(p[1], 4) for p in rings[0]})
+            if len(x) == 2 and len(y) == 2:
+                self.rect = (x[0], y[0], x[1], y[1])
+
+    @property
+    def poly(self):
+        if self._poly is None:
+            from shapely.geometry import Polygon
+            polys = []
+            for ring in self._rings:
+                g = Polygon(ring)
+                if not g.is_valid:
+                    g = g.buffer(0)
+                if not g.is_empty and g.area > 0:
+                    polys.append(g)
+            g = None
+            for p in polys:
+                g = p if g is None else g.union(p)
+            self._poly = g
+        return self._poly
+
+    def contains_box(self, bbox) -> bool:
+        if self.bounds is None:
+            return False
+        if not (self.bounds[0] <= bbox[0] and self.bounds[1] <= bbox[1]
+                and bbox[2] <= self.bounds[2] and bbox[3] <= self.bounds[3]):
+            return False
+        if self.rect is not None:
+            return True
+        from shapely.geometry import box as _box
+        g = self.poly
+        return g is not None and g.contains(_box(*bbox))
+
+    def outside_box(self, bbox) -> bool:
+        b = self.bounds
+        return b is None or bbox[2] < b[0] or bbox[0] > b[2] or bbox[3] < b[1] or bbox[1] > b[3]
+
+    def visible(self, seg: Seg) -> list[Seg]:
+        """Sträckans synliga delar, i ordning."""
+        if self.rect is not None:
+            return _rect_clip(seg, self.rect)
+        g = self.poly
+        if g is None:
+            return []
+        from shapely.geometry import LineString
+        inter = LineString([(seg.x0, seg.y0), (seg.x1, seg.y1)]).intersection(g)
+        out: list[Seg] = []
+        for piece in (inter.geoms if hasattr(inter, "geoms") else [inter]):
+            if piece.geom_type != "LineString" or piece.length <= 0:
+                continue                                  # en tangentberöring är ingen längd
+            cs = list(piece.coords)
+            for a, b in zip(cs, cs[1:]):
+                out.append(Seg(a[0], a[1], b[0], b[1]))
+        return out
+
+
+def _rect_clip(seg: Seg, rect: tuple[float, float, float, float]) -> list[Seg]:
+    """Liang-Barsky: sträckans del innanför en rektangel. Ingen shapely, för de flesta klipp ÄR rektanglar."""
+    x0, y0, x1, y1 = rect
+    dx, dy = seg.x1 - seg.x0, seg.y1 - seg.y0
+    t0, t1 = 0.0, 1.0
+    for p, q in ((-dx, seg.x0 - x0), (dx, x1 - seg.x0), (-dy, seg.y0 - y0), (dy, y1 - seg.y0)):
+        if abs(p) < 1e-12:
+            if q < 0:
+                return []                                 # parallell och utanför
+            continue
+        r = q / p
+        if p < 0:
+            if r > t1:
+                return []
+            if r > t0:
+                t0 = r
+        else:
+            if r < t0:
+                return []
+            if r < t1:
+                t1 = r
+    if t1 - t0 <= 1e-12:
+        return []
+    return [Seg(seg.x0 + t0 * dx, seg.y0 + t0 * dy, seg.x0 + t1 * dx, seg.y0 + t1 * dy)]
+
+
+def _clip_rings(clip: dict, M) -> list[list[tuple[float, float]]]:
+    """Klippbanans ringar i den visade sidans rymd."""
+    rings: list[list[tuple[float, float]]] = []
+    for it in clip.get("items") or []:
+        if it[0] == "re":
+            r = it[1]
+            rings.append([(r.x0, r.y0), (r.x1, r.y0), (r.x1, r.y1), (r.x0, r.y1)])
+        elif it[0] == "qu":
+            q = it[1]
+            rings.append([(q.ul.x, q.ul.y), (q.ur.x, q.ur.y), (q.lr.x, q.lr.y), (q.ll.x, q.ll.y)])
+    lines = [it for it in (clip.get("items") or []) if it[0] == "l"]
+    if lines:
+        pts: list[tuple[float, float]] = []
+        for it in lines:
+            for pt in (it[1], it[2]):
+                p = (pt.x, pt.y)
+                if not pts or abs(p[0] - pts[-1][0]) > 1e-9 or abs(p[1] - pts[-1][1]) > 1e-9:
+                    pts.append(p)
+        if len(pts) >= 3:
+            rings.append(pts)
+    if M is not None:
+        import pymupdf
+        rings = [[tuple(pymupdf.Point(x, y) * M) for x, y in ring] for ring in rings]
+    return [r for r in rings if len(r) >= 3]
 
 
 def _items_to_segs(items, closed: bool) -> tuple[list[Seg], int, int]:
@@ -478,10 +631,23 @@ def _read_page(doc, pno: int, pdf_path: str, keep_markup: bool = False, known: t
     # coordinates; map them with rotation_matrix so all downstream geometry matches the rendered page.
     M = page.rotation_matrix if rot else None
     rect = page.rect
-    drawings = page.get_drawings()
-    layer_ids = {name: i for i, name in enumerate(sorted({d.get("layer") or "" for d in drawings}))}
+    # extended=True ger klippbanorna vid sidan av det ritade; utan dem mäts geometri som aldrig målas
+    drawings = page.get_drawings(extended=True)
+    layer_ids = {name: i for i, name in enumerate(sorted({d.get("layer") or "" for d in drawings
+                                                         if d.get("type") not in ("clip", "group", "end")}))}
     paths: list[RawPath] = []
-    for seq, d in enumerate(drawings):
+    clip: _Clip | None = None
+    n_hidden = n_clipped = 0
+    seq = -1
+    for d in drawings:
+        kind_ = d.get("type")
+        if kind_ == "clip":
+            rings = _clip_rings(d, M)
+            clip = _Clip(rings) if rings else None
+            continue
+        if kind_ in ("group", "end"):
+            continue
+        seq += 1
         items = d.get("items") or []
         if M is not None:
             items = _transform_items(items, M)
@@ -489,6 +655,18 @@ def _read_page(doc, pno: int, pdf_path: str, keep_markup: bool = False, known: t
         segs, n_curves, n_sub = _items_to_segs(items, closed)
         if not segs:
             continue
+        raw_segs = segs
+        if clip is not None:
+            box = bbox_union([sg.bbox() for sg in segs])
+            if clip.outside_box(box):
+                n_hidden += 1
+                continue                                   # ingenting av vägen når papperet
+            if not clip.contains_box(box):
+                segs = [piece for sg in segs for piece in clip.visible(sg)]
+                if not segs:
+                    n_hidden += 1
+                    continue
+                n_clipped += 1
         layer = d.get("layer") or ""
         kind = d.get("type") or "s"
         width = float(d.get("width") or 0.0)
@@ -497,7 +675,8 @@ def _read_page(doc, pno: int, pdf_path: str, keep_markup: bool = False, known: t
         pid = stable_id("path", pno, *key)
         paths.append(RawPath(pid=pid, seqno=seq, page=pno, layer=layer, layer_id=layer_ids[layer], kind=kind,
                              width=width, color=_color(d.get("color")), fill=_color(d.get("fill")), closed=closed,
-                             segs=segs, bbox=bbox, n_items=len(items), n_curves=n_curves, n_subpaths=n_sub))
+                             segs=segs, bbox=bbox, n_items=len(items), n_curves=n_curves, n_subpaths=n_sub,
+                             raw_segs=None if raw_segs is segs else raw_segs))
     # duplicate pid disambiguation (identical geometry drawn twice): keep both, suffix by occurrence rank in
     # a content-sorted order so that the result does not depend on enumeration order.
     _dedupe_ids(paths)
@@ -514,6 +693,8 @@ def _read_page(doc, pno: int, pdf_path: str, keep_markup: bool = False, known: t
             fonts.append({"xref": f[0], "ext": f[1], "type": f[2], "basefont": f[3], "name": f[4], "encoding": f[5]})
     except Exception:
         pass
+    if n_hidden or n_clipped:
+        print(f"[clip] sida {pno}: {n_hidden} vägar helt utanför klippbanan, {n_clipped} delvis klippta", flush=True)
     info = PageInfo(index=pno, width=float(rect.width), height=float(rect.height), rotation=rot,
                     mediabox=[round(v, 2) for v in page.mediabox], cropbox=[round(v, 2) for v in page.cropbox],
                     n_images=len(page.get_images()), n_annots=len(annots), n_xobjects=len(xobjs), xobjects=xobjs,
