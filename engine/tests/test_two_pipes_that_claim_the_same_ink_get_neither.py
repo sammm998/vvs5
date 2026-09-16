@@ -140,12 +140,20 @@ def test_a_reading_with_nothing_disputed_is_left_exactly_as_it_was():
 
 
 def test_withholding_never_takes_more_than_the_row_confirmed():
-    """En rad kan inte bli skyldig meter. Finns det bara lodrät mängd att ta av tas ingen ritad meter."""
+    """En rad kan inte bli skyldig meter - och när den ändå inte går ihop ska det SYNAS.
+
+    Raden här påstår nio meter som inte finns bland de ritade intervallen. Spärren tar inte mer än vad raden
+    har, så raden blir inte negativ; men journalen kan då inte räkna om raden, och det är ett brott mot det
+    andra villkoret. Att tysta det genom att låta spärren ta för mycket vore att byta ett synligt fel mot ett
+    osynligt."""
     a = _Pipe("pp1", _Ident("S2-P5", 110), ["delad"])
     b = _Pipe("pp2", _Ident("S2-P5", 75), ["delad"])
     rows = [{"base": "S2-P5", "dn": 110, "confirmed_horizontal_m": 0.0, "confirmed_total_m": 9.0,
              "ambiguous_m": 0.0},
             _row("S2-P5", 75, 6.0)]
-    commit([_Measure(a, horizontal_m=4.0), _Measure(b, horizontal_m=6.0)], rows, mpp=0.01)
+    j = commit([_Measure(a, horizontal_m=4.0), _Measure(b, horizontal_m=6.0)], rows, mpp=0.01)
     assert rows[0]["confirmed_total_m"] == 9.0 and rows[0]["ambiguous_m"] == 0.0
     assert rows[1]["confirmed_total_m"] == 0.0 and rows[1]["ambiguous_m"] == 6.0
+    assert j["check"]["state"] == "FAIL"
+    brott = [b for b in j["check"]["breaches"] if b["invariant"] == "mangden_gar_att_rakna_om_ur_journalen"]
+    assert brott and brott[0]["examples"][0]["skillnad_m"] == -9.0

@@ -9,6 +9,7 @@ import time
 from typing import Any
 
 from . import __version__
+from .release import identity_of_run
 from .contamination import scan_source
 from .determinism import run_determinism
 from .output.schema import stamp as _stamp
@@ -134,6 +135,32 @@ def sheet_record(pa) -> dict:
     }
 
 
+def _source_hash() -> str:
+    """Vad koden som läser var för kod.
+
+    Frysningsmanifestet är svaret när ett sådant finns - det är det som grindarna körs mot. Saknas det räknas
+    hashen ur paketets egna filer i stället, så att identiteten aldrig är tom: en körning utan kodversion går
+    inte att gå tillbaka till."""
+    import hashlib
+    here = os.path.dirname(os.path.abspath(__file__))
+    man = os.path.join(os.path.dirname(os.path.dirname(here)), "results", "hashmanifest.json")
+    try:
+        with open(man, encoding="utf-8") as fh:
+            m = json.load(fh)
+        if m.get("manifest"):
+            return str(m["manifest"])
+    except (OSError, ValueError):
+        pass
+    h = hashlib.sha256()
+    for root, dirs, names in os.walk(here):
+        dirs[:] = sorted(d for d in dirs if d != "__pycache__")
+        for n in sorted(names):
+            if n.endswith(".py"):
+                with open(os.path.join(root, n), "rb") as fh:
+                    h.update(fh.read())
+    return h.hexdigest()[:16]
+
+
 def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinism: bool = True, contamination: bool = True,
                 progress=None, pages: list[int] | None = None, review: bool = True, review_ocr: bool = True,
                 film_sink=None,
@@ -252,6 +279,16 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
     det = run_determinism(doc, 0, first, known_families=known_families, known_legend=vocab) \
         if determinism and not consulted else None
     cont = scan_source(os.path.dirname(os.path.abspath(__file__))) if contamination else None
+    # Releaseidentiteten: allt som kan få två läsningar av samma PDF att svara olika, som ETT värde. Den skrivs
+    # med resultatet så att frågan "varför blev det så här den gången" går att besvara, och så att ett
+    # mellanresultat aldrig återanvänds under en annan identitet - gammalt ägarskap ovanpå ny geometri är den
+    # sortens fel som inte syns i en summa. Koden hämtas ur frysningsmanifestet när ett sådant finns.
+    ident = identity_of_run(pdf_path, code=_source_hash(), model="",
+                            profile=(first.style_profile or {}).get("paper_factor_state", ""),
+                            flags={"determinism": bool(determinism), "contamination": bool(contamination),
+                                   "review": bool(review), "review_ocr": bool(review_ocr),
+                                   "ocr_assist": bool(ocr_assist), "pages": list(pages) if pages else None,
+                                   "second_reader": bool(second_reader), "given_scale": given_scale is not None})
     t0 = time.perf_counter()
     timings["total_s"] = time.perf_counter() - t_all
     files = write_all(pdf_path, doc, [first], out_dir, name, timings, det, cont, overlays, CONFIG, rev,
@@ -268,6 +305,7 @@ def analyze_pdf(pdf_path: str, out_dir: str, name: str | None = None, determinis
                           "from_sheet": next((e.page for e in (vocab.entries if vocab else []) if e.page is not None), None)},
                "sheets": sheets,
                "scale": {"of_the_set": set_scale, "sheets_reread_with_it": rescaled},
+               "release": ident.as_dict(),
                "contamination": cont["state"] if cont else None, "files": files, "total_seconds": round(timings["total_s"], 2),
                "input": getattr(doc.pages[0], "input_class", None), "skipped_pages": doc.skipped_pages,
                "review": {"state": rev["state"], "n_findings": rev["n_findings"], "agents": rev["agents"]} if rev else None,

@@ -114,6 +114,13 @@ def run(out_path: str, unmarked: bool) -> None:
             fr = json.load(open(f"{d}/pipe-extent-frontiers.json")) if os.path.exists(f"{d}/pipe-extent-frontiers.json") else {}
             issues = json.load(open(f"{d}/route-crosscheck.json")) if os.path.exists(f"{d}/route-crosscheck.json") else {}
             des = (json.load(open(f"{d}/vector-designations.json")).get("designations") or []) if os.path.exists(f"{d}/vector-designations.json") else []
+            # mängdjournalens kontroll och ritningsprofilen, från bladets egna artefakter. De ändrar ingen
+            # mängd; de finns i grindens utdata så att en journal som slutar gå ihop syns på korpusen och inte
+            # bara på det blad någon råkar öppna.
+            jp = f"{d}/takeoff-journal.json"
+            jr = json.load(open(jp)) if os.path.exists(jp) else {}
+            sp = f"{d}/style-profile.json"
+            prof = json.load(open(sp)) if os.path.exists(sp) else {}
             pps = (json.load(open(f"{d}/physical-pipes.json")).get("physical_pipes") or []) if os.path.exists(f"{d}/physical-pipes.json") else []
             anc = (json.load(open(f"{d}/pipe-code-anchors.json")).get("anchors") or []) if os.path.exists(f"{d}/pipe-code-anchors.json") else []
             # vad bladet skriver, och vad som fick meter: det som skiljer "inte läst" från "läst men utan rör"
@@ -146,6 +153,11 @@ def run(out_path: str, unmarked: bool) -> None:
                 "quantities": q.get("rows") or [], "totals": q.get("totals") or {},
                 "pipes": [pipe_note(pp) for pp in pps],
                 "anchors": [anchor_note(a) for a in anc],
+                "takeoff_journal": jr.get("check") or {},
+                "style_profile": {k: prof.get(k) for k in ("paper_format", "text_mode", "text_height_pt",
+                                                           "paper_factor", "paper_factor_state", "user_unit",
+                                                           "hairline_share", "curve_share",
+                                                           "widths_separate_families")},
                 "n_issues": 0, "blocking": 0, "advisory": 0,
             }
             if isinstance(issues, dict):

@@ -16,6 +16,7 @@ from typing import Any, Callable
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
 from .measure.commit import commit as commit_assignment
+from .profile.style_profile import profile_page
 from .semantics.scope import NY as SCOPE_NY
 from .semantics.scope import read_designations as scope_read_designations
 from .geometry.core import GridIndex, dist, point_seg_distance
@@ -116,6 +117,9 @@ class PageAnalysis:
     # mängdjournalen för sidan: varje meter tillbaka till sitt atomära intervall, plus kontrollen
     # av att mängdraden går att räkna om ur den
     takeoff_journal: dict = field(default_factory=dict)
+    # ritningsprofilen: vad bladet är för sorts ritning, och hur stort det är i förhållande till den ritning
+    # toleranserna skrevs för. Mätt och nedskriven; ingenting i läsningen läser den ännu (profile/style_profile.py)
+    style_profile: dict = field(default_factory=dict)
 
 
 # A label over a bundle has found its pipes - the leader landed on as many drawn parallel lines as the block has
@@ -1771,12 +1775,16 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # räknas åt ingen av dem utan blir tvetydigt med sina alternativ, och först på det som blev kontrolleras
     # villkoren. Journalen skriver ned varje meter tillbaka till det intervall den kom ur (measure/commit.py).
     takeoff_journal = commit_assignment(measures, quantities, scale.meters_per_pt)
+    # Ritningsprofilen mäts sist, när både texten och beteckningarna är lästa - höjden ska helst mätas på de
+    # rader som faktiskt blev beteckningar. Den skrivs ned och används inte: att låta pappersfaktorn skala
+    # toleranserna ändrar varje läsning på varje blad och är sitt eget steg med sin egen grind.
+    style_profile = profile_page(page, rows=lines, designations=designations)
     for r in quantities:
         r["scope"] = label_scopes.get(r.get("base", "") + f"|DN{r.get('dn') if r.get('dn') is not None else '?'}", SCOPE_NY)
     film.measured(quantities, scale)
     t0 = _t(timings, "measurement_ms", t0)
     timings.update({f"text_{k}": v for k, v in vt_timing.items()})
-    return PageAnalysis(page=page, takeoff_journal=takeoff_journal, legend=legend, declarations=declarations, second_reader=second, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
+    return PageAnalysis(page=page, takeoff_journal=takeoff_journal, style_profile=style_profile.as_dict(), legend=legend, declarations=declarations, second_reader=second, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
                         designations=designations, grammar=grammar, ann_layers=ann_layers, leaders=leaders,
                         pipe_families=pipe_families, prims=prims, graphs=graphs, anchors=anchors, contact_stats=contact_stats,
                         ownership=ownership, scale=scale, measures=measures, quantities=quantities, elevations=elevations,

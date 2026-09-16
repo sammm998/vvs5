@@ -634,6 +634,7 @@ def write_all(pdf_path: str, doc, analyses: list, out_dir: str, name: str, timin
     # Mängdjournalen: varje meter tillbaka till det atomära intervall den kom ur, och kontrollen av att
     # mängdraden går att räkna om ur dem. Den ändrar ingen mängd; den gör summan öppningsbar.
     W("takeoff-journal.json", pa.takeoff_journal or {})
+    W("style-profile.json", pa.style_profile or {})
     W("reading-coverage.json", {"sheets": [{"page": sh.get("page"), **(sh.get("coverage") or {})}
                                            for sh in (sheets or [])]} if sheets
       else {"sheets": [{"page": pa.page.info.index, **reading_coverage(pa)}]})
