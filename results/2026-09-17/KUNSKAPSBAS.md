@@ -37,19 +37,31 @@ den vägen är redan implementerad.
 
 ## Vad som fattas, och vad det kostar
 
-Fyra saker hittade jag inte i läsningen alls:
+> **Rättelse.** Den första versionen av det här avsnittet räknade fyra luckor. Två av dem var fel, och båda
+> felen var mina. Standardtabellerna FINNS byggda, och rivningsmarkeringarna finns inte i materialet - mitt
+> ordsök räknade 29 träffar på `RIVNING` som alla satt inne i ordet BESK**RIVNING**.
 
-1. **Omfattningsmarkeringar.** `BEF` = befintlig installation, en hel kod inom parentes `(S1)` där
-   förklaringen säger "( ) AVSER BEFINTLIGT", `(PB)`/`(PWC)` = prefabricerat badrum vars rör är
-   fabriksleverans. Ingen av dem är ny meter att bygga, och **ingenting i geometrin skiljer dem** från det som
-   ska byggas. Räknas de in blir mängden för stor; undantas de i tysthet blir den för liten. Båda felen ser
-   likadana ut på skärmen: inget.
-2. **Rivningsmarkering** - linje med upprepade kryss, och ombyggnadssetens streckade ARBETSOMRÅDE. Geometri,
-   inte text.
-3. **Avslutande `L`/`V` på dimensionen** (`110L`, `100V` = luftning) - accepteras som siffra och röret flaggas
-   som luftledning.
-4. **Standardtabeller för omärkt rör** - KOPPLINGSLEDNINGAR, AVLOPPSANSLUTNINGAR, SCHAKTTABELL ger dimensioner
-   per apparattyp och per våning. En läsning som bara läser etiketter tappar allt det.
+**1. Omfattningsmarkeringar.** `BEF`, en hel kod inom parentes där förklaringen säger "( ) AVSER BEFINTLIGT",
+`(PB)`/`(PWC)` för prefabricerade enheter. Ingen av dem är ny meter, och ingenting i geometrin skiljer dem från
+det som ska byggas. **Byggt** - se nedan.
+
+**2. Avslutande `L`/`V` på dimensionen** (`110L`, `100V` = luftning). **Byggt**, och det var värre än väntat:
+`S01-P5-110L` delade sig i två rader under samma namn på flera blad, en med dimension och en utan, med 19,1 m
+på oprissättbara rader.
+
+**3. Standardtabeller för omärkt rör - fanns redan.** `semantics/declarations.py` läser bladets skrivna regel
+(KOPPLINGSLEDNINGAR ... OM INGET ANNAT ANGES, med beteckningsstammar och talkolumner) och namnger de rör
+ingen etikett når. I korpusen äger den regeln **1 674,7 m på 33 blad**. Jag redovisade den som en lucka och
+det var fel.
+
+Det som verkligen saknas är smalare: `TRIGGER_WORDS` känner en enda tabellsort. Kunskapsbasen nämner två till,
+AVLOPPSANSLUTNINGAR och SCHAKTTABELL/STAMTABELL. Sökt i 55 blads verkliga text: **noll förekomster** av båda.
+Att bygga dem nu vore att bygga mot ingenting.
+
+**4. Rivningsmarkering och arbetsområde** - kryss längs en linje, och ombyggnadssetens streckade rektangel.
+Geometri, inte text. Sökt i korpusen: **noll** förekomster av RIVAS, ARBETSOMR, DEMONTER, PREFAB och BEFINTLIG
+i verklig text. Det finns alltså inget exempel att bygga mot och inget att pröva mot, och att skriva en
+detektor blind bryter mot ordningen som gäller här: bevisa först, ändra sedan.
 
 ## Vad som är gjort här
 
