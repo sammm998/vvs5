@@ -52,19 +52,20 @@ Den som rättar kod ska känna till dessa först. De är inte stilfrågor.
 
 ```
 engine/vvs_engine/      läsningen: allt som gör en PDF till en mängd. Inga webbberoenden.
-engine/tests/           41 provfiler. Kör: cd engine && python3 -m pytest -q tests
+engine/tests/           127 provfiler. Kör: cd engine && python3 -m pytest -q tests
 engine/tools/           transporter (astra/agent/vision) och e2e-verktyg
 backend/app/            FastAPI: konton, projekt, jobb, resultat, export, mängdning, kalkyl, admin
 frontend/src/           React + TypeScript, svenskt gränssnitt
 frontend/smoke/         rökprov som klickar i en riktig webbläsare (Playwright)
-docs/                   SYSTEMET.md (varför), KARTA.md (den här filen)
+docs/                   SYSTEMET.md (varför), KARTA.md (den här filen),
+                        ETAPPER.md (genomförandespecens fyra etapper, punkt för punkt)
 data/                   lokal lagring och (git-ignorerad) valideringsdata
 ```
 
 Kör allt lokalt:
 
 ```bash
-cd engine && python3 -m pytest -q tests           # 337 prov
+cd engine && python3 -m pytest -q tests           # 897 prov
 cd frontend && npm run build                      # eslint --max-warnings=0 && tsc --noEmit && vite build
 python3 frontend/smoke/serve_seeded.py            # tjänsten seedad med två analyserade blad, port 8077
 python3 frontend/smoke/ui_smoke.py                # klickar igenom läsningen
