@@ -132,6 +132,36 @@ def _panel_why(use: tuple[str, ...], keys: list[str]) -> str:
 # label on one drawing is not an office's habit; two hundred agreeing ones are.
 PROJECT_MIN_TIMES = 3
 PROJECT_MIN_SHARE = 0.8
+# ...and it has to be said by more than one sheet. The two thresholds above count statements, and a single
+# drawing can carry three of them on its own - that is one sheet's habit, which is exactly what the sheet
+# being read is not allowed to assume. Two drawings agreeing is the least that separates a convention from a
+# coincidence, and it is also what makes a re-analysis worthless as extra weight: the same sheet read twice is
+# still one sheet.
+PROJECT_MIN_SHEETS = 2
+
+
+def _latest_run_per_drawing(db, drawing) -> list:
+    """The other drawings of this project, each represented by its most recent completed reading. One each.
+
+    A job is a reading; a drawing is a source. Counting jobs let one sheet vote once per time it happened to be
+    analysed - re-run it five times and it spoke five times, so a threshold meant to say "several independent
+    sheets agree" could be satisfied by a single one. Worse, the extra weight arrived silently, from an action
+    (pressing analyse again) that says nothing at all about the drawing.
+
+    Order by when the reading finished, falling back to when it was queued, and let the last one stand: a newer
+    reading supersedes an older one rather than adding to it.
+    """
+    rows = (db.query(AnalysisJob)
+            .filter(AnalysisJob.drawing_id.in_(
+                db.query(Drawing.id).filter(Drawing.project_id == drawing.project_id)),
+                    AnalysisJob.status == "COMPLETED", AnalysisJob.drawing_id != drawing.id,
+                    AnalysisJob.result_key.isnot(None))
+            .all())
+    rows.sort(key=lambda j: (j.finished_at or j.created_at, j.created_at, j.id))
+    latest: dict[str, object] = {}
+    for job in rows:
+        latest[job.drawing_id] = job                            # senare läsning ersätter tidigare, aldrig adderar
+    return list(latest.values())
 
 
 def project_system_families(db, drawing) -> dict[str, str]:
@@ -140,17 +170,17 @@ def project_system_families(db, drawing) -> dict[str, str]:
     A set of drawings is one office drawing one building. Where a sheet labels a run on its own, it says which
     pen that office uses for that system - and on a sheet whose bundles are symmetric, that is the fixpoint that
     settles them. It is a fact read off other drawings, never something a person was asked for.
+
+    Weight is per source, not per reading: one drawing per vote, its most recent completed reading, and more
+    than one drawing before the thresholds count as met. What makes this evidence is that several sheets drawn
+    independently say the same thing; pressing analyse again says nothing about any of them.
     """
     from collections import defaultdict
 
     from vvs_engine.pipeline import pen_key
-    rows = (db.query(AnalysisJob, Drawing)
-            .join(Drawing, AnalysisJob.drawing_id == Drawing.id)
-            .filter(Drawing.project_id == drawing.project_id, AnalysisJob.status == "COMPLETED",
-                    AnalysisJob.drawing_id != drawing.id, AnalysisJob.result_key.isnot(None))
-            .all())
     tally: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
-    for job, _ in rows:
+    voters: dict[str, dict[str, set]] = defaultdict(lambda: defaultdict(set))
+    for job in _latest_run_per_drawing(db, drawing):
         path = os.path.join(storage.path(job.result_key), "drawn-system-families.json")
         if not os.path.isfile(path):
             continue
@@ -163,11 +193,12 @@ def project_system_families(db, drawing) -> dict[str, str]:
             fam, sysname, n = st.get("family"), st.get("system"), int(st.get("times") or 0)
             if fam and sysname and n > 0:
                 tally[pen_key(fam)][sysname] += n
+                voters[pen_key(fam)][sysname].add(job.drawing_id)
     out: dict[str, str] = {}
     for fam, systems in tally.items():
         total = sum(systems.values())
         best, n = max(systems.items(), key=lambda kv: kv[1])
-        if n >= PROJECT_MIN_TIMES and n >= PROJECT_MIN_SHARE * total:
+        if n >= PROJECT_MIN_TIMES and n >= PROJECT_MIN_SHARE * total and len(voters[fam][best]) >= PROJECT_MIN_SHEETS:
             out[fam] = best
     return out
 
@@ -181,19 +212,16 @@ def project_legend(db, drawing):
     drawings' own artifacts, never something a person was asked for.
 
     Only a list a drawing carried itself counts, so a borrowed list is never re-lent; and where two drawings
-    disagree about what a code is, the code is dropped rather than settled by whichever was read first.
+    disagree about what a code is, the code is dropped rather than settled by whichever was read first. Two
+    DRAWINGS: one drawing read twice by two different engine versions disagreed with itself, and dropped a code
+    that nothing on any sheet disputes, so here too a drawing is represented by its latest reading only.
     """
     from collections import defaultdict
 
     from vvs_engine.semantics.legend import DrawingLegend, LegendEntry
-    rows = (db.query(AnalysisJob, Drawing)
-            .join(Drawing, AnalysisJob.drawing_id == Drawing.id)
-            .filter(Drawing.project_id == drawing.project_id, AnalysisJob.status == "COMPLETED",
-                    AnalysisJob.drawing_id != drawing.id, AnalysisJob.result_key.isnot(None))
-            .all())
     seen: dict[str, dict] = {}
     roles: dict[str, set] = defaultdict(set)
-    for job, _ in rows:
+    for job in _latest_run_per_drawing(db, drawing):
         path = os.path.join(storage.path(job.result_key), "drawing-legend.json")
         if not os.path.isfile(path):
             continue
