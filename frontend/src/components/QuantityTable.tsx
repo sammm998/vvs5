@@ -4,7 +4,7 @@ import { identityColor } from "../palette";
 export const identityKey = (r: any) => `${r.base}|DN${r.dn ?? "?"}`;
 const STATE_LABELS: Record<string, string> = { CONFIRMED: "BEKRÄFTAD", AMBIGUOUS: "TVETYDIG", NO_SCALE: "INGEN SKALA",
   SCALE_UNSETTLED: "OAVGJORD SKALA", SCALE_FROM_THE_SET: "SKALA UR OMGÅNGEN", SCALE_GIVEN_BY_HAND: "ANGIVEN SKALA",
-  UNSUPPORTED_STYLE: "EJ STÖDD STIL", RISER_LABELS_ONLY: "ENDAST STIGARE" };
+  UNSUPPORTED_STYLE: "EJ STÖDD STIL", RISER_LABELS_ONLY: "ENDAST STIGARE", IN_HATCHED_AREA: "I SKRAFFERAD YTA" };
 
 /* En rad utan skala har ingen meter - och noll är inte samma sak som okänt. Tabellen skrev 0,00 i varje
    meterkolumn på ett blad vars skala aldrig blev fastställd, vilket läses som "röret är noll meter långt"
@@ -106,7 +106,9 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
                   rör kommer upp ur golvet och dras vidare längs väggen, och då finns ledningen och läsningen
                   kan ha missat den. Strecket säger att ingen vågrät sträcka hittades, utan att påstå vilket
                   av de två fallen det är. */}
-              <td className="num">{r.state === "RISER_LABELS_ONLY" && !(r.horizontal_calc > 0)
+              <td className="num">{r.state === "IN_HATCHED_AREA" && !(r.horizontal_calc > 0)
+                ? <span className="muted" title={`Hela stråket är ritat inne i en skrafferad yta (${Number(r.in_hatched_area_m ?? 0).toFixed(2)} m). Skrafferingen är hur ritningen säger att en del inte redovisas här - en angränsande byggnadsdel eller ett annat skede - och mängden räknar inte i den. Bocka i "Räkna med skrafferade ytor" om den här ritningen menar något annat med sin skraffering.`}>–</span>
+                : r.state === "RISER_LABELS_ONLY" && !(r.horizontal_calc > 0)
                 ? <span className="muted" title="Ingen vågrät sträcka hittad för den här etiketten. Den märker ett rör som går genom bjälklaget: antingen slutar det där (en vask, en golvbrunn) och det finns ingen ledning i planet, eller så fortsätter det längs väggen och läsningen har inte hittat den. Ritningen avgör det med strecket vid dimensionssiffran.">–</span>
                 : M(r.horizontal_calc, noScale)}</td>
               <td className="num">{noScale || r.vertical_calc == null
@@ -125,7 +127,7 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
               <td className="num">{!noScale && r.ambiguous_m > 0 ? r.ambiguous_m.toFixed(2) : "–"}</td>
               <td className="num">{!noScale && (r.in_hatched_area_m ?? 0) > 0 ? Number(r.in_hatched_area_m).toFixed(2) : "–"}</td>
               <td className="num" title={`Ritade stigarsymboler: ${r.riser_count ?? 0} · etiketter med dimension på raden under: ${r.riser_count_from_labels ?? 0}`}>{r.risers_calc > 0 ? r.risers_calc : "–"}</td>
-              <td><span className={`badge ${r.state === "CONFIRMED" ? "ok" : r.state === "AMBIGUOUS" || r.state === "RISER_LABELS_ONLY" ? "warn" : "bad"}`}>{STATE_LABELS[r.state] ?? r.state}</span></td>
+              <td><span className={`badge ${r.state === "CONFIRMED" ? "ok" : r.state === "AMBIGUOUS" || r.state === "RISER_LABELS_ONLY" || r.state === "IN_HATCHED_AREA" ? "warn" : "bad"}`}>{STATE_LABELS[r.state] ?? r.state}</span></td>
             </tr>,
             ...(open === identityKey(r)
               ? pipes.filter((p: any) => p.identity === identityKey(r))

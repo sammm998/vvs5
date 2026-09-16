@@ -181,6 +181,7 @@ class PipeMeasure:
 SETTLED_SCALE = ("VERIFIED", "TEXT_ONLY", "BAR_ONLY")
 UNSETTLED_ROW_STATE = {"CONFLICT": "SCALE_UNSETTLED", "FROM_THE_SET": "SCALE_FROM_THE_SET",
                        "GIVEN_BY_HAND": "SCALE_GIVEN_BY_HAND"}
+HATCHED_ONLY = "IN_HATCHED_AREA"        # hela stråket ligger inne i en skraffering: ritat, men inte det här bladets
 
 
 def scale_standing(scale: ScaleResult) -> str | None:
@@ -229,7 +230,14 @@ def measure_pipes(own: OwnershipResult, scale: ScaleResult, elevations: dict[str
         total = (hm + (vert or 0.0)) if hm is not None else None
         # Utan skala finns ingen meter. Raden hette förut EJ STÖDD STIL, vilket pekade på fel sak: stilen gick
         # att läsa, det var storleken bladet inte sa. NO_SCALE säger vad som saknas, och därmed vad som behövs.
-        state = ("NO_SCALE" if hm is None else standing or "CONFIRMED")
+        # Ett stråk som ritats helt inne i en skraffering är inte det här bladets. Skrafferingen är hur ritningen
+        # säger att en del inte redovisas här - en angränsande byggnadsdel, ett annat entreprenadskede - och den
+        # som mängdar mäter inte i den: på de fem blad där mängdarens egna mätlinjer finns ligger 0,1-1,2 procent
+        # av hennes meter inne i skraffering. Raden ska då inte stå som bekräftad med noll meter, som om röret
+        # letats efter och inte funnits. Den ska säga var metrarna tog vägen.
+        state = ("NO_SCALE" if hm is None else
+                 HATCHED_ONLY if hpu <= 0.0 < p.length_pt else
+                 standing or "CONFIRMED")
         if p.frontier_reasons:
             reasons.extend(p.frontier_reasons)
         out.append(PipeMeasure(pipe=p, horizontal_pdf_units=hpu, horizontal_m=hm, vertical_m=vert, vertical_evidence=vev,
@@ -296,6 +304,7 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
             r["confirmed_horizontal_m"] += m.horizontal_m
             r["confirmed_total_m"] += m.horizontal_m
             r["in_hatched_area_m"] += m.hatched_m or 0.0      # excluded from the horizontal quantity
+            r["hatched_only_pipes"] = r.get("hatched_only_pipes", 0) + (1 if m.state == HATCHED_ONLY else 0)
             if m.state in UNSETTLED_ROW_STATE.values() and r["state"] == "CONFIRMED":
                 r["state"] = m.state          # mätt under en skala bladet inte avgjort: ett förslag, inte ett besked
         else:
@@ -340,6 +349,11 @@ def aggregate(measures: list[PipeMeasure], ambiguous_pt: dict[str, float], mpp: 
         if r["physical_pipe_count"] == 0 and r["ambiguous_pdf_units"] == 0 \
                 and max(r["riser_count"], r["riser_count_from_labels"]) > 0:
             r["state"] = "RISER_LABELS_ONLY"
+        # ...och en rad vars alla stråk ligger inne i skrafferingen säger det, i stället för att visa en nolla
+        if r["state"] == "CONFIRMED" and r["physical_pipe_count"] > 0 \
+                and r.pop("hatched_only_pipes", 0) == r["physical_pipe_count"]:
+            r["state"] = HATCHED_ONLY
+        r.pop("hatched_only_pipes", None)
         for f in ("confirmed_horizontal_m", "confirmed_vertical_m", "confirmed_total_m", "ambiguous_m",
                   "horizontal_pdf_units", "in_hatched_area_m", "ambiguous_pdf_units", "double_line_m"):
             r[f] = round(r[f], 3)
