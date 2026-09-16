@@ -130,3 +130,36 @@ def test_the_reading_carries_scope_onto_the_quantity_row_without_moving_a_metre(
 def test_a_row_with_no_marker_anywhere_on_the_sheet_is_plain_new_build():
     from vvs_engine.cli import _scope_counts
     assert _scope_counts([{"confirmed_total_m": 5.0}]) == {"NY": 1}
+
+
+# --------------------------------------------------------------------------------------------------------
+# Luftningens bokstav: `110L` är dimension 110 på en luftledning, inte en oläslig token.
+
+def test_a_dimension_figure_may_carry_the_vent_letter():
+    from vvs_engine.semantics.grammar import dimension_figure
+    assert dimension_figure("110") == (110, None)
+    assert dimension_figure("110L") == (110, "L")
+    assert dimension_figure("100V") == (100, "V")
+    assert dimension_figure("110l") == (110, "L")       # gemen bokstav är samma bokstav
+    assert dimension_figure("X7") == (None, None)       # det här tolkar inte, det läser
+    assert dimension_figure("") == (None, None)
+
+
+def test_the_vent_letter_is_not_part_of_the_number_and_not_thrown_away():
+    """Båda felen finns: att läsa bokstaven som siffra, och att kasta den.
+
+    Läses `110L` som ett tal faller dimensionen bort helt - och på korpusen hamnade metrarna då på en rad utan
+    DN, oprissatt, medan samma rör med bar siffra fick en egen rad. En beteckning blev två. Kastas bokstaven i
+    stället försvinner att röret är en luftledning.
+    """
+    from vvs_engine.semantics.grammar import dimension_figure
+    v, vent = dimension_figure("110L")
+    assert v == 110 and vent == "L"
+    assert v != 110110 and str(v) == "110"
+
+
+def test_only_the_two_letters_the_drawing_language_uses_are_read_as_vent():
+    """L för luftning och V för vent. Andra bokstäver är något annat och ska inte tvingas till en dimension."""
+    from vvs_engine.semantics.grammar import dimension_figure
+    for t in ("110W", "110K", "110A", "110S"):
+        assert dimension_figure(t) == (None, None), t

@@ -311,3 +311,23 @@ NOMINAL_SIZES = {6, 8, 10, 12, 15, 16, 18, 20, 22, 25, 28, 32, 35, 40, 42, 50, 5
 
 def dn_plausible(v: int) -> bool:
     return 6 <= v <= 1200
+
+
+# Dimensionssiffran kan bära en bokstav: `110L`, `100V` - luftning. Bokstaven hör till RÖRET, inte till talet.
+# Läses den som en del av siffran är token varken ett tal eller en dimension, och hela dimensionen faller bort:
+# metrarna hamnar på en rad utan DN, oprissatt, och skilda från samma rör där siffran råkade stå bar. På
+# korpusen delade det `S01-P5-110L` i två rader på flera blad, en med dimension och en utan.
+_VENT_FIGURE = re.compile(r"^(\d{1,4})([LV])$")
+
+
+def dimension_figure(tok: str) -> tuple[int | None, str | None]:
+    """Talet i en dimensionstoken, och luftningsbokstaven om den står kvar efter det.
+
+    En bar siffra ger (110, None). `110L` ger (110, "L") - dimensionen är 110 och röret är en luftledning.
+    Allt annat ger (None, None): det här tolkar inte, det läser.
+    """
+    t = (tok or "").strip()
+    if t.isdigit():
+        return int(t), None
+    m = _VENT_FIGURE.match(t.upper())
+    return (int(m.group(1)), m.group(2)) if m else (None, None)

@@ -31,7 +31,7 @@ SAME_PLACE_SHARE = 0.5
 # gånger närmare, och de fall där de ligger lika nära är fall ritningen inte har avgjort.
 UNIT_MARGIN = 1.5
 from ..text.model import Glyph, TextRow, make_row, project, row_axes
-from .grammar import DesignationGrammar, NOMINAL_SIZES, compress_pattern, dn_plausible, is_code_like, split_tokens, strip_count_prefix, strip_row_separator, word_readings
+from .grammar import DesignationGrammar, NOMINAL_SIZES, compress_pattern, dimension_figure, dn_plausible, is_code_like, split_tokens, strip_count_prefix, strip_row_separator, word_readings
 
 
 # ----------------------------------------------------------------------------------------------------------------
@@ -343,6 +343,9 @@ class Designation:
     unknown_chars: int
     evidence: dict[str, Any] = field(default_factory=dict)
     family: str = ""
+    # Luftningsbokstaven som stod kvar efter dimensionssiffran (`110L`). Röret är en luftledning, och det
+    # är en egenskap hos RÖRET - inte en del av talet, och inte något att kasta bort.
+    vent: str | None = None
 
     @property
     def aside(self) -> str:
@@ -387,7 +390,7 @@ class Designation:
         return {"did": self.did, "page": self.page, "block_id": self.block_id, "row_index": self.row_index, "text": self.text,
                 "raw_text": self.raw_text, "pattern": self.pattern, "tokens": self.tokens, "system_token": self.system_token,
                 "dn": self.dn, "dn_source": self.dn_source, "display_text": self.display_text, "aside": self.aside,
-                "multiplier": self.multiplier, "bbox": [round(v, 2) for v in self.bbox],
+                "multiplier": self.multiplier, "vent": self.vent, "bbox": [round(v, 2) for v in self.bbox],
                 "angle": round(self.angle, 1), "layer": self.layer, "source": self.source, "unknown_chars": self.unknown_chars,
                 "min_glyph_confidence": round(1.0 - max(self.glyph_scores), 3) if self.glyph_scores else None,
                 "evidence": self.evidence, "family": self.family}
@@ -684,13 +687,13 @@ def extract_designations(page: RawPage, blocks: list[AnnotationBlock]) -> tuple[
                 pat = compress_pattern(word)
                 fam = grammar.families.get(pat)
                 wbbox = bbox_union([g.bbox for g in gw]) if gw else br.line.bbox
-                dn, dn_src, dn_row, dn_row_text = _find_dn(word, toks, fam, b, ri, wbbox if multi else None)
+                dn, dn_src, dn_row, dn_row_text, vent = _find_dn(word, toks, fam, b, ri, wbbox if multi else None)
                 gl = [g for g in (gw if gw else br.line.glyphs) if g.char != " "]
                 did = stable_id("des", page.info.index, word, f"{wbbox[0]:.1f}", f"{wbbox[1]:.1f}")
                 designations.append(Designation(
                     did=did, page=page.info.index, block_id=b.bid, row_index=ri, text=word,
                     raw_text="".join(g.char for g in gl), pattern=pat, tokens=toks, system_token=toks[0] if toks else "",
-                    dn=dn, dn_source=dn_src, dn_row_index=dn_row, dn_row_text=dn_row_text, multiplier=mult, bbox=wbbox,
+                    dn=dn, dn_source=dn_src, dn_row_index=dn_row, dn_row_text=dn_row_text, multiplier=mult, vent=vent, bbox=wbbox,
                     angle=br.line.angle,
                     layer=br.line.layer, source=br.line.source, glyph_scores=[g.score for g in gl], unknown_chars=sum(1 for g in gl if g.char == "?"),
                     evidence={"pattern_count": fam.count if fam else 0, "underlined": bool(br.underline),
@@ -760,16 +763,20 @@ def _find_dn(word: str, toks: list[str], fam, b: AnnotationBlock, ri: int, word_
     """DN from inline pure-digit token (grammar family position) or from a pure-number row directly below.
 
     Returns (dn, source, row index of the dimension row, that row's text as drawn)."""
-    numeric = [(i, t) for i, t in enumerate(toks) if t.isdigit()]
+    # en dimensionstoken är en siffra, eller en siffra med luftningens bokstav kvar efter sig (`110L`)
+    figures = [(i, dimension_figure(t)) for i, t in enumerate(toks)]
+    numeric = [(i, v) for i, (v, _) in figures if v is not None]
     if fam is not None and fam.dn_token_index is not None:
         i = fam.dn_token_index
-        if i < len(toks) and toks[i].isdigit() and dn_plausible(int(toks[i])):
-            return int(toks[i]), "inline", None, None
-    if fam is not None and fam.count <= 2 and len(numeric) == 1 and numeric[0][0] > 0 and int(numeric[0][1]) in NOMINAL_SIZES:
+        if i < len(toks):
+            v, vent = dimension_figure(toks[i])
+            if v is not None and dn_plausible(v):
+                return v, "inline", None, None, vent
+    if fam is not None and fam.count <= 2 and len(numeric) == 1 and numeric[0][0] > 0 and numeric[0][1] in NOMINAL_SIZES:
         # rare pattern (no family statistics): a single nominal-size token after the system token
-        return int(numeric[0][1]), "inline", None, None
+        return numeric[0][1], "inline", None, None, figures[numeric[0][0]][1][1]
     if numeric and (fam is None or fam.dn_token_index is None) and any(i > 0 for i, _ in numeric):
-        return None, None, None, None
+        return None, None, None, None, None
     # DN row directly below (next row(s) in the block with role dn); for multi-word rows the DN row must overlap
     # the word horizontally (each word has its own DN row)
     for rj in range(ri + 1, min(ri + 3, len(b.rows))):
@@ -782,11 +789,13 @@ def _find_dn(word: str, toks: list[str], fam, b: AnnotationBlock, ri: int, word_
             ov = min(word_bbox[2], nxt.line.bbox[2]) - max(word_bbox[0], nxt.line.bbox[0])
             if ov <= 0:
                 continue
-        mv = re.match(r"\d{1,4}", nxt.text_norm.strip())
+        raw = nxt.text_norm.strip()
+        mv = re.match(r"\d{1,4}", raw)
         v = int(mv.group(0)) if mv else -1
         if dn_plausible(v):
-            return v, "row", rj, nxt.text_norm.strip()
-    return None, None, None, None
+            _, vent = dimension_figure(re.sub(r"[^0-9A-Za-z]", "", raw))
+            return v, "row", rj, raw, vent
+    return None, None, None, None, None
 
 
 def _units(b: AnnotationBlock) -> list[list[int]]:
