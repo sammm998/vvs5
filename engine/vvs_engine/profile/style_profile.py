@@ -241,6 +241,38 @@ def profile_page(page: RawPage, rows=None, designations=None) -> StyleProfile:
     )
 
 
+def tolerance_overrides(profile: StyleProfile | None) -> dict[str, float]:
+    """Vilka toleranser bladets storlek flyttar, och vart.
+
+    Bara de regler som själva säger att de följer papperet (`Rule.scales_with_paper`). Skillnaden mot att skala
+    allt i punkter är hela poängen: ett avstånd som säger hur långt en hänvisningslinje får sträcka sig är
+    skrivet för en ritning av en viss storlek, medan ett avstånd som säger om två streck är samma bläck följer
+    PENNAN. Det senare skalas inte här.
+
+    Två gränser till:
+
+    * en regel som användes för att LÄSA texten kan inte skalas med en faktor som räknats ur den texten. Den
+      cirkeln går bara att bryta genom att läsa bladet två gånger, och det är inte värt det - därför är inga
+      textregler märkta;
+    * varje flyttat värde hålls inom regelns egna `lo`/`hi`. Registret vet vad som är ett rimligt tal för just
+      den regeln; pappersfaktorn vet bara hur stort bladet är."""
+    f = tolerance_scale(profile)
+    if f == 1.0:
+        return {}
+    from ..rules import RULES
+    out: dict[str, float] = {}
+    for r in RULES:
+        if not (r.scales_with_paper and r.tunable):
+            continue
+        v = float(r.default) * f
+        if r.lo is not None:
+            v = max(float(r.lo), v)
+        if r.hi is not None:
+            v = min(float(r.hi), v)
+        out[r.id] = v
+    return out
+
+
 def tolerance_scale(profile: StyleProfile | None) -> float:
     """Vad toleranserna SKULLE skalas med om profilen fick verka. Ingen kallar den ännu.
 

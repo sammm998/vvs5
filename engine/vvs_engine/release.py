@@ -179,6 +179,7 @@ class RuleChange:
     version: int = 0
     previous_version: int | None = None
     regression: Regression | None = None
+    noise: float = 0.0                           # det mätta brusgolvet regressionen bedöms mot
     reason: str = ""
 
     # ------------------------------------------------------------------ steg 2-3: underlaget och prövningen
@@ -192,24 +193,30 @@ class RuleChange:
             return False, f"{len(held)} undanhållna fall, {MIN_HELD_OUT} krävs"
         return True, f"{len(src)} oberoende dokument, {len(held)} undanhållna"
 
-    def tested(self, regression: Regression) -> "RuleChange":
-        """Steg 3: regressionen körd mot alla stilgrupper. Utfallet fästs vid ändringen, gott som dåligt."""
+    def tested(self, regression: Regression, noise: float = 0.0) -> "RuleChange":
+        """Steg 3: regressionen körd mot alla stilgrupper. Utfallet fästs vid ändringen, gott som dåligt.
+
+        `noise` är det MÄTTA brusgolvet i måttet, inte ett påhittat slack. Utan det avslås varje ändring som
+        rör någon stil en tusendel åt fel håll, och med ett gissat blir varje verklig försämring bortförklarad.
+        Golvet mäts genom att köra korpusen igen med byte-identisk kod under andra förutsättningar och se hur
+        mycket måttet ändå rör sig."""
         self.regression = regression
+        self.noise = float(noise)
         ok, why = self.enough_evidence()
         if not ok:
             self.state, self.reason = REJECTED, f"underlaget räcker inte: {why}"
             return self
-        if self.style_scope is None and regression.worse():
+        if self.style_scope is None and regression.worse(self.noise):
             # Steg 5 baklänges: en generell regel som skadar en annan stil är inte generell. Vägen framåt är
             # ett stilundantag med mätt konflikt, inte att aktivera ändå.
             self.state = REJECTED
             self.reason = ("en generell regel som gör en annan stil sämre är inte generell; "
-                           f"sämre: {', '.join(regression.worse())}")
+                           f"sämre: {', '.join(regression.worse(self.noise))}")
             return self
-        if not regression.better():
+        if not regression.better(self.noise):
             self.state, self.reason = REJECTED, "ingen stilgrupp blev bättre"
             return self
-        self.state, self.reason = TESTED, f"{why}; bättre: {', '.join(regression.better())}"
+        self.state, self.reason = TESTED, f"{why}; bättre: {', '.join(regression.better(self.noise))}"
         return self
 
     # ------------------------------------------------------------------ steg 5: stilundantaget
@@ -248,5 +255,5 @@ class RuleChange:
         return {"change_id": self.change_id, "hypothesis": self.hypothesis, "changes": dict(self.changes),
                 "before": dict(self.before), "style_scope": self.style_scope, "state": self.state,
                 "version": self.version, "previous_version": self.previous_version, "reason": self.reason,
-                "n_independent_sources": len(independent_sources(self.sources)),
+                "n_independent_sources": len(independent_sources(self.sources)), "noise": self.noise,
                 "regression": self.regression.as_dict() if self.regression else None}

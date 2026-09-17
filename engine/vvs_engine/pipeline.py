@@ -16,7 +16,7 @@ from typing import Any, Callable
 from .geometry.core import stable_id
 from .pdf.extract import RawDocument, RawPage, extract_document
 from .measure.commit import commit as commit_assignment
-from .profile.style_profile import profile_page
+from .profile.style_profile import profile_page, tolerance_overrides
 from .semantics.scope import NY as SCOPE_NY
 from .semantics.scope import read_designations as scope_read_designations
 from .geometry.core import GridIndex, dist, point_seg_distance
@@ -940,6 +940,11 @@ class PreparedPage:
     timings: dict
     vt_timing: dict
     declarations: Declarations = field(default_factory=Declarations)
+    # Bladets profil, mätt på de rader som blev beteckningar. Den hör hemma här och inte i andra halvan:
+    # toleranserna som geometrin läses under ska bindas innan geometrin läses, och profilen är det som binder
+    # dem. Fältet står sist bara för att dataklassen kräver det - ordningen säger ingenting om ordningen den
+    # räknas ut i.
+    style_profile: Any = None
 
 
 def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, ocr_assist: bool = False,
@@ -1031,7 +1036,9 @@ def prepare_page(page: RawPage, progress: Callable[[str], None] | None = None, o
                       "blad skriver den.")
         film.designations(designations)
     _t(timings, "designation_ms", t0)
-    return PreparedPage(page=page, layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
+    profile = profile_page(page, rows=lines, designations=designations)
+    return PreparedPage(page=page, style_profile=profile,
+                        layer_stats=layer_stats, vtext=vtext, srows=srows, lines=lines, blocks=blocks,
                         free=free, consumed=consumed, designations=designations, grammar=grammar, legend=legend,
                         ocr_report=ocr_report, timings=timings, vt_timing=vt_timing, declarations=declarations)
 
@@ -1072,6 +1079,18 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # The front half of the reading says what it is finding as it finds it, so a prepared sheet must not say it
     # all a second time: it was said when it was worked out.
     prep = prepared if prepared is not None else prepare_page(page, progress, ocr_assist, film)
+    # Bladets storlek binder toleranserna innan geometrin läses. Motorns punkttoleranser är skrivna för en
+    # ritning med elvapunktstext; ett blad som skriver hälften så stort har hälften så stora avstånd mellan
+    # allting, och samma tal i punkter snappar då ihop det som inte hör ihop. Bara de regler som själva säger
+    # att de följer papperet flyttas, och bara inom sina egna gränser.
+    with _rules.using(tolerance_overrides(prep.style_profile)):
+        return _read_the_geometry(page, prep, film, progress, second_reader, known_families, known_legend,
+                                  known_scale, known_scale_pages, given_scale, prepared)
+
+
+def _read_the_geometry(page, prep, film, progress, second_reader, known_families, known_legend,
+                       known_scale, known_scale_pages, given_scale, prepared) -> PageAnalysis:
+    """Andra halvan av läsningen: rör, ägande, skala, mängd. Körs under bladets egna toleranser."""
     timings = dict(prep.timings)
     layer_stats, vtext, srows = prep.layer_stats, prep.vtext, prep.srows
     lines, blocks, free, designations, grammar = prep.lines, prep.blocks, prep.free, prep.designations, prep.grammar
@@ -1778,7 +1797,7 @@ def analyze_page(page: RawPage, progress: Callable[[str], None] | None = None, o
     # Ritningsprofilen mäts sist, när både texten och beteckningarna är lästa - höjden ska helst mätas på de
     # rader som faktiskt blev beteckningar. Den skrivs ned och används inte: att låta pappersfaktorn skala
     # toleranserna ändrar varje läsning på varje blad och är sitt eget steg med sin egen grind.
-    style_profile = profile_page(page, rows=lines, designations=designations)
+    style_profile = prep.style_profile
     for r in quantities:
         r["scope"] = label_scopes.get(r.get("base", "") + f"|DN{r.get('dn') if r.get('dn') is not None else '?'}", SCOPE_NY)
     film.measured(quantities, scale)

@@ -14,9 +14,13 @@ Proven här handlar mest om vad profilen INTE får göra:
 """
 from dataclasses import dataclass, field
 
+import pytest
+
 from vvs_engine.profile.style_profile import (FACTOR_MAX, FACTOR_MIN, FALLBACK, MEASURED, REFERENCE_TEXT_PT,
                                               TEXT_GLYPHS, TEXT_MIXED, TEXT_NATIVE, TEXT_UNKNOWN, UNSURE,
-                                              paper_format_of, profile_page, tolerance_scale)
+                                              paper_format_of, profile_page, tolerance_overrides,
+                                              tolerance_scale)
+from vvs_engine.rules import BY_ID, RULES
 from vvs_engine.geometry.core import Seg
 
 
@@ -142,3 +146,67 @@ def test_a_sideways_sheet_measures_the_short_side_of_the_label_box():
     stAende = profile_page(p, rows=[], designations=[_Des((0, 0, 11.0, 40.0))] * 12)
     liggande = profile_page(p, rows=[], designations=[_Des((0, 0, 40.0, 11.0))] * 12)
     assert stAende.text_height_pt == liggande.text_height_pt == 11.0
+
+
+# ------------------------------------------------------------------------ vilka toleranser faktorn flyttar
+def test_a_reference_sheet_moves_no_tolerance_at_all():
+    """Faktorn 1 ska inte ge nio värden som råkar vara desamma - den ska ge ingenting.
+
+    Skillnaden syns i registret: ett värde satt till sitt eget förval är ändå ett satt värde, och då kan ingen
+    längre se på en läsning om profilen verkade eller inte."""
+    pr = profile_page(_Page(paths=_ink()), rows=[], designations=[_Des((0, 0, 40, 11.0))] * 12)
+    assert pr.paper_factor == 1.0
+    assert tolerance_overrides(pr) == {}
+
+
+def test_a_half_size_sheet_halves_the_distances_that_follow_the_paper():
+    pr = profile_page(_Page(paths=_ink()), rows=[], designations=[_Des((0, 0, 20, 5.5))] * 12)
+    ov = tolerance_overrides(pr)
+    assert ov, "en faktor på 0,5 ska flytta något"
+    for rid, v in ov.items():
+        assert v == pytest.approx(float(BY_ID[rid].default) * 0.5, rel=1e-9), rid
+
+
+def test_only_the_rules_that_say_they_follow_the_paper_are_moved():
+    """Gränsen som gör faktorn till en pappersfaktor och inte en generell hopkrympning."""
+    pr = profile_page(_Page(paths=_ink()), rows=[], designations=[_Des((0, 0, 20, 5.5))] * 12)
+    moved = set(tolerance_overrides(pr))
+    assert moved == {r.id for r in RULES if r.scales_with_paper and r.tunable}
+    for rid in moved:
+        assert BY_ID[rid].unit == "pt"
+
+
+def test_the_tolerances_that_say_whether_two_strokes_are_the_same_ink_are_left_alone():
+    """De följer PENNAN, inte papperet. Att krympa dem med pappersfaktorn vore att byta ut en mätning mot en
+    annan storhet som råkar ha samma enhet."""
+    pr = profile_page(_Page(paths=_ink()), rows=[], designations=[_Des((0, 0, 20, 5.5))] * 12)
+    moved = set(tolerance_overrides(pr))
+    for rid in ("semantics.attachment.CONTACT_TOL", "pipes.representation.OVERLAP_OFF",
+                "pipes.ownership.SLIVER_RUN", "semantics.attachment.COLLINEAR_OFF",
+                "pipes.ownership.BOUNDARY_TOL"):
+        assert rid not in moved, rid
+
+
+def test_no_rule_used_to_read_the_text_is_moved_by_a_factor_taken_from_that_text():
+    """Cirkeln. Texthöjden kommer ur beteckningarna, som lästes med de här reglerna - att sedan flytta dem med
+    en faktor räknad ur resultatet skulle bara gå genom att läsa bladet två gånger."""
+    moved = {r.id for r in RULES if r.scales_with_paper}
+    for rid in moved:
+        assert not rid.startswith("text."), rid
+        assert not rid.startswith("semantics.legend."), rid
+
+
+def test_a_moved_value_stays_inside_the_rules_own_limits():
+    """Registret vet vad som är ett rimligt tal för just den regeln; pappersfaktorn vet bara hur stort bladet
+    är. Där de två är oense vinner registret."""
+    pr = profile_page(_Page(paths=_ink()), rows=[], designations=[_Des((0, 0, 14, 4.0))] * 12)
+    for rid, v in tolerance_overrides(pr).items():
+        r = BY_ID[rid]
+        assert (r.lo is None or v >= r.lo) and (r.hi is None or v <= r.hi), rid
+
+
+def test_a_sheet_whose_factor_could_not_be_measured_moves_nothing():
+    """Ingen faktor betyder toleranserna som de är - inte en gissad hopkrympning."""
+    pr = profile_page(_Page(paths=_ink()), rows=[_Row(60.0)] * 5, designations=[_Des((0, 0, 200, 60.0))] * 5)
+    assert pr.paper_factor is None
+    assert tolerance_overrides(pr) == {}
