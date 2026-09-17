@@ -99,6 +99,30 @@ class LegendEntry:
                 "bbox": [round(v, 1) for v in self.bbox]}
 
 
+def opens_head(head: str, code: str) -> bool:
+    """Öppnar listkoden `code` beteckningshuvudet `head`?
+
+    Koden får äga huvudet som det är, eller som dess början - men det som följer får **aldrig vara en bokstav**.
+    En siffra är systemets löpnummer (`KV` öppnar `KV1` och `KV2`); en avskiljare betyder att koden är komplett
+    och att nästa led börjar (`TD102` öppnar `TD102-100`). En bokstav betyder att koden slutade mitt i ett annat
+    systemnamn: `K` öppnar inte `KB1`, och `VV` öppnar inte `VVC1`.
+
+    Skillnaden är inte en detalj. En ritning vars namnruta räknar upp handlingarna - `A`, `K`, `E`, `VVS` -
+    läses lätt som en beteckningslista, och får `K` då äga `KB1`, `KB2` och `KV2` befordras den till systemkod
+    av just de etiketter den efteråt lägger veto mot. På ett blad ur den öppna världen blev följden att
+    spillvattnet och värmen försvann ur mängden utan ett ord: elva etiketter av ett system, en av dem med sin
+    dimension utläst, och bladet rapporterade ändå full täckning på det som blev kvar. Ett prefix som slutar
+    mitt i ett systemnamn är inget prefix.
+    """
+    h = (head or "").upper().strip()
+    c = (code or "").upper().strip()
+    if not h or not c:
+        return False
+    if h == c:
+        return True
+    return h.startswith(c) and len(h) > len(c) and not h[len(c)].isalpha()
+
+
 @dataclass
 class DrawingLegend:
     entries: list[LegendEntry] = field(default_factory=list)
@@ -128,7 +152,7 @@ class DrawingLegend:
             c = e.code.upper()
             if not c:
                 continue
-            if h == c or (h.startswith(c) and len(h) > len(c)):
+            if opens_head(h, c):
                 if best is None or len(c) > len(best):
                     best = c
         return best
@@ -169,9 +193,9 @@ class DrawingLegend:
             return True
         if self.names_a_component(text):
             return False
-        if any(head == c or head.startswith(c) for c in systems):
+        if any(opens_head(head, c) for c in systems):
             return True
-        return not self.own and not any(head == c or head.startswith(c) for c in self.by_code)
+        return not self.own and not any(opens_head(head, c) for c in self.by_code)
 
     def components(self) -> set[str]:
         return {e.code.upper() for e in self.entries if e.role == "component"}
@@ -404,7 +428,7 @@ def read_legend(lines: list[TextRow], designations=()) -> DrawingLegend:
         codes = {e.code.upper() for e in entries}
         if len(codes) < _R("semantics.legend.MIN_CODES", MIN_CODES):
             continue                    # a column that repeats one word is a table, not a vocabulary
-        used = sum(1 for c in codes if any(h == c or h.startswith(c) for h in heads))
+        used = sum(1 for c in codes if any(opens_head(h, c) for h in heads))
         dxs = [found[rid][2] for rid in (l.rid for l in rows)
                if rid in found and edge - 0.1 <= by_rid[rid].bbox[0] <= edge + _R("semantics.legend.COL_TOL", COL_TOL)]
         dedge = densest_edge(dxs)
@@ -574,7 +598,7 @@ def assign_roles(legend: DrawingLegend, designations, prior: dict[str, str] | No
 
     def owner(head: str) -> str | None:
         for c in codes:
-            if head == c or (head.startswith(c) and len(head) > len(c)):
+            if opens_head(head, c):
                 return c
         return None
 

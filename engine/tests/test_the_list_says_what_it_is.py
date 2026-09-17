@@ -18,7 +18,8 @@ slutar likadant och mäts i meter. Där avgör ritningens egen användning som f
 """
 import pytest
 
-from vvs_engine.semantics.legend import (DrawingLegend, LegendEntry, assign_roles, role_from_words)
+from vvs_engine.semantics.legend import (DrawingLegend, LegendEntry, assign_roles, opens_head,
+                                         role_from_words)
 
 
 def _entry(code, description, role="material"):
@@ -141,3 +142,31 @@ def test_a_row_read_twice_is_one_row():
 
     apart = _Row("LD102 = LJUDDÄMPARE", 504.4, 515.4, "text")
     assert len(_one_per_line([good, apart])) == 2, "två olika rader är fortfarande två rader"
+
+
+# ---------------------------------------------------------------- en kod får inte sluta mitt i ett systemnamn
+def test_a_one_letter_code_does_not_own_every_designation_that_starts_with_it():
+    """Felet ett osett blad avslöjade, och det är värre än det låter.
+
+    En ritnings namnruta räknar upp handlingarna - `A`, `K`, `E`, `VVS` - och den listan läses lätt som en
+    beteckningslista. Får `K` då äga `KB1`, `KB2` och `KV2` händer två saker i följd: koden befordras till
+    SYSTEMKOD därför att de etiketterna bär mått, och sedan används systemkoderna som vit lista. Allt som inte
+    börjar på K raderas - av en kod som fick sin behörighet av just de etiketter den lägger veto mot.
+
+    På bladet försvann spillvattnet och värmen ur mängden utan ett ord.
+    """
+    lg = DrawingLegend(entries=[_entry("K", ""), _entry("A", ""), _entry("E", ""), _entry("VVS", "")])
+    assign_roles(lg, [_D("KB1-09-32", "KB1", 32), _D("KB2-09-20", "KB2", 20), _D("KV2-56-20", "KV2", 20)])
+    assert "K" not in lg.systems(), "en enbokstavskod blev systemkod av etiketter den inte äger"
+
+    # ...och därför lägger listan inte veto mot något: den känner inte igen en enda av bladets koder
+    for text, head in (("S1-52", "S1"), ("VS2-56", "VS2"), ("KB1-09-32", "KB1")):
+        assert lg.names_a_pipe(_D(text, head, None)) is True, text
+
+
+def test_a_code_may_open_a_head_by_its_number_but_never_by_more_letters():
+    """Gränsen, på ritningens egna villkor: systembokstäver och sedan ett löpnummer."""
+    assert opens_head("KV1", "KV") and opens_head("KV2", "KV")      # löpnumret
+    assert opens_head("TD102-100", "TD102")                         # komplett kod, nästa led börjar
+    assert not opens_head("KB1", "K")                               # slutar mitt i ett annat systemnamn
+    assert not opens_head("VVC1", "VV")                             # VVC är sitt eget system, inte VV + C
