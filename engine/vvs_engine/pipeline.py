@@ -1200,6 +1200,14 @@ def _read_the_geometry(page, prep, film, progress, second_reader, known_families
         # all. What separates them is how much of the pen's own ink the leaders are. Where a pen draws leaders and
         # little else, it is the leader pen; where the leaders are a fraction of what it draws, the rest of that
         # ink is the drawing, and the pen stays a candidate.
+        #
+        # Det provet gäller ALLTID, och att det en gång bara gällde i en räddningsläsning var ett fel som kostade
+        # ett helt blad. Räddningen kördes när för få etiketter nådde fram, alltså när läsningen redan såg trasig
+        # ut. En lagerlös ritning kan se frisk ut på det måttet och ändå vara läst fel: dess ena system landade
+        # prydligt på en smal penna, alla dess etiketter placerades, och under tiden låg tre fjärdedelar av
+        # bladets rörbläck i den penna som ritade både glyferna, hänvisningslinjerna och rören - utesluten hel,
+        # utan att någon frågat hur stor del av den ledarna var. Antal placerade etiketter mäter om läsningen
+        # hittade något, aldrig om den hittade allt.
         lead_ink: Counter = Counter()
         for ld in des_leaders:
             fk = stroke_family(ld.layer, ld.width, ld.color)
@@ -1215,7 +1223,7 @@ def _read_the_geometry(page, prep, film, progress, second_reader, known_families
         leader_fams = {f for f, c in lead_count.items()
                        if f.split("|s|")[0]
                        or c >= _R("pipeline.LEADER_MIN_SHARE", LEADER_MIN_SHARE) * top
-                       and not (admit_leader_pens and lead_ink[f] < _R("pipeline.LEADER_INK_SHARE", LEADER_INK_SHARE) * fam_ink.get(f, 0.0))} \
+                       and not lead_ink[f] < _R("pipeline.LEADER_INK_SHARE", LEADER_INK_SHARE) * fam_ink.get(f, 0.0)} \
             | (set(ann_layers) if ann_layers else set())
         if os.environ.get("VVS_DEBUG_INK"):
             for f, v in votes.most_common():
