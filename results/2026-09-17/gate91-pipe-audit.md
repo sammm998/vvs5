@@ -1,0 +1,6542 @@
+# Rör för rör - gate91.json
+
+59 blad. Referensen har **6673 mätta dragningar**; läsningen har **3010 fysiska rör**. Parningen sker på längd per beteckning, inte på läge.
+
+| Klass | Dragningar | Referens m | Våra m |
+|---|---:|---:|---:|
+| SAME_RUN | 1503 | 3395.9 | 3407.9 |
+| MERGED | 553 | 4533.4 | 4620.3 |
+| SPLIT | 28 | 150.1 | 148.2 |
+| SHORT_RUN | 108 | 385.1 | 96.7 |
+| LONG_RUN | 196 | 442.8 | 1462.0 |
+| MISSING_RUN | 2631 | 2491.9 | 0 |
+| EXTRA_RUN | 563 | 0 | 362.2 |
+
+## Var metrarna tar slut
+
+Skälen är fronternas egna koder på de rör som blev för korta, plus namnets tillstånd när ingen rör alls fanns. En sträcka med flera frontskäl delar sitt tapp lika mellan dem.
+
+| Skäl | Tappade m |
+|---|---:|
+| NAMNET_LASTES_MEN_FICK_INGET_ROR | 2089.3 |
+| NAMNET_LASTES_INTE | 402.6 |
+| SYMBOL | 113.2 |
+| CLOSED_LOOP | 25.5 |
+| REAL_DESIGNATION_BOUNDARY | 24.9 |
+| AMBIGUOUS_JUNCTION | 24.5 |
+| UNOWNED_CONTINUATION | 18.7 |
+| VERTICAL | 17.7 |
+| FREE_END | 13.0 |
+| DECLARED_BOUNDARY | 12.0 |
+| REAL_SYSTEM_BOUNDARY | 10.1 |
+| REPRESENTATION_TRANSITION | 8.9 |
+| REAL_DN_BOUNDARY | 7.1 |
+| BROKEN_CONTINUITY | 6.3 |
+| FLOW_BUDGET | 6.0 |
+
+## Per stil
+
+| Stil | Blad | Dragningar | Våra rör | SAME_RUN | MERGED | SPLIT | SHORT_RUN | LONG_RUN | MISSING_RUN | EXTRA_RUN |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| V (textlager) | 29 | 2897 | 1432 | 657 | 243 | 22 | 34 | 97 | 1221 | 330 |
+| W (konturglyfer) | 30 | 3776 | 1578 | 846 | 310 | 6 | 74 | 99 | 1410 | 233 |
+
+## Per blad
+
+| Blad | Dragningar | Våra rör | SAME_RUN | MERGED | SPLIT | SHORT_RUN | LONG_RUN | MISSING_RUN | EXTRA_RUN | Tappat m |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| A | 78 | 42 | 31 | 8 | 0 | 2 | 1 | 12 | 0 | 7.2 |
+| C | 4 | 3 | 2 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
+| D | 36 | 20 | 11 | 5 | 0 | 1 | 0 | 3 | 3 | 6.5 |
+| E | 47 | 15 | 8 | 3 | 0 | 3 | 1 | 12 | 0 | 6.7 |
+| V-50-1-A0111 | 100 | 34 | 21 | 8 | 0 | 0 | 0 | 52 | 5 | 61.6 |
+| V-50-1-A0112 | 197 | 104 | 55 | 13 | 4 | 0 | 5 | 87 | 20 | 86.5 |
+| V-50-1-A0121 | 32 | 11 | 0 | 9 | 0 | 0 | 1 | 10 | 1 | 6.6 |
+| V-50-1-A0122 | 113 | 140 | 24 | 8 | 5 | 2 | 15 | 39 | 72 | 31.1 |
+| V-50-1-A0123 | 170 | 99 | 41 | 8 | 2 | 2 | 12 | 90 | 31 | 116.8 |
+| V-50-1-A0124 | 233 | 100 | 36 | 20 | 1 | 2 | 4 | 116 | 35 | 79.4 |
+| V-50-1-A0211 | 30 | 6 | 4 | 2 | 0 | 0 | 0 | 18 | 0 | 9.1 |
+| V-50-1-A0212 | 197 | 75 | 44 | 23 | 0 | 3 | 2 | 70 | 3 | 60.6 |
+| V-50-1-A0221 | 14 | 10 | 8 | 2 | 0 | 0 | 0 | 2 | 0 | 1.4 |
+| V-50-1-A0222 | 63 | 16 | 4 | 7 | 0 | 0 | 1 | 36 | 4 | 18.3 |
+| V-50-1-A0223 | 48 | 5 | 3 | 2 | 0 | 0 | 0 | 37 | 0 | 10.6 |
+| V-50-1-A0311 | 36 | 19 | 12 | 3 | 0 | 0 | 0 | 13 | 4 | 18.7 |
+| V-50-1-A0312 | 140 | 41 | 19 | 12 | 1 | 3 | 3 | 58 | 1 | 84.5 |
+| V-50-1-A0321 | 22 | 12 | 9 | 2 | 0 | 0 | 0 | 8 | 1 | 10.9 |
+| V-50-1-A0322 | 127 | 44 | 30 | 8 | 0 | 1 | 3 | 50 | 2 | 47.5 |
+| V-50-1-A0323 | 38 | 14 | 8 | 4 | 0 | 0 | 1 | 17 | 1 | 20.1 |
+| V-50-1-A0411 | 79 | 40 | 25 | 6 | 0 | 7 | 1 | 23 | 1 | 29.2 |
+| V-50-1-A0412 | 183 | 89 | 61 | 16 | 0 | 2 | 6 | 67 | 4 | 95.4 |
+| V-50-1-A0421 | 34 | 42 | 13 | 0 | 1 | 1 | 1 | 18 | 25 | 27.1 |
+| V-50-1-A0422 | 95 | 43 | 22 | 9 | 0 | 5 | 5 | 26 | 2 | 28.5 |
+| V-50-1-A0423 | 47 | 16 | 11 | 2 | 0 | 0 | 2 | 28 | 1 | 95.4 |
+| V-50-1-A0511 | 32 | 15 | 10 | 2 | 0 | 0 | 2 | 13 | 1 | 19.1 |
+| V-50-1-A0512 | 221 | 110 | 72 | 18 | 1 | 1 | 4 | 69 | 13 | 55.3 |
+| V-50-1-A0521 | 43 | 78 | 16 | 9 | 0 | 0 | 0 | 6 | 53 | 7.5 |
+| V-50-1-A0522 | 134 | 99 | 52 | 8 | 4 | 2 | 13 | 36 | 10 | 42.2 |
+| V-50-1-A0523 | 53 | 22 | 15 | 4 | 0 | 0 | 2 | 21 | 1 | 11.1 |
+| V-50-1-B0112 | 43 | 15 | 3 | 8 | 0 | 0 | 1 | 8 | 3 | 14.1 |
+| V-50-1-B0114 | 58 | 21 | 3 | 10 | 1 | 0 | 1 | 19 | 5 | 53.2 |
+| V-50-1-B0122 | 315 | 112 | 36 | 20 | 2 | 3 | 12 | 184 | 31 | 213.4 |
+| W-50-1-A0011 | 78 | 42 | 31 | 8 | 0 | 2 | 1 | 12 | 0 | 7.2 |
+| W-50-1-A0021 | 15 | 11 | 2 | 3 | 0 | 1 | 0 | 2 | 5 | 1.0 |
+| W-50-1-A0022 | 29 | 8 | 4 | 3 | 0 | 0 | 1 | 11 | 0 | 8.8 |
+| W-50-1-A0023 | 23 | 9 | 5 | 1 | 0 | 2 | 1 | 6 | 0 | 4.0 |
+| W-50-1-A0024 | 43 | 15 | 8 | 4 | 0 | 1 | 2 | 16 | 0 | 10.0 |
+| W-50-1-A0031 | 6 | 14 | 0 | 1 | 0 | 2 | 0 | 0 | 11 | 0.8 |
+| W-50-1-A0032 | 44 | 12 | 5 | 6 | 0 | 0 | 0 | 12 | 1 | 11.7 |
+| W-50-1-A0033 | 25 | 9 | 3 | 3 | 0 | 0 | 1 | 12 | 2 | 6.9 |
+| W-50-1-A0034 | 19 | 9 | 2 | 2 | 0 | 0 | 1 | 9 | 4 | 5.1 |
+| W-50-1-A0111 | 379 | 144 | 75 | 31 | 1 | 8 | 9 | 166 | 18 | 226.0 |
+| W-50-1-A0112 | 67 | 20 | 5 | 12 | 0 | 1 | 1 | 32 | 1 | 23.7 |
+| W-50-1-A0113 | 361 | 122 | 61 | 20 | 2 | 5 | 16 | 204 | 14 | 189.8 |
+| W-50-1-A0114 | 219 | 127 | 75 | 15 | 0 | 16 | 11 | 62 | 10 | 70.3 |
+| W-50-1-A0121 | 133 | 81 | 26 | 14 | 0 | 5 | 4 | 30 | 32 | 44.1 |
+| W-50-1-A0122 | 277 | 76 | 44 | 23 | 0 | 0 | 5 | 149 | 4 | 91.4 |
+| W-50-1-A0123 | 220 | 72 | 43 | 19 | 0 | 1 | 8 | 56 | 1 | 48.9 |
+| W-50-1-A0124 | 165 | 106 | 60 | 14 | 0 | 4 | 6 | 44 | 22 | 93.8 |
+| W-50-1-A0131 | 129 | 106 | 35 | 9 | 0 | 7 | 2 | 48 | 53 | 87.8 |
+| W-50-1-A0132 | 336 | 133 | 85 | 21 | 1 | 2 | 10 | 136 | 12 | 98.7 |
+| W-50-1-A0133 | 216 | 70 | 40 | 14 | 1 | 2 | 7 | 84 | 5 | 80.8 |
+| W-50-1-A0134 | 284 | 96 | 54 | 22 | 1 | 5 | 0 | 101 | 13 | 128.1 |
+| W-50-1-A0211 | 76 | 22 | 12 | 4 | 0 | 1 | 4 | 22 | 1 | 40.4 |
+| W-50-1-A0213 | 161 | 67 | 52 | 8 | 0 | 1 | 4 | 62 | 2 | 53.6 |
+| W-50-1-A0214 | 69 | 34 | 18 | 9 | 0 | 0 | 0 | 20 | 7 | 10.0 |
+| W-50-1-A0221 | 85 | 37 | 10 | 13 | 0 | 1 | 1 | 26 | 12 | 12.2 |
+| W-50-1-A0222 | 152 | 56 | 39 | 14 | 0 | 1 | 2 | 61 | 0 | 49.1 |
+
+## Varje beteckning, varje rör
+
+Rader som stämmer står på en rad. Rader som inte stämmer packas upp: varje mätt dragning, vilket av våra rör den parades med, och skälet där vårt rör slutade.
+
+### A  ·  referens 213.7 m i 78 dragningar  ·  vi 210.6 m i 42 rör
+
+- **KV1-X31-16** - referens 17.4 m i 2 dragningar, vi 17.22 m i 2 rör (FULL)
+- **KV2-X31-16** - referens 33.4 m i 5 dragningar, vi 33.11 m i 5 rör (FULL)
+- **S1-P2-110** - referens 9.8 m i 4 dragningar, vi 10.04 m i 1 rör (FULL)
+- **S1-P2-75** - referens 4.7 m i 4 dragningar, vi 3.74 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_c998756e9c67]
+    - `SAME_RUN` referens 3.3 m → vi 3.4 m  [pp_7854eb844139]
+    - `SHORT_RUN` referens 0.8 m → vi 0.0 m  · FLOW_BUDGET  [pp_06062bb09fd2]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · FREE_END, VERTICAL  [pp_5068c748c0e2]
+- **S3-P2-160** - referens 16.9 m i 1 dragningar, vi 16.83 m i 1 rör (FULL)
+- **S3-R8-110** - referens 59.8 m i 28 dragningar, vi 56.27 m i 5 rör (FULL)
+    - `SAME_RUN` referens 2.2 m → vi 2.2 m  [pp_7f538bc84c69]
+    - `MERGED` referens 9.5 + 4.8 + 2.9 m → vi 17.2 m  [pp_bc655b83b619]
+    - `MERGED` referens 5.2 + 5.1 + 4.0 + 2.4 m → vi 16.8 m  [pp_d921de7b1990]
+    - `MERGED` referens 3.5 + 3.5 + 2.2 + 1.6 + 1.4 m → vi 13.3 m  [pp_8538c7d85742]
+    - `MERGED` referens 1.3 + 1.3 + 1.2 + 1.2 + 1.0 + 0.9 m → vi 6.8 m  [pp_6bf2a6d67866]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S3-R8-160** - referens 16.3 m i 2 dragningar, vi 16.99 m i 1 rör (FULL)
+    - `SAME_RUN` referens 15.5 m → vi 17.0 m  [pp_304f64862dc4]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S3-R8-75** - referens 21.3 m i 27 dragningar, vi 22.51 m i 18 rör (FULL)
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_2875684cd14a]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_5e8187ac550c]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_84cc3e193ce3]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_c17ca2061590]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_c5a8561090f5]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_3c8cef2a0af6]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_9df97cbdff1f]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_a55403c840eb]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_918747699cb6]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_9788ef9b7394]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_0d9c36479fcf]
+    - `SAME_RUN` referens 3.3 m → vi 3.4 m  [pp_4ffe683d8e91]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_84db44138b56]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_e7d2ddb58154]
+    - `MERGED` referens 2.1 + 1.9 + 1.6 m → vi 5.6 m  [pp_cbba5d1d3ec6]
+    - `MERGED` referens 1.5 + 1.0 + 0.5 m → vi 3.0 m  [pp_befc7ce04bfb]
+    - `MERGED` referens 1.3 + 0.8 + 0.4 + 0.4 m → vi 2.9 m  [pp_b3b8c3e0cfbf]
+    - `LONG_RUN` referens 0.6 m → vi 2.8 m  · STOD_5  [pp_36e4a08a9111]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 34.1 m i 5 dragningar, vi 33.92 m i 5 rör (FULL)
+
+### C  ·  referens 17.6 m i 4 dragningar  ·  vi 17.6 m i 3 rör
+
+- **KV1-X31-16** - referens 10.9 m i 2 dragningar, vi 10.89 m i 2 rör (FULL)
+- **S3-R8-75** - referens 6.7 m i 2 dragningar, vi 6.69 m i 1 rör (FULL)
+
+### D  ·  referens 112.9 m i 36 dragningar  ·  vi 109.8 m i 20 rör
+
+- **D1-E4-110** - referens 1.8 m i 1 dragningar, vi 1.83 m i 1 rör (FULL)
+- **FJV1-S6-50** - referens 4.0 m i 2 dragningar, vi 2.01 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 2.0 m → vi 2.0 m  [pp_704429015394]
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-E13-75** - referens 12.1 m i 1 dragningar, vi 12.09 m i 1 rör (FULL)
+- **KV1-E13-90** - referens 12.1 m i 1 dragningar, vi 12.08 m i 1 rör (FULL)
+- **S1-P2-110** - referens 42.8 m i 13 dragningar, vi 46.75 m i 4 rör (FULL)
+    - `MERGED` referens 13.9 + 6.0 + 1.9 m → vi 21.8 m  [pp_09c074cfa287]
+    - `MERGED` referens 5.5 + 5.3 + 5.0 + 1.1 + 1.0 m → vi 19.3 m  [pp_4c64f8d58261]
+    - `MERGED` referens 0.9 + 0.8 + 0.8 + 0.3 + 0.3 m → vi 3.4 m  [pp_7326cae0bdb6]
+    - `EXTRA_RUN` referens - m → vi 2.3 m  · STOD_5  [pp_3aaa55f5aa65]
+- **S1-P2-160** - referens 24.8 m i 6 dragningar, vi 21.07 m i 1 rör (PARTIAL)
+    - `MERGED` referens 12.0 + 7.0 + 1.8 + 0.3 m → vi 21.1 m  [pp_608b152ca773]
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-75** - referens 15.3 m i 12 dragningar, vi 13.94 m i 9 rör (FULL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_c4948bcac6ef]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_04ddf703c239]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_6246233e3268]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_b91159d0790c]
+    - `SAME_RUN` referens 1.0 m → vi 0.8 m  [pp_5d72a183b12f]
+    - `SAME_RUN` referens 0.4 m → vi 0.2 m  [pp_97f59da9c452]
+    - `SAME_RUN` referens 0.4 m → vi 0.2 m  [pp_92f6c36bddc2]
+    - `MERGED` referens 4.9 + 2.4 + 1.0 + 0.5 m → vi 8.7 m  [pp_ae135642be50]
+    - `SHORT_RUN` referens 3.6 m → vi 2.9 m  · REAL_DN_BOUNDARY, VERTICAL  [pp_c68578885bf0]
+- **S3-P2-160** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_5512ff40c3ee]
+- **S3-R8-75** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_8eeccf3dc913]
+
+### E  ·  referens 50.9 m i 47 dragningar  ·  vi 49.6 m i 15 rör
+
+- **S1-P2-110** - referens 9.2 m i 11 dragningar, vi 9.84 m i 7 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_4aada0825f02]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_47ecdd2e9354]
+    - `SAME_RUN` referens 0.6 m → vi 0.5 m  [pp_b2e1667f2595]
+    - `MERGED` referens 2.7 + 2.1 + 0.3 + 0.3 m → vi 5.3 m  [pp_39bb92bc8526]
+    - `LONG_RUN` referens 1.0 m → vi 3.5 m  · STOD_8  [pp_13c7bb5d641c]
+    - `SHORT_RUN` referens 0.9 m → vi 0.0 m  · REAL_DN_BOUNDARY, VERTICAL  [pp_0b5a75512d86]
+    - `SHORT_RUN` referens 0.4 m → vi 0.0 m  · FREE_END, REAL_DN_BOUNDARY, VERTICAL  [pp_7c20da467e27]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-160** - referens 26.7 m i 19 dragningar, vi 25.1 m i 1 rör (FULL)
+    - `MERGED` referens 4.0 + 3.8 + 3.4 + 2.8 + 1.6 + 1.4 + 1.3 + 1.2 + 1.2 + 1.1 + 1.0 m → vi 25.1 m  [pp_732f87ab925a]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-75** - referens 15.0 m i 17 dragningar, vi 14.68 m i 7 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_8c118079111f]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_64f772dca8b9]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_cf243c854d9f]
+    - `SAME_RUN` referens 2.0 m → vi 2.1 m  [pp_6a42fd08c249]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_6360ec9739e7]
+    - `MERGED` referens 4.2 + 3.5 + 1.1 + 0.5 + 0.5 + 0.4 + 0.4 + 0.4 m → vi 11.9 m  [pp_00d079a31262]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · REAL_DN_BOUNDARY, VERTICAL  [pp_bae3b8d1aecd]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0111  ·  referens 165.8 m i 100 dragningar  ·  vi 104.7 m i 34 rör
+
+- **KV1-X31-16** - referens 22.2 m i 16 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 5.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.8 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **S1-P3-75** - referens 0 m i 0 dragningar, vi 0.8 m i 5 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.4 m  · STOD_1  [pp_42ad2cf35f83]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_7d21d9c9aa66]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_9397b5f44bbe]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_b7fea1e24318]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_344b23d0a26d]
+- **S1-P5-160** - referens 2.4 m i 2 dragningar, vi 2.37 m i 1 rör (FULL)
+- **VS21-S13-15** - referens 97.6 m i 52 dragningar, vi 81.92 m i 26 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_897c3071692b]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_ce7c0df21b1d]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_2c7952283bb8]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_49854a352796]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_a51788c592d4]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_aa4c858ed52e]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_3a21d497b3ea]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_28cb7426c9ab]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_31d05ed86834]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_a1c5b11c8907]
+    - `SAME_RUN` referens 18.4 m → vi 18.4 m  [pp_751c517e292e]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_1b97e98120d6]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_cdd1b01226f1]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_5e1a934e61ad]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_aa0e711fecf3]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_859d2e0e32e1]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_e8ab0f527312]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_fe39107353b0]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_b03e19cc0625]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_46f7f5852e7d]
+    - `SAME_RUN` referens 18.3 m → vi 18.6 m  [pp_69bc8e4f99f9]
+    - `MERGED` referens 13.3 + 1.6 m → vi 14.9 m  [pp_e73feb98d016]
+    - `MERGED` referens 2.3 + 1.6 + 1.0 + 0.9 m → vi 5.8 m  [pp_486abe27a0ef]
+    - `MERGED` referens 2.3 + 1.7 + 1.3 + 0.5 m → vi 5.8 m  [pp_8134c3248a83]
+    - `MERGED` referens 1.7 + 1.0 + 1.0 + 0.7 m → vi 4.4 m  [pp_1b8d40b84c88]
+    - `MERGED` referens 1.0 + 0.7 + 0.4 + 0.4 + 0.4 m → vi 3.1 m  [pp_ff27a0fdd133]
+    - `MISSING_RUN` referens 13.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 33.5 m i 22 dragningar, vi 19.63 m i 2 rör (PARTIAL)
+    - `MERGED` referens 4.7 + 4.7 + 0.7 m → vi 9.8 m  [pp_000bf2393167]
+    - `MERGED` referens 4.7 + 4.7 + 0.7 m → vi 9.8 m  [pp_b8c587a6f570]
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 10.1 m i 8 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.9 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0112  ·  referens 398.8 m i 197 dragningar  ·  vi 356.5 m i 104 rör
+
+- **KV1-K5-15** - referens 5.0 m i 4 dragningar, vi 5.07 m i 1 rör (FULL)
+- **KV1-X31-16** - referens 60.9 m i 20 dragningar, vi 61.11 m i 27 rör (FULL)
+    - `SAME_RUN` referens 4.9 m → vi 4.9 m  [pp_e08206e067fb]
+    - `SAME_RUN` referens 2.6 m → vi 2.6 m  [pp_68bd0dc643ef]
+    - `SAME_RUN` referens 4.3 m → vi 4.4 m  [pp_02296cd934da]
+    - `SAME_RUN` referens 3.4 m → vi 3.3 m  [pp_ca5858c03823]
+    - `SAME_RUN` referens 4.9 m → vi 4.8 m  [pp_6b53f4c257f8]
+    - `SAME_RUN` referens 4.9 m → vi 4.8 m  [pp_8a892997b474]
+    - `SAME_RUN` referens 4.9 m → vi 4.8 m  [pp_8766cc185eca]
+    - `SAME_RUN` referens 4.6 m → vi 4.5 m  [pp_37c10cbc9e9a]
+    - `SAME_RUN` referens 4.9 m → vi 4.8 m  [pp_9d3e9fbfaacb]
+    - `SAME_RUN` referens 4.9 m → vi 4.7 m  [pp_dd905674de81]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_9068014ed71a]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_00bcec071bdc]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_b568592db4f3]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_f003f9490271]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_0c0b8e90bb48]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_82eb636850d9]
+    - `SPLIT` referens 5.0 m → vi 4.4 + 0.6 m  [pp_8de6b4bf7bfc, pp_5a7e7d3e8db7]
+    - `SPLIT` referens 4.9 m → vi 4.4 + 0.5 m  [pp_f3827b8ac1b7, pp_b0c9752d00af]
+    - `SPLIT` referens 3.0 m → vi 2.2 + 0.5 + 0.5 m  [pp_e75b5f3d730e, pp_4b8f4381c44f, pp_ece534dc8335]
+    - `LONG_RUN` referens 2.5 m → vi 3.7 m  · STOD_0  [pp_a8e1ce257064]
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_0  [pp_35c9bce44adb]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_acf31c8b05cc]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c4a40e290c7f]
+- **KV1-X7-20** - referens 2.9 m i 5 dragningar, vi 2.61 m i 1 rör (FULL)
+    - `MERGED` referens 1.8 + 0.6 + 0.1 + 0.1 m → vi 2.6 m  [pp_00fb24c86ec3]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-25** - referens 6.7 m i 3 dragningar, vi 7.7 m i 1 rör (OVER)
+    - `LONG_RUN` referens 5.7 m → vi 7.7 m  · STOD_1  [pp_5126afc5730e]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 11.4 m i 6 dragningar, vi 9.25 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_9fc31f44f2cc]
+    - `SAME_RUN` referens 8.3 m → vi 8.6 m  [pp_bdb0a7444982]
+    - `MISSING_RUN` referens 1.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 11.5 m i 3 dragningar, vi 11.24 m i 1 rör (FULL)
+    - `SAME_RUN` referens 10.7 m → vi 11.2 m  [pp_f6bd88deb574]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P3-75** - referens 0 m i 0 dragningar, vi 1.15 m i 5 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_2  [pp_37d7e6c3ed0a]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_94782f988f5b]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_61dc4aeab5a9]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_c68ba3a5858d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_168fc6a2fd56]
+- **S1-P5-110** - referens 0.3 m i 1 dragningar, vi 5.14 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.3 m → vi 0.4 m  [pp_707a99d4fbef]
+    - `EXTRA_RUN` referens - m → vi 4.0 m  · STOD_2  [pp_b38a89ccfea7]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_1  [pp_8265176dc230]
+- **S1-P5-160** - referens 46.0 m i 26 dragningar, vi 18.7 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_c3f967f4c7ee]
+    - `SAME_RUN` referens 11.7 m → vi 12.0 m  [pp_c6243fd1f344]
+    - `MERGED` referens 1.6 + 1.3 + 0.8 m → vi 3.7 m  [pp_750f4f2a3e5d]
+    - `MERGED` referens 1.0 + 0.7 + 0.6 m → vi 2.3 m  [pp_f42d0acf21dc]
+    - `MISSING_RUN` referens 9.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 8.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 0 m i 0 dragningar, vi 2.56 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.2 m  · STOD_2  [pp_7dd4116f967a]
+    - `EXTRA_RUN` referens - m → vi 0.4 m  · STOD_1  [pp_ae67bb2a7569]
+- **VP1-S2-65** - referens 22.6 m i 4 dragningar, vi 22.45 m i 2 rör (FULL)
+    - `SAME_RUN` referens 10.7 m → vi 11.1 m  [pp_12f513611b2b]
+    - `SAME_RUN` referens 10.7 m → vi 11.3 m  [pp_caa362def36f]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_dcf5b172d197]
+- **VS21-S13-15** - referens 41.0 m i 32 dragningar, vi 58.84 m i 16 rör (OVER)
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_7c78c96d65e6]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_be2c5fb61250]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_0656f1b40d39]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_75ec71c3308d]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_c5a9975498e5]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_80a42fabaf89]
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_f4210e2ecdad]
+    - `SAME_RUN` referens 0.9 m → vi 0.8 m  [pp_eb6aa11c92da]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_0aa419ab8257]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_fa63efcd5899]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_0d31bd5b65ba]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_f2651d4cd9b0]
+    - `MERGED` referens 5.9 + 5.9 + 1.0 + 0.9 m → vi 13.6 m  [pp_da660a366de4]
+    - `MERGED` referens 4.3 + 4.3 + 1.7 + 1.2 + 1.2 m → vi 13.5 m  [pp_e302b3606d3e]
+    - `LONG_RUN` referens 1.0 m → vi 12.2 m  · STOD_2  [pp_245fbf924e98]
+    - `LONG_RUN` referens 1.0 m → vi 12.1 m  · STOD_2  [pp_0abcb02364d5]
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 58.9 m i 35 dragningar, vi 20.2 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 4.7 m → vi 4.7 m  [pp_8c26e06c0c73]
+    - `SAME_RUN` referens 4.5 m → vi 4.5 m  [pp_3fa363f1eb48]
+    - `SAME_RUN` referens 5.0 m → vi 5.5 m  [pp_8772d9243fe0]
+    - `SAME_RUN` referens 5.0 m → vi 5.5 m  [pp_e0270b444b2d]
+    - `MISSING_RUN` referens 11.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 11.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-28** - referens 28.8 m i 14 dragningar, vi 28.06 m i 4 rör (FULL)
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_f3c8ddb570ea]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_4b7c1dd044e4]
+    - `MERGED` referens 10.8 + 1.4 + 0.8 m → vi 13.0 m  [pp_e895b746a936]
+    - `MERGED` referens 11.0 + 0.8 + 0.6 + 0.3 m → vi 12.8 m  [pp_d803802a5d7a]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-K5-15** - referens 5.2 m i 4 dragningar, vi 5.07 m i 1 rör (FULL)
+    - `MERGED` referens 4.1 + 0.6 + 0.3 m → vi 5.1 m  [pp_5052f589bdb7]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-K5-22** - referens 0 m i 0 dragningar, vi 1.03 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 1.0 m  · STOD_1  [pp_533290688026]
+- **VV1-X31-16** - referens 33.7 m i 12 dragningar, vi 35.75 m i 21 rör (FULL)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_b59713bd1d38]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_ac80ba9e133c]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_29f6b7a21320]
+    - `SAME_RUN` referens 4.9 m → vi 4.8 m  [pp_1ca13db23eb5]
+    - `SAME_RUN` referens 4.9 m → vi 4.8 m  [pp_a13fd99dc94f]
+    - `SAME_RUN` referens 2.4 m → vi 2.5 m  [pp_deaf95eb28f6]
+    - `SAME_RUN` referens 4.5 m → vi 4.6 m  [pp_623f7201ed1b]
+    - `SAME_RUN` referens 3.4 m → vi 3.5 m  [pp_56b4d9258c86]
+    - `SAME_RUN` referens 0.3 m → vi 0.1 m  [pp_04d546403968]
+    - `SAME_RUN` referens 4.9 m → vi 4.6 m  [pp_fe47611b8f2c]
+    - `SPLIT` referens 4.9 m → vi 4.0 + 0.8 + 0.0 + 0.0 m  [pp_f14b962d7da3, pp_7033c5adedf7, pp_dc6e1a72d741, pp_750d80eae015]
+    - `LONG_RUN` referens 2.8 m → vi 3.7 m  · STOD_0  [pp_9c0a1ab2d023]
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_0  [pp_2cbd2e9f3c44]
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_0  [pp_e876f3d586bf]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_dbb5fe015f65]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_04a305795620]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_0d1123b9d522]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_91ef622fb51e]
+- **VV1-X7-20** - referens 2.8 m i 5 dragningar, vi 1.19 m i 1 rör (PARTIAL)
+    - `MERGED` referens 0.6 + 0.2 + 0.1 + 0.1 m → vi 1.2 m  [pp_f2b0aad8bced]
+    - `MISSING_RUN` referens 1.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-25** - referens 6.7 m i 3 dragningar, vi 7.38 m i 1 rör (OVER)
+    - `MERGED` referens 6.0 + 0.5 + 0.2 m → vi 7.4 m  [pp_2fcf5bcc7769]
+- **VV1-X7-32** - referens 12.4 m i 6 dragningar, vi 10.27 m i 1 rör (PARTIAL)
+    - `MERGED` referens 8.6 + 1.6 m → vi 10.3 m  [pp_adcc789e6df0]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 11.5 m i 3 dragningar, vi 11.25 m i 1 rör (FULL)
+    - `SAME_RUN` referens 10.7 m → vi 11.2 m  [pp_25b3f40bbb80]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-20** - referens 19.0 m i 8 dragningar, vi 19.02 m i 2 rör (FULL)
+    - `SAME_RUN` referens 0.7 m → vi 0.6 m  [pp_c0ab72c3c349]
+    - `MERGED` referens 8.3 + 6.1 + 1.6 + 1.2 m → vi 18.4 m  [pp_a1995687c715]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 11.5 m i 3 dragningar, vi 11.49 m i 1 rör (FULL)
+    - `SAME_RUN` referens 10.7 m → vi 11.5 m  [pp_7685b3543096]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0121  ·  referens 101.5 m i 32 dragningar  ·  vi 95.1 m i 11 rör
+
+- **KV1-X31-16** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_3c4eb9ae543a]
+- **KV1-X7-40** - referens 12.5 m i 2 dragningar, vi 12.5 m i 1 rör (FULL)
+- **VP1-S2-65** - referens 25.9 m i 4 dragningar, vi 25.63 m i 2 rör (FULL)
+- **VS21-S13-15** - referens 15.4 m i 12 dragningar, vi 9.05 m i 2 rör (PARTIAL)
+    - `MERGED` referens 3.4 + 0.7 + 0.6 m → vi 4.7 m  [pp_dfb4fab3be81]
+    - `MERGED` referens 3.8 + 0.6 m → vi 4.4 m  [pp_f46ac686f027]
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-S13-28** - referens 22.1 m i 8 dragningar, vi 21.86 m i 2 rör (FULL)
+    - `MERGED` referens 8.2 + 2.5 + 0.2 + 0.2 m → vi 11.1 m  [pp_26a2567d93de]
+    - `MERGED` referens 8.3 + 2.5 m → vi 10.8 m  [pp_91a3301a96bf]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-X32-25** - referens 0.4 m i 2 dragningar, vi 0.86 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.3 m → vi 0.9 m  · STOD_1  [pp_2763394e7ebb]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X7-40** - referens 12.6 m i 2 dragningar, vi 12.62 m i 1 rör (FULL)
+- **VVC1-X7-32** - referens 12.6 m i 2 dragningar, vi 12.54 m i 1 rör (FULL)
+
+### V-50-1-A0122  ·  referens 321.1 m i 113 dragningar  ·  vi 404.7 m i 140 rör
+
+- **KV1-X31-16** - referens 31.9 m i 10 dragningar, vi 31.26 m i 46 rör (FULL)
+    - `SAME_RUN` referens 2.1 m → vi 2.1 m  [pp_d30db789e853]
+    - `SAME_RUN` referens 2.2 m → vi 2.1 m  [pp_cd278e584485]
+    - `SAME_RUN` referens 2.4 m → vi 2.3 m  [pp_194f587230f0]
+    - `SAME_RUN` referens 3.0 m → vi 2.9 m  [pp_f41001f8b0e1]
+    - `SAME_RUN` referens 1.8 m → vi 1.7 m  [pp_9fde79ff9709]
+    - `SAME_RUN` referens 3.0 m → vi 2.9 m  [pp_bfe9ac9103a9]
+    - `SPLIT` referens 6.6 m → vi 3.6 + 1.3 + 1.2 + 0.5 m  [pp_09f936271a8f, pp_a49c61e791f2, pp_828ff6d8886a, pp_e4f5af23b52f]
+    - `SPLIT` referens 5.5 m → vi 1.9 + 1.6 + 1.2 + 0.8 m  [pp_622840c668be, pp_e02f789046d9, pp_fbf9f20a31e7, pp_3c4ce03375f8]
+    - `SPLIT` referens 2.7 m → vi 1.2 + 0.9 + 0.4 + 0.3 m  [pp_934ff22e4ef3, pp_82487450d2f3, pp_bdb04be1d7c4, pp_9325ecbe2193]
+    - `SHORT_RUN` referens 2.6 m → vi 0.8 m  · SYMBOL  [pp_5ca0be00f938]
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_0  [pp_d6a8c68368a5]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_0  [pp_496153f2b225]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_0  [pp_ef3e9417d177]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_0  [pp_1e31ee1d6beb]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_0e158f4335e4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_69eb4f50970d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_02dc7e378448]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_360d97712eba]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_38e584112700]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_9b6b648f46a3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_acd07818697d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_feb363eb200a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_20348fc0be22]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_60b6fde2366c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_8522f1bdb111]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c4401eff5620]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_5d8bb508b86e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7d2ede0a0279]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_fcd787ddb0b4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_1a783a007d0e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_3d80f71afc43]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_0eeb2fdea773]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_387a3b6c96f3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_3afcb823ee2d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4e79450829c3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_8fe8e58d761c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4038c5ae78a3]
+- **KV1-X32-25** - referens 0 m i 0 dragningar, vi 3.02 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.4 m  · STOD_1  [pp_e4f2d4577656]
+    - `EXTRA_RUN` referens - m → vi 0.6 m  · STOD_1  [pp_1a6f7b029cae]
+- **KV1-X7-25** - referens 3.6 m i 8 dragningar, vi 10.68 m i 4 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_2a2f7f2799b1]
+    - `MERGED` referens 0.4 + 0.4 + 0.3 + 0.1 + 0.1 + 0.1 m → vi 1.5 m  [pp_6cc0b1e1dc74]
+    - `LONG_RUN` referens 2.1 m → vi 7.7 m  · STOD_1  [pp_2e392415565e]
+    - `EXTRA_RUN` referens - m → vi 1.4 m  · STOD_1  [pp_82190fbd43a8]
+- **KV1-X7-32** - referens 14.2 m i 9 dragningar, vi 19.43 m i 3 rör (OVER)
+    - `MERGED` referens 7.7 + 2.8 + 0.2 + 0.1 m → vi 10.8 m  [pp_f9612a17a342]
+    - `MERGED` referens 1.7 + 0.5 m → vi 2.2 m  [pp_f8de3251f9d4]
+    - `LONG_RUN` referens 1.0 m → vi 6.4 m  · STOD_2  [pp_faa48ccaba9e]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 16.4 m i 2 dragningar, vi 18.95 m i 1 rör (OVER)
+    - `LONG_RUN` referens 14.9 m → vi 18.9 m  · STOD_1  [pp_b997419a5308]
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV2-X32-25** - referens 0 m i 0 dragningar, vi 0.12 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_f165f2ff6089]
+- **KV2-X7-25** - referens 0.9 m i 5 dragningar, vi 10.89 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_8373a6a08dfa]
+    - `LONG_RUN` referens 0.6 m → vi 10.9 m  · STOD_1  [pp_df8e4159b700]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-160** - referens 10.3 m i 3 dragningar, vi 10.26 m i 1 rör (FULL)
+    - `SAME_RUN` referens 9.6 m → vi 10.3 m  [pp_bba787037768]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **SF1-P3-75** - referens 0 m i 0 dragningar, vi 1.17 m i 5 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.4 m  · STOD_1  [pp_de72eba6876e]
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_1  [pp_4ca92bb95f55]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_1  [pp_7997388c6a91]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_1  [pp_842cddf55cfc]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_c22acfb165f0]
+- **SF1-P5** - referens 0 m i 0 dragningar, vi 2.56 m i 3 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 1.5 m  · STOD_2  [pp_3ffbd0782a69]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_1  [pp_a6757ead2b71]
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_1  [pp_89925b6fade1]
+- **SF1-P5-110** - referens 14.5 m i 7 dragningar, vi 3.13 m i 1 rör (PARTIAL)
+    - `MERGED` referens 2.4 + 0.7 m → vi 3.1 m  [pp_6eada2dc3e9a]
+    - `MISSING_RUN` referens 6.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.8 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+- **SF1-P5-75** - referens 1.4 m i 1 dragningar, vi 6.0 m i 2 rör (OVER)
+    - `LONG_RUN` referens 1.4 m → vi 5.0 m  · STOD_1  [pp_231afef4cb0e]
+    - `EXTRA_RUN` referens - m → vi 1.0 m  · STOD_2  [pp_6be653d00f42]
+- **VP1-S2-65** - referens 33.4 m i 4 dragningar, vi 42.69 m i 2 rör (OVER)
+    - `MERGED` referens 15.3 + 1.5 + 1.5 m → vi 19.1 m  [pp_c8d2ebf99021]
+    - `LONG_RUN` referens 15.1 m → vi 23.5 m  · STOD_1  [pp_72b4fc80b4df]
+- **VS21-S13-15** - referens 63.4 m i 24 dragningar, vi 64.53 m i 12 rör (FULL)
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_cdc6b420fb6f]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_fe13d21f1491]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_4ac2e3559bcd]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_838a209e17c4]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_c72b3b13f36b]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_f2ecbf2e7cea]
+    - `SAME_RUN` referens 0.8 m → vi 0.7 m  [pp_745c062c1a8c]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_f5e3cdcedea0]
+    - `MERGED` referens 9.9 + 8.7 + 8.5 + 7.5 m → vi 34.5 m  [pp_7881bd290348]
+    - `MERGED` referens 10.2 + 1.1 + 0.6 + 0.3 m → vi 12.2 m  [pp_714d3d357e42]
+    - `LONG_RUN` referens 7.7 m → vi 11.8 m  · STOD_3  [pp_926966db0ef0]
+    - `SHORT_RUN` referens 0.6 m → vi 0.0 m  · UNOWNED_CONTINUATION, VERTICAL  [pp_50bf890657ed]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-S13-28** - referens 33.9 m i 4 dragningar, vi 47.57 m i 2 rör (OVER)
+    - `LONG_RUN` referens 15.5 m → vi 23.8 m  · STOD_1  [pp_8bf4ff950ef1]
+    - `LONG_RUN` referens 15.4 m → vi 23.7 m  · STOD_1  [pp_2b999bb8c7b8]
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 30.0 m i 10 dragningar, vi 35.97 m i 43 rör (OVER)
+    - `SAME_RUN` referens 2.2 m → vi 2.2 m  [pp_5a6a59dcd5ae]
+    - `SAME_RUN` referens 6.3 m → vi 6.3 m  [pp_d38fb008ac7b]
+    - `SAME_RUN` referens 1.7 m → vi 1.6 m  [pp_4b38698e1c8e]
+    - `SAME_RUN` referens 3.0 m → vi 3.1 m  [pp_3438d39cc16b]
+    - `SAME_RUN` referens 2.5 m → vi 2.4 m  [pp_768a8631dc9b]
+    - `MERGED` referens 2.3 + 2.2 + 1.9 m → vi 6.2 m  [pp_7ae191e8d551]
+    - `SPLIT` referens 5.4 m → vi 1.4 + 1.3 + 1.3 + 1.2 m  [pp_0538f4e3b13c, pp_5f7bc8019f6c, pp_9c31761f72a2, pp_d635b58814e6]
+    - `SPLIT` referens 2.5 m → vi 1.0 + 1.0 + 0.5 m  [pp_0c79f1f77a4d, pp_abc229256cb3, pp_3534a15e859c]
+    - `EXTRA_RUN` referens - m → vi 1.2 m  · STOD_0  [pp_306525dfd31e]
+    - `EXTRA_RUN` referens - m → vi 1.0 m  · STOD_0  [pp_9f3c125a8600]
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_0  [pp_02a1e6b76956]
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_0  [pp_cdbee2db93e7]
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_0  [pp_5a5a27ebf3ee]
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_0  [pp_a05bfefb637c]
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_0  [pp_a3672614a0be]
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_0  [pp_76b6d58cbb8c]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_0  [pp_6e4fb765ccda]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_0  [pp_d5e415529ea4]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_0  [pp_6b78a9654a4f]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_0  [pp_cf56bac77ec4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_081e77e80959]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7c454bf7f7cf]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_994690cb80f9]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_baeb94f98c6e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f858f89a3902]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_e7d1ee40fb54]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f003b6bbe1d4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f979fedd73a4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_3060f5302db9]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7cdffe4993e0]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4f0b1c12fb43]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4c5516e18aec]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ba981b9b8aa4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_441f8b51cd9f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b1a13c7c6dd7]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_d7a4dce479f0]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f8a3ddc49eab]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b383a2c0a4f2]
+- **VV1-X32-25** - referens 0 m i 0 dragningar, vi 1.82 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 1.0 m  · STOD_1  [pp_a7af0cb07bca]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_1  [pp_ae2567102dde]
+- **VV1-X7-25** - referens 4.7 m i 8 dragningar, vi 5.39 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_ac25a39c8607]
+    - `LONG_RUN` referens 3.2 m → vi 5.4 m  · STOD_1  [pp_cf613f93274f]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-32** - referens 14.8 m i 9 dragningar, vi 23.67 m i 2 rör (OVER)
+    - `SAME_RUN` referens 2.8 m → vi 2.7 m  [pp_9ea584ec021b]
+    - `LONG_RUN` referens 7.6 m → vi 21.0 m  · STOD_1  [pp_28cfcec4ae9a]
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 16.5 m i 2 dragningar, vi 19.02 m i 1 rör (OVER)
+    - `LONG_RUN` referens 15.0 m → vi 19.0 m  · STOD_1  [pp_dc4b055ee68d]
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-20** - referens 14.7 m i 5 dragningar, vi 27.49 m i 2 rör (OVER)
+    - `LONG_RUN` referens 10.0 m → vi 21.2 m  · STOD_2  [pp_a109268d0784]
+    - `LONG_RUN` referens 4.2 m → vi 6.3 m  · STOD_2  [pp_04cbcf7d3dc9]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 16.5 m i 2 dragningar, vi 19.03 m i 1 rör (OVER)
+    - `LONG_RUN` referens 15.0 m → vi 19.0 m  · STOD_1  [pp_07cd934fef17]
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0123  ·  referens 404.0 m i 170 dragningar  ·  vi 335.0 m i 99 rör
+
+Utanför referensens system: 1 rör, 9.5 m.
+
+- **KV1-K5-15** - referens 0 m i 0 dragningar, vi 0.27 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_1  [pp_04a1f7fc4338]
+- **KV1-X31-16** - referens 29.1 m i 12 dragningar, vi 30.75 m i 22 rör (FULL)
+    - `SAME_RUN` referens 1.4 m → vi 1.4 m  [pp_9845b302f186]
+    - `SAME_RUN` referens 5.6 m → vi 5.6 m  [pp_1ce986574832]
+    - `SAME_RUN` referens 4.3 m → vi 4.3 m  [pp_b7cd2d8e5ca5]
+    - `SAME_RUN` referens 3.6 m → vi 3.6 m  [pp_b4e6a6103029]
+    - `SAME_RUN` referens 6.3 m → vi 6.3 m  [pp_e14993226453]
+    - `SAME_RUN` referens 3.1 m → vi 3.0 m  [pp_632f23d9a53e]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_c9b821b78d48]
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_bccd71c9e743]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_26de54a9ea16]
+    - `MERGED` referens 1.5 + 1.1 m → vi 2.8 m  [pp_fa9a5ceade81]
+    - `LONG_RUN` referens 1.1 m → vi 2.0 m  · STOD_0  [pp_d82f830a2d7a]
+    - `EXTRA_RUN` referens - m → vi 0.4 m  · STOD_0  [pp_138c06436154]
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_0  [pp_54b41361d420]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_41951fab76ce]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4db4aec8471d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_50502c2459d5]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_747a441c281a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a6549906ed66]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b06feab99176]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_db8fe87566f5]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f1dfb4945738]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f7fda20781a1]
+- **KV1-X7-20** - referens 4.1 m i 6 dragningar, vi 1.01 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 1.1 m → vi 1.0 m  [pp_6f9f5707b58e]
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-25** - referens 0.1 m i 1 dragningar, vi 3.31 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.1 m → vi 3.3 m  · STOD_1  [pp_12176d706f3e]
+- **KV1-X7-32** - referens 10.7 m i 7 dragningar, vi 9.18 m i 1 rör (PARTIAL)
+    - `MERGED` referens 6.1 + 3.1 m → vi 9.2 m  [pp_72d0f9e9c3bc]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 23.8 m i 5 dragningar, vi 22.17 m i 1 rör (FULL)
+    - `SAME_RUN` referens 20.7 m → vi 22.2 m  [pp_85b58511db9f]
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV2-X7-25** - referens 9.1 m i 4 dragningar, vi 6.79 m i 1 rör (PARTIAL)
+    - `LONG_RUN` referens 5.8 m → vi 6.8 m  · STOD_3  [pp_8eb4d47367f9]
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **SF1-P3** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_c4d821d66012]
+- **SF1-P5-110** - referens 26.5 m i 9 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 14.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 6.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 2.9 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+- **SF1-P5-160** - referens 5.0 m i 4 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+- **SF1-P5-75** - referens 0 m i 0 dragningar, vi 4.25 m i 4 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.9 m  · STOD_1  [pp_81c9433eb8b8]
+    - `EXTRA_RUN` referens - m → vi 0.9 m  · STOD_1  [pp_b34470d345f7]
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_1  [pp_f9b5436355e1]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_f9b5c3339bdc]
+- **VP1-S13-22** - referens 0.8 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-28** - referens 0.8 m i 2 dragningar, vi 0.05 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_e755c542ecae]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-35** - referens 3.5 m i 4 dragningar, vi 5.62 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_410a54967e46]
+    - `MERGED` referens 1.7 + 0.7 + 0.3 m → vi 2.8 m  [pp_2968c37de1cd]
+    - `EXTRA_RUN` referens - m → vi 2.0 m  · STOD_1  [pp_61313f513d68]
+- **VP1-S13-42** - referens 1.4 m i 2 dragningar, vi 3.67 m i 2 rör (OVER)
+    - `LONG_RUN` referens 0.7 m → vi 2.0 m  · STOD_1  [pp_ae888b7a8ed1]
+    - `LONG_RUN` referens 0.7 m → vi 1.7 m  · STOD_1  [pp_0ff56cdad3ef]
+- **VP1-S2-65** - referens 45.2 m i 9 dragningar, vi 41.86 m i 4 rör (FULL)
+    - `SPLIT` referens 19.7 m → vi 10.2 + 9.9 m  [pp_3162f866298a, pp_01065d140800]
+    - `SHORT_RUN` referens 19.1 m → vi 11.0 m  · SYMBOL  [pp_89f69d48dd80]
+    - `LONG_RUN` referens 1.6 m → vi 10.7 m  · STOD_1  [pp_23fbdb127677]
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS11-S13-42** - referens 3.3 m i 4 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13** - referens 0 m i 0 dragningar, vi 0.0 m i 3 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_022b7a410255]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_8064e9c166ae]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_c136065c9f35]
+- **VS21-S13-15** - referens 65.9 m i 26 dragningar, vi 70.52 m i 15 rör (FULL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_832d41684a68]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_40ccd9a6cd52]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_73842027b584]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_ce70517fad73]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_3e91a017840e]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_a76f94783519]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_c0c770953145]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_9b6f48f99662]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_39cc45de854b]
+    - `SAME_RUN` referens 0.8 m → vi 0.7 m  [pp_8a47755d8d24]
+    - `SAME_RUN` referens 0.9 m → vi 1.0 m  [pp_d2414481812a]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_09280d9b888c]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_e10217df6e27]
+    - `MERGED` referens 16.5 + 9.7 + 9.0 + 0.4 m → vi 35.6 m  [pp_7e71e1037267]
+    - `LONG_RUN` referens 17.2 m → vi 27.6 m  · STOD_4  [pp_9f90ad89aa0b]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 0.2 m i 4 dragningar, vi 0.42 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.2 m  [pp_8ceeab111dde]
+    - `SAME_RUN` referens 0.1 m → vi 0.3 m  [pp_1faf3b50b127]
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-28** - referens 0.3 m i 2 dragningar, vi 0.69 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.3 m  [pp_247c3d4c8af1]
+    - `LONG_RUN` referens 0.1 m → vi 0.4 m  · STOD_1  [pp_125788eed873]
+- **VS21-S13-35** - referens 30.4 m i 18 dragningar, vi 2.52 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 1.1 m → vi 1.3 m  [pp_c65e5cf929a2]
+    - `MERGED` referens 0.9 + 0.4 m → vi 1.3 m  [pp_80a87b171afc]
+    - `MISSING_RUN` referens 9.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 8.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-S13-22** - referens 1.3 m i 4 dragningar, vi 5.13 m i 2 rör (OVER)
+    - `LONG_RUN` referens 0.6 m → vi 3.0 m  · STOD_1  [pp_1ef062c66e0c]
+    - `LONG_RUN` referens 0.3 m → vi 2.2 m  · STOD_1  [pp_26c71b3fd181]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-S13-28** - referens 45.0 m i 8 dragningar, vi 40.35 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 18.7 m → vi 18.8 m  [pp_f29f8129a5c5]
+    - `MERGED` referens 18.3 + 2.2 + 0.1 + 0.1 m → vi 20.8 m  [pp_699d885c1948]
+    - `SHORT_RUN` referens 2.2 m → vi 0.8 m  · SYMBOL  [pp_83f98fbc1751]
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-X32-25** - referens 0.5 m i 2 dragningar, vi 1.04 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.3 m → vi 1.0 m  · STOD_1  [pp_5aa52e6a42af]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X31-16** - referens 27.3 m i 9 dragningar, vi 29.88 m i 21 rör (FULL)
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_22a1629d8bc7]
+    - `SAME_RUN` referens 5.6 m → vi 5.6 m  [pp_09e96c41b004]
+    - `SAME_RUN` referens 3.6 m → vi 3.6 m  [pp_26a51293f96c]
+    - `SAME_RUN` referens 3.7 m → vi 3.7 m  [pp_d1c2463ddd2a]
+    - `SAME_RUN` referens 6.7 m → vi 6.6 m  [pp_bf209114d18f]
+    - `SAME_RUN` referens 3.4 m → vi 3.3 m  [pp_7c20f24a6181]
+    - `SAME_RUN` referens 1.8 m → vi 1.7 m  [pp_118cf76b9a01]
+    - `SAME_RUN` referens 0.2 m → vi 0.3 m  [pp_3493a106d591]
+    - `SPLIT` referens 1.1 m → vi 0.6 + 0.4 + 0.0 m  [pp_61f8689cecb9, pp_74e2feda4b33, pp_29d448f32dd1]
+    - `EXTRA_RUN` referens - m → vi 2.8 m  · STOD_0  [pp_c6f0ea90f5a6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_5fd85f32d781]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_928030dd5814]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_9ace11a29ceb]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b6124b73ae6f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_bb73ce32c755]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_d0c11eeb0ac8]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f3e6f0674db6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f878ca36f1d2]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_fccc7c5bd0cb]
+- **VV1-X7-20** - referens 3.2 m i 4 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-25** - referens 0.1 m i 1 dragningar, vi 2.69 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.1 m → vi 2.7 m  · STOD_1  [pp_4a72f8ee3eb8]
+- **VV1-X7-32** - referens 10.8 m i 7 dragningar, vi 9.57 m i 1 rör (PARTIAL)
+    - `MERGED` referens 6.4 + 3.1 + 0.1 m → vi 9.6 m  [pp_17295f812aa6]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 23.2 m i 6 dragningar, vi 21.74 m i 1 rör (FULL)
+    - `MERGED` referens 17.0 + 3.3 + 1.5 m → vi 21.7 m  [pp_a04323c1c89d]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-20** - referens 10.6 m i 5 dragningar, vi 0.0 m i 1 rör (MISSED)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_13b5d61062e0]
+    - `MISSING_RUN` referens 6.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 21.8 m i 3 dragningar, vi 21.52 m i 1 rör (FULL)
+    - `SAME_RUN` referens 20.2 m → vi 21.5 m  [pp_14fe9164359b]
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0124  ·  referens 252.2 m i 233 dragningar  ·  vi 193.5 m i 100 rör
+
+- **FJV1-S6-65** - referens 7.4 m i 10 dragningar, vi 3.0 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 2.9 m → vi 3.0 m  [pp_297994259356]
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X31-16** - referens 10.0 m i 13 dragningar, vi 15.29 m i 25 rör (OVER)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_336aa4066aaf]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_cc88224aac25]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_5158b4acb6b3]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_0b09b3352683]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_54b4a9d821a7]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_e75950e3810a]
+    - `SAME_RUN` referens 0.6 m → vi 0.5 m  [pp_06f4306a631a]
+    - `SAME_RUN` referens 2.7 m → vi 2.5 m  [pp_549f37e311a5]
+    - `MERGED` referens 1.0 + 1.0 + 0.4 m → vi 2.5 m  [pp_72b2c7e99b9d]
+    - `SPLIT` referens 0.4 m → vi 0.1 + 0.1 + 0.1 m  [pp_e29cbb454c4c, pp_55b5f4195702, pp_14f7d30e9c88]
+    - `LONG_RUN` referens 2.8 m → vi 6.9 m  · STOD_0  [pp_33a809f58f6e]
+    - `EXTRA_RUN` referens - m → vi 1.3 m  · STOD_0  [pp_19e1c154ae1c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_3b7669e5930c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_413f19c749dd]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4a3605d1d01e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_5a1d2b432c7a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_5fe2bdc18506]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_681dab1ff7fd]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_aa0f1a04c0a8]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b4fad9c0f6c2]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b519fb98b7ea]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_cd8eeb420f48]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_def0f44235da]
+- **KV1-X7-20** - referens 9.8 m i 15 dragningar, vi 8.37 m i 5 rör (PARTIAL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_d8982b772af1]
+    - `SAME_RUN` referens 1.8 m → vi 1.7 m  [pp_6103ef2e5162]
+    - `SAME_RUN` referens 0.5 m → vi 0.7 m  [pp_121882b3557e]
+    - `MERGED` referens 2.6 + 1.5 + 0.5 m → vi 4.6 m  [pp_0e32bb1cf945]
+    - `MERGED` referens 0.3 + 0.2 + 0.2 + 0.1 m → vi 0.8 m  [pp_d344110e92cf]
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-25** - referens 8.0 m i 8 dragningar, vi 5.07 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_bb525a446aff]
+    - `MERGED` referens 2.1 + 1.4 + 1.3 + 0.3 m → vi 5.1 m  [pp_8bbd5e3fc75c]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 8.6 m i 11 dragningar, vi 7.7 m i 1 rör (PARTIAL)
+    - `MERGED` referens 3.4 + 1.1 + 1.1 + 1.1 + 0.5 m → vi 7.7 m  [pp_b1bbeab6442f]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-50** - referens 20.5 m i 29 dragningar, vi 12.15 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 2.2 m → vi 2.3 m  [pp_b8cf51bd3d29]
+    - `SAME_RUN` referens 3.3 m → vi 3.5 m  [pp_384c3ed57469]
+    - `MERGED` referens 2.1 + 1.1 + 1.1 + 0.4 m → vi 4.7 m  [pp_132201653549]
+    - `MERGED` referens 0.4 + 0.4 + 0.4 + 0.3 m → vi 1.6 m  [pp_795ac44e7bfa]
+    - `MISSING_RUN` referens 5.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV2-X7-25** - referens 2.5 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **SF1-P5-110** - referens 7.3 m i 5 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 4.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+- **SF1-P5-160** - referens 15.5 m i 10 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 4.9 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 4.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VP1-S13-28** - referens 3.0 m i 2 dragningar, vi 2.56 m i 1 rör (PARTIAL)
+    - `LONG_RUN` referens 1.6 m → vi 2.6 m  · STOD_2  [pp_75966fb3b32d]
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-35** - referens 2.0 m i 3 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+- **VP1-S2-65** - referens 4.4 m i 11 dragningar, vi 3.15 m i 2 rör (PARTIAL)
+    - `MERGED` referens 1.1 + 0.3 + 0.1 + 0.1 m → vi 1.6 m  [pp_2fe152b813be]
+    - `MERGED` referens 0.8 + 0.6 + 0.2 m → vi 1.5 m  [pp_bebf97870773]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13** - referens 0 m i 0 dragningar, vi 1.25 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_1  [pp_02eca2ce577b]
+    - `EXTRA_RUN` referens - m → vi 0.6 m  · STOD_1  [pp_fa8d4dace893]
+- **VS21-S13-15** - referens 25.9 m i 20 dragningar, vi 27.53 m i 16 rör (FULL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_a638421ef747]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_55c5c762142d]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_f9ae8a29addf]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_db3f8b5dbd1b]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_fd5d7c4d5c85]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_f226588d4024]
+    - `SAME_RUN` referens 2.0 m → vi 2.0 m  [pp_8131918af432]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_7d1df1aff23e]
+    - `SAME_RUN` referens 0.6 m → vi 0.5 m  [pp_bb9c0daebaf7]
+    - `SAME_RUN` referens 5.6 m → vi 5.7 m  [pp_0ee80cb61107]
+    - `SAME_RUN` referens 6.0 m → vi 6.1 m  [pp_a661e4cea342]
+    - `SAME_RUN` referens 2.2 m → vi 2.4 m  [pp_e1ce05b0ab8a]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_b2a5de2db446]
+    - `MERGED` referens 0.9 + 0.9 + 0.8 m → vi 2.5 m  [pp_b11dedc4ef90]
+    - `MERGED` referens 0.2 + 0.2 m → vi 0.5 m  [pp_c70e1e3c2317]
+    - `LONG_RUN` referens 1.1 m → vi 2.4 m  · STOD_1  [pp_5b37aa615eaf]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-15-** - referens 0.8 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+- **VS21-S13-22** - referens 70.7 m i 28 dragningar, vi 53.95 m i 2 rör (PARTIAL)
+    - `MERGED` referens 22.7 + 4.5 m → vi 27.1 m  [pp_3b001f0dfbc2]
+    - `MERGED` referens 22.3 + 4.5 m → vi 26.8 m  [pp_f41eb3118607]
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 7.8 m i 10 dragningar, vi 6.32 m i 27 rör (PARTIAL)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_009b2681f9b0]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_ca526370042c]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_d242124c2397]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_bd90cc4b5bc3]
+    - `SAME_RUN` referens 2.5 m → vi 2.3 m  [pp_09dee1194c10]
+    - `MERGED` referens 1.1 + 0.4 + 0.4 m → vi 1.9 m  [pp_e9ca35fd3ad5]
+    - `SHORT_RUN` referens 2.7 m → vi 1.8 m  · FREE_END, REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_f059245b7fe8]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_80b1bc242cbc]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_30f5bb9e4e82]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_0aeb76edd7e7]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_20a3e078f6de]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_38aed25336bc]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_47401f9bfbb6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_499fd0ddd929]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7644f3517ed0]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_8c3116544fb0]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_90b37231f224]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_9faef815bee3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a47b2977bd6c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b773aad06927]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c251b0ed2682]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c3dded19601a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_da082c49aae3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_de445fa92046]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f59f4ad442ba]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f7b8c232a3ab]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_fb9b7137df3f]
+- **VV1-X31-20** - referens 0 m i 0 dragningar, vi 0.07 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_5e34403f3f4c]
+- **VV1-X7-20** - referens 10.5 m i 14 dragningar, vi 20.7 m i 6 rör (OVER)
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_d5ad1016ada6]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_4a5a2e96bb56]
+    - `MERGED` referens 2.5 + 1.8 + 1.3 + 0.7 m → vi 6.5 m  [pp_a53f00792ff8]
+    - `MERGED` referens 1.1 + 0.6 + 0.5 + 0.2 + 0.1 + 0.1 + 0.1 m → vi 2.9 m  [pp_406084937e90]
+    - `LONG_RUN` referens 0.0 m → vi 5.4 m  · STOD_1  [pp_c13da0294bc9]
+    - `EXTRA_RUN` referens - m → vi 4.4 m  · STOD_3  [pp_58d80967f369]
+- **VV1-X7-25** - referens 8.0 m i 8 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-32** - referens 7.8 m i 11 dragningar, vi 7.46 m i 1 rör (FULL)
+    - `MERGED` referens 3.5 + 0.9 + 0.9 + 0.9 + 0.7 m → vi 7.5 m  [pp_fc51a1feb287]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-50** - referens 4.0 m i 5 dragningar, vi 1.56 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 1.7 m → vi 1.6 m  [pp_d39187cff281]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-20** - referens 14.2 m i 9 dragningar, vi 14.17 m i 2 rör (FULL)
+    - `MERGED` referens 3.7 + 1.8 + 1.4 + 0.3 m → vi 7.2 m  [pp_8b687b4d9fa9]
+    - `MERGED` referens 4.4 + 1.3 + 0.6 + 0.5 m → vi 7.0 m  [pp_a25abba1da8f]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-40** - referens 3.2 m i 5 dragningar, vi 3.2 m i 1 rör (FULL)
+    - `MERGED` referens 1.6 + 0.6 + 0.5 + 0.4 m → vi 3.2 m  [pp_c47912bfa79d]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0211  ·  referens 107.2 m i 30 dragningar  ·  vi 100.6 m i 6 rör
+
+- **VS21-S13-15** - referens 107.2 m i 30 dragningar, vi 100.62 m i 6 rör (FULL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_31a5ef850840]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_0786e33c83a7]
+    - `SAME_RUN` referens 20.5 m → vi 20.8 m  [pp_adc5a9b3dc52]
+    - `SAME_RUN` referens 20.5 m → vi 20.9 m  [pp_f4d95dfdd459]
+    - `MERGED` referens 15.0 + 10.1 + 2.1 + 2.1 m → vi 29.2 m  [pp_49a5d19531f6]
+    - `MERGED` referens 14.4 + 9.7 + 1.4 + 1.4 m → vi 28.7 m  [pp_8ee4bd7f7312]
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0212  ·  referens 366.1 m i 197 dragningar  ·  vi 343.5 m i 75 rör
+
+- **KV1-X31-16** - referens 92.0 m i 37 dragningar, vi 85.43 m i 21 rör (FULL)
+    - `SAME_RUN` referens 7.3 m → vi 7.3 m  [pp_3dcdfe7f045c]
+    - `SAME_RUN` referens 1.1 m → vi 1.1 m  [pp_4a9382f236bb]
+    - `SAME_RUN` referens 2.6 m → vi 2.6 m  [pp_777b2a12fb89]
+    - `SAME_RUN` referens 7.8 m → vi 7.8 m  [pp_0995312ca1be]
+    - `SAME_RUN` referens 5.4 m → vi 5.4 m  [pp_db1ca126ea87]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_206f371fb86e]
+    - `SAME_RUN` referens 11.5 m → vi 11.6 m  [pp_8b994305a26f]
+    - `SAME_RUN` referens 4.6 m → vi 4.7 m  [pp_790f64cf2f2c]
+    - `SAME_RUN` referens 3.2 m → vi 3.1 m  [pp_dd692082b1fb]
+    - `SAME_RUN` referens 5.8 m → vi 5.9 m  [pp_03af2430fa7b]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_60879540d885]
+    - `SAME_RUN` referens 3.0 m → vi 2.9 m  [pp_c7f977675144]
+    - `SAME_RUN` referens 7.1 m → vi 7.2 m  [pp_056a862da190]
+    - `SAME_RUN` referens 8.6 m → vi 8.8 m  [pp_47809fc26cd4]
+    - `SAME_RUN` referens 1.6 m → vi 1.8 m  [pp_6e8b732734bf]
+    - `MERGED` referens 2.8 + 2.4 + 0.3 m → vi 5.5 m  [pp_869411e5a780]
+    - `MERGED` referens 1.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.2 + 0.2 m → vi 3.4 m  [pp_be0c704e034d]
+    - `MERGED` referens 0.2 + 0.2 + 0.2 + 0.2 m → vi 1.0 m  [pp_e1d562ff0355]
+    - `MERGED` referens 0.2 + 0.2 + 0.2 + 0.2 m → vi 0.7 m  [pp_a4fab8f7580a]
+    - `SHORT_RUN` referens 6.7 m → vi 3.4 m  · SYMBOL  [pp_296e68d29618]
+    - `SHORT_RUN` referens 4.3 m → vi 0.5 m  · SYMBOL  [pp_3731cc1a5aec]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-25** - referens 0 m i 0 dragningar, vi 14.53 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 14.5 m  · STOD_3  [pp_52967ecd86dc]
+- **KV1-X7-32** - referens 1.9 m i 5 dragningar, vi 0.57 m i 1 rör (PARTIAL)
+    - `MERGED` referens 0.2 + 0.2 + 0.1 + 0.1 m → vi 0.6 m  [pp_332f8018bc87]
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 0.2 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **KV2-X7-25** - referens 8.5 m i 5 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 4.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_INTE
+- **S1-P3-110** - referens 0 m i 0 dragningar, vi 2.49 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.5 m  · STOD_1  [pp_ae976bcd6c6e]
+- **S1-P5-110** - referens 17.3 m i 7 dragningar, vi 12.39 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 9.1 m → vi 10.0 m  [pp_b4c3cb34862a]
+    - `MERGED` referens 1.0 + 0.9 + 0.5 m → vi 2.4 m  [pp_4717f1bc7af3]
+    - `MISSING_RUN` referens 3.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-160** - referens 12.3 m i 9 dragningar, vi 8.39 m i 1 rör (PARTIAL)
+    - `MERGED` referens 3.8 + 2.2 + 1.7 + 0.8 m → vi 8.4 m  [pp_ff3ff8670c77]
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 2.4 m i 11 dragningar, vi 0.52 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_e8209c598e36]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_28425b4641ae]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_10f603c7053b]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-35** - referens 4.1 m i 4 dragningar, vi 5.34 m i 4 rör (OVER)
+    - `SAME_RUN` referens 1.3 m → vi 1.3 m  [pp_aa3284e463af]
+    - `SAME_RUN` referens 1.8 m → vi 1.8 m  [pp_2f9036599166]
+    - `MERGED` referens 0.5 + 0.5 m → vi 1.0 m  [pp_c0bff9bd618c]
+    - `EXTRA_RUN` referens - m → vi 1.3 m  · STOD_1  [pp_82c84a4ebba5]
+- **VP1-S13-42** - referens 6.1 m i 6 dragningar, vi 5.33 m i 2 rör (PARTIAL)
+    - `MERGED` referens 2.3 + 0.5 m → vi 2.7 m  [pp_cf1aad91fd80]
+    - `MERGED` referens 2.3 + 0.1 + 0.1 m → vi 2.7 m  [pp_f5dae4a593c5]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S2-65** - referens 0.4 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VS11-S13-35** - referens 11.9 m i 6 dragningar, vi 5.98 m i 1 rör (PARTIAL)
+    - `MERGED` referens 3.0 + 3.0 m → vi 6.0 m  [pp_d3bf2d4c8d3c]
+    - `MISSING_RUN` referens 2.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-15** - referens 90.3 m i 36 dragningar, vi 99.09 m i 12 rör (FULL)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_526638b86a2f]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_6f68a7ba3a48]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_3eafa61af287]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_c5b25f693d90]
+    - `SAME_RUN` referens 13.2 m → vi 13.8 m  [pp_b1ab39eba68e]
+    - `SAME_RUN` referens 10.5 m → vi 11.4 m  [pp_ef362950385c]
+    - `MERGED` referens 10.5 + 7.4 m → vi 17.9 m  [pp_08a20a8e5a82]
+    - `MERGED` referens 13.2 + 3.9 + 0.6 m → vi 17.7 m  [pp_2ee2c27bc22e]
+    - `MERGED` referens 5.0 + 4.0 + 4.0 + 3.9 m → vi 17.7 m  [pp_0c46e2ea0c45]
+    - `MERGED` referens 2.6 + 0.4 m → vi 3.0 m  [pp_c997e90a1a9f]
+    - `MERGED` referens 0.5 + 0.4 m → vi 0.9 m  [pp_549a664741c5]
+    - `LONG_RUN` referens 2.6 m → vi 14.8 m  · STOD_3  [pp_b6fc911dde32]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 37.3 m i 20 dragningar, vi 25.69 m i 2 rör (PARTIAL)
+    - `MERGED` referens 5.0 + 4.8 + 2.9 + 0.3 m → vi 13.0 m  [pp_1dbf3837148c]
+    - `MERGED` referens 4.7 + 4.6 + 2.7 + 0.6 m → vi 12.7 m  [pp_6b9cac93ff1e]
+    - `MISSING_RUN` referens 4.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-35** - referens 0.4 m i 2 dragningar, vi 0.27 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_006151164435]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_bf343336fdc0]
+- **VS21-S13-42** - referens 5.6 m i 8 dragningar, vi 4.52 m i 2 rör (PARTIAL)
+    - `MERGED` referens 1.1 + 0.8 + 0.6 m → vi 2.5 m  [pp_dc0931455e19]
+    - `MERGED` referens 1.1 + 0.7 + 0.1 + 0.1 m → vi 2.0 m  [pp_7b4801e5c3d9]
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 54.6 m i 20 dragningar, vi 50.63 m i 16 rör (FULL)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_cac91c641daa]
+    - `SAME_RUN` referens 7.6 m → vi 7.6 m  [pp_2f9e0519a5e7]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_71abab629527]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_b7c2df6d8def]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_bff805c89f25]
+    - `SAME_RUN` referens 0.3 m → vi 0.4 m  [pp_6286ac8f1383]
+    - `SAME_RUN` referens 2.7 m → vi 2.8 m  [pp_8c9f4c7ba654]
+    - `SAME_RUN` referens 10.2 m → vi 10.3 m  [pp_d60dfe04727f]
+    - `SAME_RUN` referens 5.2 m → vi 5.3 m  [pp_79432d8cf123]
+    - `SAME_RUN` referens 3.6 m → vi 3.8 m  [pp_5e0f3107dd39]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_c31300e80dec]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_bed1feb0a8ec]
+    - `SAME_RUN` referens 7.3 m → vi 7.7 m  [pp_a9cf80f5d363]
+    - `SAME_RUN` referens 4.7 m → vi 4.2 m  [pp_78995b1aa37c]
+    - `MERGED` referens 0.3 + 0.2 + 0.2 m → vi 0.8 m  [pp_2ad2c63b2823]
+    - `SHORT_RUN` referens 7.0 m → vi 5.9 m  · SYMBOL  [pp_5e456e1d853a]
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X7-25** - referens 11.0 m i 10 dragningar, vi 12.62 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_f0fd9c397cc2]
+    - `MERGED` referens 5.0 + 2.6 + 0.5 + 0.1 m → vi 8.2 m  [pp_f2f86672c3b1]
+    - `LONG_RUN` referens 1.1 m → vi 3.7 m  · STOD_1  [pp_f554ad2b3085]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 0.2 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VVC1-X7-20** - referens 9.4 m i 6 dragningar, vi 9.69 m i 1 rör (FULL)
+    - `MERGED` referens 5.0 + 2.6 + 0.9 + 0.5 m → vi 9.7 m  [pp_66c3527978ff]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 0.2 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0221  ·  referens 55.8 m i 14 dragningar  ·  vi 55.4 m i 10 rör
+
+- **VS21-S13-15** - referens 55.8 m i 14 dragningar, vi 55.39 m i 10 rör (FULL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_1ecb14171f42]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_8e9e3f5c9693]
+    - `SAME_RUN` referens 1.7 m → vi 1.6 m  [pp_37cfd0a8d808]
+    - `SAME_RUN` referens 1.3 m → vi 1.2 m  [pp_797cf21bd8d5]
+    - `SAME_RUN` referens 1.9 m → vi 1.8 m  [pp_8631818c9f2b]
+    - `SAME_RUN` referens 1.5 m → vi 1.4 m  [pp_26aa4ddaac0a]
+    - `SAME_RUN` referens 20.0 m → vi 20.5 m  [pp_f8783f7e851b]
+    - `SAME_RUN` referens 19.9 m → vi 20.6 m  [pp_b295c5522752]
+    - `MERGED` referens 2.8 + 0.7 m → vi 3.6 m  [pp_245dd128091f]
+    - `MERGED` referens 2.5 + 0.7 m → vi 3.2 m  [pp_4fe107f6c17e]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0222  ·  referens 106.3 m i 63 dragningar  ·  vi 94.5 m i 16 rör
+
+- **KV1-X31-16** - referens 0.7 m i 6 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **S1-P5-110** - referens 9.6 m i 5 dragningar, vi 9.47 m i 4 rör (FULL)
+    - `SAME_RUN` referens 1.3 m → vi 1.2 m  [pp_e51273f34499]
+    - `SAME_RUN` referens 0.5 m → vi 0.4 m  [pp_3e91a9d7a765]
+    - `MERGED` referens 5.1 + 1.1 m → vi 5.8 m  [pp_9af71bcaf273]
+    - `LONG_RUN` referens 1.6 m → vi 2.0 m  · STOD_2  [pp_19518dd2d5fe]
+- **S1-P5-160** - referens 24.4 m i 18 dragningar, vi 12.98 m i 2 rör (PARTIAL)
+    - `MERGED` referens 4.4 + 3.5 + 1.3 + 0.8 m → vi 10.1 m  [pp_f857219f0963]
+    - `MERGED` referens 1.8 + 1.1 m → vi 2.9 m  [pp_73c57c4a7979]
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 0 m i 0 dragningar, vi 6.88 m i 4 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 3.1 m  · STOD_1  [pp_0da1e0ba0553]
+    - `EXTRA_RUN` referens - m → vi 2.7 m  · STOD_3  [pp_d2b7013a5c30]
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_1  [pp_96e67bfbf1d5]
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_1  [pp_83dea5a63000]
+- **SF1-P5-75** - referens 1.3 m i 6 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VS21-S13-15** - referens 69.6 m i 22 dragningar, vi 65.21 m i 6 rör (FULL)
+    - `SAME_RUN` referens 1.4 m → vi 1.4 m  [pp_9bf8877003cb]
+    - `SAME_RUN` referens 0.5 m → vi 0.4 m  [pp_fe66bf3e79f3]
+    - `MERGED` referens 17.4 + 1.1 + 0.8 + 0.8 m → vi 20.1 m  [pp_bd7f2ee88d32]
+    - `MERGED` referens 16.8 + 1.4 + 1.4 m → vi 19.5 m  [pp_b7789d2ad351]
+    - `MERGED` referens 10.0 + 0.7 + 0.7 + 0.7 m → vi 12.1 m  [pp_7d7adf0a6cca]
+    - `MERGED` referens 9.7 + 1.4 + 0.7 m → vi 11.8 m  [pp_dbbc66f1afd2]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 0.7 m i 6 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0223  ·  referens 92.7 m i 48 dragningar  ·  vi 85.3 m i 5 rör
+
+- **KV1-X31-16** - referens 0.9 m i 8 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **SF1-P5-75** - referens 1.6 m i 8 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VS21-S13-15** - referens 88.3 m i 22 dragningar, vi 84.82 m i 4 rör (FULL)
+    - `SAME_RUN` referens 30.2 m → vi 31.6 m  [pp_b665df7b8aaa]
+    - `SAME_RUN` referens 30.1 m → vi 31.9 m  [pp_49fba10e06c5]
+    - `MERGED` referens 7.8 + 1.7 + 0.9 + 0.6 m → vi 11.0 m  [pp_2c860a6790aa]
+    - `MERGED` referens 8.1 + 0.9 + 0.9 + 0.4 m → vi 10.3 m  [pp_647cb67b0259]
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-28** - referens 1.0 m i 2 dragningar, vi 0.48 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_1d8a6db58d06]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X31-16** - referens 0.9 m i 8 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0311  ·  referens 129.5 m i 36 dragningar  ·  vi 118.7 m i 19 rör
+
+- **S1-P5-110** - referens 21.1 m i 6 dragningar, vi 7.54 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 1.9 m → vi 1.9 m  [pp_ccf549e1c3b0]
+    - `MERGED` referens 3.7 + 1.3 + 0.7 m → vi 5.6 m  [pp_ba7054602176]
+    - `MISSING_RUN` referens 13.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-110L** - referens 0 m i 0 dragningar, vi 3.05 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.4 m  · STOD_1  [pp_9455188c7a95]
+    - `EXTRA_RUN` referens - m → vi 0.6 m  · STOD_1  [pp_4e55f34ac9ae]
+- **S1-P5-75** - referens 0 m i 0 dragningar, vi 2.74 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 1.5 m  · STOD_1  [pp_c7b66e6c161c]
+    - `EXTRA_RUN` referens - m → vi 1.3 m  · STOD_1  [pp_35eea1077125]
+- **VS21-S13-15** - referens 108.4 m i 30 dragningar, vi 105.4 m i 13 rör (FULL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_495e2200b9e0]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_23b1f2491bd8]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_5516f7c7ffd5]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_11c40875eb06]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_1948704fbe1d]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_b50bb13b865a]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_40bb71bd3635]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_4f21da76182c]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_87d73d723030]
+    - `SAME_RUN` referens 21.2 m → vi 21.4 m  [pp_241e5cb95815]
+    - `SAME_RUN` referens 21.0 m → vi 21.6 m  [pp_ec2e54f9b2a7]
+    - `MERGED` referens 14.4 + 13.7 + 1.6 m → vi 29.7 m  [pp_9812ae130492]
+    - `MERGED` referens 10.6 + 10.2 + 2.5 + 2.5 + 1.6 m → vi 28.8 m  [pp_b36cb696a18f]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0312  ·  referens 262.6 m i 140 dragningar  ·  vi 209.1 m i 41 rör
+
+- **KV1-X31-16** - referens 55.9 m i 20 dragningar, vi 29.89 m i 10 rör (PARTIAL)
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_e67949a2b47c]
+    - `SAME_RUN` referens 8.0 m → vi 8.1 m  [pp_4083123f17aa]
+    - `SAME_RUN` referens 4.8 m → vi 4.9 m  [pp_a28b67b03b94]
+    - `SAME_RUN` referens 6.0 m → vi 6.1 m  [pp_57efecff0cad]
+    - `SAME_RUN` referens 3.5 m → vi 3.4 m  [pp_01579f98562c]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_e6178680dc56]
+    - `MERGED` referens 3.2 + 0.3 + 0.2 m → vi 3.7 m  [pp_4a9ddd2961ab]
+    - `MERGED` referens 0.3 + 0.3 + 0.2 + 0.2 + 0.2 + 0.2 m → vi 1.4 m  [pp_abfac9ed89c0]
+    - `SHORT_RUN` referens 7.5 m → vi 0.7 m  · BROKEN_CONTINUITY, SYMBOL  [pp_fae7ac4e5be7]
+    - `SHORT_RUN` referens 6.9 m → vi 0.6 m  · SYMBOL  [pp_112145b5c4c5]
+    - `MISSING_RUN` referens 5.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 4.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 2.8 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-25** - referens 2.2 m i 4 dragningar, vi 5.27 m i 1 rör (OVER)
+    - `LONG_RUN` referens 1.3 m → vi 5.3 m  · STOD_1  [pp_66b2fd7eb5a3]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **S1-P3-160** - referens 0 m i 0 dragningar, vi 6.16 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 6.2 m  · STOD_1  [pp_f19c90292ff7]
+- **S1-P5-110** - referens 10.3 m i 7 dragningar, vi 7.85 m i 2 rör (PARTIAL)
+    - `MERGED` referens 3.9 + 1.0 m → vi 4.9 m  [pp_0a8c0b3925d7]
+    - `MERGED` referens 1.0 + 0.9 + 0.5 + 0.5 m → vi 2.9 m  [pp_39da13b35a0f]
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-160** - referens 12.3 m i 9 dragningar, vi 2.2 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 2.2 m → vi 2.2 m  [pp_7733313757ed]
+    - `MISSING_RUN` referens 3.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 1.4 m i 6 dragningar, vi 0.14 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_e8209c598e36]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-35** - referens 5.5 m i 4 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 2.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-42** - referens 0.2 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VS11-S13-35** - referens 14.1 m i 6 dragningar, vi 14.11 m i 2 rör (FULL)
+- **VS21-S13-15** - referens 84.0 m i 38 dragningar, vi 98.88 m i 9 rör (OVER)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_526638b86a2f]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_549a664741c5]
+    - `SAME_RUN` referens 11.5 m → vi 11.9 m  [pp_08e0ce52ce5d]
+    - `MERGED` referens 11.5 + 3.3 + 2.9 m → vi 17.8 m  [pp_d757e1f9b792]
+    - `MERGED` referens 10.6 + 3.3 + 2.9 + 0.9 m → vi 17.8 m  [pp_4729a53087ef]
+    - `MERGED` referens 10.6 + 5.0 + 0.9 + 0.9 m → vi 17.7 m  [pp_d7fe44532fdb]
+    - `MERGED` referens 7.4 + 0.7 + 0.7 + 0.6 + 0.6 + 0.6 + 0.6 + 0.6 + 0.6 + 0.6 + 0.5 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 m → vi 17.7 m  [pp_db67aa7785fb]
+    - `LONG_RUN` referens 0.3 m → vi 14.3 m  · STOD_2  [pp_5096216454a5]
+    - `SHORT_RUN` referens 0.3 m → vi 0.1 m  · FLOW_BUDGET, VERTICAL  [pp_c5b25f693d90]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 45.9 m i 26 dragningar, vi 14.85 m i 2 rör (PARTIAL)
+    - `MERGED` referens 4.5 + 3.0 m → vi 7.5 m  [pp_1f905b23093c]
+    - `MERGED` referens 5.3 + 0.8 + 0.7 + 0.6 m → vi 7.4 m  [pp_4d61a951ef3a]
+    - `MISSING_RUN` referens 5.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 5.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 5.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-35** - referens 0.2 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X31-16** - referens 28.6 m i 10 dragningar, vi 24.13 m i 11 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_6a62e5be5527]
+    - `SAME_RUN` referens 3.4 m → vi 3.5 m  [pp_551b5eabfdbc]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_1f37cf60d768]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_c8f01733a076]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_946aad2d00f1]
+    - `SAME_RUN` referens 7.4 m → vi 7.6 m  [pp_591495be39a9]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_b178ed8e78fe]
+    - `SAME_RUN` referens 5.0 m → vi 5.2 m  [pp_654c1c66f183]
+    - `SPLIT` referens 6.9 m → vi 5.7 + 0.7 + 0.0 m  [pp_914aa6519f66, pp_3ce758419b6d, pp_206c9d997451]
+    - `MISSING_RUN` referens 4.6 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X7-25** - referens 1.8 m i 4 dragningar, vi 5.66 m i 1 rör (OVER)
+    - `LONG_RUN` referens 1.1 m → vi 5.7 m  · STOD_1  [pp_89810403f2fc]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0321  ·  referens 76.9 m i 22 dragningar  ·  vi 68.2 m i 12 rör
+
+- **S1-P5-110** - referens 3.6 m i 2 dragningar, vi 3.48 m i 1 rör (FULL)
+- **S1-P5-160** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_6d0a183dc79c]
+- **VS21-S13-15** - referens 73.3 m i 20 dragningar, vi 64.76 m i 10 rör (PARTIAL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_af654bf19453]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_d944859778fa]
+    - `SAME_RUN` referens 1.7 m → vi 1.6 m  [pp_d302cf628e01]
+    - `SAME_RUN` referens 1.3 m → vi 1.2 m  [pp_ec737997f5ea]
+    - `SAME_RUN` referens 1.5 m → vi 1.4 m  [pp_f66e4e01d9f4]
+    - `SAME_RUN` referens 1.9 m → vi 1.8 m  [pp_658dcc357bd7]
+    - `SAME_RUN` referens 7.6 m → vi 8.2 m  [pp_0d67f56eea46]
+    - `SAME_RUN` referens 19.6 m → vi 20.5 m  [pp_8b4ab200e46e]
+    - `SAME_RUN` referens 19.5 m → vi 20.5 m  [pp_72929d6b0b17]
+    - `MERGED` referens 7.1 + 1.3 + 0.2 m → vi 8.7 m  [pp_73a0fdb511d5]
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0322  ·  referens 255.4 m i 127 dragningar  ·  vi 224.1 m i 44 rör
+
+- **KV1-X31-16** - referens 95.5 m i 36 dragningar, vi 85.11 m i 16 rör (PARTIAL)
+    - `SAME_RUN` referens 5.7 m → vi 5.7 m  [pp_6b1e843317da]
+    - `SAME_RUN` referens 4.4 m → vi 4.4 m  [pp_377db98bd8eb]
+    - `SAME_RUN` referens 4.6 m → vi 4.6 m  [pp_ebf419651099]
+    - `SAME_RUN` referens 4.7 m → vi 4.7 m  [pp_ff77da9a1c49]
+    - `SAME_RUN` referens 6.8 m → vi 6.8 m  [pp_c7ba031e6eef]
+    - `SAME_RUN` referens 13.1 m → vi 13.2 m  [pp_bc5d6b24e268]
+    - `SAME_RUN` referens 6.8 m → vi 6.9 m  [pp_ca974acb3ef0]
+    - `SAME_RUN` referens 2.6 m → vi 2.7 m  [pp_d59c982fa395]
+    - `SAME_RUN` referens 7.6 m → vi 7.7 m  [pp_b54c14d86f72]
+    - `SAME_RUN` referens 3.5 m → vi 3.6 m  [pp_d686879812af]
+    - `SAME_RUN` referens 0.6 m → vi 0.7 m  [pp_e1d409000516]
+    - `SAME_RUN` referens 5.6 m → vi 5.7 m  [pp_8dcfae784a3f]
+    - `SAME_RUN` referens 3.2 m → vi 3.3 m  [pp_6062dae17f22]
+    - `SAME_RUN` referens 4.3 m → vi 4.4 m  [pp_bc320833c763]
+    - `SAME_RUN` referens 5.5 m → vi 5.8 m  [pp_1ceafc750993]
+    - `MERGED` referens 4.3 + 0.3 + 0.2 m → vi 4.8 m  [pp_278c8e71ccc5]
+    - `MISSING_RUN` referens 6.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.9 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-20** - referens 0.2 m i 2 dragningar, vi 8.22 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.1 m → vi 8.2 m  · STOD_1  [pp_fffb90730d97]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-25** - referens 2.0 m i 5 dragningar, vi 2.87 m i 1 rör (OVER)
+    - `LONG_RUN` referens 1.2 m → vi 2.9 m  · STOD_1  [pp_cc1540fdcce9]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-110** - referens 9.4 m i 6 dragningar, vi 4.83 m i 1 rör (PARTIAL)
+    - `MERGED` referens 4.0 + 0.8 m → vi 4.8 m  [pp_1e82393dfbda]
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-160** - referens 10.5 m i 9 dragningar, vi 4.84 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 1.5 m → vi 1.4 m  [pp_06fac2d066be]
+    - `MERGED` referens 1.6 + 0.9 + 0.5 + 0.5 m → vi 3.5 m  [pp_6f0a908624df]
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 2.2 m i 10 dragningar, vi 0.84 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_3e9bd43738e3]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_de3eec20be1f]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_9972bf0f82a4]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_d340979b7300]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VS21-S13** - referens 0 m i 0 dragningar, vi 0.03 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_3755941dd47a]
+- **VS21-S13-15** - referens 82.5 m i 30 dragningar, vi 64.54 m i 7 rör (PARTIAL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_5bbbe37520f7]
+    - `SAME_RUN` referens 0.5 m → vi 0.4 m  [pp_b5cae653252f]
+    - `SAME_RUN` referens 17.9 m → vi 19.1 m  [pp_580fee9dc9b9]
+    - `MERGED` referens 10.1 + 9.8 m → vi 20.0 m  [pp_76d364a62301]
+    - `MERGED` referens 2.3 + 2.3 + 1.3 + 1.3 + 1.1 + 1.1 + 1.1 + 1.1 m → vi 12.4 m  [pp_c414b026d9b4]
+    - `MERGED` referens 1.1 + 1.0 + 1.0 + 1.0 + 0.9 + 0.9 + 0.9 + 0.9 + 0.9 + 0.9 + 0.9 + 0.8 m → vi 12.0 m  [pp_358e189a999d]
+    - `SHORT_RUN` referens 17.9 m → vi 0.2 m  · REPRESENTATION_TRANSITION, UNOWNED_CONTINUATION  [pp_d6c8b78e9db6]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 0 m i 0 dragningar, vi 0.52 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_2  [pp_94c647bc719a]
+- **VV1-X31-16** - referens 50.2 m i 20 dragningar, vi 52.26 m i 10 rör (FULL)
+    - `SAME_RUN` referens 5.5 m → vi 5.6 m  [pp_728e5273dfb5]
+    - `SAME_RUN` referens 3.1 m → vi 3.2 m  [pp_351b2b485b6b]
+    - `SAME_RUN` referens 12.7 m → vi 12.8 m  [pp_434021407072]
+    - `SAME_RUN` referens 4.6 m → vi 4.7 m  [pp_61e238d25f88]
+    - `SAME_RUN` referens 4.2 m → vi 4.4 m  [pp_58675cdb5382]
+    - `SAME_RUN` referens 3.3 m → vi 3.5 m  [pp_66b11f4333fb]
+    - `SAME_RUN` referens 5.7 m → vi 6.0 m  [pp_9ec9720fabb1]
+    - `MERGED` referens 6.4 + 1.5 + 0.3 + 0.2 m → vi 8.4 m  [pp_20eb94f36ba2]
+    - `MERGED` referens 0.8 + 0.3 + 0.3 + 0.3 + 0.3 + 0.2 + 0.2 + 0.2 m → vi 2.7 m  [pp_98970c77e25e]
+    - `LONG_RUN` referens 0.1 m → vi 1.0 m  · STOD_0  [pp_ae59c07bd2a4]
+- **VV1-X7-20** - referens 0.2 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-25** - referens 2.3 m i 5 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-25** - referens 0.4 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0323  ·  referens 123.9 m i 38 dragningar  ·  vi 106.3 m i 14 rör
+
+- **VS21-S13** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_966f3feb4439]
+- **VS21-S13-15** - referens 66.1 m i 12 dragningar, vi 67.58 m i 9 rör (FULL)
+    - `SAME_RUN` referens 1.4 m → vi 1.4 m  [pp_5933ecab5da1]
+    - `SAME_RUN` referens 1.4 m → vi 1.3 m  [pp_fc7fe3054821]
+    - `SAME_RUN` referens 1.0 m → vi 1.1 m  [pp_a97536662025]
+    - `SAME_RUN` referens 29.5 m → vi 29.4 m  [pp_a515fa0963ae]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_76a25b56a5ea]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_d19681198043]
+    - `SAME_RUN` referens 29.5 m → vi 29.2 m  [pp_fe560cec0ac9]
+    - `MERGED` referens 0.9 + 0.4 m → vi 1.2 m  [pp_e1aafe0e4647]
+    - `LONG_RUN` referens 0.6 m → vi 3.9 m  · STOD_1  [pp_cf5872f7dbb2]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 56.6 m i 24 dragningar, vi 38.74 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 1.3 m → vi 1.3 m  [pp_e8cd4a976a78]
+    - `MERGED` referens 10.3 + 4.2 + 2.5 + 1.5 m → vi 18.5 m  [pp_aced6cf0dfc8]
+    - `MERGED` referens 9.9 + 3.8 + 2.2 + 1.9 m → vi 17.8 m  [pp_9bb657f09642]
+    - `MERGED` referens 0.6 + 0.5 m → vi 1.1 m  [pp_b9467dfc6b55]
+    - `MISSING_RUN` referens 3.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-28** - referens 1.2 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0411  ·  referens 196.2 m i 79 dragningar  ·  vi 181.4 m i 40 rör
+
+- **KV1-X31-16** - referens 15.8 m i 9 dragningar, vi 7.45 m i 6 rör (PARTIAL)
+    - `SAME_RUN` referens 1.4 m → vi 1.4 m  [pp_7b10733ac0c1]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_27b57303ff3d]
+    - `SAME_RUN` referens 1.4 m → vi 1.3 m  [pp_c2c6bec4c8d9]
+    - `SAME_RUN` referens 1.1 m → vi 0.9 m  [pp_eaf2074de4cc]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_9c4f9ca119dc]
+    - `SAME_RUN` referens 3.0 m → vi 3.2 m  [pp_fdd8562ba60a]
+    - `MISSING_RUN` referens 7.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-25** - referens 8.9 m i 4 dragningar, vi 16.86 m i 1 rör (OVER)
+    - `LONG_RUN` referens 6.9 m → vi 16.9 m  · STOD_1  [pp_f99fc9c94ea1]
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-110** - referens 19.9 m i 8 dragningar, vi 12.39 m i 2 rör (PARTIAL)
+    - `MERGED` referens 2.0 + 1.9 + 1.4 + 1.0 + 1.0 + 0.7 m → vi 8.4 m  [pp_0cdbcce7016d]
+    - `SHORT_RUN` referens 11.5 m → vi 4.0 m  · AMBIGUOUS_JUNCTION, REAL_DN_BOUNDARY, SYMBOL, VERTICAL  [pp_ad450ec97ec9]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 8.2 m i 6 dragningar, vi 7.06 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_5ef36a7c5372]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_b7cbeecab091]
+    - `MERGED` referens 4.7 + 1.2 + 0.5 m → vi 6.5 m  [pp_ca553949711c]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-15** - referens 62.3 m i 25 dragningar, vi 60.64 m i 16 rör (FULL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_8df4aa3140c4]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_c2abbc5b71f4]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_1073d02f8bcf]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_0cc1a4d80219]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_327716e10fa0]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_664cd11f64ee]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_6f57b45741b5]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_caff7ce3db55]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_acbb240edce8]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_5761dd3dee7c]
+    - `MERGED` referens 14.4 + 13.5 + 0.7 m → vi 28.7 m  [pp_47e09d689e80]
+    - `MERGED` referens 10.0 + 9.6 + 2.2 + 2.2 + 1.6 m → vi 28.3 m  [pp_62b737561a67]
+    - `SHORT_RUN` referens 1.6 m → vi 0.1 m  · FLOW_BUDGET, UNOWNED_CONTINUATION  [pp_86d2a210e98d]
+    - `SHORT_RUN` referens 0.6 m → vi 0.0 m  · FLOW_BUDGET  [pp_f9765b799b0d]
+    - `SHORT_RUN` referens 0.6 m → vi 0.0 m  · SYMBOL, VERTICAL  [pp_562c82849279]
+    - `SHORT_RUN` referens 0.6 m → vi 0.0 m  · VERTICAL  [pp_97d9e4010a99]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 47.8 m i 12 dragningar, vi 44.4 m i 2 rör (FULL)
+    - `SAME_RUN` referens 21.6 m → vi 22.1 m  [pp_c6c093e69542]
+    - `SAME_RUN` referens 21.5 m → vi 22.3 m  [pp_ce61062ece5c]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 14.7 m i 7 dragningar, vi 14.68 m i 8 rör (FULL)
+    - `SAME_RUN` referens 1.4 m → vi 1.4 m  [pp_ad3a80301be2]
+    - `SAME_RUN` referens 1.4 m → vi 1.3 m  [pp_221d2ccebaf8]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_3dea323ade31]
+    - `SAME_RUN` referens 3.0 m → vi 3.2 m  [pp_2b7acf7d35ef]
+    - `SAME_RUN` referens 7.3 m → vi 8.0 m  [pp_3544acef5f0a]
+    - `SHORT_RUN` referens 1.1 m → vi 0.8 m  · SYMBOL, VERTICAL  [pp_baf2ad0e4143]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · SYMBOL  [pp_41a6cbf18349]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_846a4d39bde0]
+- **VV1-X7-25** - referens 9.3 m i 4 dragningar, vi 8.97 m i 1 rör (FULL)
+    - `MERGED` referens 7.3 + 1.3 + 0.6 m → vi 9.0 m  [pp_3d592efa689b]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-20** - referens 9.3 m i 4 dragningar, vi 8.95 m i 1 rör (FULL)
+    - `MERGED` referens 7.3 + 1.2 + 0.6 m → vi 8.9 m  [pp_d389c1bb2a20]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0412  ·  referens 473.6 m i 183 dragningar  ·  vi 401.6 m i 89 rör
+
+- **KV1-X31-16** - referens 145.5 m i 38 dragningar, vi 117.98 m i 27 rör (PARTIAL)
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_474faa15198e]
+    - `SAME_RUN` referens 9.8 m → vi 9.8 m  [pp_1783f23d9829]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_57ff01b7e0d6]
+    - `SAME_RUN` referens 10.3 m → vi 10.3 m  [pp_0862978a5574]
+    - `SAME_RUN` referens 7.8 m → vi 7.8 m  [pp_0995312ca1be]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_112145b5c4c5]
+    - `SAME_RUN` referens 5.5 m → vi 5.5 m  [pp_ade281bc1988]
+    - `SAME_RUN` referens 3.2 m → vi 3.2 m  [pp_8fd073b0f7fb]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_fae7ac4e5be7]
+    - `SAME_RUN` referens 6.1 m → vi 6.1 m  [pp_a36fdea92855]
+    - `SAME_RUN` referens 11.8 m → vi 11.8 m  [pp_4d4296fec1ad]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_06ac5fbb65dd]
+    - `SAME_RUN` referens 4.6 m → vi 4.7 m  [pp_790f64cf2f2c]
+    - `SAME_RUN` referens 5.8 m → vi 5.9 m  [pp_03af2430fa7b]
+    - `SAME_RUN` referens 6.7 m → vi 6.6 m  [pp_35fb94c3fb60]
+    - `SAME_RUN` referens 1.1 m → vi 1.2 m  [pp_c2cf7096d284]
+    - `SAME_RUN` referens 4.1 m → vi 4.0 m  [pp_8e1443162bf8]
+    - `SAME_RUN` referens 6.1 m → vi 6.0 m  [pp_da0b21cacac3]
+    - `SAME_RUN` referens 3.0 m → vi 3.1 m  [pp_dd692082b1fb]
+    - `SAME_RUN` referens 3.3 m → vi 3.5 m  [pp_78cb86c1823d]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_e6178680dc56]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_bb0c098c4196]
+    - `SAME_RUN` referens 10.7 m → vi 10.5 m  [pp_63b21354fb04]
+    - `SAME_RUN` referens 11.5 m → vi 11.2 m  [pp_1bbeb18ff78d]
+    - `MERGED` referens 0.6 + 0.3 + 0.3 + 0.2 m → vi 1.4 m  [pp_abfac9ed89c0]
+    - `MERGED` referens 0.3 + 0.2 + 0.2 + 0.2 m → vi 0.9 m  [pp_7578a4e373d1]
+    - `SHORT_RUN` referens 7.9 m → vi 0.9 m  · FREE_END, SYMBOL  [pp_d8a1c2868abd]
+    - `MISSING_RUN` referens 7.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 5.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 4.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-25** - referens 11.6 m i 6 dragningar, vi 14.46 m i 2 rör (OVER)
+    - `MERGED` referens 8.1 + 1.9 + 0.1 + 0.1 m → vi 10.3 m  [pp_c32d68ba39a5]
+    - `LONG_RUN` referens 1.3 m → vi 4.2 m  · STOD_1  [pp_caef0032f9d5]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **S1-P5-110** - referens 48.5 m i 23 dragningar, vi 18.13 m i 6 rör (PARTIAL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_2f21e94ee1b9]
+    - `SAME_RUN` referens 2.9 m → vi 2.9 m  [pp_fc6c328d875c]
+    - `SAME_RUN` referens 1.7 m → vi 1.8 m  [pp_0e4971113393]
+    - `SAME_RUN` referens 1.3 m → vi 1.2 m  [pp_725234e36499]
+    - `SAME_RUN` referens 1.6 m → vi 1.5 m  [pp_959e5ed04885]
+    - `MERGED` referens 8.2 + 1.0 + 1.0 m → vi 10.2 m  [pp_51eb8cfe027a]
+    - `MISSING_RUN` referens 6.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-160** - referens 12.4 m i 9 dragningar, vi 8.37 m i 1 rör (PARTIAL)
+    - `MERGED` referens 3.8 + 2.2 + 1.7 + 0.7 m → vi 8.4 m  [pp_cc426e028f46]
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 1.9 m i 7 dragningar, vi 6.75 m i 5 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_4349ac10e8b2]
+    - `SAME_RUN` referens 0.6 m → vi 0.5 m  [pp_53e45f12527a]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_098773698ba6]
+    - `LONG_RUN` referens 0.4 m → vi 4.9 m  · STOD_2  [pp_a6484a48158d]
+    - `LONG_RUN` referens 0.2 m → vi 1.2 m  · STOD_1  [pp_6bc799ca82dd]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-35** - referens 5.5 m i 4 dragningar, vi 6.0 m i 2 rör (FULL)
+    - `SAME_RUN` referens 2.9 m → vi 2.7 m  [pp_1700fa453e6b]
+    - `LONG_RUN` referens 2.4 m → vi 3.2 m  · STOD_1  [pp_b8b74eb60530]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-42** - referens 0.2 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VS11-S13-35** - referens 14.1 m i 6 dragningar, vi 14.15 m i 2 rör (FULL)
+- **VS21-S13-15** - referens 47.5 m i 20 dragningar, vi 54.9 m i 8 rör (OVER)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_526638b86a2f]
+    - `SAME_RUN` referens 12.3 m → vi 12.3 m  [pp_c6514b333ccd]
+    - `SAME_RUN` referens 12.3 m → vi 12.2 m  [pp_561d4c04a3fe]
+    - `SAME_RUN` referens 1.9 m → vi 1.8 m  [pp_0320f96d5170]
+    - `MERGED` referens 7.4 + 5.0 + 1.9 m → vi 14.3 m  [pp_3044fb38d32e]
+    - `MERGED` referens 0.5 + 0.4 m → vi 0.9 m  [pp_549a664741c5]
+    - `MERGED` referens 0.4 + 0.4 m → vi 0.8 m  [pp_65383b67da05]
+    - `LONG_RUN` referens 0.6 m → vi 11.9 m  · STOD_2  [pp_14ac11487e38]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 55.6 m i 30 dragningar, vi 32.62 m i 6 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_c9f22d2e65b2]
+    - `SAME_RUN` referens 3.2 m → vi 3.2 m  [pp_267aa509c5f2]
+    - `SAME_RUN` referens 3.2 m → vi 3.2 m  [pp_3c47f613d598]
+    - `MERGED` referens 5.2 + 5.1 m → vi 10.3 m  [pp_fed0026dc6e7]
+    - `MERGED` referens 5.4 + 2.5 m → vi 7.9 m  [pp_f29f1a1b3d2e]
+    - `MERGED` referens 5.2 + 2.7 m → vi 7.9 m  [pp_3a90e974bd8b]
+    - `MISSING_RUN` referens 5.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 5.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-28** - referens 0.2 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X31-16** - referens 108.8 m i 24 dragningar, vi 102.61 m i 27 rör (FULL)
+    - `SAME_RUN` referens 3.9 m → vi 3.9 m  [pp_03f35d716a9f]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_dbe0041d568a]
+    - `SAME_RUN` referens 5.7 m → vi 5.7 m  [pp_6d1c92664e55]
+    - `SAME_RUN` referens 1.1 m → vi 1.1 m  [pp_eaa320150c36]
+    - `SAME_RUN` referens 7.7 m → vi 7.7 m  [pp_a9cf80f5d363]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_db7b3bb3d978]
+    - `SAME_RUN` referens 11.6 m → vi 11.6 m  [pp_d2477b283936]
+    - `SAME_RUN` referens 10.3 m → vi 10.3 m  [pp_af1e9c6e13bd]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_deb31d121db3]
+    - `SAME_RUN` referens 3.5 m → vi 3.5 m  [pp_cdc06b7eff3e]
+    - `SAME_RUN` referens 7.6 m → vi 7.7 m  [pp_0170eb9b79ca]
+    - `SAME_RUN` referens 3.6 m → vi 3.7 m  [pp_1dcedcfed4ee]
+    - `SAME_RUN` referens 9.7 m → vi 9.6 m  [pp_82e693b7dd1d]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_6a62e5be5527]
+    - `SAME_RUN` referens 5.2 m → vi 5.3 m  [pp_3f3536b1c2e1]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_acf39b910e98]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_c8f01733a076]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_946aad2d00f1]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_500f8d284b1a]
+    - `SAME_RUN` referens 11.4 m → vi 11.1 m  [pp_f7c298fe3c2c]
+    - `SAME_RUN` referens 10.6 m → vi 9.6 m  [pp_4280c8ef29b2]
+    - `MERGED` referens 4.7 + 1.2 m → vi 5.8 m  [pp_19c9eaf43f00]
+    - `SHORT_RUN` referens 7.0 m → vi 0.7 m  · SYMBOL  [pp_418687f2b581]
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_0  [pp_3ce758419b6d]
+    - `EXTRA_RUN` referens - m → vi 0.6 m  · STOD_0  [pp_caa398aa97a3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b178ed8e78fe]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_206c9d997451]
+- **VV1-X7-25** - referens 11.4 m i 6 dragningar, vi 15.36 m i 2 rör (OVER)
+    - `MERGED` referens 8.1 + 1.9 + 0.1 + 0.1 m → vi 10.2 m  [pp_420dade51260]
+    - `LONG_RUN` referens 1.1 m → vi 5.2 m  · STOD_1  [pp_45f67ba00c95]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VVC1-X7-20** - referens 10.1 m i 3 dragningar, vi 10.24 m i 1 rör (FULL)
+- **VVC1-X7-32** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0421  ·  referens 129.9 m i 34 dragningar  ·  vi 104.1 m i 42 rör
+
+- **KV1-X31-16** - referens 42.4 m i 6 dragningar, vi 38.69 m i 20 rör (FULL)
+    - `SAME_RUN` referens 10.1 m → vi 10.1 m  [pp_b847ab5e809e]
+    - `SAME_RUN` referens 2.5 m → vi 2.4 m  [pp_722b4a49a12d]
+    - `SAME_RUN` referens 4.9 m → vi 5.2 m  [pp_ad6914afb09d]
+    - `SAME_RUN` referens 9.1 m → vi 8.8 m  [pp_71768c37006c]
+    - `SAME_RUN` referens 10.3 m → vi 9.9 m  [pp_fa1fb0559d4d]
+    - `SHORT_RUN` referens 5.5 m → vi 2.2 m  · SYMBOL, VERTICAL  [pp_2b6cd7aebe67]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_2a4785827a28]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_2ea058e2b3a4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_73c97de5fb8d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_77c600139540]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_8e05dee9ffef]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_9a54d8040820]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_9e209d99570e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a5aab8d9db12]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_bea3dba0c177]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c380c9e05b8a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c3f9863cdc28]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c93bf816100c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_cab4b7c36f47]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_dd2af6ec7e11]
+- **KV1-X7-25** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_4916dc739957]
+- **S1-P5-110** - referens 27.4 m i 8 dragningar, vi 8.56 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 9.0 m → vi 8.6 m  [pp_9bbcaca80ace]
+    - `MISSING_RUN` referens 7.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 6.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 0.4 m i 1 dragningar, vi 2.98 m i 2 rör (OVER)
+    - `LONG_RUN` referens 0.4 m → vi 3.0 m  · STOD_2  [pp_257b7dee98da]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_c495e68dddb4]
+- **VS21-S13-15** - referens 21.9 m i 14 dragningar, vi 16.77 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 8.2 m → vi 8.2 m  [pp_82c462133a78]
+    - `SAME_RUN` referens 7.9 m → vi 8.5 m  [pp_c52e52418b7d]
+    - `SPLIT` referens 0.3 m → vi 0.1 + 0.0 m  [pp_0c0e76cf75f2, pp_9f164bd5e75d]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 37.8 m i 5 dragningar, vi 37.07 m i 13 rör (FULL)
+    - `SAME_RUN` referens 10.1 m → vi 10.1 m  [pp_e44a2779405c]
+    - `SAME_RUN` referens 9.2 m → vi 9.1 m  [pp_34a5c37c72a2]
+    - `SAME_RUN` referens 2.6 m → vi 2.4 m  [pp_b8447869d876]
+    - `SAME_RUN` referens 5.6 m → vi 5.4 m  [pp_37a04575af59]
+    - `SAME_RUN` referens 10.3 m → vi 10.0 m  [pp_75c88ff058e9]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_10155d9189ab]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_1b93ab0954ba]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_245fe1dab1c4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4ae66942296c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_60b7da2c1ba3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_6a141a94593e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ddd665c3c66d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f21d585729eb]
+- **VV1-X7VVC01-X7** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_61e2be58e823]
+
+### V-50-1-A0422  ·  referens 175.2 m i 95 dragningar  ·  vi 166.1 m i 43 rör
+
+- **KV1-X31-16** - referens 53.9 m i 23 dragningar, vi 53.05 m i 14 rör (FULL)
+    - `SAME_RUN` referens 2.0 m → vi 2.0 m  [pp_b808eb29b215]
+    - `SAME_RUN` referens 4.7 m → vi 4.8 m  [pp_313449fe5406]
+    - `SAME_RUN` referens 3.9 m → vi 3.8 m  [pp_8c5cce6d228f]
+    - `SAME_RUN` referens 1.0 m → vi 0.9 m  [pp_051feba6c341]
+    - `SAME_RUN` referens 6.0 m → vi 6.1 m  [pp_cbaa8bdf3703]
+    - `SAME_RUN` referens 3.0 m → vi 3.1 m  [pp_45538ba51186]
+    - `SAME_RUN` referens 7.1 m → vi 7.2 m  [pp_1e7093e64c55]
+    - `SAME_RUN` referens 5.1 m → vi 5.2 m  [pp_67c3cc0cac36]
+    - `SAME_RUN` referens 7.1 m → vi 7.3 m  [pp_06624af17c33]
+    - `SAME_RUN` referens 5.9 m → vi 6.1 m  [pp_2db77cfb0227]
+    - `SAME_RUN` referens 3.5 m → vi 3.7 m  [pp_3cf204e7db60]
+    - `MERGED` referens 0.3 + 0.3 + 0.2 + 0.2 m → vi 1.1 m  [pp_4a9d78052ea5]
+    - `MERGED` referens 0.2 + 0.2 + 0.2 + 0.2 m → vi 0.8 m  [pp_662e4be769dd]
+    - `SHORT_RUN` referens 2.3 m → vi 0.8 m  · SYMBOL, VERTICAL  [pp_d781995b9241]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-25** - referens 0.3 m i 2 dragningar, vi 2.87 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.2 m → vi 2.9 m  · STOD_1  [pp_c1ff4589faa1]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **S1-P5-110** - referens 37.6 m i 16 dragningar, vi 20.05 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_6aaf3eb6c7b9]
+    - `SAME_RUN` referens 4.4 m → vi 4.3 m  [pp_5defaf9f7204]
+    - `MERGED` referens 4.0 + 3.7 + 1.4 + 1.0 m → vi 10.2 m  [pp_8fd0c3c9fab7]
+    - `MERGED` referens 3.9 + 1.0 m → vi 4.9 m  [pp_ee71f913e257]
+    - `MISSING_RUN` referens 8.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-110L** - referens 0 m i 0 dragningar, vi 2.09 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.1 m  · STOD_3  [pp_2780406f06d0]
+- **S1-P5-160** - referens 9.0 m i 8 dragningar, vi 3.45 m i 1 rör (PARTIAL)
+    - `MERGED` referens 2.4 + 0.5 + 0.5 m → vi 3.5 m  [pp_ccb9dca09e83]
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 1.5 m i 7 dragningar, vi 7.61 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_311e3ef40f69]
+    - `LONG_RUN` referens 0.3 m → vi 4.7 m  · STOD_2  [pp_027d06107972]
+    - `LONG_RUN` referens 0.2 m → vi 2.7 m  · STOD_1  [pp_9b14c4be3268]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5KV01-X31** - referens 0 m i 0 dragningar, vi 2.33 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.3 m  · STOD_1  [pp_23582897463e]
+- **VS21-S13-15** - referens 46.7 m i 22 dragningar, vi 46.5 m i 8 rör (FULL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_3ec073f7a358]
+    - `SAME_RUN` referens 10.3 m → vi 9.8 m  [pp_ab658074545c]
+    - `SAME_RUN` referens 10.4 m → vi 9.7 m  [pp_4725ca4881db]
+    - `MERGED` referens 8.1 + 1.0 + 0.9 + 0.8 + 0.8 + 0.8 m → vi 13.4 m  [pp_1908ea39c7b5]
+    - `MERGED` referens 7.9 + 0.8 + 0.6 + 0.5 + 0.5 + 0.5 + 0.5 + 0.4 + 0.3 m → vi 13.2 m  [pp_fbcf4beee20f]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · AMBIGUOUS_JUNCTION, VERTICAL  [pp_198f3b7c1638]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · AMBIGUOUS_JUNCTION, VERTICAL  [pp_540176ab0fc7]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · AMBIGUOUS_JUNCTION, VERTICAL  [pp_e98ae48a16b3]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 25.7 m i 13 dragningar, vi 25.68 m i 9 rör (FULL)
+    - `SAME_RUN` referens 2.0 m → vi 2.0 m  [pp_89e5524cca1a]
+    - `SAME_RUN` referens 5.9 m → vi 5.9 m  [pp_31fcc7ad56cc]
+    - `SAME_RUN` referens 3.5 m → vi 3.6 m  [pp_51d44920cb7b]
+    - `SAME_RUN` referens 3.7 m → vi 3.9 m  [pp_35795d408f72]
+    - `SAME_RUN` referens 6.1 m → vi 6.3 m  [pp_094e1c6c364e]
+    - `MERGED` referens 1.2 + 0.2 m → vi 1.4 m  [pp_2a3b595a344a]
+    - `MERGED` referens 0.3 + 0.3 + 0.3 m → vi 0.9 m  [pp_ebbd9bc9cb35]
+    - `SHORT_RUN` referens 1.9 m → vi 0.8 m  · FREE_END, SYMBOL  [pp_ae772a071abf]
+    - `LONG_RUN` referens 0.2 m → vi 0.8 m  · STOD_0  [pp_071c0f04a918]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X7-25** - referens 0.3 m i 2 dragningar, vi 2.52 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.2 m → vi 2.5 m  · STOD_1  [pp_234fbd626d64]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-32** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0423  ·  referens 156.6 m i 47 dragningar  ·  vi 138.6 m i 16 rör
+
+- **KV1-X31-16** - referens 2.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 2.1 m → vi - m  · NAMNET_LASTES_INTE
+- **S1-P5-110** - referens 33.2 m i 11 dragningar, vi 25.21 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_488225d13234]
+    - `SAME_RUN` referens 2.0 m → vi 1.9 m  [pp_a778848dbc90]
+    - `MERGED` referens 8.6 + 8.1 + 3.1 + 2.7 m → vi 22.7 m  [pp_0011c0da121b]
+    - `MISSING_RUN` referens 4.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 0 m i 0 dragningar, vi 6.03 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 6.0 m  · STOD_1  [pp_aae952a2ceea]
+- **VS21-S13-15** - referens 36.6 m i 14 dragningar, vi 105.72 m i 10 rör (OVER)
+    - `SAME_RUN` referens 1.1 m → vi 1.1 m  [pp_225de55f21b0]
+    - `SAME_RUN` referens 1.3 m → vi 1.3 m  [pp_e32844c42c29]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_0dce21734cbf]
+    - `SAME_RUN` referens 1.7 m → vi 1.7 m  [pp_2926f9428823]
+    - `SAME_RUN` referens 1.3 m → vi 1.3 m  [pp_a46673d76a03]
+    - `SAME_RUN` referens 2.0 m → vi 1.9 m  [pp_967791f98145]
+    - `SAME_RUN` referens 1.7 m → vi 1.6 m  [pp_d43a4506e16c]
+    - `MERGED` referens 0.8 + 0.3 m → vi 1.1 m  [pp_791b4a01b3ba]
+    - `LONG_RUN` referens 11.7 m → vi 47.6 m  · STOD_4  [pp_ce6ff752ce14]
+    - `LONG_RUN` referens 11.3 m → vi 46.8 m  · STOD_4  [pp_d0817e8188a3]
+    - `MISSING_RUN` referens 1.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 82.6 m i 20 dragningar, vi 1.66 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.8 m → vi 0.7 m  [pp_2eb807838ff3]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_4cdaea9718ac]
+    - `MISSING_RUN` referens 29.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 29.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 2.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 2.1 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-A0511  ·  referens 62.7 m i 32 dragningar  ·  vi 61.9 m i 15 rör
+
+- **KV1-X31-16** - referens 5.0 m i 7 dragningar, vi 3.25 m i 5 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_4a4b292be591]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_6b09e2df51a5]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_d0352eb0ee18]
+    - `SAME_RUN` referens 3.0 m → vi 3.0 m  [pp_0880ca97d574]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_a4a02a8502a7]
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-20** - referens 10.8 m i 3 dragningar, vi 12.26 m i 1 rör (OVER)
+    - `LONG_RUN` referens 8.9 m → vi 12.3 m  · STOD_2  [pp_937c95fffc12]
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-110** - referens 3.8 m i 3 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_INTE
+- **S1-P5-110L** - referens 0 m i 0 dragningar, vi 3.65 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 3.6 m  · STOD_2  [pp_9f5800f03739]
+- **VS21-S13-15** - referens 17.4 m i 6 dragningar, vi 16.99 m i 1 rör (FULL)
+    - `MERGED` referens 7.4 + 7.3 + 0.8 + 0.8 m → vi 17.0 m  [pp_78642b80b824]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 4.7 m i 7 dragningar, vi 15.35 m i 6 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_4ffb7219ce8a]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_e5de4d9618df]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_94d2fd2ec30e]
+    - `SAME_RUN` referens 2.8 m → vi 2.9 m  [pp_c977ff8a55bc]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_772caf7d247e]
+    - `LONG_RUN` referens 1.2 m → vi 12.3 m  · STOD_0  [pp_b6b815a82008]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X7-20** - referens 10.6 m i 3 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 8.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-20** - referens 10.4 m i 3 dragningar, vi 10.35 m i 1 rör (FULL)
+
+### V-50-1-A0512  ·  referens 286.5 m i 221 dragningar  ·  vi 254.4 m i 110 rör
+
+- **KV1-K5-22** - referens 0 m i 0 dragningar, vi 0.44 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_1  [pp_d14d1fce876f]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_065fbab7c17e]
+- **KV1-X31-16** - referens 59.6 m i 50 dragningar, vi 38.0 m i 38 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_eb4b8bc9d3e5]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_fc616a8e369b]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_1080fa3c6983]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_34ab9bf20ae0]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_211b29a13137]
+    - `SAME_RUN` referens 2.5 m → vi 2.5 m  [pp_c0cf0cbd711b]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_ddc7a99c605e]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_3e1cc0b0b1ee]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_1f23134bb0be]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_004e04ed3b84]
+    - `SAME_RUN` referens 7.7 m → vi 7.7 m  [pp_086036586233]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_2a9875fa2be3]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_b199fd012918]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_f17372de8def]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_8b7d68eb029e]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_20d469596262]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_77b960c8da0b]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_362311292321]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_e4f2b6c5cc78]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_b8928e6313d3]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_0839e8f92f04]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_759d5e87b9f7]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_803b72a15673]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_ddaaef962d14]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_0013f742c651]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_a32b47aeb11b]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_33cabcf5dca7]
+    - `SAME_RUN` referens 4.5 m → vi 4.6 m  [pp_e923af6b7104]
+    - `SAME_RUN` referens 3.1 m → vi 3.0 m  [pp_56cfb92936e9]
+    - `SAME_RUN` referens 5.7 m → vi 5.8 m  [pp_96f85e9fec71]
+    - `SAME_RUN` referens 0.7 m → vi 0.6 m  [pp_112145b5c4c5]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_e6178680dc56]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_2cd5f5fbc32f]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_9a3aa6041bbb]
+    - `SAME_RUN` referens 3.9 m → vi 4.2 m  [pp_c3461c1567b0]
+    - `MERGED` referens 2.9 + 0.3 + 0.3 m → vi 3.4 m  [pp_2c23ec83fb52]
+    - `MERGED` referens 0.3 + 0.3 + 0.3 + 0.3 + 0.3 m → vi 1.4 m  [pp_abfac9ed89c0]
+    - `SHORT_RUN` referens 7.4 m → vi 0.0 m  · SYMBOL  [pp_b43a86d59561]
+    - `MISSING_RUN` referens 6.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 5.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-20** - referens 0.4 m i 1 dragningar, vi 5.21 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.4 m → vi 5.2 m  · STOD_1  [pp_d3e108bd092f]
+- **KV1-X7-25** - referens 2.6 m i 9 dragningar, vi 6.74 m i 2 rör (OVER)
+    - `MERGED` referens 0.6 + 0.6 + 0.4 + 0.4 + 0.2 + 0.2 m → vi 2.7 m  [pp_38276dc77c59]
+    - `LONG_RUN` referens 0.1 m → vi 4.1 m  · STOD_1  [pp_86617692e379]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 1.6 m i 4 dragningar, vi 1.73 m i 3 rör (FULL)
+    - `SAME_RUN` referens 0.3 m → vi 0.1 m  [pp_7dab6d849252]
+    - `MERGED` referens 0.6 + 0.4 + 0.3 m → vi 1.5 m  [pp_aec8dd198de1]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_98ebe7b421a7]
+- **KV1-X7-40** - referens 26.4 m i 15 dragningar, vi 15.0 m i 2 rör (PARTIAL)
+    - `MERGED` referens 4.9 + 2.5 + 0.5 + 0.3 m → vi 8.3 m  [pp_ec5fbc9cc616]
+    - `MERGED` referens 3.9 + 1.3 + 1.2 + 0.1 m → vi 6.7 m  [pp_4eec4f567da5]
+    - `MISSING_RUN` referens 11.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5** - referens 0 m i 0 dragningar, vi 0.65 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_1  [pp_3fcdd222d3a8]
+- **S1-P5-110** - referens 0 m i 0 dragningar, vi 0.51 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_2  [pp_23cb31c48413]
+- **S1-P5-110L** - referens 8.0 m i 4 dragningar, vi 7.88 m i 1 rör (FULL)
+- **S1-P5-75** - referens 2.0 m i 11 dragningar, vi 0.39 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.4 m  [pp_410e7bc67e7c]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VP1-S13-35** - referens 6.3 m i 6 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS11-S13-35** - referens 14.1 m i 6 dragningar, vi 14.02 m i 2 rör (FULL)
+- **VS21-S13-15** - referens 18.3 m i 12 dragningar, vi 19.67 m i 3 rör (FULL)
+    - `MERGED` referens 4.1 + 3.9 + 1.6 + 1.6 + 1.2 + 1.1 + 1.0 m → vi 15.6 m  [pp_a29be32eef60]
+    - `MERGED` referens 0.8 + 0.6 + 0.6 m → vi 2.0 m  [pp_de228ec1a447]
+    - `LONG_RUN` referens 0.9 m → vi 2.0 m  · STOD_1  [pp_9cc5432b4f2c]
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 50.4 m i 12 dragningar, vi 48.53 m i 2 rör (FULL)
+    - `MERGED` referens 11.8 + 11.7 + 1.1 m → vi 24.6 m  [pp_2351abf16251]
+    - `MERGED` referens 12.2 + 10.5 + 1.1 + 0.1 m → vi 23.9 m  [pp_6038269385a4]
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-K5-22** - referens 0 m i 0 dragningar, vi 0.16 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_1  [pp_0f34d6127f50]
+- **VV1-X31-16** - referens 34.3 m i 33 dragningar, vi 37.8 m i 39 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_6b2cf732c3ea]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_73ccb8c4aae0]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_228486237bea]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_a3b421236362]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_b9a7a3051e7d]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_35c617c9620d]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_e98b408d1f0e]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_6a62e5be5527]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_d1912ad98c9f]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_29c34bbdbe5c]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_080400fb952f]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_5baaa99c120a]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_00199ffffa89]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_cddac5567daf]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_bff9934ae486]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_f2a6febbac6c]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_c60c6f528ed6]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_368e637e823d]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_768972fed230]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_65511678e457]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_dd638868e27b]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_0e2b947d8421]
+    - `SAME_RUN` referens 5.1 m → vi 5.0 m  [pp_7c00c6575940]
+    - `SAME_RUN` referens 3.5 m → vi 3.6 m  [pp_f5095c706c3e]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_e5b381f343d7]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_acf39b910e98]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_c8f01733a076]
+    - `SAME_RUN` referens 7.5 m → vi 7.7 m  [pp_923c2f6c639f]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_206c9d997451]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_0f79743ead35]
+    - `MERGED` referens 4.6 + 0.9 m → vi 5.7 m  [pp_ae8a7bf1c5a1]
+    - `SPLIT` referens 7.0 m → vi 5.3 + 1.7 m  [pp_2e41a16de19a, pp_72cb65626e93]
+    - `EXTRA_RUN` referens - m → vi 1.9 m  · STOD_0  [pp_278d8954c6ad]
+    - `EXTRA_RUN` referens - m → vi 1.4 m  · STOD_0  [pp_9c321014e5db]
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_0  [pp_946aad2d00f1]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_62a42d59ea0b]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a8ae2af1b67d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c19a5540582f]
+- **VV1-X7-20** - referens 0.4 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-25** - referens 0.3 m i 3 dragningar, vi 5.1 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.1 m → vi 5.1 m  · STOD_1  [pp_2b5b7295b527]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-32** - referens 2.3 m i 4 dragningar, vi 2.81 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.8 m → vi 0.6 m  [pp_4617d55e7557]
+    - `MERGED` referens 0.9 + 0.3 + 0.3 m → vi 1.6 m  [pp_129910a1d979]
+    - `EXTRA_RUN` referens - m → vi 0.6 m  · STOD_1  [pp_bd67ce1a9dcd]
+- **VV1-X7-40** - referens 30.8 m i 29 dragningar, vi 21.25 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 4.3 m → vi 4.2 m  [pp_c0961f3bd8db]
+    - `SAME_RUN` referens 2.3 m → vi 2.1 m  [pp_32a904ed8e94]
+    - `MERGED` referens 3.6 + 3.1 + 1.4 m → vi 8.1 m  [pp_b2b4c8bfd15d]
+    - `MERGED` referens 4.7 + 0.9 + 0.7 + 0.6 m → vi 6.9 m  [pp_73f33cef395d]
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-20** - referens 0.4 m i 1 dragningar, vi 0.33 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 0.4 m → vi 0.3 m  [pp_8f0deddca1a7]
+- **VVC1-X7-32** - referens 28.3 m i 20 dragningar, vi 28.18 m i 2 rör (FULL)
+    - `SAME_RUN` referens 6.3 m → vi 6.9 m  [pp_ff8fa902e684]
+    - `MERGED` referens 4.7 + 4.3 + 3.6 + 2.3 + 1.4 + 1.0 + 0.6 + 0.6 + 0.6 + 0.6 m → vi 21.2 m  [pp_670404d2967f]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0521  ·  referens 68.5 m i 43 dragningar  ·  vi 61.6 m i 78 rör
+
+- **KV1-X31-16** - referens 0.5 m i 5 dragningar, vi 0.36 m i 32 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_dc4a8856ccff]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_0b45823d449d]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_bff721029630]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_d82a8eb3346a]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_b0fdd02980c4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_101d176cca04]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_1376c1a00659]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_15d3f8addb48]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_38902237d28b]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_3d349c434fe3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_3fda4390a062]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_503ee8c09408]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_548e4cbc2151]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_561f000c728a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_56938a54bc46]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_70060e80cf83]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7241e848d1b9]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_77ae38df183f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7d82c8396542]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_965f3fba990b]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_9b43340bd45d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a18b62dccced]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ab6768988b08]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ac9d03f76c6f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ad266daef4fc]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ae79b15057eb]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ba60e908d17f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_bc1424f6e88f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_bca03851091b]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_d7eeea97b7c7]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_edc7ea46d10f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ff895973b6ce]
+- **KV1-X7-25** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_7db7d3a60a58]
+- **KV1-X7-32** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_9740aefb45de]
+- **KV1-X7-40** - referens 9.7 m i 3 dragningar, vi 10.47 m i 1 rör (FULL)
+- **VS21-S13-15** - referens 21.4 m i 16 dragningar, vi 22.04 m i 10 rör (FULL)
+- **VS21-S13-22** - referens 15.1 m i 8 dragningar, vi 7.37 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 3.8 m → vi 3.7 m  [pp_cd436f7910c8]
+    - `SAME_RUN` referens 3.8 m → vi 3.7 m  [pp_38468d4e0891]
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 0.5 m i 5 dragningar, vi 0.36 m i 28 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_b976abfdd2cb]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_c323230ae678]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_d053e55adb22]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_d24cc5cc7b78]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_7637b4949bac]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_067125c359d8]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_0dd11f6149f8]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_110e1947d1ce]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_1368ac056c38]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_151a11270345]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_188fdaee8d5b]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_24b44057a6ba]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_28a30c586f9e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_2d73106f4f21]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4a936d474054]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_61594cf11735]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_638d83fe5abe]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7197403faa7f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_8a24c2b8ddfc]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_9d79019109a5]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_9dd597cee064]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a4e53ff495cc]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_bdfbe305b0f5]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c07dc90f91de]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_d563b020e5f0]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_dc6340163664]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_eab462fd14cc]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_fede52e2027e]
+- **VV1-X7-40** - referens 10.6 m i 3 dragningar, vi 10.53 m i 1 rör (FULL)
+- **VVC1-X7-32** - referens 10.7 m i 3 dragningar, vi 10.53 m i 2 rör (FULL)
+    - `MERGED` referens 9.0 + 1.2 + 0.5 m → vi 10.5 m  [pp_664bd805ec29]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_74ff45865741]
+
+### V-50-1-A0522  ·  referens 263.3 m i 134 dragningar  ·  vi 270.1 m i 99 rör
+
+- **KV1-X31-16** - referens 92.7 m i 37 dragningar, vi 89.13 m i 40 rör (FULL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_b005ad60885c]
+    - `SAME_RUN` referens 1.5 m → vi 1.5 m  [pp_4cdc9f759178]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_79e200010827]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_52acec3d3761]
+    - `SAME_RUN` referens 5.0 m → vi 5.0 m  [pp_2eabaa4312e6]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_f27bde61f53f]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_41f45452ca66]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_013e8ecd3f92]
+    - `SAME_RUN` referens 7.0 m → vi 7.0 m  [pp_f2e3eefcd307]
+    - `SAME_RUN` referens 2.1 m → vi 2.0 m  [pp_849864d05ecb]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_b5b4e1e704c4]
+    - `SAME_RUN` referens 5.7 m → vi 5.8 m  [pp_fed91791a234]
+    - `SAME_RUN` referens 3.7 m → vi 3.8 m  [pp_9fea6ceb02f1]
+    - `SAME_RUN` referens 2.8 m → vi 2.9 m  [pp_756d4d4ad0e7]
+    - `SAME_RUN` referens 4.5 m → vi 4.6 m  [pp_586503f6f8f5]
+    - `SAME_RUN` referens 4.4 m → vi 4.3 m  [pp_c4589b0c7938]
+    - `SAME_RUN` referens 5.7 m → vi 5.8 m  [pp_9b09906ec94d]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_fb7a9147a3f1]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_99c95e9fcb9a]
+    - `SAME_RUN` referens 6.9 m → vi 7.1 m  [pp_799c0ee829d7]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_1905b92fcd58]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_55ef9aaa9985]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_69ae144ed957]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_6da3a7a232d5]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_8f739dea4402]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_92c7eac07211]
+    - `SAME_RUN` referens 1.9 m → vi 1.7 m  [pp_9ede5f32e2ed]
+    - `SAME_RUN` referens 0.7 m → vi 0.9 m  [pp_6ee8d74c2d71]
+    - `SAME_RUN` referens 3.3 m → vi 3.5 m  [pp_0609ea9d177a]
+    - `SAME_RUN` referens 5.2 m → vi 5.6 m  [pp_ff2c35ccc6f7]
+    - `MERGED` referens 4.9 + 0.3 + 0.3 m → vi 5.9 m  [pp_3913d7e7a2ea]
+    - `SPLIT` referens 10.8 m → vi 6.2 + 1.7 + 1.5 + 1.4 m  [pp_fd5448a9023b, pp_fd385b00d049, pp_f1d7b3ab1d02, pp_7c47afaad915]
+    - `LONG_RUN` referens 4.4 m → vi 5.9 m  · STOD_0  [pp_bf02c4f8bd85]
+    - `SHORT_RUN` referens 4.1 m → vi 1.5 m  · BROKEN_CONTINUITY, SYMBOL  [pp_2d4f1fa81ac5]
+    - `SHORT_RUN` referens 4.0 m → vi 1.2 m  · FREE_END, SYMBOL  [pp_0515ea0c3d67]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_085dc77ae3ff]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_0909f3596225]
+- **KV1-X7-20** - referens 1.2 m i 8 dragningar, vi 6.49 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.3 m → vi 6.5 m  · STOD_1  [pp_0410d9c55aab]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-25** - referens 9.5 m i 5 dragningar, vi 24.1 m i 3 rör (OVER)
+    - `LONG_RUN` referens 8.2 m → vi 18.3 m  · STOD_1  [pp_ac148a26fa9c]
+    - `LONG_RUN` referens 1.2 m → vi 3.6 m  · STOD_1  [pp_4b83eee73e5b]
+    - `LONG_RUN` referens 0.1 m → vi 2.2 m  · STOD_1  [pp_390b9b6381db]
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 4.1 m i 4 dragningar, vi 0.62 m i 1 rör (PARTIAL)
+    - `MERGED` referens 0.4 + 0.1 + 0.1 m → vi 0.6 m  [pp_8080b0cf551f]
+    - `MISSING_RUN` referens 3.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 17.4 m i 5 dragningar, vi 13.13 m i 1 rör (PARTIAL)
+    - `MERGED` referens 11.6 + 0.9 + 0.4 + 0.1 m → vi 13.1 m  [pp_5589b0734969]
+    - `MISSING_RUN` referens 4.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-G3-100L** - referens 0 m i 0 dragningar, vi 0.06 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_a8cbddd1f186]
+- **S1-P5-110L** - referens 9.8 m i 5 dragningar, vi 9.67 m i 3 rör (FULL)
+    - `SAME_RUN` referens 5.0 m → vi 5.0 m  [pp_05e4775a93d3]
+    - `SAME_RUN` referens 0.6 m → vi 0.5 m  [pp_eb3d3f1527d8]
+    - `MERGED` referens 3.1 + 1.0 m → vi 4.1 m  [pp_7148571bc3b2]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 2.0 m i 9 dragningar, vi 0.69 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_dac12c04bec7]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_17ca18a29934]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_3ccf91043f79]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VS21-S13-15** - referens 10.7 m i 8 dragningar, vi 13.07 m i 4 rör (OVER)
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_dda3fdc13c25]
+    - `MERGED` referens 3.7 + 0.8 + 0.7 + 0.6 m → vi 5.8 m  [pp_5597fead3103]
+    - `LONG_RUN` referens 3.1 m → vi 5.2 m  · STOD_4  [pp_03e34c5f8c5a]
+    - `LONG_RUN` referens 0.6 m → vi 1.2 m  · STOD_2  [pp_c615f4fcc921]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 54.5 m i 23 dragningar, vi 57.98 m i 34 rör (FULL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_83116b6d46a3]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_2d0e1e24163f]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_6f0d4239b799]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_b7d7aa4c0228]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_d46d22abb2d5]
+    - `SAME_RUN` referens 5.9 m → vi 5.9 m  [pp_78c0383236bc]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_9346903758cc]
+    - `SAME_RUN` referens 1.7 m → vi 1.7 m  [pp_81855f82d9c4]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_3e9159f18005]
+    - `SAME_RUN` referens 5.7 m → vi 5.8 m  [pp_bf568a8e5427]
+    - `SAME_RUN` referens 3.3 m → vi 3.4 m  [pp_d2e96581d28e]
+    - `SAME_RUN` referens 1.3 m → vi 1.2 m  [pp_3ab2c8c0d672]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_1fdb108803e4]
+    - `SAME_RUN` referens 4.2 m → vi 4.1 m  [pp_992541316718]
+    - `SAME_RUN` referens 3.5 m → vi 3.7 m  [pp_9c3a12e7faea]
+    - `MERGED` referens 5.3 + 0.5 + 0.3 + 0.3 m → vi 6.7 m  [pp_e10f735edd2f]
+    - `SPLIT` referens 10.3 m → vi 7.5 + 1.6 + 1.2 m  [pp_246db788fe65, pp_26c478059994, pp_97a8c94bdf03]
+    - `SPLIT` referens 5.2 m → vi 4.0 + 1.2 + 0.0 m  [pp_baf8edcc70b2, pp_607fd61a8e8d, pp_1615c933aa9b]
+    - `SPLIT` referens 0.3 m → vi 0.1 + 0.0 + 0.0 + 0.0 m  [pp_487c74ae86b2, pp_1d740eb7dee9, pp_4ad85f90c35e, pp_9ea71a574790]
+    - `LONG_RUN` referens 4.5 m → vi 6.1 m  · STOD_0  [pp_3e2eba989151]
+    - `EXTRA_RUN` referens - m → vi 1.5 m  · STOD_0  [pp_49f164d7ef6e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f83695558b74]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_8dd76c9b16a4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_5e4df81894ce]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_070d28a570f7]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4401653625c3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_50731bd6490f]
+- **VV1-X7-20** - referens 1.2 m i 8 dragningar, vi 2.31 m i 2 rör (OVER)
+    - `MERGED` referens 0.5 + 0.2 + 0.2 + 0.1 m → vi 1.2 m  [pp_479cfdc927a8]
+    - `LONG_RUN` referens 0.1 m → vi 1.1 m  · STOD_2  [pp_7813839981b0]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-25** - referens 9.4 m i 4 dragningar, vi 13.97 m i 2 rör (OVER)
+    - `LONG_RUN` referens 8.1 m → vi 11.5 m  · STOD_2  [pp_8f9609d1b55c]
+    - `LONG_RUN` referens 1.1 m → vi 2.5 m  · STOD_1  [pp_73f3f729218f]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-32** - referens 4.7 m i 5 dragningar, vi 7.27 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_e0e838d7ebc5]
+    - `LONG_RUN` referens 4.1 m → vi 7.2 m  · STOD_1  [pp_cc1de34eb4c7]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 17.0 m i 5 dragningar, vi 12.64 m i 1 rör (PARTIAL)
+    - `MERGED` referens 11.0 + 1.1 + 0.4 m → vi 12.6 m  [pp_696a9f870e94]
+    - `MISSING_RUN` referens 4.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-25** - referens 12.5 m i 4 dragningar, vi 19.0 m i 1 rör (OVER)
+    - `LONG_RUN` referens 8.1 m → vi 19.0 m  · STOD_3  [pp_b61d84c5a540]
+    - `MISSING_RUN` referens 4.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 16.6 m i 4 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 10.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-A0523  ·  referens 60.8 m i 53 dragningar  ·  vi 56.7 m i 22 rör
+
+Utanför referensens system: 1 rör, 0.0 m.
+
+- **KV1-K5-15** - referens 0 m i 0 dragningar, vi 0.69 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_1  [pp_d80c3a8d1e58]
+- **KV1-X31-16** - referens 19.8 m i 15 dragningar, vi 17.79 m i 8 rör (PARTIAL)
+    - `SAME_RUN` referens 2.3 m → vi 2.3 m  [pp_86ef40f2b16b]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_bfa3141d0912]
+    - `SAME_RUN` referens 2.6 m → vi 2.6 m  [pp_b4e10222f9d1]
+    - `SAME_RUN` referens 2.4 m → vi 2.4 m  [pp_ae819e5bc259]
+    - `SAME_RUN` referens 1.8 m → vi 1.9 m  [pp_93ea68a0f8b9]
+    - `SAME_RUN` referens 2.9 m → vi 3.0 m  [pp_1a27fcf949e8]
+    - `SAME_RUN` referens 1.5 m → vi 1.4 m  [pp_9be58c7bb8f1]
+    - `SAME_RUN` referens 4.3 m → vi 4.0 m  [pp_2deea1a5a320]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-20** - referens 5.7 m i 5 dragningar, vi 9.35 m i 2 rör (OVER)
+    - `MERGED` referens 1.9 + 1.8 + 1.8 + 0.1 m → vi 5.9 m  [pp_834a156ec011]
+    - `LONG_RUN` referens 0.1 m → vi 3.5 m  · STOD_1  [pp_42127397e7f6]
+- **KV1-X7-25** - referens 3.7 m i 3 dragningar, vi 0.0 m i 1 rör (MISSED)
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_487f36999948]
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 1.0 m i 5 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **SF1-P5-110L** - referens 0.8 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X31-16** - referens 13.9 m i 11 dragningar, vi 13.47 m i 6 rör (FULL)
+    - `SAME_RUN` referens 2.1 m → vi 2.1 m  [pp_ee761ca86781]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_22e8f62d464b]
+    - `SAME_RUN` referens 2.2 m → vi 2.2 m  [pp_76a53e15e271]
+    - `SAME_RUN` referens 1.7 m → vi 1.8 m  [pp_76e84080e700]
+    - `SAME_RUN` referens 4.3 m → vi 4.1 m  [pp_6452128ab154]
+    - `MERGED` referens 2.6 + 0.3 + 0.2 + 0.1 m → vi 3.2 m  [pp_3f5cc34df7ee]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X7-20** - referens 6.0 m i 4 dragningar, vi 9.25 m i 2 rör (OVER)
+    - `MERGED` referens 2.2 + 1.9 + 1.8 m → vi 5.9 m  [pp_dc56eab951ab]
+    - `LONG_RUN` referens 0.1 m → vi 3.3 m  · STOD_1  [pp_9de95e434ec5]
+- **VV1-X7-25** - referens 3.5 m i 3 dragningar, vi 0.0 m i 1 rör (MISSED)
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_0a31a43bb2fa]
+    - `MISSING_RUN` referens 2.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-25** - referens 6.4 m i 5 dragningar, vi 6.12 m i 1 rör (FULL)
+    - `MERGED` referens 2.2 + 2.1 + 1.6 + 0.2 m → vi 6.1 m  [pp_76b018d257c2]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### V-50-1-B0112  ·  referens 84.0 m i 43 dragningar  ·  vi 76.9 m i 15 rör
+
+- **S1-P5-110** - referens 18.1 m i 7 dragningar, vi 13.68 m i 1 rör (PARTIAL)
+    - `MERGED` referens 8.4 + 2.8 + 2.4 m → vi 13.7 m  [pp_65cd68bd7839]
+    - `MISSING_RUN` referens 2.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 0 m i 0 dragningar, vi 0.3 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_2  [pp_3d126ef8f254]
+- **VS21-S13-15** - referens 31.2 m i 16 dragningar, vi 37.64 m i 9 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_8f0b7613af3e]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_797af9ca60a0]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_e4f6f3a63954]
+    - `MERGED` referens 11.3 + 1.8 + 1.5 + 1.2 m → vi 15.7 m  [pp_1d0f3f88aa91]
+    - `MERGED` referens 11.0 + 1.5 + 0.4 + 0.4 + 0.3 m → vi 15.0 m  [pp_3259a25d82aa]
+    - `MERGED` referens 0.3 + 0.3 + 0.2 m → vi 0.8 m  [pp_1a84c31577d0]
+    - `LONG_RUN` referens 0.2 m → vi 2.5 m  · STOD_1  [pp_e8cea7c8d7ba]
+    - `EXTRA_RUN` referens - m → vi 2.3 m  · STOD_1  [pp_3b308cf5d215]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_1  [pp_754153ea2d25]
+- **VS21-S13-22** - referens 22.3 m i 12 dragningar, vi 12.82 m i 2 rör (PARTIAL)
+    - `MERGED` referens 4.1 + 1.9 + 0.4 + 0.1 m → vi 6.5 m  [pp_eb127ea63244]
+    - `MERGED` referens 3.8 + 1.9 + 0.3 + 0.2 m → vi 6.3 m  [pp_7cca1242ea07]
+    - `MISSING_RUN` referens 4.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-S13-22** - referens 12.4 m i 8 dragningar, vi 12.47 m i 2 rör (FULL)
+
+### V-50-1-B0114  ·  referens 155.6 m i 58 dragningar  ·  vi 166.9 m i 21 rör
+
+- **S1-P3-75** - referens 0 m i 0 dragningar, vi 0.21 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_1  [pp_87e8d93f5d3c]
+- **S1-P5-110** - referens 13.6 m i 9 dragningar, vi 20.74 m i 3 rör (OVER)
+    - `MERGED` referens 4.2 + 3.4 + 2.2 + 0.4 m → vi 10.2 m  [pp_0e5b854b7c82]
+    - `MERGED` referens 0.6 + 0.5 m → vi 1.1 m  [pp_5577dd3cfd20]
+    - `LONG_RUN` referens 0.8 m → vi 9.5 m  · STOD_4  [pp_1b249363f973]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-160** - referens 19.5 m i 8 dragningar, vi 17.35 m i 1 rör (PARTIAL)
+    - `MERGED` referens 7.3 + 5.4 + 2.2 + 1.5 m → vi 17.4 m  [pp_74d0cfddf329]
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 1.2 m i 3 dragningar, vi 8.27 m i 3 rör (OVER)
+    - `MERGED` referens 0.5 + 0.4 + 0.3 m → vi 1.2 m  [pp_86f337dcd09d]
+    - `EXTRA_RUN` referens - m → vi 3.9 m  · STOD_2  [pp_a3effac83bd5]
+    - `EXTRA_RUN` referens - m → vi 3.2 m  · STOD_2  [pp_7ebece504729]
+- **VS21-S13-15** - referens 2.6 m i 8 dragningar, vi 2.15 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_a384079a17c3]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_0be7f5428c05]
+    - `MERGED` referens 0.3 + 0.3 + 0.1 + 0.1 m → vi 0.8 m  [pp_488d3b82f677]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-22** - referens 56.9 m i 20 dragningar, vi 55.42 m i 7 rör (FULL)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_4670ed08e2c0]
+    - `MERGED` referens 5.9 + 4.8 + 1.6 + 1.6 m → vi 13.9 m  [pp_0fab05d5bf99]
+    - `MERGED` referens 10.5 + 2.4 + 0.7 + 0.3 m → vi 13.9 m  [pp_22625ef38329]
+    - `MERGED` referens 5.9 + 2.3 m → vi 8.2 m  [pp_8cd7eda4eabb]
+    - `MERGED` referens 4.8 + 2.0 + 0.5 + 0.3 m → vi 8.2 m  [pp_c4ebf0dee555]
+    - `SPLIT` referens 10.5 m → vi 7.2 + 3.9 m  [pp_43d058fec826, pp_c5dd75f0de7b]
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-28** - referens 32.0 m i 6 dragningar, vi 16.11 m i 1 rör (PARTIAL)
+    - `MERGED` referens 13.8 + 1.2 + 1.1 m → vi 16.1 m  [pp_dd61aa10c5df]
+    - `MISSING_RUN` referens 13.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-S13-22** - referens 0 m i 0 dragningar, vi 46.67 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 23.4 m  · STOD_3  [pp_005118729746]
+    - `EXTRA_RUN` referens - m → vi 23.3 m  · STOD_3  [pp_6a8ef4573ce5]
+- **VS31-S13-28** - referens 29.8 m i 4 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 13.8 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 13.8 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_INTE
+
+### V-50-1-B0122  ·  referens 517.2 m i 315 dragningar  ·  vi 427.6 m i 112 rör
+
+- **FJV1-S6-65** - referens 9.8 m i 11 dragningar, vi 8.13 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 3.4 m → vi 3.7 m  [pp_4c6955c7cd47]
+    - `MERGED` referens 2.7 + 0.8 + 0.8 + 0.1 m → vi 4.4 m  [pp_b24c1584dee6]
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-K5-15** - referens 1.2 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-K5-22** - referens 0.9 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X31-16** - referens 56.0 m i 23 dragningar, vi 70.99 m i 31 rör (OVER)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_68860dbba1d2]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_bbfcbe690302]
+    - `SAME_RUN` referens 3.1 m → vi 3.1 m  [pp_d57d191fc7a6]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_f1f3511a895b]
+    - `SAME_RUN` referens 4.9 m → vi 4.8 m  [pp_b384c84a4a77]
+    - `SAME_RUN` referens 10.8 m → vi 10.9 m  [pp_6002ad06eafa]
+    - `SAME_RUN` referens 1.5 m → vi 1.6 m  [pp_56dfba64150c]
+    - `SAME_RUN` referens 6.8 m → vi 6.7 m  [pp_a638e4b807dc]
+    - `SAME_RUN` referens 5.6 m → vi 5.7 m  [pp_a0e984378876]
+    - `SAME_RUN` referens 4.2 m → vi 4.3 m  [pp_4f642b9bd470]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_0d346d271a57]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_9c3d8043bd7a]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_a6b2a4ed5e88]
+    - `SAME_RUN` referens 3.7 m → vi 4.1 m  [pp_01e06fa20de2]
+    - `MERGED` referens 2.6 + 2.0 + 0.3 + 0.3 + 0.3 m → vi 5.8 m  [pp_dc8944febe91]
+    - `MERGED` referens 0.3 + 0.2 + 0.2 m → vi 0.9 m  [pp_a77ba0e10a04]
+    - `SPLIT` referens 7.5 m → vi 3.2 + 1.7 + 1.6 + 0.9 m  [pp_d9b10a705424, pp_d02e0c2a5477, pp_1e18d41347fb, pp_258e31c110e0]
+    - `EXTRA_RUN` referens - m → vi 4.4 m  · STOD_0  [pp_94643f477ce3]
+    - `EXTRA_RUN` referens - m → vi 2.2 m  · STOD_0  [pp_74a51785a5b3]
+    - `EXTRA_RUN` referens - m → vi 1.2 m  · STOD_0  [pp_c417a9ddd837]
+    - `EXTRA_RUN` referens - m → vi 1.1 m  · STOD_0  [pp_d5a6a574aded]
+    - `EXTRA_RUN` referens - m → vi 1.1 m  · STOD_0  [pp_745289e356e9]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_0  [pp_01e24fba47d4]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_0  [pp_3776b975cd0a]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_0  [pp_91c2ee814604]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_0  [pp_4fa46c9c300d]
+    - `EXTRA_RUN` referens - m → vi 0.6 m  · STOD_0  [pp_7b8e7bae7e2a]
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_0  [pp_b2c064f726a0]
+- **KV1-X7-20** - referens 6.1 m i 14 dragningar, vi 2.91 m i 1 rör (PARTIAL)
+    - `MERGED` referens 2.0 + 0.9 m → vi 2.9 m  [pp_a2c55a270c81]
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-25** - referens 1.8 m i 4 dragningar, vi 4.43 m i 1 rör (OVER)
+    - `LONG_RUN` referens 1.1 m → vi 4.4 m  · STOD_1  [pp_213ff805f481]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 14.9 m i 10 dragningar, vi 23.66 m i 1 rör (OVER)
+    - `LONG_RUN` referens 10.8 m → vi 23.7 m  · STOD_3  [pp_c8828cef4ced]
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-50** - referens 12.3 m i 19 dragningar, vi 1.94 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_6929c049bd9b]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_5eee04481d17]
+    - `MERGED` referens 0.5 + 0.5 + 0.1 m → vi 1.1 m  [pp_1075d2e8f2e4]
+    - `MISSING_RUN` referens 4.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P3-75** - referens 0 m i 0 dragningar, vi 1.8 m i 8 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.4 m  · STOD_1  [pp_4179d3d7ce48]
+    - `EXTRA_RUN` referens - m → vi 0.4 m  · STOD_1  [pp_b0fbfd74c417]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_1  [pp_a3781f13adc7]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_1  [pp_d3455a5d6bbc]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_1  [pp_d6d30277b0d2]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_508375ba1fe5]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_88b427b3f96c]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_9141a0610a50]
+- **S1-P31-32** - referens 0 m i 0 dragningar, vi 6.63 m i 4 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.5 m  · STOD_1  [pp_5a16b644bb0b]
+    - `EXTRA_RUN` referens - m → vi 2.5 m  · STOD_1  [pp_a59406e1b7cd]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_1  [pp_39eb3b35b824]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_1  [pp_7edf243f352e]
+- **S1-P5** - referens 0 m i 0 dragningar, vi 0.47 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_1  [pp_0d4df636313d]
+- **S1-P5-110** - referens 30.3 m i 19 dragningar, vi 29.69 m i 5 rör (FULL)
+    - `SAME_RUN` referens 2.3 m → vi 2.1 m  [pp_77914df21b6a]
+    - `MERGED` referens 5.1 + 5.0 + 1.6 + 1.2 m → vi 12.9 m  [pp_5128ac6db43e]
+    - `MERGED` referens 4.6 + 1.1 + 1.0 + 0.8 m → vi 7.7 m  [pp_67e918384171]
+    - `MERGED` referens 0.7 + 0.7 + 0.5 + 0.4 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 m → vi 3.5 m  [pp_e2b13d80241a]
+    - `SHORT_RUN` referens 4.3 m → vi 3.4 m  · AMBIGUOUS_JUNCTION, REAL_DN_BOUNDARY, VERTICAL  [pp_bd25ceeee85e]
+- **S1-P5-160** - referens 28.7 m i 16 dragningar, vi 12.64 m i 1 rör (PARTIAL)
+    - `MERGED` referens 4.8 + 4.3 + 3.6 m → vi 12.6 m  [pp_815707a2ee90]
+    - `MISSING_RUN` referens 5.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P5-75** - referens 2.2 m i 5 dragningar, vi 7.25 m i 6 rör (OVER)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_e58c6527dfa3]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_f34cbf3632b8]
+    - `SAME_RUN` referens 0.6 m → vi 0.8 m  [pp_faed7b609621]
+    - `LONG_RUN` referens 0.5 m → vi 3.4 m  · STOD_2  [pp_b3218ccf2dac]
+    - `LONG_RUN` referens 0.4 m → vi 2.4 m  · STOD_1  [pp_c590b037011b]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_f345f7656f5e]
+- **VP1-S13-22** - referens 3.1 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_INTE
+- **VP1-S13-28** - referens 5.6 m i 6 dragningar, vi 10.94 m i 3 rör (OVER)
+    - `MERGED` referens 2.7 + 0.2 + 0.2 + 0.1 + 0.1 m → vi 3.6 m  [pp_61322a46dbf4]
+    - `LONG_RUN` referens 2.3 m → vi 4.0 m  · STOD_2  [pp_810293f39c63]
+    - `EXTRA_RUN` referens - m → vi 3.3 m  · STOD_1  [pp_5e8bdee3e8ea]
+- **VP1-S13-42** - referens 0.2 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VP1-S13-54** - referens 8.9 m i 16 dragningar, vi 7.93 m i 2 rör (PARTIAL)
+    - `MERGED` referens 2.3 + 0.8 + 0.6 + 0.3 m → vi 4.0 m  [pp_05a4f3de9787]
+    - `MERGED` referens 1.7 + 0.8 + 0.5 + 0.5 + 0.4 m → vi 4.0 m  [pp_bc8478282a1e]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-15** - referens 1.6 m i 6 dragningar, vi 2.38 m i 2 rör (OVER)
+    - `MERGED` referens 0.5 + 0.4 + 0.4 m → vi 1.3 m  [pp_1f87826de3c1]
+    - `LONG_RUN` referens 0.3 m → vi 1.1 m  · STOD_1  [pp_f359d2aac303]
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS21-S13-28** - referens 55.5 m i 14 dragningar, vi 73.07 m i 2 rör (OVER)
+    - `MERGED` referens 16.9 + 16.9 + 1.3 + 1.3 m → vi 37.3 m  [pp_fa7ab416aeec]
+    - `LONG_RUN` referens 7.6 m → vi 35.8 m  · STOD_5  [pp_043768a9b7b6]
+    - `MISSING_RUN` referens 6.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-S13-22** - referens 39.6 m i 20 dragningar, vi 63.98 m i 6 rör (OVER)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_1be1744acc06]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_4d08f5348559]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_2e72fe822dd7]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_c3fb4475c531]
+    - `MERGED` referens 16.9 + 16.9 + 1.3 m → vi 35.0 m  [pp_07db7f09b4a4]
+    - `LONG_RUN` referens 1.3 m → vi 27.2 m  · STOD_4  [pp_044d1ad50ca4]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-S13-28** - referens 14.8 m i 6 dragningar, vi 10.33 m i 2 rör (PARTIAL)
+    - `LONG_RUN` referens 7.1 m → vi 8.7 m  · STOD_1  [pp_47238431bd03]
+    - `SHORT_RUN` referens 7.1 m → vi 1.6 m  · REAL_DN_BOUNDARY, SYMBOL  [pp_709b51b9782b]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS31-S13-35** - referens 4.2 m i 10 dragningar, vi 0.9 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_ceb6e9579d33]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_4b1c2ac457c6]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV01/KV01-X31-16** - referens 106.6 m i 40 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 8.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 8.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 7.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 7.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 7.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 7.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 6.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 6.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 4.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 4.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 4.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 4.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 4.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.8 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 3.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-K5-15** - referens 1.2 m i 1 dragningar, vi 1.52 m i 1 rör (OVER)
+    - `LONG_RUN` referens 1.2 m → vi 1.5 m  · STOD_1  [pp_0209651f9147]
+- **VV1-K5-22** - referens 0.9 m i 1 dragningar, vi 4.63 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.9 m → vi 4.6 m  · STOD_1  [pp_0237c183842a]
+- **VV1-X31-16** - referens 41.9 m i 14 dragningar, vi 38.94 m i 21 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_ca6eb38e95c1]
+    - `SAME_RUN` referens 2.4 m → vi 2.5 m  [pp_d7d9a341edc2]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_24fefe1f4684]
+    - `SAME_RUN` referens 4.5 m → vi 4.6 m  [pp_5c165e9d4b8f]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_40d517e7b659]
+    - `SAME_RUN` referens 5.2 m → vi 5.1 m  [pp_cae1498a78d2]
+    - `SAME_RUN` referens 2.8 m → vi 3.0 m  [pp_3f748a6da0ac]
+    - `SAME_RUN` referens 5.2 m → vi 5.0 m  [pp_07f5a7a35bfc]
+    - `MERGED` referens 6.3 + 0.3 + 0.3 + 0.3 m → vi 7.4 m  [pp_0e8180f455fa]
+    - `SPLIT` referens 10.0 m → vi 3.5 + 1.8 + 1.2 + 0.9 + 0.9 + 0.9 m  [pp_4f96086fdf46, pp_81f3292b9a7c, pp_a5a0ae607ed7, pp_3536cc988ce6, pp_1ed068b4eb42, pp_a916fc027f9e]
+    - `SHORT_RUN` referens 4.0 m → vi 0.8 m  · BROKEN_CONTINUITY, SYMBOL  [pp_32700fb32619]
+    - `EXTRA_RUN` referens - m → vi 0.6 m  · STOD_0  [pp_a32f3bfdb2f3]
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_0  [pp_79434a05f419]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_734b4212057e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_cb459daeb0fe]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_af3ade8e7f78]
+- **VV1-X7-20** - referens 6.3 m i 14 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-25** - referens 1.6 m i 4 dragningar, vi 10.55 m i 1 rör (OVER)
+    - `LONG_RUN` referens 1.1 m → vi 10.6 m  · STOD_1  [pp_e55bd8803a76]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-32** - referens 19.5 m i 10 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 10.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 5.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 0.1 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-50** - referens 10.8 m i 11 dragningar, vi 1.51 m i 1 rör (PARTIAL)
+    - `MERGED` referens 0.7 + 0.5 + 0.3 m → vi 1.5 m  [pp_b86deaa35aa3]
+    - `MISSING_RUN` referens 4.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-20** - referens 20.8 m i 7 dragningar, vi 20.71 m i 2 rör (FULL)
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_2e51a8093e89]
+    - `MERGED` referens 10.8 + 5.4 + 1.6 + 1.1 m → vi 20.5 m  [pp_876cba7c26f3]
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-25** - referens 9.7 m i 6 dragningar, vi 9.64 m i 2 rör (FULL)
+
+### W-50-1-A0011  ·  referens 213.7 m i 78 dragningar  ·  vi 210.6 m i 42 rör
+
+- **KV1-X31-16** - referens 17.4 m i 2 dragningar, vi 17.22 m i 2 rör (FULL)
+- **KV2-X31-16** - referens 33.4 m i 5 dragningar, vi 33.11 m i 5 rör (FULL)
+- **S1-P2-110** - referens 9.8 m i 4 dragningar, vi 10.04 m i 1 rör (FULL)
+- **S1-P2-75** - referens 4.7 m i 4 dragningar, vi 3.74 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_c998756e9c67]
+    - `SAME_RUN` referens 3.3 m → vi 3.4 m  [pp_7854eb844139]
+    - `SHORT_RUN` referens 0.8 m → vi 0.0 m  · FLOW_BUDGET  [pp_06062bb09fd2]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · FREE_END, VERTICAL  [pp_5068c748c0e2]
+- **S3-P2-160** - referens 16.9 m i 1 dragningar, vi 16.83 m i 1 rör (FULL)
+- **S3-R8-110** - referens 59.8 m i 28 dragningar, vi 56.27 m i 5 rör (FULL)
+    - `SAME_RUN` referens 2.2 m → vi 2.2 m  [pp_7f538bc84c69]
+    - `MERGED` referens 9.5 + 4.8 + 2.9 m → vi 17.2 m  [pp_bc655b83b619]
+    - `MERGED` referens 5.2 + 5.1 + 4.0 + 2.4 m → vi 16.8 m  [pp_d921de7b1990]
+    - `MERGED` referens 3.5 + 3.5 + 2.2 + 1.6 + 1.4 m → vi 13.3 m  [pp_8538c7d85742]
+    - `MERGED` referens 1.3 + 1.3 + 1.2 + 1.2 + 1.0 + 0.9 m → vi 6.8 m  [pp_6bf2a6d67866]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S3-R8-160** - referens 16.3 m i 2 dragningar, vi 16.99 m i 1 rör (FULL)
+    - `SAME_RUN` referens 15.5 m → vi 17.0 m  [pp_304f64862dc4]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S3-R8-75** - referens 21.3 m i 27 dragningar, vi 22.51 m i 18 rör (FULL)
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_2875684cd14a]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_5e8187ac550c]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_84cc3e193ce3]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_c17ca2061590]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_c5a8561090f5]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_3c8cef2a0af6]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_9df97cbdff1f]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_a55403c840eb]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_918747699cb6]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_9788ef9b7394]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_0d9c36479fcf]
+    - `SAME_RUN` referens 3.3 m → vi 3.4 m  [pp_4ffe683d8e91]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_84db44138b56]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_e7d2ddb58154]
+    - `MERGED` referens 2.1 + 1.9 + 1.6 m → vi 5.6 m  [pp_cbba5d1d3ec6]
+    - `MERGED` referens 1.5 + 1.0 + 0.5 m → vi 3.0 m  [pp_befc7ce04bfb]
+    - `MERGED` referens 1.3 + 0.8 + 0.4 + 0.4 m → vi 2.9 m  [pp_b3b8c3e0cfbf]
+    - `LONG_RUN` referens 0.6 m → vi 2.8 m  · STOD_5  [pp_36e4a08a9111]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 34.1 m i 5 dragningar, vi 33.92 m i 5 rör (FULL)
+
+### W-50-1-A0021  ·  referens 31.7 m i 15 dragningar  ·  vi 31.2 m i 11 rör
+
+- **S1-P2-110** - referens 19.3 m i 6 dragningar, vi 19.11 m i 5 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_8996180da4f7]
+    - `MERGED` referens 9.9 + 5.4 + 2.1 + 1.2 m → vi 19.1 m  [pp_24cc250f79e8]
+    - `SHORT_RUN` referens 0.5 m → vi 0.0 m  · REAL_DN_BOUNDARY, SYMBOL, VERTICAL  [pp_c15db83465b8]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_cb78023bc110]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_e62225b113fb]
+- **S1-P2-160** - referens 7.5 m i 4 dragningar, vi 7.22 m i 1 rör (FULL)
+    - `MERGED` referens 3.8 + 3.3 m → vi 7.2 m  [pp_0df526b5736a]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-75** - referens 4.9 m i 5 dragningar, vi 4.84 m i 5 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_2347ef0a65dc]
+    - `MERGED` referens 3.5 + 0.5 + 0.4 + 0.3 m → vi 4.8 m  [pp_9d1c6a88eba5]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_54ba17d9366a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_58a652630dbd]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_5a86250535be]
+
+### W-50-1-A0022  ·  referens 72.8 m i 29 dragningar  ·  vi 71.0 m i 8 rör
+
+- **S1-P2-110** - referens 24.2 m i 8 dragningar, vi 25.79 m i 3 rör (FULL)
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_d606a487f388]
+    - `SAME_RUN` referens 3.5 m → vi 3.3 m  [pp_26fe81b2d4e3]
+    - `MERGED` referens 15.4 + 2.4 + 0.5 + 0.5 + 0.4 m → vi 21.3 m  [pp_063efd51c605]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-160** - referens 45.3 m i 15 dragningar, vi 40.27 m i 1 rör (PARTIAL)
+    - `MERGED` referens 12.8 + 9.3 + 6.3 + 4.6 + 2.4 + 1.6 m → vi 40.3 m  [pp_17d6fd9a043f]
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-75** - referens 3.3 m i 6 dragningar, vi 4.94 m i 4 rör (OVER)
+    - `SAME_RUN` referens 1.6 m → vi 1.6 m  [pp_96607bfd4949]
+    - `SAME_RUN` referens 0.4 m → vi 0.3 m  [pp_2ccb2e078d48]
+    - `MERGED` referens 0.5 + 0.4 m → vi 0.9 m  [pp_3a4a6d455881]
+    - `LONG_RUN` referens 0.2 m → vi 2.0 m  · STOD_3  [pp_10c12aacf3b1]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0023  ·  referens 36.4 m i 23 dragningar  ·  vi 35.8 m i 9 rör
+
+- **S1-P2-110** - referens 26.0 m i 15 dragningar, vi 24.23 m i 1 rör (FULL)
+    - `MERGED` referens 5.8 + 4.9 + 4.0 + 3.0 + 1.0 + 1.0 + 1.0 + 0.9 + 0.9 m → vi 24.2 m  [pp_35ab336203e1]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-75** - referens 10.4 m i 8 dragningar, vi 11.56 m i 8 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_df037abc05d1]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_b6e2bc13c0b6]
+    - `SAME_RUN` referens 6.0 m → vi 6.0 m  [pp_570dfce1a60a]
+    - `SAME_RUN` referens 0.9 m → vi 0.8 m  [pp_bafe49cda6bf]
+    - `SAME_RUN` referens 2.0 m → vi 1.9 m  [pp_38e3f034c8a4]
+    - `LONG_RUN` referens 0.5 m → vi 2.5 m  · STOD_5  [pp_0ea9f15fdb89]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · FREE_END, VERTICAL  [pp_07ca5774ef12]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · VERTICAL  [pp_c7337784538c]
+
+### W-50-1-A0024  ·  referens 57.2 m i 43 dragningar  ·  vi 57.1 m i 15 rör
+
+- **S1-P2-110** - referens 15.4 m i 17 dragningar, vi 16.66 m i 7 rör (FULL)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_c7686d9d07b9]
+    - `SAME_RUN` referens 1.4 m → vi 1.3 m  [pp_7a2e022a4f70]
+    - `MERGED` referens 2.5 + 1.0 + 0.6 + 0.6 m → vi 4.7 m  [pp_398d122d72f6]
+    - `MERGED` referens 2.2 + 1.5 + 0.5 m → vi 4.2 m  [pp_186d44902289]
+    - `MERGED` referens 1.5 + 0.8 + 0.5 + 0.4 m → vi 3.2 m  [pp_18009f053913]
+    - `LONG_RUN` referens 0.5 m → vi 2.9 m  · STOD_6  [pp_b8db74510760]
+    - `SHORT_RUN` referens 0.4 m → vi 0.0 m  · FREE_END, SYMBOL  [pp_3da48a674bcc]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-160** - referens 37.2 m i 16 dragningar, vi 33.1 m i 1 rör (PARTIAL)
+    - `MERGED` referens 17.0 + 5.2 + 2.8 + 2.6 + 2.2 m → vi 33.1 m  [pp_f9973aae76c1]
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-75** - referens 4.6 m i 10 dragningar, vi 7.3 m i 7 rör (OVER)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_462fa17e6c72]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_c13a193cc1b9]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_a80da7f70dbf]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_c216cbf5a5df]
+    - `SAME_RUN` referens 0.4 m → vi 0.3 m  [pp_9861ee9ceb5d]
+    - `SAME_RUN` referens 0.4 m → vi 0.2 m  [pp_91a266cd17d8]
+    - `LONG_RUN` referens 1.0 m → vi 5.4 m  · STOD_4  [pp_b47fd55ed31f]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0031  ·  referens 7.0 m i 6 dragningar  ·  vi 6.6 m i 14 rör
+
+- **S1-P2-110** - referens 6.5 m i 5 dragningar, vi 6.55 m i 5 rör (FULL)
+    - `MERGED` referens 2.9 + 1.5 + 1.2 + 0.6 m → vi 6.5 m  [pp_39b8b8a75f7b]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · REAL_DN_BOUNDARY, VERTICAL  [pp_703ada2a5db6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_6  [pp_7e2c882742f6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_6  [pp_b311e8b1b115]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_e91def8de5fe]
+- **S1-P2-160** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_8  [pp_079f0f934890]
+- **S1-P2-75** - referens 0.5 m i 1 dragningar, vi 0.0 m i 8 rör (MISSED)
+    - `SHORT_RUN` referens 0.5 m → vi 0.0 m  · VERTICAL  [pp_0ac1cb092884]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_0d1eb70501d1]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_5f9df537cf5c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_4  [pp_6dc69279b271]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_7a8e208574d4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_f07dd4361f1a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_f2d340d4a553]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_fdfdc535d012]
+
+### W-50-1-A0032  ·  referens 56.0 m i 44 dragningar  ·  vi 53.7 m i 12 rör
+
+- **S1-P2-110** - referens 18.1 m i 19 dragningar, vi 26.43 m i 7 rör (OVER)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_e5c4d268a5dd]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_bb3d20c7c29c]
+    - `SAME_RUN` referens 2.3 m → vi 2.2 m  [pp_8b6f080f13a4]
+    - `MERGED` referens 4.7 + 1.8 + 1.7 + 1.5 m → vi 10.0 m  [pp_da49c708cd12]
+    - `MERGED` referens 0.6 + 0.6 + 0.5 + 0.5 + 0.4 + 0.4 m → vi 3.0 m  [pp_6979a25e0514]
+    - `MERGED` referens 0.4 + 0.4 + 0.3 + 0.3 + 0.3 + 0.3 m → vi 2.1 m  [pp_836dbdb80c94]
+    - `EXTRA_RUN` referens - m → vi 7.9 m  · STOD_8  [pp_87c217e113a8]
+- **S1-P2-160** - referens 32.4 m i 18 dragningar, vi 23.35 m i 1 rör (PARTIAL)
+    - `MERGED` referens 4.4 + 3.2 + 3.2 + 3.2 + 2.9 + 2.8 + 2.6 m → vi 23.4 m  [pp_91494a8113bc]
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-75** - referens 5.5 m i 7 dragningar, vi 3.96 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_e3e3cec9ba1a]
+    - `SAME_RUN` referens 0.4 m → vi 0.3 m  [pp_ddfb07791558]
+    - `MERGED` referens 2.5 + 0.2 m → vi 2.8 m  [pp_5f36808a2238]
+    - `MERGED` referens 0.4 + 0.2 m → vi 0.6 m  [pp_bfe88bde1b49]
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0033  ·  referens 35.1 m i 25 dragningar  ·  vi 34.6 m i 9 rör
+
+- **S1-75-P** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_c4e6f8f1dfdf]
+- **S1-F** - referens 0 m i 0 dragningar, vi 0.01 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_d6f9ee803081]
+- **S1-P2-110** - referens 11.1 m i 9 dragningar, vi 12.34 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_f8c00ca404da]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_cee6a3f50bd9]
+    - `LONG_RUN` referens 5.1 m → vi 11.5 m  · STOD_12  [pp_e61ff4e614f0]
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-160** - referens 4.1 m i 4 dragningar, vi 3.27 m i 1 rör (PARTIAL)
+    - `MERGED` referens 2.2 + 1.2 m → vi 3.3 m  [pp_ed21883cb5f7]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-75** - referens 19.9 m i 12 dragningar, vi 19.02 m i 3 rör (FULL)
+    - `SAME_RUN` referens 7.5 m → vi 7.7 m  [pp_880626334afe]
+    - `MERGED` referens 4.6 + 2.7 + 0.4 + 0.3 m → vi 8.0 m  [pp_226e5a722fba]
+    - `MERGED` referens 1.4 + 1.2 + 0.8 m → vi 3.4 m  [pp_c3215a06e1e5]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0034  ·  referens 44.6 m i 19 dragningar  ·  vi 43.9 m i 9 rör
+
+- **S1-P2-110** - referens 0 m i 0 dragningar, vi 0.0 m i 4 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_03e00200eb89]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_0df6dc0296ef]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_8fe18670f8a7]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_909b1be09953]
+- **S1-P2-160** - referens 31.1 m i 13 dragningar, vi 27.09 m i 1 rör (PARTIAL)
+    - `MERGED` referens 14.3 + 4.9 + 4.5 + 2.3 m → vi 27.1 m  [pp_9709f018422b]
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S1-P2-75** - referens 13.5 m i 6 dragningar, vi 16.83 m i 4 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_2b59134ac5eb]
+    - `SAME_RUN` referens 6.3 m → vi 6.5 m  [pp_bc5c45e61367]
+    - `MERGED` referens 6.2 + 0.4 + 0.3 m → vi 7.0 m  [pp_942797ec5661]
+    - `LONG_RUN` referens 0.2 m → vi 3.4 m  · STOD_2  [pp_dfe9758fbfad]
+
+### W-50-1-A0111  ·  referens 519.5 m i 379 dragningar  ·  vi 368.7 m i 144 rör
+
+- **KV1-K5-12** - referens 0.8 m i 2 dragningar, vi 4.56 m i 2 rör (OVER)
+    - `LONG_RUN` referens 0.6 m → vi 2.3 m  · STOD_1  [pp_3eb8bb5fb873]
+    - `LONG_RUN` referens 0.2 m → vi 2.3 m  · STOD_1  [pp_7a712ffa94bb]
+- **KV1-K5-15** - referens 0 m i 0 dragningar, vi 4.17 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 4.2 m  · STOD_1  [pp_1b7414f747d3]
+- **KV1-R1-12** - referens 2.8 m i 6 dragningar, vi 3.41 m i 5 rör (OVER)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_4aafd981a658]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_10fc7c96d856]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_64ab75613ac7]
+    - `SAME_RUN` referens 0.3 m → vi 0.1 m  [pp_64a390506959]
+    - `LONG_RUN` referens 0.9 m → vi 2.1 m  · STOD_1  [pp_2fbb625bfd66]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-R1-15** - referens 5.6 m i 6 dragningar, vi 12.02 m i 4 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.4 m  [pp_b67ee164ed98]
+    - `MERGED` referens 1.7 + 1.3 + 1.2 + 0.2 m → vi 4.8 m  [pp_6895f085ff42]
+    - `LONG_RUN` referens 1.0 m → vi 6.2 m  · STOD_3  [pp_35fba80178c6]
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_1  [pp_72a2eca19351]
+- **KV1-X31-16** - referens 11.5 m i 6 dragningar, vi 18.41 m i 12 rör (OVER)
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_0e6b7c834d48]
+    - `SAME_RUN` referens 0.6 m → vi 0.7 m  [pp_2fb675ddf798]
+    - `SAME_RUN` referens 2.4 m → vi 2.3 m  [pp_2c78f97250a5]
+    - `SAME_RUN` referens 1.6 m → vi 1.4 m  [pp_bc6b8ebcc27c]
+    - `SPLIT` referens 4.2 m → vi 3.0 + 0.8 + 0.5 m  [pp_5e1eece22503, pp_7228a4608825, pp_a6d25e8415e5]
+    - `LONG_RUN` referens 2.2 m → vi 8.7 m  · STOD_0  [pp_aff2a538ee13]
+    - `EXTRA_RUN` referens - m → vi 0.4 m  · STOD_0  [pp_59302b923597]
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_0  [pp_e495b8065fc6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4b07f79ea2df]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7843773c5c99]
+- **KV1-X7-16** - referens 36.2 m i 31 dragningar, vi 19.47 m i 10 rör (PARTIAL)
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_2203a72222ea]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_0163c37bc272]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_fb176f8e3f3b]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_a6d3580eeb8d]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_4ab5c09a7cc8]
+    - `SAME_RUN` referens 1.2 m → vi 1.1 m  [pp_49bd941c9bc0]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_eb54ac72f293]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_3f3f0132dfd6]
+    - `MERGED` referens 3.8 + 3.5 + 0.7 m → vi 8.0 m  [pp_00be4d79c92c]
+    - `MERGED` referens 2.6 + 2.2 + 1.7 + 0.4 m → vi 6.9 m  [pp_bcd3d5beeeb1]
+    - `MISSING_RUN` referens 5.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-20** - referens 24.0 m i 22 dragningar, vi 21.24 m i 3 rör (PARTIAL)
+    - `MERGED` referens 5.8 + 3.2 + 0.7 m → vi 9.7 m  [pp_206f5fe5dba3]
+    - `MERGED` referens 3.1 + 2.3 + 1.2 + 0.3 m → vi 6.9 m  [pp_4224afe094ac]
+    - `MERGED` referens 2.1 + 1.3 + 0.8 + 0.4 m → vi 4.7 m  [pp_dc983040e78b]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-25** - referens 13.6 m i 12 dragningar, vi 10.93 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_f3573772d735]
+    - `MERGED` referens 4.5 + 2.2 + 1.7 + 1.3 m → vi 10.6 m  [pp_e6e5c68eee5b]
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV2-R1** - referens 0 m i 0 dragningar, vi 4.43 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 4.4 m  · STOD_2  [pp_281137d7ae31]
+- **KV2-R1-12** - referens 3.3 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 3.3 m → vi - m  · NAMNET_LASTES_INTE
+- **KV2-R1-15** - referens 1.9 m i 2 dragningar, vi 6.67 m i 2 rör (OVER)
+    - `LONG_RUN` referens 1.4 m → vi 3.6 m  · STOD_1  [pp_50fe4935205d]
+    - `LONG_RUN` referens 0.5 m → vi 3.1 m  · STOD_1  [pp_afff81409e53]
+- **KV2-R1-18** - referens 0 m i 0 dragningar, vi 5.23 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 5.2 m  · STOD_1  [pp_6634f54c688f]
+- **KV2-X31-16** - referens 19.7 m i 9 dragningar, vi 6.12 m i 6 rör (PARTIAL)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_ea9688e63d95]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_570f4b69332f]
+    - `SAME_RUN` referens 3.5 m → vi 3.3 m  [pp_4b027f3e406b]
+    - `MERGED` referens 0.6 + 0.5 + 0.4 m → vi 1.5 m  [pp_19726b7583b7]
+    - `SHORT_RUN` referens 5.3 m → vi 0.1 m  · AMBIGUOUS_JUNCTION, REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_668f7919a374]
+    - `SHORT_RUN` referens 4.5 m → vi 0.0 m  · FREE_END, REAL_DESIGNATION_BOUNDARY  [pp_8cf16408ef36]
+    - `MISSING_RUN` referens 3.6 m → vi - m  · NAMNET_LASTES_INTE
+- **KV2-X7-16** - referens 15.8 m i 14 dragningar, vi 15.38 m i 4 rör (FULL)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_6a94681e9f31]
+    - `SAME_RUN` referens 0.6 m → vi 0.7 m  [pp_87a068b0d234]
+    - `MERGED` referens 3.6 + 2.8 + 1.8 + 1.6 + 1.6 m → vi 12.2 m  [pp_72f51729196a]
+    - `MERGED` referens 1.3 + 0.9 + 0.2 m → vi 2.4 m  [pp_87e35e343d14]
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV2-X7-25** - referens 6.2 m i 13 dragningar, vi 15.64 m i 2 rör (OVER)
+    - `MERGED` referens 3.0 + 1.5 + 0.3 + 0.3 + 0.2 + 0.2 + 0.2 + 0.2 m → vi 6.5 m  [pp_5ee8a3d32e73]
+    - `LONG_RUN` referens 0.1 m → vi 9.2 m  · STOD_1  [pp_3175fee0f620]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV2-X7-32** - referens 9.2 m i 9 dragningar, vi 1.13 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 1.2 m → vi 1.1 m  [pp_42c20894b13d]
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-75** - referens 0.5 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+- **S3-P5-110** - referens 6.0 m i 4 dragningar, vi 3.72 m i 1 rör (PARTIAL)
+    - `MERGED` referens 2.2 + 1.2 + 0.3 m → vi 3.7 m  [pp_eda40aa601ba]
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S3-R8-110** - referens 0 m i 0 dragningar, vi 2.14 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.1 m  · STOD_1  [pp_8f9b21899bb0]
+- **S3-R8-160** - referens 0.8 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_INTE
+- **VP1-S13-22** - referens 25.8 m i 11 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 9.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 8.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-54** - referens 26.1 m i 7 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 5.9 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 5.8 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 5.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 5.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VS1-** - referens 0 m i 0 dragningar, vi 3.64 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 3.6 m  · STOD_1  [pp_3776c5284efc]
+- **VS1-R1-12** - referens 5.4 m i 11 dragningar, vi 5.1 m i 4 rör (FULL)
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_1106ca6dd13d]
+    - `SAME_RUN` referens 0.5 m → vi 0.7 m  [pp_5da5b13b2c6c]
+    - `MERGED` referens 1.2 + 1.1 + 0.1 m → vi 2.4 m  [pp_a4ece31f8ab2]
+    - `MERGED` referens 0.5 + 0.5 + 0.3 + 0.3 m → vi 1.6 m  [pp_47062e843d0f]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VS1-S13-12** - referens 93.2 m i 59 dragningar, vi 59.27 m i 34 rör (PARTIAL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_6eebe8dca68b]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_890ad43e92ad]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_147ef3591342]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_c4df352c6f50]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_e6c0138e8b31]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_d13b6b047864]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_132e66f2e4dd]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_5699a8aecdc5]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_28c58b7728cd]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_384bdb5d60c0]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_2c49bc67d482]
+    - `SAME_RUN` referens 1.0 m → vi 0.9 m  [pp_85e9e5c0d772]
+    - `SAME_RUN` referens 1.4 m → vi 1.3 m  [pp_b8007b66e730]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c9fc9ed5e056]
+    - `SAME_RUN` referens 3.2 m → vi 3.1 m  [pp_a2d156335f51]
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_c652d3bca8e7]
+    - `SAME_RUN` referens 3.0 m → vi 3.1 m  [pp_cf9f924aaa3a]
+    - `SAME_RUN` referens 1.5 m → vi 1.6 m  [pp_cdecc08fe2c4]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_34c85df26953]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_7c4f30cd5bb6]
+    - `SAME_RUN` referens 1.1 m → vi 1.2 m  [pp_c5b3949be9e1]
+    - `SAME_RUN` referens 6.8 m → vi 6.9 m  [pp_1f6f0fbdb000]
+    - `SAME_RUN` referens 1.1 m → vi 1.2 m  [pp_0a74c3f1de10]
+    - `SAME_RUN` referens 2.9 m → vi 2.8 m  [pp_52e78f66b506]
+    - `SAME_RUN` referens 1.1 m → vi 0.9 m  [pp_9bba3fe92143]
+    - `SAME_RUN` referens 0.7 m → vi 0.9 m  [pp_c88ce744adfd]
+    - `SAME_RUN` referens 5.4 m → vi 5.2 m  [pp_564cdef9f339]
+    - `SAME_RUN` referens 7.1 m → vi 7.3 m  [pp_efbf23726298]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_9874b716c712]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_d612b8a0a64e]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_e39043393367]
+    - `MERGED` referens 3.8 + 3.4 + 1.4 m → vi 8.6 m  [pp_2412298324f9]
+    - `MERGED` referens 6.4 + 0.7 + 0.7 m → vi 7.8 m  [pp_eef566579a6b]
+    - `SHORT_RUN` referens 6.4 m → vi 0.0 m  · SYMBOL, UNOWNED_CONTINUATION  [pp_ec6ac43bb2a1]
+    - `MISSING_RUN` referens 5.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 39.3 m i 31 dragningar, vi 37.95 m i 4 rör (FULL)
+    - `SAME_RUN` referens 0.9 m → vi 1.1 m  [pp_a94611d250f0]
+    - `MERGED` referens 4.4 + 4.4 + 4.3 + 4.0 + 3.9 + 3.7 m → vi 24.0 m  [pp_8f286bfa5339]
+    - `MERGED` referens 2.4 + 2.1 + 1.5 + 1.4 m → vi 7.5 m  [pp_3275bdc9b6fa]
+    - `MERGED` referens 0.9 + 0.8 + 0.7 + 0.7 + 0.6 + 0.4 + 0.3 + 0.3 + 0.3 m → vi 5.3 m  [pp_7bf8bae9caac]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 38.2 m i 15 dragningar, vi 0.0 m i 1 rör (MISSED)
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_7e3d1d34ea2e]
+    - `MISSING_RUN` referens 7.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 7.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 6.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 6.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-42** - referens 0 m i 0 dragningar, vi 0.0 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_15c98599abbd]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_890e1d71c858]
+- **VV1-K5-15** - referens 0.6 m i 2 dragningar, vi 2.1 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.4 m → vi 2.1 m  · STOD_1  [pp_745050fa0165]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-R1-12** - referens 1.9 m i 4 dragningar, vi 4.95 m i 4 rör (OVER)
+    - `SAME_RUN` referens 0.6 m → vi 0.7 m  [pp_c22efc3d1b7b]
+    - `MERGED` referens 0.5 + 0.5 + 0.3 m → vi 1.3 m  [pp_6cc530bae6aa]
+    - `EXTRA_RUN` referens - m → vi 2.1 m  · STOD_1  [pp_7eab6a570ebd]
+    - `EXTRA_RUN` referens - m → vi 0.9 m  · STOD_1  [pp_3790b2b90243]
+- **VV1-R1-15** - referens 7.9 m i 8 dragningar, vi 19.28 m i 5 rör (OVER)
+    - `MERGED` referens 1.7 + 1.4 + 1.4 + 1.2 m → vi 5.6 m  [pp_13cf7b0dfba1]
+    - `MERGED` referens 1.4 + 0.4 + 0.2 + 0.2 m → vi 2.1 m  [pp_9024f79657d7]
+    - `EXTRA_RUN` referens - m → vi 4.7 m  · STOD_3  [pp_768f51f26e5f]
+    - `EXTRA_RUN` referens - m → vi 3.7 m  · STOD_1  [pp_14359095214c]
+    - `EXTRA_RUN` referens - m → vi 3.1 m  · STOD_1  [pp_42d7bedeb6e1]
+- **VV1-R1-18** - referens 0 m i 0 dragningar, vi 5.35 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 5.3 m  · STOD_1  [pp_222658e429f3]
+- **VV1-X31-16** - referens 25.4 m i 11 dragningar, vi 14.65 m i 10 rör (PARTIAL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_d16f6b5ee63a]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_452c30930822]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_97ceb973d302]
+    - `SAME_RUN` referens 0.5 m → vi 0.4 m  [pp_730f2e566efb]
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_b98d45d18b40]
+    - `MERGED` referens 4.1 + 3.8 m → vi 7.8 m  [pp_aa6d60c2bffd]
+    - `SHORT_RUN` referens 5.4 m → vi 2.5 m  · SYMBOL  [pp_c1041b9635d3]
+    - `SHORT_RUN` referens 5.1 m → vi 1.4 m  · REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_a9adf685c57e]
+    - `SHORT_RUN` referens 2.1 m → vi 0.1 m  · AMBIGUOUS_JUNCTION, REAL_DESIGNATION_BOUNDARY  [pp_bb86c9396097]
+    - `SHORT_RUN` referens 2.0 m → vi 0.0 m  · REAL_DESIGNATION_BOUNDARY  [pp_78d8223ba7bc]
+- **VV1-X7-16** - referens 38.7 m i 27 dragningar, vi 21.51 m i 10 rör (PARTIAL)
+    - `SAME_RUN` referens 1.7 m → vi 1.7 m  [pp_9d73da4f3e04]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_f3f586b62f46]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_db3d67f452ea]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_8a14bd126b63]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_c625eba425d8]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_f759c94ebfe6]
+    - `SAME_RUN` referens 2.0 m → vi 1.9 m  [pp_ade48ea83a28]
+    - `MERGED` referens 5.7 + 2.8 m → vi 8.5 m  [pp_eafede53d80e]
+    - `MERGED` referens 3.9 + 0.8 + 0.4 m → vi 5.1 m  [pp_4d447bcb25f7]
+    - `MERGED` referens 1.1 + 0.3 + 0.2 m → vi 1.6 m  [pp_6e7319a7ed8f]
+    - `MISSING_RUN` referens 3.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-20** - referens 24.1 m i 22 dragningar, vi 19.66 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 1.7 m → vi 1.6 m  [pp_53160887ce90]
+    - `MERGED` referens 5.7 + 0.7 + 0.5 + 0.4 m → vi 7.3 m  [pp_ce3c862a6880]
+    - `MERGED` referens 3.1 + 1.8 + 1.5 m → vi 6.4 m  [pp_bb53e137e233]
+    - `MERGED` referens 2.5 + 1.4 + 0.4 m → vi 4.3 m  [pp_c13bc4a5e029]
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-25** - referens 12.7 m i 18 dragningar, vi 12.14 m i 4 rör (FULL)
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_5ff1b753dc6d]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_89c48e9ba2d3]
+    - `MERGED` referens 2.1 + 2.0 + 1.8 + 1.7 m → vi 8.2 m  [pp_0b7a497b6393]
+    - `MERGED` referens 1.0 + 0.9 + 0.6 + 0.4 + 0.3 m → vi 3.2 m  [pp_9189d7f451c0]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-32** - referens 3.9 m i 7 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-16** - referens 18.4 m i 7 dragningar, vi 8.36 m i 1 rör (PARTIAL)
+    - `SHORT_RUN` referens 14.1 m → vi 8.4 m  · AMBIGUOUS_JUNCTION, DECLARED_BOUNDARY, UNOWNED_CONTINUATION  [pp_1f657bebca6b]
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0112  ·  referens 130.1 m i 67 dragningar  ·  vi 124.3 m i 20 rör
+
+- **VS1-S13-12** - referens 34.2 m i 36 dragningar, vi 26.26 m i 13 rör (PARTIAL)
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_3acaa3a1a175]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_dc713638ebcf]
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_8600b745574c]
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_3a41f7bd590c]
+    - `MERGED` referens 6.9 + 6.7 m → vi 13.2 m  [pp_09d67f5409d6]
+    - `MERGED` referens 2.6 + 0.5 m → vi 3.0 m  [pp_b0131ce15055]
+    - `MERGED` referens 0.6 + 0.6 + 0.5 m → vi 1.7 m  [pp_79c66c4e9b33]
+    - `MERGED` referens 0.5 + 0.5 + 0.5 m → vi 1.6 m  [pp_edf82a21ec8a]
+    - `MERGED` referens 0.5 + 0.5 m → vi 1.1 m  [pp_8cd895e79653]
+    - `MERGED` referens 0.5 + 0.5 m → vi 1.0 m  [pp_1442cd0a84db]
+    - `MERGED` referens 0.5 + 0.5 m → vi 0.9 m  [pp_e235c4efa241]
+    - `MERGED` referens 0.5 + 0.5 m → vi 0.8 m  [pp_1da833996729]
+    - `MERGED` referens 0.5 + 0.3 m → vi 0.8 m  [pp_bb1df40ae5bb]
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 13.2 m i 4 dragningar, vi 11.99 m i 1 rör (FULL)
+    - `MERGED` referens 6.4 + 6.3 m → vi 12.0 m  [pp_e66ccd1dbb11]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 49.7 m i 21 dragningar, vi 57.49 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_2e85e7f8f95f]
+    - `MERGED` referens 12.7 + 12.2 + 3.7 + 0.4 m → vi 29.0 m  [pp_a9550140b2b8]
+    - `LONG_RUN` referens 6.6 m → vi 28.5 m  · STOD_2  [pp_54e56cedbb1c]
+    - `MISSING_RUN` referens 6.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-28** - referens 32.0 m i 4 dragningar, vi 28.57 m i 1 rör (PARTIAL)
+    - `MERGED` referens 15.8 + 15.6 m → vi 28.6 m  [pp_7dd7c02b6fe3]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-35** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_e830697a72ee]
+- **VS1-S13-42** - referens 1.0 m i 2 dragningar, vi 0.0 m i 1 rör (MISSED)
+    - `SHORT_RUN` referens 0.5 m → vi 0.0 m  · SYMBOL  [pp_77f99f5a1ba0]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0113  ·  referens 516.0 m i 361 dragningar  ·  vi 450.2 m i 122 rör
+
+Utanför referensens system: 2 rör, 1.9 m.
+
+- **FJV1-S6-50** - referens 11.7 m i 4 dragningar, vi 5.83 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 5.5 m → vi 5.8 m  [pp_a9de8e171816]
+    - `MISSING_RUN` referens 5.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-E13-90** - referens 1.8 m i 5 dragningar, vi 1.26 m i 1 rör (PARTIAL)
+    - `MERGED` referens 0.8 + 0.3 + 0.2 m → vi 1.3 m  [pp_b606c4c2799c]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-K5-10** - referens 0 m i 0 dragningar, vi 4.91 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.8 m  · STOD_1  [pp_a5752b3cae47]
+    - `EXTRA_RUN` referens - m → vi 2.1 m  · STOD_1  [pp_f4d9e16991ae]
+- **KV1-K5-15** - referens 0.4 m i 1 dragningar, vi 4.88 m i 2 rör (OVER)
+    - `LONG_RUN` referens 0.4 m → vi 3.2 m  · STOD_1  [pp_346803fe7716]
+    - `EXTRA_RUN` referens - m → vi 1.6 m  · STOD_1  [pp_e5ea7f1b04bb]
+- **KV1-VM1** - referens 0 m i 0 dragningar, vi 2.21 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 2.2 m  · STOD_1  [pp_5765e6186bd1]
+- **KV1-X31-16** - referens 16.6 m i 11 dragningar, vi 12.37 m i 13 rör (PARTIAL)
+    - `SAME_RUN` referens 2.1 m → vi 2.1 m  [pp_8e057d9dd238]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_9ac971629400]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_a98b98a25623]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_5242f5839ff5]
+    - `SAME_RUN` referens 1.3 m → vi 1.3 m  [pp_07cedc637e0b]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_2e6dfb4c07b1]
+    - `SAME_RUN` referens 1.6 m → vi 1.8 m  [pp_c407f02731e5]
+    - `SPLIT` referens 3.3 m → vi 1.9 + 1.1 + 0.1 + 0.0 m  [pp_41f85c1123f6, pp_f1a82297848a, pp_33948cd7d450, pp_4742efb3d534]
+    - `SHORT_RUN` referens 2.7 m → vi 1.9 m  · CLOSED_LOOP  [pp_e5f7f4a774b8]
+    - `SHORT_RUN` referens 2.2 m → vi 0.0 m  · REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_3524119171f6]
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-16** - referens 17.5 m i 16 dragningar, vi 17.28 m i 6 rör (FULL)
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_b49fa91eb516]
+    - `SAME_RUN` referens 1.5 m → vi 1.4 m  [pp_6b7b17ab2478]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_65085235efd1]
+    - `MERGED` referens 4.6 + 1.2 + 0.3 + 0.1 m → vi 6.2 m  [pp_2a351f7db83e]
+    - `MERGED` referens 4.4 + 1.0 m → vi 5.4 m  [pp_a54467723e57]
+    - `MERGED` referens 1.2 + 0.9 + 0.7 + 0.4 m → vi 3.4 m  [pp_d9379aa23979]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-20** - referens 8.5 m i 4 dragningar, vi 19.79 m i 2 rör (OVER)
+    - `SAME_RUN` referens 2.5 m → vi 2.6 m  [pp_956898af72c1]
+    - `LONG_RUN` referens 2.4 m → vi 17.1 m  · STOD_1  [pp_5bdf86dce6cd]
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-25** - referens 9.6 m i 4 dragningar, vi 13.4 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.9 m → vi 1.1 m  [pp_4ef0def5dbfc]
+    - `LONG_RUN` referens 4.2 m → vi 12.3 m  · STOD_3  [pp_6a7872777363]
+    - `MISSING_RUN` referens 3.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 13.9 m i 8 dragningar, vi 14.77 m i 3 rör (FULL)
+    - `SAME_RUN` referens 0.6 m → vi 0.5 m  [pp_68a874340733]
+    - `MERGED` referens 10.1 + 1.6 + 0.1 m → vi 11.8 m  [pp_32821766ddf1]
+    - `LONG_RUN` referens 1.0 m → vi 2.4 m  · STOD_1  [pp_516eb0856f93]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 3.2 m i 4 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-50** - referens 13.6 m i 11 dragningar, vi 4.55 m i 1 rör (PARTIAL)
+    - `MERGED` referens 2.3 + 2.1 + 0.1 m → vi 4.5 m  [pp_a7c760a9f772]
+    - `MISSING_RUN` referens 5.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-63** - referens 3.4 m i 6 dragningar, vi 0.79 m i 1 rör (PARTIAL)
+    - `MERGED` referens 0.5 + 0.1 + 0.1 m → vi 0.8 m  [pp_1b784f984caa]
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV2-R1-15** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_845d9ad80a01]
+- **KV2-R1-18** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_24a1011a0a03]
+- **KV2-X31-16** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_09f44dcc56e0]
+- **KV2-X7-32** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_5caceb6c0eb8]
+- **S2-E4-110** - referens 1.8 m i 1 dragningar, vi 1.83 m i 1 rör (FULL)
+- **S2-P5-110** - referens 17.5 m i 16 dragningar, vi 14.79 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_8f5deeccfd9c]
+    - `SAME_RUN` referens 1.8 m → vi 1.8 m  [pp_75d542b6eeb2]
+    - `SAME_RUN` referens 7.6 m → vi 8.2 m  [pp_19c80fff29c3]
+    - `MERGED` referens 1.9 + 1.2 + 1.1 + 0.4 m → vi 4.6 m  [pp_4b2e4d2800a1]
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-160** - referens 8.1 m i 16 dragningar, vi 5.6 m i 1 rör (PARTIAL)
+    - `MERGED` referens 1.2 + 0.8 + 0.8 + 0.8 + 0.6 + 0.6 + 0.5 m → vi 5.6 m  [pp_16ef0a02ed6b]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-50** - referens 0.8 m i 4 dragningar, vi 5.33 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_e97d9c53ad57]
+    - `LONG_RUN` referens 0.2 m → vi 2.8 m  · STOD_4  [pp_dde83219798d]
+    - `LONG_RUN` referens 0.2 m → vi 2.4 m  · STOD_1  [pp_27bb6f73375b]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-75** - referens 0.2 m i 1 dragningar, vi 0.17 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_0fee1e2cd023]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_1f9deec3ce9b]
+- **VP1-S1-65** - referens 18.4 m i 14 dragningar, vi 2.09 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 1.1 m → vi 1.1 m  [pp_00593efbd991]
+    - `MERGED` referens 0.7 + 0.3 m → vi 0.9 m  [pp_287fd23090c1]
+    - `MISSING_RUN` referens 3.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-42** - referens 21.9 m i 6 dragningar, vi 27.79 m i 2 rör (OVER)
+    - `LONG_RUN` referens 10.5 m → vi 14.0 m  · STOD_2  [pp_6af78da65d6c]
+    - `LONG_RUN` referens 9.9 m → vi 13.8 m  · STOD_1  [pp_044182a34de9]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-54** - referens 19.6 m i 2 dragningar, vi 11.45 m i 1 rör (PARTIAL)
+    - `LONG_RUN` referens 9.8 m → vi 11.4 m  · STOD_1  [pp_0cc9c424faf1]
+    - `MISSING_RUN` referens 9.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-12** - referens 88.3 m i 90 dragningar, vi 73.93 m i 24 rör (PARTIAL)
+    - `SAME_RUN` referens 3.3 m → vi 3.3 m  [pp_5133ee66a281]
+    - `SAME_RUN` referens 2.3 m → vi 2.3 m  [pp_13d67b13e3be]
+    - `SAME_RUN` referens 1.7 m → vi 1.7 m  [pp_93d04298b79f]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_d78a0f8b1a48]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_1131856cde12]
+    - `SAME_RUN` referens 1.8 m → vi 1.8 m  [pp_bccc51f37699]
+    - `SAME_RUN` referens 4.9 m → vi 4.9 m  [pp_ad33e9df2b65]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_99fcb3c0a764]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_92cd94bada60]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_4f4a22289797]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_6c8356bbe794]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_9f48f49c6c8b]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_7f7d529a0713]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_29f01de31b45]
+    - `SAME_RUN` referens 3.4 m → vi 3.3 m  [pp_d7a9c9f01535]
+    - `SAME_RUN` referens 1.0 m → vi 0.9 m  [pp_6058526e32e8]
+    - `SAME_RUN` referens 1.4 m → vi 1.3 m  [pp_68843a008bab]
+    - `SAME_RUN` referens 2.9 m → vi 3.0 m  [pp_a7ab2f5f6fde]
+    - `SAME_RUN` referens 6.3 m → vi 6.1 m  [pp_260cadfce054]
+    - `SAME_RUN` referens 2.8 m → vi 2.6 m  [pp_4542d31e3115]
+    - `SAME_RUN` referens 3.8 m → vi 3.6 m  [pp_23dce65d8a67]
+    - `SAME_RUN` referens 5.8 m → vi 6.1 m  [pp_7ca875af9192]
+    - `MERGED` referens 4.7 + 3.8 + 3.2 + 2.8 + 2.3 + 2.3 m → vi 19.5 m  [pp_2a5d4bd9ef33]
+    - `MERGED` referens 1.9 + 1.7 + 1.6 + 1.2 + 1.1 + 1.1 m → vi 8.8 m  [pp_41a2d891c08a]
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 12.6 m i 23 dragningar, vi 24.26 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.7 m → vi 0.6 m  [pp_df44e26ad4ca]
+    - `LONG_RUN` referens 2.2 m → vi 23.6 m  · STOD_2  [pp_0c8ad3a9ac1f]
+    - `MISSING_RUN` referens 1.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 36.3 m i 21 dragningar, vi 9.34 m i 1 rör (PARTIAL)
+    - `MERGED` referens 4.0 + 4.0 + 1.3 m → vi 9.3 m  [pp_716f474be8d6]
+    - `MISSING_RUN` referens 5.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-42** - referens 73.8 m i 22 dragningar, vi 49.13 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 11.2 m → vi 11.3 m  [pp_c06228c58cdd]
+    - `SAME_RUN` referens 11.0 m → vi 11.9 m  [pp_5cf923e1d61e]
+    - `MERGED` referens 10.7 + 1.5 + 1.0 m → vi 13.2 m  [pp_1e4be38f2599]
+    - `MERGED` referens 4.1 + 3.8 + 3.2 + 1.7 m → vi 12.8 m  [pp_3e9d52c4f50d]
+    - `MISSING_RUN` referens 10.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-54** - referens 14.7 m i 8 dragningar, vi 34.63 m i 4 rör (OVER)
+    - `SAME_RUN` referens 4.9 m → vi 4.9 m  [pp_ad79f15150d5]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_ec77b287679b]
+    - `LONG_RUN` referens 4.7 m → vi 17.5 m  · STOD_1  [pp_f50f393a66f3]
+    - `LONG_RUN` referens 1.6 m → vi 12.3 m  · STOD_1  [pp_6008392fac58]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-K5-10** - referens 0 m i 0 dragningar, vi 1.89 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 1.9 m  · STOD_1  [pp_90f4e438a09a]
+- **VV1-K5-15** - referens 0.4 m i 1 dragningar, vi 3.74 m i 2 rör (OVER)
+    - `LONG_RUN` referens 0.4 m → vi 2.7 m  · STOD_1  [pp_373c98c39382]
+    - `EXTRA_RUN` referens - m → vi 1.1 m  · STOD_1  [pp_bf340dbc44d2]
+- **VV1-R1-15** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_746416b7c633]
+- **VV1-R1-18** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_bfcb374a6557]
+- **VV1-X31-16** - referens 13.6 m i 9 dragningar, vi 9.52 m i 11 rör (PARTIAL)
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_29fdd8a42cf4]
+    - `SAME_RUN` referens 1.8 m → vi 1.8 m  [pp_10ad056ea1be]
+    - `SAME_RUN` referens 0.6 m → vi 0.7 m  [pp_28589ac644a0]
+    - `SAME_RUN` referens 3.2 m → vi 3.1 m  [pp_82528257a76c]
+    - `SAME_RUN` referens 1.1 m → vi 1.3 m  [pp_65a32da6ef6c]
+    - `SPLIT` referens 1.9 m → vi 1.5 + 0.4 m  [pp_49b445a659ce, pp_4f772eea628d]
+    - `SHORT_RUN` referens 2.6 m → vi 0.1 m  · AMBIGUOUS_JUNCTION, FREE_END, REAL_DESIGNATION_BOUNDARY  [pp_30dce2508e32]
+    - `SHORT_RUN` referens 0.9 m → vi 0.0 m  · REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_9c2b3cce8bde]
+    - `SHORT_RUN` referens 0.9 m → vi 0.0 m  · SYMBOL  [pp_c0d026e7d4ae]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_0c38da9ef8c9]
+- **VV1-X7-16** - referens 17.3 m i 15 dragningar, vi 18.7 m i 6 rör (FULL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_7384234dd08c]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_c1a61ba689e9]
+    - `SAME_RUN` referens 5.0 m → vi 5.3 m  [pp_16e4cf98b9d5]
+    - `MERGED` referens 4.1 + 1.4 + 1.2 + 1.2 m → vi 7.8 m  [pp_836aacf0dd85]
+    - `MERGED` referens 0.9 + 0.9 + 0.8 m → vi 2.6 m  [pp_5c107d9ebe0f]
+    - `LONG_RUN` referens 0.3 m → vi 2.3 m  · STOD_1  [pp_2049a384f68b]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-20** - referens 8.8 m i 5 dragningar, vi 7.97 m i 2 rör (FULL)
+    - `SAME_RUN` referens 2.5 m → vi 2.4 m  [pp_ca625d86c233]
+    - `MERGED` referens 2.2 + 2.0 + 1.2 m → vi 5.6 m  [pp_47ce31937ba9]
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-32** - referens 10.5 m i 5 dragningar, vi 24.73 m i 2 rör (OVER)
+    - `MERGED` referens 4.7 + 3.5 + 1.0 + 0.9 m → vi 10.0 m  [pp_0050eac4cfc5]
+    - `LONG_RUN` referens 0.4 m → vi 14.7 m  · STOD_1  [pp_4365c5f15d5a]
+- **VV1-X7-40** - referens 8.0 m i 7 dragningar, vi 9.54 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_1edb22ede385]
+    - `LONG_RUN` referens 4.2 m → vi 8.7 m  · STOD_1  [pp_20856f156111]
+    - `MISSING_RUN` referens 1.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-50** - referens 9.6 m i 5 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 5.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-16** - referens 14.6 m i 6 dragningar, vi 8.13 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 8.2 m → vi 8.1 m  [pp_a06c9bad0666]
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 19.0 m i 10 dragningar, vi 3.65 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.3 m  [pp_9d5df36a575b]
+    - `SAME_RUN` referens 1.2 m → vi 1.4 m  [pp_8bf9261fd82a]
+    - `MERGED` referens 1.2 + 0.7 m → vi 1.9 m  [pp_41794084be18]
+    - `MISSING_RUN` referens 6.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0114  ·  referens 325.7 m i 219 dragningar  ·  vi 301.7 m i 127 rör
+
+- **KV1-K5-10** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_eda9e697be3c]
+- **KV1-K5-12** - referens 1.1 m i 4 dragningar, vi 4.76 m i 2 rör (OVER)
+    - `LONG_RUN` referens 0.5 m → vi 2.4 m  · STOD_1  [pp_63a4ddeada1e]
+    - `LONG_RUN` referens 0.4 m → vi 2.4 m  · STOD_1  [pp_32e9a2877ea4]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-K5-15** - referens 4.6 m i 8 dragningar, vi 0.0 m i 2 rör (MISSED)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_a84c398970ef]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_f1cc9f13ff1f]
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X31-16** - referens 34.6 m i 28 dragningar, vi 28.94 m i 28 rör (PARTIAL)
+    - `SAME_RUN` referens 3.3 m → vi 3.3 m  [pp_8328e030ab05]
+    - `SAME_RUN` referens 2.2 m → vi 2.2 m  [pp_2b057254758a]
+    - `SAME_RUN` referens 3.2 m → vi 3.2 m  [pp_732df4b47319]
+    - `SAME_RUN` referens 3.3 m → vi 3.3 m  [pp_d8f5b2dea62b]
+    - `SAME_RUN` referens 3.1 m → vi 3.1 m  [pp_7b605e536f6b]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_279751d925ba]
+    - `SAME_RUN` referens 1.9 m → vi 1.9 m  [pp_7606b4a2e495]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_6666713178f7]
+    - `SAME_RUN` referens 1.3 m → vi 1.3 m  [pp_f59511f4fc24]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_0916fac9721c]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_68ba5512e84c]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_5e326a3808c4]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_7593f2d1f6b9]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c35877093e7f]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c499958872e4]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c810ac2056f9]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_fbae4b7a3321]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_2fb8147f48af]
+    - `SAME_RUN` referens 2.7 m → vi 2.8 m  [pp_d5d6947bf750]
+    - `SAME_RUN` referens 1.5 m → vi 1.6 m  [pp_2e405251801d]
+    - `SAME_RUN` referens 1.1 m → vi 1.2 m  [pp_a28fc32912b5]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_0d3a75d3aaa6]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_66e94cbc7c8c]
+    - `MERGED` referens 2.6 + 0.4 m → vi 2.9 m  [pp_f3f2bdd47b5b]
+    - `SHORT_RUN` referens 2.4 m → vi 0.6 m  · REAL_DESIGNATION_BOUNDARY  [pp_f5f2a80d42dc]
+    - `SHORT_RUN` referens 2.4 m → vi 0.0 m  · AMBIGUOUS_JUNCTION, REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_710657b175c6]
+    - `SHORT_RUN` referens 1.1 m → vi 0.0 m  · SYMBOL  [pp_a413cd60061f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b91ff8d45c0c]
+- **KV1-X7-16** - referens 5.1 m i 5 dragningar, vi 8.12 m i 7 rör (OVER)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_34af341cbf5b]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_0fd0c4adf3ed]
+    - `SAME_RUN` referens 3.8 m → vi 4.0 m  [pp_5b6454fd3803]
+    - `LONG_RUN` referens 0.4 m → vi 3.6 m  · STOD_2  [pp_fb80976dc75c]
+    - `SHORT_RUN` referens 0.4 m → vi 0.1 m  · AMBIGUOUS_JUNCTION, DECLARED_BOUNDARY, REAL_DESIGNATION_BOUNDARY  [pp_921fb070509f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_1625666c3296]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_ebd0db6f1140]
+- **KV1-X7-20** - referens 5.4 m i 7 dragningar, vi 8.21 m i 5 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_0733940528fc]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_2b05970f7290]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_a14bc946f4d4]
+    - `MERGED` referens 1.3 + 0.6 + 0.3 m → vi 2.1 m  [pp_6615864e7705]
+    - `LONG_RUN` referens 2.8 m → vi 6.1 m  · STOD_1  [pp_e32a0ad15125]
+- **KV1-X7-40** - referens 24.3 m i 11 dragningar, vi 23.52 m i 2 rör (FULL)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_06c193581993]
+    - `MERGED` referens 9.1 + 8.4 + 2.5 + 1.3 m → vi 23.5 m  [pp_0ce75b7a9dd5]
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-110** - referens 3.0 m i 3 dragningar, vi 2.92 m i 1 rör (FULL)
+- **S2-P5-75** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_7  [pp_67422521adfd]
+- **VP1-S13-42** - referens 13.0 m i 4 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 6.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 5.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S1** - referens 0 m i 0 dragningar, vi 3.84 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 3.8 m  · STOD_1  [pp_c3d3765ccda4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_143b8babe84b]
+- **VS1-S13-12** - referens 66.7 m i 43 dragningar, vi 52.89 m i 26 rör (PARTIAL)
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_6dd8edab0cdd]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_445e2a80f52a]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_6a0382f40f2e]
+    - `SAME_RUN` referens 2.4 m → vi 2.4 m  [pp_af73a6cbaa3c]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_f170dd3eec7c]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_8651d3c2cf0b]
+    - `SAME_RUN` referens 1.3 m → vi 1.2 m  [pp_8a785cf9d43f]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c33f14fe3562]
+    - `SAME_RUN` referens 2.7 m → vi 2.8 m  [pp_eb688e03d832]
+    - `SAME_RUN` referens 4.1 m → vi 4.2 m  [pp_e750cb5c96d9]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_032e9aaa9780]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_0cb45153bde3]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_0d38de63197c]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_235d013da7e2]
+    - `MERGED` referens 5.3 + 2.3 + 1.9 + 1.8 m → vi 11.3 m  [pp_e345cda6a094]
+    - `MERGED` referens 5.1 + 4.3 + 1.6 m → vi 11.0 m  [pp_404cf5a77a11]
+    - `MERGED` referens 2.5 + 2.3 + 2.2 + 0.8 m → vi 7.8 m  [pp_7d275908a9cd]
+    - `MERGED` referens 1.7 + 0.8 + 0.7 + 0.6 m → vi 3.9 m  [pp_350a046b3964]
+    - `MERGED` referens 0.7 + 0.7 + 0.5 + 0.5 + 0.5 + 0.5 m → vi 3.5 m  [pp_f77a3ce6837b]
+    - `SHORT_RUN` referens 5.0 m → vi 3.1 m  · FREE_END  [pp_b44ab49262df]
+    - `SHORT_RUN` referens 5.0 m → vi 0.0 m  · FLOW_BUDGET, SYMBOL  [pp_4556c2f259ab]
+    - `SHORT_RUN` referens 4.3 m → vi 0.0 m  · SYMBOL, UNOWNED_CONTINUATION  [pp_60334bba9c3f]
+    - `SHORT_RUN` referens 0.5 m → vi 0.0 m  · CLOSED_LOOP  [pp_66deb543d576]
+    - `SHORT_RUN` referens 0.5 m → vi 0.0 m  · SYMBOL  [pp_7f7d6cc70ba2]
+    - `SHORT_RUN` referens 0.5 m → vi 0.0 m  · FLOW_BUDGET, VERTICAL  [pp_c471021c51a2]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · FLOW_BUDGET, VERTICAL  [pp_eb139129c4c0]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 3.6 m i 6 dragningar, vi 4.9 m i 2 rör (OVER)
+    - `MERGED` referens 1.4 + 1.2 + 0.3 + 0.2 m → vi 3.1 m  [pp_bf45819e5116]
+    - `LONG_RUN` referens 0.3 m → vi 1.8 m  · STOD_1  [pp_c84f0c4ec3d1]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 1.5 m i 4 dragningar, vi 13.28 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_fd4d2fb01dd5]
+    - `LONG_RUN` referens 0.5 m → vi 10.7 m  · STOD_1  [pp_cc7fc3f3dcf3]
+    - `LONG_RUN` referens 0.4 m → vi 2.4 m  · STOD_1  [pp_016f242aad03]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+- **VS1-S13-28** - referens 0 m i 0 dragningar, vi 1.44 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.9 m  · STOD_1  [pp_6debf80dbfcf]
+    - `EXTRA_RUN` referens - m → vi 0.6 m  · STOD_1  [pp_5d43e0cfbd4b]
+- **VS1-S13-35** - referens 32.0 m i 14 dragningar, vi 20.86 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 4.9 m → vi 4.9 m  [pp_ea2cd21613a7]
+    - `MERGED` referens 7.5 + 7.4 + 1.0 m → vi 15.9 m  [pp_9fdc8a562d6d]
+    - `MISSING_RUN` referens 5.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-42** - referens 35.6 m i 14 dragningar, vi 37.52 m i 6 rör (FULL)
+    - `SAME_RUN` referens 3.3 m → vi 3.3 m  [pp_d3683e7998e9]
+    - `SAME_RUN` referens 3.1 m → vi 3.1 m  [pp_3f3b2c347e50]
+    - `SAME_RUN` referens 11.4 m → vi 11.3 m  [pp_86764bd1e580]
+    - `SAME_RUN` referens 11.1 m → vi 11.7 m  [pp_1d6bbca0a295]
+    - `MERGED` referens 1.6 + 1.5 + 0.8 + 0.3 m → vi 4.3 m  [pp_14ca7891a9eb]
+    - `LONG_RUN` referens 0.6 m → vi 4.0 m  · STOD_2  [pp_48583896c65c]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-54** - referens 4.2 m i 5 dragningar, vi 1.4 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_d4fe97ff7302]
+    - `SAME_RUN` referens 1.0 m → vi 0.8 m  [pp_890c2efbaebc]
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-K5-10** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_75038992830f]
+- **VV1-K5-12** - referens 1.0 m i 4 dragningar, vi 4.89 m i 2 rör (OVER)
+    - `LONG_RUN` referens 0.5 m → vi 2.5 m  · STOD_1  [pp_d8e166499deb]
+    - `LONG_RUN` referens 0.3 m → vi 2.4 m  · STOD_1  [pp_06257795b996]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-K5-15** - referens 4.6 m i 8 dragningar, vi 0.0 m i 1 rör (MISSED)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_0577c41fe90e]
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 15.2 m i 17 dragningar, vi 12.0 m i 17 rör (PARTIAL)
+    - `SAME_RUN` referens 2.5 m → vi 2.5 m  [pp_06a845c58619]
+    - `SAME_RUN` referens 1.7 m → vi 1.7 m  [pp_26b10caf5798]
+    - `SAME_RUN` referens 2.7 m → vi 2.7 m  [pp_8daa5977f19d]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_8f43be67d116]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_0442a17ab1d5]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_af0cdeaafa3a]
+    - `SAME_RUN` referens 1.6 m → vi 1.6 m  [pp_fba52906ac58]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_011aef98d97f]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_5756346342eb]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_7a2a487ae37f]
+    - `SAME_RUN` referens 0.3 m → vi 0.4 m  [pp_8d441455c993]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_c255f1cfdef8]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_d07d8e27ae1a]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_fdc87e046616]
+    - `SHORT_RUN` referens 3.2 m → vi 2.4 m  · SYMBOL  [pp_f5d6d4557ca7]
+    - `SHORT_RUN` referens 1.3 m → vi 0.0 m  · SYMBOL, VERTICAL  [pp_587433b92e8c]
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · SYMBOL  [pp_7bc360dface4]
+- **VV1-X7-16** - referens 11.1 m i 7 dragningar, vi 9.68 m i 5 rör (PARTIAL)
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_35acaea22a91]
+    - `SAME_RUN` referens 3.9 m → vi 4.3 m  [pp_647da429148a]
+    - `MERGED` referens 2.5 + 2.3 + 0.5 m → vi 5.2 m  [pp_d27d1c2ffbc2]
+    - `SHORT_RUN` referens 0.9 m → vi 0.0 m  · SYMBOL, VERTICAL  [pp_124f9e2a7efd]
+    - `SHORT_RUN` referens 0.7 m → vi 0.0 m  · SYMBOL, VERTICAL  [pp_1bb6c7439cbd]
+- **VV1-X7-20** - referens 5.6 m i 9 dragningar, vi 9.65 m i 5 rör (OVER)
+    - `SAME_RUN` referens 2.7 m → vi 2.6 m  [pp_b4f8588d68ac]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_2829c87c5d9e]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_70cf88750b20]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_948c27d19aa1]
+    - `LONG_RUN` referens 1.5 m → vi 7.0 m  · STOD_4  [pp_02df194dceab]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 24.2 m i 9 dragningar, vi 23.95 m i 1 rör (FULL)
+    - `MERGED` referens 9.3 + 8.5 + 2.8 + 1.1 m → vi 23.9 m  [pp_c268293a4766]
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 29.3 m i 9 dragningar, vi 28.91 m i 1 rör (FULL)
+    - `MERGED` referens 12.3 + 9.2 + 3.6 + 2.1 m → vi 28.9 m  [pp_90133a69c9b9]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0121  ·  referens 171.4 m i 133 dragningar  ·  vi 145.7 m i 81 rör
+
+- **KV1-K5-12** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_5adb29ab7d70]
+- **KV1-X31-16** - referens 5.3 m i 6 dragningar, vi 1.49 m i 16 rör (PARTIAL)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_21e4c6e4ef78]
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_452eab077c44]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_9e570a48e90f]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_349021604390]
+    - `SHORT_RUN` referens 2.6 m → vi 1.1 m  · AMBIGUOUS_JUNCTION, REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_3b08c5b59082]
+    - `SHORT_RUN` referens 2.4 m → vi 0.0 m  · SYMBOL  [pp_e2547349857f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_0bebf0563a6f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_65ccc6be1431]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_8cbe7fd5073e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c1421c576d58]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c68ad6b8c6e9]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_dbeefe1dec37]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ec905a452b06]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ee14d6652e98]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f6515432ac17]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ffa8a4dbe8fc]
+- **KV1-X7-16** - referens 0.6 m i 1 dragningar, vi 5.57 m i 4 rör (OVER)
+    - `LONG_RUN` referens 0.6 m → vi 4.5 m  · STOD_2  [pp_95734ef87d70]
+    - `EXTRA_RUN` referens - m → vi 1.1 m  · STOD_2  [pp_5441d2e3873e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_2c3bac24f3e6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_575dece4da4a]
+- **KV1-X7-20** - referens 4.1 m i 3 dragningar, vi 2.54 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 2.4 m → vi 2.5 m  [pp_2b2e85bce3ef]
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 6.9 m i 5 dragningar, vi 6.49 m i 2 rör (FULL)
+- **S2-P5-110** - referens 1.1 m i 1 dragningar, vi 0.0 m i 1 rör (MISSED)
+    - `SHORT_RUN` referens 1.1 m → vi 0.0 m  · VERTICAL  [pp_c4f1673d8fd5]
+- **S2-P5-50** - referens 0.2 m i 1 dragningar, vi 0.15 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_0097d7732dcb]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_663f2b4355fa]
+- **S2-P5-75** - referens 14.1 m i 13 dragningar, vi 14.35 m i 2 rör (FULL)
+    - `MERGED` referens 4.1 + 2.3 + 1.9 + 0.3 m → vi 8.6 m  [pp_44c17ad67200]
+    - `MERGED` referens 1.8 + 1.6 + 0.7 + 0.7 + 0.3 + 0.1 m → vi 5.8 m  [pp_59e0a0765cd0]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-42** - referens 32.0 m i 6 dragningar, vi 31.92 m i 2 rör (FULL)
+    - `SAME_RUN` referens 14.8 m → vi 15.7 m  [pp_f28ab43d3c1b]
+    - `MERGED` referens 14.4 + 0.7 + 0.7 + 0.7 m → vi 16.2 m  [pp_35da8b0ba818]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1** - referens 0 m i 0 dragningar, vi 0.0 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_142e4b405aba]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_f99314a9398d]
+- **VS1-S13-12** - referens 38.9 m i 46 dragningar, vi 51.46 m i 18 rör (OVER)
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_6adf6b69294e]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_f23b25a9953f]
+    - `SAME_RUN` referens 1.6 m → vi 1.6 m  [pp_b0919a7988c6]
+    - `SAME_RUN` referens 1.3 m → vi 1.2 m  [pp_07a3a621fafd]
+    - `SAME_RUN` referens 1.9 m → vi 2.0 m  [pp_b31e882091ed]
+    - `SAME_RUN` referens 1.5 m → vi 1.4 m  [pp_0613415cb98c]
+    - `SAME_RUN` referens 2.8 m → vi 2.9 m  [pp_e4fbcdef6567]
+    - `SAME_RUN` referens 1.5 m → vi 1.4 m  [pp_70c3fd304d40]
+    - `SAME_RUN` referens 2.8 m → vi 3.0 m  [pp_974ceacc43ea]
+    - `MERGED` referens 3.3 + 3.3 + 2.7 + 0.9 + 0.8 m → vi 11.6 m  [pp_11f63ff7b8ab]
+    - `MERGED` referens 0.8 + 0.8 + 0.7 + 0.7 + 0.7 + 0.7 + 0.6 + 0.6 m → vi 6.1 m  [pp_9617ded1700c]
+    - `MERGED` referens 0.6 + 0.5 + 0.5 + 0.5 + 0.4 + 0.4 + 0.4 + 0.4 + 0.3 + 0.3 m → vi 4.5 m  [pp_dda342aa1407]
+    - `MERGED` referens 0.3 + 0.3 + 0.3 + 0.3 + 0.3 m → vi 1.7 m  [pp_52d35e55f14b]
+    - `MERGED` referens 0.3 + 0.2 + 0.2 + 0.1 + 0.1 + 0.1 + 0.1 m → vi 1.2 m  [pp_99518fca324f]
+    - `LONG_RUN` referens 0.1 m → vi 4.3 m  · STOD_1  [pp_464c8ccf4c40]
+    - `LONG_RUN` referens 0.1 m → vi 4.3 m  · STOD_1  [pp_c643becef9df]
+    - `EXTRA_RUN` referens - m → vi 1.2 m  · STOD_3  [pp_4583c4be5a22]
+    - `EXTRA_RUN` referens - m → vi 1.1 m  · STOD_3  [pp_38aed4b85eeb]
+- **VS1-S13-35** - referens 11.5 m i 10 dragningar, vi 4.81 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_3234e2c8ecb5]
+    - `MERGED` referens 2.1 + 2.0 + 0.5 m → vi 4.6 m  [pp_5fe7922f7c57]
+    - `SHORT_RUN` referens 1.7 m → vi 0.0 m  · AMBIGUOUS_JUNCTION, FREE_END  [pp_629bc7f986f5]
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-42** - referens 29.4 m i 16 dragningar, vi 4.12 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 3.1 m → vi 3.1 m  [pp_959da9ce9331]
+    - `SAME_RUN` referens 1.2 m → vi 1.0 m  [pp_0b44c261c51b]
+    - `MISSING_RUN` referens 3.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-54** - referens 4.5 m i 5 dragningar, vi 0.76 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_8292232ce5a5]
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 0.6 m i 4 dragningar, vi 0.26 m i 15 rör (PARTIAL)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_019b3406d45b]
+    - `SAME_RUN` referens 0.3 m → vi 0.2 m  [pp_381c180990de]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_a71c04b224fc]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_2417fd79de16]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_3c71a8062849]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7204dcf413c5]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_75c7f09c795f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_92b521ea594d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ca202c52ea99]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ce96ab9bc199]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_cfbc37e8fb06]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_e1179a12ac34]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f2b8cd080443]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f94bfe1ed3ba]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_fa367b829ccd]
+- **VV1-X7-16** - referens 6.3 m i 4 dragningar, vi 6.56 m i 4 rör (FULL)
+    - `SAME_RUN` referens 0.4 m → vi 0.2 m  [pp_09b29501d7d3]
+    - `MERGED` referens 2.5 + 2.4 m → vi 5.0 m  [pp_0d5364f72149]
+    - `LONG_RUN` referens 1.0 m → vi 1.4 m  · STOD_1  [pp_9d47fde56849]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_8cb730ad822a]
+- **VV1-X7-20** - referens 3.6 m i 6 dragningar, vi 3.71 m i 1 rör (FULL)
+    - `MERGED` referens 1.6 + 1.2 + 0.3 + 0.2 + 0.2 m → vi 3.7 m  [pp_906508e8c98b]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 6.4 m i 4 dragningar, vi 5.96 m i 2 rör (FULL)
+    - `MERGED` referens 3.0 + 1.7 + 0.9 m → vi 6.0 m  [pp_d662d90c0c72]
+    - `SHORT_RUN` referens 0.8 m → vi 0.0 m  · SYMBOL  [pp_0ecdf645dde6]
+- **VVC1-X7-32** - referens 5.9 m i 2 dragningar, vi 5.57 m i 2 rör (FULL)
+    - `MERGED` referens 3.0 + 2.9 m → vi 5.6 m  [pp_de3402370588]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_f2f574a49bd0]
+
+### W-50-1-A0122  ·  referens 333.6 m i 277 dragningar  ·  vi 306.5 m i 76 rör
+
+- **KV1-X31-16** - referens 5.5 m i 8 dragningar, vi 2.39 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_9c6640d6a0ec]
+    - `SAME_RUN` referens 1.5 m → vi 1.4 m  [pp_a3aa85e35236]
+    - `SAME_RUN` referens 0.3 m → vi 0.4 m  [pp_bfa1e4c2bfc2]
+    - `SAME_RUN` referens 0.3 m → vi 0.5 m  [pp_af420adcbb85]
+    - `MISSING_RUN` referens 2.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X31-20** - referens 0.1 m i 1 dragningar, vi 0.03 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_73bbd69b6ccb]
+- **KV1-X7-16** - referens 4.3 m i 5 dragningar, vi 4.41 m i 2 rör (FULL)
+- **KV1-X7-20** - referens 11.2 m i 10 dragningar, vi 14.26 m i 3 rör (OVER)
+    - `SAME_RUN` referens 6.5 m → vi 6.0 m  [pp_672b930946a5]
+    - `MERGED` referens 0.8 + 0.4 m → vi 1.2 m  [pp_a67a8777bc65]
+    - `LONG_RUN` referens 1.7 m → vi 7.1 m  · STOD_1  [pp_4888541605b3]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 34.5 m i 6 dragningar, vi 34.44 m i 2 rör (FULL)
+    - `MERGED` referens 12.4 + 10.0 + 8.4 m → vi 30.8 m  [pp_6d521f65558a]
+    - `MERGED` referens 3.0 + 0.6 m → vi 3.6 m  [pp_64e237a39ec7]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-G3-50** - referens 0 m i 0 dragningar, vi 0.54 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_2  [pp_db0eb02d33a8]
+- **S2-P5-110** - referens 16.0 m i 26 dragningar, vi 15.36 m i 2 rör (FULL)
+    - `MERGED` referens 3.0 + 1.8 + 1.2 + 1.1 + 1.0 m → vi 8.8 m  [pp_d593ea54883b]
+    - `MERGED` referens 0.9 + 0.8 + 0.7 + 0.7 + 0.7 + 0.5 + 0.5 + 0.4 + 0.4 + 0.3 + 0.3 m → vi 6.6 m  [pp_28dbc2c6ebc9]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-50** - referens 0.4 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **S2-P5-75** - referens 5.8 m i 4 dragningar, vi 5.78 m i 3 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_ae7a1c7dc85c]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_6a8e193c2fde]
+    - `SAME_RUN` referens 4.4 m → vi 4.7 m  [pp_77e75a0024a6]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13** - referens 0 m i 0 dragningar, vi 0.04 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_d41b9c8ac24f]
+- **VS1-S13-12** - referens 68.8 m i 121 dragningar, vi 80.44 m i 40 rör (OVER)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_428a7f67b674]
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_5589d247f8a8]
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_aa0e7f729acb]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_386c3bf0d5a9]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_358af354440b]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_41e310f8579a]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_49850e6dacb3]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_d545795a8f13]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_91eaf5a9690e]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_fdc017f73745]
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_3aad422596f7]
+    - `SAME_RUN` referens 1.3 m → vi 1.3 m  [pp_c01473560df0]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_9dff2efdcbf8]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_3faef53271b0]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_e9f3bbdabafb]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_9e5807035332]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_62b69d39dbe5]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_1df280f6864d]
+    - `SAME_RUN` referens 1.4 m → vi 1.4 m  [pp_b694435ec372]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_bd96c4b5a789]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_f7d7330c6917]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_62f21d22e7dd]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_38c6fffbbd2a]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_01e6c1125562]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_42373847336c]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_1469e0c68ea2]
+    - `SAME_RUN` referens 1.1 m → vi 1.2 m  [pp_60b425581fc3]
+    - `SAME_RUN` referens 3.0 m → vi 3.2 m  [pp_ae59d38cef86]
+    - `MERGED` referens 2.6 + 2.3 + 0.8 m → vi 5.7 m  [pp_184babc7d9dc]
+    - `MERGED` referens 2.4 + 0.8 + 0.8 m → vi 4.0 m  [pp_0af1940cdec9]
+    - `MERGED` referens 2.9 + 0.9 m → vi 3.8 m  [pp_75596119acac]
+    - `MERGED` referens 0.9 + 0.7 m → vi 1.6 m  [pp_fffb996fde3b]
+    - `MERGED` referens 0.9 + 0.7 m → vi 1.6 m  [pp_11b3a3aee6d2]
+    - `MERGED` referens 0.8 + 0.6 m → vi 1.4 m  [pp_3b753c8044c4]
+    - `MERGED` referens 0.8 + 0.6 m → vi 1.4 m  [pp_433b9d8993f5]
+    - `MERGED` referens 0.8 + 0.5 m → vi 1.3 m  [pp_783bbc7a61b8]
+    - `MERGED` referens 0.7 + 0.5 m → vi 1.2 m  [pp_7b378cf890a6]
+    - `MERGED` referens 0.7 + 0.5 m → vi 1.2 m  [pp_aea79426d52c]
+    - `MERGED` referens 0.6 + 0.6 m → vi 1.2 m  [pp_77c0ac8c8820]
+    - `LONG_RUN` referens 2.1 m → vi 35.8 m  · STOD_4  [pp_ab879f7784bf]
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 11.3 m i 8 dragningar, vi 6.6 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_7f6f62f17279]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_9dbd97337fb0]
+    - `MERGED` referens 4.2 + 1.0 + 0.1 + 0.1 m → vi 5.4 m  [pp_dcd84703ae5a]
+    - `MISSING_RUN` referens 4.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 2.3 m i 4 dragningar, vi 5.42 m i 1 rör (OVER)
+    - `LONG_RUN` referens 1.0 m → vi 5.4 m  · STOD_2  [pp_e9c9db230a07]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-35** - referens 72.5 m i 40 dragningar, vi 36.42 m i 1 rör (PARTIAL)
+    - `MERGED` referens 4.9 + 4.9 + 4.0 + 3.8 + 3.4 + 3.3 + 3.3 + 3.2 + 3.2 m → vi 36.4 m  [pp_e035b0e4ceb7]
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 4.2 m i 5 dragningar, vi 11.06 m i 4 rör (OVER)
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_60c8381fce3b]
+    - `SAME_RUN` referens 1.1 m → vi 1.1 m  [pp_1163646b4880]
+    - `SAME_RUN` referens 2.2 m → vi 2.4 m  [pp_ad9162e8ce16]
+    - `LONG_RUN` referens 0.3 m → vi 7.1 m  · STOD_0  [pp_47893824e06d]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7** - referens 0 m i 0 dragningar, vi 4.52 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 3.8 m  · STOD_1  [pp_d0f82be55e5d]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_1  [pp_b73d5e7d0051]
+- **VV1-X7-16** - referens 11.7 m i 13 dragningar, vi 4.72 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_e69b23301fbb]
+    - `MERGED` referens 2.2 + 1.0 + 0.8 m → vi 4.0 m  [pp_b313f6ab1dcf]
+    - `MISSING_RUN` referens 5.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-20** - referens 10.7 m i 7 dragningar, vi 3.68 m i 1 rör (PARTIAL)
+    - `MERGED` referens 1.4 + 1.1 + 0.9 + 0.3 m → vi 3.7 m  [pp_84e1f7436449]
+    - `MISSING_RUN` referens 6.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 35.0 m i 6 dragningar, vi 34.93 m i 1 rör (FULL)
+    - `MERGED` referens 12.6 + 10.6 + 8.2 + 3.0 m → vi 34.9 m  [pp_4947746a1a40]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-16** - referens 3.8 m i 5 dragningar, vi 6.34 m i 1 rör (OVER)
+    - `LONG_RUN` referens 1.9 m → vi 6.3 m  · STOD_1  [pp_95041f919356]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 35.5 m i 6 dragningar, vi 35.18 m i 1 rör (FULL)
+    - `MERGED` referens 12.8 + 11.2 + 8.0 + 3.1 m → vi 35.2 m  [pp_da55cd9fc473]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0123  ·  referens 294.1 m i 220 dragningar  ·  vi 258.3 m i 72 rör
+
+- **KV1-X31-16** - referens 3.2 m i 13 dragningar, vi 4.81 m i 9 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_22ac143a5c48]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_79e8f65e0d68]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_8a62f9b76eb3]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_e95868b816b8]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_09d1b5f5d6a3]
+    - `MERGED` referens 0.4 + 0.3 + 0.2 + 0.1 m → vi 1.0 m  [pp_325a973367eb]
+    - `MERGED` referens 0.5 + 0.5 m → vi 1.0 m  [pp_e39fec546687]
+    - `LONG_RUN` referens 0.1 m → vi 1.0 m  · STOD_1  [pp_eae0422ce288]
+    - `LONG_RUN` referens 0.1 m → vi 0.9 m  · STOD_1  [pp_d26bbf2f4bdc]
+- **KV1-X7-16** - referens 3.6 m i 4 dragningar, vi 0.12 m i 1 rör (PARTIAL)
+    - `SHORT_RUN` referens 1.8 m → vi 0.1 m  · AMBIGUOUS_JUNCTION, DECLARED_BOUNDARY  [pp_db0b7c23a8bf]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-20** - referens 13.3 m i 14 dragningar, vi 11.54 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 4.1 m → vi 4.1 m  [pp_872bac5765fa]
+    - `SAME_RUN` referens 2.7 m → vi 2.9 m  [pp_b59d0f9b5909]
+    - `MERGED` referens 1.4 + 1.2 + 0.8 + 0.7 m → vi 4.5 m  [pp_3898684b5a60]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 19.5 m i 5 dragningar, vi 18.73 m i 1 rör (FULL)
+    - `MERGED` referens 12.8 + 5.8 + 0.2 m → vi 18.7 m  [pp_67bad2d93fce]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-110** - referens 3.6 m i 5 dragningar, vi 3.39 m i 1 rör (FULL)
+    - `MERGED` referens 1.9 + 1.1 + 0.3 + 0.1 m → vi 3.4 m  [pp_7c44813e7047]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-50** - referens 0.3 m i 2 dragningar, vi 0.17 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_ca4daf3ee60c]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_5aff054c36ba]
+- **S2-P5-75** - referens 5.2 m i 7 dragningar, vi 5.31 m i 2 rör (FULL)
+- **VP1-S13-42** - referens 64.3 m i 10 dragningar, vi 63.91 m i 2 rör (FULL)
+    - `MERGED` referens 15.5 + 15.0 + 0.9 + 0.6 m → vi 32.1 m  [pp_ba040607fb1c]
+    - `MERGED` referens 9.2 + 9.2 + 6.2 + 6.2 m → vi 31.8 m  [pp_1f9d3a4ead3e]
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-12** - referens 49.3 m i 86 dragningar, vi 55.12 m i 33 rör (OVER)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_322aa250d740]
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_80e0f0c3f2ea]
+    - `SAME_RUN` referens 2.8 m → vi 2.8 m  [pp_147b6b44d889]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_d80c41c322a3]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_a9157649abd0]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_933d327f4634]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_a747fa733dc4]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_8995e05bd218]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_19ee6107f542]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_c2316646e8ca]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_904c30fecece]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_498e9265e3a7]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_91371549770f]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_c1772c9c180a]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_1cd7c817cc1c]
+    - `SAME_RUN` referens 1.2 m → vi 1.3 m  [pp_fc2e73305fa2]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_17048ee0eccd]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_a221663bd0c4]
+    - `SAME_RUN` referens 2.1 m → vi 2.2 m  [pp_13f1774eb7d7]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_280a4c433416]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_1aa2cf0ec0df]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_bfa855fb8ab7]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_d2ce768a43c3]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_df5f220ccf3b]
+    - `SAME_RUN` referens 2.1 m → vi 2.3 m  [pp_39ad382f9b79]
+    - `SAME_RUN` referens 3.1 m → vi 3.4 m  [pp_22bb9b478a1a]
+    - `MERGED` referens 4.6 + 4.4 + 1.9 + 1.9 + 0.8 + 0.8 + 0.7 + 0.6 + 0.6 + 0.5 + 0.5 + 0.5 + 0.5 + 0.5 m → vi 20.5 m  [pp_2dbc50d6125a]
+    - `MERGED` referens 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 m → vi 5.2 m  [pp_2cc79a5ac301]
+    - `MERGED` referens 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 m → vi 3.5 m  [pp_a3c01cd1550c]
+    - `MERGED` referens 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.1 + 0.1 + 0.1 + 0.1 m → vi 2.7 m  [pp_e77cdd307fcf]
+    - `LONG_RUN` referens 0.1 m → vi 1.3 m  · STOD_4  [pp_9bf24ae54a1c]
+    - `LONG_RUN` referens 0.1 m → vi 1.1 m  · STOD_3  [pp_e42509f7ba1d]
+    - `LONG_RUN` referens 0.1 m → vi 1.1 m  · STOD_1  [pp_ef2adf412314]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 0.2 m i 2 dragningar, vi 0.57 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.1 m → vi 0.6 m  · STOD_1  [pp_188091c2dd3c]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-35** - referens 69.0 m i 32 dragningar, vi 33.97 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 4.0 m → vi 4.2 m  [pp_e44cb492ea1e]
+    - `MERGED` referens 4.8 + 4.8 + 3.9 + 3.7 m → vi 18.5 m  [pp_59ee38085f66]
+    - `MERGED` referens 3.7 + 3.5 + 2.2 + 1.8 m → vi 11.2 m  [pp_eddaec8b17f1]
+    - `MISSING_RUN` referens 3.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-K5-28** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_2ebf51b98db4]
+- **VV1-X31-16** - referens 2.8 m i 12 dragningar, vi 3.99 m i 7 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_d3765fb117ac]
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_a2f55c87a138]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_ba04a75638de]
+    - `MERGED` referens 0.5 + 0.3 m → vi 0.8 m  [pp_0a11d783d6f7]
+    - `MERGED` referens 0.5 + 0.2 + 0.1 m → vi 0.8 m  [pp_14fc8644830f]
+    - `LONG_RUN` referens 0.1 m → vi 0.8 m  · STOD_1  [pp_8eca73f4ff7b]
+    - `LONG_RUN` referens 0.1 m → vi 0.8 m  · STOD_0  [pp_58093c95d94f]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-16** - referens 3.4 m i 7 dragningar, vi 1.28 m i 1 rör (PARTIAL)
+    - `MERGED` referens 0.5 + 0.4 + 0.3 + 0.1 m → vi 1.3 m  [pp_d9ac37762880]
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-20** - referens 26.9 m i 16 dragningar, vi 25.82 m i 3 rör (FULL)
+    - `SAME_RUN` referens 4.6 m → vi 4.3 m  [pp_d40b58763672]
+    - `MERGED` referens 12.7 + 2.8 + 1.4 + 0.5 m → vi 17.5 m  [pp_abc86513f84c]
+    - `MERGED` referens 1.2 + 0.9 + 0.5 + 0.5 + 0.5 + 0.4 m → vi 4.0 m  [pp_93018c064e31]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-32** - referens 6.0 m i 3 dragningar, vi 5.97 m i 1 rör (FULL)
+    - `SAME_RUN` referens 5.7 m → vi 6.0 m  [pp_fbfd972a0e86]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-16** - referens 23.5 m i 2 dragningar, vi 23.54 m i 1 rör (FULL)
+    - `SAME_RUN` referens 23.3 m → vi 23.5 m  [pp_46e4528a39d9]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0124  ·  referens 246.7 m i 165 dragningar  ·  vi 216.9 m i 106 rör
+
+- **KV1-K5-15** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_bbd8526dc9e1]
+- **KV1-X31-16** - referens 42.1 m i 26 dragningar, vi 41.69 m i 22 rör (FULL)
+    - `SAME_RUN` referens 4.3 m → vi 4.3 m  [pp_de07d66c5faa]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_384267f9c6a7]
+    - `SAME_RUN` referens 0.7 m → vi 0.6 m  [pp_dd0406bee26e]
+    - `SAME_RUN` referens 2.6 m → vi 2.7 m  [pp_dc4cb5350bae]
+    - `SAME_RUN` referens 2.8 m → vi 2.9 m  [pp_516326442e02]
+    - `SAME_RUN` referens 3.5 m → vi 3.6 m  [pp_199cd83e432f]
+    - `SAME_RUN` referens 1.0 m → vi 1.1 m  [pp_e9e196eb2d16]
+    - `SAME_RUN` referens 5.2 m → vi 5.3 m  [pp_7fc59eccd136]
+    - `SAME_RUN` referens 5.2 m → vi 5.3 m  [pp_e5b57d383303]
+    - `SAME_RUN` referens 2.4 m → vi 2.5 m  [pp_37285f32ed96]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_fd86cc94351b]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_194ac350069a]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_24a5f0639242]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_2921870cbea6]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_58d6e19731bc]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_b6e6ecd6b532]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c8ea51915444]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_e4491a463f15]
+    - `SAME_RUN` referens 2.3 m → vi 2.2 m  [pp_249c8a106224]
+    - `SAME_RUN` referens 4.2 m → vi 4.4 m  [pp_bf883f4ecf48]
+    - `SAME_RUN` referens 4.2 m → vi 4.4 m  [pp_d2fd8adba445]
+    - `MERGED` referens 1.9 + 0.3 + 0.2 + 0.1 m → vi 2.5 m  [pp_3be5c9d6c4dc]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+- **KV1-X7-16** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_a42208cac06e]
+- **KV1-X7-20** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_ec3ac3cdbe05]
+- **KV1-X7-25** - referens 3.1 m i 5 dragningar, vi 3.32 m i 2 rör (FULL)
+- **KV1-X7-32** - referens 0 m i 0 dragningar, vi 4.67 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 4.7 m  · STOD_1  [pp_87fba4c8d4dd]
+- **KV1-X7-40** - referens 31.7 m i 8 dragningar, vi 26.59 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_b20e148a3822]
+    - `SAME_RUN` referens 16.2 m → vi 16.7 m  [pp_ac6e1b305130]
+    - `MERGED` referens 7.4 + 0.8 + 0.6 m → vi 8.8 m  [pp_ff78265efbc4]
+    - `SHORT_RUN` referens 4.6 m → vi 1.1 m  · AMBIGUOUS_JUNCTION, DECLARED_BOUNDARY, SYMBOL  [pp_8bcec0014338]
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-110** - referens 11.3 m i 15 dragningar, vi 11.66 m i 3 rör (FULL)
+    - `SAME_RUN` referens 0.8 m → vi 0.7 m  [pp_607ac5bb84f3]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_5add1b50b210]
+    - `MERGED` referens 2.1 + 1.9 + 1.7 + 0.6 + 0.6 + 0.6 + 0.6 + 0.6 + 0.6 + 0.3 + 0.3 m → vi 10.9 m  [pp_dbfd0392c13c]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-160** - referens 4.9 m i 5 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+- **S2-P5-50** - referens 1.1 m i 5 dragningar, vi 3.2 m i 4 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_56d989880444]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_fea1c2819fd8]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_3f9023590211]
+    - `LONG_RUN` referens 0.3 m → vi 2.7 m  · STOD_3  [pp_7c8d9fa41a65]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-75** - referens 0 m i 0 dragningar, vi 1.25 m i 6 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 1.2 m  · STOD_1  [pp_10bd0b2a0073]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_12  [pp_27c43bc35316]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_7252c86d9ec4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_cfb5667175ca]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_4  [pp_f099c656ad55]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_5  [pp_fefec4462634]
+- **VP1-S13-42** - referens 10.6 m i 4 dragningar, vi 5.33 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 5.4 m → vi 5.3 m  [pp_1c766c82a205]
+    - `MISSING_RUN` referens 5.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-42/WC** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_867a84924a83]
+- **VS1-S13-12** - referens 8.3 m i 24 dragningar, vi 17.58 m i 20 rör (OVER)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_3fea8636f785]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_bed8fb515140]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_9a80ef56d364]
+    - `SAME_RUN` referens 1.3 m → vi 1.2 m  [pp_967e03aec9e1]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_5a29ed36a136]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_61ad44b7ee60]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_6818998f2768]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_6a58c22f0f25]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c06b7b290f6d]
+    - `SAME_RUN` referens 0.6 m → vi 0.8 m  [pp_02095bc407bf]
+    - `SAME_RUN` referens 0.6 m → vi 0.8 m  [pp_4e7872efabe8]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_c2be2d03af2e]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_d16d79647761]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_e15caef77735]
+    - `MERGED` referens 0.4 + 0.3 + 0.3 m → vi 1.0 m  [pp_5d6beb610965]
+    - `MERGED` referens 0.4 + 0.3 + 0.3 m → vi 0.9 m  [pp_60d8a692adb6]
+    - `MERGED` referens 0.4 + 0.4 m → vi 0.9 m  [pp_6c38cc2e6e99]
+    - `MERGED` referens 0.4 + 0.4 m → vi 0.9 m  [pp_5d396600522a]
+    - `EXTRA_RUN` referens - m → vi 9.2 m  · STOD_2  [pp_c44d0a65678e]
+    - `EXTRA_RUN` referens - m → vi 0.8 m  · STOD_2  [pp_c55ce740e591]
+- **VS1-S13-12/WC** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_4423f16e620e]
+- **VS1-S13-15** - referens 6.0 m i 10 dragningar, vi 5.31 m i 2 rör (PARTIAL)
+    - `MERGED` referens 2.2 + 0.2 + 0.2 + 0.2 m → vi 2.8 m  [pp_2ea819f4fc99]
+    - `MERGED` referens 1.9 + 0.6 m → vi 2.5 m  [pp_a1719ec3daa3]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-28** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_206d4b98f67d]
+- **VS1-S13-35** - referens 30.6 m i 23 dragningar, vi 13.34 m i 2 rör (PARTIAL)
+    - `MERGED` referens 6.3 + 1.6 + 1.1 + 0.8 m → vi 9.8 m  [pp_28d8e68cc4b3]
+    - `MERGED` referens 1.5 + 1.4 + 0.7 m → vi 3.6 m  [pp_976c988ea135]
+    - `MISSING_RUN` referens 6.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-35/WC** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_397039880d44]
+- **VS1-X31-16** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_8ab6a874bc32]
+- **VV1-X31-16** - referens 26.8 m i 16 dragningar, vi 57.11 m i 17 rör (OVER)
+    - `SAME_RUN` referens 2.9 m → vi 2.9 m  [pp_04e3f02dff71]
+    - `SAME_RUN` referens 4.2 m → vi 4.2 m  [pp_c94a0468c40a]
+    - `SAME_RUN` referens 2.8 m → vi 2.8 m  [pp_421eb8982453]
+    - `SAME_RUN` referens 4.1 m → vi 4.1 m  [pp_2886d099ad4a]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_4d88d3f87cc6]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_011f8758771c]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_015116612070]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_028553b052ff]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_6b07f878af12]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_83376b16ee13]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_8e78915e055a]
+    - `SAME_RUN` referens 2.4 m → vi 2.5 m  [pp_c9788b8004f5]
+    - `SAME_RUN` referens 3.2 m → vi 3.3 m  [pp_911c40cd3aa4]
+    - `SAME_RUN` referens 4.3 m → vi 4.4 m  [pp_9ce05c921106]
+    - `LONG_RUN` referens 1.9 m → vi 16.0 m  · STOD_0  [pp_4da91f21bc49]
+    - `LONG_RUN` referens 0.1 m → vi 15.9 m  · STOD_0  [pp_d23e3a895f04]
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_0  [pp_edbc46f54ada]
+- **VV1-X7-16** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_448efcc34497]
+- **VV1-X7-20** - referens 0.2 m i 2 dragningar, vi 1.2 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_5e7403f1c10a]
+    - `LONG_RUN` referens 0.1 m → vi 0.9 m  · STOD_1  [pp_a93b130a152e]
+    - `EXTRA_RUN` referens - m → vi 0.3 m  · STOD_1  [pp_53edbe87f47e]
+- **VV1-X7-25** - referens 3.3 m i 5 dragningar, vi 5.83 m i 3 rör (OVER)
+    - `MERGED` referens 1.3 + 1.0 + 0.4 + 0.3 m → vi 3.1 m  [pp_8adab9504146]
+    - `LONG_RUN` referens 0.3 m → vi 2.7 m  · STOD_2  [pp_d1de874e78cc]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_6b9ce6224cd6]
+- **VV1-X7-32** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_3b6238bb6de9]
+- **VV1-X7-40** - referens 31.9 m i 7 dragningar, vi 3.98 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 2.3 m → vi 2.4 m  [pp_4c9c0ae55db1]
+    - `MERGED` referens 1.2 + 0.4 m → vi 1.6 m  [pp_03777b7d7d60]
+    - `SHORT_RUN` referens 15.4 m → vi 0.0 m  · AMBIGUOUS_JUNCTION, REAL_SYSTEM_BOUNDARY  [pp_ecb1b0bf11f2]
+    - `MISSING_RUN` referens 7.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-16** - referens 3.7 m i 3 dragningar, vi 13.84 m i 1 rör (OVER)
+    - `LONG_RUN` referens 2.5 m → vi 13.8 m  · STOD_2  [pp_af36d955e9f5]
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-25** - referens 12.1 m i 3 dragningar, vi 1.02 m i 2 rör (PARTIAL)
+    - `SHORT_RUN` referens 7.0 m → vi 1.0 m  · AMBIGUOUS_JUNCTION, DECLARED_BOUNDARY  [pp_68e5ed5f10c5]
+    - `SHORT_RUN` referens 4.7 m → vi 0.0 m  · REAL_SYSTEM_BOUNDARY, SYMBOL  [pp_fa37707dfe00]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-32** - referens 19.0 m i 4 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 15.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0131  ·  referens 201.0 m i 129 dragningar  ·  vi 155.9 m i 106 rör
+
+- **KV1-K5-15** - referens 0.6 m i 1 dragningar, vi 1.38 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.6 m → vi 1.4 m  · STOD_1  [pp_0870ee8357c1]
+- **KV1-X31-16** - referens 9.6 m i 4 dragningar, vi 8.91 m i 26 rör (FULL)
+    - `SAME_RUN` referens 2.8 m → vi 2.8 m  [pp_42d7c943858a]
+    - `SAME_RUN` referens 1.8 m → vi 1.8 m  [pp_6c3ba4d6571e]
+    - `SHORT_RUN` referens 3.0 m → vi 2.6 m  · SYMBOL, VERTICAL  [pp_365eebcd813a]
+    - `SHORT_RUN` referens 2.0 m → vi 1.7 m  · SYMBOL, VERTICAL  [pp_d35c791ba2e2]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_070dbaf11360]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_110f4cfcebc0]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_12c8bc86e5b0]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_28350feeddc6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_2f06a1398008]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_3a5b318503d8]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4073e025e38a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_462d3b0fb221]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_5166e08979a2]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_5b4ab85eb662]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_7d69445f2f30]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_943e550a462d]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a1030b443227]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a7d9932e8770]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a85595fcf029]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b2405f724205]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_bc27107c6fe4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c07eecca11c2]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c4c339d8b562]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_cb36df1e6868]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_4  [pp_e11594dd91ec]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f6713ef130f7]
+- **KV1-X7-16** - referens 0.8 m i 1 dragningar, vi 0.51 m i 1 rör (PARTIAL)
+    - `SHORT_RUN` referens 0.8 m → vi 0.5 m  · REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_1330fdcfa07a]
+- **KV1-X7-20** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_9016c958bda7]
+- **KV1-X7-25** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_4fabd8b40973]
+- **KV1-X7-32** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_c614949064cb]
+- **KV1-X7-40** - referens 7.7 m i 5 dragningar, vi 7.09 m i 2 rör (FULL)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_de5453d6028f]
+    - `MERGED` referens 4.1 + 2.6 + 0.3 m → vi 7.1 m  [pp_1eaac36874cb]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-110** - referens 6.2 m i 7 dragningar, vi 3.52 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_88dad6bb7bac]
+    - `SAME_RUN` referens 3.1 m → vi 3.4 m  [pp_a6815f269c34]
+    - `SHORT_RUN` referens 1.0 m → vi 0.0 m  · AMBIGUOUS_JUNCTION, REAL_DN_BOUNDARY, VERTICAL  [pp_68a7fa882cd1]
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-50** - referens 0 m i 0 dragningar, vi 0.0 m i 4 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_009f455609e3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_ad408a6d20d7]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_ca402cb28732]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_3  [pp_efcf5ba1e765]
+- **S2-P5-75** - referens 10.4 m i 14 dragningar, vi 10.33 m i 6 rör (FULL)
+- **VP1-S13-42** - referens 39.2 m i 9 dragningar, vi 5.69 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_8614d12d3917]
+    - `SAME_RUN` referens 5.8 m → vi 5.7 m  [pp_e0e5dc84681e]
+    - `MISSING_RUN` referens 10.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 10.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 5.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-42/WC** - referens 0 m i 0 dragningar, vi 13.7 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 13.7 m  · STOD_1  [pp_ef6b1442945b]
+- **VS1-S13-12** - referens 29.2 m i 37 dragningar, vi 18.66 m i 21 rör (PARTIAL)
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_815a9df9b221]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_6c0905b44e4c]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_cf081dc2a325]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_4cd301d0385d]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_376ccd2e3349]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_dea54bdd5cd2]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_9d9dd8ba4e60]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_0de05271971b]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_1f9ed48f7b81]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_04e23716d231]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_2e15aba7e83d]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_700890532b3c]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_93d5655f0871]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_a8a8855f6c6f]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_eeb5652bb714]
+    - `MERGED` referens 4.7 + 1.5 + 0.7 + 0.4 m → vi 7.3 m  [pp_1b5402d21147]
+    - `MERGED` referens 0.7 + 0.7 + 0.7 + 0.4 m → vi 2.4 m  [pp_5c4c1b5024da]
+    - `MERGED` referens 0.8 + 0.4 + 0.4 + 0.4 m → vi 2.1 m  [pp_ac673e94cbbf]
+    - `MERGED` referens 0.4 + 0.4 + 0.4 + 0.4 + 0.3 m → vi 2.0 m  [pp_685af1a9f8ce]
+    - `SHORT_RUN` referens 4.8 m → vi 1.0 m  · SYMBOL, VERTICAL  [pp_857fd1e017cc]
+    - `SHORT_RUN` referens 3.0 m → vi 0.0 m  · UNOWNED_CONTINUATION, VERTICAL  [pp_f72e6c64db3b]
+    - `MISSING_RUN` referens 2.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-12/WC** - referens 0 m i 0 dragningar, vi 6.71 m i 3 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 3.4 m  · STOD_2  [pp_8c4a9508d331]
+    - `EXTRA_RUN` referens - m → vi 3.2 m  · STOD_2  [pp_dcd7bf6ea901]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_1  [pp_d3ccafdc6ea3]
+- **VS1-S13-35** - referens 63.9 m i 32 dragningar, vi 26.1 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_a8c770374165]
+    - `MERGED` referens 10.2 + 8.2 + 7.7 m → vi 26.1 m  [pp_8c33df592b15]
+    - `MISSING_RUN` referens 11.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-35/WC** - referens 0 m i 0 dragningar, vi 21.13 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 21.1 m  · STOD_1  [pp_b3f0b3f2c704]
+- **VS1-X31-16** - referens 0 m i 0 dragningar, vi 0.0 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_99c77463649a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_a2f7e4f8f410]
+- **VV1-K5-15** - referens 0.4 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X31-16** - referens 16.1 m i 6 dragningar, vi 16.02 m i 21 rör (FULL)
+    - `SAME_RUN` referens 2.3 m → vi 2.3 m  [pp_aa5b090a2c78]
+    - `SAME_RUN` referens 2.9 m → vi 2.9 m  [pp_709e95ed927a]
+    - `SAME_RUN` referens 2.0 m → vi 2.0 m  [pp_c5aae417b0cc]
+    - `SAME_RUN` referens 3.0 m → vi 3.0 m  [pp_f073bcd8c4b6]
+    - `SAME_RUN` referens 2.7 m → vi 2.8 m  [pp_4864faf9eddc]
+    - `SAME_RUN` referens 3.2 m → vi 3.1 m  [pp_abc2a5426c42]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_0d7e10fcc081]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_352fad3b5a4c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_4478fe50a412]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_5758a69357d0]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_81e30d9392ed]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_887f1aeaac8f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a8704abd8cac]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b135dfe70db4]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_e97dcf1d6156]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_eac547f3bfe3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ef27e6351419]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_efd453cb8540]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_f8e3ae8188a6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_fb1ac31473d6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_fdabeb0c4c24]
+- **VV1-X7-16** - referens 0.7 m i 1 dragningar, vi 1.49 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.7 m → vi 1.5 m  · STOD_1  [pp_dc3f72142444]
+- **VV1-X7-20** - referens 1.1 m i 1 dragningar, vi 0.73 m i 3 rör (PARTIAL)
+    - `SHORT_RUN` referens 1.1 m → vi 0.7 m  · SYMBOL  [pp_bf81f2faf6e7]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_b46c14030810]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_e234807783cf]
+- **VV1-X7-40** - referens 8.0 m i 7 dragningar, vi 6.89 m i 1 rör (PARTIAL)
+    - `MERGED` referens 3.9 + 2.8 + 0.1 + 0.1 m → vi 6.9 m  [pp_ec3fe2381406]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-25** - referens 7.1 m i 3 dragningar, vi 7.03 m i 2 rör (FULL)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_1a9134532dcb]
+    - `SAME_RUN` referens 6.6 m → vi 7.0 m  [pp_ee7b56826140]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0132  ·  referens 451.7 m i 336 dragningar  ·  vi 420.6 m i 133 rör
+
+Utanför referensens system: 1 rör, 1.7 m.
+
+- **KV1-K5-12** - referens 0.3 m i 1 dragningar, vi 9.75 m i 2 rör (OVER)
+    - `LONG_RUN` referens 0.3 m → vi 8.2 m  · STOD_1  [pp_1ea20de514bd]
+    - `EXTRA_RUN` referens - m → vi 1.6 m  · STOD_1  [pp_7d9584189fb2]
+- **KV1-X31-16** - referens 51.1 m i 26 dragningar, vi 53.85 m i 30 rör (FULL)
+    - `SAME_RUN` referens 5.4 m → vi 5.4 m  [pp_b4b212e85584]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_b89687aab98e]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_4deb54e80159]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_8a912fb62f22]
+    - `SAME_RUN` referens 2.5 m → vi 2.5 m  [pp_75e787c5c5df]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_858e70df1eac]
+    - `SAME_RUN` referens 2.8 m → vi 2.8 m  [pp_1b8cadebf93f]
+    - `SAME_RUN` referens 5.4 m → vi 5.4 m  [pp_88801a3c3ff3]
+    - `SAME_RUN` referens 2.0 m → vi 2.0 m  [pp_9656b5c3d406]
+    - `SAME_RUN` referens 1.8 m → vi 1.8 m  [pp_7f791819a595]
+    - `SAME_RUN` referens 1.9 m → vi 1.9 m  [pp_4d9703d8fa2c]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_85c24c022348]
+    - `SAME_RUN` referens 5.5 m → vi 5.5 m  [pp_8aceb2b632fb]
+    - `SAME_RUN` referens 1.7 m → vi 1.8 m  [pp_f4e1c15bd58e]
+    - `SAME_RUN` referens 2.6 m → vi 2.5 m  [pp_23c30a69548e]
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_c0f51ac0f305]
+    - `SAME_RUN` referens 0.9 m → vi 0.8 m  [pp_74a202b38131]
+    - `SAME_RUN` referens 1.6 m → vi 1.5 m  [pp_f8a953627911]
+    - `SAME_RUN` referens 6.3 m → vi 6.2 m  [pp_7a946e044dc9]
+    - `SAME_RUN` referens 2.6 m → vi 2.7 m  [pp_b14c80502319]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_a281bbac8a2d]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_67a51817a272]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_88bc43143cb8]
+    - `SPLIT` referens 2.2 m → vi 1.3 + 0.6 + 0.4 m  [pp_f337d14bff06, pp_a18ac1cedc3e, pp_0257ca450930]
+    - `LONG_RUN` referens 2.6 m → vi 6.9 m  · STOD_2  [pp_4d0403c2a0d5]
+    - `SHORT_RUN` referens 1.0 m → vi 0.0 m  · SYMBOL  [pp_b4726589d8d5]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_d4b3b3debcca]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_e74954197e04]
+- **KV1-X7-16** - referens 17.5 m i 16 dragningar, vi 6.99 m i 5 rör (PARTIAL)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_e7adcf1e7400]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_4fe989ac9bb5]
+    - `SAME_RUN` referens 0.6 m → vi 0.7 m  [pp_2dc848861e4b]
+    - `SAME_RUN` referens 3.7 m → vi 3.3 m  [pp_ccc80a85452e]
+    - `MERGED` referens 1.4 + 0.5 + 0.2 + 0.1 m → vi 2.2 m  [pp_fd19f3eec34d]
+    - `MISSING_RUN` referens 3.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-20** - referens 4.4 m i 2 dragningar, vi 5.53 m i 3 rör (OVER)
+    - `LONG_RUN` referens 2.9 m → vi 3.5 m  · STOD_2  [pp_b62c36d4c62b]
+    - `LONG_RUN` referens 1.5 m → vi 2.0 m  · STOD_1  [pp_24aca74ab9be]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_039e5ed01756]
+- **KV1-X7-32** - referens 10.1 m i 7 dragningar, vi 7.05 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_451730bd49b6]
+    - `MERGED` referens 3.2 + 2.4 + 0.6 + 0.1 m → vi 6.3 m  [pp_75fab7e0e86e]
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-40** - referens 22.3 m i 11 dragningar, vi 20.6 m i 2 rör (FULL)
+    - `MERGED` referens 11.1 + 3.7 + 2.5 + 1.9 m → vi 18.9 m  [pp_819378e410ce]
+    - `MERGED` referens 0.7 + 0.6 + 0.3 + 0.1 m → vi 1.7 m  [pp_09d912c1de60]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-110** - referens 31.1 m i 32 dragningar, vi 28.33 m i 5 rör (FULL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_9268b7cdd304]
+    - `SAME_RUN` referens 1.7 m → vi 1.7 m  [pp_5e5efbd48e13]
+    - `SAME_RUN` referens 6.2 m → vi 6.0 m  [pp_7f421ec2f347]
+    - `MERGED` referens 2.7 + 2.5 + 1.8 + 1.6 + 1.4 + 1.4 m → vi 11.9 m  [pp_6970fc972a51]
+    - `MERGED` referens 1.2 + 1.2 + 1.1 + 0.7 + 0.7 + 0.6 + 0.6 + 0.6 + 0.5 + 0.5 m → vi 8.3 m  [pp_e0733228c679]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-75** - referens 29.0 m i 38 dragningar, vi 28.53 m i 11 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_a53c71e40c0a]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_b70669dc421a]
+    - `SAME_RUN` referens 1.1 m → vi 1.1 m  [pp_22c3f93de26c]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_186e54189960]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_d1746ad6e7fc]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_e1b35237af21]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_6509f31aad75]
+    - `SAME_RUN` referens 1.6 m → vi 1.5 m  [pp_efc3cb38f15e]
+    - `MERGED` referens 3.2 + 2.7 + 2.0 + 1.9 + 1.9 + 1.8 m → vi 14.7 m  [pp_1f0ec3bcdb16]
+    - `MERGED` referens 1.7 + 1.7 + 1.7 m → vi 5.1 m  [pp_989e252692c0]
+    - `MERGED` referens 0.7 + 0.6 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.3 + 0.3 + 0.3 + 0.3 m → vi 4.8 m  [pp_d2ab3ac5460b]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-12** - referens 94.3 m i 74 dragningar, vi 74.94 m i 25 rör (PARTIAL)
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_52926265a0b0]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_9a7ff856bc28]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_c8eeb71e9ec7]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_be56c0b8c798]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_90038c36304a]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_6d850760ebce]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_56995c2a5c66]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_e71ae7ec47c5]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_628aa055a310]
+    - `SAME_RUN` referens 1.2 m → vi 1.1 m  [pp_d6d92e9baf0d]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_980df1aca771]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_257584235d4e]
+    - `SAME_RUN` referens 2.6 m → vi 2.5 m  [pp_b96024939dd5]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_dfbcf97ae42f]
+    - `SAME_RUN` referens 2.3 m → vi 2.4 m  [pp_6453eb1e1237]
+    - `SAME_RUN` referens 1.2 m → vi 1.3 m  [pp_e5a3794a7193]
+    - `SAME_RUN` referens 9.1 m → vi 9.3 m  [pp_e20581e758b4]
+    - `SAME_RUN` referens 7.4 m → vi 7.7 m  [pp_f57d24e9e6f4]
+    - `SAME_RUN` referens 6.6 m → vi 7.1 m  [pp_99947ade920a]
+    - `MERGED` referens 6.5 + 6.4 + 1.0 + 0.9 m → vi 14.8 m  [pp_f1dde2f98072]
+    - `MERGED` referens 8.0 + 6.4 m → vi 14.4 m  [pp_ea82badccdc0]
+    - `MERGED` referens 0.9 + 0.7 + 0.6 + 0.6 + 0.6 m → vi 3.4 m  [pp_ea21fc85dbec]
+    - `MERGED` referens 0.6 + 0.6 + 0.5 m → vi 1.7 m  [pp_f35db74f949a]
+    - `MERGED` referens 0.6 + 0.6 + 0.4 m → vi 1.6 m  [pp_78a8038651dd]
+    - `MERGED` referens 0.6 + 0.5 + 0.4 m → vi 1.5 m  [pp_76b49b4aa351]
+    - `MISSING_RUN` referens 9.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 15.3 m i 26 dragningar, vi 49.2 m i 3 rör (OVER)
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_0cfccc27df89]
+    - `MERGED` referens 4.0 + 3.9 + 1.2 + 1.0 + 0.9 + 0.8 + 0.6 + 0.4 + 0.3 + 0.3 + 0.2 + 0.2 + 0.2 m → vi 15.5 m  [pp_82afd1ed585e]
+    - `LONG_RUN` referens 0.2 m → vi 33.1 m  · STOD_1  [pp_390680b8ded1]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 61.9 m i 35 dragningar, vi 20.34 m i 1 rör (PARTIAL)
+    - `MERGED` referens 12.3 + 3.6 + 3.6 + 0.8 m → vi 20.3 m  [pp_3173eabebeaf]
+    - `MISSING_RUN` referens 11.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 6.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 6.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-X31-16** - referens 0.5 m i 4 dragningar, vi 9.67 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_8aee95327239]
+    - `LONG_RUN` referens 0.1 m → vi 9.5 m  · STOD_1  [pp_ee443c94c676]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-K5-12** - referens 0.5 m i 1 dragningar, vi 1.47 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.5 m → vi 1.5 m  · STOD_1  [pp_168d0419d9e7]
+- **VV1-X31-16** - referens 31.6 m i 20 dragningar, vi 35.71 m i 26 rör (OVER)
+    - `SAME_RUN` referens 4.2 m → vi 4.2 m  [pp_79a84b408844]
+    - `SAME_RUN` referens 1.0 m → vi 1.0 m  [pp_c8c307c48ef5]
+    - `SAME_RUN` referens 5.3 m → vi 5.3 m  [pp_d70bd3977656]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_5168570f2951]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_c0cdeecc6878]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_eba9e8b0e14f]
+    - `SAME_RUN` referens 1.9 m → vi 1.9 m  [pp_773e2291ace9]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_f7518294779e]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_bb06320ea098]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_f77d3f9f7688]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_d14a2ccd0156]
+    - `SAME_RUN` referens 2.2 m → vi 2.1 m  [pp_d9ad6314fff1]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c41b258232e1]
+    - `SAME_RUN` referens 5.1 m → vi 5.0 m  [pp_97aa8fb6c3d3]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_02a21d1e2b57]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_2bcb6dabf5a3]
+    - `SAME_RUN` referens 1.3 m → vi 1.4 m  [pp_4d763e6180bf]
+    - `SAME_RUN` referens 4.1 m → vi 4.0 m  [pp_7cbd075ab59a]
+    - `LONG_RUN` referens 1.6 m → vi 3.8 m  · STOD_4  [pp_4e9b5081b58a]
+    - `LONG_RUN` referens 0.9 m → vi 2.9 m  · STOD_0  [pp_f1710049541c]
+    - `EXTRA_RUN` referens - m → vi 0.4 m  · STOD_1  [pp_cfa9ef15b80e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_35a3e978ca53]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_6a220eef6f7a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_6fc941a5c050]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_83fe913094ca]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_865885929acf]
+- **VV1-X7-16** - referens 16.5 m i 16 dragningar, vi 14.18 m i 4 rör (PARTIAL)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_759f23268224]
+    - `SAME_RUN` referens 0.6 m → vi 0.5 m  [pp_8938978a9476]
+    - `SAME_RUN` referens 4.0 m → vi 4.1 m  [pp_69f072e2b1ab]
+    - `MERGED` referens 3.6 + 2.8 + 2.5 + 0.2 m → vi 9.2 m  [pp_109d2b41379b]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-20** - referens 4.7 m i 3 dragningar, vi 5.15 m i 3 rör (FULL)
+    - `SAME_RUN` referens 1.5 m → vi 1.5 m  [pp_d3176d08604d]
+    - `LONG_RUN` referens 2.0 m → vi 3.6 m  · STOD_2  [pp_c12ce517ab87]
+    - `SHORT_RUN` referens 1.2 m → vi 0.0 m  · SYMBOL  [pp_f3b09cf5fc4c]
+- **VV1-X7-25** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_0aad396c9687]
+- **VV1-X7-32** - referens 10.4 m i 7 dragningar, vi 0.51 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 0.6 m → vi 0.5 m  [pp_a513c1ac3f25]
+    - `MISSING_RUN` referens 3.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 21.6 m i 11 dragningar, vi 20.3 m i 2 rör (FULL)
+    - `MERGED` referens 11.5 + 4.0 + 2.1 + 1.7 m → vi 19.2 m  [pp_c91adfe34b03]
+    - `MERGED` referens 0.5 + 0.4 + 0.2 m → vi 1.1 m  [pp_529ae471bc4f]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-16** - referens 7.1 m i 1 dragningar, vi 7.67 m i 2 rör (FULL)
+    - `SAME_RUN` referens 7.1 m → vi 7.7 m  [pp_2d1cedd13d6f]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_e5f517305ca5]
+- **VVC1-X7-20** - referens 0.4 m i 1 dragningar, vi 0.54 m i 1 rör (OVER)
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_2c4ac8e2a667]
+- **VVC1-X7-25** - referens 21.1 m i 4 dragningar, vi 20.26 m i 1 rör (FULL)
+    - `MERGED` referens 12.5 + 8.3 m → vi 20.3 m  [pp_0733b8d60955]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0133  ·  referens 305.1 m i 216 dragningar  ·  vi 242.7 m i 70 rör
+
+- **KV1-X31-16** - referens 31.4 m i 16 dragningar, vi 30.25 m i 10 rör (FULL)
+    - `SAME_RUN` referens 5.1 m → vi 5.1 m  [pp_8b7a8b204ba1]
+    - `SAME_RUN` referens 2.1 m → vi 2.1 m  [pp_c2b5fa112260]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_1fb509040ca5]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_d52deb91abeb]
+    - `SAME_RUN` referens 2.2 m → vi 2.2 m  [pp_73098ee64687]
+    - `SAME_RUN` referens 5.0 m → vi 5.0 m  [pp_c52d2518faa7]
+    - `SAME_RUN` referens 3.5 m → vi 3.4 m  [pp_29f2a7e03fa5]
+    - `SAME_RUN` referens 1.8 m → vi 1.9 m  [pp_60f1aa80bc47]
+    - `SAME_RUN` referens 5.3 m → vi 5.1 m  [pp_b8ba01c1334f]
+    - `SAME_RUN` referens 5.4 m → vi 5.1 m  [pp_d87e6bd712b0]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-16** - referens 16.8 m i 1 dragningar, vi 17.48 m i 1 rör (FULL)
+- **KV1-X7-20** - referens 0.4 m i 1 dragningar, vi 0.45 m i 1 rör (OVER)
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_7c1fb48d6605]
+- **KV1-X7-25** - referens 3.6 m i 6 dragningar, vi 4.06 m i 2 rör (OVER)
+    - `MERGED` referens 2.4 + 0.1 + 0.1 + 0.1 m → vi 2.9 m  [pp_26e67b34bb17]
+    - `LONG_RUN` referens 0.8 m → vi 1.1 m  · STOD_3  [pp_7a1f52d10ed2]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 2.7 m i 4 dragningar, vi 1.44 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 1.6 m → vi 1.4 m  [pp_8e2d73d7e6d2]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P2-75** - referens 0 m i 0 dragningar, vi 0.0 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_8da4453c63d7]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_ab5bbe7f3dc5]
+- **S2-P3-50** - referens 0 m i 0 dragningar, vi 0.17 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_1  [pp_c19264d722ca]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_82fa0a701297]
+- **S2-P5-110** - referens 10.7 m i 22 dragningar, vi 10.44 m i 2 rör (FULL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_585fdd519222]
+    - `MERGED` referens 1.2 + 1.0 + 1.0 + 1.0 + 0.9 + 0.9 + 0.5 + 0.5 + 0.5 + 0.5 + 0.5 + 0.3 + 0.3 + 0.3 m → vi 10.3 m  [pp_def811eb239f]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-50** - referens 2.6 m i 7 dragningar, vi 1.97 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_dd3ea9fed562]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_86054da2327a]
+    - `MERGED` referens 0.1 + 0.1 + 0.1 + 0.1 m → vi 0.4 m  [pp_1c81a69d33d7]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-75** - referens 1.1 m i 4 dragningar, vi 0.16 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_9e1dca00eb64]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_64620b17bc4c]
+    - `SHORT_RUN` referens 0.4 m → vi 0.0 m  · FREE_END, REAL_DN_BOUNDARY, SYMBOL  [pp_e0cbe28a1c98]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-75/75/50** - referens 0 m i 0 dragningar, vi 0.91 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.9 m  · STOD_1  [pp_adcbd8c216f2]
+- **VP1-S13-42** - referens 13.2 m i 4 dragningar, vi 6.55 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 6.2 m → vi 6.5 m  [pp_46e760b8d454]
+    - `MISSING_RUN` referens 6.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-12** - referens 86.9 m i 63 dragningar, vi 91.72 m i 25 rör (FULL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_ad81d2f0ba6c]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_80f9ce4e253f]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_165970e88f50]
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_711a767355a9]
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_d18a8702b533]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_733978254f18]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_2208eae853e2]
+    - `SAME_RUN` referens 1.1 m → vi 1.1 m  [pp_a49299127133]
+    - `SAME_RUN` referens 4.0 m → vi 3.9 m  [pp_19813b566092]
+    - `SAME_RUN` referens 1.7 m → vi 1.6 m  [pp_63eb7e75f264]
+    - `SAME_RUN` referens 6.6 m → vi 6.7 m  [pp_99e76c5ef993]
+    - `SAME_RUN` referens 0.6 m → vi 0.7 m  [pp_76c68cd8305e]
+    - `SAME_RUN` referens 1.4 m → vi 1.5 m  [pp_7d9ea02f3a2c]
+    - `SAME_RUN` referens 0.6 m → vi 0.8 m  [pp_24ac90fd3b7b]
+    - `SAME_RUN` referens 1.0 m → vi 0.8 m  [pp_e86151b34067]
+    - `SAME_RUN` referens 9.1 m → vi 8.6 m  [pp_4c68bfaeab37]
+    - `MERGED` referens 9.2 + 6.6 + 6.4 + 6.4 + 5.8 m → vi 32.5 m  [pp_db776383c70b]
+    - `MERGED` referens 5.7 + 1.0 + 1.0 + 0.6 m → vi 8.3 m  [pp_f18fdfb0a9bf]
+    - `MERGED` referens 3.6 + 1.0 + 0.6 + 0.6 + 0.6 + 0.6 + 0.6 m → vi 8.1 m  [pp_5f4b50659552]
+    - `MERGED` referens 0.5 + 0.5 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 m → vi 3.2 m  [pp_6bd8c6822223]
+    - `MERGED` referens 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.3 + 0.3 m → vi 2.9 m  [pp_543dcc29abed]
+    - `MERGED` referens 0.3 + 0.3 + 0.3 + 0.3 + 0.2 + 0.2 + 0.2 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 m → vi 2.5 m  [pp_feaf5ece0d31]
+    - `LONG_RUN` referens 0.1 m → vi 2.4 m  · STOD_2  [pp_51854d02a192]
+    - `LONG_RUN` referens 0.1 m → vi 2.1 m  · STOD_2  [pp_aa68767d9c11]
+    - `LONG_RUN` referens 0.1 m → vi 1.6 m  · STOD_1  [pp_c9092afa0696]
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 2.6 m i 13 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 1.9 m i 10 dragningar, vi 1.57 m i 1 rör (PARTIAL)
+    - `MERGED` referens 0.4 + 0.3 + 0.3 + 0.2 + 0.2 m → vi 1.6 m  [pp_3cf209bc345d]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-35** - referens 70.4 m i 32 dragningar, vi 32.98 m i 1 rör (PARTIAL)
+    - `MERGED` referens 10.1 + 9.4 + 9.1 + 4.4 m → vi 33.0 m  [pp_6937b7f37537]
+    - `MISSING_RUN` referens 9.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-X31-16** - referens 0.5 m i 4 dragningar, vi 6.25 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.3 m  [pp_08f6c90631dd]
+    - `LONG_RUN` referens 0.1 m → vi 6.0 m  · STOD_1  [pp_9a5e36a5e578]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 19.8 m i 10 dragningar, vi 21.56 m i 7 rör (FULL)
+    - `SAME_RUN` referens 4.0 m → vi 4.0 m  [pp_78775cdc54f1]
+    - `SAME_RUN` referens 2.6 m → vi 2.5 m  [pp_7d8f5dbea82f]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c0bb4a698453]
+    - `MERGED` referens 5.0 + 2.4 m → vi 6.9 m  [pp_83180f0c1454]
+    - `SPLIT` referens 5.1 m → vi 3.6 + 1.3 m  [pp_6c1d0dbf1ab7, pp_44ce0057d73d]
+    - `LONG_RUN` referens 0.2 m → vi 3.2 m  · STOD_0  [pp_5df260533321]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-16** - referens 16.5 m i 2 dragningar, vi 0.0 m i 1 rör (MISSED)
+    - `SHORT_RUN` referens 9.9 m → vi 0.0 m  · DECLARED_BOUNDARY, SYMBOL  [pp_66a5c337c591]
+    - `MISSING_RUN` referens 6.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-20** - referens 1.7 m i 4 dragningar, vi 3.51 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_1b65e79b6db4]
+    - `LONG_RUN` referens 1.1 m → vi 3.4 m  · STOD_1  [pp_9631509682f0]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-25** - referens 5.6 m i 7 dragningar, vi 4.53 m i 1 rör (PARTIAL)
+    - `MERGED` referens 1.9 + 1.6 + 1.1 m → vi 4.5 m  [pp_de09e8f47d5e]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-16** - referens 16.7 m i 6 dragningar, vi 6.69 m i 1 rör (PARTIAL)
+    - `MERGED` referens 3.4 + 1.6 + 1.4 + 0.1 m → vi 6.7 m  [pp_47d08046005b]
+    - `MISSING_RUN` referens 9.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0134  ·  referens 350.0 m i 284 dragningar  ·  vi 249.8 m i 96 rör
+
+- **KV1-K5-15** - referens 0.4 m i 1 dragningar, vi 0.51 m i 1 rör (OVER)
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_827385631797]
+- **KV1-X31-16** - referens 4.5 m i 8 dragningar, vi 10.82 m i 13 rör (OVER)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_641a85c35976]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_b4a9c60773d6]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_1f728afe7457]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_10ffd0d81a33]
+    - `SAME_RUN` referens 2.4 m → vi 2.5 m  [pp_2c1c425dea87]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_21cc5736ee6c]
+    - `SAME_RUN` referens 1.4 m → vi 1.6 m  [pp_70234330fa6b]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_74254e1e0da4]
+    - `EXTRA_RUN` referens - m → vi 6.0 m  · STOD_1  [pp_8dc0bf2537fb]
+    - `EXTRA_RUN` referens - m → vi 0.5 m  · STOD_1  [pp_929d68ecdc6a]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_8367287953ae]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_bd4c068ce222]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ff8dab5a8c88]
+- **KV1-X7-16** - referens 26.4 m i 7 dragningar, vi 13.04 m i 5 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_d63018d2d427]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_30d05b1b382d]
+    - `SAME_RUN` referens 6.1 m → vi 6.4 m  [pp_ff706ee9fffa]
+    - `SHORT_RUN` referens 13.1 m → vi 4.6 m  · REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_c88549a9a3bc]
+    - `SHORT_RUN` referens 3.5 m → vi 1.1 m  · AMBIGUOUS_JUNCTION, SYMBOL  [pp_6754c564b9af]
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-25** - referens 17.4 m i 7 dragningar, vi 12.66 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_c6dffc775fe1]
+    - `MERGED` referens 5.7 + 5.3 + 1.0 + 0.8 m → vi 12.7 m  [pp_92863d5b5b43]
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-32** - referens 4.2 m i 5 dragningar, vi 3.64 m i 2 rör (PARTIAL)
+    - `MERGED` referens 2.2 + 0.3 + 0.2 + 0.2 m → vi 3.1 m  [pp_643ed7bd53de]
+    - `SHORT_RUN` referens 1.3 m → vi 0.5 m  · REAL_DN_BOUNDARY, SYMBOL  [pp_ccfb1f0e3553]
+- **KV1-X7-40** - referens 1.2 m i 6 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **S2-P2-75** - referens 0.3 m i 1 dragningar, vi 0.0 m i 1 rör (PARTIAL)
+    - `SHORT_RUN` referens 0.3 m → vi 0.0 m  · VERTICAL  [pp_e944de3165de]
+- **S2-P3-50** - referens 0 m i 0 dragningar, vi 0.25 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.2 m  · STOD_1  [pp_1114b3ce3a80]
+- **S2-P5-110** - referens 5.8 m i 10 dragningar, vi 4.63 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_8e6ae47842dd]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_627f93be7e54]
+    - `MERGED` referens 1.5 + 1.1 + 0.7 + 0.6 m → vi 4.2 m  [pp_ea59873afabd]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-50** - referens 0 m i 0 dragningar, vi 0.0 m i 2 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_5cd4d9e34443]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_6a40cc947c44]
+- **S2-P5-75** - referens 13.2 m i 20 dragningar, vi 13.55 m i 4 rör (FULL)
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_4da9ad0ef35f]
+    - `SAME_RUN` referens 1.9 m → vi 1.7 m  [pp_2301df685abf]
+    - `MERGED` referens 2.7 + 1.4 + 1.2 + 0.9 m → vi 6.2 m  [pp_d96a1bbd25c0]
+    - `MERGED` referens 1.1 + 0.8 + 0.5 + 0.4 + 0.3 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 + 0.1 + 0.1 m → vi 5.0 m  [pp_c675a2756503]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-75/75/50** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_302f3d14c620]
+- **VS1-S13-12** - referens 101.8 m i 114 dragningar, vi 92.18 m i 38 rör (FULL)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_235f8402d8b4]
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_65a9a01abf77]
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_fc5dd3bdab3d]
+    - `SAME_RUN` referens 0.9 m → vi 0.9 m  [pp_31ef2c8e6775]
+    - `SAME_RUN` referens 2.0 m → vi 2.0 m  [pp_b91299b47aa3]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_5e492b9f4eb7]
+    - `SAME_RUN` referens 6.6 m → vi 6.6 m  [pp_a3fb6b93be3d]
+    - `SAME_RUN` referens 3.6 m → vi 3.6 m  [pp_10944487b69e]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_60544da7a7a5]
+    - `SAME_RUN` referens 2.4 m → vi 2.4 m  [pp_ab1a87be3af5]
+    - `SAME_RUN` referens 6.7 m → vi 6.7 m  [pp_0737b9d596d3]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_c629a6aec662]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_beffa089936f]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_9b8c9a205f95]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_80a4bef8777c]
+    - `SAME_RUN` referens 1.2 m → vi 1.2 m  [pp_7d800c244b5a]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_ba338d0f207b]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_14feda32b4f4]
+    - `SAME_RUN` referens 1.5 m → vi 1.4 m  [pp_5cc9b0e7cec1]
+    - `SAME_RUN` referens 1.3 m → vi 1.4 m  [pp_ae6174b320ef]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_d2f139017c5c]
+    - `SAME_RUN` referens 1.9 m → vi 1.8 m  [pp_86d42af3261c]
+    - `SAME_RUN` referens 0.8 m → vi 0.7 m  [pp_1b5dfd910d5c]
+    - `SAME_RUN` referens 0.6 m → vi 0.7 m  [pp_9e93cef11fb4]
+    - `SAME_RUN` referens 3.0 m → vi 3.1 m  [pp_2180f2ad1ac5]
+    - `SAME_RUN` referens 4.6 m → vi 4.9 m  [pp_2e748a8a69d4]
+    - `SAME_RUN` referens 4.5 m → vi 4.2 m  [pp_0294612025e7]
+    - `MERGED` referens 5.9 + 1.1 m → vi 7.0 m  [pp_245a5db52921]
+    - `MERGED` referens 2.6 + 1.6 + 1.1 m → vi 5.3 m  [pp_ee34219810f2]
+    - `MERGED` referens 1.7 + 1.4 + 1.1 + 1.0 m → vi 5.2 m  [pp_5dd35a26a8c7]
+    - `MERGED` referens 2.6 + 1.4 + 0.9 m → vi 4.9 m  [pp_206392516aca]
+    - `MERGED` referens 2.5 + 0.8 + 0.6 m → vi 3.9 m  [pp_6d47a093cd4d]
+    - `MERGED` referens 2.0 + 0.8 + 0.6 + 0.5 m → vi 3.9 m  [pp_0ef098d870a8]
+    - `MERGED` referens 0.6 + 0.6 + 0.5 + 0.5 + 0.5 + 0.5 + 0.5 m → vi 3.7 m  [pp_0ffe6bc2d85c]
+    - `MERGED` referens 0.5 + 0.5 + 0.5 + 0.5 + 0.5 + 0.5 + 0.5 m → vi 3.5 m  [pp_dd659fc52ed9]
+    - `MERGED` referens 0.5 + 0.5 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 m → vi 3.5 m  [pp_d48f89c0c27e]
+    - `MERGED` referens 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 m → vi 3.3 m  [pp_51525151a39f]
+    - `MERGED` referens 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.2 + 0.2 + 0.2 m → vi 3.2 m  [pp_6f912ddd7aaf]
+    - `MISSING_RUN` referens 6.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 8.8 m i 22 dragningar, vi 9.64 m i 3 rör (FULL)
+    - `SAME_RUN` referens 0.5 m → vi 0.6 m  [pp_2bb97ee86512]
+    - `MERGED` referens 2.1 + 2.0 + 0.4 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.2 + 0.2 + 0.2 + 0.2 + 0.2 m → vi 8.1 m  [pp_84a2e861ab4f]
+    - `MERGED` referens 0.2 + 0.2 + 0.2 + 0.1 + 0.1 m → vi 1.0 m  [pp_4e4527e9206f]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 0 m i 0 dragningar, vi 11.59 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 11.6 m  · STOD_1  [pp_d785d6066ebf]
+- **VS1-S13-35** - referens 81.2 m i 40 dragningar, vi 22.09 m i 1 rör (PARTIAL)
+    - `MERGED` referens 8.6 + 6.3 + 3.9 + 3.3 m → vi 22.1 m  [pp_9cb4f7795458]
+    - `MISSING_RUN` referens 8.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 6.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-K5-15** - referens 0.2 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X31-16** - referens 7.1 m i 8 dragningar, vi 13.47 m i 11 rör (OVER)
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_51b1cec4e03f]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_7a1dd7e174a7]
+    - `SAME_RUN` referens 0.4 m → vi 0.3 m  [pp_26a65468a926]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_5efe6ebf3dc4]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_7afea8ded9bb]
+    - `SAME_RUN` referens 2.5 m → vi 2.6 m  [pp_08b2bed0f4d0]
+    - `SAME_RUN` referens 3.5 m → vi 3.4 m  [pp_14a247ee46eb]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_9f5736b2d4aa]
+    - `EXTRA_RUN` referens - m → vi 6.2 m  · STOD_2  [pp_aa72a0ec9f2a]
+    - `EXTRA_RUN` referens - m → vi 0.7 m  · STOD_1  [pp_4d9d493e3198]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ee1533b798db]
+- **VV1-X7-16** - referens 26.7 m i 7 dragningar, vi 8.53 m i 5 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_679140333a3b]
+    - `MERGED` referens 3.8 + 0.8 + 0.2 m → vi 4.8 m  [pp_14eacc730e4b]
+    - `SPLIT` referens 2.9 m → vi 2.2 + 0.5 m  [pp_40c2c04c882f, pp_1cc4d22a671f]
+    - `SHORT_RUN` referens 12.7 m → vi 1.1 m  · REAL_DESIGNATION_BOUNDARY, SYMBOL  [pp_0ac616834c4c]
+    - `MISSING_RUN` referens 6.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-25** - referens 21.9 m i 12 dragningar, vi 16.46 m i 1 rör (PARTIAL)
+    - `MERGED` referens 5.8 + 5.4 + 2.2 + 2.0 m → vi 16.5 m  [pp_f182c226f1b4]
+    - `MISSING_RUN` referens 1.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-40** - referens 1.4 m i 6 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VVC1-X7-16** - referens 26.9 m i 8 dragningar, vi 16.79 m i 1 rör (PARTIAL)
+    - `MERGED` referens 8.5 + 6.3 + 1.7 + 0.2 m → vi 16.8 m  [pp_69efdd3a16f4]
+    - `MISSING_RUN` referens 9.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-25** - referens 0.6 m i 1 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_INTE
+
+### W-50-1-A0211  ·  referens 111.3 m i 76 dragningar  ·  vi 107.1 m i 22 rör
+
+- **S2-P5-75** - referens 22.5 m i 25 dragningar, vi 22.34 m i 1 rör (FULL)
+    - `MERGED` referens 4.0 + 2.1 + 2.1 + 1.6 + 1.5 + 1.4 + 1.4 + 1.2 + 1.1 + 1.0 + 1.0 + 1.0 + 0.4 + 0.4 m → vi 22.3 m  [pp_334d983c3789]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VP1-S13-54** - referens 2.5 m i 3 dragningar, vi 1.88 m i 1 rör (PARTIAL)
+    - `MERGED` referens 1.0 + 0.9 m → vi 1.9 m  [pp_a487044449fc]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-12** - referens 64.8 m i 36 dragningar, vi 48.09 m i 18 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_34ba4e340f7d]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_4898540676f1]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_772e8e89209f]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_cd5c7c97e608]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_2bb414e4b007]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_deef311624cb]
+    - `SAME_RUN` referens 1.3 m → vi 1.5 m  [pp_dd2725798bc1]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_7825e57b3fa5]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_82e65e7bffd5]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_976dfe87dad7]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_bb59eb031a42]
+    - `MERGED` referens 26.5 + 1.2 + 0.5 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 m → vi 33.6 m  [pp_ae9d8a3db7cb]
+    - `MERGED` referens 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.4 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 m → vi 4.7 m  [pp_d21eeef92e39]
+    - `SHORT_RUN` referens 26.3 m → vi 2.1 m  · CLOSED_LOOP  [pp_6330fe68b6c4]
+    - `LONG_RUN` referens 0.3 m → vi 2.1 m  · STOD_1  [pp_54e33d96d593]
+    - `LONG_RUN` referens 0.3 m → vi 1.9 m  · STOD_2  [pp_5ed2c267d87b]
+    - `LONG_RUN` referens 0.3 m → vi 1.6 m  · STOD_1  [pp_edf9c6b290ad]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_d86b27a80221]
+- **VS1-S13-15** - referens 21.5 m i 12 dragningar, vi 34.83 m i 2 rör (OVER)
+    - `SAME_RUN` referens 0.0 m → vi 0.0 m  [pp_87abd7a2700a]
+    - `LONG_RUN` referens 8.2 m → vi 34.8 m  · STOD_1  [pp_6ed76e9f361b]
+    - `MISSING_RUN` referens 8.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0213  ·  referens 211.9 m i 161 dragningar  ·  vi 186.4 m i 67 rör
+
+- **KV1-X31-16** - referens 40.1 m i 22 dragningar, vi 42.69 m i 24 rör (FULL)
+    - `SAME_RUN` referens 6.0 m → vi 6.0 m  [pp_6d38a69e678b]
+    - `SAME_RUN` referens 5.4 m → vi 5.4 m  [pp_9de7408b6962]
+    - `SAME_RUN` referens 4.0 m → vi 4.0 m  [pp_a49eb6a8e638]
+    - `SAME_RUN` referens 4.4 m → vi 4.4 m  [pp_11710480ec1a]
+    - `SAME_RUN` referens 5.0 m → vi 5.0 m  [pp_05fcd32f0df8]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_22db422da39e]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_3ee2752c6b6a]
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_5ac63fa0638b]
+    - `SAME_RUN` referens 1.6 m → vi 1.6 m  [pp_3894a8d83041]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_5f7c3c6b2482]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_74722327996b]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_74c965d406d1]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_791a29883354]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_7ace1c22eb1e]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_b9a2d933a7b4]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_ccbdb3d50fd3]
+    - `SAME_RUN` referens 3.3 m → vi 3.4 m  [pp_94cc411806d0]
+    - `SAME_RUN` referens 2.0 m → vi 2.1 m  [pp_458297ab56ef]
+    - `SAME_RUN` referens 3.3 m → vi 3.4 m  [pp_6e1559db5bdd]
+    - `SAME_RUN` referens 1.1 m → vi 1.2 m  [pp_91308e8e6a10]
+    - `SAME_RUN` referens 0.3 m → vi 0.1 m  [pp_d3eab05cb000]
+    - `SAME_RUN` referens 2.4 m → vi 2.6 m  [pp_c650d9f1e360]
+    - `EXTRA_RUN` referens - m → vi 1.7 m  · STOD_0  [pp_d62f7d26f0dd]
+    - `EXTRA_RUN` referens - m → vi 0.1 m  · STOD_0  [pp_d80ee7ae2192]
+- **KV1-X7-20** - referens 1.4 m i 3 dragningar, vi 1.42 m i 1 rör (FULL)
+    - `MERGED` referens 1.2 + 0.2 m → vi 1.4 m  [pp_cd5b55d3ba6b]
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-110** - referens 7.9 m i 17 dragningar, vi 7.62 m i 3 rör (FULL)
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_9d9824e9ab5d]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_b465e40dc553]
+    - `MERGED` referens 1.2 + 0.9 + 0.7 + 0.7 + 0.6 + 0.5 + 0.5 + 0.5 + 0.3 + 0.2 m → vi 6.6 m  [pp_e1a3f9170249]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-160** - referens 3.1 m i 7 dragningar, vi 5.97 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.6 m → vi 6.0 m  · STOD_10  [pp_a0a02bb2980b]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-50** - referens 1.3 m i 6 dragningar, vi 0.18 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_7c5121c01200]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_168c0299c202]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_e99fde072dd0]
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-75** - referens 2.3 m i 6 dragningar, vi 0.0 m i 1 rör (MISSED)
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_b7c5a3fa91e9]
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-12** - referens 54.5 m i 42 dragningar, vi 70.73 m i 23 rör (OVER)
+    - `SAME_RUN` referens 5.8 m → vi 5.8 m  [pp_0c6218f52fb9]
+    - `SAME_RUN` referens 2.4 m → vi 2.4 m  [pp_b18f5ce6f1b4]
+    - `SAME_RUN` referens 1.5 m → vi 1.5 m  [pp_0b3d646b529a]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_52e3ad020491]
+    - `SAME_RUN` referens 1.1 m → vi 1.1 m  [pp_e0247c56e999]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_a820a1baffc8]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_af25062d4b26]
+    - `SAME_RUN` referens 0.7 m → vi 0.8 m  [pp_9c277b57c6a5]
+    - `SAME_RUN` referens 1.0 m → vi 0.9 m  [pp_7ceb0304ab8b]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_38a12ec8556c]
+    - `SAME_RUN` referens 2.0 m → vi 1.9 m  [pp_0aa40ff981ce]
+    - `SAME_RUN` referens 1.2 m → vi 1.1 m  [pp_f789c0d383cf]
+    - `SAME_RUN` referens 5.9 m → vi 5.8 m  [pp_bf827fd5409a]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_277786809d22]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_065453023795]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_a985fd3a797a]
+    - `SAME_RUN` referens 3.5 m → vi 3.7 m  [pp_31cc71ad6adc]
+    - `MERGED` referens 5.5 + 5.3 + 3.2 + 2.1 m → vi 16.0 m  [pp_d01a2e76c6d6]
+    - `MERGED` referens 2.3 + 1.2 + 0.6 + 0.6 m → vi 4.7 m  [pp_4fdf5db6f5a3]
+    - `MERGED` referens 1.4 + 0.6 + 0.5 + 0.4 + 0.4 + 0.4 m → vi 3.8 m  [pp_a545dcb1fd4b]
+    - `MERGED` referens 0.4 + 0.4 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 + 0.3 m → vi 2.7 m  [pp_c901cdbdc2fa]
+    - `LONG_RUN` referens 0.2 m → vi 15.7 m  · STOD_3  [pp_0b0ab3d573d2]
+    - `LONG_RUN` referens 0.2 m → vi 1.7 m  · STOD_2  [pp_fcb8b03e065f]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 21.2 m i 14 dragningar, vi 17.47 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 8.7 m → vi 7.9 m  [pp_e83d713019a7]
+    - `MERGED` referens 0.6 + 0.5 + 0.5 + 0.2 m → vi 1.8 m  [pp_d836a5138ae2]
+    - `SHORT_RUN` referens 8.7 m → vi 7.8 m  · FREE_END  [pp_20bffc84e683]
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 58.5 m i 30 dragningar, vi 18.97 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_f096842567ae]
+    - `MERGED` referens 8.0 + 5.5 + 3.2 + 2.0 m → vi 18.7 m  [pp_db783d8b0bc2]
+    - `MISSING_RUN` referens 8.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 5.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 5.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 3.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 20.4 m i 11 dragningar, vi 16.26 m i 5 rör (PARTIAL)
+    - `SAME_RUN` referens 4.6 m → vi 4.6 m  [pp_2b63ee82a8f6]
+    - `SAME_RUN` referens 3.4 m → vi 3.4 m  [pp_2878e63fbe9f]
+    - `SAME_RUN` referens 2.2 m → vi 2.2 m  [pp_3b9f94579e06]
+    - `SAME_RUN` referens 5.0 m → vi 5.0 m  [pp_821412c1948e]
+    - `SAME_RUN` referens 1.0 m → vi 1.1 m  [pp_2b38c7ac2558]
+    - `MISSING_RUN` referens 3.6 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X7-20** - referens 1.2 m i 3 dragningar, vi 5.11 m i 1 rör (OVER)
+    - `LONG_RUN` referens 0.9 m → vi 5.1 m  · STOD_1  [pp_cbca3524bbe7]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
+### W-50-1-A0214  ·  referens 101.8 m i 69 dragningar  ·  vi 93.1 m i 34 rör
+
+Utanför referensens system: 3 rör, 0.0 m.
+
+- **S2-P5-110** - referens 2.5 m i 3 dragningar, vi 2.22 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 2.1 m → vi 2.2 m  [pp_d0d5ab0dd109]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-12** - referens 21.8 m i 28 dragningar, vi 22.88 m i 26 rör (FULL)
+    - `SAME_RUN` referens 2.1 m → vi 2.1 m  [pp_c57a9fd157ce]
+    - `SAME_RUN` referens 2.1 m → vi 2.1 m  [pp_43c3e8719c4d]
+    - `SAME_RUN` referens 1.6 m → vi 1.6 m  [pp_0b385f956350]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_1d8e253b5da9]
+    - `SAME_RUN` referens 1.3 m → vi 1.3 m  [pp_e3415988809d]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_8bb240dbed93]
+    - `SAME_RUN` referens 0.2 m → vi 0.2 m  [pp_ffba00536915]
+    - `SAME_RUN` referens 1.0 m → vi 1.1 m  [pp_fedfe05142b8]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_af12aefec8b5]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_2d68c35a764b]
+    - `SAME_RUN` referens 1.5 m → vi 1.6 m  [pp_5655853223d2]
+    - `SAME_RUN` referens 0.8 m → vi 0.9 m  [pp_82cabab9186d]
+    - `SAME_RUN` referens 1.3 m → vi 1.4 m  [pp_899ecf152ff6]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_196ee239eeec]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_3dbf5a60932e]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_480788f1c6a3]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_66bc8cff305c]
+    - `MERGED` referens 2.2 + 0.6 + 0.3 m → vi 3.1 m  [pp_976e22a3a479]
+    - `MERGED` referens 2.4 + 0.4 m → vi 2.9 m  [pp_932f4cb62b76]
+    - `MERGED` referens 0.4 + 0.4 + 0.3 + 0.3 + 0.3 + 0.3 m → vi 2.0 m  [pp_814ac58e33f8]
+    - `EXTRA_RUN` referens - m → vi 1.6 m  · STOD_1  [pp_94dcf0b8e861]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_680eb9ef482e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_8ecfcd1163bf]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_ac754caa64d6]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_2  [pp_bbfdc48ed8e7]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_c1ec2ce3d9c6]
+- **VS1-S13-15** - referens 0 m i 0 dragningar, vi 0.0 m i 1 rör (WRONG)
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_1  [pp_ec65ed0cb50d]
+- **VS1-S13-22** - referens 52.0 m i 24 dragningar, vi 49.39 m i 4 rör (FULL)
+    - `MERGED` referens 16.7 + 4.9 + 0.5 m → vi 22.1 m  [pp_e2b6eaf3131e]
+    - `MERGED` referens 16.2 + 4.9 m → vi 21.2 m  [pp_161e54508383]
+    - `MERGED` referens 1.4 + 1.2 + 0.5 + 0.3 m → vi 3.4 m  [pp_9aed9b143981]
+    - `MERGED` referens 0.7 + 0.6 + 0.6 + 0.6 m → vi 2.7 m  [pp_010ec3efd8ed]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-35** - referens 25.2 m i 12 dragningar, vi 18.66 m i 2 rör (PARTIAL)
+    - `MERGED` referens 7.2 + 1.6 + 0.7 m → vi 9.5 m  [pp_89e540bda42a]
+    - `MERGED` referens 6.9 + 1.5 + 0.5 + 0.4 m → vi 9.2 m  [pp_862a00510cd7]
+    - `MISSING_RUN` referens 3.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 2.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-42** - referens 0.3 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+
+### W-50-1-A0221  ·  referens 116.1 m i 85 dragningar  ·  vi 104.5 m i 37 rör
+
+Utanför referensens system: 2 rör, 0.0 m.
+
+- **KV1-X31-16** - referens 12.4 m i 6 dragningar, vi 11.48 m i 12 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.1 m  [pp_24a43b89d38c]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_0742484c356a]
+    - `SAME_RUN` referens 5.8 m → vi 6.2 m  [pp_d321a080f352]
+    - `MERGED` referens 4.4 + 0.9 m → vi 5.2 m  [pp_1405a171eb95]
+    - `SHORT_RUN` referens 0.9 m → vi 0.0 m  · SYMBOL  [pp_16e8456f0e44]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_2414d5c6a634]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_2c36a75dbf9c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_52caf8895d25]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_5332b58a180c]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_85782fbaf03e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b633618aa9ec]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_b8a9f27e73f7]
+- **VS1-S13-12** - referens 14.0 m i 18 dragningar, vi 14.72 m i 8 rör (FULL)
+    - `SAME_RUN` referens 2.1 m → vi 2.1 m  [pp_9561dc048c8c]
+    - `SAME_RUN` referens 0.4 m → vi 0.5 m  [pp_e3e0265b8221]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_20288a4e0982]
+    - `MERGED` referens 2.2 + 0.9 + 0.9 + 0.7 m → vi 4.7 m  [pp_2a43be4202c4]
+    - `MERGED` referens 1.1 + 1.1 + 0.8 m → vi 3.0 m  [pp_ca5c74678297]
+    - `MERGED` referens 0.9 + 0.4 + 0.2 m → vi 1.5 m  [pp_b69e39d1a86c]
+    - `MERGED` referens 0.9 + 0.4 + 0.2 m → vi 1.5 m  [pp_d91f8004386e]
+    - `LONG_RUN` referens 0.4 m → vi 1.4 m  · STOD_1  [pp_a15ee2557b36]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 12.4 m i 8 dragningar, vi 9.22 m i 3 rör (PARTIAL)
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_f15038a65a7e]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_82b536d124e9]
+    - `MERGED` referens 4.5 + 4.4 m → vi 8.5 m  [pp_7957cf6f3c30]
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.9 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 21.7 m i 24 dragningar, vi 21.61 m i 3 rör (FULL)
+    - `MERGED` referens 2.4 + 2.4 + 2.2 + 0.8 m → vi 7.8 m  [pp_32c4838ae6f7]
+    - `MERGED` referens 2.5 + 1.7 + 1.4 + 1.4 m → vi 7.2 m  [pp_0c84e3365c73]
+    - `MERGED` referens 1.0 + 1.0 + 0.8 + 0.7 + 0.5 + 0.5 + 0.5 + 0.4 + 0.4 + 0.3 m → vi 6.6 m  [pp_c07086860d47]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-35** - referens 44.0 m i 21 dragningar, vi 36.51 m i 2 rör (PARTIAL)
+    - `MERGED` referens 7.0 + 5.8 + 5.6 m → vi 18.4 m  [pp_1b83d12795ed]
+    - `MERGED` referens 6.9 + 3.1 + 3.0 + 2.7 + 2.6 m → vi 18.1 m  [pp_6a92e1dce01d]
+    - `MISSING_RUN` referens 1.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-42** - referens 0.3 m i 2 dragningar, vi 0 m i 0 rör (MISSED)
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_INTE
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_INTE
+- **VV1-X31-16** - referens 11.3 m i 6 dragningar, vi 10.98 m i 9 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_7710199e4777]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_80dfe12ccf9c]
+    - `MERGED` referens 5.3 + 0.9 m → vi 6.3 m  [pp_92ca1ae601a1]
+    - `MERGED` referens 3.8 + 0.9 m → vi 4.7 m  [pp_902eeeacc47e]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_9d1472e630e3]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_a538a1e7fe7b]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_c886324d58e9]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_df328d2689d9]
+    - `EXTRA_RUN` referens - m → vi 0.0 m  · STOD_0  [pp_ef1a4e02305a]
+
+### W-50-1-A0222  ·  referens 213.7 m i 152 dragningar  ·  vi 169.9 m i 56 rör
+
+- **KV1-X31-16** - referens 29.3 m i 21 dragningar, vi 28.93 m i 13 rör (FULL)
+    - `SAME_RUN` referens 5.3 m → vi 5.3 m  [pp_01fb3d407a61]
+    - `SAME_RUN` referens 1.5 m → vi 1.5 m  [pp_dec742459b5a]
+    - `SAME_RUN` referens 0.5 m → vi 0.5 m  [pp_bab0b86400a3]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_288ea84cca4f]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_bcd56ba9e9bf]
+    - `SAME_RUN` referens 0.6 m → vi 0.6 m  [pp_dc47a0b821e0]
+    - `SAME_RUN` referens 0.7 m → vi 0.7 m  [pp_9bbef4999495]
+    - `SAME_RUN` referens 4.1 m → vi 4.1 m  [pp_fc5241b5187b]
+    - `SAME_RUN` referens 5.8 m → vi 5.7 m  [pp_162dc7a455b0]
+    - `SAME_RUN` referens 2.4 m → vi 2.5 m  [pp_450ecee0c3ab]
+    - `SAME_RUN` referens 3.9 m → vi 4.0 m  [pp_c6c53da12f4f]
+    - `SAME_RUN` referens 1.8 m → vi 1.9 m  [pp_e7f02d26a92d]
+    - `MERGED` referens 1.1 + 0.1 + 0.1 + 0.1 m → vi 1.4 m  [pp_a4972ec31bce]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-16** - referens 2.0 m i 4 dragningar, vi 1.74 m i 2 rör (PARTIAL)
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_8c0813bf83e1]
+    - `MERGED` referens 1.3 + 0.4 m → vi 1.6 m  [pp_40637eaa3081]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **KV1-X7-20** - referens 13.7 m i 10 dragningar, vi 13.53 m i 2 rör (FULL)
+    - `SAME_RUN` referens 0.2 m → vi 0.3 m  [pp_bcaa5a90c8ed]
+    - `MERGED` referens 9.3 + 1.7 + 1.5 + 0.4 m → vi 13.2 m  [pp_651adf14db93]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **S2-P5-110** - referens 0.4 m i 1 dragningar, vi 0.36 m i 1 rör (FULL)
+- **S2-P5-75** - referens 5.8 m i 11 dragningar, vi 5.47 m i 1 rör (FULL)
+    - `MERGED` referens 2.3 + 0.9 + 0.6 + 0.4 + 0.4 + 0.4 m → vi 5.5 m  [pp_efcfad69dcb4]
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-12** - referens 42.9 m i 34 dragningar, vi 40.47 m i 20 rör (FULL)
+    - `SAME_RUN` referens 5.0 m → vi 5.0 m  [pp_1da8f9a8570a]
+    - `SAME_RUN` referens 1.5 m → vi 1.5 m  [pp_fe153f3ebc08]
+    - `SAME_RUN` referens 0.3 m → vi 0.3 m  [pp_944a5464c536]
+    - `SAME_RUN` referens 0.4 m → vi 0.4 m  [pp_a2e24b9a2abf]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_55b014d12a76]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_bbc063d2c8d6]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_357f94c43573]
+    - `SAME_RUN` referens 5.8 m → vi 5.9 m  [pp_2340c4f7dc28]
+    - `SAME_RUN` referens 0.1 m → vi 0.0 m  [pp_4036abda2496]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_56f9604a74a8]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_d62aa7b93ba7]
+    - `SAME_RUN` referens 0.2 m → vi 0.0 m  [pp_eefb377cf599]
+    - `SAME_RUN` referens 5.4 m → vi 5.9 m  [pp_160b84d08715]
+    - `MERGED` referens 4.0 + 2.0 + 0.9 + 0.4 m → vi 7.3 m  [pp_71f806a5ef2c]
+    - `MERGED` referens 5.0 + 0.4 + 0.4 + 0.4 m → vi 6.1 m  [pp_4f563a65ff2c]
+    - `MERGED` referens 0.9 + 0.9 + 0.4 m → vi 2.3 m  [pp_f6f5b5650e27]
+    - `MERGED` referens 0.9 + 0.4 + 0.3 m → vi 1.6 m  [pp_2c7fca444795]
+    - `MERGED` referens 0.4 + 0.4 + 0.4 + 0.3 m → vi 1.5 m  [pp_ed66a2839ce4]
+    - `SHORT_RUN` referens 4.0 m → vi 1.3 m  · SYMBOL, VERTICAL  [pp_a5ed79473433]
+    - `LONG_RUN` referens 0.4 m → vi 1.3 m  · STOD_1  [pp_c939582b569f]
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-15** - referens 5.8 m i 17 dragningar, vi 3.44 m i 2 rör (PARTIAL)
+    - `MERGED` referens 1.3 + 0.4 + 0.2 m → vi 1.9 m  [pp_c283ff65498c]
+    - `MERGED` referens 1.0 + 0.3 + 0.1 + 0.1 m → vi 1.5 m  [pp_527e7a811f56]
+    - `MISSING_RUN` referens 0.6 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.5 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-22** - referens 34.3 m i 12 dragningar, vi 16.27 m i 1 rör (PARTIAL)
+    - `MERGED` referens 10.4 + 4.8 + 1.1 m → vi 16.3 m  [pp_210c93f67a2c]
+    - `MISSING_RUN` referens 10.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 4.8 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VS1-S13-28** - referens 38.1 m i 12 dragningar, vi 18.61 m i 1 rör (PARTIAL)
+    - `MERGED` referens 13.4 + 5.2 m → vi 18.6 m  [pp_2c8580fcd2c8]
+    - `MISSING_RUN` referens 12.7 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 5.0 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X31-16** - referens 15.4 m i 15 dragningar, vi 17.19 m i 10 rör (OVER)
+    - `SAME_RUN` referens 4.3 m → vi 4.3 m  [pp_c9cb2107a4c6]
+    - `SAME_RUN` referens 1.4 m → vi 1.4 m  [pp_62b32841e5ba]
+    - `SAME_RUN` referens 0.8 m → vi 0.8 m  [pp_0ec6d016577c]
+    - `SAME_RUN` referens 0.1 m → vi 0.1 m  [pp_7112b00531ed]
+    - `SAME_RUN` referens 0.4 m → vi 0.3 m  [pp_3f7770a8ca45]
+    - `SAME_RUN` referens 0.4 m → vi 0.3 m  [pp_a8f22cfdc201]
+    - `SAME_RUN` referens 4.2 m → vi 4.3 m  [pp_165284760b15]
+    - `SAME_RUN` referens 1.3 m → vi 1.5 m  [pp_c0f0f35ff76a]
+    - `SAME_RUN` referens 1.2 m → vi 1.0 m  [pp_7887e1f27d7c]
+    - `LONG_RUN` referens 0.8 m → vi 3.2 m  · STOD_0  [pp_d357ff6962bd]
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VV1-X7-16** - referens 14.8 m i 11 dragningar, vi 14.35 m i 2 rör (FULL)
+    - `SAME_RUN` referens 9.7 m → vi 10.7 m  [pp_1db06c5bf68b]
+    - `MERGED` referens 1.7 + 1.3 + 0.7 m → vi 3.7 m  [pp_8920b8414cfb]
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.1 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+- **VVC1-X7-16** - referens 11.2 m i 4 dragningar, vi 9.56 m i 1 rör (PARTIAL)
+    - `SAME_RUN` referens 9.3 m → vi 9.6 m  [pp_f10e7d8b4d2e]
+    - `MISSING_RUN` referens 1.2 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.4 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+    - `MISSING_RUN` referens 0.3 m → vi - m  · NAMNET_LASTES_MEN_FICK_INGET_ROR
+
