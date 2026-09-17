@@ -1,8 +1,8 @@
 {
- "commit": "93e3784e1dd3846c37091bfc16627190f9b8e091",
+ "commit": "7a88d76e386545ab8681880bb397de05ac87a416",
  "uncommitted": [],
  "n_files": 133,
- "manifest_sha256": "872d187453add484",
+ "manifest_sha256": "796cd69352cb3951",
  "python": "3.11.15",
  "files": {
   "engine/vvs_engine/__init__.py": "ad49e92ec1d28191",
@@ -19,7 +19,7 @@
   "engine/vvs_engine/reconcile.py": "357b74add3ad0a63",
   "engine/vvs_engine/release.py": "19fb5bdad590f016",
   "engine/vvs_engine/routes.py": "2890c4530b7f7398",
-  "engine/vvs_engine/rules.py": "09dd41671b4cac22",
+  "engine/vvs_engine/rules.py": "8acd6a2f4dac3ef9",
   "engine/vvs_engine/semantics/__init__.py": "e3b0c44298fc1c14",
   "engine/vvs_engine/semantics/annotation.py": "8734abe6ad7431b2",
   "engine/vvs_engine/semantics/astra.py": "d27463a0e1ce7e5c",
@@ -27,7 +27,7 @@
   "engine/vvs_engine/semantics/declarations.py": "4b9c7ef781bbc1b2",
   "engine/vvs_engine/semantics/grammar.py": "7da50a031c8bd9b6",
   "engine/vvs_engine/semantics/leaders.py": "4de934e80c1108f1",
-  "engine/vvs_engine/semantics/legend.py": "d3daa427fa85878b",
+  "engine/vvs_engine/semantics/legend.py": "8ccfd80ed6b7b9d2",
   "engine/vvs_engine/semantics/scope.py": "567d52c847997ecb",
   "engine/vvs_engine/text/__init__.py": "e3b0c44298fc1c14",
   "engine/vvs_engine/text/hershey.py": "d69e05736633f9a9",
