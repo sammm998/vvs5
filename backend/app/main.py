@@ -902,9 +902,11 @@ def job_result(job_id: str, page: int = 0, user: User = Depends(current_user), d
         "designations": [{"id": d["did"], "text": d["text"], "dn": d["dn"], "bbox": d["bbox"], "source": d["source"],
                           "in_wall": d.get("in_wall", False), "names_a_pipe": d.get("names_a_pipe", True)} for d in des],
         "leaders": [{"id": l["lid"], "points": l["points"], "family": l["family"], "in_wall": l.get("in_wall", False)} for l in leaders],
+        # elevations: nivåtalen ritningen skrev vid just den här etiketten (VG+1,54 och deras likar). De hör
+        # till punkten, inte till stråket - en självfallsledning faller - så de följer ankaret och ritas där.
         "anchors": [{"id": a["anchor_id"], "designation": a["designation"], "dn": a["dn"], "state": a["state"], "reason": a["reason"],
                      "endpoint": a["leader_endpoint"], "in_wall": a.get("in_wall", False),
-                     "names_a_pipe": a.get("names_a_pipe", True)} for a in anchors],
+                     "names_a_pipe": a.get("names_a_pipe", True), "elevations": a.get("elevations") or []} for a in anchors],
         "ambiguous_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "candidates": g["candidates"], "reason": g["reason"]} for g in ambiguous],
         "unowned_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "family": g["family"]} for g in unowned],
         "claimed_geometry": [{"x0": g["x0"], "y0": g["y0"], "x1": g["x1"], "y1": g["y1"], "claimed_by": g["claimed_by"]} for g in claimed],

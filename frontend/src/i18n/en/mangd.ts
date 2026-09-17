@@ -75,6 +75,8 @@ export const mangd: Record<string, string> = {
   "Sträckans längd i meter": "The length of the run in metres",
   "Till beteckning": "To designation",
   "Var röret slutar": "Where the pipe ends",
+  "Nivåer längs röret": "Levels along the pipe",
+  "fall": "fall",
   "Verifierade röranslutningar": "Verified pipe connections",
   "Oidentifierad geometri": "Unidentified geometry",
   "Ej anslutna beteckningar": "Designations that did not connect",

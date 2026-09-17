@@ -46,4 +46,5 @@ ok("valt rör visar fortfarande sin dimension i tjockleken",
    && selectedWidth("X|DN110") < selectedWidth("X|DN160"));
 
 console.log(failed ? `\n${failed} PÅSTÅENDEN FÖLL` : "\nalla påståenden höll");
-if (failed) process.exit(1);
+// körs av esbuild-budet i engine/tests; `process` finns i noden men inte i webbläsarens typer
+if (failed) (globalThis as any).process.exit(1);

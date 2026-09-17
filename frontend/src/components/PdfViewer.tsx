@@ -10,7 +10,7 @@ import { type Pt, type Snap, type SnapSettings, constrain, defaultSnaps, snapPoi
 import { frontierColor, frontierText } from "../frontier";
 import { InkIndex } from "../cad/pagesnap";
 
-export type Layer = "pipes" | "ambiguous" | "claimed" | "unowned" | "declined" | "designations" | "legend" | "leaders" | "anchors" | "inWall" | "frontiers";
+export type Layer = "pipes" | "ambiguous" | "claimed" | "unowned" | "declined" | "designations" | "legend" | "leaders" | "anchors" | "levels" | "inWall" | "frontiers";
 export type EditKind = "extend" | "draw" | "erase" | null;
 
 /** What a finished edit gesture produced: the line drawn, and what it does to the measurement. */
@@ -525,6 +525,16 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
   const mpp = props.meterPerPt ?? 0;
   const metres = (pts: number[][]) => pathLen(pts) * mpp;
   const fmt = (m: number) => `${num(m, 2)} m`;
+
+  /** Vilket rör varje ankare hör till, så att nivåtalet kan bära sitt stråks ton. Kommer ur mätningen själv -
+    * rören namnger de ankare som stöder dem - och inte ur namnet, så en etikett utan mätt rör får grått. */
+  const anchorIdentity = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const p of props.pipes ?? []) {
+      for (const aid of p.supporting_anchors ?? []) if (!m.has(aid)) m.set(aid, p.identity);
+    }
+    return m;
+  }, [props.pipes]);
 
   /** The ends of the run being extended: where a drag may start. */
   const handles: number[][] = useMemo(() => {
@@ -1071,6 +1081,35 @@ const PdfViewer = forwardRef<ViewerHandle, ViewerProps>(function PdfViewer(props
                 strokeWidth={sw(a.names_a_pipe === false ? 1 : 1.5)}
                 strokeDasharray={a.names_a_pipe === false ? `${sw(2)} ${sw(2)}` : undefined} />
             ))}
+
+            {/* NIVÅTALEN, där ritningen skrev dem.
+              *
+              * `VG+1,54` gäller den punkten och ingen annan. En självfallsledning faller, så ett stråk har
+              * flera nivåtal och inget av dem beskriver stråket - därför bär röret varken färg eller tjocklek
+              * efter nivå, och talet sitter i stället vid sin egen etikett. Två nivåtal längs samma rör läses
+              * då som det de är: fallet, avläst på bladet.
+              *
+              * Texten är svart med vit bård så att den går att läsa var som helst på ritningen; pricken bär
+              * rörets ton, så att det syns vilket stråk talet hör till utan att färga texten. Är ett rör valt
+              * bleknar de andras nivåtal - då står det valda strålets fall kvar ensamt. */}
+            {props.layers.levels && props.anchors.map((a) => {
+              const ev: any[] = a.elevations || [];
+              if (!ev.length) return null;
+              const ident = anchorIdentity.get(a.id) || null;
+              const c = ident ? identityColor(ident) : "#6b7280";
+              const dim = props.selectedIdentity != null && ident !== props.selectedIdentity;
+              return (
+                <g key={`lvl_${a.id}`} opacity={dim ? 0.2 : 1} pointerEvents="none">
+                  <circle cx={a.endpoint[0]} cy={a.endpoint[1]} r={sw(2.6)} fill={c} />
+                  {ev.map((e, i) => (
+                    <text key={i} x={a.endpoint[0] + sw(7)} y={a.endpoint[1] - sw(5) + i * sw(11)}
+                      fontSize={sw(10.5)} fontFamily="ui-monospace, monospace" fontWeight={600}
+                      fill="#111827" stroke="#fff" strokeWidth={sw(2.6)} strokeLinejoin="round"
+                      paintOrder="stroke">{e.text || `${e.tag}${e.value}`}</text>
+                  ))}
+                </g>
+              );
+            })}
           </svg>
         )}
       </div>

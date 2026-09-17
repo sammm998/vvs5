@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import { t as tr } from "../i18n";
+import { t as tr, num } from "../i18n";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../api";
 import AnalysisCompletionReveal from "../components/AnalysisCompletionReveal";
@@ -23,7 +23,7 @@ const Drawing3DView = lazy(() => import("../components/Drawing3DView"));
 
 // why a label never got a line to follow, said the way a person reads a drawing
 
-const LAYER_LABELS: Record<Layer, string> = { pipes: "Mätta rör", ambiguous: "Tvetydigt", claimed: "Påpekad men onämnd", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", legend: "Förklaringslistan", leaders: "CAD-leaders", anchors: "Anslutningar", inWall: "I vägg (räknas ej)", frontiers: "Var rören slutar" };
+const LAYER_LABELS: Record<Layer, string> = { pipes: "Mätta rör", ambiguous: "Tvetydigt", claimed: "Påpekad men onämnd", unowned: "Oidentifierat", declined: "Bortvald geometri", designations: "Beteckningar", legend: "Förklaringslistan", leaders: "CAD-leaders", anchors: "Anslutningar", levels: "Nivåtal (VG)", inWall: "I vägg (räknas ej)", frontiers: "Var rören slutar" };
 const LAYER_HINTS: Record<Layer, string> = {
   pipes: "Sträckor som fått en identitet och en längd, en färg per beteckning",
   ambiguous: "Ritad linje som kunde tillhöra mer än en beteckning — mäts inte",
@@ -34,6 +34,7 @@ const LAYER_HINTS: Record<Layer, string> = {
   legend: "Varje beteckning färgad efter vad handlingens förklaringslista säger att koden är: grönt rörsystem, orange komponent, grått material — och magenta streckat för en kod som inte står i listan alls. Listans egen ruta markeras där den står på bladet.",
   leaders: "Hänvisningslinjerna som ritningen drar från etikett till rör",
   anchors: "Där en beteckning faktiskt möter sitt rör",
+  levels: "Nivåtalen ritningen skrev — VG+1,54 och deras likar — vid den punkt de står vid. Ett nivåtal beskriver en punkt, inte ett stråk: en självfallsledning faller, så samma rör har flera. Därför bär röret ingen färg och ingen tjocklek efter nivå; talen sitter vid sina egna etiketter, och två av dem längs samma rör är fallet, avläst på bladet. Prickens ton säger vilket rör talet hör till. Är ett rör valt bleknar de andras.",
   frontiers: "Varje kant på varje mätt rör, med skälet: grönt där röret slutar på rätt ställe (annan dimension, annat system, stigare, komponent, bladets kant), rött där läsningen sannolikt tappar meter (samma penna fortsätter utan namn, ett gap som inte överbryggades, byte av penna), orange där något lämnats öppet (tvetydig korsning). Det valda röret visar alltid sina kanter. Inget rör slutar tyst.",
   inWall: "Rör i vägg ritas alltid i det ej räknades färg — längden ligger utanför den horisontella mängden. Etiketter, hänvisningslinjer och anslutningar över en skrafferad yta ritas blekt; det här lagret lyfter fram dem. Ingenting läsningen hittade göms.",
 };
@@ -129,7 +130,7 @@ export default function AnalysisPage() {
   // The sheet opens showing what was measured. Ink the reading accepted as pipe but no label reached is a real
   // finding and has its own switch - shown first it reads as a fault, and a grey tangle over a good reading is
   // the fastest way to make a correct answer look wrong.
-  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, claimed: true, unowned: false, declined: false, designations: false, legend: false, leaders: false, anchors: false, inWall: false, frontiers: false });
+  const [layers, setLayers] = useState<Record<Layer, boolean>>({ pipes: true, ambiguous: true, claimed: true, unowned: false, declined: false, designations: false, legend: false, leaders: false, anchors: false, levels: false, inWall: false, frontiers: false });
   // which bortvald family the reader is pointing at, so the sheet can show that ink and not all of it at once
   const selDeclined: string | null = null;
   const [layersOpen, setLayersOpen] = useState(false);
@@ -578,6 +579,22 @@ export default function AnalysisPage() {
               <div style={{ marginTop: 12 }}>
                 <h4>Varför? {why.pipe.designation} DN{why.pipe.dn ?? "?"} · {typeof why.pipe.horizontal_m === "number" ? `${why.pipe.horizontal_m.toFixed(2)} m` : "ingen skala"}</h4>
                 <p className="muted">Rör-id {why.pipe.physical_pipe_id} · {why.pipe.raw_pt.toFixed(1)} pt + {why.pipe.bridged_gap_pt.toFixed(1)} pt överbryggade mikrogap · {why.pipe.source_path_ids.length} PDF-objekt</p>
+                {/* Nivåtalen som står längs just det här röret, och fallet mellan det högsta och det lägsta.
+                    Det är därför ett nivåtal inte kan färga ett stråk: stråket har flera, och skillnaden
+                    mellan dem är hela poängen med en självfallsledning. */}
+                {(() => {
+                  const ve = why.pipe.vertical_evidence;
+                  const vals: number[] = ve?.values ?? [];
+                  if (vals.length < 1) return null;
+                  const lo = Math.min(...vals), hi = Math.max(...vals);
+                  const u = ve.unit === "mm" ? "mm" : "m";
+                  return (
+                    <p className="muted">
+                      {tr("Nivåer längs röret")} ({ve.tag}): {vals.map((v: number) => num(v, 2)).join(" · ")} {u}
+                      {vals.length > 1 && <> — {tr("fall")} {num(hi - lo, 2)} {u}</>}
+                    </p>
+                  );
+                })()}
                 {/* Vägen från det utpekade röret till agenten. Frågan skrivs färdig med rörets eget namn och
                     id, och läggs i rutan - inte i samtalet - så att den går att läsa och ändra innan den
                     ställs. Agenten ser samma rör som markerats på bladet. */}

@@ -544,6 +544,12 @@ def sheet_reading(pa, doc, doc_legend=None, profile: dict | None = None,
         ad = a.as_dict()
         ad["in_wall"] = _in_wall(*a.endpoint)
         ad["names_a_pipe"] = bool(names_pipe.get(a.designation_id, False))
+        # Nivåtalet hör till punkten, inte till stråket. En självfallsledning faller, så `VG+1,54` gäller där
+        # ritningen skrev det och ingen annanstans; att hänga det på hela röret vore att påstå att röret ligger
+        # på en enda nivå. Därför följer det med ankaret - den punkt där etiketten möter sitt rör - och det är
+        # där en läsare ska kunna se det. Ingenting mäts av det här; mängden kommer från `vertical_evidence`.
+        ad["elevations"] = [{"tag": e["tag"], "value": e["value"], "unit": e["unit"], "text": e["text"]}
+                            for e in (pa.elevations.get(a.anchor_id) or [])]
         anc_out.append(ad)
     out["pipe-code-anchors.json"] = {"anchors": anc_out}
     out["pipe-representation-families.json"] = {"families": [rf.as_dict() for rf in pa.pipe_families.values()]}
