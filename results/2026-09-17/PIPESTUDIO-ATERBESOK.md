@@ -80,6 +80,17 @@ namngivna överallt. Där en onämnd kedja möter en korsning med exakt en bekr�
 nästan alltid en gren, inte stammen. Så grenens namn vandrar upp i stammen, och stammen står kvar med sina
 16 meter.
 
+**Men ritningen på just det stället visar något mer.** De två noder som ensamma står för 18,1 av bladets
+19,5 m via regeln - nod 2113 vid (1403,9, 1286,3) och nod 516 vid (1423,9, 1304,7) - ligger i ett hörn där
+fem parallella streck-punkt-linjer svänger tillsammans: tillopp och retur i flera dimensioner, ritade som en
+bunt. Den bekräftade armen i noden är vågrät, den onämnda kedjan som tar namnet är diagonal, och den tredje
+armen är **0,12 pt** lång - en avrundningsflisa, inte en ledning. Där finns alltså ingen stam som går rakt
+igenom att skydda: det som behöver avgöras är vilken av buntens linjer som är vilken, och det är samma fel
+som uppgifterna #92, #93, #94 och #60 beskriver.
+
+Det betyder att TEE-regeln (3.1) är rätt regel för fel blad. Den ska prövas där ritningen verkligen har ett
+T med en stam som passerar - och buntfallet ska avgöras för sig, på linjeidentitet, inte på korsningar.
+
 ---
 
 ## 3. Vad PipeStudio har som vi inte har
@@ -146,7 +157,10 @@ skrivform och isoleringsbeteckning hålls isär i evidensen innan den går att p
 
 ## 5. Näst på tur
 
-1. **TEE-regeln (3.1).** Läs A0132 och V-50-1-A0423 blad för blad, formulera villkoret på ritad evidens
-   (kollinjärt par = stammen; en arm = gren), grind mot gate90. Potentialen är mätt: 598 m, varav 562 m åt
-   ett och samma håll.
-2. Uppgift #92 och #93 hör till samma fel och bör avgöras i samma grind.
+1. **Bunten först.** De 598 metrarna ligger till stor del i parallella tillopp/retur-buntar (VS1-S13,
+   VS21-S13, KV1-X7): flera linjer av samma stam, olika dimension, ritade sida vid sida. Där avgörs ägandet
+   av vilken linje som är vilken, inte av vilken korsning som nås först. Uppgifterna #92, #93, #94 och #60
+   är samma fel sett från fyra håll och bör avgöras i en gemensam grind.
+2. **TEE-regeln (3.1)** för de blad som verkligen har ett T med en stam som passerar. Villkoret formuleras
+   på ritad evidens - kollinjärt par = stammen, en ensam arm = gren - och armar under kontakttoleransen
+   (0,12 pt-flisor) räknas inte som armar alls.
