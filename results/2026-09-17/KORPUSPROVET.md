@@ -112,14 +112,28 @@ Och för de 2 491,9 saknade metrarna finns skälet:
 
 | Varför metrarna saknas | m | andel |
 |---|---:|---:|
-| **namnet lästes men fick aldrig ett rör** | **2 089,3** | **84 %** |
+| namnet lästes men just den dragningen fick inget rör | 2 089,3 | 84 % |
 | namnet lästes inte alls | 402,6 | 16 % |
 | allt annat (fronter: symbol, sluten slinga, gräns, tvetydig knut …) | ~288 | — |
 
-**Det här är korpusens enskilt största fel, och det är ett fel, inte en gräns.** Motorn läser beteckningen,
-ritar ut den i tabellen — och den får noll meter, för hänvisningslinjen nådde aldrig fram till ett rör eller
-stråket bröts direkt. Fronterna, som säger var ett rör slutar och varför, står tillsammans för under 300 m.
-Det är alltså inte så att stråken slutar för tidigt av redovisade skäl: de börjar aldrig.
+Och den första raden måste delas, för den blandar ihop två helt olika fel:
+
+| | m | dragningar | snittlängd |
+|---|---:|---:|---:|
+| beteckningen fick **noll meter alls** | 238,7 | 165 | 1,4 m |
+| beteckningen fick meter, men **just den här dragningen saknas** | **1 850,6** | **2 142** | **0,86 m** |
+
+**Det är de korta grenarna som fattas, inte stammarna.** En mätt dragning hos oss är i snitt 2,26 m
+(`SAME_RUN`), en dragning vi höll ihop täcker 8,2 m av mängdarens (`MERGED`) — men de 2 142 dragningar som
+inte har någon motsvarighet alls är i snitt 0,86 m. Mängdaren mäter varje kort avstick till en apparat för
+sig; läsningen tar stammen och tappar avsticken. Det stämmer med radbilden: 201 rader är PARTIAL och saknar
+tillsammans 1 771,6 m.
+
+Fronterna — som säger var ett rör slutar och varför — står tillsammans för under 300 m. Stråken slutar alltså
+inte för tidigt av redovisade skäl; det är grenarna ut från dem som aldrig blir rör.
+
+Värst (saknade dragningar på rader som ändå fick meter): W-50-1-A0113 169,3 m, W-50-1-A0134 101,2 m,
+W-50-1-A0132 96,5 m, V-50-1-A0423 91,2 m, W-50-1-A0122 91,0 m, W-50-1-A0111 90,8 m.
 
 Det näst största: **597,5 m ligger på fel dimension av rätt stam**, och 561,6 av dem åt samma håll (den
 klenare dimensionen tar den grövres stråk). Det är 48 % av allt falskt ägande. Se
@@ -164,8 +178,9 @@ Vi läser bådas rör som `VS1-S13-12/W`. Den skillnaden är i arbetsboken, inte
 Målet är rimligt — fyra blad är redan där (94–100 % på mängdarens egna streck). Men korpusen som helhet
 ligger på 78 %, och de 22 procenten är inte ett jämnt brus utan tre högar:
 
-1. **2 089 m: beteckningen lästes men fick aldrig ett rör.** Den största enskilda posten i hela systemet,
-   och den som ska angripas först. Uppgifterna #82, #89 och #88 rör alla den här.
+1. **1 851 m i 2 142 korta grenar** (snitt 0,86 m) på beteckningar som redan har meter, plus 239 m på
+   beteckningar som fick noll. Det är den största enskilda posten, och den handlar om avsticken ut från
+   stammen - inte om att hitta stammen. Uppgifterna #82, #89 och #88 rör alla den här.
 2. **598 m: rätt stam, fel dimension**, 94 % åt samma håll. Parallellbunten är mekanismen (#92, #93, #94,
    #60), TEE-regeln är en del av svaret (#112).
 3. **403 m: namnet lästes inte alls.** Glyfläsningen (#49) och V-stilens textlager.
