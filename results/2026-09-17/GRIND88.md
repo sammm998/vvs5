@@ -29,27 +29,50 @@ Det är ett starkare besked än siffrorna. Mekanismen gör exakt det den säger:
 säger att de ska röras, och den rör inget annat. Det som är fel är inte hur faktorn kopplas in utan **vilka
 regler den kopplas in på**.
 
-## Vad utfallet säger om vilka regler som är fel
+## Rättelse: min första förklaring var fel, och mätningen tog den
 
-Det som ser motsägelsefullt ut - att både täckning OCH falskhet steg - är i själva verket ledtråden.
-A0214 tappar 9,3 procentenheters täckning och får 9,3 tillbaka som falskhet. Det är inte två fel utan ett:
-när en hänvisningslinje som stannar strax intill sitt rör inte längre når fram, blir stråket inte oägt - det
-tas av **en annan** etikett. Meterna byter rad i stället för att försvinna.
+Jag skrev först att skadan var räckviddsreglerna och att de regler som mäter **vad ritaren ritade** var den
+sunda delen — att `NEAR_MISS` och dess likar absorberar slarv medan symbolstorlek och knippbredd är storheter
+på papperet. Det lät rimligt och byggde på täckningssiffrorna.
 
-Det pekar på räckviddsreglerna, och där är hypotesen faktiskt fel i sak:
+Det höll inte. Jag läste fel nyckel ur mätningen (`falseness` i stället för `false_ownership`), fick noll
+falskhet i varje ruta och drog slutsatsen ur täckningen ensam. Med rätt nyckel kördes de fyra blad som rörde
+sig under varje delmängd:
 
-* **vad ritaren RITADE** - symbolens storlek, märkets storlek, knippets bredd, dubbellinjens avstånd - är
-  storheter på papperet och skalas med papperet. Ritar kontoret 41 % mindre är symbolerna 41 % mindre;
-* **hur långt läsningen är villig att sträcka sig** - `NEAR_MISS`, `NEAR_ONE`, `COLLECTOR_MAX`,
-  `DASH_GAP_MAX`, `CLOSE_ON_OWNED_TOL` - är något annat. De absorberar slarv, och slarv skalar inte med
-  papperet. En ritare som drar en hänvisningslinje ett par punkter kort gör det för att handen gled, inte för
-  att bladet är litet.
+| delmängd | täckning | falskt ägande |
+|---|---:|---:|
+| ingen (baslinjen) | 65,57 % | **12,97 %** |
+| vad som ritats | 67,21 % | 14,11 % |
+| räckvidd | 66,53 % | 14,14 % |
+| båda | 68,16 % | 15,29 % |
 
-Jag märkte alla nio som pappersberoende utan att skilja de två sorterna åt. Det var en generalisering jag inte
-hade underlag för, och grinden hittade den.
+**Båda delmängderna höjer falskheten, och med nästan exakt lika mycket** — 1,14 respektive 1,17
+procentenheter, och de är additiva. Det finns ingen delmängd som förbättrar kriteriet. Min uppdelning i
+"vad som ritats" och "räckvidd" var en berättelse jag byggde av halva mätningen.
 
-## Vad som står kvar
+Per blad separerar det ändå rent, och det är värt att ha skrivet:
 
-Profilen, faktorn och `Rule.scales_with_paper` står kvar och är oförändrade - de mäter rätt och kopplar in
-rätt. Det som ändras är märkningen, och nästa grind prövar den smalare hypotesen: bara det som ritaren ritade
-skalar, aldrig hur långt läsningen får gissa.
+| blad | ingen | vad som ritats | räckvidd |
+|---|---|---|---|
+| A0214 | 90,4 / 1,1 | 90,4 / 1,1 | **81,1 / 10,4** |
+| A0133 | 74,2 / 5,4 | **80,4 / 6,2** | 74,2 / 5,4 |
+| A0111 | 57,0 / 14,0 | **57,4 / 13,4** | 60,9 / 14,8 |
+| A0124 | 62,9 / 25,1 | **61,9 / 30,8** | 62,9 / 25,1 |
+
+Varje blad rörs av exakt en delmängd, aldrig av båda — så mekanismen är precis och går att resonera om. Men
+bara en enda ruta i hela tabellen är strikt bättre än baslinjen (A0111 under "vad som ritats": +0,4 täckning,
+−0,6 falskhet). En regel som hjälper ett blad av fyra är inte en regel.
+
+## Vad som står kvar, och varför fältet finns kvar tomt
+
+Ingen regel är märkt som pappersberoende. Det är ett **mätt** beslut och står som ett prov, så att en framtida
+märkning inte kan ske i förbifarten.
+
+Profilen, faktorn och `Rule.scales_with_paper` står kvar. Faktorn är inte felmätt — den är mätt på 59 blad och
+skiljer två ritkontor åt utan ett enda undantag, och grind 88 visade att inkopplingen rör exakt de blad vars
+faktor inte är 1 och inga andra. Det mätningen säger är något annat: **en tolerans i punkter är inte den
+storhet pappersfaktorn hör hemma i.** Var den hör hemma vet jag inte, och det är bättre att skriva det än att
+märka fler regler tills någon kombination råkar se bra ut på fyra blad.
+
+Återgången är verifierad utan en egen korpuskörning: de fyra bladen under "ingen delmängd" ger exakt grind 87:s
+siffror, blad för blad, på båda måtten.

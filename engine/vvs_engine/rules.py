@@ -34,10 +34,24 @@ class Rule:
     figure: str | None = None   # akademifiguren som visar vad regeln handlar om
     tunable: bool = False       # går att ändra per läsning
     fixed_why: str = ""         # ...och om inte: varför
-    # Följer regeln papperets storlek? Ett avstånd som säger hur långt en hänvisningslinje får sträcka sig är
-    # skrivet för en ritning av en viss storlek: samma ritning nedförminskad har hälften så stora avstånd mellan
-    # allting, och då är samma tal i punkter dubbelt så grovt mätt i vad ritaren menade. Ett avstånd som säger
-    # om två streck är samma bläck följer däremot PENNAN, inte papperet, och skalas inte här.
+    # Följer regeln papperets storlek? Tanken är rimlig: ett avstånd som säger hur långt en hänvisningslinje
+    # får sträcka sig är skrivet för en ritning av en viss storlek, och samma ritning nedförminskad har hälften
+    # så stora avstånd mellan allting.
+    #
+    # INGEN REGEL ÄR MÄRKT, och det är ett mätt beslut, inte ett förbiseende. Grind 88 märkte nio avstånd och
+    # lät bladets pappersfaktor skala dem. Falskt ägande steg från 10,91 % till 11,15 % över korpusen. De fyra
+    # blad som rörde sig kördes sedan under varje delmängd, och ingen delmängd klarade sig:
+    #
+    #     delmängd      täckning   falskt ägande
+    #     ingen          65,57 %        12,97 %      <- baslinjen
+    #     vad som ritats 67,21 %        14,11 %
+    #     räckvidd       66,53 %        14,14 %
+    #     båda           68,16 %        15,29 %
+    #
+    # Täckningen steg i alla tre, och falskheten steg lika mycket. Det betyder inte att faktorn är fel mätt -
+    # den är mätt på 59 blad och skiljer två ritkontor åt utan undantag - utan att en tolerans i punkter inte
+    # är den storhet som faktorn hör hemma i. Fältet står kvar för att mekanismen är prövad och fungerar
+    # (grind 88 rörde bara de blad vars faktor inte var 1), men en regel får inte märkas utan en egen grind.
     scales_with_paper: bool = False
 
     @property
@@ -89,12 +103,12 @@ RULES: tuple[Rule, ...] = (
          "streck på var kant namnger båda. Två sträckor med samma namn och samma penna som ligger sida vid sida, "
          "så nära som det här, längs större delen av den kortare, är ett rör: den längre kanten bär metrarna. "
          "Två rör med samma namn som bara löper bredvid varandra en bit förblir två.",
-         "pt", 8.0, 2.0, 20.0, "pipe", True, scales_with_paper=True),
+         "pt", 8.0, 2.0, 20.0, "pipe", True),
     Rule("semantics.attachment.COLLECTOR_MAX", G_LEADER, "Så lång får en samlingslinje vara",
          "Ritaren drar flera hänvisningslinjer till ett streck och det strecket vidare till röret. Ett sådant "
          "streck på skrivpennan får bära ledaren till röret om det är kort och rakt; en lång linje på "
          "skrivpennan är något annat och får aldrig bli en brygga.",
-         "pt", 90.0, 10.0, 300.0, "leader", True, scales_with_paper=True),
+         "pt", 90.0, 10.0, 300.0, "leader", True),
     Rule("semantics.attachment.CONTACT_TOL", G_LEADER, "Kontakt räknas som kontakt",
          "Hur nära en hänvisningslinjes ände måste ligga rörets linje för att räknas som att den rör vid den. "
          "Under det här är det samma punkt så långt en PDF-export kan uttrycka den.",
@@ -102,27 +116,27 @@ RULES: tuple[Rule, ...] = (
     Rule("semantics.attachment.NEAR_MISS", G_LEADER, "Linjen stannar strax intill",
          "Hur långt före sitt rör en hänvisningslinje får stanna och ändå räknas som att den pekar på det. "
          "Vidgningen gäller bara där det inte finns något annat rör inom räckhåll.",
-         "pt", 6.0, 0.0, 20.0, "leader", True, scales_with_paper=True),
+         "pt", 6.0, 0.0, 20.0, "leader", True),
     Rule("semantics.attachment.NEAR_ONE", G_LEADER, "...och att det bara finns ett rör där",
          "Hur nära varandra de rör som ligger inom räckvidden måste ligga för att vara en enda ritad sak. "
          "Ligger de isär har ritningen inte sagt vilket som menas, och sträckan lämnas onämnd.",
-         "pt", 2.5, 0.5, 10.0, "bundle", True, scales_with_paper=True),
+         "pt", 2.5, 0.5, 10.0, "bundle", True),
     Rule("semantics.attachment.DASH_GAP_MAX", G_LEADER, "Landar i en lucka i strecken",
          "Den bredaste ritade luckan i ett streckat rör som en hänvisningslinje får sluta i och ändå räknas som "
          "att den träffat röret.",
-         "pt", 8.0, 0.0, 30.0, "leader", True, scales_with_paper=True),
+         "pt", 8.0, 0.0, 30.0, "leader", True),
     Rule("semantics.attachment.MARKER_MAX", G_LEADER, "Punkter och små ringar vid röränden",
          "Hur stor en sluten markering vid en röraände får vara för att räknas som rörets ände och inte som ett "
          "eget föremål.",
-         "pt", 3.0, 0.5, 12.0, None, True, scales_with_paper=True),
+         "pt", 3.0, 0.5, 12.0, None, True),
     Rule("semantics.attachment.SYMBOL_MAX", G_LEADER, "Symboler en linje får peka på",
          "Hur stor en sluten symbol får vara för att en hänvisningslinje ska få peka på den i stället för på "
          "röret självt - stigarmärken, ändcirklar, kopplingar.",
-         "pt", 20.0, 2.0, 60.0, "riser", True, scales_with_paper=True),
+         "pt", 20.0, 2.0, 60.0, "riser", True),
     Rule("semantics.attachment.BUNDLE_SPAN", G_LEADER, "Hur brett ett rörknippe är",
          "Hur långt isär parallella rör får ligga och ändå räknas som ett knippe som en etikettstapel namnger "
          "uppifrån och ned.",
-         "pt", 34.0, 5.0, 120.0, "bundle", True, scales_with_paper=True),
+         "pt", 34.0, 5.0, 120.0, "bundle", True),
     Rule("semantics.attachment.COLLINEAR_DEG", G_LEADER, "Samma rör, eller två som möts",
          "Hur mycket två sträckor får luta olika och ändå räknas som samma rör. Slutar en hänvisningslinje i "
          "ett märke mitt på ett stråk rör den samma rör åt två håll; går sträckorna isär är det en koppling "
@@ -157,7 +171,7 @@ RULES: tuple[Rule, ...] = (
     Rule("pipeline.CLOSE_ON_OWNED_TOL", G_LEADER, "Etiketten står på sin egen sträcka",
          "Hur nära en redan namngiven sträcka en etikettände får sluta för att räknas som att den bekräftar "
          "samma sträcka i stället för att vara olöst.",
-         "pt", 8.0, 0.0, 30.0, None, True, scales_with_paper=True),
+         "pt", 8.0, 0.0, 30.0, None, True),
 
     # ---- förklaringslistan -------------------------------------------------------------------------------
     Rule("semantics.legend.MIN_ENTRIES", G_LEGEND, "Kortaste lista som är en lista",

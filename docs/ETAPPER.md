@@ -81,8 +81,8 @@ grafnoder och kräver en egen grind; att bunta den med tilldelningen hade gjort 
 
 | punkt | var | tillstånd |
 |---|---|---|
-| ritningsprofil | `profile/style_profile.py` | **byggd och mätt, verkar inte ännu** |
-| pappersfaktor | `style_profile.paper_factor`, `tolerance_scale()` | **byggd**, begränsad till [0,35, 2,5], och den rör aldrig meter per punkt |
+| ritningsprofil | `profile/style_profile.py` | **byggd och mätt** |
+| pappersfaktor | `style_profile.paper_factor`, `tolerance_overrides()` | **byggd och prövad; ingen regel märkt** (grind 88) |
 | native-text-först | `semantics/annotation.py:_reading_quality` | **byggd**: filens egen text slår återskapade glyfer |
 | lokal familjekalibrering | `pipes/representation.py:describe_family` | **delvis**: streck och gap mäts per familj ur ritningen |
 | streckmönster | `describe_family`, `build_graph` | **delvis**: mönstret återskapas och används för att brygga, men delar inte familjen |
@@ -104,7 +104,23 @@ Tre gränser står i koden och i proven, inte bara i ett beslut:
 * **ett litet pappersformat ensamt är inget skäl att skala.** En ritning som ritats för A3 från början har
   text i A3-storlek och faktorn 1; att anta att varje A3 är en förminskad A1 vore en gissning.
 
-Att låta faktorn verka ändrar varje läsning på varje blad och är sitt eget steg med sin egen grind.
+Faktorn mättes på alla 59 blad och delade korpusen i två ritkontor utan ett enda undantag: V-serien skriver
+11,0 pt och får faktorn 1,000, W-serien plus A/C/D/E skriver 6,5 pt och får 0,591. Alla blad är A1.
+
+**Att låta faktorn skala toleranserna prövades i grind 88 och backades.** Falskt ägande steg från 10,91 % till
+11,15 %. De fyra blad som rörde sig kördes sedan under varje delmängd av reglerna, och ingen delmängd klarade
+sig - täckningen steg i alla tre, och falskheten steg lika mycket:
+
+| delmängd | täckning | falskt ägande |
+|---|---:|---:|
+| ingen (baslinjen) | 65,57 % | **12,97 %** |
+| vad som ritats | 67,21 % | 14,11 % |
+| räckvidd | 66,53 % | 14,14 % |
+| båda | 68,16 % | 15,29 % |
+
+Mekanismen är däremot bevisad: grind 88 rörde bara de blad vars faktor inte var 1, och inga andra. Slutsatsen
+är alltså inte att faktorn är felmätt utan att **en tolerans i punkter inte är den storhet den hör hemma i**.
+Var den hör hemma vet jag inte. Ingen regel är märkt, och att den inte är det står som ett prov.
 
 ---
 
@@ -138,7 +154,9 @@ vilka tal en återgång ska sätta. Det tillståndet gör omöjligt behöver ing
 
 ## Vad som återstår, med skäl
 
-1. **Pappersfaktorn får verka** på toleranserna. Egen grind. Störst enskild kvarvarande post i etapp 2.
+1. **Var pappersfaktorn hör hemma.** Prövad som toleransskala i grind 88 och backad: mekanismen fungerar,
+   men storheten är fel. Faktorn skiljer två ritkontor åt utan undantag och är därför värd något - men vad,
+   är öppet, och nästa försök behöver en annan idé än att multiplicera punkttoleranser med den.
 2. **Adaptiv bezierapproximation.** Mätt effekt 0,013 % av ritat bläck. Egen grind.
 3. **Hårfin-läge och streckmönster som familjedelare.** Kräver stil 3-blad för att gå att avgöra.
 4. **Regressionen kopplad till `RuleChange` i kod.** I dag körs grinden för hand och utfallet förs in.
