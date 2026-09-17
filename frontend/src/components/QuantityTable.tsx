@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { identityColor } from "../palette";
+import { identityColor, dimensionWidth } from "../palette";
 
 export const identityKey = (r: any) => `${r.base}|DN${r.dn ?? "?"}`;
 import { t as tr } from "../i18n";
@@ -89,7 +89,7 @@ export default function QuantityTable({ rows, selected, onSelect, floorHeight, i
         <tbody>
           {list.flatMap((r) => [
             <tr key={identityKey(r)} className={`selectable ${selected === identityKey(r) ? "selected" : ""}`} onClick={() => onSelect(selected === identityKey(r) ? null : identityKey(r))}>
-              <td><span style={{ display: "inline-block", width: 12, height: 12, borderRadius: 2, background: identityColor(identityKey(r)), marginRight: 6, verticalAlign: "middle" }} />{r.designation}</td><td>{r.dn ?? "?"}</td><td className="num" title={(r.declared_m ?? 0) > 0
+              <td><span title={`DN ${r.dn ?? "?"}`} style={{ display: "inline-block", width: 14, height: Math.round(dimensionWidth(identityKey(r)) * 1.6), borderRadius: 2, background: identityColor(identityKey(r)), marginRight: 6, verticalAlign: "middle" }} />{r.designation}</td><td>{r.dn ?? "?"}</td><td className="num" title={(r.declared_m ?? 0) > 0
                 ? `${r.label_count ?? 0} verifierade beteckningar på ritningen. ${Number(r.declared_m).toFixed(1)} m är namngivna av bladets egen tabell (kopplingsledningar enligt tabell om inget annat anges), inte av en etikett.`
                 : "Antal verifierade beteckningar på ritningen för denna identitet"}>
                 {r.label_count ?? "–"}{(r.declared_m ?? 0) > 0 && <span className="assumed"> tabell</span>}{(r.double_line_m ?? 0) > 0 && <span className="assumed" title={`${Number(r.double_line_m).toFixed(1)} m är rörets andra ritade kant och räknas inte: ett grövre rör ritas som två linjer.`}> dubbellinje</span>}
